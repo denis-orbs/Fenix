@@ -1,0 +1,78 @@
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      animation: {
+        'spin-slow': 'spin 25s linear infinite',
+      },
+      colors: {
+        shark: {
+          '100': '#52575C',
+          '200': '#474C51',
+          '300': '#393E44',
+          '400': '#292D32', // main
+          '500': '#1C1F21',
+          '600': '#0D0F10',
+          '700': '#000000',
+          '800': '#000000',
+          '900': '#000000',
+        },
+        'outrageous-orange': {
+          '100': '#ffe2d4',
+          '200': '#ffc2a9',
+          '300': '#ff9772',
+          '400': '#fe5e35', // main
+          '500': '#fd3812',
+          '600': '#ee1e08',
+          '700': '#c51209',
+          '800': '#9c1110',
+          '900': '#7e1110',
+        },
+        'chilean-fire': {
+          '50': '#fffaec',
+          '100': '#fff3d3',
+          '200': '#ffe3a6',
+          '300': '#ffce6e',
+          '400': '#ffad33',
+          '500': '#ff920c',
+          '600': '#f67702', // main
+          '700': '#ca5904',
+          '800': '#a0450c',
+          '900': '#813b0d',
+        },
+        festival: {
+          '100': '#fff9c2',
+          '200': '#ffef76', // main
+          '300': '#ffe245',
+          '400': '#fcce13',
+          '500': '#ecb506',
+          '600': '#cc8c02',
+          '700': '#a26306',
+          '800': '#864d0d',
+          '900': '#723f11',
+        },
+      },
+      screens: {
+        xxs: '320px',
+      },
+    },
+    container: {
+      screens: {
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1740px',
+      },
+    },
+  },
+  plugins: [],
+}
+// eslint-disable-next-line import/no-default-export
+export default config

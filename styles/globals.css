@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply h-full text-base bg-shark-700;
+}
+
+/************* ScrollBar ***********/
+::-webkit-scrollbar {
+  width: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.container {
+  @apply max-w-[1760px] mx-auto px-5;
+}
