@@ -11,6 +11,14 @@ const config: Config = {
       animation: {
         'spin-slow': 'spin 25s linear infinite',
       },
+      backgroundImage: {
+        // Gradients
+        'button-primary':
+          'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%);',
+        'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%);',
+        // Background images
+        'header-rectangle': 'url("/static/images/header/rectangle.svg")',
+      },
       colors: {
         shark: {
           '100': '#52575C',

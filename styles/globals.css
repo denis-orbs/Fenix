@@ -1,13 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("./fontello.css");
 
-html {
-  scroll-behavior: smooth;
-}
 
 body {
   @apply h-full text-base bg-shark-700;
+  scroll-behavior: smooth;
 }
 
 /************* ScrollBar ***********/
@@ -21,4 +20,25 @@ body {
 
 .container {
   @apply max-w-[1760px] mx-auto px-5;
+}
+
+/************* Button ***********/
+
+.button {
+  @apply flex items-center justify-center focus:outline-none font-normal transition ease-in-out duration-300 rounded-lg py-3 px-5 text-sm;
+}
+.button-default {
+  @apply text-white hover:text-outrageous-orange-400;
+}
+.button-primary {
+  @apply text-white border border-outrageous-orange-400 bg-button-primary hover:bg-button-primary-hover;
+}
+.button-secondary {
+  @apply text-white border border-transparent bg-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-outrageous-orange-400;
+}
+.button-tertiary {
+  @apply text-white border bg-shark-400 border-shark-300 hover:bg-button-primary hover:border-outrageous-orange-400;
+}
+.header {
+  @apply flex items-center justify-between p-4 bg-shark-400 bg-opacity-40 rounded-xl border border-shark-400 relative after:content-["''"] after:absolute after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle;
 }

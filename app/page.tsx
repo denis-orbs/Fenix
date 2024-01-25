@@ -1,9 +1,13 @@
 /* eslint-disable import/no-default-export */
 
+import Header from "@/components/Layout/Header"
+
 export default function Home() {
   return (
     <main>
-      <h4 className="text-white text-4xl">hello</h4>
+      <div className="p-5">
+        <Header />
+      </div>
     </main>
   )
 }
