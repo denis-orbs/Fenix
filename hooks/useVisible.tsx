@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 
-export const ComponentVisible = (initialIsVisible: boolean) => {
+const ComponentVisible = (initialIsVisible: boolean) => {
   const [isVisible, setIsVisible] = useState(initialIsVisible)
   const ref = useRef<HTMLElement | null>(null)
 
@@ -28,3 +28,5 @@ export const ComponentVisible = (initialIsVisible: boolean) => {
 
   return { ref, isVisible, setIsVisible }
 }
+
+export default ComponentVisible
