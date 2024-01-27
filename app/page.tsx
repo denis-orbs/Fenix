@@ -1,7 +1,7 @@
 /* eslint-disable import/no-default-export */
-import Header from "@/components/Layout/Header"
+import Footer from '@/components/Layout/Footer'
+import Header from '@/components/Layout/Header'
 import WalletSelection from '@/components/Modals/WalletSelection'
-
 
 export default function Home() {
   return (
@@ -10,6 +10,7 @@ export default function Home() {
         <Header />
         <WalletSelection />
       </div>
+      <Footer />
     </main>
   )
 }
