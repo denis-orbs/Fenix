@@ -23,7 +23,7 @@ const Welcome = () => {
         <p className="mb-4 text-shark-100">Welcome to fenix</p>
         <h3 className="mb-4 text-4xl text-white">
           The core trading and{' '}
-          <span className="inline-block text-transparent bg-gradient-to-r from-festival-500 via- to-outrageous-orange-500 bg-clip-text">
+          <span className="inline-block text-transparent bg-gradient-to-r from-festival-500 to-outrageous-orange-500 bg-clip-text">
             liquidity marketplace
           </span>{' '}
           on{' '}

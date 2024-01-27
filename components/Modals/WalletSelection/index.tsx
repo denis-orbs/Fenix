@@ -6,6 +6,7 @@ import { Modal } from '@/components/UI'
 import ConnectYourWallet from '@/components/Modals/WalletSelection/ConnectYourWallet'
 import Welcome from '@/components/Modals/WalletSelection/Welcome'
 import SignIn from '@/components/Modals/WalletSelection/SignIn'
+
 import useStore from '@/store'
 
 const WalletSelection = () => {

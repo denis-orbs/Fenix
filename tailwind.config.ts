@@ -8,8 +8,28 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        'toast-in': {
+          from: {
+            transform: 'translateX(100%)',
+          },
+          to: {
+            transform: 'translateX(0%)',
+          },
+        },
+        progress: {
+          from: {
+            width: '0',
+          },
+          to: {
+            width: '100%',
+          },
+        },
+      },
       animation: {
         'spin-slow': 'spin 25s linear infinite',
+        'toast-in': 'toast-in 250ms linear',
+        progress: 'progress 3s linear',
       },
       backgroundImage: {
         // Gradients
@@ -22,6 +42,7 @@ const config: Config = {
         'modal-welcome': 'url("/static/images/modals/modal-welcome.svg")',
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
         'info-box': 'url("/static/images/modals/info-box.svg")',
+        notification: 'url("/static/images/notification/notification.svg")',
       },
       colors: {
         shark: {
