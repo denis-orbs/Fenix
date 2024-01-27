@@ -16,22 +16,23 @@ const AccountHandler = () => {
   }
 
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex items-center gap-[38px]">
       {isConnected && (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <Image src="/static/images/tokens/ETH.png" className="w-6 h-6" alt="logo" width={24} height={24} />
           <p className="text-xs text-white">1.987 ETH</p>
         </div>
       )}
       <div className="flex">
         {isConnected ? (
-          <div className="flex gap-5 p-4 transition-all border rounded-lg cursor-pointer bg-shark-600 border-shark-500 hover:bg-shark-500 group">
-            <div className="flex items-center gap-3">
-              <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-shark-500 group-hover:bg-shark-600">
-                <span className="text-base icon-wallet text-outrageous-orange-500"></span>
+          <div className="flex gap-5 py-[13px] px-3.5 pr-0 transition-all border rounded-[10px] cursor-pointer bg-bunker-950 border-shark-950 bg-opacity-40 hover:bg-limed-spruce-900 group">
+            <div className="flex items-center gap-2.5">
+              <div className="relative flex items-center justify-center w-12 h-12 rounded-[10px] bg-shark-960 hover:bg-shark-970">
+                <span className="text-[17px] icon-wallet text-outrageous-orange-500"></span>
+
                 <Image
                   src="/static/images/wallets/metamask.png"
-                  className="absolute bottom-0 w-6 h-6 -right-1"
+                  className="absolute w-6 h-6 right-0 bottom-0"
                   alt="logo"
                   width={24}
                   height={24}
@@ -40,19 +41,19 @@ const AccountHandler = () => {
               <div className="">
                 <p className="text-xs font-medium text-shark-100">Welcome</p>
                 <p className="flex items-center text-xs text-white">
-                  <span className="block w-2 h-2 mr-2 bg-green-400 rounded-full"></span>
+                  <span className="block w-2 h-2 mr-1.5 bg-green-400 rounded-full"></span>
                   0x98b36...ab87c6de3c
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-center w-10 h-10 pl-2 border-l border-shark-300">
-              <span className="text-lg icon-cog text-shark-100 group-hover:text-outrageous-orange-500"></span>
+            <div className="flex items-center justify-center px-4 border-l border-shark-300 flex-shrink-0 group-hover:border-shark-950 transition-colors">
+              <span className="text-xl icon-cog text-shark-100 group-hover:text-outrageous-orange-500"></span>
             </div>
           </div>
         ) : (
-          <Button className="gap-4 w-[290px]" onClick={handlerConnectWallet}>
+          <Button className="gap-3.5 w-[298px] h-[49px]" onClick={handlerConnectWallet}>
             <span className="icon-wallet text-md"></span>
-            Connect your Wallet
+            <span className='text-xs'>Connect your Wallet</span>
           </Button>
         )}
       </div>

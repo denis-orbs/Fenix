@@ -39,6 +39,69 @@ body {
 .button-tertiary {
   @apply text-white border bg-shark-400 border-shark-300 hover:bg-button-primary hover:border-outrageous-orange-400;
 }
+
 .header {
-  @apply flex items-center justify-between p-4 bg-shark-400 bg-opacity-40 rounded-xl border border-shark-400 relative after:content-["''"] after:absolute after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle;
+  @apply
+  relative
+  h-[105px]
+  
+  /* bg-shark-400 bg-opacity-40 rounded-xl border border-shark-400 relative  */
+  
+  before:content-[""]
+  before:absolute 
+  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
+  before:bg-[url("/static/images/header/SVG/left-side.svg")]
+  before:bg-no-repeat
+  before:h-[87px]
+  before:w-[calc(100%-397px)]
+  before:left-0
+  before:top-0
+  before:bg-cover
+  before:backdrop-blur-[5px]
+
+
+  after:content-[""]
+  after:absolute 
+  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
+  after:bg-[url("/static/images/header/SVG/right-side.svg")]
+  after:bg-no-repeat
+  after:h-[105px]
+  after:w-[397px]
+  after:right-0
+  after:top-0
+  after:backdrop-blur-[5px]
+
+}
+
+.footer {
+  @apply
+  relative
+  h-[102px]
+  
+  /* bg-shark-400 bg-opacity-40 rounded-xl border border-shark-400 relative  */
+  
+  before:content-[""]
+  before:absolute 
+  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
+  before:bg-[url("/static/images/footer/SVG/left-side.svg")]
+  before:bg-no-repeat
+  before:h-[102px]
+  before:w-[352px]
+  before:left-0
+  before:bottom-0
+  before:backdrop-blur-[5px]
+
+
+  after:content-[""]
+  after:absolute 
+  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
+  after:bg-[url("/static/images/footer/SVG/right-side.svg")]
+  after:bg-no-repeat
+  after:h-[88px]
+  after:w-[calc(100%-352px)]
+  after:right-0
+  after:bottom-0
+  after:bg-cover
+  after:backdrop-blur-[5px]
+  after:bg-right
 }
