@@ -1,6 +1,6 @@
 /* eslint-disable import/no-default-export */
 import Header from "@/components/Layout/Header"
-import WalletSelection from '@/components/Modals/WalletSelection'
+import Liquidity from '@/components/Liquidity'
 
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
     <main>
       <div className="p-5">
         <Header />
-        <WalletSelection />
+        <Liquidity />
       </div>
     </main>
   )
