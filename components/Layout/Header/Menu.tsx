@@ -40,11 +40,11 @@ const Menu = () => {
   const [isActive, setIsActive] = useState<boolean>(false)
 
   return (
-    <ul className="flex item-center gap-3">
+    <ul className="flex item-center gap-2">
       {MENU_LINKS.map((link, index) => (
         <li key={index}>
           <Button href={link.href} variant={isActive ? 'primary' : 'secondary'}>
-            {link.name}
+            <span className='text-xs'>{link.name}</span>
           </Button>
         </li>
       ))}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1470.36 88">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(41, 45, 50, .4);
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-1, .cls-3 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #262c33;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        mask: url(#mask);
+      }
+    </style>
+    <mask id="mask" x="-350.64" y="-13" width="1821" height="101" maskUnits="userSpaceOnUse">
+      <g id="path-1-inside-1_531_6042" data-name="path-1-inside-1 531 6042">
+        <path class="cls-3" d="M-350.64,77c0,5.52,4.48,10,10,10h1800c5.52,0,10-4.48,10-10V11c0-5.52-4.48-10-10-10H0C-4.16,1-7.74-1.93-8.56-6c-.83-4.07-4.41-7-8.57-7h-304.03c-4.16,0-7.74,2.93-8.56,7-.83,4.07-4.41,7-8.56,7h-2.36c-5.52,0-10,4.48-10,10v66Z"/>
+      </g>
+    </mask>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <path class="cls-1" d="M1469.36,11v66c0,5.52-4.48,10-10,10H0V1h1459.36c5.52,0,10,4.47,10,10Z"/>
+      <g class="cls-4">
+        <path class="cls-2" d="M0,86v2h1459.36v-2H0ZM1468.36,11v66h2V11h-2ZM0,0v2h1459.36V0H0ZM1459.36,0v2c4.97,0,9,4.03,9,9h2c0-6.08-4.92-11-11-11ZM1468.36,77c0,4.97-4.03,9-9,9v2c6.08,0,11-4.93,11-11h-2Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
