@@ -71,7 +71,7 @@ const Footer = () => {
             <div className="flex gap-[23px] items-center mb-2">
               <FenixIcon className="text-[32px]" />
               <div>
-                <p className="text-shuttle-gray-600 text-xs leading-normal font-semibold mb-[5px]">Navigation</p>
+                <p className="text-shark-100 text-xs leading-normal font-semibold mb-[5px]">Navigation</p>
                 <div className="flex gap-[30px]">
                   {navLinks.map((link, i) => (
                     <a
@@ -91,7 +91,7 @@ const Footer = () => {
                   title={link.title}
                   href={link.href}
                   key={i}
-                  className="text-base text-white w-9 h-9 flex items-center justify-center border border-oxford-blue-900 rounded-[10px] flex-shrink-0 bg-limed-spruce-900 bg-opacity-40 transition-colors hover:border-outrageous-orange-500 hover:bg-button-primary-hover hover:bg-opacity-80"
+                  className="text-base text-white w-9 h-9 flex items-center justify-center border border-shark-400 rounded-[10px] flex-shrink-0 bg-shark-400 bg-opacity-40 transition-colors hover:border-outrageous-orange-500 hover:bg-button-primary-hover hover:bg-opacity-80"
                 >
                   <i className={`icon-${link.iconName}`}></i>
                 </a>
@@ -99,10 +99,10 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="text-shuttle-gray-600 flex text-xs leading-normal items-center justify-between">
+        <div className="text-shark-100 flex text-xs leading-normal items-center justify-between">
           <div className="flex items-center gap-5">
             <div>{currentYear} © Fenix Finance</div>
-            <div className="px-2.5 h-7 border border-shark-950 rounded-[10px] bg-shark-400 bg-opacity-40 flex items-center">
+            <div className="px-2.5 h-7 border border-shark-300 rounded-[10px] bg-shark-400 bg-opacity-40 flex items-center">
               Version: 93a8d72
             </div>
           </div>
