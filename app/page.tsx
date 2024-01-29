@@ -1,11 +1,11 @@
 /* eslint-disable import/no-default-export */
-import WalletSelection from '@/components/Modals/WalletSelection'
+import Liquidity from '@/components/Liquidity'
 
 export default function Home() {
   return (
     <main>
       <div className="p-5">
-        <WalletSelection />
+        <Liquidity />
       </div>
     </main>
   )
