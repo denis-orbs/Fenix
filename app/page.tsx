@@ -4,7 +4,7 @@ import Liquidity from '@/components/Liquidity'
 export default function Home() {
   return (
     <main>
-      <div className="p-5">
+      <div className="py-5 max-w-[1820px] mx-auto ">
         <Liquidity />
       </div>
     </main>

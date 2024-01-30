@@ -25,7 +25,7 @@ body {
 /************* Button ***********/
 
 .button {
-  @apply flex items-center justify-center focus:outline-none font-normal transition rounded-lg py-3 px-5 text-sm;
+  @apply flex items-center justify-center px-5 py-3 text-sm font-normal transition rounded-lg focus:outline-none;
 }
 .button-default {
   @apply text-white hover:text-outrageous-orange-400;
@@ -34,7 +34,7 @@ body {
   @apply text-white border border-outrageous-orange-400 bg-button-primary hover:bg-button-primary-hover;
 }
 .button-secondary {
-  @apply text-white border border-transparent bg-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-outrageous-orange-400;
+  @apply text-white bg-transparent border border-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-outrageous-orange-400;
 }
 .button-tertiary {
   @apply text-white border bg-shark-400 border-shark-300 hover:bg-button-primary hover:border-outrageous-orange-400;
@@ -96,4 +96,14 @@ body {
   after:bg-cover
   after:backdrop-blur-[5px]
   after:bg-right
+}
+
+.box {
+  @apply rounded-lg bg-shark-400 bg-opacity-40;
+  clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 95.71% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 4.29% 100%)
+}
+
+.box-large {
+  @apply rounded-lg bg-shark-400 bg-opacity-40;
+  clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 97.71% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 2.29% 100%)
 }

@@ -34,7 +34,7 @@ const Welcome = () => {
         </p>
       </div>
       <div className="flex items-center gap-5">
-        <div className="relative p-4 bg-info-box bg-contain bg-no-repeat flex items-center gap-4 h-[100px]">
+        <div className="relative p-4 box bg-contain bg-no-repeat flex items-center gap-4 h-[100px]">
           <div className="bg-shark-400 bg-opacity-40 rounded-lg p-3 w-12 h-12 flex items-center justify-center">
             <span className="text-xl text-white icon-wallet"></span>
           </div>
@@ -46,7 +46,7 @@ const Welcome = () => {
             </p>
           </div>
         </div>
-        <div className="relative p-4 bg-info-box bg-contain bg-no-repeat flex items-center gap-4 h-[100px]">
+        <div className="relative p-4 box bg-contain bg-no-repeat flex items-center gap-4 h-[100px]">
           <div className="bg-shark-400 bg-opacity-40 rounded-lg p-3 w-12 h-12 flex items-center justify-center">
             <span className="text-2xl text-outrageous-orange-500 icon-document"></span>
           </div>

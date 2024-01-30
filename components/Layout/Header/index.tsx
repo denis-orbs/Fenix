@@ -4,10 +4,11 @@ import Image from 'next/image'
 
 import Menu from './Menu'
 import AccountHandler from './AccountHandler'
+import WalletSelection from '../../Modals/WalletSelection'
 
 const Header = () => {
   return (
-    <div className='px-5 pt-[26px]'>
+    <div className="px-5 pt-[26px]">
       <header className="header max-w-[1820px] mx-auto p-0 flex gap-5 justify-between">
         <div className="flex items-center justify-between w-full relative z-10 h-[87px] p-4 max-w-[1309px]">
           <Image src="/static/images/logo.svg" className="w-[150px] h-10" alt="logo" width={150} height={40} priority />
@@ -20,6 +21,7 @@ const Header = () => {
           </div>
         </div>
       </header>
+      <WalletSelection />
     </div>
   )
 }

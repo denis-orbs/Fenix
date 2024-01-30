@@ -21,7 +21,7 @@ const Modal = ({ children, openModal, setOpenModal }: ModalProps) => {
 
   return (
     <div
-      className="fixed top-0 right-0 w-full h-full bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50"
+      className="fixed top-0 right-0 w-full h-full bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50"
       onClick={handleCloseModal}
     >
       <div onClick={(e) => e.stopPropagation()}>{children}</div>

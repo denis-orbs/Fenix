@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import Button from './Button'
 import Modal from './Modal'
-import Notification from './Notification'
+import BigBox from './Boxes/BigBox'
+import MediumBox from './Boxes/MediumBox'
 
-export { Button, Modal, Notification }
+export { Button, Modal, BigBox, MediumBox }

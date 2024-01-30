@@ -47,17 +47,16 @@ const config: Config = {
         'modal-connect': 'url("/static/images/modals/modal-connect.svg")',
         'modal-welcome': 'url("/static/images/modals/modal-welcome.svg")',
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
-        'info-box': 'url("/static/images/modals/info-box.svg")',
         notification: 'url("/static/images/notification/notification.svg")',
-        liquidity: 'url("/static/images/liquidity/liquidity.svg")',
-        'statistics-box': 'url("/static/images/liquidity/statistics-box.svg")',
+        'big-box': 'url("/static/images/components/big-box.svg")',
+        'small-box': 'url("/static/images/components/small-box.svg")',
       },
       lineHeight: {
         normal: 'normal',
       },
       colors: {
         shark: {
-          '100': '#52575C',
+          '100': '#53606A',
           '200': '#474C51',
           '300': '#393E44',
           '400': '#292D32', // main
