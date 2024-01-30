@@ -71,9 +71,11 @@ const Welcome = () => {
       </div>
 
       <div className="flex items-center gap-5 absolute bottom-0 left-[206px] text-xs text-shark-100">
-          <p className="">2023 © Fenix Finance</p>
-          <p className="bg-shark-400 bg-opacity-40 rounded-[10px] w-[123px] h-[28px] flex items-center justify-center border border-shark-950">Version: 93a8d72</p>
-        </div>
+        <p className="">2023 © Fenix Finance</p>
+        <p className="bg-shark-400 bg-opacity-40 rounded-[10px] w-[123px] h-[28px] flex items-center justify-center border border-shark-950">
+          Version: 93a8d72
+        </p>
+      </div>
     </div>
   )
 }

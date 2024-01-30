@@ -7,7 +7,7 @@ interface ModalProps {
   children: React.ReactNode
   openModal: boolean
   className?: string
-  setOpenModal: (openModal: boolean) => void,
+  setOpenModal: (openModal: boolean) => void
 }
 
 const Modal = ({ children, openModal, className = '', setOpenModal }: ModalProps) => {

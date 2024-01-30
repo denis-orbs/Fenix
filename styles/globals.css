@@ -4,7 +4,7 @@
 @import url('./fontello.css');
 
 body {
-  @apply h-full text-base bg-woodsmoke-950;
+  @apply h-full text-base bg-shark-900;
   scroll-behavior: smooth;
 }
 
@@ -24,7 +24,7 @@ body {
 /************* Button ***********/
 
 .button {
-  @apply flex items-center justify-center focus:outline-none font-normal transition rounded-lg py-3 px-5 text-sm;
+  @apply flex items-center justify-center px-5 py-3 text-sm font-normal transition rounded-lg focus:outline-none;
 }
 .button-default {
   @apply text-white hover:text-outrageous-orange-400;
@@ -33,21 +33,19 @@ body {
   @apply text-white border border-outrageous-orange-400 bg-button-primary hover:bg-button-primary-hover;
 }
 .button-secondary {
-  @apply text-white border border-transparent bg-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-outrageous-orange-400;
+  @apply text-white bg-transparent border border-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-outrageous-orange-400;
 }
 .button-tertiary {
   @apply text-white border bg-shark-400 border-shark-300 hover:bg-button-primary hover:border-outrageous-orange-400;
 }
 
+/************* Header ***********/
+
 .header {
   @apply relative
   h-[105px]
-  
-  /* bg-shark-400 bg-opacity-40 rounded-xl border border-shark-400 relative  */
-  
   before:content-[""]
-  before:absolute 
-  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
+  before:absolute
   before:bg-[url("/static/images/header/SVG/left-side.svg")]
   before:bg-no-repeat
   before:h-[87px]
@@ -57,10 +55,8 @@ body {
   before:bg-cover
   before:backdrop-blur-[5px]
 
-
   after:content-[""]
-  after:absolute 
-  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
+  after:absolute
   after:bg-[url("/static/images/header/SVG/right-side.svg")]
   after:bg-no-repeat
   after:h-[105px]
@@ -70,15 +66,13 @@ body {
   after:backdrop-blur-[5px];
 }
 
+/************* Footer ***********/
+
 .footer {
   @apply relative
   h-[102px]
-  
-  /* bg-shark-400 bg-opacity-40 rounded-xl border border-shark-400 relative  */
-  
   before:content-[""]
-  before:absolute 
-  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
+  before:absolute
   before:bg-[url("/static/images/footer/SVG/left-side.svg")]
   before:bg-no-repeat
   before:h-[102px]
@@ -87,10 +81,8 @@ body {
   before:bottom-0
   before:backdrop-blur-[5px]
 
-
   after:content-[""]
-  after:absolute 
-  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
+  after:absolute
   after:bg-[url("/static/images/footer/SVG/right-side.svg")]
   after:bg-no-repeat
   after:h-[88px]
@@ -267,4 +259,19 @@ body {
 
 
 .liquidity-read-more-modal .scroll-box::-webkit-scrollbar-thumb {
+}
+
+.box-invert {
+  @apply rounded-lg bg-shark-400 bg-opacity-40;
+  clip-path: polygon(20px 0px, 326px 0px, 335px 75px, 310px 108px, 0px 106px, 0px 20px);
+}
+
+.box {
+  @apply rounded-lg bg-shark-400 bg-opacity-40;
+  clip-path: polygon( 0px 0px, 365px 0px, 386px 25px, 384px 120px, 20px 95px, 0px 75px);
+}
+
+.box-large {
+  @apply rounded-lg bg-shark-400 bg-opacity-40;
+  clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 98.5% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 1.29% 100%)
 }
