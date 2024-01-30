@@ -108,6 +108,11 @@ body {
   clip-path: polygon( 0px 0px, 365px 0px, 386px 25px, 384px 120px, 20px 95px, 0px 75px);
 }
 
+.box-small {
+  @apply rounded-lg bg-shark-400 bg-opacity-40;
+  clip-path: polygon( 0px 0px, 136px 0px, 150px 13px, 160px 90px, 137px 139px, 0px 49px);
+}
+
 .box-large {
   @apply rounded-lg bg-shark-400 bg-opacity-40;
   clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 98.5% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 1.29% 100%)

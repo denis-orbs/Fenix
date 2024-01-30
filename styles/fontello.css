@@ -21,7 +21,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
 .icon-calculator:before { content: '\e800'; } /* '' */
 .icon-lock-off:before { content: '\e801'; } /* '' */
 .icon-lock:before { content: '\e802'; } /* '' */
@@ -60,3 +59,8 @@
 .icon-lock-up:before { content: '\e851'; } /* '' */
 .icon-rocket:before { content: '\e853'; } /* '' */
 .icon-circles:before { content: '\e854'; } /* '' */
+.icon-info:before { content: '\e855'; } /* '' */
+.icon-lucide:before { content: '\e856'; } /* '' */
+.icon-download:before { content: '\e858'; } /* '' */
+.icon-compass:before { content: '\e859'; } /* '' */
+.icon-swap:before { content: '\e85a'; } /* '' */

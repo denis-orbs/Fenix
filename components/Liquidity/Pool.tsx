@@ -7,7 +7,7 @@ const Pool = () => {
   return (
     <div className="relative">
       <h5 className="mb-4 text-lg text-white">Liquidity Pools</h5>
-      <div className="flex items-center justify-between gap-10">
+      <div className="flex items-center justify-between gap-5">
         <Filter />
         <Search />
       </div>
