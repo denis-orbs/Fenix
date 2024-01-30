@@ -45,7 +45,7 @@ const ConnectYourWallet = ({ setIsConnecting }: ConnectYourWalletProps) => {
   const handlerSelectWallet = () => setIsConnecting(true)
 
   return (
-    <div className="w-[620px] h-[602px] px-12 py-12 bg-no-repeat bg-[length:100%] bg-modal-connect flex flex-col items-center justify-center">
+    <div className="w-full max-w-[615px] h-[602px] px-12 py-12 bg-no-repeat bg-[length:100%] bg-modal-connect flex flex-col items-center justify-center">
       <div className="w-full">
         <h4 className="mb-8 text-xl text-white">Connect your Wallet</h4>
         <div className="grid grid-cols-2 gap-4 mb-4">
