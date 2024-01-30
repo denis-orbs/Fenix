@@ -275,3 +275,34 @@ body {
   @apply rounded-lg bg-shark-400 bg-opacity-40;
   clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 98.5% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 1.29% 100%)
 }
+
+
+.main-pagination {
+  @apply relative
+
+  before:content-[""]
+  before:absolute 
+  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
+  before:bg-[url("/static/images/pagination-bg.svg")]
+  before:bg-no-repeat
+  before:h-[62px]
+  before:w-1/2
+  before:left-0
+  before:bottom-0
+  before:bg-cover
+  /* before:backdrop-blur-[5px] */
+
+
+  after:content-[""]
+  after:absolute 
+  /* after:w-[333px] after:right-[60px] after:bottom-full after:bg-header-rectangle; */
+  after:bg-[url("/static/images/pagination-bg.svg")]
+  after:bg-no-repeat
+  after:h-[62px]
+  after:w-1/2
+  after:right-0
+  after:bottom-0
+  after:bg-cover
+  /* after:backdrop-blur-[5px] */
+  after:bg-right;
+}
