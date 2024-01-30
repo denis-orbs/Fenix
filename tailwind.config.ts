@@ -45,7 +45,7 @@ const config: Config = {
         // Background images
         'header-rectangle': 'url("/static/images/header/rectangle.svg")',
         'modal-connect': 'url("/static/images/modals/modal-connect.svg")',
-        'modal-welcome': 'url("/static/images/modals/modal-welcome.svg")',
+        // 'modal-welcome': 'url("/static/images/modals/modal-welcome.svg")',
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
         'info-box': 'url("/static/images/modals/info-box.svg")',
         notification: 'url("/static/images/notification/notification.svg")',

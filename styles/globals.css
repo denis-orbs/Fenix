@@ -1,8 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("./fontello.css");
-
+@import url('./fontello.css');
 
 body {
   @apply h-full text-base bg-woodsmoke-950;
@@ -41,8 +40,7 @@ body {
 }
 
 .header {
-  @apply
-  relative
+  @apply relative
   h-[105px]
   
   /* bg-shark-400 bg-opacity-40 rounded-xl border border-shark-400 relative  */
@@ -69,13 +67,11 @@ body {
   after:w-[397px]
   after:right-0
   after:top-0
-  after:backdrop-blur-[5px]
-
+  after:backdrop-blur-[5px];
 }
 
 .footer {
-  @apply
-  relative
+  @apply relative
   h-[102px]
   
   /* bg-shark-400 bg-opacity-40 rounded-xl border border-shark-400 relative  */
@@ -103,5 +99,172 @@ body {
   after:bottom-0
   after:bg-cover
   after:backdrop-blur-[5px]
-  after:bg-right
+  after:bg-right;
+}
+
+.welcome-modal {
+  @apply pt-[126px] pb-[82px];
+}
+
+.welcome-modal .up {
+  @apply absolute
+  left-0
+  right-0
+  top-0
+  h-[126px]
+
+  before:content-[""]
+  before:absolute 
+  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
+  before:bg-[url("/static/images/modals/welcome/modal-left/up/SVG/left-side.svg")]
+  before:bg-no-repeat
+  before:h-[88px]
+  before:w-[90px]
+  before:left-0
+  before:top-[39px]
+  /* before:backdrop-blur-[5px] */
+
+
+  after:content-[""]
+  after:absolute 
+  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
+  after:bg-[url("/static/images/modals/welcome/modal-left/up/SVG/right-side.svg")]
+  after:bg-no-repeat
+  after:h-[126px]
+  after:w-[calc(100%-90px)]
+  after:right-0
+  after:top-0
+  after:bg-cover
+  /* after:backdrop-blur-[5px] */
+  after:bg-right;
+}
+
+.welcome-modal .bottom {
+  @apply absolute
+  left-0
+  right-0
+  bottom-0
+  h-[82px]
+
+  before:content-[""]
+  before:absolute 
+  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
+  before:bg-[url("/static/images/modals/welcome/modal-left/bottom/SVG/left-side.svg")]
+  before:bg-no-repeat
+  before:h-[82px]
+  before:w-[calc(100%-79px)]
+  before:left-0
+  before:bottom-0
+  /* before:backdrop-blur-[5px] */
+  before:bg-cover
+
+
+  after:content-[""]
+  after:absolute 
+  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
+  after:bg-[url("/static/images/modals/welcome/modal-left/bottom/SVG/right-side.svg")]
+  after:bg-no-repeat
+  after:h-[82px]
+  after:w-[79px]
+  after:right-0
+  after:bottom-0
+  /* after:backdrop-blur-[5px] */
+  after:bg-right;
+}
+
+.liquidity-read-more-modal {
+  @apply pt-[68px] pb-[64.1px] w-[603.249px];
+}
+
+.liquidity-read-more-modal .top {
+  @apply absolute
+  left-0
+  right-0
+  top-0
+  h-[68px]
+
+  before:content-[""]
+  before:absolute 
+  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
+  before:bg-[url("/static/images/modals/liquidity/read-more/SVG/top.svg")]
+  before:bg-no-repeat
+  before:h-[68px]
+  before:w-1/2
+  before:left-0
+  before:top-0
+  before:bg-cover
+  /* before:backdrop-blur-[5px] */
+
+
+  after:content-[""]
+  after:absolute 
+  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
+  after:bg-[url("/static/images/modals/liquidity/read-more/SVG/top.svg")]
+  after:bg-no-repeat
+  after:h-[68px]
+  after:w-1/2
+  after:right-0
+  after:top-0
+  after:bg-cover
+  /* after:backdrop-blur-[5px] */
+  after:bg-right;
+}
+
+.liquidity-read-more-modal .bottom {
+  @apply absolute
+  left-0
+  right-0
+  bottom-0
+  h-[64px]
+
+  before:content-[""]
+  before:absolute 
+  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
+  before:bg-[url("/static/images/modals/liquidity/read-more/SVG/bottom.svg")]
+  before:bg-no-repeat
+  before:h-[64px]
+  before:w-1/2
+  before:left-0
+  before:bottom-0
+  before:bg-cover
+  /* before:backdrop-blur-[5px] */
+
+
+  after:content-[""]
+  after:absolute 
+  /* after:w-[333px] after:right-[60px] after:bottom-full after:bg-header-rectangle; */
+  after:bg-[url("/static/images/modals/liquidity/read-more/SVG/bottom.svg")]
+  after:bg-no-repeat
+  after:h-[64px]
+  after:w-1/2
+  after:right-0
+  after:bottom-0
+  after:bg-cover
+  /* after:backdrop-blur-[5px] */
+  after:bg-right;
+}
+
+.liquidity-read-more-modal .scroll-box::-webkit-scrollbar {
+  /* Customize the scrollbar width */
+  width: 10px;
+  margin-right: 10px;
+}
+
+.liquidity-read-more-modal .scroll-box::-webkit-scrollbar-track {
+  /* Customize the scrollbar track */
+  background: transparent;
+  border: #292D32 10px solid;
+}
+
+.liquidity-read-more-modal .scroll-box::-webkit-scrollbar-thumb {
+  /* Customize the scrollbar thumb */
+  background: white;
+  border-radius: 10px;
+  width: 5px;
+  border: 3px solid #292D32;
+}
+
+
+
+.liquidity-read-more-modal .scroll-box::-webkit-scrollbar-thumb {
 }

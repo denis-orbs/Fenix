@@ -4,6 +4,7 @@ import Image from 'next/image'
 
 import Menu from './Menu'
 import AccountHandler from './AccountHandler'
+import WalletSelection from '@/components/Modals/WalletSelection'
 
 const Header = () => {
   return (
@@ -20,6 +21,8 @@ const Header = () => {
           </div>
         </div>
       </header>
+
+      <WalletSelection />
     </div>
   )
 }
