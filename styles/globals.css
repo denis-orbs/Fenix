@@ -98,12 +98,17 @@ body {
   after:bg-right
 }
 
+.box-invert {
+  @apply rounded-lg bg-shark-400 bg-opacity-40;
+  clip-path: polygon(20px 0px, 326px 0px, 335px 75px, 310px 108px, 0px 106px, 0px 20px);
+}
+
 .box {
   @apply rounded-lg bg-shark-400 bg-opacity-40;
-  clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 95.71% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 4.29% 100%)
+  clip-path: polygon( 0px 0px, 365px 0px, 386px 25px, 384px 120px, 20px 95px, 0px 75px);
 }
 
 .box-large {
   @apply rounded-lg bg-shark-400 bg-opacity-40;
-  clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 97.71% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 2.29% 100%)
+  clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 98.5% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 1.29% 100%)
 }

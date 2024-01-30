@@ -1,19 +1,19 @@
 'use client'
 
-import Deposit from '@/components/Liquidity/Deposit'
+import Migration from '@/components/Claim/Migration'
 import Steps from '@/components/Common/Steps'
-import Pool from '@/components/Liquidity/Pool'
+// import Pool from '@/components/Claim/Pool'
 
-const Liquidity = () => {
+const Claim = () => {
   return (
     <section>
       <div className="flex items-center gap-5">
-        <Deposit />
+        <Migration />
         <Steps />
       </div>
-      <Pool />
+      {/* <Pool /> */}
     </section>
   )
 }
 
-export default Liquidity
+export default Claim

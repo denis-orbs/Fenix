@@ -1,11 +1,11 @@
 /* eslint-disable import/no-default-export */
-import Liquidity from '@/components/Liquidity'
+import Claim from '@/components/Claim'
 
-export default function HomePage() {
+export default function ClaimPage() {
   return (
     <main>
       <div className="py-5 max-w-[1820px] mx-auto ">
-        <Liquidity />
+        <Claim />
       </div>
     </main>
   )
