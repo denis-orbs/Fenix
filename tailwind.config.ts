@@ -48,7 +48,6 @@ const config: Config = {
         'modal-welcome': 'url("/static/images/modals/modal-welcome.svg")',
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
         'info-box': 'url("/static/images/modals/info-box.svg")',
-        notification: 'url("/static/images/notification/notification.svg")',
         'big-box': 'url("/static/images/components/big-box.svg")',
         'small-box': 'url("/static/images/components/small-box.svg")',
       },
@@ -66,7 +65,6 @@ const config: Config = {
           '700': '#000000',
           '800': '#000000',
           '900': '#111315',
-          '950': '#262c33',
         },
         'outrageous-orange': {
           '100': '#ffe2d4',

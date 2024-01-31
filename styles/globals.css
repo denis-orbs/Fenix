@@ -94,81 +94,11 @@ body {
   after:bg-right;
 }
 
-.welcome-modal {
-  @apply pt-[126px] pb-[82px];
-}
-
-.welcome-modal .up {
-  @apply absolute
-  left-0
-  right-0
-  top-0
-  h-[126px]
-
-  before:content-[""]
-  before:absolute 
-  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
-  before:bg-[url("/static/images/modals/welcome/modal-left/up/SVG/left-side.svg")]
-  before:bg-no-repeat
-  before:h-[88px]
-  before:w-[90px]
-  before:left-0
-  before:top-[39px]
-  /* before:backdrop-blur-[5px] */
-
-
-  after:content-[""]
-  after:absolute 
-  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
-  after:bg-[url("/static/images/modals/welcome/modal-left/up/SVG/right-side.svg")]
-  after:bg-no-repeat
-  after:h-[126px]
-  after:w-[calc(100%-90px)]
-  after:right-0
-  after:top-0
-  after:bg-cover
-  /* after:backdrop-blur-[5px] */
-  after:bg-right;
-}
-
-.welcome-modal .bottom {
-  @apply absolute
-  left-0
-  right-0
-  bottom-0
-  h-[82px]
-
-  before:content-[""]
-  before:absolute 
-  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
-  before:bg-[url("/static/images/modals/welcome/modal-left/bottom/SVG/left-side.svg")]
-  before:bg-no-repeat
-  before:h-[82px]
-  before:w-[calc(100%-79px)]
-  before:left-0
-  before:bottom-0
-  /* before:backdrop-blur-[5px] */
-  before:bg-cover
-
-
-  after:content-[""]
-  after:absolute 
-  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
-  after:bg-[url("/static/images/modals/welcome/modal-left/bottom/SVG/right-side.svg")]
-  after:bg-no-repeat
-  after:h-[82px]
-  after:w-[79px]
-  after:right-0
-  after:bottom-0
-  /* after:backdrop-blur-[5px] */
-  after:bg-right;
-}
-
-.liquidity-read-more-modal {
+.read-more-modal {
   @apply pt-[68px] pb-[64.1px] w-[603.249px];
 }
 
-.liquidity-read-more-modal .top {
+.read-more-modal .top {
   @apply absolute
   left-0
   right-0
@@ -176,33 +106,28 @@ body {
   h-[68px]
 
   before:content-[""]
-  before:absolute 
-  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
-  before:bg-[url("/static/images/modals/liquidity/read-more/SVG/top.svg")]
+  before:absolute
+  before:bg-[url("/static/images/modals/liquidity/SVG/top.svg")]
   before:bg-no-repeat
   before:h-[68px]
   before:w-1/2
   before:left-0
   before:top-0
   before:bg-cover
-  /* before:backdrop-blur-[5px] */
-
 
   after:content-[""]
-  after:absolute 
-  /* after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle; */
-  after:bg-[url("/static/images/modals/liquidity/read-more/SVG/top.svg")]
+  after:absolute
+  after:bg-[url("/static/images/modals/liquidity/SVG/top.svg")]
   after:bg-no-repeat
   after:h-[68px]
   after:w-1/2
   after:right-0
   after:top-0
   after:bg-cover
-  /* after:backdrop-blur-[5px] */
   after:bg-right;
 }
 
-.liquidity-read-more-modal .bottom {
+.read-more-modal .bottom {
   @apply absolute
   left-0
   right-0
@@ -210,45 +135,40 @@ body {
   h-[64px]
 
   before:content-[""]
-  before:absolute 
-  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
-  before:bg-[url("/static/images/modals/liquidity/read-more/SVG/bottom.svg")]
+  before:absolute
+  before:bg-[url("/static/images/modals/liquidity/SVG/bottom.svg")]
   before:bg-no-repeat
   before:h-[64px]
   before:w-1/2
   before:left-0
   before:bottom-0
   before:bg-cover
-  /* before:backdrop-blur-[5px] */
-
 
   after:content-[""]
-  after:absolute 
-  /* after:w-[333px] after:right-[60px] after:bottom-full after:bg-header-rectangle; */
-  after:bg-[url("/static/images/modals/liquidity/read-more/SVG/bottom.svg")]
+  after:absolute
+  after:bg-[url("/static/images/modals/liquidity/SVG/bottom.svg")]
   after:bg-no-repeat
   after:h-[64px]
   after:w-1/2
   after:right-0
   after:bottom-0
   after:bg-cover
-  /* after:backdrop-blur-[5px] */
   after:bg-right;
 }
 
-.liquidity-read-more-modal .scroll-box::-webkit-scrollbar {
+.read-more-modal .scroll-box::-webkit-scrollbar {
   /* Customize the scrollbar width */
   width: 10px;
   margin-right: 10px;
 }
 
-.liquidity-read-more-modal .scroll-box::-webkit-scrollbar-track {
+.read-more-modal .scroll-box::-webkit-scrollbar-track {
   /* Customize the scrollbar track */
   background: transparent;
   border: #292D32 10px solid;
 }
 
-.liquidity-read-more-modal .scroll-box::-webkit-scrollbar-thumb {
+.read-more-modal .scroll-box::-webkit-scrollbar-thumb {
   /* Customize the scrollbar thumb */
   background: white;
   border-radius: 10px;
@@ -256,19 +176,9 @@ body {
   border: 3px solid #292D32;
 }
 
-
-
-.liquidity-read-more-modal .scroll-box::-webkit-scrollbar-thumb {
-}
-
 .box-invert {
   @apply rounded-lg bg-shark-400 bg-opacity-40;
   clip-path: polygon(20px 0px, 326px 0px, 335px 75px, 310px 108px, 0px 106px, 0px 20px);
-}
-
-.box {
-  @apply rounded-lg bg-shark-400 bg-opacity-40;
-  clip-path: polygon( 0px 0px, 365px 0px, 386px 25px, 384px 120px, 20px 95px, 0px 75px);
 }
 
 .box-small {
@@ -276,38 +186,12 @@ body {
   clip-path: polygon( 0px 0px, 136px 0px, 150px 13px, 160px 90px, 137px 139px, 0px 49px);
 }
 
+.box-medium {
+  @apply rounded-lg bg-shark-400 bg-opacity-40;
+  clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 95.5% 0%, 100.29% 0%, 0% 0%, 0% 83.71%, 3.29% 100%)
+}
+
 .box-large {
   @apply rounded-lg bg-shark-400 bg-opacity-40;
   clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 98.5% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 1.29% 100%)
-}
-
-
-.main-pagination {
-  @apply relative
-
-  before:content-[""]
-  before:absolute 
-  /* before:w-[333px] before:right-[60px] before:top-full before:bg-header-rectangle; */
-  before:bg-[url("/static/images/pagination-bg.svg")]
-  before:bg-no-repeat
-  before:h-[62px]
-  before:w-1/2
-  before:left-0
-  before:bottom-0
-  before:bg-cover
-  /* before:backdrop-blur-[5px] */
-
-
-  after:content-[""]
-  after:absolute 
-  /* after:w-[333px] after:right-[60px] after:bottom-full after:bg-header-rectangle; */
-  after:bg-[url("/static/images/pagination-bg.svg")]
-  after:bg-no-repeat
-  after:h-[62px]
-  after:w-1/2
-  after:right-0
-  after:bottom-0
-  after:bg-cover
-  /* after:backdrop-blur-[5px] */
-  after:bg-right;
 }

@@ -8,7 +8,7 @@ export default function ClaimPage() {
       <div className="py-5 max-w-[1820px] mx-auto ">
         <Claim />
 
-        <Pagination className='mx-auto' />
+        <Pagination className='mx-auto' numberPages={9} />
       </div>
     </main>
   )

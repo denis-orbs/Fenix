@@ -36,7 +36,7 @@ const Deposit = () => {
           </div>
         </div>
         <div className="relative flex flex-col w-auto px-8">
-          <div className="w-[384px] h-[97px] flex gap-3 items-center p-3 box mb-3">
+          <div className="w-[384px] h-[97px] flex gap-3 items-center p-3 box-medium mb-3">
             <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
               <span className="inline-block text-2xl text-transparent icon-lock bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
             </div>
@@ -45,7 +45,7 @@ const Deposit = () => {
               <p className="text-white">$92,833,342</p>
             </div>
           </div>
-          <div className="w-[384px] h-[97px] flex gap-3 items-center p-3 box mb-3">
+          <div className="w-[384px] h-[97px] flex gap-3 items-center p-3 box-medium mb-3">
             <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-40">
               <span className="inline-block text-2xl text-transparent icon-pig bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
             </div>
@@ -54,7 +54,7 @@ const Deposit = () => {
               <p className="text-white">$64,789,445.82</p>
             </div>
           </div>
-          <div className="w-[384px] h-[97px] flex gap-3 items-center p-3 box">
+          <div className="w-[384px] h-[97px] flex gap-3 items-center p-3 box-medium">
             <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-40">
               <span className="inline-block text-2xl text-transparent icon-coins bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
             </div>

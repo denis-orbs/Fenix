@@ -45,10 +45,8 @@ const Welcome = () => {
               Learn More
             </p>
           </div>
-        </div>
-        <div className="relative p-4 bg-info-box bg-contain bg-no-repeat flex items-center gap-4 h-[100px]">
           <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-40">
-            <span className="text-2xl text-outrageous-orange-500 icon-document"></span>
+
           </div>
           <div className="relative">
             <p className="text-xs text-white max-w-[240px]">

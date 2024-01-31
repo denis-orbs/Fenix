@@ -9,7 +9,7 @@ const Notification = ({ show = false }: NotificationProps) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // document.querySelector('.bg-notification')?.classList.add('hidden')
+      document.querySelector('.notification')?.classList.add('hidden')
     }, 2000)
     return () => clearTimeout(timer)
   }, [])
@@ -17,7 +17,7 @@ const Notification = ({ show = false }: NotificationProps) => {
   if (!show) return null
 
   return (
-    <div className="box-invert animate-toast-in bg-[length:100%] bg-no-repeat fixed top-[150px] right-5 w-[326px] backdrop-blur-sm p-2">
+    <div className="notification box-invert animate-toast-in bg-[length:100%] bg-no-repeat fixed top-[150px] right-5 w-[326px] backdrop-blur-sm p-2">
       <div className="flex items-center justify-end w-full gap-3">
         <div className="h-[5px] w-10 bg-shark-400 flex rounded-lg overflow-hidden">
           <div className="h-full bg-gradient-to-r from-outrageous-orange-500 to-chilean-fire-500 animate-progress"></div>
