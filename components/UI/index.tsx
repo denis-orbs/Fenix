@@ -3,5 +3,7 @@ import Button from './Button'
 import Modal from './Modal'
 import BigBox from './Boxes/BigBox'
 import MediumBox from './Boxes/MediumBox'
+import Pagination from './Pagination/'
+import { TableBody, TableHead, TableCell, TableRow } from './Table'
 
-export { Button, Modal, BigBox, MediumBox }
+export { Button, Modal, BigBox, MediumBox, Pagination, TableBody, TableHead, TableCell, TableRow }

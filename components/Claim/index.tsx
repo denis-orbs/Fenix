@@ -7,17 +7,17 @@ import Overview from '@/components/Claim/Overview'
 const STEPS = [
   {
     title: 'Check your Wallet',
-    description: 'Sign your wallet in order to check your CHR Balance.',
+    description: 'Sign in with your wallet to check your CHR ecosystem tokens balances.',
     icon: 'icon-wallet',
   },
   {
     title: 'Migrate your Tokens',
-    description: 'Select your CHR tokens and migrate them to FNX.',
+    description: 'Select your CHR ecosystem tokens and migrate them to veFNX.',
     icon: 'icon-circles',
   },
   {
-    title: 'Withdraw your new Tokens',
-    description: 'Withdraw your new FNX tokens to your wallet!',
+    title: 'Migration',
+    description: 'Your veFNX tokens will be airdropped a week before the launch of Fenix to the wallet you used for the migration.',
     icon: 'icon-download',
   },
 ]
