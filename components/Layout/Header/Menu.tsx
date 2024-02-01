@@ -2,37 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/UI'
-
-const MENU_LINKS = [
-  {
-    name: 'Swap',
-    href: '#',
-  },
-  {
-    name: 'Liquidity',
-    href: '#',
-  },
-  {
-    name: 'Vote',
-    href: '#',
-  },
-  {
-    name: 'Rewards',
-    href: '#',
-  },
-  {
-    name: 'Bribes',
-    href: '#',
-  },
-  {
-    name: 'Claim',
-    href: '#',
-  },
-  {
-    name: 'Marketplace',
-    href: '#',
-  },
-]
+import MENU_LINKS from './data'
 
 const Menu = () => {
   // TODO: Delete this comment

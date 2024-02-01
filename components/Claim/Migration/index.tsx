@@ -1,43 +1,11 @@
 'use client'
 
-import { Button, BigBox } from '@/components/UI'
-
-const EXCHANGE_LIST = [
-  {
-    label: 'Exchange Ratio',
-    amount: '1.06 veFNX: 1 CHR',
-    info: {
-      unlocked: '103.983.32',
-      locked: '103.983.32',
-    },
-  },
-  {
-    label: 'Exchange Ratio',
-    amount: '1.42 veFNX: 1 CHR',
-    info: {
-      unlocked: '103.983.32',
-      locked: '103.983.32',
-    },
-  },
-  {
-    label: 'Exchange Ratio',
-    amount: '75 veFNX: 1 CHR',
-    info: {
-      unlocked: '103.983.32',
-      locked: '103.983.32',
-    },
-  },
-  {
-    label: 'Exchange Ratio',
-    amount: '75 veFNX: 1 CHR',
-    info: {
-      unlocked: '103.983.32',
-      locked: '103.983.32',
-    },
-  },
-]
+import { BigBox } from '@/components/UI'
+import MigrationItem from './MigrationItem'
+import EXCHANGE_LIST from './data'
 
 const Migration = () => {
+
   return (
     <BigBox>
       <div className="flex items-center justify-between w-full">
@@ -87,18 +55,7 @@ const Migration = () => {
         </div>
         <div className="relative flex flex-col w-auto px-8">
           {EXCHANGE_LIST.map((exchange, index) => (
-            <div key={index} className="w-[384px] h-[77px] flex gap-3 items-center p-3 box-medium mb-3">
-              <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
-                <span className="inline-block text-2xl text-transparent icon-lucide bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
-              </div>
-              <div className="fw">
-                <h5 className="text-xs text-shark-100">{exchange.label}</h5>
-                <div className="flex items-center gap-1">
-                  <p className="text-white">{exchange.amount}</p>
-                  <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full icon-info bg-shark-200 hover:bg-outrageous-orange-500 cursor-pointer"></span>
-                </div>
-              </div>
-            </div>
+            <MigrationItem exchange={exchange} key={index} />
           ))}
         </div>
       </div>
