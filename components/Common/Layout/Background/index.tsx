@@ -1,9 +1,8 @@
 /* eslint-disable max-len */
 
 import Image from 'next/image'
-import cellImg from '@/public/static/images/cell.png'
 
-const Decorator = () => {
+const Background = () => {
   return (
     <div className="absolute -z-10 h-full min-h-screen top-0 left-0 right-0 bottom-0 overflow-hidden bg-shark-900">
       <div className="w-[715px] h-[715px] rounded-full opacity-20 bg-[linear-gradient(101deg,_#F60202_-4.02%,_#FFB400_94.06%)] blur-[150px] bottom-[calc(100%-115px)] left-[155px] absolute" />
@@ -135,12 +134,14 @@ const Decorator = () => {
       </svg>
 
       <Image
-        src={cellImg}
+        src="/static/images/cell.png"
         alt="cell"
+        width={1920}
+        height={538}
         className="absolute -z-10 h-auto w-full bottom-0 max-w-[1920px] -translate-x-1/2 left-1/2 mix-blend-lighten"
       />
     </div>
   )
 }
 
-export default Decorator
+export default Background

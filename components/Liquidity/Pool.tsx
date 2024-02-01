@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Search from '@/components/Common/Search'
 import Filter from '@/components/Common/Filter'
@@ -10,6 +10,13 @@ import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@
 
 const Pool = () => {
   const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+  }, [])
+
 
   return (
     <div className="relative">

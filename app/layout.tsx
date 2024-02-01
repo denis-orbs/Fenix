@@ -4,9 +4,9 @@ import type { Metadata } from 'next'
 import Head from 'next/head'
 import { Poppins } from 'next/font/google'
 
-import Decorator from '@/components/Layout/Decorator'
-import Footer from '@/components/Layout/Footer'
-import Header from '@/components/Layout/Header'
+import Decorator from '@/components/Common/Layout/Background'
+import Footer from '@/components/Common/Layout/Footer'
+import Header from '@/components/Common/Layout/Header'
 
 export const metadata: Metadata = {
   title: 'Fenix',
