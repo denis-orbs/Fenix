@@ -1,7 +1,7 @@
 const MENU_LINKS = [
   {
     name: 'Swap',
-    href: '#',
+    href: '/swap',
   },
   {
     name: 'Liquidity',
@@ -9,15 +9,15 @@ const MENU_LINKS = [
   },
   {
     name: 'Vote',
-    href: '#',
+    href: '/vote',
   },
   {
     name: 'Rewards',
-    href: '#',
+    href: '/rewards',
   },
   {
     name: 'Bribes',
-    href: '#',
+    href: '/bribes',
   },
   {
     name: 'Claim',
@@ -25,7 +25,7 @@ const MENU_LINKS = [
   },
   {
     name: 'Marketplace',
-    href: '#',
+    href: '/marketplace',
   },
 ]
 

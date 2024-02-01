@@ -22,7 +22,8 @@ interface MigrationItemProps {
 const MigrationItem = ({ exchange }: MigrationItemProps) => {
   const [show, setShow] = useState<boolean>(false)
 
-  const handleTooltip = () => setShow(!show)
+  const handleShowTooltip = () => setShow(true)
+  const handleHiddenTooltip = () => setShow(false)
 
   return (
     <div className="relative">
@@ -35,7 +36,8 @@ const MigrationItem = ({ exchange }: MigrationItemProps) => {
           <div className="flex items-center gap-1">
             <p className="text-white">{exchange.amount}</p>
             <span
-              onClick={handleTooltip}
+              onMouseEnter={handleShowTooltip}
+              onMouseLeave={handleHiddenTooltip}
               className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full icon-info bg-shark-200 hover:bg-outrageous-orange-500 cursor-pointer"
             ></span>
           </div>
