@@ -5,7 +5,7 @@ const MENU_LINKS = [
   },
   {
     name: 'Liquidity',
-    href: '#',
+    href: '/liquidity',
   },
   {
     name: 'Vote',
@@ -21,7 +21,7 @@ const MENU_LINKS = [
   },
   {
     name: 'Claim',
-    href: '#',
+    href: '/claim',
   },
   {
     name: 'Marketplace',

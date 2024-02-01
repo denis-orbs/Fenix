@@ -2,7 +2,7 @@
 
 import { BigBox } from '@/components/UI'
 import MigrationItem from './MigrationItem'
-import EXCHANGE_LIST from './data'
+import { EXCHANGE_LIST } from './data'
 
 const Migration = () => {
 

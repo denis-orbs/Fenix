@@ -11,7 +11,7 @@ const Welcome = () => {
         width={150}
         height={150}
       />
-      <div className="max-w-[500px] mb-4">
+      <div className="max-w-[500px] mb-4 relative">
         <Image
           src="/static/images/logo.svg"
           className="w-[150px] h-10 mb-8"

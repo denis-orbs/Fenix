@@ -5,6 +5,7 @@ import Image from 'next/image'
 import AddressCheck from './AddressCheck'
 import MigratedAmount from './MigratedAmount'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
+import { TOKENS_LIST } from './Migration/data'
 
 const Overview = () => {
   return (
@@ -25,53 +26,55 @@ const Overview = () => {
         />
 
         <TableBody>
-          <TableRow>
-            <TableCell>
-              <div className="flex gap-2 items-center">
-                <Image
-                  src="/static/images/tokens/CHR.png"
-                  alt="token"
-                  className="w-7 h-7 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                <p className="text-white text-sm">CHR</p>
-              </div>
-            </TableCell>
-            <TableCell className="max-w-[300px]">
-              <div className="flex w-full justify-end px-3 items-center">
-                <div className="flex gap-2">
+          {TOKENS_LIST.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>
+                <div className="flex gap-2 items-center">
                   <Image
-                    src="/static/images/tokens/CHR.png"
+                    src={`/static/images/tokens/${item.icon}.png`}
                     alt="token"
-                    className="w-5 h-5 rounded-full"
+                    className="w-7 h-7 rounded-full"
                     width={20}
                     height={20}
                   />
-                  <p className="text-white text-sm">12.49</p>
+                  <p className="text-white text-sm">{item.token}</p>
                 </div>
-              </div>
-            </TableCell>
-            <TableCell className="max-w-[300px]">
-              <div className="flex w-full justify-end px-3 items-center">
-                <div className="flex gap-2">
-                  <Image
-                    src="/static/images/tokens/FNX.png"
-                    alt="token"
-                    className="w-5 h-5 rounded-full"
-                    width={20}
-                    height={20}
-                  />
-                  <p className="text-white text-sm">82,334.52</p>
+              </TableCell>
+              <TableCell className="max-w-[300px]">
+                <div className="flex w-full justify-end px-3 items-center">
+                  <div className="flex gap-2">
+                    <Image
+                      src={`/static/images/tokens/${item.migrated.icon}.png`}
+                      alt="token"
+                      className="w-5 h-5 rounded-full"
+                      width={20}
+                      height={20}
+                    />
+                    <p className="text-white text-sm">{item.migrated.amount}</p>
+                  </div>
                 </div>
-              </div>
-            </TableCell>
-            <TableCell className="max-w-[300px]">
-              <div className="flex w-full justify-end">
-                <Button variant="tertiary">Claim not started</Button>
-              </div>
-            </TableCell>
-          </TableRow>
+              </TableCell>
+              <TableCell className="max-w-[300px]">
+                <div className="flex w-full justify-end px-3 items-center">
+                  <div className="flex gap-2">
+                    <Image
+                      src={`/static/images/tokens/${item.claimable.icon}.png`}
+                      alt="token"
+                      className="w-5 h-5 rounded-full"
+                      width={20}
+                      height={20}
+                    />
+                    <p className="text-white text-sm">{item.claimable.amount}</p>
+                  </div>
+                </div>
+              </TableCell>
+              <TableCell className="max-w-[300px]">
+                <div className="flex w-full justify-end">
+                  <Button variant="tertiary">Claim not started</Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </div>
       <div className="flex items-center">
