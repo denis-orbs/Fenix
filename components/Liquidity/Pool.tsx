@@ -21,7 +21,7 @@ const Pool = () => {
   return (
     <div className="relative">
       <h5 className="mb-4 text-lg text-white">Liquidity Pools</h5>
-      <div className="flex items-center justify-between gap-5 mb-10">
+      <div className="flex flex-col justify-between gap-5 mb-10 md:items-center md:flex-row">
         <Filter />
         <Search />
       </div>
@@ -47,19 +47,19 @@ const Pool = () => {
           ) : (
             <TableRow>
               <TableCell>
-                <div className="flex gap-2 items-center">
+                <div className="flex items-center gap-2">
                   <div className="flex items-center">
                     <Image
                       src="/static/images/tokens/FNX.png"
                       alt="token"
-                      className="w-7 h-7 rounded-full"
+                      className="rounded-full w-7 h-7"
                       width={20}
                       height={20}
                     />
                     <Image
                       src="/static/images/tokens/ETH.png"
                       alt="token"
-                      className="w-7 h-7 rounded-full -ml-4"
+                      className="-ml-4 rounded-full w-7 h-7"
                       width={20}
                       height={20}
                     />
@@ -81,8 +81,8 @@ const Pool = () => {
                 </div>
               </TableCell>
               <TableCell className="max-w-[260px]">
-                <div className="flex flex-col justify-end w-full px-3 items-end">
-                  <p className="text-white text-sm">34.58%</p>
+                <div className="flex flex-col items-end justify-end w-full px-3">
+                  <p className="text-sm text-white">34.58%</p>
                   <p className="flex items-center gap-3 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
                     <span className="text-lg icon-link"></span>
                     Add Incentives
@@ -90,8 +90,8 @@ const Pool = () => {
                 </div>
               </TableCell>
               <TableCell className="max-w-[260px]">
-                <div className="flex flex-col justify-end w-full px-3 items-end">
-                  <p className="text-white text-sm mb-1">$1,289.863.54</p>
+                <div className="flex flex-col items-end justify-end w-full px-3">
+                  <p className="mb-1 text-sm text-white">$1,289.863.54</p>
                   <div className="flex items-center gap-2">
                     <p className="flex items-center gap-2 text-sm text-shark-100">
                       <Image
@@ -117,8 +117,8 @@ const Pool = () => {
                 </div>
               </TableCell>
               <TableCell className="max-w-[260px]">
-                <div className="flex flex-col justify-end w-full px-3 items-end">
-                  <p className="text-white text-sm mb-1">$539.863.54</p>
+                <div className="flex flex-col items-end justify-end w-full px-3">
+                  <p className="mb-1 text-sm text-white">$539.863.54</p>
                   <div className="flex items-center gap-2">
                     <p className="flex items-center gap-2 text-sm text-shark-100">
                       <Image
@@ -144,8 +144,8 @@ const Pool = () => {
                 </div>
               </TableCell>
               <TableCell className="max-w-[260px]">
-                <div className="flex flex-col justify-end w-full px-3 items-end">
-                  <p className="text-white text-sm mb-1">$98.751.23</p>
+                <div className="flex flex-col items-end justify-end w-full px-3">
+                  <p className="mb-1 text-sm text-white">$98.751.23</p>
                   <div className="flex items-center gap-2">
                     <p className="flex items-center gap-2 text-sm text-shark-100">
                       <Image
@@ -171,9 +171,9 @@ const Pool = () => {
                 </div>
               </TableCell>
               <TableCell className="">
-                <div className="w-full px-3 flex gap-2 justify-between">
-                  <div className="flex items-end flex-col">
-                    <p className="text-white text-sm mb-1">$1,453,987.34</p>
+                <div className="flex justify-between w-full gap-2 px-3">
+                  <div className="flex flex-col items-end">
+                    <p className="mb-1 text-sm text-white">$1,453,987.34</p>
                     <div className="flex items-center gap-2">
                       <p className="flex items-center gap-2 text-sm text-shark-100">
                         <Image
@@ -207,10 +207,10 @@ const Pool = () => {
           )}
         </TableBody>
       </div>
-      <div className="flex items-center">
+      <div className="items-center hidden md:flex">
         <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
         <Pagination className="mx-auto" numberPages={7} />
-        <div className="flex items-center justify-center px-4 border w-12 h-12 border-shark-300 bg-shark-400 bg-opacity-40 text-white flex-shrink-0 transition-colors hover:bg-outrageous-orange-400 rounded-lg">
+        <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 text-white transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
           <span className="text-lg icon-cog"></span>
         </div>
       </div>
