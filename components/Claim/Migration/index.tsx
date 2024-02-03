@@ -8,14 +8,14 @@ const Migration = () => {
 
   return (
     <BigBox>
-      <div className="flex items-center justify-between w-full">
-        <div className="w-1/2">
+      <div className="flex justify-between w-full flex-col md:flex-row md:items-center">
+        <div className="w-full md:w-1/2 mb-5 md:mb-0">
           <h4 className="mb-3 text-xl text-white">Migration Claim</h4>
           <p className="mb-4 text-sm text-shark-100">
             Deposit your CHR Tokens in order to migrate to our new Protocol!
           </p>
           <div className="flex items-center gap-3 mb-4">
-            <div className="px-4 py-3 rounded-lg box-medium flex items-center gap-10">
+            <div className="px-4 py-3 rounded-lg box-medium flex items-center gap-5 md:gap-10">
               <div>
                 <h5 className="mb-1 text-xs text-shark-100">Migration</h5>
                 <p className="text-xs text-green-500">Open</p>
@@ -53,7 +53,7 @@ const Migration = () => {
             </p>
           </div>
         </div>
-        <div className="relative flex flex-col w-auto px-8">
+        <div className="relative flex flex-col w-auto md:px-8">
           {EXCHANGE_LIST.map((exchange, index) => (
             <MigrationItem exchange={exchange} key={index} />
           ))}

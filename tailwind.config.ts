@@ -48,8 +48,6 @@ const config: Config = {
         'modal-welcome': 'url("/static/images/modals/modal-welcome.svg")',
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
         'info-box': 'url("/static/images/modals/info-box.svg")',
-        'big-box': 'url("/static/images/components/big-box.svg")',
-        'small-box': 'url("/static/images/components/small-box.svg")',
       },
       lineHeight: {
         normal: 'normal',

@@ -7,9 +7,9 @@ const Deposit = () => {
     <BigBox>
       <div className="flex items-center justify-between w-full">
         <div className="w-1/2">
-          <h4 className="mb-3 text-xl text-white">Liquidity</h4>
+          <h4 className="mb-3 text-xl text-white">Vote</h4>
           <p className="mb-4 text-sm text-shark-100">
-            Liquidity Providers (LPs) make low-slippage swaps posibble. Deposit and Stake liquidity to earn FNX.
+            Voters earn a share of transaction fees and incentives for helping govern how emissions are distributed.
           </p>
           <div className="flex gap-2 mb-8">
             <Button>
@@ -36,31 +36,40 @@ const Deposit = () => {
           </div>
         </div>
         <div className="relative flex flex-col w-auto px-8">
-          <div className="w-[384px] h-[97px] flex gap-3 items-center p-3 box-medium mb-3">
+          <div className="w-[384px] h-[77px] flex gap-3 items-center p-3 box-medium mb-3">
             <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
               <span className="inline-block text-2xl text-transparent icon-lock bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
             </div>
             <div className="fw">
-              <h5 className="text-xs text-shark-100">Total Value Locked</h5>
-              <p className="text-white">$92,833,342</p>
+              <h5 className="text-xs text-shark-100">Total Fees</h5>
+              <p className="text-white">$76,739.86</p>
             </div>
           </div>
-          <div className="w-[384px] h-[97px] flex gap-3 items-center p-3 box-medium mb-3">
+          <div className="w-[384px] h-[77px] flex gap-3 items-center p-3 box-medium mb-3">
             <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-40">
               <span className="inline-block text-2xl text-transparent icon-pig bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
             </div>
             <div className="fw">
-              <h5 className="text-xs text-shark-100">Fees</h5>
-              <p className="text-white">$64,789,445.82</p>
+              <h5 className="text-xs text-shark-100">Total Incentives</h5>
+              <p className="text-white">$25,172.06</p>
             </div>
           </div>
-          <div className="w-[384px] h-[97px] flex gap-3 items-center p-3 box-medium">
+          <div className="w-[384px] h-[77px] flex gap-3 items-center p-3 box-medium mb-3">
             <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-40">
               <span className="inline-block text-2xl text-transparent icon-coins bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
             </div>
             <div className="fw">
-              <h5 className="text-xs text-shark-100">Volume</h5>
-              <p className="text-white">$48,680,765.44</p>
+              <h5 className="text-xs text-shark-100">Total Rewards</h5>
+              <p className="text-white">$101,912.22</p>
+            </div>
+          </div>
+          <div className="w-[384px] h-[77px] flex gap-3 items-center p-3 box-medium">
+            <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-40">
+              <span className="inline-block text-2xl text-transparent icon-coins bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+            </div>
+            <div className="fw">
+              <h5 className="text-xs text-shark-100">New Emissions</h5>
+              <p className="text-white">13,957,341.43</p>
             </div>
           </div>
           <div className="absolute flex items-center justify-end gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500 -bottom-10 right-16">

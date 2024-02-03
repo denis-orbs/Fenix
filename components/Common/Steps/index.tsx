@@ -22,11 +22,11 @@ const Steps = ({ steps }: StepsProps) => {
 
   return (
     <MediumBox>
-      <div className="flex flex-col items-center justify-center w-full">
+      <div className="flex flex-col justify-center w-full">
         <h4 className="w-full mb-3 text-sm text-white">Start now</h4>
         <div className="relative flex flex-col w-auto">
           {steps.map((step, index) => (
-            <div key={index} className="w-[493px] h-[97px] flex gap-3 items-center p-3 box-medium mb-3 relative">
+            <div key={index} className="md:w-[493px] h-[97px] flex gap-3 items-center p-3 box-medium mb-3 relative">
               <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
                 <span
                   className={`inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${step.icon}`}

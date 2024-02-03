@@ -17,7 +17,7 @@ const Tooltip = ({ children, className, show, setShow }: TooltipProps) => {
 
   const mergeClassName = cn(
     'flex justify-center flex-col w-[250px] px-3 box-medium !bg-opacity-100 rounded-lg h-[80px] transition-all absolute -bottom-[50px] -right-[70px] z-20',
-    show ? 'opacity-100 visible' : 'opacity-0 invisible',
+    show ? 'block' : 'hidden',
     className
   )
 

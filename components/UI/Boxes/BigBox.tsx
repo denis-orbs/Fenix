@@ -6,8 +6,10 @@ interface BigBoxProps {
 
 const BigBox = ({ children }: BigBoxProps) => {
   return (
-    <div className="w-[1168px] h-[429px] p-12 bg-no-repeat bg-[length:100%] bg-big-box flex flex-col items-center justify-center">
-      {children}
+    <div className="relative pt-[50px] pb-[64px] flex flex-col items-center justify-center w-full md:w-[65%]">
+      <div className="main-box-top"></div>
+      <div className="main-box-bottom"></div>
+      <div className="bg-opacity-40 bg-shark-400 w-full px-5 md:px-10">{children}</div>
     </div>
   )
 }

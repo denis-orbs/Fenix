@@ -156,6 +156,82 @@ body {
   after:bg-right;
 }
 
+.main-box-top {
+  @apply absolute
+  left-0
+  right-0
+  top-0
+  h-[50px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/main/top.svg")]
+  before:bg-no-repeat
+  before:h-[50px]
+  before:w-full
+  before:left-0
+  before:top-0
+  before:bg-cover
+}
+
+.main-box-bottom {
+  @apply absolute
+  left-0
+  right-0
+  bottom-0
+  h-[64px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/main/bottom.svg")]
+  before:bg-no-repeat
+  before:h-[65px]
+  before:w-full
+  before:left-0
+  before:bottom-0
+  before:bg-cover
+}
+
+.steps-box-top {
+  @apply absolute
+  left-0
+  right-0
+  top-0
+  h-[47px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/top.svg")]
+  before:bg-no-repeat
+  before:h-[47px]
+  before:w-full
+  before:left-0
+  before:top-0
+  before:bg-cover
+}
+
+.steps-box-bottom {
+  @apply absolute
+  left-0
+  right-0
+  bottom-0
+  h-[50px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/bottom.svg")]
+  before:bg-no-repeat
+  before:h-[52px]
+  before:w-full
+  before:left-0
+  before:bottom-0
+  before:bg-cover
+}
+
 .read-more-modal .scroll-box::-webkit-scrollbar {
   /* Customize the scrollbar width */
   width: 10px;
@@ -180,7 +256,6 @@ body {
   @apply rounded-lg bg-shark-400 bg-opacity-40;
   clip-path: polygon(20px 0px, 326px 0px, 335px 75px, 310px 108px, 0px 106px, 0px 20px);
 }
-
 .box-small {
   @apply rounded-lg bg-shark-400 bg-opacity-40;
   clip-path: polygon( 0px 0px, 136px 0px, 150px 13px, 160px 90px, 137px 139px, 0px 49px);
@@ -195,3 +270,6 @@ body {
   @apply rounded-lg bg-shark-400 bg-opacity-40;
   clip-path: polygon(100% 100%, 100% 100.71%, 100% 19%, 98.5% 0%, 100.29% 0%, 0% 0%, 0% 80.71%, 1.29% 100%)
 }
+
+
+

@@ -6,7 +6,7 @@ const MigratedAmount = () => {
     const isConnected = useStore((state) => state.isConnected)
 
   return (
-    <div className="relative flex items-center w-1/3 h-[62px] px-4 py-2 rounded-lg box-large gap-2">
+    <div className="relative flex items-center md:w-1/3 h-[62px] px-4 py-2 rounded-lg box-large gap-2">
       <div className="flex items-center justify-center w-8 h-8 p-2 rounded-lg bg-shark-400 bg-opacity-60">
         <span
           className={`inline-block text-xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text icon-compass`}

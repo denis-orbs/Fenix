@@ -1,8 +1,8 @@
 'use client'
 
-import Deposit from '@/components/Liquidity/Deposit'
+import Deposit from '@/components/Vote/Deposit'
 import Steps from '@/components/Common/Steps'
-import Pool from '@/components/Liquidity/Pool'
+import Pool from '@/components/Vote/Pool'
 
 import STEPS from './data'
 

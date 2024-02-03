@@ -11,7 +11,7 @@ const Overview = () => {
   return (
     <div className="relative">
       <h5 className="mb-4 text-lg text-white">Migration Overview</h5>
-      <div className="flex items-center justify-between gap-5 mb-5">
+      <div className="flex md:items-center md:justify-between gap-5 mb-5 flex-col md:flex-row">
         <AddressCheck />
         <MigratedAmount />
       </div>
@@ -19,16 +19,16 @@ const Overview = () => {
         <TableHead
           items={[
             { text: 'Token', className: 'text-left', sortable: true },
-            { text: 'My Migrated Amount', className: 'max-w-[300px]', sortable: true },
-            { text: 'Claimable Token', className: 'max-w-[300px]', sortable: true },
-            { text: 'Action', className: 'max-w-[300px]', sortable: false },
+            { text: 'My Migrated Amount', className: 'md:max-w-[300px]', sortable: true },
+            { text: 'Claimable Token', className: 'md:max-w-[300px]', sortable: true },
+            { text: 'Action', className: 'hidden md:block md:max-w-[300px]', sortable: false },
           ]}
         />
 
         <TableBody>
           {TOKENS_LIST.map((item, index) => (
             <TableRow key={index}>
-              <TableCell>
+              <TableCell className="w-1/3">
                 <div className="flex gap-2 items-center">
                   <Image
                     src={`/static/images/tokens/${item.icon}.png`}
@@ -40,7 +40,7 @@ const Overview = () => {
                   <p className="text-white text-sm">{item.token}</p>
                 </div>
               </TableCell>
-              <TableCell className="max-w-[300px]">
+              <TableCell className="w-1/3  md:max-w-[300px]">
                 <div className="flex w-full justify-end px-3 items-center">
                   <div className="flex gap-2">
                     <Image
@@ -54,7 +54,7 @@ const Overview = () => {
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="max-w-[300px]">
+              <TableCell className="w-1/3 md:max-w-[300px]">
                 <div className="flex w-full justify-end px-3 items-center">
                   <div className="flex gap-2">
                     <Image
@@ -68,18 +68,18 @@ const Overview = () => {
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="max-w-[300px]">
+              <TableCell className="w-full md:max-w-[300px]">
                 <div className="flex w-full justify-end">
-                  <Button variant="tertiary">Claim not started</Button>
+                  <Button variant="tertiary" className="w-full md:w-auto">Claim not started</Button>
                 </div>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </div>
-      <div className="flex items-center">
-        <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
-        <Pagination className="mx-auto" numberPages={7} />
+      <div className="md:flex items-center hidden">
+        <p className="text-sm text-shark-100 mb-5 md:mb-0">Showing 2 out of 2 migrations...</p>
+        <Pagination className="mx-auto mb-5 md:mb-0" numberPages={7} />
         <div className="flex items-center justify-center px-4 border w-12 h-12 border-shark-300 bg-shark-400 bg-opacity-40 text-white flex-shrink-0 transition-colors hover:bg-outrageous-orange-400 rounded-lg">
           <span className="text-lg icon-cog"></span>
         </div>

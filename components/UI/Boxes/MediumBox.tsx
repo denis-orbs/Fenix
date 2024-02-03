@@ -5,7 +5,13 @@ interface MediumBoxProps {
 }
 
 const MediumBox = ({ children }: MediumBoxProps) => {
-  return <div className="w-[615px] h-[440px] px-12 py-8 bg-no-repeat bg-[length:100%] bg-small-box">{children}</div>
+  return (
+    <div className="relative w-full md:w-[615px] pt-[47px] pb-[50px] flex flex-col items-center justify-center">
+      <div className="steps-box-top"></div>
+      <div className="steps-box-bottom"></div>
+      <div className="bg-opacity-40 bg-shark-400 w-full px-5 md:px-10">{children}</div>
+    </div>
+  )
 }
 
 export default MediumBox

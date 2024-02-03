@@ -24,8 +24,8 @@ const STEPS = [
 
 const Claim = () => {
   return (
-    <section>
-      <div className="flex items-center gap-5">
+    <section className="px-3 md:px-0">
+      <div className="flex items-center gap-6 justify-between flex-col md:flex-row mb-10 md:mb-0">
         <Migration />
         <Steps steps={STEPS} />
       </div>
