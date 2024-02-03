@@ -25,7 +25,7 @@ const Pool = () => {
         <Filter />
         <Search />
       </div>
-      <div className="w-full mb-10">
+      <div className="hidden w-full mb-10 md:block">
         <TableHead
           items={[
             { text: 'Liquidity Pool', className: 'text-left', sortable: true },

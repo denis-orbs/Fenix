@@ -8,28 +8,29 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <div className="px-5 pb-4 hidden md:block">
+    <div className="px-5">
       <footer className="max-w-[1820px] mx-auto">
-        <div className="footer relative flex items-end mb-3.5">
-          <div className="flex relative z-10 items-center h-[86px] w-full px-5">
-            <div className="flex gap-[23px] items-center mb-2">
-              <FenixIcon className="text-[32px]" />
-              <div>
+        <div className="md:footer relative flex items-end mb-3.5 bg-shark-400 md:bg-none bg-opacity-40 rounded-lg py-5">
+          <div className="relative z-10 flex flex-col w-full px-5 md:items-center md:flex-row">
+            <div className="flex gap-[23px] md:items-center flex-col md:flex-row w-full mb-5 md:mb-0">
+              <div className="flex items-center gap-4">
+                <FenixIcon className="text-[32px]" />
                 <p className="text-shark-100 text-xs leading-normal font-semibold mb-[5px]">Navigation</p>
-                <div className="flex gap-[30px]">
-                  {NAV_LINKS.map((link, index) => (
-                    <a
-                      href={link.href}
-                      key={index}
-                      className="text-xs leading-normal text-white inline-block hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
-                    >
-                      {link.title}
-                    </a>
-                  ))}
-                </div>
               </div>
+              <div className="grid grid-cols-3 md:w-1/2 md:grid-cols-6">
+                {NAV_LINKS.map((link, index) => (
+                  <a
+                    href={link.href}
+                    key={index}
+                    className="flex justify-center py-3 text-xs leading-normal text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
+                  >
+                    {link.title}
+                  </a>
+                ))}
+              </div>
+
             </div>
-            <div className="flex gap-2.5 items-center ml-auto pr-1">
+            <div className="flex gap-2.5 items-center">
               {SOCIAL_LINKS.map((link, index) => (
                 <a
                   title={link.title}
@@ -43,7 +44,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="text-shark-100 flex text-xs leading-normal items-center justify-between">
+        <div className="flex flex-col justify-between gap-4 mb-4 text-xs leading-normal md:items-center md:flex-row text-shark-100">
           <div className="flex items-center gap-5">
             <div>{currentYear} © Fenix Finance</div>
             <div className="px-2.5 h-7 border border-shark-300 rounded-[10px] bg-shark-400 bg-opacity-40 flex items-center">
@@ -54,7 +55,7 @@ const Footer = () => {
             href="#"
             className="flex items-center gap-[5px] hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
           >
-            <i className="icon-document text-2xl leading-none"></i>
+            <i className="text-2xl leading-none icon-document"></i>
             <span className="text-xs leading-normal">Legal Disclaimer</span>
           </a>
           <div className="flex items-center gap-[11px]">
