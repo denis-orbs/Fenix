@@ -7,6 +7,7 @@ import { Poppins } from 'next/font/google'
 import Decorator from '@/components/Common/Layout/Background'
 import Footer from '@/components/Common/Layout/Footer'
 import Header from '@/components/Common/Layout/Header'
+import MobileHeader from '@/components/Common/Layout/Header/Mobile'
 
 export const metadata: Metadata = {
   title: 'Fenix',
@@ -32,6 +33,7 @@ export default function RootLayout({
       </Head>
       <body suppressHydrationWarning={true} className={`${poppins.className} relative`}>
         <Header />
+        <MobileHeader />
         {children}
         <Footer />
 

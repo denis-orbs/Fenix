@@ -28,7 +28,6 @@ const Footer = () => {
                   </a>
                 ))}
               </div>
-
             </div>
             <div className="flex gap-2.5 items-center">
               {SOCIAL_LINKS.map((link, index) => (

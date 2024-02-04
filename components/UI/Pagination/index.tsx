@@ -16,7 +16,7 @@ const Pagination = ({ className, numberPages }: PaginationProps) => {
 
   const pageClassName = (index: number) => {
     return cn(
-      'flex items-center justify-center leading-normal transition-colors bg-shark-400 bg-opacity-40 border border-shark-300 px-[15px] h-[38px] rounded-[10px] hover:border-outrageous-orange-500 hover:bg-button-primary-hover hover:bg-opacity-80',
+      'flex items-center justify-center leading-normal transition-colors bg-shark-400 bg-opacity-40 border border-shark-400 px-[15px] h-[38px] rounded-[10px] hover:border-outrageous-orange-500 hover:bg-button-primary-hover hover:bg-opacity-80',
       activePage === index + 1 ? 'bg-button-primary bg-opacity-100' : '[&:not(:hover)]:text-navy-gray-500'
     )
   }
