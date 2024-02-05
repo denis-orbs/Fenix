@@ -27,7 +27,7 @@ const MigrationItem = ({ exchange }: MigrationItemProps) => {
 
   return (
     <div className="relative">
-      <div className="md:w-[384px] h-[77px] box-medium flex gap-3 items-center p-3 mb-3 relative">
+      <div className="md:w-[340px] 2xl:w-[384px] h-[77px] box-medium flex gap-3 items-center p-3 mb-3 relative">
         <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
           <span className="inline-block text-2xl text-transparent icon-lucide bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
         </div>

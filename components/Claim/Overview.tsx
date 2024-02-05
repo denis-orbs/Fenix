@@ -28,7 +28,7 @@ const Overview = () => {
         <TableBody>
           {TOKENS_LIST.map((item, index) => (
             <TableRow key={index}>
-              <TableCell className="w-1/3">
+              <TableCell className="w-1/3 md:w-1/4">
                 <div className="flex gap-2 items-center">
                   <Image
                     src={`/static/images/tokens/${item.icon}.png`}
@@ -40,7 +40,7 @@ const Overview = () => {
                   <p className="text-white text-sm">{item.token}</p>
                 </div>
               </TableCell>
-              <TableCell className="w-1/3  md:max-w-[300px]">
+              <TableCell className="w-1/3 md:w-1/4 2xl:max-w-[300px]">
                 <div className="flex w-full justify-end px-3 items-center">
                   <div className="flex gap-2">
                     <Image
@@ -54,7 +54,7 @@ const Overview = () => {
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="w-1/3 md:max-w-[300px]">
+              <TableCell className="w-1/3 md:w-1/4 2xl:max-w-[300px]">
                 <div className="flex w-full justify-end px-3 items-center">
                   <div className="flex gap-2">
                     <Image
@@ -68,9 +68,11 @@ const Overview = () => {
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="w-full md:max-w-[300px]">
+              <TableCell className="w-1/3 md:w-1/4 2xl:max-w-[300px]">
                 <div className="flex w-full justify-end">
-                  <Button variant="tertiary" className="w-full md:w-auto">Claim not started</Button>
+                  <Button variant="tertiary" className="w-full md:w-auto">
+                    Claim not started
+                  </Button>
                 </div>
               </TableCell>
             </TableRow>

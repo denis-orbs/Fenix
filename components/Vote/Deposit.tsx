@@ -1,10 +1,10 @@
 'use client'
 
-import { Button, BigBox } from '@/components/UI'
+import { Button, MainBox } from '@/components/UI'
 
 const Deposit = () => {
   return (
-    <BigBox>
+    <MainBox>
       <div className="flex items-center justify-between w-full">
         <div className="w-1/2">
           <h4 className="mb-3 text-xl text-white">Vote</h4>
@@ -78,7 +78,7 @@ const Deposit = () => {
           </div>
         </div>
       </div>
-    </BigBox>
+    </MainBox>
   )
 }
 
