@@ -1,10 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { MainBox } from '@/components/UI'
-import MigrationItem from './MigrationItem'
-import { EXCHANGE_LIST } from './data'
+import { EXCHANGE_LIST } from '../data'
+import InfoBox from '@/components/Common/InfoBox'
 
 const Migration = () => {
+
+  const [show, setShow] = useState<boolean>(false)
 
   return (
     <MainBox>
@@ -53,9 +56,9 @@ const Migration = () => {
             </p>
           </div>
         </div>
-        <div className="relative flex flex-col w-auto">
+        <div className="relative flex flex-col w-auto max-h-[350px] overflow-y-auto overflow-x-none pr-4">
           {EXCHANGE_LIST.map((exchange, index) => (
-            <MigrationItem exchange={exchange} key={index} />
+            <InfoBox key={index} data={exchange} setShowTooltip={setShow} hasTooltip/>
           ))}
         </div>
       </div>

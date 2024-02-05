@@ -4,7 +4,7 @@ import Deposit from '@/components/Liquidity/Deposit'
 import Steps from '@/components/Common/Steps'
 import Pool from '@/components/Liquidity/Pool'
 
-import STEPS from './data'
+import { STEPS } from './data'
 
 const Liquidity = () => {
   return (

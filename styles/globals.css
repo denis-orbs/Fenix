@@ -10,15 +10,15 @@ body {
 
 /************* ScrollBar ***********/
 ::-webkit-scrollbar {
-  width: 1px;
+  @apply mr-[10px] w-[10px];
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  @apply bg-transparent;
 }
 
-.container {
-  @apply max-w-[1760px] mx-auto px-5;
+::-webkit-scrollbar-thumb {
+  @apply bg-white rounded-xl w-2 border-4 border-solid border-shark-400;
 }
 
 /************* Button ***********/
@@ -215,26 +215,6 @@ body {
   before:left-0
   before:bottom-0
   before:bg-cover
-}
-
-.read-more-modal .scroll-box::-webkit-scrollbar {
-  /* Customize the scrollbar width */
-  width: 10px;
-  margin-right: 10px;
-}
-
-.read-more-modal .scroll-box::-webkit-scrollbar-track {
-  /* Customize the scrollbar track */
-  background: transparent;
-  border: #292D32 10px solid;
-}
-
-.read-more-modal .scroll-box::-webkit-scrollbar-thumb {
-  /* Customize the scrollbar thumb */
-  background: white;
-  border-radius: 10px;
-  width: 5px;
-  border: 3px solid #292D32;
 }
 
 .box-invert {

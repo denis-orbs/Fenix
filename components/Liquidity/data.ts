@@ -1,4 +1,4 @@
-const STEPS = [
+export const STEPS = [
   {
     title: 'Select your Pool',
     description: 'Select the pair that suits better your strategy.',
@@ -17,4 +17,20 @@ const STEPS = [
   },
 ]
 
-export default STEPS
+export const EXCHANGE_LIST = [
+  {
+    label: 'Total Value Locked',
+    amount: 9283732732,
+    icon: 'icon-lock',
+  },
+  {
+    label: 'Minimum Exchange Ratio',
+    amount: 6478944582,
+    icon: 'icon-pig',
+  },
+  {
+    label: 'Minimum Exchange Ratio',
+    amount: 4868076544,
+    icon: 'icon-coin',
+  },
+]

@@ -5,7 +5,7 @@ import Image from 'next/image'
 import AddressCheck from './AddressCheck'
 import MigratedAmount from './MigratedAmount'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
-import { TOKENS_LIST } from './Migration/data'
+import { TOKENS_LIST } from './data'
 
 const Overview = () => {
   return (
