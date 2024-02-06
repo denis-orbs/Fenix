@@ -18,7 +18,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-white rounded-xl w-2 border-4 border-solid border-shark-400;
+  @apply bg-white rounded-xl w-2 border-4 border-solid border-shark-400 bg-opacity-40;
 }
 
 /************* Button ***********/

@@ -31,6 +31,6 @@ export const EXCHANGE_LIST = [
   {
     label: 'Minimum Exchange Ratio',
     amount: 4868076544,
-    icon: 'icon-coin',
+    icon: 'icon-coins',
   },
 ]
