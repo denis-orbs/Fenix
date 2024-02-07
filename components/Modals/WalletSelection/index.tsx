@@ -21,7 +21,7 @@ const WalletSelection = () => {
           <SignIn setOpenModal={setWalletSelectionModal} />
         </div>
       ) : (
-        <div className="flex items-center justify-center gap-10">
+        <div className="flex flex-col items-center justify-center md:gap-10 xl:flex-row">
           <Welcome />
           <ConnectYourWallet setIsConnecting={setIsConnecting} />
         </div>

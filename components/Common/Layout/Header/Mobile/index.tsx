@@ -11,9 +11,9 @@ const MobileHeader = () => {
   const handleShowMenu = () => {}
 
   return (
-    <div className="p-3 block md:hidden">
-      <header className="header max-w-[1820px] mx-auto p-0 flex gap-5 justify-between bg-shark-400 bg-opacity-40 rounded-lg">
-        <div className="flex items-center justify-between w-full relative z-10 h-[87px] p-4">
+    <div className="block p-3 xl:hidden">
+      <header className="flex justify-between gap-5 p-0 mx-auto rounded-lg header bg-shark-400 bg-opacity-40">
+        <div className="flex items-center justify-between w-full relative z-10 h-[87px] p-4 gap-3">
           <Image src="/static/images/isotipe.svg" className="w-[45px] h-7" alt="logo" width={43} height={26} priority />
           <div className="flex items-center gap-2">
             <AccountHandler />

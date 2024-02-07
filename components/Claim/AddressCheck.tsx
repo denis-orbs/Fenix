@@ -14,7 +14,7 @@ const AddressCheck = ({ migrateStatus, setMigrateStatus }: AddressCheckProps) =>
   const handlerMigrateCheck = () => setMigrateStatus('wrong')
 
   return (
-    <div className="flex items-center gap-4 md:w-2/3 px-5 py-4 box-large flex-col md:flex-row">
+    <div className="flex flex-col items-center w-full gap-4 px-5 py-4 rounded-lg xl:w-2/4 2xl:w-2/3 md:flex-row bg-shark-400 bg-opacity-40">
       <div className="flex items-center gap-5 md:flex-row">
         <p className="text-sm text-shark-100">Wallet Address</p>
         <span className="px-3 py-1 text-xs md:text-sm border rounded-lg text-center text-shark-100 bg-shark-400 border-shark-300 truncate max-w-[200px]">
@@ -35,11 +35,11 @@ const AddressCheck = ({ migrateStatus, setMigrateStatus }: AddressCheckProps) =>
           >
             Check
           </Button>
-          <span className="icon-check text-2xl text-green-500"></span>
+          <span className="text-2xl text-green-500 icon-check"></span>
         </div>
       )}
       {migrateStatus === 'wrong' && (
-        <div className="flex items-center gap-3 w-full md:w-auto">
+        <div className="flex items-center w-full gap-3 md:w-auto">
           <Button
             variant="tertiary"
             className="!py-2 !text-red-500 hover:!text-white w-[90%] md:w-auto"
@@ -47,7 +47,7 @@ const AddressCheck = ({ migrateStatus, setMigrateStatus }: AddressCheckProps) =>
           >
             Check
           </Button>
-          <span className="icon-x-circle text-2xl text-red-500"></span>
+          <span className="text-2xl text-red-500 icon-x-circle"></span>
         </div>
       )}
     </div>

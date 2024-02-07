@@ -20,7 +20,7 @@ const InfoBox = ({ data, setShowTooltip, hasTooltip = false }: InfoBoxProps) => 
 
   return (
     <div className="relative">
-      <div className="md:w-[340px] 2xl:w-[440px] h-[77px] box-medium flex gap-3 items-center p-3 mb-3 relative">
+      <div className="2xl:min-w-[400px] h-[77px] flex gap-3 items-center p-3 mb-3 relative bg-shark-400 bg-opacity-40 rounded-lg">
         <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
           <span
             className={`inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${data.icon}`}
@@ -34,7 +34,7 @@ const InfoBox = ({ data, setShowTooltip, hasTooltip = false }: InfoBoxProps) => 
               <span
                 onMouseEnter={handleShowTooltip}
                 onMouseLeave={handleHiddenTooltip}
-                className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full icon-info bg-shark-200 hover:bg-outrageous-orange-500 cursor-pointer"
+                className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"
               ></span>
             )}
           </div>

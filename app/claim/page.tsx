@@ -4,7 +4,7 @@ import Claim from '@/components/Claim'
 export default function ClaimPage() {
   return (
     <main>
-      <div className="py-8 md:py-10 max-w-[1820px] mx-auto">
+      <div className="mx-auto md:p-6">
         <Claim />
       </div>
     </main>

@@ -13,10 +13,10 @@ const ReadMoreModal = () => {
   const handleClose = () => setReadMoreModal(false)
 
   return (
-    <Modal className="!justify-end" openModal={openModal} setOpenModal={setReadMoreModal}>
-      <div className="w-[603px] text-white read-more-modal relative ml-auto mx-5">
+    <Modal className="xl:!justify-end" openModal={openModal} setOpenModal={setReadMoreModal}>
+      <div className="xl:w-[603px] bg-shark-400 bg-opacity-40 text-white py-[70px] relative xl:ml-auto xl:mx-5 rounded-2xl">
         <button
-          className="absolute top-0 right-2.5 cursor-pointer text-shark-100 text-2xl hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text z-10"
+          className="absolute z-10 text-2xl cursor-pointer top-5 right-5 text-shark-100 hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
           type="button"
           aria-label="Close Modal"
           title="Close"
@@ -25,13 +25,10 @@ const ReadMoreModal = () => {
           <span className="icon-x"></span>
         </button>
 
-        <div className="top"></div>
-        <div className="bottom"></div>
-
-        <div className="bg-shark-400 bg-opacity-40 border-l border-r border-shark-300 pr-1">
+        <div className="pr-1">
           <div className="px-[30px] py-3.5 max-h-[calc(100vh-200px)] overflow-auto flex flex-col gap-[27px]  scroll-box">
             <li className="flex gap-3">
-              <div className="w-[57.224px] h-[57.224px] border border-shark-300 bg-shark-400 bg-opacity-40 rounded-xl flex-shrink-0 flex items-center justify-center">
+              <div className="w-[57.224px] h-[57.224px] bg-shark-400 bg-opacity-40 rounded-xl flex-shrink-0 hidden xl:flex items-center justify-center">
                 <span className="icon-send text-[30px] inline-block text-transparent bg-button-primary-hover bg-clip-text"></span>
               </div>
               <div>
@@ -113,7 +110,7 @@ const ReadMoreModal = () => {
             </li>
 
             <li className="flex gap-3">
-              <div className="w-[57.224px] h-[57.224px] border border-shark-300 bg-shark-400 bg-opacity-40 rounded-xl flex-shrink-0 flex items-center justify-center">
+              <div className="w-[57.224px] h-[57.224px] bg-shark-400 bg-opacity-40 rounded-xl flex-shrink-0 hidden xl:flex items-center justify-center">
                 <span className="icon-send text-[30px] inline-block text-transparent bg-button-primary-hover bg-clip-text"></span>
               </div>
               <div>
@@ -134,7 +131,7 @@ const ReadMoreModal = () => {
             </li>
 
             <li className="flex gap-3">
-              <div className="w-[57.224px] h-[57.224px] border border-shark-300 bg-shark-400 bg-opacity-40 rounded-xl flex-shrink-0 flex items-center justify-center">
+              <div className="w-[57.224px] h-[57.224px] bg-shark-400 bg-opacity-40 rounded-xl flex-shrink-0 hidden xl:flex items-center justify-center">
                 <span className="icon-send text-[30px] inline-block text-transparent bg-button-primary-hover bg-clip-text"></span>
               </div>
               <div>
@@ -155,7 +152,7 @@ const ReadMoreModal = () => {
             </li>
 
             <li className="flex gap-3">
-              <div className="w-[57.224px] h-[57.224px] border border-shark-300 bg-shark-400 bg-opacity-40 rounded-xl flex-shrink-0 flex items-center justify-center">
+              <div className="w-[57.224px] h-[57.224px] bg-shark-400 bg-opacity-40 rounded-xl flex-shrink-0 hidden xl:flex items-center justify-center">
                 <span className="icon-send text-[30px] inline-block text-transparent bg-button-primary-hover bg-clip-text"></span>
               </div>
               <div>
@@ -171,7 +168,7 @@ const ReadMoreModal = () => {
                       Below, you can find a visual comparison between the stable (red) and volatile (green) AMM pricing
                       equations, where:
                     </p>
-                    <ul className="list-disc pl-5">
+                    <ul className="pl-5 list-disc">
                       <li>x is the amount of first token in the pool</li>
                       <li>y is the amount of second token in the same pool</li>
                       <li>k is a fixed constant</li>

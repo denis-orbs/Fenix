@@ -14,7 +14,7 @@ const Overview = () => {
   return (
     <div className="relative">
       <h5 className="mb-4 text-lg text-white">Migration Overview</h5>
-      <div className="flex md:items-center md:justify-between gap-5 mb-5 flex-col md:flex-row">
+      <div className="flex flex-col gap-5 mb-5 md:items-center md:justify-between xl:flex-row">
         <AddressCheck migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
         <TotalMigrated />
       </div>
@@ -35,19 +35,19 @@ const Overview = () => {
               {TOKENS_LIST.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell className="w-1/3 md:w-1/4">
-                    <div className="flex gap-2 items-center">
+                    <div className="flex items-center gap-2">
                       <Image
                         src={`/static/images/tokens/${item.icon}.png`}
                         alt="token"
-                        className="w-7 h-7 rounded-full"
+                        className="rounded-full w-7 h-7"
                         width={20}
                         height={20}
                       />
-                      <p className="text-white text-sm">{item.token}</p>
+                      <p className="text-sm text-white">{item.token}</p>
                     </div>
                   </TableCell>
                   <TableCell className="w-1/3 md:w-1/4 2xl:max-w-[300px]">
-                    <div className="flex w-full justify-end px-3 items-center">
+                    <div className="flex items-center justify-end w-full px-3">
                       <div className="flex gap-2">
                         <Image
                           src={`/static/images/tokens/${item.migrated.icon}.png`}
@@ -56,12 +56,12 @@ const Overview = () => {
                           width={20}
                           height={20}
                         />
-                        <p className="text-white text-sm">{item.migrated.amount}</p>
+                        <p className="text-sm text-white">{item.migrated.amount}</p>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="w-1/3 md:w-1/4 2xl:max-w-[300px]">
-                    <div className="flex w-full justify-end px-3 items-center">
+                    <div className="flex items-center justify-end w-full px-3">
                       <div className="flex gap-2">
                         <Image
                           src={`/static/images/tokens/${item.claimable.icon}.png`}
@@ -70,12 +70,12 @@ const Overview = () => {
                           width={20}
                           height={20}
                         />
-                        <p className="text-white text-sm">{item.claimable.amount}</p>
+                        <p className="text-sm text-white">{item.claimable.amount}</p>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="w-1/3 md:w-1/4 2xl:max-w-[300px]">
-                    <div className="flex w-full justify-end">
+                    <div className="flex justify-end w-full">
                       <Button variant="tertiary" className="w-full md:w-auto">
                         Claim not started
                       </Button>
@@ -85,18 +85,18 @@ const Overview = () => {
               ))}
             </TableBody>
           </div>
-          <div className="md:flex items-center hidden">
-            <p className="text-sm text-shark-100 mb-5 md:mb-0">Showing 2 out of 2 migrations...</p>
+          <div className="items-center hidden md:flex">
+            <p className="mb-5 text-sm text-shark-100 md:mb-0">Showing 2 out of 2 migrations...</p>
             <Pagination className="mx-auto mb-5 md:mb-0" numberPages={7} />
-            <div className="flex items-center justify-center px-4 border w-12 h-12 border-shark-300 bg-shark-400 bg-opacity-40 text-white flex-shrink-0 transition-colors hover:bg-outrageous-orange-400 rounded-lg">
+            <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 text-white transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
               <span className="text-lg icon-cog"></span>
             </div>
           </div>
         </>
       ) : (
-        <div className="flex items-center justify-center flex-col py-10 bg-shark-400 bg-opacity-40 rounded-lg">
-          <span className="icon-send text-5xl text-shark-100"></span>
-          <p className="text-shark-100 text-sm">No migrations or tokens found</p>
+        <div className="flex flex-col items-center justify-center py-10 rounded-lg bg-shark-400 bg-opacity-40">
+          <span className="text-5xl icon-send text-shark-100"></span>
+          <p className="text-sm text-shark-100">No migrations or tokens found</p>
         </div>
       )}
     </div>

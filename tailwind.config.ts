@@ -43,11 +43,7 @@ const config: Config = {
           'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%);',
         'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%);',
         // Background images
-        'header-rectangle': 'url("/static/images/header/rectangle.svg")',
-        'modal-connect': 'url("/static/images/modals/modal-connect.svg")',
-        'modal-welcome': 'url("/static/images/modals/modal-welcome.svg")',
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
-        'info-box': 'url("/static/images/modals/info-box.svg")',
       },
       lineHeight: {
         normal: 'normal',

@@ -18,7 +18,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-white rounded-xl w-2 border-4 border-solid border-shark-400 bg-opacity-40;
+  @apply w-2 bg-white border-4 border-solid rounded-xl border-shark-400 bg-opacity-40;
 }
 
 /************* Button ***********/
@@ -37,44 +37,6 @@ body {
 }
 .button-tertiary {
   @apply text-white border bg-shark-400 border-shark-400 hover:bg-button-primary hover:border-outrageous-orange-400;
-}
-
-/************* Header ***********/
-
-.header {
-  @apply relative
-  after:content-[""]
-  after:absolute
-  after:bg-[url("/static/images/header/header.svg")]
-  after:bg-no-repeat
-  after:h-[15px]
-  after:md:w-[350px]
-  after:w-[260px]
-  after:md:right-[40px]
-  after:right-0
-  after:top-full
-}
-
-/************* Footer ***********/
-
-.footer {
-  @apply relative
-
-  after:content-[""]
-  after:absolute
-  after:bg-[url("/static/images/footer/footer.svg")]
-  after:bg-no-repeat
-  after:h-[12px]
-  after:md:h-[15px]
-  after:md:w-[350px]
-  after:w-[260px]
-  after:md:right-[40px]
-  after:left-5
-  after:bottom-full
-}
-
-.read-more-modal {
-  @apply pt-[68px] pb-[64.1px] w-[603.249px];
 }
 
 .read-more-modal .top {
@@ -133,88 +95,6 @@ body {
   after:bottom-0
   after:bg-cover
   after:bg-right;
-}
-
-.main-box-top {
-  @apply absolute
-  left-0
-  right-0
-  top-0
-  h-[50px]
-  overflow-hidden
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/main/top.svg")]
-  before:bg-no-repeat
-  before:h-[15px]
-  before:md:h-[35px]
-  before:2xl:h-[45px]
-  before:w-full
-  before:left-0
-  before:top-0
-  before:bg-cover
-}
-
-.main-box-bottom {
-  @apply absolute
-  left-0
-  right-0
-  bottom-0
-  h-[64px]
-  overflow-hidden
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/main/bottom.svg")]
-  before:bg-no-repeat
-  before:h-[25px]
-  before:md:h-[50px]
-  before:2xl:h-[65px]
-  before:w-full
-  before:left-0
-  before:bottom-0
-  before:bg-cover
-}
-
-.steps-box-top {
-  @apply absolute
-  left-0
-  right-0
-  top-0
-  h-[47px]
-  overflow-hidden
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/steps/top.svg")]
-  before:bg-no-repeat
-  before:h-[27px]
-  before:md:h-[47px]
-  before:w-full
-  before:left-0
-  before:top-0
-  before:bg-cover
-}
-
-.steps-box-bottom {
-  @apply absolute
-  left-0
-  right-0
-  bottom-0
-  h-[50px]
-  overflow-hidden
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/steps/bottom.svg")]
-  before:bg-no-repeat
-  before:h-[32px]
-  before:md:h-[52px]
-  before:w-full
-  before:left-0
-  before:bottom-0
-  before:bg-cover
 }
 
 .box-invert {

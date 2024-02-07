@@ -25,7 +25,7 @@ const Modal = ({ children, openModal, className = '', setOpenModal }: ModalProps
       className={`fixed top-0 right-0 w-full h-full bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 ${className}`}
       onClick={handleCloseModal}
     >
-      <div onClick={(e) => e.stopPropagation()}>{children}</div>
+      <div onClick={(e) => e.stopPropagation()} className="w-[90%]">{children}</div>
     </div>
   )
 }
