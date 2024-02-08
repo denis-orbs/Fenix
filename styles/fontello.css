@@ -55,7 +55,6 @@
 .icon-coin-received:before { content: '\e84b'; } /* '' */
 .icon-send:before { content: '\e84c'; } /* '' */
 .icon-safe:before { content: '\e84d'; } /* '' */
-.icon-wap:before { content: '\e84e'; } /* '' */
 .icon-pig:before { content: '\e84f'; } /* '' */
 .icon-coins:before { content: '\e850'; } /* '' */
 .icon-lock-up:before { content: '\e851'; } /* '' */
@@ -65,6 +64,7 @@
 .icon-lucide:before { content: '\e856'; } /* '' */
 .icon-download:before { content: '\e858'; } /* '' */
 .icon-compass:before { content: '\e859'; } /* '' */
-.icon-swap:before { content: '\e85a'; } /* '' */
 .icon-check:before { content: '\e85b'; } /* '' */
 .icon-x-circle:before { content: '\e85c'; } /* '' */
+.icon-badge-check:before { content: '\e85d'; } /* '' */
+.icon-swap:before { content: '\e85e'; } /* '' */

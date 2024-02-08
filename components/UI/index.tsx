@@ -5,6 +5,7 @@ import MainBox from './Boxes/MainBox'
 import StepBox from './Boxes/StepBox'
 import Tooltip from './Tooltip/'
 import Pagination from './Pagination/'
+import Select from './Select/'
 import { TableBody, TableHead, TableCell, TableRow } from './Table'
 
-export { Button, Modal, MainBox, StepBox, Pagination, TableBody, TableHead, TableCell, TableRow, Tooltip }
+export { Button, Modal, MainBox, StepBox, Pagination, TableBody, TableHead, TableCell, TableRow, Tooltip, Select }
