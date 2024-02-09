@@ -1,7 +1,6 @@
-/* eslint-disable import/no-default-export */
 import Vote from '@/components/Vote'
 
-export default function VotePage() {
+const VotePage = () => {
   return (
     <main>
       <div className="py-10 mx-auto">
@@ -10,3 +9,5 @@ export default function VotePage() {
     </main>
   )
 }
+
+export default VotePage

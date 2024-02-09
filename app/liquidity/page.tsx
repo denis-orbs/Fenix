@@ -1,7 +1,7 @@
-/* eslint-disable import/no-default-export */
 import Liquidity from '@/components/Liquidity'
 
-export default function LiquidityPage() {
+
+const LiquidityPage = () => {
   return (
     <main>
       <div className="py-10 mx-auto">
@@ -10,3 +10,5 @@ export default function LiquidityPage() {
     </main>
   )
 }
+
+export default LiquidityPage

@@ -1,7 +1,6 @@
-/* eslint-disable import/no-default-export */
 import Claim from '@/components/Claim'
 
-export default function ClaimPage() {
+const ClaimPage = () => {
   return (
     <main>
       <div className="mx-auto md:p-6">
@@ -10,3 +9,5 @@ export default function ClaimPage() {
     </main>
   )
 }
+
+export default ClaimPage

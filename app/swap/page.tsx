@@ -1,7 +1,6 @@
-/* eslint-disable import/no-default-export */
 import Swap from '@/components/Swap'
 
-export default function SwapPage() {
+const SwapPage = () => {
   return (
     <main>
       <div className="px-3 md:px-6">
@@ -10,3 +9,5 @@ export default function SwapPage() {
     </main>
   )
 }
+
+export default SwapPage
