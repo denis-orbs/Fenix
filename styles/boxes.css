@@ -41,3 +41,84 @@
   before:left-0
   before:top-0
 }
+
+
+.main-box-top {
+  @apply relative
+  left-0
+  right-0
+  bottom-full
+  h-[40px]
+  sm:h-[60px]
+  md:h-[80px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/main/top.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-full
+  before:left-0
+  before:top-0
+}
+
+.main-box-bottom {
+  @apply relative
+  left-0
+  right-0
+  top-full
+  h-[40px]
+  xl:h-[50px]
+  2xl:h-[80px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/main/bottom.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-full
+  before:left-0
+  before:top-0
+}
+
+.steps-box-top {
+  @apply relative
+  left-0
+  right-0
+  bottom-full
+  h-[60px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/top.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-full
+  before:left-0
+  before:top-0
+}
+
+.steps-box-bottom {
+  @apply relative
+  left-0
+  right-0
+  top-full
+  h-[60px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/bottom.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-full
+  before:left-0
+  before:top-0
+}
