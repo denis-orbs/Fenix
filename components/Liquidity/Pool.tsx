@@ -23,7 +23,9 @@ const Pool = () => {
       <h5 className="mb-4 text-lg text-white">Liquidity Pools</h5>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
         <Filter />
-        <Search />
+        <div className="xl:w-1/3">
+          <Search />
+        </div>
       </div>
       <div className="hidden w-full mb-10 md:block">
         <TableHead
@@ -41,7 +43,7 @@ const Pool = () => {
           {loading ? (
             <>
               {Array.from({ length: 1 }).map((_, index) => (
-                <RowSkeleton key={index}/>
+                <RowSkeleton key={index} />
               ))}
             </>
           ) : (
