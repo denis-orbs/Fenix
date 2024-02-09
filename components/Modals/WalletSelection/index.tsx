@@ -16,7 +16,7 @@ const WalletSelection = () => {
 
   return (
     <Modal openModal={openModal} setOpenModal={setWalletSelectionModal}>
-      {!isConnecting ? (
+      {isConnecting ? (
         <div className="flex items-center justify-center gap-10">
           <SignIn setOpenModal={setWalletSelectionModal} />
         </div>
