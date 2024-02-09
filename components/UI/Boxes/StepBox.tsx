@@ -6,9 +6,9 @@ interface StepBoxProps {
 
 const StepBox = ({ children }: StepBoxProps) => {
   return (
-    <div className="relative w-full xl:max-w-[615px]">
+    <div className="relative w-full xl:max-w-[615px] xl:w-[50%]">
       <div className="steps-box-top"></div>
-        {children}
+      {children}
       <div className="steps-box-bottom"></div>
     </div>
   )

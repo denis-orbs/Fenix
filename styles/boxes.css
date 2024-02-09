@@ -90,7 +90,7 @@
   left-0
   right-0
   bottom-full
-  h-[60px]
+  h-[40px]
   overflow-hidden
 
   before:content-[""]
@@ -110,6 +110,10 @@
   right-0
   top-full
   h-[60px]
+  md:h-[100px]
+  lg:h-[70px]
+  xl:h-[50px]
+  2xl:h-[70px]
   overflow-hidden
 
   before:content-[""]
