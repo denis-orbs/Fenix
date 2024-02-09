@@ -15,8 +15,8 @@ const SignIn = ({ setOpenModal }: SignInProps) => {
 
   useEffect(() => {
     setTimeout(() => {
-      // setOpenModal(false)
-      // setIsConnected(true)
+      setOpenModal(false)
+      setIsConnected(true)
     }, 1000)
   }, [])
 

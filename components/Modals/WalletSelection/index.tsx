@@ -16,16 +16,16 @@ const WalletSelection = () => {
 
   return (
     <Modal openModal={openModal} setOpenModal={setWalletSelectionModal}>
+      {!isConnecting ? (
         <div className="flex items-center justify-center gap-10">
           <SignIn setOpenModal={setWalletSelectionModal} />
         </div>
-      {/* {!isConnecting ? (
       ) : (
         <div className="flex flex-col items-center justify-center md:gap-10 xl:flex-row">
           <Welcome />
           <ConnectYourWallet setIsConnecting={setIsConnecting} />
         </div>
-      )} */}
+      )}
     </Modal>
   )
 }
