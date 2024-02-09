@@ -2,19 +2,20 @@
 'use client'
 import Image from 'next/image'
 
-import { MainBox, Button } from '@/components/UI'
+import { Button } from '@/components/UI'
 import HowToSwap from './HowToSwap'
 import ExchangeBox from './ExchangeBox'
 import Separator from './Separator'
 
 const Swap = () => {
   return (
-    <section className="relative w-3/4 pt-[70px] rounded-2xl mx-auto">
+    <section className="mt-36 mb-52 relative w-full xl:w-3/4 rounded-2xl mx-auto max-w-[1200px]">
       <div className="swap-box-top"></div>
-      <div className="bg-shark-400 bg-opacity-40 flex justify-between gap-10 items-center">
-        <div className="w-full my-5 md:w-[50%] relative">
+      <div className="swap-box-bottom"></div>
+      <div className="flex flex-col xl:flex-row justify-between gap-12 items-center bg-shark-400 bg-opacity-40 px-10">
+        <div className="w-full my-5 xl:w-[50%] relative">
           <h4 className="mb-3 text-xl text-white">Trade</h4>
-          <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-3">
               <Button variant="primary" className="!py-2 !rounded-xl">
                 Swap

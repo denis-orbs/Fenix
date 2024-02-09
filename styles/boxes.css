@@ -1,0 +1,43 @@
+/************* Boxes ***********/
+
+.swap-box-top {
+  @apply absolute
+  left-0
+  right-0
+  bottom-full
+  h-[50px]
+  md:h-[100px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/swap/top.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-full
+  before:left-0
+  before:top-0
+}
+
+.swap-box-bottom {
+  @apply absolute
+  left-0
+  right-0
+  top-full
+  h-[50px]
+  md:h-[90px]
+  lg:h-[120px]
+  2xl:h-[140px]
+  overflow-hidden
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/swap/bottom.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-full
+  before:left-0
+  before:top-0
+}

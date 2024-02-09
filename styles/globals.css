@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url('./fontello.css');
+@import url('./boxes.css');
 
 body {
   @apply h-full text-base bg-shark-900;
@@ -37,26 +38,4 @@ body {
 }
 .button-tertiary {
   @apply text-white border bg-shark-400 border-shark-400 hover:bg-button-primary hover:border-outrageous-orange-400;
-}
-
-
-/************* Boxes ***********/
-
-.swap-box-top {
-  @apply absolute
-  left-0
-  right-0
-  top-0
-  h-[70px]
-  overflow-hidden
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/swap/top.svg")]
-  before:bg-no-repeat
-  before:h-[70px]
-  before:w-full
-  before:left-0
-  before:top-0
-  before:bg-cover
 }

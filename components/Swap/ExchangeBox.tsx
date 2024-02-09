@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { Button } from '@/components/UI'
 
-
 interface ExchangeBoxProps {
   title: string
 }
@@ -20,7 +19,7 @@ const ExchangeBox = ({ title }: ExchangeBoxProps) => {
       </div>
       <div className="flex items-center gap-3">
         <div className="relative w-2/5">
-          <div className="bg-shark-400 bg-opacity-40 h-[56px] rounded-lg text-white flex items-center justify-between px-4">
+          <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
             <div className="flex items-center gap-2">
               <Image
                 src={`/static/images/tokens/FNX.png`}
@@ -37,7 +36,7 @@ const ExchangeBox = ({ title }: ExchangeBoxProps) => {
         <div className="relative w-3/5">
           <input
             type="text"
-            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[56px] w-full rounded-lg outline-none px-3 text-white text-sm"
+            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
           />
           <Button variant="tertiary" className="!py-1 !px-3 absolute right-2 top-3">
             Max
