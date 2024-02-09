@@ -1,7 +1,7 @@
 /************* Boxes ***********/
 
 .swap-box-top {
-  @apply absolute
+  @apply relative
   left-0
   right-0
   bottom-full
@@ -21,7 +21,7 @@
 }
 
 .swap-box-bottom {
-  @apply absolute
+  @apply relative
   left-0
   right-0
   top-full

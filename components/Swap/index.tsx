@@ -9,9 +9,8 @@ import Separator from './Separator'
 
 const Swap = () => {
   return (
-    <section className="mt-36 mb-52 relative w-full xl:w-3/4 rounded-2xl mx-auto max-w-[1200px]">
+    <section className="mt-4 mb-6 relative w-full xl:w-3/4 rounded-2xl mx-auto max-w-[1200px]">
       <div className="swap-box-top"></div>
-      <div className="swap-box-bottom"></div>
       <div className="flex flex-col xl:flex-row justify-between gap-12 items-center bg-shark-400 bg-opacity-40 px-10">
         <div className="w-full my-5 xl:w-[50%] relative">
           <h4 className="mb-3 text-xl text-white">Trade</h4>
@@ -47,6 +46,7 @@ const Swap = () => {
         </div>
         <HowToSwap />
       </div>
+      <div className="swap-box-bottom"></div>
     </section>
   )
 }
