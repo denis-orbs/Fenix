@@ -1,13 +1,12 @@
-import React from 'react'
+/* eslint-disable import/no-default-export */
+import Swap from '@/components/Swap'
 
-const page = () => {
+export default function SwapPage() {
   return (
-    <div>Probando Modal
-
-        <button className='text-white p-6 bg-gray-700'>Presioname</button>
-
-    </div>
+    <main>
+      <div className="mx-auto md:p-6">
+        <Swap />
+      </div>
+    </main>
   )
 }
-
-export default page

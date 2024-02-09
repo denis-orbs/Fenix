@@ -2,7 +2,7 @@
 
 const Search = () => {
   return (
-    <div className="relative flex items-center md:w-1/3 h-[62px] p-2 rounded-lg box-large">
+    <div className="relative flex items-center w-full xl:w-1/3 h-[62px] p-2 rounded-lg box-large">
       <span className="flex items-center justify-center w-8 h-5 text-2xl icon-search text-shark-100" />
       <input
         type="text"

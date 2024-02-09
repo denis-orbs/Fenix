@@ -12,7 +12,7 @@ const Migration = () => {
   return (
     <MainBox>
       <div className="flex flex-col justify-between w-full md:gap-10 md:flex-row md:items-center">
-        <div className="w-full my-5 md:w-[40%] md:m-0">
+        <div className="w-full my-5 md:w-[50%] xl:w-[40%] md:m-0">
           <h4 className="mb-3 text-xl text-white">Migration Claim</h4>
           <p className="mb-4 text-sm text-shark-100">
             Deposit your CHR Tokens in order to migrate to our new Protocol!
@@ -58,7 +58,7 @@ const Migration = () => {
         </div>
         <div className="relative flex flex-col w-full md:w-[40%] max-h-[390px] overflow-y-auto overflow-x-none pr-4">
           {EXCHANGE_LIST.map((exchange, index) => (
-            <InfoBox key={index} data={exchange} setShowTooltip={setShow} hasTooltip/>
+            <InfoBox key={index} data={exchange} setShowTooltip={setShow} hasTooltip />
           ))}
         </div>
       </div>

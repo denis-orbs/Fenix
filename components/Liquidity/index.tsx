@@ -9,7 +9,7 @@ import { STEPS } from './data'
 const Liquidity = () => {
   return (
     <section className="px-3 md:px-5">
-      <div className="flex items-center gap-6 justify-between flex-col md:flex-row mb-10 md:mb-0">
+      <div className="flex items-center gap-6 justify-between flex-col md:flex-row mb-10 xl:h-[450px]">
         <Deposit />
         <Steps steps={STEPS} />
       </div>
