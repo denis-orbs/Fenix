@@ -9,9 +9,9 @@ interface ExchangeBoxProps {
 
 const ExchangeBox = ({ title }: ExchangeBoxProps) => {
   return (
-    <div className="bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 pt-6 pb-8">
+    <div className="exchange-box">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-white">{title}</p>
+        <p className="text-white font-medium">{title}</p>
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
           <span>Available: 0.00 ETH</span>

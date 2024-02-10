@@ -8,7 +8,7 @@ import WalletSelection from '@/components/Modals/WalletSelection'
 
 const Header = () => {
   return (
-    <div className="hidden p-6 xl:block">
+    <div className="hidden xl:block">
       <header className="flex justify-between gap-5 mx-auto rounded-lg bg-shark-400 bg-opacity-40">
         <div className="flex items-center justify-between w-full relative z-10 h-[87px] p-4">
           <Image src="/static/images/logo.svg" className="w-[150px] h-10" alt="logo" width={150} height={40} priority />
