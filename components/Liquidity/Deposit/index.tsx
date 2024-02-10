@@ -7,8 +7,8 @@ import { EXCHANGE_LIST } from '../data'
 const Deposit = () => {
   return (
     <MainBox>
-      <div className="flex flex-col items-center justify-between w-full xl:flex-row bg-shark-400 bg-opacity-40 px-10">
-        <div className="xl:w-1/2">
+      <div className="flex flex-col items-center justify-between w-full xl:flex-row bg-shark-400 bg-opacity-40 rounded-2xl xl:rounded-none py-8 xl:py-0 px-10">
+        <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-xl text-white">Liquidity</h4>
           <p className="mb-4 text-sm text-shark-100">
             Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and Stake liquidity to earn FNX.
@@ -37,7 +37,7 @@ const Deposit = () => {
             </p>
           </div>
         </div>
-        <div className="relative flex flex-col w-full xl:w-[40%] max-h-[390px] overflow-y-auto overflow-x-none">
+        <div className="relative flex flex-col w-full xl:w-[40%]">
           {EXCHANGE_LIST.map((exchange, index) => (
             <InfoBox key={index} data={exchange} />
           ))}

@@ -5,9 +5,10 @@
   left-0
   right-0
   bottom-full
-  h-[50px]
-  md:h-[100px]
+  h-[90px]
   overflow-hidden
+  hidden
+  xl:block
 
   before:content-[""]
   before:absolute
@@ -22,13 +23,12 @@
 
 .swap-box-bottom {
   @apply relative
+  hidden
+  xl:block
   left-0
   right-0
   top-full
-  h-[50px]
-  md:h-[90px]
-  lg:h-[120px]
-  2xl:h-[140px]
+  h-[60px]
   overflow-hidden
 
   before:content-[""]
@@ -47,10 +47,10 @@
   @apply relative
   left-0
   right-0
+  hidden
+  xl:block
   bottom-full
-  h-[40px]
-  sm:h-[60px]
-  md:h-[80px]
+  h-[80px]
   overflow-hidden
 
   before:content-[""]
@@ -68,10 +68,10 @@
   @apply relative
   left-0
   right-0
+  hidden
+  xl:block
   top-full
-  h-[40px]
-  xl:h-[50px]
-  2xl:h-[80px]
+  h-[80px]
   overflow-hidden
 
   before:content-[""]
