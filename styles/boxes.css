@@ -1,5 +1,32 @@
 /************* Boxes ***********/
 
+
+.header-box {
+  @apply relative h-[15px] w-[337px] hidden xl:block ml-auto mr-[60px]
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/header/header.svg")]
+  after:bg-no-repeat
+  after:h-full
+  after:w-full
+  after:right-0
+  after:bottom-0
+}
+
+.footer-box {
+  @apply relative h-[15px] w-[337px] hidden xl:block
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/footer/footer.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:w-full
+  before:left-0
+  before:top-0
+}
+
 .swap-box-top {
   @apply relative
   left-0

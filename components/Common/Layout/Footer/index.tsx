@@ -8,20 +8,21 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="mx-auto">
+    <footer className="relative mx-auto mt-3">
+      <div className="footer-box"></div>
       <div className="relative flex items-end mb-3.5 bg-shark-400 bg-opacity-40 rounded-lg py-5">
         <div className="relative z-10 flex flex-col w-full px-5 md:items-center md:flex-row">
           <div className="flex gap-[23px] md:items-center flex-col md:flex-row w-full mb-5 md:mb-0">
             <div className="flex items-center gap-4">
               <FenixIcon className="text-[32px]" />
-              <p className="text-shark-100 text-xs leading-normal font-semibold mb-[5px]">Navigation</p>
+              <p className="text-shark-100 text-sm leading-normal font-semibold mb-[5px]">Navigation</p>
             </div>
             <div className="grid grid-cols-3 md:w-1/2 md:grid-cols-6">
               {NAV_LINKS.map((link, index) => (
                 <a
                   href={link.href}
                   key={index}
-                  className="flex justify-center py-3 text-xs leading-normal text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
+                  className="flex justify-center py-3 text-sm leading-normal text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
                 >
                   {link.title}
                 </a>

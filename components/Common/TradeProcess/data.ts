@@ -6,7 +6,7 @@ const PROCESS_LIST = [
   },
   {
     button: 'Refresh Rate',
-    description: 'Set and Forget',
+    description: '1.0% slippage applied',
     icon: 'icon-coin',
   },
   {
