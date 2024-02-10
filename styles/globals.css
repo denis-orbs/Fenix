@@ -54,5 +54,17 @@ body {
   before:border-t-[40px]
   before:border-r-[40px]
   before:border-b-[40px]
-  before:border-[transparent_transparent_#1b1d21];
+  before:border-[transparent_transparent_#1b1d21]
+
+  after:absolute
+  after:w-0
+  after:h-0
+  after:bottom-[-15px]
+  after:right-[14px]
+  after:rotate-[-91deg]
+  after:border-solid
+  after:border-t-[30px]
+  after:border-r-[30px]
+  after:border-b-[30px]
+  after:border-[transparent_transparent_#1b1d21];
 }
