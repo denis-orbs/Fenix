@@ -13,20 +13,9 @@ const Swap = () => {
         <div className="swap-box-top"></div>
         <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center py-8 xl:py-0 px-10 xl:bg-shark-400 xl:bg-opacity-40">
           <div className="w-full relative">
-            <h4 className="mb-3 text-xl text-white">Trade</h4>
             <div className="flex items-center justify-between mb-5">
-              <div className="flex items-center gap-3">
-                <Button variant="primary" className="!py-2 !rounded-xl">
-                  Swap
-                </Button>
-                <Button variant="secondary" className="!py-2 !rounded-xl">
-                  Limit
-                </Button>
-                <Button variant="secondary" className="!py-2 !rounded-xl">
-                  Twap
-                </Button>
-              </div>
-              <span className="icon-reflesh text-shark-100 text-lg"></span>
+              <h4 className="mb-3 text-2xl text-white font-medium">Trade</h4>
+              <span className="icon-reflesh text-shark-100 text-xl"></span>
             </div>
             <div className="flex flex-col gap-1 mb-5 relative">
               <ExchangeBox title="Swap" />
