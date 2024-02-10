@@ -126,3 +126,32 @@
   before:left-0
   before:top-0
 }
+
+
+.exchange-box {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-8 pr-6 py-6
+
+  before:absolute
+  before:w-0
+  before:h-0
+  before:top-[-21px]
+  before:left-[20px]
+  before:rotate-[89deg]
+  before:border-solid
+  before:border-t-[40px]
+  before:border-r-[40px]
+  before:border-b-[40px]
+  before:border-[transparent_transparent_#1b1d21]
+
+  after:absolute
+  after:w-0
+  after:h-0
+  after:bottom-[-15px]
+  after:right-[14px]
+  after:rotate-[-91deg]
+  after:border-solid
+  after:border-t-[30px]
+  after:border-r-[30px]
+  after:border-b-[30px]
+  after:border-[transparent_transparent_#1b1d21];
+}
