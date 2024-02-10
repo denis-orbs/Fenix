@@ -131,6 +131,8 @@
 .exchange-box {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-8 pr-6 py-6
 
+  before:hidden
+  xl:before:block
   before:absolute
   before:w-0
   before:h-0
@@ -143,6 +145,8 @@
   before:border-b-[40px]
   before:border-[transparent_transparent_#1b1d21]
 
+  after:hidden
+  xl:after:block
   after:absolute
   after:w-0
   after:h-0
@@ -154,4 +158,36 @@
   after:border-r-[30px]
   after:border-b-[30px]
   after:border-[transparent_transparent_#1b1d21];
+}
+
+.process-box {
+  @apply relative flex flex-col items-center justify-center p-4 px-3 rounded-lg bg-shark-400 bg-opacity-40
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:top-[-16px]
+  before:left-[15px]
+  before:rotate-[89deg]
+  before:border-solid
+  before:border-t-[30px]
+  before:border-r-[30px]
+  before:border-b-[30px]
+  before:border-[transparent_transparent_#111315]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:bottom-[-16px]
+  after:right-[15px]
+  after:rotate-[-91deg]
+  after:border-solid
+  after:border-t-[30px]
+  after:border-r-[30px]
+  after:border-b-[30px]
+  after:border-[transparent_transparent_#141619];
 }
