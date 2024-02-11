@@ -156,7 +156,7 @@
 
 
 .exchange-box {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-8 pr-6 py-6
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-8 pr-4 xl:pr-6 py-6
 
   before:hidden
   xl:before:block

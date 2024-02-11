@@ -1,18 +1,24 @@
 'use client'
 
-import Panel from './Panel'
+import { useState } from 'react'
 import TradeProcess from '../Common/TradeProcess'
 import TradeNavigation from '@/components/Common/TradeNavigation'
+import Trade from './Sections/Trade'
+import DCA from './Sections/DCA'
 
 const Swap = () => {
+  const [sectionActive, setSectionActive] = useState<string>("swap")
+
+  const TRADE_SECTIONS: { [key: string]: JSX.Element } = {
+    swap: <Trade />,
+    dca: <DCA />
+  }
+
   return (
     <section>
-      <TradeNavigation />
-      <div className="flex flex-col items-center gap-6 mb-4 xl:gap-10 xl:flex-row">
-        <Panel />
-        <section className="w-full xl:w-4/6 bg-shark-400 opacity-40 h-[585px] rounded-2xl">grafica</section>
-      </div>
-      <TradeProcess/>
+      <TradeNavigation setSectionActive={setSectionActive} />
+      <div className="flex flex-col items-center gap-6 mb-4 xl:gap-10 xl:flex-row">{TRADE_SECTIONS[sectionActive]}</div>
+      <TradeProcess />
     </section>
   )
 }

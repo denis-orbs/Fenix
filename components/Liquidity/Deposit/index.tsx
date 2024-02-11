@@ -1,6 +1,7 @@
 'use client'
 
-import { Button, MainBox } from '@/components/UI'
+import { Button } from '@/components/UI'
+import MainBox from '@/components/Common/Boxes/MainBox'
 import InfoBox from '@/components/Common/InfoBox'
 import { EXCHANGE_LIST } from '../data'
 

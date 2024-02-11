@@ -1,6 +1,7 @@
 'use client'
 
-import { Button, MainBox } from '@/components/UI'
+import { Button } from '@/components/UI'
+import MainBox from '@/components/Common/Boxes/MainBox'
 
 const Deposit = () => {
   return (

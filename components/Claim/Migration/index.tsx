@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { MainBox } from '@/components/UI'
+import MainBox from '@/components/Common/Boxes/MainBox'
 import { EXCHANGE_LIST } from '../data'
 import InfoBox from '@/components/Common/InfoBox'
 
