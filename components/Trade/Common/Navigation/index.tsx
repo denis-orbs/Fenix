@@ -2,13 +2,13 @@
 import { useState } from 'react'
 
 import NavItem from './NavItem'
-import NAV_LIST from "./data"
+import { NAV_LIST } from "../../data"
 
-interface TradeNavigationProps {
+interface NavigationProps {
   setSectionActive: (section: string) => void
 }
 
-const TradeNavigation = ({ setSectionActive }: TradeNavigationProps) => {
+const Navigation = ({ setSectionActive }: NavigationProps) => {
   const [activePath, setActivePath] = useState("swap")
 
   const handlerNavigation = (section: string) => {
@@ -36,4 +36,4 @@ const TradeNavigation = ({ setSectionActive }: TradeNavigationProps) => {
   )
 }
 
-export default TradeNavigation
+export default Navigation

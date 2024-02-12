@@ -1,7 +1,7 @@
 'use client'
 
 import ProcessItem from './ProcessItem'
-import PROCESS_LIST from './data'
+import { PROCESS_LIST } from '../../data'
 
 const TradeProcess = () => {
   return (
