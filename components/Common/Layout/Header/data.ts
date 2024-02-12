@@ -1,7 +1,7 @@
 const MENU_LINKS = [
   {
-    name: 'Swap',
-    href: '/swap',
+    name: 'Trade',
+    href: '/trade',
   },
   {
     name: 'Liquidity',
