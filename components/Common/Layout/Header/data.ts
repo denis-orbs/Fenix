@@ -4,6 +4,10 @@ const MENU_LINKS = [
     href: '/trade',
   },
   {
+    name: 'Dashboard',
+    href: '/dashboard',
+  },
+  {
     name: 'Liquidity',
     href: '/liquidity',
   },
@@ -12,21 +16,13 @@ const MENU_LINKS = [
     href: '/vote',
   },
   {
-    name: 'Rewards',
-    href: '/rewards',
+    name: 'Lock',
+    href: '/lock',
   },
   {
-    name: 'Bribes',
-    href: '/bribes',
-  },
-  {
-    name: 'Claim',
-    href: '/claim',
-  },
-  {
-    name: 'Marketplace',
-    href: '/marketplace',
-  },
+    name: 'Migration',
+    href: '/migration',
+  }
 ]
 
 export default MENU_LINKS
