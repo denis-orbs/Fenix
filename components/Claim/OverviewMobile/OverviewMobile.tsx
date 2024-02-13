@@ -14,7 +14,6 @@ interface OverviewMobileProps {
 }
 
 const OverviewMobile = ({ migrateStatus, setMigrateStatus } :OverviewMobileProps) => {
-//   const [migrateStatus, setMigrateStatus] = useState<string | undefined>(undefined)
   const [activeAccordion, setActiveAccordion] = useState<boolean>(false)
 
   const handlerActive = () => (activeAccordion ? setActiveAccordion(false) : setActiveAccordion(true))
