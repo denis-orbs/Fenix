@@ -23,11 +23,11 @@ const SignIn = ({ setOpenModal }: SignInProps) => {
   return (
     <div className="w-[478px] h-[468px] px-8 py-8 bg-no-repeat bg-[length:100%] bg-modal-signin flex flex-col items-center justify-center relative">
       <span
-        className="icon-x text-shark-100 text-2xl absolute top-0 right-0 cursor-pointer"
+        className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100"
         onClick={handlerClose}
-      ></span>
-      <div className="w-full h-full relative">
-        <div className="bg-shark-400 bg-opacity-40 rounded-lg p-3 w-12 h-12 flex items-center justify-center">
+      />
+      <div className="relative w-full h-full">
+        <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-40">
           <span className="text-xl text-chilean-fire-600 icon-wallet"></span>
         </div>
         <Image
@@ -37,11 +37,11 @@ const SignIn = ({ setOpenModal }: SignInProps) => {
           width={156}
           height={156}
         />
-        <h4 className="text-white mb-3 text-lg text-center">Approve Signature</h4>
+        <h4 className="mb-3 text-lg text-center text-white">Approve Signature</h4>
         <p className="text-shark-100 text-sm text-center mb-6 max-w-[300px] mx-auto">
           Please approve the wallet signature in order to log into the Platform.
         </p>
-        <div className="flex items-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500 justify-center">
+        <div className="flex items-center justify-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
           <span className="icon-discord"></span>
           <p className="text-sm">Need help?</p>
         </div>
