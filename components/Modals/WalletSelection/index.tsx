@@ -6,6 +6,7 @@ import { Modal } from '@/components/UI'
 import ConnectYourWallet from '@/components/Modals/WalletSelection/ConnectYourWallet'
 import Welcome from '@/components/Modals/WalletSelection/Welcome'
 import SignIn from '@/components/Modals/WalletSelection/SignIn'
+import IncorrectChain from '@/components/Modals/WalletSelection/IncorrectChain'
 
 import useStore from '@/store'
 
@@ -18,7 +19,7 @@ const WalletSelection = () => {
     <Modal openModal={openModal} setOpenModal={setWalletSelectionModal}>
       {isConnecting ? (
         <div className="flex items-center justify-center gap-10">
-          <SignIn setOpenModal={setWalletSelectionModal} />
+          <IncorrectChain setOpenModal={setWalletSelectionModal} />
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center md:gap-10 xl:flex-row">

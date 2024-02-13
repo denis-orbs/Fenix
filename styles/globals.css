@@ -7,6 +7,16 @@
 body {
   @apply h-full text-base bg-shark-900;
   scroll-behavior: smooth;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* This Delete the arrows of inputs type number */
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 /************* ScrollBar ***********/
