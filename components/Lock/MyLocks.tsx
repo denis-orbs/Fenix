@@ -23,8 +23,8 @@ const MyLocks = () => {
         <span className="text-xl text-white icon-info"></span>
       </div>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
-        <Filter FILTER_OPTIONS={FILTER_OPTIONS} />
-        <Search />
+        <Filter />
+        <Search className="w-1/3" />
       </div>
       <div className="w-full">
         <TableHead

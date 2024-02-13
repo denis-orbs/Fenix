@@ -1,5 +1,4 @@
 'use client'
-
 import React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -11,40 +10,53 @@ const Page404 = () => {
   const hadleGoHome = () => router.push('/')
 
   return (
-    <div className="text-white flex relative justify-between items-center mb-20">
-      <div>
+    <div className="relative flex items-center justify-center mt-10 mb-20 text-white">
+      <div className="absolute">
         <Image
-          src={'/static/images/404/left.png'}
-          className="absolute left-0 top-0 w-auto h-[800px] object-contain  "
+          src={'/static/images/404/Ellipse67.svg'}
+          className="w-[1046.345px] h-[1046.345px]"
           height={800}
           width={800}
           alt="image"
         />
       </div>
-      <div className="bg-shark-400 lg:p-24 sm:p-24 p-8 z-30 rounded-2xl bg-opacity-40 mt-10 flex flex-col justify-center items-center">
-        <h1 className="lg:text-[200px] text-[150px] leading-none bg-gradient-to-r text-transparent from-outrageous-orange-500 to-festival-500 bg-clip-text">
-          404
+      <div className="absolute blur-lg">
+        <Image
+          src={'/static/images/404/background.svg'}
+          className="w-auto h-[800px]"
+          height={800}
+          width={800}
+          alt="image"
+        />
+      </div>
+      <div className="absolute">
+        <Image
+          src={'/static/images/404/OQ3D1501.svg'}
+          className="mix-blend-color-dodge w-[1392px] h-[1392px]"
+          height={800}
+          width={800}
+          alt="image"
+        />
+      </div>
+      <div className="bg-background-404 z-10 p-24 rounded-2xl !bg-opacity-10 w-[960px] h-[659.34px]  flex flex-col justify-center items-center">
+        <h1 className="lg:text-[150px] sm:text-[150px] text-white mb-14">
+          ERC-
+          <span className="text-transparent bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text">404</span>
         </h1>
-        <p className="lg:text-shark-300 text-slate-300 text-[24px] lg:text-[32px] mt-5 w-72 sm:w-auto lg:w-auto text-center">
-          Oh no, the page is gone! We are Sorry
-        </p>
-        <p className="lg:text-shark-300 text-slate-300 mt-5 text-[12px] w-60 text-center lg:w-auto lg:text-[20px]">
-          Sorry, the page you are looking for does not exist or has been moved.{' '}
+        <p className="mt-5 text-2xl text-white ">Oh no, the page is gone!</p>
+        <p className="mt-2 text-2xl font-light text-white">{`We’re sorry!`}</p>
+        <p className="text-white mt-5 md:text-center sm:text-center text-[20px]">
+          {`Sorry, the page you are looking for doesn't exist or has been moved.`}
         </p>
         <div className="p-5">
-          <Button variant="tertiary" className="!py-2 w-full md:w-auto gap-2" onClick={hadleGoHome}>
-            Go to Home <span className="icon-logout text-lg"></span>
+          <Button
+            variant="tertiary"
+            className="!py-2 md:w-auto gap-2 !bg-opacity-30"
+            onClick={hadleGoHome}
+          >
+            Go to Home <span className="text-lg icon-logout"></span>
           </Button>
         </div>
-      </div>
-      <div>
-        <Image
-          src={'/static/images/404/right.png'}
-          className="absolute right-0 top-0 w-auto h-[800px] transform object-contain "
-          height={800}
-          width={800}
-          alt="image"
-        />
       </div>
     </div>
   )
