@@ -3,14 +3,16 @@
 import Image from 'next/image'
 import Articles from './Articles'
 import HowItWorks from './HowItWorks'
+import Info from './Info'
 import Lottie from 'lottie-react'
 import animation from '@/lottie/space.json'
 
 const Landing = () => {
   return (
     <main>
+      <Info />
       <div className="w-full relative">
-        <div className="relative z-20">
+        <div className="relative z-20 w-full mx-auto">
           <Lottie animationData={animation} />
         </div>
         <div className="mx-auto flex justify-center absolute bottom-[338px] left-[38%] w-[23%] mix-blend-color-dodge z-10">
