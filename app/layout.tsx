@@ -31,7 +31,7 @@ export default function RootLayout({
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <body suppressHydrationWarning={true} className={`${poppins.className} relative p-3`}>
+      <body suppressHydrationWarning={true} className={`${poppins.className} relative py-3`}>
         <Header />
         <MobileHeader />
         {children}

@@ -19,6 +19,10 @@ body {
   }
 }
 
+.container {
+  @apply mx-auto max-w-[1800px];
+}
+
 /************* ScrollBar ***********/
 ::-webkit-scrollbar {
   @apply mr-[10px] w-[10px];
