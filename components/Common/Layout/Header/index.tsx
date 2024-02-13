@@ -9,7 +9,7 @@ import WalletSelection from '@/components/Modals/WalletSelection'
 
 const Header = () => {
   return (
-    <header className="hidden mx-auto xl:block container">
+    <header className="hidden mx-auto xl:block container px-5">
       <div className="flex justify-between gap-5 rounded-lg bg-shark-400 bg-opacity-40">
         <div className="flex items-center justify-between w-full relative z-10 h-[87px] p-4">
           <Link href="/">
