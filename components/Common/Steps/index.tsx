@@ -28,16 +28,21 @@ const Steps = ({ steps }: StepsProps) => {
           {steps.map((step, index) => (
             <div
               key={index}
-              className="xl:h-[97px] flex gap-3 items-center p-3 mb-3 relative bg-shark-400 bg-opacity-40 rounded-lg"
+              className="xl:h-[97px] flex gap-3 items-center p-3 mb-3 relative box"
             >
-              <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
+              <div className="flex items-center justify-center w-[32px] h-[32px] p-2 lg:w-12 lg:h-12 lg:p-3 rounded-lg bg-shark-400 bg-opacity-60">
                 <span
-                  className={`inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${step.icon}`}
+                  className={`inline-block lg:text-2xl text-transparent
+                  text-[18px]
+                  bg-gradient-to-r
+                   from-outrageous-orange-500
+                   
+                   to-festival-500 bg-clip-text ${step.icon}`}
                 ></span>
               </div>
               <div className="">
-                <h5 className="text-xs text-shark-100">{step.title}</h5>
-                <p className="text-xs text-white line-clamp-2">{step.description}</p>
+                <h5 className="text-xs text-[11px] text-shark-100">{step.title}</h5>
+                <p className="text-[10px] text-white line-clamp-2">{step.description}</p>
               </div>
             </div>
           ))}
