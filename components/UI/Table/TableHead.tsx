@@ -27,7 +27,7 @@ const TableHead = ({ items }: TableHeadProps) => {
 
   const mergeClassName = (item: IItems) => {
     return cn(
-      'p-2.5 basis-[100%] flex-grow text-right',
+      'p-2.5  flex-grow text-right',
       item.sortable ? 'cursor-pointer relative select-none' : '',
       item.className
     )
