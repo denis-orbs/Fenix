@@ -20,7 +20,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
   return (
     <div className="relative">
       <h5 className="mb-4 text-lg text-white">Migration Overview</h5>
-      <div className="flex flex-col lg:hidden xl:hidden gap-5 mb-5 md:items-center md:justify-between xl:flex-row">
+      <div className="flex flex-col gap-5 mb-5 lg:hidden xl:hidden md:items-center md:justify-between xl:flex-row">
         <AddressCheck migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
         <TotalMigrated />
       </div>
@@ -35,95 +35,72 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
                 <TableRow key={index}>
                   <TableCell className="flex">
                     <div className="flex flex-col w-full">
-                      <div className="flex  justify-between">
-                        <div className="flex gap-6">
-                          <div className="flex  items-center gap-2">
-                            <Image
-                              src={`/static/images/tokens/${item.icon}.png`}
-                              alt="token"
-                              className="rounded-full w-[40px] h-[40px]"
-                              width={40}
-                              height={40}
-                            />
-                            <p className="text-sm text-white">{item.token}</p>
-                          </div>
-                          <div className="bg-shark-400 bg-opacity-40 flex justify-start rounded-lg flex-col p-2">
-                            <p className="text-sm text-shark-100">Mi Migrated Amount</p>
-                            <div className="flex gap-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center w-1/2 gap-2 px-3 py-[18px] rounded-lg bg-shark-400 bg-opacity-40">
+                          <Image
+                            src={`/static/images/tokens/${item.icon}.png`}
+                            alt="token"
+                            className="w-5 h-5 rounded-full"
+                            width={40}
+                            height={40}
+                          />
+                          <p className="text-xs text-white">{item.token}</p>
+                        </div>
+                        <div className="flex items-center w-1/2 gap-3">
+                          <div className="flex flex-col justify-start w-full px-3 py-2 rounded-lg bg-shark-400 bg-opacity-40">
+                            <p className="mb-1 text-xs text-shark-100 line-clamp-1">Mi Migrated Amount</p>
+                            <div className="flex items-center gap-2">
                               <Image
                                 src={`/static/images/tokens/${item.migrated.icon}.png`}
                                 alt="token"
-                                className="w-5 h-5 rounded-full"
+                                className="w-4 h-4 rounded-full"
                                 width={20}
                                 height={20}
                               />
                               <p className="text-sm text-white">{item.migrated.amount}</p>
                             </div>
                           </div>
-                        </div>
-                        <div className="flex ms-2 items-center">
-                          <Button
-                            onClick={handlerActive}
-                            variant="tertiary"
-                            className="transition duration-150 delay-150"
-                          >
-                            {activeAccordion ? (
-                              <Image
-                                src={'/static/images/claim/arrowUp.svg'}
-                                className="h-[16px] w-[16px]"
-                                alt="arrow"
-                                height={16}
-                                width={16}
-                              />
-                            ) : (
-                              <Image
-                                src={'/static/images/claim/arrowDown.svg'}
-                                className="h-[16px] w-[16px]"
-                                alt="arrow"
-                                height={16}
-                                width={16}
-                              />
-                            )}
+                          <Button onClick={handlerActive} variant="tertiary" className="!py-4 !px-4">
+                            <span
+                              className={`text-sm flex items-center justify-center ${
+                                activeAccordion ? 'icon-chevron rotate-180' : 'icon-chevron'
+                              }`}
+                            ></span>
                           </Button>
                         </div>
-                        {/* button right section */}
                       </div>
                       {activeAccordion && (
-                        <div className="flex flex-col transition duration-150">
-                          <div className="flex gap-2 justify-center items-center mt-5">
-                            <div className="flex">
-                              <div className="bg-shark-400 bg-opacity-40 flex rounded-lg flex-col h-[51px] w-[140px]">
-                                <p className="text-[12px] text-shark-100 ms-2">Mi Migrated Amount</p>
-                                <div className="flex gap-2 ms-2">
-                                  <Image
-                                    src={`/static/images/tokens/${item.migrated.icon}.png`}
-                                    alt="token"
-                                    className="w-5 h-5 rounded-full"
-                                    width={20}
-                                    height={20}
-                                  />
-                                  <p className="text-sm text-white">{item.migrated.amount}</p>
-                                </div>
+                        <div className="flex flex-col">
+                          <div className="flex items-center justify-between gap-2 py-2">
+                            <div className="flex flex-col w-1/2 px-3 py-2 rounded-lg bg-shark-400 bg-opacity-40">
+                              <p className="text-xs text-shark-100 line-clamp-1">Mi Migrated Amount</p>
+                              <div className="flex gap-2">
+                                <Image
+                                  src={`/static/images/tokens/${item.migrated.icon}.png`}
+                                  alt="token"
+                                  className="w-5 h-5 rounded-full"
+                                  width={20}
+                                  height={20}
+                                />
+                                <p className="text-sm text-white">{item.migrated.amount}</p>
                               </div>
                             </div>
-                            <div className="flex">
-                              <div className="bg-shark-400 bg-opacity-40 flex justify-start rounded-lg flex-col w-[150px] ">
-                                <p className="text-[12px] text-shark-100 ms-2">Mi Migrated Amount</p>
-                                <div className="flex gap-2 ms-2">
-                                  <Image
-                                    src={`/static/images/tokens/${item.migrated.icon}.png`}
-                                    alt="token"
-                                    className="w-5 h-5 rounded-full"
-                                    width={20}
-                                    height={20}
-                                  />
-                                  <p className="text-sm text-white">{item.migrated.amount}</p>
-                                </div>
+                            <div className="flex flex-col w-1/2 px-3 py-2 rounded-lg bg-shark-400 bg-opacity-40">
+                              <p className="text-xs text-shark-100 line-clamp-1">Mi Migrated Amount</p>
+                              <div className="flex gap-2">
+                                <Image
+                                  src={`/static/images/tokens/${item.migrated.icon}.png`}
+                                  alt="token"
+                                  className="w-5 h-5 rounded-full"
+                                  width={20}
+                                  height={20}
+                                />
+                                <p className="text-sm text-white">{item.migrated.amount}</p>
                               </div>
                             </div>
                           </div>
-                          <Button variant="tertiary" className="w-full h-[38px] mt-3 !text-left ">
-                            <span className="text-shark-100 text-left">Claim not started</span>
+                          <Button variant="tertiary" className="w-full">
+                            Claim not started
                           </Button>
                         </div>
                       )}
@@ -133,8 +110,8 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
               ))}
             </TableBody>
           </div>
-          <div className=" flex  items-center justify-between text-[12px]">
-            <div className="flex gap-2 items-center">
+          <div className="flex items-center justify-between text-sm ">
+            <div className="flex items-center gap-2">
               <div className="flex gap-2 bg-shark-400 bg-opacity-40 rounded-lg w-[168px] h-[42px] text-white items-center justify-center">
                 <div>
                   <p>10 Row</p>
