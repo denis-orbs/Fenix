@@ -1,12 +1,17 @@
-/* eslint-disable import/no-default-export */
-import Liquidity from '@/components/Liquidity'
+import React from 'react'
+import Landing from '@/components/Landing'
 
-export default function HomePage() {
+import Main from '@/components/Landing/Main'
+
+const HomePage = () => {
   return (
     <main>
       <div className="py-10 mx-auto">
-        <Liquidity />
+        <Main />
+        <Landing />
       </div>
     </main>
   )
 }
+
+export default HomePage

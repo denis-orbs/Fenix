@@ -21,7 +21,7 @@ const MENU_LINKS = [
   },
   {
     name: 'Migration',
-    href: '/migration',
+    href: '/miagration',
   }
 ]
 

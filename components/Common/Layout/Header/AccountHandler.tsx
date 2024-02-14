@@ -11,9 +11,7 @@ const AccountHandler = () => {
   const isConnected = useStore((state) => state.isConnected)
   const { setWalletSelectionModal } = useStore()
 
-  const handlerConnectWallet = () => {
-    setWalletSelectionModal(true)
-  }
+  const handlerConnectWallet = () => setWalletSelectionModal(true)
 
   return (
     <div className="flex items-center gap-[15px]">

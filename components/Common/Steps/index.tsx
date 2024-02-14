@@ -22,7 +22,7 @@ const Steps = ({ steps }: StepsProps) => {
 
   return (
     <StepBox>
-      <div className="flex flex-col justify-center w-full bg-shark-400 bg-opacity-40 px-10">
+      <div className="flex flex-col justify-center w-full bg-shark-400 bg-opacity-40 px-5 xl:px-10 py-5 xl:py-0 rounded-2xl xl:rounded-none">
         <h4 className="w-full mb-3 text-sm text-white">Start now</h4>
         <div className="relative flex flex-col w-auto">
           {steps.map((step, index) => (
@@ -34,15 +34,12 @@ const Steps = ({ steps }: StepsProps) => {
                 <span
                   className={`inline-block lg:text-2xl text-transparent
                   text-[18px]
-                  bg-gradient-to-r
-                   from-outrageous-orange-500
-                   
-                   to-festival-500 bg-clip-text ${step.icon}`}
+                  bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${step.icon}`}
                 ></span>
               </div>
               <div className="">
-                <h5 className="text-xs text-[11px] text-shark-100">{step.title}</h5>
-                <p className="text-[10px] text-white line-clamp-2">{step.description}</p>
+                <h5 className="text-sm text-shark-100">{step.title}</h5>
+                <p className="text-sm text-white line-clamp-2">{step.description}</p>
               </div>
             </div>
           ))}

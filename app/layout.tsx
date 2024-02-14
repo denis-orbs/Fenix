@@ -1,10 +1,10 @@
 /* eslint-disable import/no-default-export */
+import Image from 'next/image'
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import Head from 'next/head'
-import { Poppins } from 'next/font/google'
+import { Poppins, Michroma } from 'next/font/google'
 
-import Decorator from '@/components/Common/Layout/Background'
 import Footer from '@/components/Common/Layout/Footer'
 import Header from '@/components/Common/Layout/Header'
 import MobileHeader from '@/components/Common/Layout/Header/Mobile'
@@ -31,13 +31,13 @@ export default function RootLayout({
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <body suppressHydrationWarning={true} className={`${poppins.className} relative p-3`}>
+
+      <body suppressHydrationWarning={true} className={`${poppins.className} relative py-3`}>
         <Header />
         <MobileHeader />
         {children}
         <Footer />
 
-        <Decorator />
       </body>
     </html>
   )

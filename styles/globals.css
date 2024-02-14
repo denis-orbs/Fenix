@@ -5,7 +5,7 @@
 @import url('./boxes.css');
 
 body {
-  @apply h-full text-base bg-shark-900;
+  @apply h-full text-base bg-woodsmoke-950;
   scroll-behavior: smooth;
   font-family: 'Poppins', sans-serif;
 }
@@ -17,6 +17,10 @@ body {
     -webkit-appearance: none;
     margin: 0;
   }
+}
+
+.container {
+  @apply mx-auto max-w-[1860px] px-5;
 }
 
 /************* ScrollBar ***********/
@@ -48,4 +52,26 @@ body {
 }
 .button-tertiary {
   @apply text-white border bg-shark-400 border-shark-400 hover:bg-button-primary hover:border-outrageous-orange-400;
+}
+
+
+.main-header-box {
+  @apply relative
+
+  before:content-['']
+  before:absolute
+  before:left-0
+  before:bottom-0
+  before:bg-[url(/static/images/landing/main/box.svg)]
+  before:w-1/2
+  before:h-[123px]
+
+  after:content-['']
+  after:absolute
+  after:right-0
+  after:bottom-0
+  after:bg-[url(/static/images/landing/main/box.svg)]
+  after:w-1/2
+  after:h-[123px]
+  after:bg-right
 }

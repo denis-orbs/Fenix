@@ -8,7 +8,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="relative mx-auto mt-3">
+    <footer className="container relative mx-auto mt-3">
       <div className="footer-box"></div>
       <div className="relative flex items-end mb-3.5 bg-shark-400 bg-opacity-40 rounded-lg py-5">
         <div className="relative z-10 flex flex-col w-full px-5 md:items-center md:flex-row">
@@ -59,7 +59,7 @@ const Footer = () => {
         </a>
         <div className="flex items-center gap-[11px]">
           <span>The central trading and liquidity market on</span>
-          <Image src="/static/images/footer/arbitrum.png" alt="pancake" width={24} height={24} className="w-6 h-6" />
+          <Image src="/static/images/footer/blast.svg" alt="pancake" width={24} height={24} className="w-6 h-6" />
         </div>
       </div>
     </footer>
