@@ -8,13 +8,13 @@ interface SearchProps {
 const Search = ({ className }: SearchProps) => {
 
   const mergeClassName = cn(
-    'relative flex items-center w-full h-[62px] p-2 rounded-lg bg-shark-400 bg-opacity-40',
+    'relative flex items-center w-full h-[62px] p-2 rounded-lg search-box bg-opacity-30 ',
     className
   )
 
   return (
     <div className={mergeClassName}>
-      <span className="flex items-center justify-center w-8 h-5 text-2xl icon-search text-shark-100" />
+      <span className="flex items-center justify-center w-8 h-5 text-2xl icon-search  text-shark-100" />
       <input
         type="text"
         placeholder="Search by name, symbol or address..."

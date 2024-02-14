@@ -6,7 +6,6 @@ import Search from '@/components/Common/Search'
 import Filter from '@/components/Common/Filter'
 import RowSkeleton from '../Liquidity/RowSkeleton'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
-import { FILTER_OPTIONS } from './data'
 const MyLocks = () => {
   const [loading, setLoading] = useState(true)
 
@@ -24,13 +23,13 @@ const MyLocks = () => {
       </div>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
         <Filter />
-        <Search className="w-1/3" />
+        <Search className="" />
       </div>
       <div className="w-full">
         <TableHead
           items={[
             { text: 'Lock ID', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Rebase APR ', className: 'text-left w-[14.28%]', sortable: true },
+            { text: 'Rebase APR ', className: 'w-[14.28%]', sortable: true },
             { text: 'Lock Amount', className: 'text-left w-[14.28%]', sortable: true },
             { text: 'Voting Power', className: 'text-left w-[14.28%]', sortable: true },
             { text: 'Unlock Date', className: 'text-left w-[14.28%]', sortable: true },
@@ -57,17 +56,17 @@ const MyLocks = () => {
                     width={40}
                     height={40}
                   />
-                  <div>
+                  <div className='flex flex-col items-center'>
                     <h1 className="text-sm">10923</h1>
-                    <p className="text-sm text-spring-green-400">
-                      <span className="text-spring-green-400">•</span> Active
+                    <p className="text-sm text-green-400">
+                      <span >•</span> Active
                     </p>
                   </div>
                 </div>
               </TableCell>
               <TableCell className="w-[14.28%]">
-                <div className="flex items-center justify-end">
-                  <h1 className="text-sm text-left">34.58%</h1>
+                <div className="flex items-center justify-center">
+                  <p className="text-sm ">34.58%</p>
                 </div>
               </TableCell>
               <TableCell className="w-[14.28%]">

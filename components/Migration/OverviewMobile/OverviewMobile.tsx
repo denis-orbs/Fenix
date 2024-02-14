@@ -6,6 +6,7 @@ import AddressCheck from '../AddressCheck'
 import TotalMigrated from '../TotalMigrated'
 import { TableHead, TableBody, TableCell, TableRow, Button } from '@/components/UI'
 import { TOKENS_LIST } from '../data'
+import PaginationMobile from '@/components/UI/Pagination/PaginationMobile'
 
 interface OverviewMobileProps {
   migrateStatus: string | undefined
@@ -110,26 +111,8 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
               ))}
             </TableBody>
           </div>
-          <div className="flex items-center justify-between text-sm ">
-            <div className="flex items-center gap-2">
-              <div className="flex gap-2 bg-shark-400 bg-opacity-40 rounded-lg w-[168px] h-[42px] text-white items-center justify-center">
-                <div>
-                  <p>10 Row</p>
-                </div>
-                <div className="h-[20px] w-[2px] bg-orange-600"></div>
-                <div>
-                  <p>1-10 of 186</p>
-                </div>
-              </div>
-              <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 text-white transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
-                <span className="text-lg icon-cog"></span>
-              </div>
-            </div>
-
-            <div className="flex">
-              <Image src={'/static/images/claim/PaginationArrowInactive.svg'} alt="" height={20} width={20} />
-              <Image src={'/static/images/claim/PaginationArrowActive.svg'} alt="" height={20} width={20} />
-            </div>
+          <div>
+          <PaginationMobile/>
           </div>
         </>
       )}
