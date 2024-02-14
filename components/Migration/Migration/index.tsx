@@ -1,15 +1,18 @@
 'use client'
 import MainBox from '@/components/Common/Boxes/MainBox'
-import { EXCHANGE_LIST } from '../data'
 import InfoBox from '@/components/Common/InfoBox'
 import { Button } from '@/components/UI'
+import { EXCHANGE_LIST } from '../data'
+import useStore from '@/store'
 
 interface MigrationsProps {
   isConnected: boolean
 }
 
 const Migration = ({ isConnected }: MigrationsProps) => {
-  // const [show, setShow] = useState<boolean>(false) ???
+  const { setWalletSelectionModal } = useStore()
+
+  const handlerConnectWallet = () => !isConnected && setWalletSelectionModal(true)
 
   return (
     <MainBox>
@@ -48,7 +51,7 @@ const Migration = ({ isConnected }: MigrationsProps) => {
             </div>
           </div>
           <div className="flex flex-col gap-2 mb-8 xl:mb-14 md:flex-row">
-            <Button variant="primary" className="flex gap-3">
+            <Button variant="primary" className="flex gap-3" onClick={handlerConnectWallet}>
               <span className={`text-white ${isConnected ? 'icon-coin-received' : 'icon-wallet'}`}></span>
               {isConnected ? `Check Tokens` : `Connect your Wallet`}
             </Button>

@@ -1,12 +1,11 @@
-import Claim from '@/components/Claim'
+import Migration from '@/components/Migration'
 import Decorator from '@/components/Common/Layout/Background'
 
-const ClaimPage = () => {
+const MigrationPage = () => {
   return (
     <main>
       <div className="container">
-        <Claim />
-
+        <Migration />
 
         <Decorator />
       </div>
@@ -14,4 +13,4 @@ const ClaimPage = () => {
   )
 }
 
-export default ClaimPage
+export default MigrationPage

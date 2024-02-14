@@ -1,8 +1,8 @@
 'use client'
 
-import Migration from '@/components/Claim/Migration'
+import Migration from '@/components/Migration/Migration'
 import Steps from '@/components/Common/Steps'
-import Overview from '@/components/Claim/Overview'
+import Overview from '@/components/Migration/Overview'
 import { STEPS } from './data'
 import useStore from '@/store'
 import OverviewMobile from './OverviewMobile/OverviewMobile'
