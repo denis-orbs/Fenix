@@ -12,7 +12,7 @@ const Landing = () => {
     <main>
       <Info />
       <div className="w-full relative">
-        <div className="relative z-20 w-full mx-auto [&>div]:max-w-[1920px] [&>div]:mx-auto [&>div]:border [&>div]:border-pink-800 border border-yellow-500">
+        <div className="relative z-20 w-full mx-auto [&>div]:max-w-[1920px] [&>div]:mx-auto">
           <Lottie animationData={animation} />
 
           <Image
@@ -20,7 +20,7 @@ const Landing = () => {
             alt="img"
             width={556}
             height={412}
-            className="border border-green-400 absolute  mix-blend-color-dodge  z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            className=" absolute  mix-blend-color-dodge  z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           />
         </div>
 
@@ -30,7 +30,7 @@ const Landing = () => {
             alt="img"
             width={733}
             height={560}
-            className="w-[1300px] border border-red-400"
+            className="w-[1300px] "
           />
         </div>
       </div>
