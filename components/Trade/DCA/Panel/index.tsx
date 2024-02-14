@@ -7,7 +7,8 @@ import Frequency from './Frequency'
 import AdvancedDCA from './AdvancedDCA'
 import Summary from './Summary'
 import Separator from '../../Common/Separator'
-import { Button } from '@/components/UI'
+
+import { Button, Switch } from '@/components/UI'
 
 import { IToken } from '@/types'
 
@@ -53,9 +54,7 @@ const Panel = () => {
                   <p className="text-white text-sm">Advanced DCA</p>
                   <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"></span>
                 </div>
-                <div onClick={handleShowAdvancedDCA} className="bg-shark-100 rounded-full w-10 h-5 cursor-pointer flex items-center relative">
-                  <span className="rounded-full w-4 h-4 bg-shark-400 block absolute top-[2px] left-[2px]"></span>
-                </div>
+                <Switch active={advancedDCA} setActive={setAdvancedDCA} />
               </div>
               {advancedDCA && <AdvancedDCA />}
             </div>

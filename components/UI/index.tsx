@@ -4,6 +4,7 @@ import Modal from './Modal'
 import Tooltip from './Tooltip/'
 import Select from './Select/'
 import Pagination from './Pagination/'
-import { TableBody, TableHead, TableCell, TableRow } from './Table'
+import Switch from './Switch/'
+import { TableBody, TableHead, TableCell, TableRow,  } from './Table'
 
-export { Button, Modal, Pagination, TableBody, TableHead, TableCell, TableRow, Tooltip, Select }
+export { Button, Modal, Pagination, TableBody, TableHead, TableCell, TableRow, Tooltip, Select, Switch }
