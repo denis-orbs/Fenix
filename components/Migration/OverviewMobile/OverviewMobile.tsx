@@ -15,7 +15,7 @@ interface OverviewMobileProps {
 
 const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps) => {
   const [activeAccordion, setActiveAccordion] = useState<boolean>(false)
-
+ 
   const handlerActive = () => (activeAccordion ? setActiveAccordion(false) : setActiveAccordion(true))
 
   return (
@@ -26,6 +26,14 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
         <TotalMigrated />
       </div>
 
+      {migrateStatus !== 'sucess' && 'wrong'  && (
+        <>
+          <div className="flex flex-col items-center justify-center py-10 rounded-lg bg-shark-400 bg-opacity-40">
+            <span className="text-5xl icon-circles text-shark-100"></span>
+            <p className="text-sm text-shark-100">No migrations or tokens found</p>
+          </div>
+        </>
+      )}
       {migrateStatus === 'success' && (
         <>
           <div className="w-full mb-10">
@@ -112,8 +120,53 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
             </TableBody>
           </div>
           <div>
-          <PaginationMobile/>
+            <PaginationMobile />
           </div>
+        </>
+      )}
+      
+      {migrateStatus === 'wrong' && (
+        <>
+          <div className="w-full mb-10">
+            <TableHead items={[{ text: 'Tokens', className: 'text-left w-[100%]', sortable: true }]} />
+
+            <TableBody>
+              {TOKENS_LIST.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell className="w-[13%] ">
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src={`/static/images/tokens/${item.icon}.png`}
+                        alt="token"
+                        className="rounded-full w-[40px] h-[40px]"
+                        width={40}
+                        height={40}
+                      />
+                      <p className="text-sm text-white">{item.token}</p>
+                    </div>
+                  </TableCell>
+                  <TableCell className="w-[50%]">
+                    <div className="flex  w-full ">
+                      <div className="bg-shark-300  flex justify-start   rounded-lg bg-opacity-30 flex-col h-[51px] w-full ">
+                        <p className="text-[12px] text-shark-100 ms-2">Mi Migrated Amount</p>
+                        <div className="flex gap-2 ms-2">
+                          <Image
+                            src={`/static/images/tokens/${item.migrated.icon}.png`}
+                            alt="token"
+                            className="w-5 h-5 rounded-full"
+                            width={20}
+                            height={20}
+                          />
+                          <p className="text-sm text-white">{item.migrated.amount}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </div>
+          <PaginationMobile/>
         </>
       )}
     </div>

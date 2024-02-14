@@ -3,7 +3,7 @@ import Lock from '@/components/Lock'
 const LockPage = () => {
   return (
     <main>
-      <div className="py-10 mx-auto w-full">
+      <div className="container">
         <Lock />
       </div>
     </main>

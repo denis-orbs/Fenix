@@ -1,4 +1,3 @@
-
 'use client'
 import React from 'react'
 import { useState, useEffect } from 'react'
@@ -7,7 +6,8 @@ import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@
 
 const Relay = () => {
   const [loading, setLoading] = useState(true)
-
+  const [activeAccordion, setActiveAccordion] = useState<boolean>(false)
+  const handlerAccordion = () => (activeAccordion ? setActiveAccordion(false) : setActiveAccordion(true))
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
@@ -16,25 +16,25 @@ const Relay = () => {
 
   return (
     <div className="relative">
-      <div className='flex items-center gap-3'>
-        <h5 className=" text-[24px] text-white ms-2">Relay</h5>
-        <Image className='mt-1' src={'/static/images/LocksIcons/Information.svg'} alt="" width={18} height={18} />
+      <div className="flex items-center gap-3">
+        <h5 className=" text-2xl text-white ms-2">Nest</h5>
+        <span className="icon-info text-white text-xl"></span>
       </div>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row"></div>
       <div className="w-full mb-10">
         <TableHead
           items={[
-            { text: 'Relay ID', className: 'text-left w-[60%] ', sortable: true },
-            { text: 'Rebase APR ', className: 'text-left w-[10%]', sortable: true },
-            { text: 'Reward', className: 'text-left w-[10%]', sortable: true },
-            { text: 'Voting Power', className: 'text-left w-[10%]', sortable: true },
-            { text: 'Action', className: 'text-left w-[10%]', sortable: false },
+            { text: 'Your Nests', className: 'text-left w-[50%] ', sortable: true },
+            { text: 'Rebase APR ', className: 'w-[10%]', sortable: true },
+            { text: 'Reward', className: ' w-[10%]', sortable: true },
+            { text: 'Voting Power', className: 'w-[10%] ', sortable: true },
+            { text: 'Action', className: ' w-[20%]', sortable: false },
           ]}
         />
 
         <TableBody>
           <TableRow>
-            <TableCell className="w-[60%]">
+            <TableCell className="w-[50%]">
               <div className="flex gap-3 items-center">
                 <Button variant="tertiary" className="w-[40px]">
                   <span className="icon-lucide w-[20px] h-[20px]"></span>
@@ -42,31 +42,31 @@ const Relay = () => {
                 <div className="flex flex-col text-center gap-2 ">
                   <div className="flex gap-2 items-center">
                     <h1 className="text-[14px] font-bold">veFNX Maxi</h1>{' '}
-                    <p className="text-[12px] w-[71px] h-[21px] bg-[#343C45] flex items-center justify-center rounded rounded-lg  border-[#53606A] border-solid border-2">
+                    <p className="text-[12px] w-[71px] h-[21px] bg-shark-400 flex items-center justify-center  rounded-lg  border-[#53606A] border-solid border-2">
                       ID 11230
                     </p>
                   </div>
                   <div className="flex gap-1">
                     <p
                       className="text-[12px] text-[#53606A] w-[159px] h-[27px]
-                    bg-[#343C45]  rounded-lg  border-[#53606A] border-solid border-2"
+                    bg-shark-400  rounded-lg  border-[#53606A] border-solid border-2"
                     >
                       Updated 2 days ago
                     </p>
-                    <p className="text-[12px] text-[#53606A] bg-[#343C45] w-[111px] h-[27px] rounded-lg border border-[#53606A] border-solid border-1">
+                    <p className="text-[12px] text-[#53606A] bg-shark-400 w-[111px] h-[27px] rounded-lg border border-[#53606A] border-solid border-1">
                       0xc981...EF14f
                     </p>
                   </div>
                 </div>
               </div>
             </TableCell>
-            <TableCell className="w-[10%]">
-              <div className="flex items-center">
-                <h1 className="text-[12px]">34.58%</h1>
-              </div>
+            {/* first */}
+            <TableCell className="w-[10%] flex items-center justify-end ">
+              <h1 className="text-sm me-4">34.58%</h1>
             </TableCell>
-            <TableCell className="w-[10%]">
-              <div className="flex items-center gap-2">
+            {/* second */}
+            <TableCell className="w-[10%] flex justify-end ">
+              <div className="flex items-center gap-2 me-4">
                 <Image
                   src={`/static/images/tokens/FNX.png`}
                   alt="token"
@@ -77,7 +77,8 @@ const Relay = () => {
                 <p className="text-sm text-white">FNX</p>
               </div>
             </TableCell>
-            <TableCell className="w-[10%]">
+            {/* third */}
+            <TableCell className="w-[10%] flex justify-end">
               <div className="flex items-center gap-2">
                 <Image
                   src={`/static/images/tokens/FNX.png`}
@@ -89,14 +90,42 @@ const Relay = () => {
                 <p className="text-sm text-white">744,621.46</p>
               </div>
             </TableCell>
-            <TableCell className="w-[10%]">
-              <div className="flex items-center gap-2">
-                <Button variant="tertiary" className="w-[115px] h-[38px]">
+            {/* fourths */}
+            <TableCell className="w-[20%] flex justify-end">
+              <div className="flex items-center gap-2 ">
+                <Button variant="tertiary" className="w-full h-[38px] !bg-opacity-40">
                   {' '}
-                  <span className="text-[12px]">Deposit Lock</span>
+                  <span className="text-sm">Deposit Lock</span>
                 </Button>
+                {activeAccordion ? (
+                  <span onClick={handlerAccordion} className="icon-chevron rotate-180"></span>
+                ) : (
+                  <span onClick={handlerAccordion} className="icon-chevron"></span>
+                )}
               </div>
             </TableCell>
+            {/* fifth*/}
+            {activeAccordion && (
+              <div className='w-[93%] text-sm mx-auto border border-shark-400 p-2 rounded-lg'>
+              <div className='text-white flex items-center justify-between  w-full'>
+                <div className='flex gap-2 items-center'>
+                  <span className="icon-lock text-white"></span>
+                  <p>Lock #11462</p>
+                </div>
+                <div className='flex gap-3'>
+                  <p>0.0</p>
+                  <p>FNX locked for 3 years</p>
+                </div>
+                <div className='flex gap-3'>
+                  <p>0.0</p>
+                  <p>FNX compouned</p>
+                </div>
+                <div>
+                  <p>Withdraw available after first epoch</p>
+                </div>
+              </div>
+              </div>
+            )}
           </TableRow>
         </TableBody>
       </div>

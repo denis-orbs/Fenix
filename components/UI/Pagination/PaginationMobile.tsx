@@ -3,7 +3,7 @@ const PaginationMobile = () => {
   return (
     <div className="flex items-center justify-between text-sm ">
       <div className="flex items-center gap-2">
-        <div className="flex gap-2 pagination-mobile-box h-12   bg-opacity-40 
+        <div className="flex gap-2 pagination-mobile-box h-12 bg-opacity-40 
          w-[168px]  text-white items-center justify-center">
           <div>
             <p>10 Row</p>
@@ -18,7 +18,7 @@ const PaginationMobile = () => {
        flex-shrink-0 w-12 h-12 px-4 text-white transition-colors 
         border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
         >
-          <span className="text-lg icon-cog"></span>
+          <span className="text-lg icon-circles"></span>
         </div>
       </div>
       <div className='flex items-center gap-4 p-2'>

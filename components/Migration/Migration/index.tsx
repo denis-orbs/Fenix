@@ -69,6 +69,12 @@ const Migration = ({ isConnected }: MigrationsProps) => {
           ))}
         </div>
       </div>
+      <div className="bg-shark-400 text-sm text-right flex justify-end p-2 hidden xl:block w-full bg-opacity-40">
+        <p className="flex gap-2 absolute z-10 right-32 text-shark-100 ">
+
+          <span className="icon-discord"></span>Need some Help?
+        </p>
+      </div>
     </MainBox>
   )
 }

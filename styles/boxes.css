@@ -431,10 +431,10 @@
   before:left-[-1px]
   before:rotate-[-1deg]
   before:border-solid
-  before:border-t-[20px]
-  before:border-r-[20px]
-  before:border-b-[20px]
-  before:border-[transparent_transparent_#0e0f11]
+  before:border-t-[1px]
+  before:border-r-[1px]
+  before:border-b-[1px]
+  before:border-[transparent_transparent_#FF0000]
 
   after:hidden
   xl:after:block
@@ -445,8 +445,8 @@
   after:right-[-1px]
   after:rotate-[181deg]
   after:border-solid
-  after:border-t-[20px]
-  after:border-r-[20px]
-  after:border-b-[20px]
-  after:border-[transparent_transparent_#0e0f11];
+  after:border-t-[8px]
+  after:border-r-[8px]
+  after:border-b-[8px]
+  after:border-[transparent_transparent_#FF0000];
 }

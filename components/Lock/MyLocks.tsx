@@ -28,13 +28,13 @@ const MyLocks = () => {
       <div className="w-full">
         <TableHead
           items={[
-            { text: 'Lock ID', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Rebase APR ', className: 'w-[14.28%]', sortable: true },
-            { text: 'Lock Amount', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Voting Power', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Unlock Date', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Vote Status', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Action', className: 'text-right w-[14.28%]', sortable: false },
+            { text: 'Lock ID', className: 'text-left w-[20%]', sortable: true },
+            { text: 'Rebase APR ', className: 'text-center w-[20%]', sortable: true },
+            { text: 'Lock Amount', className: 'text-left w-[10%]', sortable: true },
+            { text: 'Voting Power', className: 'text-left w-[10%]', sortable: true },
+            { text: 'Unlock Date', className: 'text-left w-[10%]', sortable: true },
+            { text: 'Vote Status', className: 'text-left w-[10%]', sortable: true },
+            { text: 'Action', className: 'text-right w-[10%]', sortable: false },
           ]}
         />
 
@@ -47,7 +47,7 @@ const MyLocks = () => {
             </>
           ) : (
             <TableRow>
-              <TableCell className="w-[14.28%]">
+              <TableCell className="w-[20%]">
                 <div className="flex items-center gap-3">
                   <Image
                     src={'/static/images/tokens/FNX.png'}
@@ -64,12 +64,12 @@ const MyLocks = () => {
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="w-[14.28%]">
-                <div className="flex items-center justify-center">
-                  <p className="text-sm ">34.58%</p>
-                </div>
+              {/* firts */}
+              <TableCell className="w-[20%]  flex items-center justify-center">
+                  <p className="text-sm">34.58%</p>
               </TableCell>
-              <TableCell className="w-[14.28%]">
+              {/* second */}
+              <TableCell className="w-[10%]">
                 <div className="flex items-center gap-2">
                   <Image
                     src={`/static/images/tokens/FNX.png`}
@@ -81,7 +81,8 @@ const MyLocks = () => {
                   <p className="text-sm text-white">744,621.46</p>
                 </div>
               </TableCell>
-              <TableCell className="w-[14.28%]">
+              {/* third */}
+              <TableCell className="w-[10%]">
                 <div className="flex items-center gap-2">
                   <Image
                     src={`/static/images/tokens/FNX.png`}
@@ -93,23 +94,31 @@ const MyLocks = () => {
                   <p className="text-sm text-white">744,621.46</p>
                 </div>
               </TableCell>
-              <TableCell className="w-[14.28%]">
+              {/* fourth */}
+              <TableCell className="w-[10%]">
                 <div className="flex items-center gap-2">
                   <p className="text-sm text-white">27-06-2025</p>
                 </div>
               </TableCell>
-              <TableCell className="w-[14.28%]">
-                <span className="flex items-center justify-center px-5 py-1 text-white border border-spring-green-400 rounded-xl bg-shark-400">
+              {/* fifth */}
+              <TableCell className="w-[10%]">
+                <span className="flex items-center bg-opacity-40 w-[105px] text-sm justify-center px-5 py-1
+                 text-white border border-solid border-green-400 
+                 rounded-xl bg-shark-400">
                   Voted
                 </span>
               </TableCell>
-              <TableCell className="w-[14.28%]">
+              {/* sixth */}
+              <TableCell className="w-[10%]">
                 <div className="flex justify-end w-full">
-                  <Button variant="tertiary" className="h-[38px] w-[90px]">
+                  <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40">
+                   <span className='text-sm'>
                     Manage
+                    </span>
                   </Button>
                 </div>
               </TableCell>
+              {/* seventh */}
             </TableRow>
           )}
         </TableBody>
