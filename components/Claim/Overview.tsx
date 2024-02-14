@@ -117,7 +117,7 @@ const Overview = ({ migrateStatus, setMigrateStatus } :OverviewProps) => {
 
       {migrateStatus === undefined && (
         <>
-          <div className="flex flex-col items-center justify-center py-10 rounded-lg bg-shark-400 bg-opacity-40">
+          <div className="flex flex-col items-center justify-center py-10 rounded-lg">
             <span className="text-5xl icon-send text-shark-100"></span>
             <p className="text-sm text-shark-100">No migrations or tokens found</p>
           </div>

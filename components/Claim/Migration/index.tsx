@@ -48,7 +48,7 @@ const Migration = ({ isConnected }: MigrationsProps) => {
             </div>
           </div>
           <div className="flex flex-col gap-2 mb-8 md:flex-row">
-            <Button className="lg:w-[190px] h-[38px] w-full">
+            <Button className="lg:w-[200px] h-[38px] w-full flex-shrink-0">
               {/* <div className="flex gap-3"> */}
               {isConnected ? (
                 <>

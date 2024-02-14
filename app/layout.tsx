@@ -5,7 +5,6 @@ import type { Metadata } from 'next'
 import Head from 'next/head'
 import { Poppins, Michroma } from 'next/font/google'
 
-import Decorator from '@/components/Common/Layout/Background'
 import Footer from '@/components/Common/Layout/Footer'
 import Header from '@/components/Common/Layout/Header'
 import MobileHeader from '@/components/Common/Layout/Header/Mobile'
@@ -38,9 +37,6 @@ export default function RootLayout({
         <MobileHeader />
         {children}
         <Footer />
-
-        <Decorator />
-
 
       </body>
     </html>

@@ -5,7 +5,7 @@
 @import url('./boxes.css');
 
 body {
-  @apply h-full text-base bg-shark-900;
+  @apply h-full text-base bg-woodsmoke-950;
   scroll-behavior: smooth;
   font-family: 'Poppins', sans-serif;
 }

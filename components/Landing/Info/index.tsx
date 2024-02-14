@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 const Info = () => {
   return (
-    <div className="relative py-[200px]">
+    <div className="relative py-[200px] max-w-[1840px] mx-auto">
       <div className="flex gap-8 items-center flex-wrap relative z-20 mx-auto justify-center">
         <div className="w-[45%] min-h-[210px] bg-shark-400 border border-shark-300 bg-opacity-30 rounded-lg items-center flex backdrop-blur-sm overflow-hidden">
           <div className="w-[60%] p-8">

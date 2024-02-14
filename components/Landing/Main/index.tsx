@@ -2,6 +2,7 @@
 import { Button } from '@/components/UI'
 import { Michroma } from 'next/font/google'
 import Image from 'next/image'
+import Decorator from '@/components/Common/Layout/BackgroundLanding'
 
 const michroma = Michroma({
   weight: ['400'],
@@ -23,8 +24,10 @@ const Box = ({ text }: { text: string }) => {
 
 const Main = () => {
   return (
-    <div className="relative flex flex-col max-w-[1840px] mx-auto px-5">
-      <div className="max-w-[345px] md:max-w-[635px] max-xl:mx-auto mr-auto mb-[325px] md:mb-[400px] mt-20 xl:my-[150px] 2xl:mt-[250px] 2xl:mb-[491px] max-xl:text-center">
+    <div className="relative flex flex-col max-w-[1840px] mx-auto">
+      <Decorator />
+
+      <div className="max-w-[345px] md:max-w-[635px] max-xl:mx-auto mr-auto mb-[325px] md:mb-[400px] mt-20 xl:my-[150px] 2xl:mt-[250px] 2xl:mb-[491px] max-xl:text-center px-5">
         <div className="text-sm md:text-lg text-shark-100 leading-normal mb-2">Welcome to Fenix Finance</div>
 
         <div className={`text-white text-base md:text-[32px] leading-[139%] mb-6 ${michroma.className}`}>
@@ -45,14 +48,12 @@ const Main = () => {
         <Button className="w-[123px] h-[41px] !text-sm !py-2.5 !px-0 max-xl:mx-auto">Launch App</Button>
       </div>
 
-      <div className="flex gap-6 justify-center flex-wrap">
+      <div className="flex gap-6 justify-center flex-wrap px-5">
         <Box text="Total Value Locked" />
         <Box text="Annualized Volume" />
         <Box text="Annualized Fees" />
         <Box text="Active Users" />
       </div>
-
-      <div className="h-[1000px]"></div>
     </div>
   )
 }

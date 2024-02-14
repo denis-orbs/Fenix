@@ -189,7 +189,7 @@
 
 .box {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
-
+/* 
   before:hidden
   xl:before:block
   before:absolute
@@ -202,7 +202,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#1b1d21]
+  before:border-[transparent_transparent_#292D32]
 
   after:hidden
   xl:after:block
@@ -216,7 +216,7 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#1b1d21];
+  after:border-[transparent_transparent_#292D32]; */
 }
 
 
