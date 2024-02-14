@@ -362,26 +362,29 @@
   hover:opacity-100
   hover:shadow-lg
   hover:shadow-outrageous-orange-400
-  max-w-[901px]
+  xl:max-w-[901px]
+  border
+  border-shark-100
+  xl:border-0
 
-  before:content-['']
-  before:absolute
-  before:left-0
-  before:bottom-0
-  before:bg-[url(/static/images/landing/articles/box.svg)]
-  before:w-1/2
-  before:h-[207px]
-  before:bg-no-repeat
+  xl:before:content-['']
+  xl:before:absolute
+  xl:before:left-0
+  xl:before:bottom-0
+  xl:before:bg-[url(/static/images/landing/articles/box.svg)]
+  xl:before:w-1/2
+  xl:before:h-[207px]
+  xl:before:bg-no-repeat
 
-  after:content-['']
-  after:absolute
-  after:right-0
-  after:bottom-0
-  after:bg-[url(/static/images/landing/articles/box.svg)]
-  after:w-1/2
-  after:h-[207px]
-  after:bg-right
-  after:bg-no-repeat
+  xl:after:content-['']
+  xl:after:absolute
+  xl:after:right-0
+  xl:after:bottom-0
+  xl:after:bg-[url(/static/images/landing/articles/box.svg)]
+  xl:after:w-1/2
+  xl:after:h-[207px]
+  xl:after:bg-right
+  xl:after:bg-no-repeat
 }
 
 .article-big-box {
@@ -394,26 +397,29 @@
   hover:opacity-100
   hover:shadow-lg
   hover:shadow-outrageous-orange-400
-  max-w-[607px]
+  xl:max-w-[607px]
+  border
+  border-shark-100
+  xl:border-0
 
-  before:content-['']
-  before:absolute
-  before:right-0
-  before:top-0
-  before:bg-[url(/static/images/landing/articles/big-box.svg)]
-  before:w-full
-  before:h-1/2
-  before:bg-no-repeat
-  before:bg-cover
+  xl:before:content-['']
+  xl:before:absolute
+  xl:before:right-0
+  xl:before:top-0
+  xl:before:bg-[url(/static/images/landing/articles/big-box.svg)]
+  xl:before:w-full
+  xl:before:h-1/2
+  xl:before:bg-no-repeat
+  xl:before:bg-cover
 
-  after:content-['']
-  after:absolute
-  after:right-0
-  after:bottom-0
-  after:bg-[url(/static/images/landing/articles/big-box.svg)]
-  after:w-full
-  after:h-1/2
-  after:bg-bottom
-  after:bg-no-repeat
-  after:bg-cover
+  xl:after:content-['']
+  xl:after:absolute
+  xl:after:right-0
+  xl:after:bottom-0
+  xl:after:bg-[url(/static/images/landing/articles/big-box.svg)]
+  xl:after:w-full
+  xl:after:h-1/2
+  xl:after:bg-bottom
+  xl:after:bg-no-repeat
+  xl:after:bg-cover
 }
