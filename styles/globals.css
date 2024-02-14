@@ -20,7 +20,7 @@ body {
 }
 
 .container {
-  @apply mx-auto max-w-[1800px];
+  @apply mx-auto max-w-[1860px] px-5;
 }
 
 /************* ScrollBar ***********/

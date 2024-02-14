@@ -21,7 +21,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus } :OverviewMobileProps
   return (
     <div className="relative">
       <h5 className="mb-4 text-lg text-white">Migration Overview</h5>
-      <div className="flex flex-col block lg:hidden xl:hidden gap-5 mb-5 md:items-center md:justify-between xl:flex-row">
+      <div className="flex flex-col lg:hidden xl:hidden gap-5 mb-5 md:items-center md:justify-between xl:flex-row">
         <AddressCheck migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
         <TotalMigrated />
       </div>
@@ -50,7 +50,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus } :OverviewMobileProps
                           </div>
                           {/* firts section */}
                           <div
-                            className="bg-shark-300  flex justify-start   
+                            className="bg-shark-300  flex justify-start
                         rounded-lg bg-opacity-30 flex-col h-[51px] w-[150px]"
                           >
                             <p className="text-[11px] text-shark-100 ms-2">Mi Migrated Amount</p>
@@ -99,7 +99,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus } :OverviewMobileProps
                           <div className="flex gap-2 justify-center items-center mt-5">
                             <div className="flex">
                               <div
-                                className="bg-shark-300  flex    
+                                className="bg-shark-300  flex
                         rounded-lg bg-opacity-30 flex-col h-[51px] w-[140px] "
                               >
                                 <p className="text-[12px] text-shark-100 ms-2">Mi Migrated Amount</p>
@@ -117,7 +117,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus } :OverviewMobileProps
                             </div>
                             <div className="flex">
                               <div
-                                className="bg-shark-300  flex justify-start   
+                                className="bg-shark-300  flex justify-start
                         rounded-lg bg-opacity-30 flex-col h-[51px] w-[150px] "
                               >
                                 <p className="text-[12px] text-shark-100 ms-2">Mi Migrated Amount</p>

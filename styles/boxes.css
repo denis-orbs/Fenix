@@ -15,7 +15,7 @@
 }
 
 .footer-box {
-  @apply relative h-[15px] w-[337px] hidden xl:block
+  @apply relative h-[15px] w-[337px] hidden xl:block ml-5
 
   before:content-[""]
   before:absolute
@@ -116,8 +116,10 @@
   @apply relative
   left-0
   right-0
+  hidden
+  xl:block
   bottom-full
-  h-[40px]
+  h-[60px]
   overflow-hidden
 
   before:content-[""]
@@ -135,17 +137,16 @@
   @apply relative
   left-0
   right-0
+  hidden
+  xl:block
   top-full
   h-[60px]
-  md:h-[100px]
-  lg:h-[70px]
-  xl:h-[50px]
-  2xl:h-[70px]
   overflow-hidden
+  rotate-180
 
   before:content-[""]
   before:absolute
-  before:bg-[url("/static/images/components/box/steps/bottom.svg")]
+  before:bg-[url("/static/images/components/box/steps/top.svg")]
   before:bg-no-repeat
   before:h-full
   before:bg-cover
@@ -185,38 +186,6 @@
   after:border-r-[25px]
   after:border-b-[25px]
   after:border-[transparent_transparent_#1b1d21];
-}
-
-.box {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
-/* 
-  before:hidden
-  xl:before:block
-  before:absolute
-  before:w-0
-  before:h-0
-  before:bottom-[0px]
-  before:left-[-1px]
-  before:rotate-[-1deg]
-  before:border-solid
-  before:border-t-[20px]
-  before:border-r-[20px]
-  before:border-b-[20px]
-  before:border-[transparent_transparent_#292D32]
-
-  after:hidden
-  xl:after:block
-  after:absolute
-  after:w-0
-  after:h-0
-  after:top-[-1px]
-  after:right-[-1px]
-  after:rotate-[181deg]
-  after:border-solid
-  after:border-t-[20px]
-  after:border-r-[20px]
-  after:border-b-[20px]
-  after:border-[transparent_transparent_#292D32]; */
 }
 
 
@@ -282,4 +251,100 @@
   after:border-r-[30px]
   after:border-b-[30px]
   after:border-[transparent_transparent_#141619];
+}
+
+.box {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:bottom-[0px]
+  before:left-[-1px]
+  before:rotate-[-1deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[20px]
+  before:border-[transparent_transparent_#1d1f21]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:top-[-1px]
+  after:right-[-1px]
+  after:rotate-[181deg]
+  after:border-solid
+  after:border-t-[20px]
+  after:border-r-[20px]
+  after:border-b-[20px]
+  after:border-[transparent_transparent_#1d1f21];
+}
+
+.address-check-box {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:bottom-[0px]
+  before:left-[-1px]
+  before:rotate-[-1deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[20px]
+  before:border-[transparent_transparent_#111316]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:top-[-1px]
+  after:right-[-1px]
+  after:rotate-[181deg]
+  after:border-solid
+  after:border-t-[20px]
+  after:border-r-[20px]
+  after:border-b-[20px]
+  after:border-[transparent_transparent_#111316];
+}
+
+.total-migrated-box {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:bottom-[0px]
+  before:left-[-1px]
+  before:rotate-[-1deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[20px]
+  before:border-[transparent_transparent_#111316]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:top-[-1px]
+  after:right-[-1px]
+  after:rotate-[181deg]
+  after:border-solid
+  after:border-t-[20px]
+  after:border-r-[20px]
+  after:border-b-[20px]
+  after:border-[transparent_transparent_#251613];
 }

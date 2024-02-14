@@ -4,7 +4,7 @@ import Decorator from '@/components/Common/Layout/Background'
 const ClaimPage = () => {
   return (
     <main>
-      <div className="mx-auto md:p-6">
+      <div className="container">
         <Claim />
 
 

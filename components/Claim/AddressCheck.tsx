@@ -14,7 +14,7 @@ const AddressCheck = ({ migrateStatus, setMigrateStatus }: AddressCheckProps) =>
   const handlerMigrateCheck = () => setMigrateStatus('success')
 
   return (
-    <div className="flex flex-col items-center w-full gap-4 px-5 py-4  xl:w-2/4 2xl:w-2/3 md:flex-row bg-shark-400 rounded-lg bg-opacity-40 border border-[#262C33] min-h-[86px]">
+    <div className="flex flex-col items-center w-full gap-4 px-5 py-4 xl:w-2/4 2xl:w-2/3 md:flex-row rounded-lg xl:min-h-[86px] address-check-box">
       <div className="flex items-center gap-5 md:flex-row">
         <p className="text-sm text-shark-100">Wallet Address</p>
         <span className="px-3 py-1 text-xs md:text-sm border rounded-lg text-center text-shark-100 bg-shark-400 border-shark-300 truncate max-w-[200px]">
