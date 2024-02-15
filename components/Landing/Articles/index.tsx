@@ -11,7 +11,7 @@ const Articles = () => {
               alt="img"
               width={190}
               height={160}
-              className="w-[190px] h-[160px] rounded-lg"
+              className="w-full xl:w-[190px] xl:h-[160px] rounded-lg"
             />
             <div className="flex flex-col">
               <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
@@ -28,7 +28,7 @@ const Articles = () => {
               alt="img"
               width={190}
               height={160}
-              className="w-[190px] h-[160px] rounded-lg"
+              className="w-full xl:w-[190px] xl:h-[160px] rounded-lg"
             />
             <div className="flex flex-col">
               <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
@@ -47,7 +47,7 @@ const Articles = () => {
               alt="img"
               width={190}
               height={160}
-              className="w-[190px] h-[160px] rounded-lg"
+              className="w-full xl:w-[190px] xl:h-[160px] rounded-lg"
             />
             <div className="flex flex-col">
               <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
@@ -64,7 +64,7 @@ const Articles = () => {
           <h1 className="mb-3 text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
             Liquidity Providers
           </h1>
-          <p className="mb-10 text-sm text-white">
+          <p className="mb-5 xl:mb-10 text-sm text-white">
             We provide Liquidity Providers (LPs) with the best Concentrated Liquidity (CL) user experience by offering a
             wide range of strategies. Our platform supports automatic CL Management (CLMs) for novices and manual,
             pre-selected ranges for more experienced users.

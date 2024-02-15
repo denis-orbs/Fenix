@@ -353,6 +353,8 @@
   @apply
   relative
   flex
+  flex-col
+  xl:flex-row
   items-center
   gap-5
   p-5
