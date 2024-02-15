@@ -352,10 +352,14 @@
 .article-box {
   @apply
   relative
+  bg-shark-400
+  bg-opacity-40
+  backdrop-blur-md
   flex
-  flex-col
+  flex-col-reverse
   xl:flex-row
-  items-center
+  xl:bg-none
+  xl:items-center
   gap-5
   p-5
   transition
@@ -393,8 +397,12 @@
   @apply
   relative
   transition
-  p-10
+  p-5
+  xl:p-10
   rounded-lg
+bg-shark-400
+  bg-opacity-40
+  backdrop-blur-md
   opacity-70
   hover:opacity-100
   hover:shadow-lg

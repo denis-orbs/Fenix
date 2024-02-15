@@ -7,11 +7,18 @@ const Articles = () => {
         <div className="flex flex-col gap-4 xl:gap-8">
           <div className="article-box">
             <Image
-              src="/static/images/landing/articles/01.svg"
+              src="/static/images/landing/articles/fenix.svg"
               alt="img"
               width={190}
               height={160}
-              className="w-full xl:w-[190px] xl:h-[160px] rounded-lg"
+              className="w-full xl:w-[190px] hidden sm:block xl:h-[160px] rounded-lg"
+            />
+            <Image
+              src="/static/images/landing/articles/fenix-mobile.png"
+              alt="img"
+              width={190}
+              height={160}
+              className="w-full sm:hidden rounded-lg"
             />
             <div className="flex flex-col">
               <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
@@ -24,11 +31,18 @@ const Articles = () => {
           </div>
           <div className="article-box">
             <Image
-              src="/static/images/landing/articles/02.svg"
+              src="/static/images/landing/articles/blast.svg"
               alt="img"
               width={190}
               height={160}
-              className="w-full xl:w-[190px] xl:h-[160px] rounded-lg"
+              className="w-full xl:w-[190px] hidden sm:block xl:h-[160px] rounded-lg"
+            />
+            <Image
+              src="/static/images/landing/articles/blast-mobile.png"
+              alt="img"
+              width={190}
+              height={160}
+              className="w-full sm:hidden rounded-lg"
             />
             <div className="flex flex-col">
               <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
@@ -43,11 +57,18 @@ const Articles = () => {
           </div>
           <div className="article-box">
             <Image
-              src="/static/images/landing/articles/03.svg"
+              src="/static/images/landing/articles/protocols.svg"
               alt="img"
               width={190}
               height={160}
-              className="w-full xl:w-[190px] xl:h-[160px] rounded-lg"
+              className="w-full xl:w-[190px] hidden sm:block xl:h-[160px] rounded-lg"
+            />
+            <Image
+              src="/static/images/landing/articles/protocols-mobile.png"
+              alt="img"
+              width={190}
+              height={160}
+              className="w-full sm:hidden rounded-lg"
             />
             <div className="flex flex-col">
               <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
@@ -77,13 +98,20 @@ const Articles = () => {
             We also feature dynamic fees to reduce Impermanent Loss (IL) and an emissions distributor algorithm that
             rewards fees generated, enhancing overall user satisfaction and financial outcomes.
           </p>
-          <div className="w-full h-[360px">
+          <div className="w-full xl:h-[300px]">
             <Image
-              src="/static/images/landing/articles/04.svg"
+              src="/static/images/landing/articles/liquidity.svg"
               alt="img"
               width={600}
               height={300}
-              className="w-full h-full rounded-lg"
+              className="w-full hidden sm:block h-full rounded-lg"
+            />
+            <Image
+              src="/static/images/landing/articles/liquidity-mobile.png"
+              alt="img"
+              width={190}
+              height={160}
+              className="w-full sm:hidden rounded-lg"
             />
           </div>
         </div>
