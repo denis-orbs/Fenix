@@ -8,7 +8,7 @@ const config: Config = {
   ],
   theme: {
     transitionDuration: {
-      DEFAULT: '300ms',
+      DEFAULT: '100ms',
     },
     transitionTimingFunction: {
       DEFAULT: 'linear',

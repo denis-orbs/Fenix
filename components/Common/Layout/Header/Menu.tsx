@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/UI'
-import MENU_LINKS from './data'
+import { MENU_LINKS } from './data'
 import Link from 'next/link'
 
 const Menu = () => {
