@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 }
 
 const poppins = Poppins({
-  weight: ['400', '500', '600', '700', '900'],
+  weight: ['300', '400', '500', '600', '700', '900'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap',
@@ -32,7 +32,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <body suppressHydrationWarning={true} className={`${poppins.className} relative py-3`}>
+      <body suppressHydrationWarning={true} className={`${poppins.className} relative pt-[26px] pb-5`}>
         <Header />
         <MobileHeader />
         {children}
