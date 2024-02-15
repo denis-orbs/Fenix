@@ -13,7 +13,7 @@ export const MENU_LINKS = [
   },
   {
     name: 'Vote',
-    href: '/',
+    href: '/vote',
   },
   {
     name: 'Lock',
