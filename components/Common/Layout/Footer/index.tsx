@@ -59,7 +59,7 @@ const Footer = () => {
         </a>
         <div className="flex items-center gap-[11px]">
           <span>The central trading and liquidity market on</span>
-          <Image src="/static/images/footer/arbitrum.png" alt="pancake" width={24} height={24} className="w-6 h-6" />
+          <Image src="/static/images/footer/blast.svg" alt="pancake" width={24} height={24} className="w-6 h-6" />
         </div>
       </div>
     </footer>

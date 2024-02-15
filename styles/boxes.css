@@ -15,7 +15,7 @@
 }
 
 .footer-box {
-  @apply relative h-[15px] w-[337px] hidden xl:block
+  @apply relative h-[15px] w-[337px] hidden xl:block ml-5
 
   before:content-[""]
   before:absolute
@@ -116,8 +116,10 @@
   @apply relative
   left-0
   right-0
+  hidden
+  xl:block
   bottom-full
-  h-[40px]
+  h-[60px]
   overflow-hidden
 
   before:content-[""]
@@ -135,17 +137,16 @@
   @apply relative
   left-0
   right-0
+  hidden
+  xl:block
   top-full
   h-[60px]
-  md:h-[100px]
-  lg:h-[70px]
-  xl:h-[50px]
-  2xl:h-[70px]
   overflow-hidden
+  rotate-180
 
   before:content-[""]
   before:absolute
-  before:bg-[url("/static/images/components/box/steps/bottom.svg")]
+  before:bg-[url("/static/images/components/box/steps/top.svg")]
   before:bg-no-repeat
   before:h-full
   before:bg-cover
@@ -185,38 +186,6 @@
   after:border-r-[25px]
   after:border-b-[25px]
   after:border-[transparent_transparent_#1b1d21];
-}
-
-.box {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
-/* 
-  before:hidden
-  xl:before:block
-  before:absolute
-  before:w-0
-  before:h-0
-  before:bottom-[0px]
-  before:left-[-1px]
-  before:rotate-[-1deg]
-  before:border-solid
-  before:border-t-[20px]
-  before:border-r-[20px]
-  before:border-b-[20px]
-  before:border-[transparent_transparent_#292D32]
-
-  after:hidden
-  xl:after:block
-  after:absolute
-  after:w-0
-  after:h-0
-  after:top-[-1px]
-  after:right-[-1px]
-  after:rotate-[181deg]
-  after:border-solid
-  after:border-t-[20px]
-  after:border-r-[20px]
-  after:border-b-[20px]
-  after:border-[transparent_transparent_#292D32]; */
 }
 
 
@@ -282,4 +251,175 @@
   after:border-r-[30px]
   after:border-b-[30px]
   after:border-[transparent_transparent_#141619];
+}
+
+.box {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:bottom-[0px]
+  before:left-[-1px]
+  before:rotate-[-1deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[20px]
+  before:border-[transparent_transparent_#1d1f21]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:top-[-1px]
+  after:right-[-1px]
+  after:rotate-[181deg]
+  after:border-solid
+  after:border-t-[20px]
+  after:border-r-[20px]
+  after:border-b-[20px]
+  after:border-[transparent_transparent_#1d1f21];
+}
+
+.address-check-box {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:bottom-[0px]
+  before:left-[-1px]
+  before:rotate-[-1deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[20px]
+  before:border-[transparent_transparent_#111316]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:top-[-1px]
+  after:right-[-1px]
+  after:rotate-[181deg]
+  after:border-solid
+  after:border-t-[20px]
+  after:border-r-[20px]
+  after:border-b-[20px]
+  after:border-[transparent_transparent_#111316];
+}
+
+.total-migrated-box {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:bottom-[0px]
+  before:left-[-1px]
+  before:rotate-[-1deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[20px]
+  before:border-[transparent_transparent_#111316]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:top-[-1px]
+  after:right-[-1px]
+  after:rotate-[181deg]
+  after:border-solid
+  after:border-t-[20px]
+  after:border-r-[20px]
+  after:border-b-[20px]
+  after:border-[transparent_transparent_#251613];
+}
+
+.article-box {
+  @apply
+  relative
+  flex
+  items-center
+  gap-5
+  p-5
+  transition
+  rounded-lg
+  opacity-70
+  hover:opacity-100
+  hover:shadow-lg
+  hover:shadow-outrageous-orange-400
+  xl:max-w-[901px]
+  border
+  border-shark-100
+  xl:border-0
+
+  xl:before:content-['']
+  xl:before:absolute
+  xl:before:left-0
+  xl:before:bottom-0
+  xl:before:bg-[url(/static/images/landing/articles/box.svg)]
+  xl:before:w-1/2
+  xl:before:h-[207px]
+  xl:before:bg-no-repeat
+
+  xl:after:content-['']
+  xl:after:absolute
+  xl:after:right-0
+  xl:after:bottom-0
+  xl:after:bg-[url(/static/images/landing/articles/box.svg)]
+  xl:after:w-1/2
+  xl:after:h-[207px]
+  xl:after:bg-right
+  xl:after:bg-no-repeat
+}
+
+.article-big-box {
+  @apply
+  relative
+  transition
+  p-10
+  rounded-lg
+  opacity-70
+  hover:opacity-100
+  hover:shadow-lg
+  hover:shadow-outrageous-orange-400
+  xl:max-w-[607px]
+  border
+  border-shark-100
+  xl:border-0
+
+  xl:before:content-['']
+  xl:before:absolute
+  xl:before:right-0
+  xl:before:top-0
+  xl:before:bg-[url(/static/images/landing/articles/big-box.svg)]
+  xl:before:w-full
+  xl:before:h-1/2
+  xl:before:bg-no-repeat
+  xl:before:bg-cover
+
+  xl:after:content-['']
+  xl:after:absolute
+  xl:after:right-0
+  xl:after:bottom-0
+  xl:after:bg-[url(/static/images/landing/articles/big-box.svg)]
+  xl:after:w-full
+  xl:after:h-1/2
+  xl:after:bg-bottom
+  xl:after:bg-no-repeat
+  xl:after:bg-cover
 }
