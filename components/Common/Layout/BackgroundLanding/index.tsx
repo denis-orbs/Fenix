@@ -11,7 +11,7 @@ const Background = () => {
           src="/static/images/landing/main/decorator-1.png"
           width={420.566}
           height={352.195}
-          className="absolute max-md:w-[198.987px] max-md:h-[166.638px]  left-[-115px] 2xl:left-[319px] top-[-47px] rotate-[70.545deg] md:rotate-[48.907deg] z-10"
+          className="absolute top-[39px] left-[-103px] rotate-[70.545deg] max-md:w-[198.987px] max-md:h-[166.638px] md:top-[-47px] md:rotate-[48.907deg] 2xl:left-[319px] z-10"
           alt="main-bg"
         />
         <Image
@@ -21,18 +21,12 @@ const Background = () => {
           className="absolute right-[-123.77px] top-[374px] z-10"
           alt="main-bg"
         />
-        <Image
-          src="/static/images/landing/main/decorator-3.png"
-          width={684.067}
-          height={382.896}
-          className="absolute left-[-112px] top-[768px] rotate-[50.718deg]"
-          alt="main-bg"
-        />
+
         <Image
           src="/static/images/landing/main/decorator-3.png"
           width={589.838}
           height={330.153}
-          className="absolute left-[241px] 2xl:left-[510px] top-[177px] rotate-[57.037deg]"
+          className="absolute left-[1px] top-[92px] rotate-[42.984deg] max-md:w-[314.57px] max-md:h-[176.076px] md:rotate-[57.037deg] md:left-[100px] 2xl:top-[177px] 2xl:left-[510px]"
           alt="main-bg"
         />
 

@@ -27,7 +27,7 @@ const Main = () => {
   return (
     <div className="">
       <Decorator />
-      <div className='relative overflow-hidden top-[-170px] pt-[170px]'>
+      <div className="relative overflow-hidden top-[-170px] pt-[170px]">
         <div className="container">
           <div className="flex max-xl:flex-col">
             <div className="xl:pl-[50px] pt-[14px] max-w-[345px] md:max-w-[670px] max-xl:mx-auto mr-auto mb-[20px] xl:mb-[400px] mt-5 md:mt-20 xl:my-[150px] 2xl:mt-[250px] 2xl:mb-[491px] max-xl:text-center shrink-0">
@@ -48,7 +48,9 @@ const Main = () => {
                 />
               </div>
 
-              <Button className="w-[112px] h-[44px] md:w-[123px] md:h-[41px] !text-sm !py-2.5 !px-0 max-xl:mx-auto">Launch App</Button>
+              <Button className="w-[112px] h-[44px] md:w-[123px] md:h-[41px] !text-sm !py-2.5 !px-0 max-xl:mx-auto">
+                Launch App
+              </Button>
             </div>
 
             <div className="relative w-full">
@@ -59,6 +61,24 @@ const Main = () => {
                 alt="main-bg"
                 className="relative xl:absolute -z-10 top-0 left-1/2 max-xl:-translate-x-1/2 xl:top-[-100px] 2xl:top-[-32px] xl:left-[-123px] min-w-[1480px] object-contain max-md:min-w-[556.986px] max-2xl:min-w-[1000px] max-xl:object-contain"
               />
+
+              {/* <div className='absolute h-[1359px] w-[1480px] max-md:w-[556.986px] max-2xl:w-[1000px] bg-green-500 bg-opacity-50'>
+
+              </div> */}
+              <div className="absolute max-xl:left-0 max-xl:top-0 max-xl:right-0 max-xl:bottom-0  xl:w-[1000px] xl:h-[701.41px]  xl:top-[-100px] xl:left-[-123px] 2xl:w-[1480px] 2xl:h-[1037.8px] 2xl:top-[-32px]">
+                <video
+                  width={1200}
+                  height={1200}
+                  loop
+                  playsInline
+                  autoPlay
+                  muted
+                  className="absolute z-10 mix-blend-lighten left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+                >
+                  <source src="/static/images/landing/main/fenix-2.mp4" type="video/mp4"></source>
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </div>
           </div>
 
