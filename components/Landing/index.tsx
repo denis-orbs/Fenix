@@ -11,7 +11,7 @@ const Landing = () => {
   return (
     <main>
       <Info />
-      <div className="w-full relative">
+      <div className="w-full relative max-md:pt-[160px]">
         {/* <div className="w-[163px] h-[163px] bg-black rounded-full border-[2px] border-white absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2" /> */}
 
         {/* <Image
@@ -25,8 +25,8 @@ const Landing = () => {
           <Lottie animationData={animation} />
         </div>
 
-        <div className="absolute left-1/2 -translate-x-1/2 top-[-100px] md:top-[-7px] z-50">
-          <Image src="/static/images/landing/support/partners.svg" alt="img" width={366} height={143} className="" />
+        <div className="absolute left-1/2 -translate-x-1/2 top-0 md:top-[-7px] z-[999] backdrop-blur-[38px]">
+          <Image src="/static/images/landing/support/partners.svg" alt="img" width={366} height={143} className="max-md:h-[111px] max-md:w-[300px]" />
         </div>
 
         {/* <div className="mx-auto flex justify-center absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[2244px] mix-blend-color-dodge">
