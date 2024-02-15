@@ -14,7 +14,7 @@ const AccountHandler = () => {
   const handlerConnectWallet = () => setWalletSelectionModal(true)
 
   return (
-    <div className="flex items-center gap-[15px] w-full">
+    <div className="flex items-center gap-[15px] w-full xl:w-auto">
       {isConnected && (
         <div className="hidden xl:flex items-center gap-2 flex-shrink-0">
           <Image src="/static/images/tokens/ETH.png" className="w-6 h-6" alt="logo" width={24} height={24} />
