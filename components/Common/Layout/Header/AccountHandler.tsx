@@ -49,7 +49,7 @@ const AccountHandler = () => {
             </div>
           </div>
         ) : (
-          <Button className="gap-3.5 w-full md:w-[300px] h-[40px] md:h-[49px]" onClick={handlerConnectWallet}>
+          <Button className="gap-3.5 w-full md:w-[300px] h-[40px] md:h-[49px]">
             <span className="icon-wallet text-md"></span>
             <span className="text-xs md:text-sm">Connect your Wallet</span>
           </Button>
