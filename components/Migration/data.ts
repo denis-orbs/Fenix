@@ -12,7 +12,7 @@ export const EXCHANGE_LIST = [
   },
   {
     label: 'Minimum Exchange Ratio',
-    amount: '178 elCHR: 1 veFNX',
+    amount: '102.65 elCHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {
