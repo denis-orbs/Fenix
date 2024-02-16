@@ -8,46 +8,44 @@ const Info = () => {
   return (
     <div className="overflow-hidden">
       <div className="relative pt-20 max-md:pb-[159px] md:pt-[386px] py-[200px] max-w-[1760px] mx-auto px-5">
-        <div className="flex gap-6 md:gap-10 items-center relative z-20 mx-auto justify-center md:flex-wrap max-md:flex-col">
-
-          <div className="md:w-[840px] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] max-md:pb-[167px]">
-            <div className="md:w-[60%] max-md:pb-0 max-md:pt-10 p-8">
-              <h3 className=" font-medium leading-normal mb-2 md:mb-3 text-outrageous-orange-500">
-                Competitive Farming
+        <div className="flex gap-6 md:gap-10 items-center relative z-20 mx-auto justify-center lg:flex-wrap max-lg:flex-col">
+          <div className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] max-md:pb-[167px]">
+            <div className="md:w-[70%] 2xl:w-[50%] max-md:pb-0 max-md:pt-10 p-8 relative z-10">
+              <h3 className="text-base xl:text-lg font-medium leading-normal mb-2 xl:mb-3 text-outrageous-orange-500">
+                Merkl Integration
               </h3>
-              <p className="text-white text-xs md:text-sm leading-normalS">
-                Algebra’s Built in Farming Distributor enables Fenix to provide a custom emissions distribution
-                structure for all CL liquidity providing strategies, encouraging fee generation and in range liquidity
-                provision to ensure stable liquidity profiles and leading to higher trading volumes and platform
-                revenues.
+              <p className="text-white text-xs xl:text-sm leading-normal">
+                Merkl enables Fenix to provide a custom emissions distribution structure for manual user and automated
+                liquidity management providers that encourages fee generation and in range liquidity provision to ensure
+                stable liquidity profiles and high revenue.
               </p>
             </div>
             <Image
               src="/static/images/landing/info/01.png"
               alt="img"
-              width={483}
-              height={643}
-              className="min-w-[483px] min-h-[643px] absolute right-[-200px] lg:right-[-127px] top-[-236px] max-md:hidden"
+              width={792}
+              height={674}
+              className="min-w-[792px] min-h-[674px] absolute right-[-500px] xl:right-[-400px] 2xl:right-[-228px] top-[-278px] max-md:hidden"
             />
             <Image
               src="/static/images/landing/info/01-mobile.png"
               alt="img"
-              width={450}
-              height={384}
-              className="min-w-[450px] min-h-[384px] absolute left-[33px] bottom-[-177px] md:hidden"
+              width={649}
+              height={336}
+              className="min-w-[649px] min-h-[336px] absolute left-[-144px] bottom-[-124px] md:hidden"
             />
           </div>
 
-          <div className="md:w-[840px] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(255,_11,_148,_0.50)] max-md:pb-[167px]">
-            <div className="md:w-[60%] max-md:pb-0 max-md:pt-10 p-8">
-              <h3 className="text-base md:text-lg font-medium leading-normal mb-2 md:mb-3 text-[#FF0B94]">
-                Fenix Trading Engine
+          <div className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(255,_11,_148,_0.50)] max-md:pb-[167px]">
+            <div className="md:w-[80%] 2xl:w-[60%] max-md:pb-0 max-md:pt-10 p-8">
+              <h3 className="text-base xl:text-lg font-medium leading-normal mb-2 xl:mb-3 text-[#FF0B94]">
+                Unified Trading Engine
               </h3>
-              <p className="text-white text-xs md:text-sm leading-normal relative z-10">
-                Fenix utilizes the secure and battle-tested Algebras “Integral” concentrated liquidity engine for Core
-                Pools, Uniswap V2 pools for Partners Pools and Curves Stable Swap for Stable Pools, that gives
-                flexibility and best strategies for each party & liquidity providers andprovides traders with the
-                deepest liquidity and best prices.
+              <p className="text-white text-xs xl:text-sm leading-normal relative z-10">
+                Fenix deploys a next-generation modular AMM that incorporates the Algebra Integral UNIV3 and UNIV4 style
+                pools and traditional UNIV2 and solidly stable swap pools. Fenix will maximise capital efficiency, price
+                execution and fee generation on exchange assets and gives protocols maximum flexibility on pool
+                deployment.
               </p>
             </div>
 
@@ -56,7 +54,7 @@ const Info = () => {
               alt="img"
               width={862}
               height={765}
-              className="absolute min-w-[862px] min-h-[765px] right-[-350px] lg:right-[-218px] top-[-300px] max-md:hidden"
+              className="absolute min-w-[862px] min-h-[765px] right-[-500px] xl:right-[-350px] 2xl:right-[-218px] top-[-300px] max-md:hidden"
             />
             <Image
               src="/static/images/landing/info/02-mobile.png"
@@ -67,19 +65,16 @@ const Info = () => {
             />
           </div>
 
-          <div className="md:w-[840px] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(239,_239,_0,_0.50)] max-md:pb-[149px]">
-            <div className="md:w-[60%] max-md:pb-0 max-md:pt-10 p-8 relative z-10">
-              <h3 className="text-base md:text-lg font-medium leading-normal mb-2 md:mb-3 text-[#EFEF00]">
-                Fenix Liquidity Hub + Zero Gas Swaps
+          <div className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(239,_239,_0,_0.50)] max-md:pb-[149px]">
+            <div className="md:w-[80%] 2xl:w-[60%] max-md:pb-0 max-md:pt-10 p-8 relative z-10">
+              <h3 className="text-base xl:text-lg font-medium leading-normal mb-2 xl:mb-3 text-[#EFEF00]">
+                Fenix Liquidity Hub
               </h3>
-              <div className="text-white text-xs md:text-sm">
-                <p className="mb-[22px] leading-normal">
-                  Fenix aggregates liquidity from all DEXs across Blast to guarantee the best price execution for
-                  traders, powered by an intent architecture using Orbs technology.
-                </p>
-                <p className="leading-normal">
-                  Additionally, Blast&apos;s gas reimbursement program enables zero gas fee swaps, offering a seamless
-                  trading experience.
+              <div className="text-white text-xs xl:text-sm">
+                <p className="mb-2 xl:mb-[22px] leading-normal">
+                  The Fenix Liquidity Hub powered by ORBS is an intent-based trading engine that allows traders to
+                  compare quotes across DEXs and market markers to ensure the best price execution for any token on
+                  Blast.
                 </p>
               </div>
             </div>
@@ -89,7 +84,7 @@ const Info = () => {
               alt="img"
               width={1229}
               height={844}
-              className="absolute min-w-[1229px] min-h-[844px] top-[-317px] right-[-400px] lg:right-[-240px] max-md:hidden"
+              className="absolute min-w-[1229px] min-h-[844px] top-[-317px] right-[-450px] xl:right-[-400px] 2xl:right-[-240px] max-md:hidden"
             />
 
             <Image
@@ -101,12 +96,12 @@ const Info = () => {
             />
           </div>
 
-          <div className="md:w-[840px] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(0,_105,_238,_0.50)] max-md:pb-[185px]">
-            <div className="md:w-[60%] max-md:pb-0 max-md:pt-10 p-8">
-              <h3 className="text-base md:text-lg font-medium leading-normal mb-2 md:mb-3 text-[#0069EE]">
+          <div className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(0,_105,_238,_0.50)] max-md:pb-[185px]">
+            <div className="md:w-[70%] xl:w-[60%] max-md:pb-0 max-md:pt-10 p-8 relative z-10">
+              <h3 className="text-base xl:text-lg font-medium leading-normal mb-2 xl:mb-3 text-[#0069EE]">
                 ICHI Market Making
               </h3>
-              <p className="text-white text-xs md:text-sm leading-normal">
+              <p className="text-white text-xs xl:text-sm leading-normal">
                 ICHI is a DeFi protocol that specializes in market making and liquidity management. Enabling
                 single-token deposits and employing algorithmic strategies to optimize liquidity provision in a
                 trustless, non-custodial, and transparent manner.
@@ -118,7 +113,7 @@ const Info = () => {
               alt="img"
               width={1132}
               height={831}
-              className="absolute min-w-[1132px] min-h-[831px] top-[-248px] right-[-250px] lg:right-[-108px] max-md:hidden"
+              className="absolute min-w-[1132px] min-h-[831px] top-[-248px] right-[-300px] xl:right-[-250px] 2xl:right-[-108px] max-md:hidden"
             />
 
             <Image
@@ -130,17 +125,16 @@ const Info = () => {
             />
           </div>
 
-          <div className="md:w-[840px] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] max-md:pb-[176px]">
-            <div className="md:w-[70%] relative z-10 max-md:pb-0 max-md:pt-10 p-8">
-              <h3 className="text-base md:text-lg font-medium leading-normal mb-1 md:mb-3 text-transparent bg-button-primary-hover bg-clip-text">
+          <div className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] max-md:pb-[176px]">
+            <div className="md:w-[90%] lg:w-[80%] max-md:pb-0 max-md:pt-10 p-8 relative z-10">
+              <h3 className="text-base xl:text-lg font-medium leading-normal mb-1 md:mb-3 text-transparent bg-button-primary-hover bg-clip-text">
                 Zero-Inflation Rebase
               </h3>
-              <p className="text-white text-xs md:text-sm leading-normal">
-                Fenix is rebase model, aiming for a 15-30% dynamic rate, uses FNX buybacks and locking from revenue to
-                reward long-term holders and governance participants, boosting capital efficiency and governance
-                strength. This approach ensures liquidity providers receive full emissions, enhancing trading liquidity.
-                Achieving Zero-Inflation rebase, the model benefits from RISE veFNX allocation revenue and BLAST Airdrop
-                for lockers, further rewarding network contributors.
+              <p className="text-white text-xs xl:text-sm leading-normal">
+                Fenix will use buy backs generated from treasury voting revenue to buy back and lock FNX that will be
+                distributed to new lockers and bribing protocols. This significantly enhances incentives efficiency by
+                rewarding users who are providing most value to the Blast ecosystem with a larger share of governance
+                power over FNX emissions.
               </p>
             </div>
 
@@ -149,23 +143,23 @@ const Info = () => {
               alt="img"
               width={803}
               height={809}
-              className="absolute min-w-[803px] h-[809px] top-[-297px]  right-[-250px] lg:right-[-154px] max-md:hidden"
+              className="absolute min-w-[803px] h-[809px] top-[-297px]  xl:right-[-250px] 2xl:right-[-154px] max-md:hidden"
             />
             <Image
               src="/static/images/landing/info/05-mobile.png"
               alt="img"
               width={617.489}
               height={395.489}
-              className="min-w-[617.489px] min-h-[395.489px] absolute left-[-160px] bottom-[-136px] md:hidden"
+              className="min-w-[617.489px] min-h-[395.489px] absolute left-[-160px] bottom-[-176px] md:hidden"
             />
           </div>
 
-          <div className="md:w-[840px] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] max-md:pb-[230px]">
-            <div className="md:w-[55%] relative z-10 max-md:pb-0 max-md:pt-10 p-8">
-              <h3 className="text-base md:text-lg font-medium leading-normal mb-2 md:mb-3 text-transparent bg-button-primary-hover bg-clip-text">
+          <div className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] max-md:pb-[230px]">
+            <div className="md:w-[80%] xl:w-[55%] max-md:pb-0 max-md:pt-10 p-8 relative z-10">
+              <h3 className="text-base xl:text-lg font-medium leading-normal mb-2 xl:mb-3 text-transparent bg-button-primary-hover bg-clip-text">
                 Dynamic Fees
               </h3>
-              <p className="text-white text-xs md:text-sm leading-normal">
+              <p className="text-white text-xs xl:text-sm leading-normal">
                 We offer a flexible fee structure that adapts in real-time to market conditions. By considering; asset
                 volatility, trading volume, and liquidity levels, dynamic fees ensure that LPs are fairly compensated
                 from potential impermanent loss and also optimizes their earnings by adjusting fees to encourage trading
@@ -178,14 +172,14 @@ const Info = () => {
               alt="img"
               width={875}
               height={856}
-              className="absolute min-w-[875px] min-h-[856px] top-[-297px] right-[-400px] lg:right-[-274px] max-md:hidden"
+              className="absolute min-w-[875px] min-h-[856px] top-[-297px] right-[-500px] xl:right-[-400px] 2xl:right-[-274px] max-md:hidden"
             />
             <Image
               src="/static/images/landing/info/06-mobile.png"
               alt="img"
               width={496}
               height={351}
-              className="min-w-[496px] min-h-[351px] absolute left-[-11px] bottom-[-136px] md:hidden"
+              className="min-w-[496px] min-h-[351px] absolute left-[-11px] bottom-[-176px] md:hidden"
             />
           </div>
         </div>
@@ -195,7 +189,7 @@ const Info = () => {
             alt="img"
             width={2086.412}
             height={1583.943}
-            className="min-w-[2086.412px] object-contain"
+            className="min-w-[2086.412px] object-contain pointer-events-none select-none"
           />
         </div>
       </div>

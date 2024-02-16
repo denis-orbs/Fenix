@@ -372,6 +372,9 @@
   border
   border-shark-100
   xl:border-0
+  max-xl:w-1/3
+  max-xl:justify-between
+  max-lg:w-full
 
   xl:before:content-['']
   xl:before:absolute

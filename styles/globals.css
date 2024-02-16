@@ -79,7 +79,7 @@ body {
 }
 
 .landing-info-box {
-  @apply relative md:h-[268px] max-md:max-w-[350px]
+  @apply relative h-[400px] md:h-[268px] max-md:max-w-[350px]
 
   before:content-['']
   before:absolute
