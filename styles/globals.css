@@ -1,31 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("./fontello.css");
-
+@import url('./fontello.css');
+@import url('./boxes.css');
 
 body {
-  @apply h-full text-base bg-shark-700;
+  @apply h-full text-base bg-[#0A0A0A];
   scroll-behavior: smooth;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* This Delete the arrows of inputs type number */
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.container {
+  @apply mx-auto max-w-[1860px] px-5;
 }
 
 /************* ScrollBar ***********/
 ::-webkit-scrollbar {
-  width: 1px;
+  @apply mr-[10px] w-[10px];
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  @apply bg-transparent;
 }
 
-.container {
-  @apply max-w-[1760px] mx-auto px-5;
+::-webkit-scrollbar-thumb {
+  @apply w-2 bg-white border-4 border-solid rounded-xl border-shark-400 bg-opacity-40;
 }
 
 /************* Button ***********/
 
 .button {
-  @apply flex items-center justify-center focus:outline-none font-normal transition ease-in-out duration-300 rounded-lg py-3 px-5 text-sm;
+  @apply flex items-center justify-center px-5 py-3 text-sm font-normal transition rounded-lg focus:outline-none;
 }
 .button-default {
   @apply text-white hover:text-outrageous-orange-400;
@@ -34,11 +48,61 @@ body {
   @apply text-white border border-outrageous-orange-400 bg-button-primary hover:bg-button-primary-hover;
 }
 .button-secondary {
-  @apply text-white border border-transparent bg-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-outrageous-orange-400;
+  @apply text-white bg-transparent border border-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-outrageous-orange-400;
 }
 .button-tertiary {
-  @apply text-white border bg-shark-400 border-shark-300 hover:bg-button-primary hover:border-outrageous-orange-400;
+  @apply text-white border bg-shark-400 border-shark-400 hover:bg-button-primary hover:border-outrageous-orange-400;
 }
-.header {
-  @apply flex items-center justify-between p-4 bg-shark-400 bg-opacity-40 rounded-xl border border-shark-400 relative after:content-["''"] after:absolute after:w-[333px] after:right-[60px] after:top-full after:bg-header-rectangle;
+
+
+.main-header-box {
+  @apply relative
+
+  before:content-['']
+  before:absolute
+  before:left-0
+  before:bottom-0
+  before:bg-[url(/static/images/landing/main/box.svg)]
+  before:w-1/2
+  before:h-[123px]
+  before:-z-10
+
+  after:content-['']
+  after:absolute
+  after:right-0
+  after:bottom-0
+  after:bg-[url(/static/images/landing/main/box.svg)]
+  after:w-1/2
+  after:h-[123px]
+  after:bg-right
+  after:-z-10
+}
+
+.landing-info-box {
+  @apply relative md:h-[268px] max-md:max-w-[350px]
+
+  before:content-['']
+  before:absolute
+  before:left-0
+  before:top-0
+  before:bottom-0
+  before:bg-[url(/static/images/landing/info/box-border-mobile.svg)]
+  md:before:bg-[url(/static/images/landing/info/box-border.svg)]
+  before:w-1/2
+  md:before:h-[268px]
+  before:-z-10
+  max-md:before:bg-cover
+
+  after:content-['']
+  after:absolute
+  after:right-0
+  after:top-0
+  after:bottom-0
+  after:bg-[url(/static/images/landing/info/box-border-mobile.svg)]
+  md:after:bg-[url(/static/images/landing/info/box-border.svg)]
+  after:w-1/2
+  md:after:h-[268px]
+  after:bg-right
+  after:-z-10
+  max-md:after:bg-cover
 }

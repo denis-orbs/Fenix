@@ -7,25 +7,51 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    transitionDuration: {
+      DEFAULT: '100ms',
+    },
+    transitionTimingFunction: {
+      DEFAULT: 'linear',
+    },
     extend: {
+      keyframes: {
+        'toast-in': {
+          from: {
+            transform: 'translateX(100%)',
+          },
+          to: {
+            transform: 'translateX(0%)',
+          },
+        },
+        progress: {
+          from: {
+            width: '0',
+          },
+          to: {
+            width: '100%',
+          },
+        },
+      },
       animation: {
         'spin-slow': 'spin 25s linear infinite',
+        'toast-in': 'toast-in 250ms linear',
+        progress: 'progress 3s linear',
       },
       backgroundImage: {
         // Gradients
         'button-primary':
           'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%);',
-        'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%);',
+        'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%)',
         // Background images
-        'header-rectangle': 'url("/static/images/header/rectangle.svg")',
-        'modal-connect': 'url("/static/images/modals/modal-connect.svg")',
-        'modal-welcome': 'url("/static/images/modals/modal-welcome.svg")',
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
-        'info-box': 'url("/static/images/modals/info-box.svg")',
+        'hours': 'url("/static/images/claim/bg-hours.svg")'
+      },
+      lineHeight: {
+        normal: 'normal',
       },
       colors: {
         shark: {
-          '100': '#52575C',
+          '100': '#53606A',
           '200': '#474C51',
           '300': '#393E44',
           '400': '#292D32', // main
@@ -33,7 +59,7 @@ const config: Config = {
           '600': '#0D0F10',
           '700': '#000000',
           '800': '#000000',
-          '900': '#000000',
+          '900': '#111315',
         },
         'outrageous-orange': {
           '100': '#ffe2d4',
@@ -68,6 +94,19 @@ const config: Config = {
           '700': '#a26306',
           '800': '#864d0d',
           '900': '#723f11',
+        },
+        'woodsmoke': {
+          '50': '#f4f6f7',
+          '100': '#e4e7e9',
+          '200': '#cbd1d6',
+          '300': '#a7b0b9',
+          '400': '#7b8795',
+          '500': '#606c7a',
+          '600': '#535b67',
+          '700': '#474e57',
+          '800': '#3f434b',
+          '900': '#383c41',
+          '950': '#0e0f11',
         },
       },
       screens: {

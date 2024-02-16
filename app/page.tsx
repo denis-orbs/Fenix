@@ -1,15 +1,17 @@
-/* eslint-disable import/no-default-export */
-import Header from "@/components/Layout/Header"
-import WalletSelection from '@/components/Modals/WalletSelection'
+import React from 'react'
+import Landing from '@/components/Landing'
 
+import Main from '@/components/Landing/Main'
 
-export default function Home() {
+const HomePage = () => {
   return (
     <main>
-      <div className="p-5">
-        <Header />
-        <WalletSelection />
+      <div className="py-10 mx-auto">
+        <Main />
+        <Landing />
       </div>
     </main>
   )
 }
+
+export default HomePage
