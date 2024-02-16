@@ -23,7 +23,7 @@ const HowItWorks = () => {
         Model designed to reward participants that enable sustainable growth for protocol
       </p>
 
-      <div className="mx-auto flex justify-center relative z-50">
+      <div className="mx-auto flex justify-center relative z-50 mix-blend-lighten">
         <video width={733} height={560} loop playsInline autoPlay muted>
           <source src="/static/images/landing/howitworks/triangle.mp4" type="video/mp4"></source>
           Your browser does not support the video tag.
