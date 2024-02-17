@@ -352,7 +352,7 @@
 
 
 .search-box {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 relative flex items-center h-[62px]
 
   before:hidden
   xl:before:block
