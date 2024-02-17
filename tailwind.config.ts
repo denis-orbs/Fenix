@@ -8,7 +8,7 @@ const config: Config = {
   ],
   theme: {
     transitionDuration: {
-      DEFAULT: '300ms',
+      DEFAULT: '100ms',
     },
     transitionTimingFunction: {
       DEFAULT: 'linear',
@@ -41,7 +41,7 @@ const config: Config = {
         // Gradients
         'button-primary':
           'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%);',
-        'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%);',
+        'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%)',
         // Background images
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
         'hours': 'url("/static/images/claim/bg-hours.svg")'
