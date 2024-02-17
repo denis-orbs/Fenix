@@ -1,5 +1,4 @@
 'use client'
-import cn from '@/utils/cn'
 
 interface SearchProps {
   className?: string
@@ -7,13 +6,8 @@ interface SearchProps {
 
 const Search = ({ className }: SearchProps) => {
 
-  const mergeClassName = cn(
-    'relative flex items-center w-full h-[62px] p-2 rounded-lg search-box bg-opacity-30 ',
-    className
-  )
-
   return (
-    <div className={mergeClassName}>
+    <div className="search-box">
       <span className="flex items-center justify-center w-8 h-5 text-2xl icon-search  text-shark-100" />
       <input
         type="text"
