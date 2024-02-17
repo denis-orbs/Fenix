@@ -6,8 +6,8 @@ import { LOCK_STEPS } from './data'
 
 const Lock = () => {
   return (
-    <section>
-      <div className="flex items-center gap-6 justify-between flex-col md:flex-row mb-10 xl:h-[450px]">
+    <section className='p-5 py-20'>
+      <div className="flex items-center gap-6  flex-col xl:flex-row mb-10 xl:h-[450px]">
         <LockTokens />
         <Steps steps={LOCK_STEPS} />
       </div>

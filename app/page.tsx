@@ -9,6 +9,7 @@ const HomePage = () => {
       <div className="py-10 mx-auto">
         <Main />
         <Landing />
+        {/* chages */}
       </div>
     </main>
   )
