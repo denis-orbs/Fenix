@@ -5,7 +5,7 @@
 @import url('./boxes.css');
 
 body {
-  @apply h-full text-base bg-woodsmoke-950;
+  @apply h-full text-base bg-[#0A0A0A];
   scroll-behavior: smooth;
   font-family: 'Poppins', sans-serif;
 }
@@ -65,6 +65,7 @@ body {
   before:bg-[url(/static/images/landing/main/box.svg)]
   before:w-1/2
   before:h-[123px]
+  before:-z-10
 
   after:content-['']
   after:absolute
@@ -74,4 +75,34 @@ body {
   after:w-1/2
   after:h-[123px]
   after:bg-right
+  after:-z-10
+}
+
+.landing-info-box {
+  @apply relative h-[400px] md:h-[268px] max-md:max-w-[350px]
+
+  before:content-['']
+  before:absolute
+  before:left-0
+  before:top-0
+  before:bottom-0
+  before:bg-[url(/static/images/landing/info/box-border-mobile.svg)]
+  md:before:bg-[url(/static/images/landing/info/box-border.svg)]
+  before:w-1/2
+  md:before:h-[268px]
+  before:-z-10
+  max-md:before:bg-cover
+
+  after:content-['']
+  after:absolute
+  after:right-0
+  after:top-0
+  after:bottom-0
+  after:bg-[url(/static/images/landing/info/box-border-mobile.svg)]
+  md:after:bg-[url(/static/images/landing/info/box-border.svg)]
+  after:w-1/2
+  md:after:h-[268px]
+  after:bg-right
+  after:-z-10
+  max-md:after:bg-cover
 }
