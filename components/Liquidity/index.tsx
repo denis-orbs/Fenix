@@ -2,9 +2,13 @@
 
 import Deposit from '@/components/Liquidity/Deposit'
 import Steps from '@/components/Common/Steps'
-import Pool from '@/components/Liquidity/Pool'
+import Filter from '../Common/Filter'
+import Search from '../Common/Search'
 
 import { STEPS } from './data'
+import Concentrated from '@/components/Liquidity/Tables/Concentrated'
+import Stable from './Tables/Stable'
+import Volatile from './Tables/Volatile'
 
 const Liquidity = () => {
   return (
@@ -13,7 +17,22 @@ const Liquidity = () => {
         <Deposit />
         <Steps steps={STEPS} />
       </div>
-      <Pool />
+      <h5 className="mb-4 text-lg text-white">Liquidity Pools</h5>
+      
+      <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
+        <Filter />
+        <div className="xl:w-1/3">
+          <Search />
+        </div>
+      </div>
+      <h1 className='text-white text-4xl text-center'>Concentrated</h1>
+      <Concentrated />
+      <h1 className='text-white text-4xl text-center'>Stable</h1>
+
+      <Stable/>
+      <h1 className='text-white text-4xl text-center'>Volatile</h1>
+
+      <Volatile/>
     </section>
   )
 }

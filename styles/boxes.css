@@ -366,7 +366,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#0e0f11]
+  before:border-[transparent_transparent_#0a0a0a]
 
   after:hidden
   xl:after:block
@@ -380,7 +380,7 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#0e0f11];
+  after:border-[transparent_transparent_#0a0a0a];
 }
 
 
@@ -399,7 +399,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#0e0f11]
+  before:border-[transparent_transparent_#0a0a0a]
 
   after:hidden
   xl:after:block
@@ -413,7 +413,7 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#0e0f11];
+  after:border-[transparent_transparent_#0a0a0a];
 }
 
 .pagination-mobile-box {
