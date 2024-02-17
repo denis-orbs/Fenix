@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/UI'
-import MENU_LINKS from './data'
+import { MENU_LINKS } from './data'
 import Link from 'next/link'
 
 const Menu = () => {
@@ -12,11 +12,9 @@ const Menu = () => {
   return (
     <ul className="flex item-center md:gap-2 2xl:gap-3">
       {MENU_LINKS.map((link, index) => (
-        <Link href={link.href} key={index}>
-          <Button variant={isActive(link.href) ? 'primary' : 'secondary'} className="!px-3 2xl:!px-5">
-            <span className="text-sm">{link.name}</span>
-          </Button>
-        </Link>
+        <Button variant={isActive(link.href) ? 'primary' : 'secondary'} className="!px-3 2xl:!px-5"  key={index}>
+          <span className="text-sm">{link.name}</span>
+        </Button>
       ))}
     </ul>
   )
