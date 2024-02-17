@@ -6,7 +6,6 @@ import Search from '@/components/Common/Search'
 import Filter from '@/components/Common/Filter'
 import RowSkeleton from '../Liquidity/RowSkeleton'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
-import { FILTER_OPTIONS } from './data'
 const MyLocks = () => {
   const [loading, setLoading] = useState(true)
 
@@ -24,18 +23,18 @@ const MyLocks = () => {
       </div>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
         <Filter />
-        <Search className="w-1/3" />
+        <Search className="" />
       </div>
       <div className="w-full">
         <TableHead
           items={[
-            { text: 'Lock ID', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Rebase APR ', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Lock Amount', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Voting Power', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Unlock Date', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Vote Status', className: 'text-left w-[14.28%]', sortable: true },
-            { text: 'Action', className: 'text-right w-[14.28%]', sortable: false },
+            { text: 'Lock ID', className: 'text-left w-[20%]', sortable: true },
+            { text: 'Rebase APR ', className: 'text-center w-[20%]', sortable: true },
+            { text: 'Lock Amount', className: 'text-left w-[10%]', sortable: true },
+            { text: 'Voting Power', className: 'text-left w-[10%]', sortable: true },
+            { text: 'Unlock Date', className: 'text-left w-[10%]', sortable: true },
+            { text: 'Vote Status', className: 'text-left w-[10%]', sortable: true },
+            { text: 'Action', className: 'text-right w-[10%]', sortable: false },
           ]}
         />
 
@@ -48,7 +47,7 @@ const MyLocks = () => {
             </>
           ) : (
             <TableRow>
-              <TableCell className="w-[14.28%]">
+              <TableCell className="w-[20%]">
                 <div className="flex items-center gap-3">
                   <Image
                     src={'/static/images/tokens/FNX.png'}
@@ -57,20 +56,20 @@ const MyLocks = () => {
                     width={40}
                     height={40}
                   />
-                  <div>
+                  <div className='flex flex-col items-center'>
                     <h1 className="text-sm">10923</h1>
-                    <p className="text-sm text-spring-green-400">
-                      <span className="text-spring-green-400">•</span> Active
+                    <p className="text-sm text-green-400">
+                      <span >•</span> Active
                     </p>
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="w-[14.28%]">
-                <div className="flex items-center justify-end">
-                  <h1 className="text-sm text-left">34.58%</h1>
-                </div>
+              {/* firts */}
+              <TableCell className="w-[20%]  flex items-center justify-center">
+                  <p className="text-sm">34.58%</p>
               </TableCell>
-              <TableCell className="w-[14.28%]">
+              {/* second */}
+              <TableCell className="w-[10%]">
                 <div className="flex items-center gap-2">
                   <Image
                     src={`/static/images/tokens/FNX.png`}
@@ -82,7 +81,8 @@ const MyLocks = () => {
                   <p className="text-sm text-white">744,621.46</p>
                 </div>
               </TableCell>
-              <TableCell className="w-[14.28%]">
+              {/* third */}
+              <TableCell className="w-[10%]">
                 <div className="flex items-center gap-2">
                   <Image
                     src={`/static/images/tokens/FNX.png`}
@@ -94,23 +94,31 @@ const MyLocks = () => {
                   <p className="text-sm text-white">744,621.46</p>
                 </div>
               </TableCell>
-              <TableCell className="w-[14.28%]">
+              {/* fourth */}
+              <TableCell className="w-[10%]">
                 <div className="flex items-center gap-2">
                   <p className="text-sm text-white">27-06-2025</p>
                 </div>
               </TableCell>
-              <TableCell className="w-[14.28%]">
-                <span className="flex items-center justify-center px-5 py-1 text-white border border-spring-green-400 rounded-xl bg-shark-400">
+              {/* fifth */}
+              <TableCell className="w-[10%]">
+                <span className="flex items-center bg-opacity-40 w-[105px] text-sm justify-center px-5 py-1
+                 text-white border border-solid border-green-400 
+                 rounded-xl bg-shark-400">
                   Voted
                 </span>
               </TableCell>
-              <TableCell className="w-[14.28%]">
+              {/* sixth */}
+              <TableCell className="w-[10%]">
                 <div className="flex justify-end w-full">
-                  <Button variant="tertiary" className="h-[38px] w-[90px]">
+                  <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40">
+                   <span className='text-sm'>
                     Manage
+                    </span>
                   </Button>
                 </div>
               </TableCell>
+              {/* seventh */}
             </TableRow>
           )}
         </TableBody>
