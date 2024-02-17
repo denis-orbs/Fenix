@@ -3,10 +3,12 @@
 const TotalMigrated = () => {
 
   return (
-    <div className="relative flex items-center w-full xl:w-2/4 2xl:w-1/3 md:h-[62px] px-4 bg-shark-400 bg-opacity-40 py-2 rounded-lg gap-2">
-      <div className="items-center justify-center hidden w-8 h-8 p-2 rounded-lg md:flex bg-shark-400 bg-opacity-60">
+    <div className="relative flex items-center w-full xl:w-2/4 2xl:w-1/3 md:h-[62px] px-4 py-2 rounded-lg gap-2 bg-shark-400 bg-opacity-40 border border-[#262C33] min-h-[86px]">
+      <div className="p-3 justify-center w-[41px]  h-[41px]  rounded-lg md:flex
+       bg-shark-400 bg-opacity-60">
         <span
-          className={`inline-block text-xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text icon-compass`}
+          className={` text-xl text-transparent bg-gradient-to-r items-center flex justify-center
+           from-outrageous-orange-500 to-festival-500 bg-clip-text icon-compass`}
         ></span>
       </div>
       <div className="w-full">

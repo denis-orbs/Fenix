@@ -11,22 +11,20 @@ const AccountHandler = () => {
   const isConnected = useStore((state) => state.isConnected)
   const { setWalletSelectionModal } = useStore()
 
-  const handlerConnectWallet = () => {
-    setWalletSelectionModal(true)
-  }
+  const handlerConnectWallet = () => setWalletSelectionModal(true)
 
   return (
-    <div className="flex items-center gap-[15px]">
+    <div className="flex items-center gap-[15px] w-full xl:w-auto">
       {isConnected && (
-        <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+        <div className="hidden xl:flex items-center gap-2 flex-shrink-0">
           <Image src="/static/images/tokens/ETH.png" className="w-6 h-6" alt="logo" width={24} height={24} />
           <p className="text-xs text-white">1.987 ETH</p>
         </div>
       )}
-      <div className="flex">
+      <div className="flex w-full xl:w-auto">
         {isConnected ? (
-          <div className="flex gap-2 md:gap-5 md:py-[13px] md:px-3.5 !pr-0 transition-all border rounded-[10px] cursor-pointer bg-shark-900 border-shark-400 bg-opacity-40 hover:bg-opacity-10 group">
-            <div className="flex items-center gap-2.5">
+          <div className="flex w-full xl:w-auto gap-2 md:gap-5 md:py-[13px] md:px-3.5 !pr-0 border rounded-[10px] cursor-pointer bg-shark-900 border-shark-400 bg-opacity-40 hover:bg-opacity-10 group">
+            <div className="w-full flex items-center gap-2.5">
               <div className="relative flex items-center justify-center w-10 md:w-12 h-10 md:h-12 rounded-[10px] bg-shark-400 bg-opacity-40">
                 <span className="text-[17px] icon-wallet text-outrageous-orange-500"></span>
 
@@ -51,7 +49,7 @@ const AccountHandler = () => {
             </div>
           </div>
         ) : (
-          <Button className="gap-3.5 md:w-[300px] h-[40px] md:h-[49px]" onClick={handlerConnectWallet}>
+          <Button className="gap-3.5 w-full md:w-[300px] h-[40px] md:h-[49px]">
             <span className="icon-wallet text-md"></span>
             <span className="text-xs md:text-sm">Connect your Wallet</span>
           </Button>

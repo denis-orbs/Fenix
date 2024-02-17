@@ -1,4 +1,4 @@
-const MENU_LINKS = [
+export const MENU_LINKS = [
   {
     name: 'Trade',
     href: '/trade',
@@ -22,7 +22,35 @@ const MENU_LINKS = [
   {
     name: 'Migration',
     href: '/migration',
-  }
+  },
 ]
 
-export default MENU_LINKS
+
+export const SOCIAL_LINKS = [
+  {
+    title: 'Twitter',
+    href: '#',
+    iconName: 'twitter',
+  },
+  {
+    title: 'Discord',
+    href: '#',
+    iconName: 'discord',
+  },
+  {
+    title: 'Medium',
+    href: '#',
+    iconName: 'medium',
+  },
+  {
+    title: 'Git',
+    href: '#',
+    iconName: 'git',
+  },
+  {
+    title: 'Telegram',
+    href: '#',
+    iconName: 'telegram',
+  },
+]
+

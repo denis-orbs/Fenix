@@ -40,7 +40,7 @@ const Deposit = () => {
         </div>
         <div className="relative flex flex-col w-full xl:w-[40%]">
           {EXCHANGE_LIST.map((exchange, index) => (
-            <InfoBox key={index} data={exchange} />
+            <InfoBox key={index} data={exchange} hasTooltip />
           ))}
         </div>
       </div>

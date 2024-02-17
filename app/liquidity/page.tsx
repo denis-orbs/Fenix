@@ -4,7 +4,7 @@ import Liquidity from '@/components/Liquidity'
 const LiquidityPage = () => {
   return (
     <main>
-      <div className="py-10 mx-auto">
+      <div className="container">
         <Liquidity />
       </div>
     </main>
