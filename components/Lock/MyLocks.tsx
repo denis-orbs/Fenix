@@ -28,13 +28,13 @@ const MyLocks = () => {
       <div className="w-full">
         <TableHead
           items={[
-            { text: 'Lock ID', className: 'text-left w-[20%]', sortable: true },
-            { text: 'Rebase APR ', className: 'text-center w-[20%]', sortable: true },
+            { text: 'Lock ID', className: 'text-left w-[30%]', sortable: true },
+            { text: 'Rebase APR ', className: 'text-center w-[10%]', sortable: true },
             { text: 'Lock Amount', className: 'text-left w-[10%]', sortable: true },
             { text: 'Voting Power', className: 'text-left w-[10%]', sortable: true },
             { text: 'Unlock Date', className: 'text-left w-[10%]', sortable: true },
-            { text: 'Vote Status', className: 'text-left w-[10%]', sortable: true },
-            { text: 'Action', className: 'text-right w-[10%]', sortable: false },
+            { text: 'Vote Status', className: 'text-center w-[15%]', sortable: true },
+            { text: 'Action', className: 'text-right w-[15%]', sortable: false },
           ]}
         />
 
@@ -47,7 +47,7 @@ const MyLocks = () => {
             </>
           ) : (
             <TableRow>
-              <TableCell className="w-[20%]">
+              <TableCell className="w-[30%]">
                 <div className="flex items-center gap-3">
                   <Image
                     src={'/static/images/tokens/FNX.png'}
@@ -65,7 +65,7 @@ const MyLocks = () => {
                 </div>
               </TableCell>
               {/* firts */}
-              <TableCell className="w-[20%]  flex items-center justify-center">
+              <TableCell className="w-[10%]  flex items-center justify-center">
                   <p className="text-sm">34.58%</p>
               </TableCell>
               {/* second */}
@@ -101,7 +101,7 @@ const MyLocks = () => {
                 </div>
               </TableCell>
               {/* fifth */}
-              <TableCell className="w-[10%]">
+              <TableCell className="w-[15%] flex justify-center">
                 <span className="flex items-center bg-opacity-40 w-[105px] text-sm justify-center px-5 py-1
                  text-white border border-solid border-green-400 
                  rounded-xl bg-shark-400">
@@ -109,7 +109,7 @@ const MyLocks = () => {
                 </span>
               </TableCell>
               {/* sixth */}
-              <TableCell className="w-[10%]">
+              <TableCell className="w-[15%]">
                 <div className="flex justify-end w-full">
                   <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40">
                    <span className='text-sm'>

@@ -9,6 +9,7 @@ import { STEPS } from './data'
 import Concentrated from '@/components/Liquidity/Tables/Concentrated'
 import Stable from './Tables/Stable'
 import Volatile from './Tables/Volatile'
+import SingleTokenDeposit from './Tables/SingleTokenDeposit'
 
 const Liquidity = () => {
   return (
@@ -25,6 +26,7 @@ const Liquidity = () => {
           <Search />
         </div>
       </div>
+      <div className='hidden xl:block'>
       <h1 className='text-white text-4xl text-center'>Concentrated</h1>
       <Concentrated />
       <h1 className='text-white text-4xl text-center'>Stable</h1>
@@ -33,6 +35,10 @@ const Liquidity = () => {
       <h1 className='text-white text-4xl text-center'>Volatile</h1>
 
       <Volatile/>
+      <h1 className='text-white text-4xl text-center'>SingleTokenDeposit</h1>
+      <SingleTokenDeposit/>
+
+      </div>
     </section>
   )
 }

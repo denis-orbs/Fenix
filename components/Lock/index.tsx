@@ -1,7 +1,7 @@
 import Steps from '../Common/Steps'
 import LockTokens from './LockTokens'
 import MyLocks from './MyLocks'
-import Relay from './Relay'
+import Nest from './Nest'
 import { LOCK_STEPS } from './data'
 
 const Lock = () => {
@@ -15,7 +15,7 @@ const Lock = () => {
         <MyLocks />
       </div>
       <div className='hidden w-full xl:block'>
-        <Relay/>
+        <Nest/>
       </div>
     </section>
   )
