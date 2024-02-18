@@ -2,8 +2,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import Search from '@/components/Common/Search'
-import Filter from '@/components/Common/Filter'
 import RowSkeleton from '../Liquidity/RowSkeleton'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
 const MyLocks = () => {
@@ -17,14 +15,7 @@ const MyLocks = () => {
 
   return (
     <div className="relative">
-      <div className="flex items-center gap-2 mb-4">
-        <h5 className="text-xl text-white">My Locks</h5>
-        <span className="text-xl text-white icon-info"></span>
-      </div>
-      <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
-        <Filter />
-        <Search className="" />
-      </div>
+      
       <div className="w-full">
         <TableHead
           items={[
