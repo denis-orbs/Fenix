@@ -6,7 +6,6 @@ const MigrationPage = () => {
     <main>
       <div className="container">
         <Migration />
-
         <Decorator />
       </div>
     </main>
