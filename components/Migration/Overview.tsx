@@ -20,7 +20,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
         <AddressCheck migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
         <TotalMigrated />
       </div>
-      {migrateStatus !== 'success' && 'wrong' && (
+      {migrateStatus !== 'success' && migrateStatus !== 'wrong' && (
         <>
           <div className="flex flex-col items-center justify-center py-10 rounded-lg bg-shark-400 bg-opacity-40">
             <span className="text-5xl icon-circles text-shark-100"></span>

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 'use client'
 
 import { TableCell, TableRow } from '@/components/UI'
@@ -6,7 +5,7 @@ import { TableCell, TableRow } from '@/components/UI'
 const RowSkeleton = () => {
   return (
     <TableRow>
-      <TableCell>
+      <TableCell className='w-[30%]'>
         <div className="animate-pulse flex items-center gap-2">
           <div className="flex items-center">
             <div className="w-7 h-7 rounded-full bg-shark-400"></div>
@@ -20,31 +19,31 @@ const RowSkeleton = () => {
           </div>
         </div>
       </TableCell>
-      <TableCell className="max-w-[260px]">
+      <TableCell className="w-[10%]">
         <div className="animate-pulse flex flex-col justify-end w-full px-3 items-end">
           <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>
           <div className="w-24 h-3 rounded bg-shark-400"></div>
         </div>
       </TableCell>
-      <TableCell className="max-w-[260px]">
+      <TableCell className="w-[15%]">
         <div className="animate-pulse flex flex-col justify-end w-full px-3 items-end">
           <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>
           <div className="w-24 h-3 rounded bg-shark-400"></div>
         </div>
       </TableCell>
-      <TableCell className="max-w-[260px]">
+      <TableCell className="w-[15%]">
         <div className="animate-pulse flex flex-col justify-end w-full px-3 items-end">
           <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>
           <div className="w-24 h-3 rounded bg-shark-400"></div>
         </div>
       </TableCell>
-      <TableCell className="max-w-[260px]">
+      <TableCell className="w-[15%]">
         <div className="animate-pulse flex flex-col justify-end w-full px-3 items-end">
           <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>
           <div className="w-24 h-3 rounded bg-shark-400"></div>
         </div>
       </TableCell>
-      <TableCell className="">
+      <TableCell className="w-[15%]">
         <div className="animate-pulse flex gap-3 justify-end w-full px-3">
           <div className="flex flex-col items-end">
             <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>

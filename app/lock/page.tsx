@@ -1,3 +1,4 @@
+import Decorator from '@/components/Common/Layout/Background'
 import Lock from '@/components/Lock'
 
 const LockPage = () => {
@@ -5,6 +6,7 @@ const LockPage = () => {
     <main>
       <div className="container">
         <Lock />
+        <Decorator/>
       </div>
     </main>
   )
