@@ -8,7 +8,7 @@ import Link from 'next/link'
 const Menu = () => {
   const pathname = usePathname()
   const isActive = (path: string) => path === pathname
-
+  
   return (
     <ul className="flex item-center md:gap-2 2xl:gap-3">
       {MENU_LINKS.map((link, index) => (
