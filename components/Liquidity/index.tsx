@@ -10,7 +10,7 @@ import { STEPS } from './data'
 import { TableHead, TableBody,  Pagination } from '../UI'
 import RowSkeleton from './RowSkeleton'
 import { OPTIONS_FILTER } from './data'
-import RowData from './Tables/Row'
+import Row from './Tables/Row'
 import PaginationMobile from '../UI/Pagination/PaginationMobile'
 import { DATA_ROW } from './data'
 
@@ -34,7 +34,7 @@ const Liquidity = () => {
       <h5 className="mb-4 text-lg text-white">Liquidity Pools</h5>
 
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
-        <Filter Options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
+        <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         <div className="xl:w-1/3">
           <Search />
         </div>
@@ -66,7 +66,7 @@ const Liquidity = () => {
             ) : (
               filterData.map((row, index) => (
                 <Fragment key={index}>
-                  <RowData row={row} />
+                  <Row row={row} />
                 </Fragment>
               ))
             )}
