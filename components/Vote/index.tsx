@@ -1,19 +1,24 @@
+/* eslint-disable no-console */
 'use client'
-
 import Deposit from '@/components/Vote/Deposit'
-import Steps from '@/components/Common/Steps'
-import Pool from '@/components/Vote/Pool'
-
-import STEPS from './data'
-
+import VoteNow from './VoteNow/VoteNow'
+import Filter from '../Common/Filter'
+import Search from '../Common/Search'
+import { FILTER_OPTIONS } from './data'
+import Voted from './Voted'
 const Vote = () => {
   return (
     <section>
-      <div className="flex items-center gap-5">
+      <div className="flex flex-col items-center gap-5 p-5 xl:flex xl:flex-row">
         <Deposit />
-        <Steps steps={STEPS} />
+        <VoteNow />
       </div>
-      <Pool />
+      <h1 className="text-xl text-white">Select Liquidity Pools for Voting</h1>
+      <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
+        <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => console.log()}/>
+        <Search />
+      </div>
+      <Voted />
     </section>
   )
 }

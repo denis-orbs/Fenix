@@ -1,31 +1,28 @@
 /* eslint-disable max-len */
 'use client'
 import { Fragment, useEffect, useState } from 'react'
-import Image from 'next/image'
 
 import Deposit from '@/components/Liquidity/Deposit'
 import Steps from '@/components/Common/Steps'
-import Filter, { FilterTabs } from '../Common/Filter'
-import Search from '../Common/Search'
+import Filter from '@/components/Common/Filter'
+import Search from '@/components/Common/Search'
+import RowSkeleton from '@/components/Common/RowSkeleton'
 import { STEPS } from './data'
-import Concentrated from '@/components/Liquidity/Tables/Concentrated'
-import Stable from './Tables/Stable'
-import Volatile from './Tables/Volatile'
-import { TableHead, TableBody, TableRow, TableCell, Button, Pagination } from '../UI'
-import RowSkeleton from './RowSkeleton'
-
-import RowData, { RowDataType } from './Tables/RowData'
-import PaginationMobile from '../UI/Pagination/PaginationMobile'
+import { TableHead, TableBody, Pagination, PaginationMobile } from '@/components/UI'
+import { OPTIONS_FILTER } from './data'
+import Row from '@/components/Liquidity/Tables/Row'
+import { DATA_ROW } from './data'
 
 const Liquidity = () => {
-  const [currentTab, setCurrentTab] = useState<FilterTabs>(FilterTabs.CONCENTRATED)
-  const [loading, setLoading] = useState(false)
-
+  const [currentTab, setCurrentTab] = useState<string>("CONCENTRATED")
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
     }, 2000)
   }, [])
+
+  const filterData = currentTab !== "ALL POOLS" ? DATA_ROW.filter(row => row.type === currentTab) : DATA_ROW
 
   return (
     <section className="my-5 xl:my-10">
@@ -36,7 +33,7 @@ const Liquidity = () => {
       <h5 className="mb-4 text-lg text-white">Liquidity Pools</h5>
 
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
-        <Filter currentTab={currentTab} setCurrentTab={setCurrentTab} />
+        <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         <div className="xl:w-1/3">
           <Search />
         </div>
@@ -51,6 +48,7 @@ const Liquidity = () => {
                 { text: 'APR', className: 'text-center  w-[10%]', sortable: true },
                 { text: 'TVL', className: 'w-[15%] text-right', sortable: true },
                 { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
+                // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
                 { text: 'Fees', className: 'w-[15%] text-right', sortable: true },
                 { text: 'Action', className: 'w-[15%] text-right', sortable: true },
               ]}
@@ -60,16 +58,14 @@ const Liquidity = () => {
           <TableBody>
             {loading ? (
               <>
-                {Array.from({ length: 1 }).map((_, index) => (
+                {Array.from({ length: filterData.length }).map((_, index) => (
                   <RowSkeleton key={index} />
                 ))}
               </>
             ) : (
-              Array.from({ length: 3 }).map((_, index) => (
+              filterData.map((row, index) => (
                 <Fragment key={index}>
-                  <RowData type={RowDataType.CONCENTRATED} />
-                  <RowData type={RowDataType.VOLATILE} />
-                  <RowData type={RowDataType.STABLE} />
+                  <Row row={row} />
                 </Fragment>
               ))
             )}

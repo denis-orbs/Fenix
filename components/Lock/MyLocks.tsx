@@ -2,7 +2,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import RowSkeleton from '../Liquidity/RowSkeleton'
+import RowSkeleton from '@/components/Common/RowSkeleton'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
 const MyLocks = () => {
   const [loading, setLoading] = useState(true)
@@ -15,7 +15,6 @@ const MyLocks = () => {
 
   return (
     <div className="relative">
-      
       <div className="w-full">
         <TableHead
           items={[
@@ -94,7 +93,7 @@ const MyLocks = () => {
               {/* fifth */}
               <TableCell className="w-[15%] flex justify-center">
                 <span className="flex items-center bg-opacity-40 w-[105px] text-sm justify-center px-5 py-1
-                 text-white border border-solid border-green-400 
+                 text-white border border-solid border-green-400
                  rounded-xl bg-shark-400">
                   Voted
                 </span>

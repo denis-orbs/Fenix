@@ -35,6 +35,45 @@ export const EXCHANGE_LIST = [
   },
 ]
 
+export const DATA_ROW = [
+  {
+    type: "CONCENTRATED",
+    APR: "35.00"
+  },
+  {
+    type: "CONCENTRATED",
+    APR: "40.00"
+  },
+  {
+    type: "CONCENTRATED",
+    APR: "48.00"
+  },
+
+  {
+    type: "STABLE",
+    APR: "35.00"
+  },
+  {
+    type: "STABLE",
+    APR: "40.00"
+  },
+  {
+    type: "STABLE",
+    APR: "555.00"
+  },
+  {
+    type: "VOLATILE",
+    APR: "35.00"
+  },
+  {
+    type: "VOLATILE",
+    APR: "999.00"
+  },
+  {
+    type: "VOLATILE",
+    APR: "48.00"
+  },
+]
 
 
 export const OPTIONS_FILTER = ["Concentrated", "Stable", "Volatile",

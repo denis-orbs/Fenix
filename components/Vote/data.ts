@@ -1,4 +1,4 @@
-const STEPS = [
+export const STEPS = [
   {
     title: 'Select your Pool',
     description: 'Select the pair that suits better your strategy.',
@@ -17,4 +17,27 @@ const STEPS = [
   },
 ]
 
-export default STEPS
+export const EXCHANGE_LIST = [
+  {
+    label: 'Total Fees',
+    amount: 9283732732,
+    icon: 'icon-pig',
+  },
+  {
+    label: 'Total Incentives',
+    amount: 6478944582,
+    icon: 'icon-coins',
+  },
+  {
+    label: 'Total Rewards',
+    amount: 4868076544,
+    icon: 'icon-coins',
+  },
+  {
+    label: 'New Emissions',
+    amount: 4868076544,
+    icon: 'icon-rocket',
+  },
+]
+
+export const FILTER_OPTIONS = [' Voted', 'Not Voted', 'Stable', ' Volatile', ' CL']

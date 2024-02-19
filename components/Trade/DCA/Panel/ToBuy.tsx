@@ -1,14 +1,20 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
+import SelectToken from '@/components/Modals/SelectToken'
 
 import { IToken } from '@/types'
 
 interface ToBuyProps {
   token: IToken
+  setToken: (token: IToken) => void
 }
 
-const ToBuy = ({ token }: ToBuyProps) => {
+const ToBuy = ({ token, setToken }: ToBuyProps) => {
+  const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
+
+  const handlerSelectToken = () => setOpenSelectToken(true)
 
   return (
     <div className="exchange-box-x2">
@@ -19,7 +25,7 @@ const ToBuy = ({ token }: ToBuyProps) => {
           <span>Available: 0.00 ETH</span>
         </p>
       </div>
-      <div className="flex flex-col xl:flex-row items-center gap-3">
+      <div className="flex flex-col xl:flex-row items-center gap-3 cursor-pointer" onClick={handlerSelectToken}>
         <div className="relative w-full">
           <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
             <div className="flex items-center gap-2">
@@ -36,6 +42,11 @@ const ToBuy = ({ token }: ToBuyProps) => {
           </div>
         </div>
       </div>
+      <SelectToken
+        openModal={openSelectToken}
+        setOpenModal={setOpenSelectToken}
+        setToken={setToken}
+      />
     </div>
   )
 }

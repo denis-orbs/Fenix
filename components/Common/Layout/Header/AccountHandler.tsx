@@ -5,18 +5,19 @@ import Image from 'next/image'
 
 import { Button } from '@/components/UI'
 import useStore from '@/store'
+import { usePathname } from 'next/navigation'
 
 const AccountHandler = () => {
-  // eslint-disable-next-line no-unused-vars
   const isConnected = useStore((state) => state.isConnected)
   const { setWalletSelectionModal } = useStore()
 
-  const handlerConnectWallet = () => setWalletSelectionModal(true)
+  const pathname = usePathname()
+  const handlerConnectWallet = () => pathname !== '/' && setWalletSelectionModal(true)
 
   return (
     <div className="flex items-center gap-[15px] w-full xl:w-auto">
       {isConnected && (
-        <div className="hidden xl:flex items-center gap-2 flex-shrink-0">
+        <div className="items-center flex-shrink-0 hidden gap-2 xl:flex">
           <Image src="/static/images/tokens/ETH.png" className="w-6 h-6" alt="logo" width={24} height={24} />
           <p className="text-xs text-white">1.987 ETH</p>
         </div>
@@ -30,26 +31,26 @@ const AccountHandler = () => {
 
                 <Image
                   src="/static/images/wallets/metamask.png"
-                  className="absolute w-6 h-6 right-0 bottom-0"
+                  className="absolute bottom-0 right-0 w-6 h-6"
                   alt="logo"
                   width={24}
                   height={24}
                 />
               </div>
               <div className="">
-                <p className="hidden md:block text-xs font-medium text-shark-100">Welcome</p>
+                <p className="hidden text-xs font-medium md:block text-shark-100">Welcome</p>
                 <p className="flex items-center text-xs text-white">
                   <span className="block w-2 h-2 mr-1.5 bg-green-400 rounded-full"></span>
                   <span className="truncate max-w-[70px] md:max-w-[150px]">0x98b36ab87c6de3c</span>
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-center px-4 border-l border-shark-300 flex-shrink-0 group-hover:border-shark-300 transition-colors">
+            <div className="flex items-center justify-center flex-shrink-0 px-4 transition-colors border-l border-shark-300 group-hover:border-shark-300">
               <span className="text-base md:text-xl icon-cog text-shark-100 group-hover:text-outrageous-orange-500"></span>
             </div>
           </div>
         ) : (
-          <Button className="gap-3.5 w-full md:w-[300px] h-[40px] md:h-[49px]">
+          <Button onClick={handlerConnectWallet} className="gap-3.5 w-full md:w-[300px] h-[40px] md:h-[49px]">
             <span className="icon-wallet text-md"></span>
             <span className="text-xs md:text-sm">Connect your Wallet</span>
           </Button>
