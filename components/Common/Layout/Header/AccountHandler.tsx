@@ -5,13 +5,14 @@ import Image from 'next/image'
 
 import { Button } from '@/components/UI'
 import useStore from '@/store'
+import { usePathname } from 'next/navigation'
 
 const AccountHandler = () => {
   // eslint-disable-next-line no-unused-vars
   const isConnected = useStore((state) => state.isConnected)
   const { setWalletSelectionModal } = useStore()
-
-  const handlerConnectWallet = () => setWalletSelectionModal(true)
+  const PATH = usePathname()
+  const handlerConnectWallet = () => PATH !== "/"? setWalletSelectionModal(true) : setWalletSelectionModal(false)
 
   return (
     <div className="flex items-center gap-[15px] w-full xl:w-auto">
@@ -49,7 +50,7 @@ const AccountHandler = () => {
             </div>
           </div>
         ) : (
-          <Button className="gap-3.5 w-full md:w-[300px] h-[40px] md:h-[49px]">
+          <Button onClick={handlerConnectWallet} className="gap-3.5 w-full md:w-[300px] h-[40px] md:h-[49px]">
             <span className="icon-wallet text-md"></span>
             <span className="text-xs md:text-sm">Connect your Wallet</span>
           </Button>
