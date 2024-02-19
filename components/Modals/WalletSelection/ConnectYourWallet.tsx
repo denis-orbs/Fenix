@@ -7,12 +7,11 @@ interface ConnectYourWalletProps {
 }
 
 const ConnectYourWallet = ({ setIsConnecting }: ConnectYourWalletProps) => {
-
   const handlerSelectWallet = () => setIsConnecting(true)
 
   return (
     <div className="w-full p-10 xl:w-[40%] bg-shark-400 bg-opacity-40 relative rounded-2xl">
-      <h4 className="mb-4 text-base text-white md:mb-8 md:text-xl">Connect your Wallet</h4>
+      <h4 className="mb-4 text-base text-white md:mb-8 md:text-xl">connect your wallet</h4>
       <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4 mb-4 max-h-[400px] md:max-h-auto overflow-y-auto md:overscroll-none">
         {WALLETS.map((wallet, index) => (
           <div

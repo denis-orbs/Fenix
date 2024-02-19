@@ -1,15 +1,13 @@
-import Migration from '@/components/Migration'
-import Decorator from '@/components/Common/Layout/Background'
+import Claim from '@/components/Claim'
 
-const MigrationPage = () => {
+const ClaimPage = () => {
   return (
     <main>
-      <div className="container">
-        <Migration />
-        <Decorator />
+      <div className="mx-auto md:p-6">
+        <Claim />
       </div>
     </main>
   )
 }
 
-export default MigrationPage
+export default ClaimPage
