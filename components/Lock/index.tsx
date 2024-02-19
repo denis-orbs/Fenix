@@ -9,6 +9,7 @@ import Search from '../Common/Search'
 import { FILTER_OPTIONS } from './data'
 
 const Lock = () => {
+  
   return (
     <section className='p-5 py-20'>
       <div className="flex items-center gap-6  flex-col xl:flex-row mb-10 xl:h-[450px]">
