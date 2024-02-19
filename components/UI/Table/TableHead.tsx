@@ -27,7 +27,7 @@ const TableHead = ({ items }: TableHeadProps) => {
 
   const mergeClassName = (item: IItems) => {
     return cn(
-      'p-2.5  flex-grow text-right',
+      'p-2.5 ',
       item.sortable ? 'cursor-pointer relative select-none' : '',
       item.className
     )
@@ -42,7 +42,7 @@ const TableHead = ({ items }: TableHeadProps) => {
   }
 
   return (
-    <div className="flex text-white justify-between text-sm mb-3.5 px-1.5">
+    <div className="flex text-white text-sm mb-3.5 px-1.5">
       {items.map((item, index) => {
         return (
           <div key={index} className={mergeClassName(item)} onClick={() => handleSort(index, item)}>

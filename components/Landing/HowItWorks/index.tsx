@@ -16,7 +16,7 @@ const HowItWorks = () => {
       <p className="text-white text-base md:text-lg md:mb-2 text-center font-light">How it Works</p>
 
       <h3 className="text-xl md:text-2xl mb-2 md:mb-4 text-center text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-        Fenix Finace
+        Fenix Finance
       </h3>
 
       <p className="text-white text-xs md:text-base text-center md:mb-10">

@@ -24,13 +24,18 @@ export const EXCHANGE_LIST = [
     icon: 'icon-lock',
   },
   {
-    label: 'Minimum Exchange Ratio',
+    label: 'Fees',
     amount: 6478944582,
     icon: 'icon-pig',
   },
   {
-    label: 'Minimum Exchange Ratio',
+    label: 'Volume',
     amount: 4868076544,
     icon: 'icon-coins',
   },
 ]
+
+
+
+export const OPTIONS_FILTER = ["Concentrated", "Stable", "Volatile",
+ "Single Token Deposit", "All Pools"]
