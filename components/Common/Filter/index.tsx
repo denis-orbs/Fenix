@@ -2,36 +2,61 @@
 
 import { Button } from '@/components/UI'
 
-interface FilterProps {
-  Options: string[]
-  tableChange?: string
-  setTableChange: React.Dispatch<React.SetStateAction<string>>
+export enum FilterTabs {
+  CONCENTRATED = 'CONCENTRATED',
+  STABLE = 'STABLE',
+  VOLATILE = 'VOLATILE',
+  SINGLE_TOKEN_DEPOSIT = 'SINGLE_TOKEN_DEPOSIT',
+  ALL_POOLS = 'ALL_POOLS',
 }
 
-const Filter = ({ Options, tableChange, setTableChange }: FilterProps) => {
-  const handlerChange = (option: string) => {
-    setTableChange(option.split(' ').join("").toLowerCase())
-  }
+const Filter = ({
+  currentTab,
+  setCurrentTab,
+}: {
+  currentTab: FilterTabs
+  setCurrentTab: (tab: FilterTabs) => void
+}) => {
   return (
     <div
       className="flex flex-col xl:flex-row items-center gap-2 px-3 py-2 filter-box 
     rounded-lg justify-start md:gap-5 w-full xl:w-2/3  bg-opacity-40"
     >
-      {Options.map((option, index) => {
-        //we need a logic to  change the current active button
-        return (
-          <Button
-            key={index}
-            variant={tableChange == option.split(" ").join("").toLowerCase() ? "primary" : "secondary"}
-            onClick={()=>{
-              handlerChange(option)
-            }}
-            className="h-[40px] md:h-auto w-full xl-w-auto"
-          >
-            {option}
-          </Button>
-        )
-      })}
+      <Button
+        variant={currentTab === FilterTabs.CONCENTRATED ? undefined : 'default'}
+        onClick={() => setCurrentTab(FilterTabs.CONCENTRATED)}
+        className="h-[40px] md:h-auto w-full xl-w-auto"
+      >
+        Concentrated
+      </Button>
+      <Button
+        variant={currentTab === FilterTabs.STABLE ? undefined : 'default'}
+        onClick={() => setCurrentTab(FilterTabs.STABLE)}
+        className="h-[40px] md:h-auto w-full xl-w-auto "
+      >
+        Stable
+      </Button>
+      <Button
+        variant={currentTab === FilterTabs.VOLATILE ? undefined : 'default'}
+        onClick={() => setCurrentTab(FilterTabs.VOLATILE)}
+        className="h-[40px] md:h-auto w-full xl-w-auto"
+      >
+        Volatile
+      </Button>
+      <Button
+        variant={currentTab === FilterTabs.SINGLE_TOKEN_DEPOSIT ? undefined : 'default'}
+        onClick={() => setCurrentTab(FilterTabs.SINGLE_TOKEN_DEPOSIT)}
+        className="h-[40px] md:h-auto w-full xl-w-auto"
+      >
+        Single Token Deposit
+      </Button>
+      <Button
+        variant={currentTab === FilterTabs.ALL_POOLS ? undefined : 'default'}
+        onClick={() => setCurrentTab(FilterTabs.ALL_POOLS)}
+        className="h-[40px] md:h-auto w-full xl-w-auto"
+      >
+        All Pools
+      </Button>
     </div>
   )
 }
