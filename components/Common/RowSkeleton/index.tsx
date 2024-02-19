@@ -5,14 +5,14 @@ import { TableCell, TableRow } from '@/components/UI'
 const RowSkeleton = () => {
   return (
     <TableRow>
-      <TableCell className='w-[30%]'>
-        <div className="animate-pulse flex items-center gap-2">
+      <TableCell className="w-[30%]">
+        <div className="flex items-center gap-2 animate-pulse">
           <div className="flex items-center">
-            <div className="w-7 h-7 rounded-full bg-shark-400"></div>
-            <div className="w-7 h-7 rounded-full bg-shark-400 -ml-2"></div>
+            <div className="rounded-full w-7 h-7 bg-shark-400"></div>
+            <div className="-ml-2 rounded-full w-7 h-7 bg-shark-400"></div>
           </div>
           <div className="flex flex-col">
-            <div className="w-14 h-3 rounded bg-shark-400 mb-2"></div>
+            <div className="h-3 mb-2 rounded w-14 bg-shark-400"></div>
             <div className="flex">
               <div className="w-40 h-3 rounded bg-shark-400"></div>
             </div>
@@ -20,33 +20,33 @@ const RowSkeleton = () => {
         </div>
       </TableCell>
       <TableCell className="w-[10%]">
-        <div className="animate-pulse flex flex-col justify-end w-full px-3 items-end">
-          <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>
+        <div className="flex flex-col items-end justify-end w-full px-3 animate-pulse">
+          <div className="w-10 h-3 mb-1 rounded bg-shark-400"></div>
           <div className="w-24 h-3 rounded bg-shark-400"></div>
         </div>
       </TableCell>
       <TableCell className="w-[15%]">
-        <div className="animate-pulse flex flex-col justify-end w-full px-3 items-end">
-          <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>
+        <div className="flex flex-col items-end justify-end w-full px-3 animate-pulse">
+          <div className="w-10 h-3 mb-1 rounded bg-shark-400"></div>
           <div className="w-24 h-3 rounded bg-shark-400"></div>
         </div>
       </TableCell>
       <TableCell className="w-[15%]">
-        <div className="animate-pulse flex flex-col justify-end w-full px-3 items-end">
-          <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>
+        <div className="flex flex-col items-end justify-end w-full px-3 animate-pulse">
+          <div className="w-10 h-3 mb-1 rounded bg-shark-400"></div>
           <div className="w-24 h-3 rounded bg-shark-400"></div>
         </div>
       </TableCell>
       <TableCell className="w-[15%]">
-        <div className="animate-pulse flex flex-col justify-end w-full px-3 items-end">
-          <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>
+        <div className="flex flex-col items-end justify-end w-full px-3 animate-pulse">
+          <div className="w-10 h-3 mb-1 rounded bg-shark-400"></div>
           <div className="w-24 h-3 rounded bg-shark-400"></div>
         </div>
       </TableCell>
       <TableCell className="w-[15%]">
-        <div className="animate-pulse flex gap-3 justify-end w-full px-3">
+        <div className="flex justify-end w-full gap-3 px-3 animate-pulse">
           <div className="flex flex-col items-end">
-            <div className="w-10 h-3 rounded bg-shark-400 mb-1"></div>
+            <div className="w-10 h-3 mb-1 rounded bg-shark-400"></div>
             <div className="w-24 h-3 rounded bg-shark-400"></div>
           </div>
           <div className="w-20 h-8 rounded-lg bg-shark-300"></div>
