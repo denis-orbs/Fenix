@@ -7,7 +7,6 @@ import Deposit from '@/components/Liquidity/Deposit'
 import Steps from '@/components/Common/Steps'
 import Filter, { FilterTabs } from '../Common/Filter'
 import Search from '../Common/Search'
-
 import { STEPS } from './data'
 import Concentrated from '@/components/Liquidity/Tables/Concentrated'
 import Stable from './Tables/Stable'

@@ -34,3 +34,8 @@ export const EXCHANGE_LIST = [
     icon: 'icon-coins',
   },
 ]
+
+
+
+export const OPTIONS_FILTER = ["Concentrated", "Stable", "Volatile",
+ "Single Token Deposit", "All Pools"]

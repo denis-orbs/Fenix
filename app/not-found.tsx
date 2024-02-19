@@ -10,7 +10,9 @@ const NotFound = () => {
   const hadleGoHome = () => router.push('/')
 
   return (
-    <div className="relative flex items-center justify-center mt-10 mb-20 text-white">
+    <div className="relative flex items-center
+    
+     justify-center mt-10 mb-20 text-white">
       <div className="absolute">
         <Image
           src={'/static/images/404/Ellipse67.svg'}
@@ -38,7 +40,7 @@ const NotFound = () => {
           alt="image"
         />
       </div>
-      <div className="bg-background-404 z-10 p-24 rounded-2xl !bg-opacity-10 w-[960px] h-[659.34px]  flex flex-col justify-center items-center">
+      <div className="bg-error-404 z-10 p-24 rounded-2xl !bg-opacity-10 w-[960px] h-[659.34px]  flex flex-col justify-center items-center">
         <h1 className="lg:text-[150px] sm:text-[150px] text-white mb-14">
           ERC-
           <span className="text-transparent bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text">404</span>

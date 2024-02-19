@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
 
-const Relay = () => {
+const Nest = () => {
   const [loading, setLoading] = useState(true)
   const [activeAccordion, setActiveAccordion] = useState<boolean>(false)
   const handlerAccordion = () => (activeAccordion ? setActiveAccordion(false) : setActiveAccordion(true))
@@ -27,8 +27,8 @@ const Relay = () => {
             { text: 'Your Nests', className: 'text-left w-[50%] ', sortable: true },
             { text: 'Rebase APR ', className: 'w-[10%]', sortable: true },
             { text: 'Reward', className: ' w-[10%]', sortable: true },
-            { text: 'Voting Power', className: 'w-[10%] ', sortable: true },
-            { text: 'Action', className: ' w-[20%]', sortable: false },
+            { text: 'Voting Power', className: ' text-center w-[10%] ', sortable: true },
+            { text: 'Action', className: 'text-right w-[20%]', sortable: false },
           ]}
         />
 
@@ -41,31 +41,32 @@ const Relay = () => {
                 </Button>
                 <div className="flex flex-col text-center gap-2 ">
                   <div className="flex gap-2 items-center">
-                    <h1 className="text-[14px] font-bold">veFNX Maxi</h1>{' '}
-                    <p className="text-[12px] w-[71px] h-[21px] bg-shark-400 flex items-center justify-center  rounded-lg  border-[#53606A] border-solid border-2">
+                    <h1 className="text-sm font-bold">veFNX Maxi</h1>{' '}
+                    <p className="text-xs w-[71px] h-[21px] bg-shark-400 flex items-center justify-center  rounded-lg  border-[#53606A] border-solid border-2">
                       ID 11230
                     </p>
                   </div>
                   <div className="flex gap-1">
                     <p
-                      className="text-[12px] text-[#53606A] w-[159px] h-[27px]
-                    bg-shark-400  rounded-lg  border-[#53606A] border-solid border-2"
+                      className="text-xs flex justify-center items-center text-shark-100 w-[159px] h-[27px]
+                    bg-shark-400  rounded-lg  border-shark-100 border-solid border-2"
                     >
                       Updated 2 days ago
                     </p>
-                    <p className="text-[12px] text-[#53606A] bg-shark-400 w-[111px] h-[27px] rounded-lg border border-[#53606A] border-solid border-1">
+                    <p className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 w-[111px] h-[27px] rounded-lg border border-[#53606A] border-solid border-1">
                       0xc981...EF14f
+                      <span className='icon-document'></span>
                     </p>
                   </div>
                 </div>
               </div>
             </TableCell>
             {/* first */}
-            <TableCell className="w-[10%] flex items-center justify-end ">
+            <TableCell className="w-[10%] flex items-center justify-center ">
               <h1 className="text-sm me-4">34.58%</h1>
             </TableCell>
             {/* second */}
-            <TableCell className="w-[10%] flex justify-end ">
+            <TableCell className="w-[10%] flex  ">
               <div className="flex items-center gap-2 me-4">
                 <Image
                   src={`/static/images/tokens/FNX.png`}
@@ -78,7 +79,7 @@ const Relay = () => {
               </div>
             </TableCell>
             {/* third */}
-            <TableCell className="w-[10%] flex justify-end">
+            <TableCell className="w-[10%] flex justify-center">
               <div className="flex items-center gap-2">
                 <Image
                   src={`/static/images/tokens/FNX.png`}
@@ -143,4 +144,4 @@ const Relay = () => {
   )
 }
 
-export default Relay
+export default Nest

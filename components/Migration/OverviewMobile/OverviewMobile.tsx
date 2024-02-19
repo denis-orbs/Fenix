@@ -42,7 +42,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
             <TableBody>
               {TOKENS_LIST.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell className="flex">
+                  <TableCell className="flex w-full">
                     <div className="flex flex-col w-full">
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center w-1/2 gap-2 px-3 py-[18px] rounded-lg bg-shark-400 bg-opacity-40">
@@ -133,7 +133,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
             <TableBody>
               {TOKENS_LIST.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell className="w-[13%] ">
+                  <TableCell className="w-[30%] ">
                     <div className="flex items-center gap-2">
                       <Image
                         src={`/static/images/tokens/${item.icon}.png`}
@@ -145,7 +145,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
                       <p className="text-sm text-white">{item.token}</p>
                     </div>
                   </TableCell>
-                  <TableCell className="w-[50%]">
+                  <TableCell className="w-[70%]">
                     <div className="flex  w-full ">
                       <div className="bg-shark-300  flex justify-start   rounded-lg bg-opacity-30 flex-col h-[51px] w-full ">
                         <p className="text-[12px] text-shark-100 ms-2">Mi Migrated Amount</p>

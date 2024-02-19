@@ -20,7 +20,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
         <AddressCheck migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
         <TotalMigrated />
       </div>
-      {migrateStatus !== 'sucess' && 'wrong' && (
+      {migrateStatus !== 'success' && 'wrong' && (
         <>
           <div className="flex flex-col items-center justify-center py-10 rounded-lg bg-shark-400 bg-opacity-40">
             <span className="text-5xl icon-circles text-shark-100"></span>
@@ -37,7 +37,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                 { text: 'My Total Amount', className: 'text-right w-[20%]', sortable: true },
                 { text: 'My Migrated Amount', className: 'text-right w-[20%]', sortable: true },
                 { text: 'Claimable Token', className: 'text-right w-[20%]', sortable: true },
-                { text: 'Action', className: 'w-[20%]', sortable: false },
+                { text: 'Action', className: 'text-right w-[20%]', sortable: false },
               ]}
             />
 
@@ -124,17 +124,15 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
           <div className="w-full mb-10">
             <TableHead
               items={[
-                { text: 'Token', className: 'text-left', sortable: true },
-                { text: 'My Migrated Amount', className: 'md:max-w-[300px]', sortable: true },
-                // { text: 'Claimable Token', className: 'md:max-w-[300px]', sortable: true },
-                // { text: 'Action', className: 'hidden md:block md:max-w-[300px]', sortable: false },
+                { text: 'Token', className: 'text-left w-[50%]', sortable: true },
+                { text: 'My Migrated Amount', className: 'text-right w-[50%]', sortable: true },
               ]}
             />
 
             <TableBody>
               {TOKENS_LIST.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell className="w-1/3 md:w-1/4">
+                  <TableCell className="w-[50%]">
                     <div className="flex items-center gap-2">
                       <Image
                         src={`/static/images/tokens/${item.icon}.png`}
@@ -146,7 +144,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                       <p className="text-sm text-white">{item.token}</p>
                     </div>
                   </TableCell>
-                  <TableCell className="w-1/3 md:w-1/4 2xl:max-w-[300px]">
+                  <TableCell className="w-[50%]">
                     <div className="flex items-center justify-end w-full px-3">
                       <div className="flex gap-2">
                         <Image
