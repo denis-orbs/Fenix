@@ -3,7 +3,7 @@
 'use client'
 import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/components/UI'
-import DesplegableRow from './DesplegableRow'
+import MobileRow from './MobileRow'
 
 type IRow = {
   type: string
@@ -12,7 +12,6 @@ type IRow = {
 interface RowDataProps {
   row: IRow
 }
-
 
 const RowData = ({ row }: RowDataProps) => {
   return (
@@ -71,7 +70,7 @@ const RowData = ({ row }: RowDataProps) => {
 
         <TableCell className="w-[10%]">
           <div className="flex items-center ">
-            <p className="text-sm text-white bg-shark-400 p-2 rounded-xl bg-opacity-40 border border-solid border-1 border-shark-300">
+            <p className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {row.APR}%
             </p>
           </div>
@@ -174,7 +173,7 @@ const RowData = ({ row }: RowDataProps) => {
           </div>
         </TableCell>
       </TableRow>
-      <DesplegableRow row={row} />
+      <MobileRow row={row} />
     </>
   )
 }

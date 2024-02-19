@@ -10,7 +10,7 @@ import { STEPS } from './data'
 import { TableHead, TableBody,  Pagination } from '../UI'
 import RowSkeleton from './RowSkeleton'
 import { OPTIONS_FILTER } from './data'
-import RowData from './Tables/RowData'
+import RowData from './Tables/Row'
 import PaginationMobile from '../UI/Pagination/PaginationMobile'
 import { DATA_ROW } from './data'
 
@@ -24,7 +24,7 @@ const Liquidity = () => {
   }, [])
 
   const filterData = currentTab !== "ALL POOLS" ? DATA_ROW.filter(row => row.type === currentTab) : DATA_ROW
-  
+
   return (
     <section className="my-5 xl:my-10">
       <div className="flex items-center gap-10 justify-around flex-col xl:flex-row mb-10 xl:h-[450px]">
