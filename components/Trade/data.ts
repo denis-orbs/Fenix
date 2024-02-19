@@ -39,36 +39,36 @@ export const NAV_LIST = [
   },
 ]
 
-export const PROCESS_LIST = [
+export const DCA_PROCESS = [
   {
-    button: 'Set Amount',
-    description: 'The Best Price',
+    description: 'Start select the token you want to spend, sell or exchange.',
     icon: 'icon-flag',
+    status: 'active',
   },
   {
-    button: 'Refresh Rate',
-    description: '1.0% slippage applied',
+    description: 'Enter the amount of token you want to spend, sell or exchange',
     icon: 'icon-coin',
+    status: 'active',
   },
   {
-    button: 'Got it',
-    description: 'Set Your Price or Your Range',
-    icon: 'icon-loading',
+    description: 'Select the exit token you want to buy or exchange',
+    icon: 'icon-coin',
+    status: 'active',
   },
   {
-    button: 'Got it',
-    description: 'Wait for the system to get your quote ready in just a moment!',
-    icon: 'icon-loading',
+    description: 'Select the frequency of purchase/sale of the tokens.',
+    icon: 'icon-time-picker',
+    status: 'active',
   },
   {
-    button: 'Got it',
-    description: 'Wait for the system to get your quote ready in just a moment!',
-    icon: 'icon-loading',
+    description: 'Select the duration of the token purchase/sale.',
+    icon: 'icon-date-time',
+    status: 'inactive',
   },
   {
-    button: 'Got it',
-    description: 'Wait for the system to get your quote ready in just a moment!',
-    icon: 'icon-loading',
+    description: 'Place order to submit the transaction',
+    icon: 'icon-submit-document',
+    status: 'inactive',
   },
 ]
 

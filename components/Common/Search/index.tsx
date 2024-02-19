@@ -1,10 +1,6 @@
 'use client'
 
-interface SearchProps {
-  className?: string
-}
-
-const Search = ({ className }: SearchProps) => {
+const Search = () => {
 
   return (
     <div className="search-box">
