@@ -2,7 +2,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import RowSkeleton from '@/components/Common/RowSkeleton'
+import RowSkeleton from '@/components/UI/Table/TableSkeleton'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
 const MyLocks = () => {
   const [loading, setLoading] = useState(true)
