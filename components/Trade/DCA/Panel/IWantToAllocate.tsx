@@ -1,18 +1,25 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
+import SelectToken from '@/components/Modals/SelectToken'
 
 import { IToken } from '@/types'
 
 interface IWantToAllocateProps {
   token: IToken
   value: number
+  setToken: (token: IToken) => void
   setValue: (value: number) => void
 }
 
-const IWantToAllocate = ({ token, setValue, value }: IWantToAllocateProps) => {
+const IWantToAllocate = ({ token, setToken, setValue, value }: IWantToAllocateProps) => {
+  const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
+
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(parseFloat(e.target.value))
+
+  const handlerSelectToken = () => setOpenSelectToken(true)
 
   return (
     <div className="exchange-box-x1">
@@ -25,7 +32,10 @@ const IWantToAllocate = ({ token, setValue, value }: IWantToAllocateProps) => {
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3">
         <div className="relative w-full xl:w-2/6">
-          <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
+          <div
+            onClick={handlerSelectToken}
+            className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]"
+          >
             <div className="flex items-center gap-2">
               <Image
                 src={`/static/images/tokens/${token.symbol}.png`}
@@ -57,6 +67,7 @@ const IWantToAllocate = ({ token, setValue, value }: IWantToAllocateProps) => {
           </div>
         </div>
       </div>
+      <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
     </div>
   )
 }

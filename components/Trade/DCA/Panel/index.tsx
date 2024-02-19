@@ -28,12 +28,10 @@ const Panel = () => {
   }
 
   const handleShowSummary = () => setShowSummary(!showSummary)
-  const handleShowAdvancedDCA = () => setAdvancedDCA(!advancedDCA)
 
   return (
-    <section className="relative w-full rounded-2xl xl:w-[667px] bg-shark-400 xl:bg-transparent bg-opacity-40">
-      <div className="swap-box-top"></div>
-      <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center py-8 xl:py-0 px-6 xl:px-10 xl:bg-shark-400 xl:bg-opacity-40">
+    <section className="box-panel-trade">
+      <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-5">
             <h4 className="mb-3 text-xl text-white font-medium">DCA</h4>
@@ -41,9 +39,14 @@ const Panel = () => {
           </div>
           <div className="flex flex-col gap-1 mb-5 relative">
             <div className="mb-3">
-              <IWantToAllocate token={tokenSell} value={allocateValue} setValue={setAllocateValue} />
+              <IWantToAllocate
+                token={tokenSell}
+                setToken={setTokenSell}
+                value={allocateValue}
+                setValue={setAllocateValue}
+              />
               <Separator />
-              <ToBuy token={tokenGet} />
+              <ToBuy token={tokenGet} setToken={setTokenGet} />
             </div>
             <div className="mb-2">
               <Frequency over={over} setOver={setOver} handleShowSummary={handleShowSummary} />
@@ -69,7 +72,6 @@ const Panel = () => {
           <Button className="w-full mx-auto">Start DCA</Button>
         </div>
       </div>
-      <div className="swap-box-bottom"></div>
     </section>
   )
 }

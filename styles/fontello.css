@@ -25,7 +25,6 @@
 .icon-lock-off:before { content: '\e801'; } /* '' */
 .icon-lock:before { content: '\e802'; } /* '' */
 .icon-percentage:before { content: '\e803'; } /* '' */
-.icon-github:before { content: '\e804'; } /* '' */
 .icon-search:before { content: '\e805'; } /* '' */
 .icon-logout:before { content: '\e806'; } /* '' */
 .icon-arrow:before { content: '\e807'; } /* '' */
@@ -40,6 +39,8 @@
 .icon-square:before { content: '\e816'; } /* '' */
 .icon-chevron:before { content: '\e821'; } /* '' */
 .icon-x:before { content: '\e824'; } /* '' */
+.icon-hands:before { content: '\e82c'; } /* '' */
+.icon-briefcase:before { content: '\e82d'; } /* '' */
 .icon-copy:before { content: '\e833'; } /* '' */
 .icon-circuit:before { content: '\e834'; } /* '' */
 .icon-cog:before { content: '\e83a'; } /* '' */
@@ -56,7 +57,6 @@
 .icon-loading:before { content: '\e848'; } /* '' */
 .icon-flag:before { content: '\e849'; } /* '' */
 .icon-coin:before { content: '\e84a'; } /* '' */
-.icon-coin-received:before { content: '\e84b'; } /* '' */
 .icon-send:before { content: '\e84c'; } /* '' */
 .icon-safe:before { content: '\e84d'; } /* '' */
 .icon-pig:before { content: '\e84f'; } /* '' */
@@ -75,5 +75,7 @@
 .icon-bridge:before { content: '\e85f'; } /* '' */
 .icon-chart-stock:before { content: '\e861'; } /* '' */
 .icon-recurring:before { content: '\e862'; } /* '' */
-.icon-icons:before { content: '\e863'; } /* '' */
+.icon-time-picker:before { content: '\e864'; } /* '' */
+.icon-date-time:before { content: '\e865'; } /* '' */
+.icon-submit-document:before { content: '\e866'; } /* '' */
 
