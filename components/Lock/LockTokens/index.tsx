@@ -4,9 +4,15 @@ import MainBox from '@/components/Common/Boxes/MainBox'
 import InfoBox from '@/components/Common/InfoBox'
 import { LOCK_LIST } from '../data'
 
-const LockTokens = () => {
+interface LockTokensProps {
+  changeState: boolean
+  setChangeState: (parameter:boolean) => void
+}
+
+const LockTokens = ({ changeState, setChangeState }: LockTokensProps) => {
+  const handlerChangeState = () => (changeState ? setChangeState(false) : setChangeState(true))
   return (
-    <MainBox >
+    <MainBox>
       <div className="flex flex-col items-center justify-between w-full px-10 py-8 xl:flex-row bg-shark-400 bg-opacity-40 rounded-2xl xl:rounded-none xl:py-0">
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-xl text-white">Lock your Tokens</h4>
@@ -14,7 +20,7 @@ const LockTokens = () => {
             Gain greater voting power and higher rewards, by locking more tokens for longer.
           </p>
           <div className="flex flex-col gap-2 md:flex-row">
-            <Button>
+            <Button onClick={handlerChangeState}>
               <div className="flex gap-2">
                 <span className="icon-lock"></span>
                 Create a Lock

@@ -10,9 +10,11 @@ interface InfoBoxProps {
   data: Items
   setShowTooltip?: (show: boolean) => void
   hasTooltip?: boolean
+  textColor?:string
+  fontSize?: string
 }
 
-const InfoBox = ({ data, setShowTooltip, hasTooltip = false }: InfoBoxProps) => {
+const InfoBox = ({ data, setShowTooltip,textColor, hasTooltip = false }: InfoBoxProps) => {
   const handleShowTooltip = () => setShowTooltip && setShowTooltip(true)
   const handleHiddenTooltip = () => setShowTooltip && setShowTooltip(false)
 
@@ -28,7 +30,7 @@ const InfoBox = ({ data, setShowTooltip, hasTooltip = false }: InfoBoxProps) => 
           <h5 className="text-xs text-shark-100">{data.label}</h5>
           <div className="flex items-center gap-1">
             <div className="text-white flex gap-2">
-              <p className="text-[12px] lg:text-[14px]">{data.amount}{' '}</p>
+              <p className={`text-[12px] lg:text-[14px] ${textColor}`}>{data.amount}{' '}</p>
              
             </div>
             {hasTooltip && (
