@@ -39,6 +39,45 @@ export const NAV_LIST = [
   },
 ]
 
+export const TRADE_PROCESS = [
+  {
+    description: 'Start by selecting the token to Swap from and the amount you want to exchange',
+    icon: 'icon-flag',
+    label: 'Set Amount',
+    status: 'active',
+  },
+  {
+    description: 'ESelect the token you want to exchange for and confirm the exchange rate',
+    icon: 'icon-coin',
+    label: 'Refresh Rate',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin',
+    label: 'Got it',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin',
+    label: 'Got it',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin',
+    label: 'Got it',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin',
+    label: 'Got it',
+    status: 'active',
+  },
+]
+
 export const DCA_PROCESS = [
   {
     description: 'Start select the token you want to spend, sell or exchange.',
