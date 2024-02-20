@@ -1,5 +1,9 @@
 'use client'
+
+import Link from 'next/link'
 import cn from '@/utils/cn'
+import { usePathname } from 'next/navigation'
+
 
 interface IItem {
   name: string
@@ -10,20 +14,22 @@ interface IItem {
 
 interface NavItemProps {
   item: IItem
-  activePath: string
-  onClick: () => void
 }
 
-const NavItem = ({ item, onClick, activePath }: NavItemProps) => {
+const NavItem = ({ item }: NavItemProps) => {
+
+  const pathname = usePathname()
+
+  const shortenedPathname = pathname.slice(7, 20)
 
   const activeItem = cn(
     'flex items-center pb-2 transtition gap-2 cursor-pointer border-b-2 group hover:border-chilean-fire-600',
-    activePath === item.path ? 'border-chilean-fire-600' : 'border-transparent'
+    shortenedPathname === item.path ? 'border-chilean-fire-600' : 'border-transparent'
   )
-  const activeName = cn(activePath === item.path ? 'text-chilean-fire-600' : 'text-white')
+  const activeName = cn(shortenedPathname === item.path ? 'text-chilean-fire-600' : 'text-white')
 
   return (
-    <div onClick={onClick} className={activeItem}>
+    <Link href={`${item.path}`} className={activeItem}>
       <div className="flex items-center justify-center w-10 h-10 p-2 border rounded-lg bg-shark-400 bg-opacity-40 border-shark-400">
         <span
           className={`inline-block text-lg text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${item.icon}`}
@@ -33,7 +39,7 @@ const NavItem = ({ item, onClick, activePath }: NavItemProps) => {
         <h6 className={`text-sm group-hover:text-chilean-fire-600 ${activeName}`}>{item.name}</h6>
         <p className="text-xs text-shark-100 line-clamp-1">{item.description}</p>
       </div>
-    </div>
+    </Link>
   )
 }
 

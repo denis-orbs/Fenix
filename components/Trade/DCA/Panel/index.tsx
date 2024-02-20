@@ -1,12 +1,12 @@
 'use client'
 import { useState } from 'react'
 
-import IWantToAllocate from './IWantToAllocate'
-import ToBuy from './ToBuy'
-import Frequency from './Frequency'
-import AdvancedDCA from './AdvancedDCA'
-import Summary from './Summary'
-import Separator from '../../Common/Separator'
+import IWantToAllocate from '@/components/Trade/DCA/Panel/IWantToAllocate'
+import ToBuy from '@/components/Trade/DCA/Panel/ToBuy'
+import Frequency from '@/components/Trade/DCA/Panel/Frequency'
+import AdvancedDCA from '@/components/Trade/DCA/Panel/AdvancedDCA'
+import Summary from '@/components/Trade/DCA/Panel/Summary'
+import Separator from '@/components/Trade/Common/Separator'
 
 import { Button, Switch } from '@/components/UI'
 
@@ -34,7 +34,7 @@ const Panel = () => {
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-5">
-            <h4 className="mb-3 text-xl text-white font-medium">DCA</h4>
+            <h4 className="mb-3 text-lg text-white font-medium">DCA</h4>
             <span className="icon-reflesh text-shark-100 text-xl"></span>
           </div>
           <div className="flex flex-col gap-1 mb-5 relative">

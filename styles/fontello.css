@@ -57,6 +57,7 @@
 .icon-loading:before { content: '\e848'; } /* '' */
 .icon-flag:before { content: '\e849'; } /* '' */
 .icon-coin:before { content: '\e84a'; } /* '' */
+.icon-coin-received:before { content: '\e84b'; } /* '' */
 .icon-send:before { content: '\e84c'; } /* '' */
 .icon-safe:before { content: '\e84d'; } /* '' */
 .icon-pig:before { content: '\e84f'; } /* '' */
@@ -75,7 +76,7 @@
 .icon-bridge:before { content: '\e85f'; } /* '' */
 .icon-chart-stock:before { content: '\e861'; } /* '' */
 .icon-recurring:before { content: '\e862'; } /* '' */
+.icon-icons:before { content: '\e863'; } /* '' */
 .icon-time-picker:before { content: '\e864'; } /* '' */
 .icon-date-time:before { content: '\e865'; } /* '' */
 .icon-submit-document:before { content: '\e866'; } /* '' */
-
