@@ -6,7 +6,7 @@ interface TradeLayoutProps {
 
 const TradeLayout = ({ children }: TradeLayoutProps) => {
   return (
-    <section className="container">
+    <section className="container py-5">
       <Navigation />
       {children}
     </section>

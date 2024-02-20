@@ -7,14 +7,14 @@ import SelectToken from '@/components/Modals/SelectToken'
 
 import { IToken } from '@/types'
 
-interface SetBuyBudgetProps {
+interface ForProps {
   token: IToken
   value: number
   setToken: (token: IToken) => void
   setValue: (value: number) => void
 }
 
-const SetBuyBudget = ({ token, setToken, setValue, value }: SetBuyBudgetProps) => {
+const For = ({ token, setToken, setValue, value }: ForProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(parseFloat(e.target.value))
@@ -22,9 +22,9 @@ const SetBuyBudget = ({ token, setToken, setValue, value }: SetBuyBudgetProps) =
   const handlerSelectToken = () => setOpenSelectToken(true)
 
   return (
-    <div className="exchange-box-x2">
+    <div className="exchange-box-x1">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-white text-sm">Set Buy Budget</p>
+        <p className="text-white text-sm">For</p>
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
           <span>Available: 0.00 ETH</span>
@@ -72,4 +72,4 @@ const SetBuyBudget = ({ token, setToken, setValue, value }: SetBuyBudgetProps) =
   )
 }
 
-export default SetBuyBudget
+export default For
