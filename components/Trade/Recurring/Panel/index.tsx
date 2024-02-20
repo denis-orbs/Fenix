@@ -2,8 +2,8 @@
 import { useState } from 'react'
 
 import Separator from '@/components/Trade/Common/Separator'
-import IWantToAllocate from '@/components/Trade/Recurring/Panel/IWantToAllocate'
-import With from '@/components/Trade/Recurring/Panel/With'
+import IWantToAllocate from '@/components/Trade/Recurring/Panel/RecurringOrders/IWantToAllocate'
+import With from '@/components/Trade/Recurring/Panel/RecurringOrders/With'
 import PurchasePrice from '@/components/Trade/Recurring/Panel/BuyLow/PurchasePrice'
 import SetBuyBudget from '@/components/Trade/Recurring/Panel/BuyLow/SetBuyBudget'
 
@@ -17,6 +17,7 @@ const Panel = () => {
   const [allocateValue, setAllocateValue] = useState<number>(0)
   const [withValue, setWithValue] = useState<number>(0)
   const [purchaseValue, setPurchaseValue] = useState<number>(0)
+  const [buyBudgetValue, setBuyBudgetValue] = useState<number>(0)
 
   return (
     <section className="box-panel-trade">
@@ -44,7 +45,7 @@ const Panel = () => {
           <div className="flex items-center justify-between mb-5">
             <h4 className="text-white font-medium text-lg">Buy Low</h4>
           </div>
-          <div className="flex flex-col items-center justify-start w-full gap-2 px-3 py-2 rounded-lg xl:flex-row filter-box md:gap-5 bg-opacity-40">
+          <div className="flex flex-col items-center justify-start w-full gap-2 px-3 py-2 rounded-lg xl:flex-row bg-shark-400 bg-opacity-40 md:gap-5 mb-4">
             <Button className="h-[40px] md:h-auto w-full xl-w-auto">Limit</Button>
             <Button variant="default" className="h-[40px] md:h-auto w-full xl-w-auto">
               Range
@@ -54,8 +55,39 @@ const Panel = () => {
             <div className="mb-3">
               <PurchasePrice value={purchaseValue} setValue={setPurchaseValue} />
               <Separator />
-              <SetBuyBudget token={tokenGet} setToken={setTokenGet} setValue={setWithValue} value={withValue} />
+              <SetBuyBudget
+                token={tokenGet}
+                setToken={setTokenGet}
+                value={buyBudgetValue}
+                setValue={setBuyBudgetValue}
+              />
             </div>
+          </div>
+          <div className="flex items-center justify-between mb-5">
+            <h4 className="text-white font-medium text-lg">Sell High</h4>
+          </div>
+          <div className="flex flex-col items-center justify-start w-full gap-2 px-3 py-2 rounded-lg xl:flex-row bg-shark-400 bg-opacity-40 md:gap-5 mb-4">
+            <Button className="h-[40px] md:h-auto w-full xl-w-auto">Limit</Button>
+            <Button variant="default" className="h-[40px] md:h-auto w-full xl-w-auto">
+              Range
+            </Button>
+          </div>
+          <div className="flex flex-col gap-1 mb-5 relative">
+            <div className="mb-3">
+              <PurchasePrice value={purchaseValue} setValue={setPurchaseValue} />
+              <Separator />
+              <SetBuyBudget
+                token={tokenGet}
+                setToken={setTokenGet}
+                value={buyBudgetValue}
+                setValue={setBuyBudgetValue}
+              />
+            </div>
+          </div>
+          <div className="flex">
+            <Button className="w-full" disabled>
+              Start Limit Order
+            </Button>
           </div>
         </div>
       </div>
