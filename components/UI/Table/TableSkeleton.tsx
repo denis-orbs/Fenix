@@ -2,7 +2,7 @@
 
 import { TableCell, TableRow } from '@/components/UI'
 
-const RowSkeleton = () => {
+const TableSkeleton = () => {
   return (
     <TableRow>
       <TableCell className="w-[30%]">
@@ -56,4 +56,4 @@ const RowSkeleton = () => {
   )
 }
 
-export default RowSkeleton
+export default TableSkeleton

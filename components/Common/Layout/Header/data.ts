@@ -1,7 +1,7 @@
 export const MENU_LINKS = [
   {
     name: 'Trade',
-    href: '/',
+    href: '/trade/dca',
   },
   {
     name: 'Dashboard',

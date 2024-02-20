@@ -72,6 +72,39 @@ export const DCA_PROCESS = [
   },
 ]
 
+export const RECURRING_PROCESS = [
+  {
+    description: 'Start by selecting the pair you want to trade',
+    icon: 'icon-flag',
+    status: 'active',
+  },
+  {
+    description: 'Choose the type of order, either limit or range.',
+    icon: 'icon-coin',
+    status: 'active',
+  },
+  {
+    description: 'Select the price and token at which you want to buy',
+    icon: 'icon-coin-received',
+    status: 'inactive',
+  },
+  {
+    description: 'Select the price and token at which you want to sell',
+    icon: 'icon-coin-received',
+    status: 'inactive',
+  },
+  {
+    description: 'Make sure all the information is correct',
+    icon: 'icon-check',
+    status: 'inactive',
+  },
+  {
+    description: 'Place order to submit the transaction',
+    icon: 'icon-submit-document',
+    status: 'inactive',
+  },
+]
+
 export const TIME_OPTIONS = [
   {
     label: 'Seconds',

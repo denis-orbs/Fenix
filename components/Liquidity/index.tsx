@@ -6,9 +6,8 @@ import Deposit from '@/components/Liquidity/Deposit'
 import Steps from '@/components/Common/Steps'
 import Filter from '@/components/Common/Filter'
 import Search from '@/components/Common/Search'
-import RowSkeleton from '@/components/Common/RowSkeleton'
 import { STEPS } from './data'
-import { TableHead, TableBody, Pagination, PaginationMobile } from '@/components/UI'
+import { TableHead, TableBody, Pagination, PaginationMobile, TableSkeleton } from '@/components/UI'
 import { OPTIONS_FILTER } from './data'
 import Row from '@/components/Liquidity/Tables/Row'
 import { DATA_ROW } from './data'
@@ -59,7 +58,7 @@ const Liquidity = () => {
             {loading ? (
               <>
                 {Array.from({ length: filterData.length }).map((_, index) => (
-                  <RowSkeleton key={index} />
+                  <TableSkeleton key={index} />
                 ))}
               </>
             ) : (
@@ -78,7 +77,7 @@ const Liquidity = () => {
             <span className="text-lg icon-cog"></span>
           </div>
         </div>
-        <div className='xl:hidden'>
+        <div className="xl:hidden">
           <PaginationMobile />
         </div>
       </div>
