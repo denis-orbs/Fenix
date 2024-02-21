@@ -17,7 +17,7 @@ export const NAV_LIST = [
     name: 'Limit / Range Orders',
     description: 'Set Your Price or Your Range',
     icon: 'icon-auto-graph',
-    path: 'range',
+    path: 'limit-range',
   },
   {
     name: 'Recurring Orders',
@@ -139,6 +139,39 @@ export const RECURRING_PROCESS = [
   },
   {
     description: 'Place order to submit the transaction',
+    icon: 'icon-submit-document',
+    status: 'inactive',
+  },
+]
+
+export const LIMIT_PROCESS = [
+  {
+    description: 'Start by selecting the pairs to Limit from',
+    icon: 'icon-flag',
+    status: 'active',
+  },
+  {
+    description: 'Enter the amount to limit you want to exchange',
+    icon: 'icon-coin',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin-received',
+    status: 'inactive',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin-received',
+    status: 'inactive',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-check',
+    status: 'inactive',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
     icon: 'icon-submit-document',
     status: 'inactive',
   },

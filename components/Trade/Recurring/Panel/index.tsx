@@ -85,7 +85,7 @@ const Panel = () => {
             </div>
           </div>
           <div className="flex">
-            <Button className="w-full" disabled>
+            <Button className="w-full" variant="tertiary">
               Start Limit Order
             </Button>
           </div>

@@ -69,7 +69,9 @@ const Panel = () => {
 
             {showSummary && <Summary summary={summary} />}
           </div>
-          <Button className="w-full mx-auto">Start DCA</Button>
+          <Button className="w-full mx-auto" variant="tertiary">
+            Start DCA
+          </Button>
         </div>
       </div>
     </section>
