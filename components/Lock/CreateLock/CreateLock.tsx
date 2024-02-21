@@ -1,13 +1,11 @@
 'use client'
-import { Button } from '@/components/UI'
 import MainBox from '@/components/Common/Boxes/MainBox'
 import InfoBox from '@/components/Common/InfoBox'
 import CREATE_LOCK_LIST from './data'
 import Image from 'next/image'
-import { useState } from 'react'
 
 const CreateLock = () => {
-   
+
   return (
     <MainBox>
       <div className="flex flex-col justify-between w-full px-10 py-8 xl:flex-row bg-shark-400 bg-opacity-40 rounded-2xl xl:rounded-none xl:py-0">
@@ -27,7 +25,6 @@ const CreateLock = () => {
                 <span className="icon-chevron"></span>
               </div>
             </div>
-            {/* box for amout to lock */}
 
             <div className="w-1/2 flex flex-col gap-2">
               <p className="text-xs text-shark-100 text-right">
@@ -47,7 +44,7 @@ const CreateLock = () => {
                 />
               </div>
             </div>
-            {/* box for input price */}
+
           </div>
           <div className="flex flex-col gap-3  mt-10 box p-5">
             <p className="text-white text-sm text-left">Locking for 6 months for 0.0 veFNX voting power</p>
@@ -59,9 +56,6 @@ const CreateLock = () => {
               <input
                 id="labels-range-input"
                 type="range"
-                // value="1000"
-                // min="100"
-                // max="1500"
                 className="w-full h-2 bg-shark-400 rounded-lg appearance-none cursor-pointer "
               />
               <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">7 days</span>

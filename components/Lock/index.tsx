@@ -1,13 +1,14 @@
 'use client'
+
+import { useState } from 'react'
+
 import Steps from '../Common/Steps'
 import LockTokens from './LockTokens'
 import MyLocks from './MyLocks'
 import Nest from './Nest'
-import { LOCK_STEPS } from './data'
+import { LOCK_STEPS, FILTER_OPTIONS } from './data'
 import Filter from '../Common/Filter'
 import Search from '../Common/Search'
-import { FILTER_OPTIONS } from './data'
-import { useState } from 'react'
 import CreateLock from './CreateLock/CreateLock'
 const Lock = () => {
   const [changeState, setChangeState] = useState<boolean>(false)
