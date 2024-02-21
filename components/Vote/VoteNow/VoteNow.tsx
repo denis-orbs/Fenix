@@ -6,7 +6,7 @@ import ReadMoreModal from '@/components/Modals/Liquidity/ReadMore'
 interface VoteNowProps {
   openModal: boolean
   activeVote : boolean
-  setOpenModal: (parameter : boolean)=>void 
+  setOpenModal: (parameter : boolean)=>void
 }
 const VoteNow = ({ openModal , setOpenModal,activeVote }: VoteNowProps) => {
   const { setReadMoreModal } = useStore()
@@ -15,15 +15,15 @@ const VoteNow = ({ openModal , setOpenModal,activeVote }: VoteNowProps) => {
   const handleReadMore = () => setReadMoreModal(true)
   return (
     <StepBox>
-      <div className="flex flex-col justify-center w-full px-5 py-5 bg-shark-400 bg-opacity-40 xl:px-10 xl:py-0 rounded-2xl xl:rounded-none">
+      <div className="flex flex-col justify-center w-full rounded-2xl xl:rounded-none">
         <div className="flex items-center mb-3 justify-evenly">
           <h4 className="w-full mb-3 text-sm text-white">Vote now</h4>
           {/* <span className="text-2xl icon-reflesh text-shark-100"></span> */}
         </div>
         <div className="relative flex flex-col w-auto">
           {activeVote ? (
-            <div className={`flex ${activeVote && 'items-center'}   
-            
+            <div className={`flex ${activeVote && 'items-center'}
+
             gap-8 p-5 text-white border-solid border-1
              border-shark-400 bg-shark-400 bg-opacity-40 rounded-xl`}>
               <div className="flex items-center gap-2 w-full xl:w-auto">
@@ -60,7 +60,7 @@ const VoteNow = ({ openModal , setOpenModal,activeVote }: VoteNowProps) => {
                 <p className='text-shark-100'>Rewards</p>
                 <p className='text-green-300'>$12.98!</p>
               </div>
-             
+
             </div>
           ) : (
             <div className="flex  gap-8 p-5 text-white border-solid border-1 border-shark-400 bg-shark-400 bg-opacity-40 rounded-xl">
@@ -81,10 +81,10 @@ const VoteNow = ({ openModal , setOpenModal,activeVote }: VoteNowProps) => {
                 </div>
               </div>
 
-              <div className="flex gap-2 
-              
+              <div className="flex gap-2
+
               p-2 top-0 bg-shark-100 text-shark-100 bg-opacity-40
-              mt-2 border border-solid rounded-lg 
+              mt-2 border border-solid rounded-lg
               border-shark-400 absolute right-0 me-2 text-sm">
                 <span className="icon-wallet"></span>
                 <p>Positions Locked: 0</p>

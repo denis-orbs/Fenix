@@ -69,49 +69,6 @@
   before:top-0
 }
 
-.steps-box-top {
-  @apply relative
-  left-0
-  right-0
-  hidden
-  xl:block
-  bottom-full
-  h-[60px]
-  overflow-hidden
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/steps/top.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:bg-cover
-  before:w-full
-  before:left-0
-  before:top-0
-}
-
-.steps-box-bottom {
-  @apply relative
-  left-0
-  right-0
-  hidden
-  xl:block
-  top-full
-  h-[60px]
-  overflow-hidden
-  rotate-180
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/steps/top.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:bg-cover
-  before:w-full
-  before:left-0
-  before:top-0
-}
-
 .process-box {
   @apply relative flex flex-col items-center justify-center p-4 px-3 rounded-lg bg-shark-400 bg-opacity-40
 
@@ -647,4 +604,47 @@
   after:border-r-[20px]
   after:border-b-[20px]
   after:border-[transparent_transparent_#1f1f20];
+}
+
+/* Background for steps */
+.steps-box {
+  @apply
+  relative
+  w-full
+  rounded-2xl
+  xl:max-w-[615px]
+  flex-shrink-0
+  xl:w-[615px]
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  py-8
+  xl:py-12
+  px-8
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/step.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/steps/step.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block
 }
