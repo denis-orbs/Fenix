@@ -1,9 +1,17 @@
+'use client'
 /* eslint-disable max-len */
 
 import Image from 'next/image'
 import cellImg from '@/public/static/images/cell.png'
+import { usePathname } from 'next/navigation'
 
 const Decorator = () => {
+  const pathname = usePathname()
+
+  if (pathname === '/') {
+    return null
+  }
+
   return (
     <div className="absolute -z-10 h-full min-h-screen top-0 left-0 right-0 bottom-0 overflow-hidden bg-shark-900">
       <div className="w-[715px] h-[715px] rounded-full opacity-20 bg-[linear-gradient(101deg,_#F60202_-4.02%,_#FFB400_94.06%)] blur-[150px] bottom-[calc(100%-115px)] left-[155px] absolute" />

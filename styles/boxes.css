@@ -127,7 +127,7 @@
   before:border-t-[30px]
   before:border-r-[30px]
   before:border-b-[30px]
-  before:border-[transparent_transparent_#0a0a0a]
+  before:border-[transparent_transparent_#111315]
 
   after:hidden
   xl:after:block
@@ -141,7 +141,7 @@
   after:border-t-[30px]
   after:border-r-[30px]
   after:border-b-[30px]
-  after:border-[transparent_transparent_#0a0a0a];
+  after:border-[transparent_transparent_#111315];
 }
 
 .box {
@@ -255,7 +255,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#15181a]
+  before:border-[transparent_transparent_#111315]
 
   after:hidden
   xl:after:block
@@ -269,8 +269,42 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#15181a];
+  after:border-[transparent_transparent_#251613];
 }
+
+.search-mini-box {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center h-[62px]
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:bottom-[0px]
+  before:left-[-1px]
+  before:rotate-[-1deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[20px]
+  before:border-[transparent_transparent_#171a1d]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:top-[-1px]
+  after:right-[-1px]
+  after:rotate-[181deg]
+  after:border-solid
+  after:border-t-[20px]
+  after:border-r-[20px]
+  after:border-b-[20px]
+  after:border-[transparent_transparent_#171a1d];
+}
+
+
 
 .filter-box {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
@@ -351,7 +385,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#16181a]
+  before:border-[transparent_transparent_#1a1d21]
 
   after:hidden
   xl:after:block
@@ -365,7 +399,7 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#16181a];
+  after:border-[transparent_transparent_#1a1d21];
 }
 
 /* Background for select token modal */
@@ -466,7 +500,7 @@
   before:border-t-[30px]
   before:border-r-[30px]
   before:border-b-[30px]
-  before:border-[transparent_transparent_#16181a]
+  before:border-[transparent_transparent_#1a1d21]
 
   after:hidden
   xl:after:block
@@ -480,8 +514,42 @@
   after:border-t-[25px]
   after:border-r-[25px]
   after:border-b-[25px]
-  after:border-[transparent_transparent_#16181a];
+  after:border-[transparent_transparent_#1a1d21];
 }
+
+
+.vote-box {
+  @apply relative bg-shark-400 bg-opacity-40 w-auto rounded-xl px-4 xl:px-6 py-6
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:top-[-15px]
+  before:left-[14px]
+  before:rotate-[89deg]
+  before:border-solid
+  before:border-t-[30px]
+  before:border-r-[30px]
+  before:border-b-[30px]
+  before:border-[transparent_transparent_#111315]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:bottom-[-14px]
+  after:right-[12px]
+  after:rotate-[-91deg]
+  after:border-solid
+  after:border-t-[25px]
+  after:border-r-[25px]
+  after:border-b-[25px]
+  after:border-[transparent_transparent_#111315];
+}
+
 
 /* Background for exchange box of trade panel */
 .exchange-box-x2 {
@@ -499,7 +567,7 @@
   before:border-t-[25px]
   before:border-l-[25px]
   before:border-b-[25px]
-  before:border-[transparent_transparent_#16181a]
+  before:border-[transparent_transparent_#1a1d21]
 
   after:hidden
   xl:after:block
@@ -513,7 +581,7 @@
   after:border-t-[30px]
   after:border-r-[30px]
   after:border-b-[30px]
-  after:border-[transparent_transparent_#16181a];
+  after:border-[transparent_transparent_#1a1d21];
 }
 
 .order-item-box {
@@ -531,7 +599,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#16181a]
+  before:border-[transparent_transparent_#1a1d21]
 
   after:hidden
   xl:after:block
@@ -545,5 +613,39 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#16181a];
+  after:border-[transparent_transparent_#1a1d21];
+}
+
+
+
+.mini-box-vote {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:bottom-[0px]
+  before:left-[-1px]
+  before:rotate-[-1deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[20px]
+  before:border-[transparent_transparent_#1b1e22]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:top-[-1px]
+  after:right-[-1px]
+  after:rotate-[181deg]
+  after:border-solid
+  after:border-t-[20px]
+  after:border-r-[20px]
+  after:border-b-[20px]
+  after:border-[transparent_transparent_#1f1f20];
 }
