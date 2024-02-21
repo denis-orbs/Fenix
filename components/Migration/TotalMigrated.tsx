@@ -10,7 +10,7 @@ const TotalMigrated = () => {
         />
       </div>
       <div className="w-full">
-        <p className="mb-3 text-xs text-shark-100 md:mb-0">Total Migrated Amount to FNX</p>
+        <p className="mb-1 text-xs text-shark-100">Total Migrated Amount to FNX</p>
         <div className="flex flex-wrap items-center gap-3 md:gap-2 md:flex-nowrap">
           <div className="flex items-center justify-between w-full gap-2 mb-2 md:w-auto md:mb-0 md:justify-start">
             <h3 className="text-sm text-white">0 CHR</h3>

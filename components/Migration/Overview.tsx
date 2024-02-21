@@ -9,7 +9,7 @@ import { TOKENS_LIST } from './data'
 
 interface OverviewProps {
   migrateStatus: string | undefined
-  setMigrateStatus: (props: string | undefined) => void
+  setMigrateStatus: (status: string) => void
 }
 
 const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
