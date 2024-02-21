@@ -1,12 +1,7 @@
-/* eslint-disable max-len */
 'use client'
 
 import { Button, Modal } from '@/components/UI'
 import Image from 'next/image'
-import ModalConfirmMergeImage from '../../../public/static/images/modals/modal-confirm-merge.png'
-import Info from '../../../public/static/images/modals/info.svg'
-import Discord from '../../../public/static/images/modals/discord.svg'
-
 
 interface ConfirmMergeProps {
   openModal: boolean
@@ -27,17 +22,19 @@ const ConfirmMerge = ({ setOpenModal, openModal }: ConfirmMergeProps) => {
           <div className='absolute top-[-8px] left-0'>
             <Button variant='secondary'>
               <Image
-                src={Info}
+                src={'/static/images/modals/info.svg'}
                 alt="Information"
                 width={20}
+                height={20}
               />
             </Button>
           </div>
           <div className='flex flex-col justify-center items-center px-[10%] py-[10%]'>
             <Image
-              src={ModalConfirmMergeImage}
+              src={'/static/images/modals/modal-confirm-merge.png'}
               alt="Modal Confirm Merge Modal"
               width={190}
+              height={105}
             />
             <h1 className="text-xl text-white font-semibold my-4">Confirm Merge</h1>
             <p className='text-shark-100 text-center'>
@@ -51,9 +48,10 @@ const ConfirmMerge = ({ setOpenModal, openModal }: ConfirmMergeProps) => {
             </Button>
             <Button variant='default' className='mt-2'>
               <Image
-                src={Discord}
+                src={'/static/images/modals/discord.svg'}
                 alt="Discord Icon"
-                width={150}
+                width={93}
+                height={20}
               />
             </Button>
           </div>
