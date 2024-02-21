@@ -17,7 +17,7 @@ export const NAV_LIST = [
     name: 'Limit / Range Orders',
     description: 'Set Your Price or Your Range',
     icon: 'icon-auto-graph',
-    path: 'range',
+    path: 'limit-range',
   },
   {
     name: 'Recurring Orders',
@@ -36,6 +36,45 @@ export const NAV_LIST = [
     description: 'Perpetuals Aggregator',
     icon: 'icon-chart-stock',
     path: 'perpetuals',
+  },
+]
+
+export const TRADE_PROCESS = [
+  {
+    description: 'Start by selecting the token to Swap from and the amount you want to exchange',
+    icon: 'icon-flag',
+    label: 'Set Amount',
+    status: 'active',
+  },
+  {
+    description: 'ESelect the token you want to exchange for and confirm the exchange rate',
+    icon: 'icon-coin',
+    label: 'Refresh Rate',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin',
+    label: 'Got it',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin',
+    label: 'Got it',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin',
+    label: 'Got it',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin',
+    label: 'Got it',
+    status: 'active',
   },
 ]
 
@@ -67,6 +106,72 @@ export const DCA_PROCESS = [
   },
   {
     description: 'Place order to submit the transaction',
+    icon: 'icon-submit-document',
+    status: 'inactive',
+  },
+]
+
+export const RECURRING_PROCESS = [
+  {
+    description: 'Start by selecting the pair you want to trade',
+    icon: 'icon-flag',
+    status: 'active',
+  },
+  {
+    description: 'Choose the type of order, either limit or range.',
+    icon: 'icon-coin',
+    status: 'active',
+  },
+  {
+    description: 'Select the price and token at which you want to buy',
+    icon: 'icon-coin-received',
+    status: 'inactive',
+  },
+  {
+    description: 'Select the price and token at which you want to sell',
+    icon: 'icon-coin-received',
+    status: 'inactive',
+  },
+  {
+    description: 'Make sure all the information is correct',
+    icon: 'icon-check',
+    status: 'inactive',
+  },
+  {
+    description: 'Place order to submit the transaction',
+    icon: 'icon-submit-document',
+    status: 'inactive',
+  },
+]
+
+export const LIMIT_PROCESS = [
+  {
+    description: 'Start by selecting the pairs to Limit from',
+    icon: 'icon-flag',
+    status: 'active',
+  },
+  {
+    description: 'Enter the amount to limit you want to exchange',
+    icon: 'icon-coin',
+    status: 'active',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin-received',
+    status: 'inactive',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-coin-received',
+    status: 'inactive',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
+    icon: 'icon-check',
+    status: 'inactive',
+  },
+  {
+    description: 'Wait for the system to get your quote ready in just a moment!',
     icon: 'icon-submit-document',
     status: 'inactive',
   },

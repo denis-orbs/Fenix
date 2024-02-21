@@ -6,19 +6,109 @@ import Filter from '../Common/Filter'
 import Search from '../Common/Search'
 import { FILTER_OPTIONS } from './data'
 import Voted from './Voted'
+import { PaginationMobile, TableSkeleton, TableBody, TableHead } from '../UI'
+import { Pagination } from '../UI'
+import { Fragment } from 'react'
+import RowDataVote from './Tables/RowVote'
+import { DATA_ROW } from '../Liquidity/data'
+import { useState, useEffect } from 'react'
+import VotePools from './VoteNow/VotePools'
+import SelectVote from '../Modals/SelectVote'
+import Overlay from './Overlay'
+
 const Vote = () => {
+  const [currentTab, setCurrentTab] = useState<string>('CONCENTRATED')
+  const [activeVote, setActiveVote] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [openModal, setOpenModal] = useState(false)
+  const filterData = currentTab !== 'ALL POOLS' ? DATA_ROW.filter((row) => row.type === currentTab) : DATA_ROW
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+  }, [])
+
   return (
     <section>
-      <div className="flex flex-col items-center gap-5 p-5 xl:flex xl:flex-row">
-        <Deposit />
-        <VoteNow />
+      <div className="flex flex-col items-center gap-5 py-5  xl:flex-row">
+        <div className="w-full xl:w-3/4">
+          <Deposit />
+        </div>
+        <VoteNow openModal={openModal} setOpenModal={setOpenModal} activeVote={activeVote} />
       </div>
       <h1 className="text-xl text-white">Select Liquidity Pools for Voting</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
-        <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => console.log()}/>
+        <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => console.log()} />
         <Search />
       </div>
-      <Voted />
+      {activeVote && (
+        <div className="xl:block hidden">
+          <h1 className="text-2xl text-white">Vote Pools</h1>
+          <div className="flex flex-wrap gap-2">
+            <VotePools />
+            <VotePools />
+            <VotePools />
+            <VotePools />
+          </div>
+        </div>
+      )}
+      <div className="relative">
+        <div className="w-full mb-2.5 xl:mb-10">
+          <div className="max-xl:hidden">
+            <TableHead
+              items={[
+                { text: 'Assets', className: 'w-[30%]', sortable: true },
+                { text: 'APR', className: 'text-center  w-[10%]', sortable: true },
+                { text: 'Your Votes', className: 'w-[20%] text-right', sortable: true },
+                { text: 'Total Rewards', className: 'w-[20%] text-right', sortable: true },
+                { text: 'Vote', className: 'w-[20%] text-right', sortable: true },
+              ]}
+            />
+          </div>
+
+          <TableBody>
+            {loading ? (
+              <>
+                {Array.from({ length: filterData.length }).map((_, index) => (
+                  <TableSkeleton key={index} />
+                ))}
+              </>
+            ) : (
+              filterData.map((row, index) => (
+                <Fragment key={index}>
+                  <RowDataVote row={row} activeVote={activeVote} />
+                  <RowDataVote row={row} activeVote={activeVote} />
+                </Fragment>
+              ))
+            )}
+          </TableBody>
+        </div>
+        <div className="items-center hidden xl:flex">
+          <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
+          <Pagination className="mx-auto" numberPages={7} />
+          <div
+            className="flex items-center justify-center
+           flex-shrink-0 w-12 h-12 px-4 text-white transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
+          >
+            <span className="text-lg icon-cog"></span>
+          </div>
+        </div>
+        <div className="xl:hidden">
+          <PaginationMobile />
+        </div>
+        <div className="p-5">
+          {activeVote && <Overlay />}
+          
+        </div>
+      </div>
+
+      <SelectVote
+        activeVote={activeVote}
+        setActiveVote={setActiveVote}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
     </section>
   )
 }

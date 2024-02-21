@@ -42,8 +42,9 @@ const config: Config = {
         'button-primary':
           'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%);',
         'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%)',
-        'error-404':'url("/static/images/404/Background_1.svg")', 
+        'error-404': 'url("/static/images/404/Background_1.svg")',
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
+        'fenix-slider':'url("/static/images/vote/fenix-slider.svg")',
         hours: 'url("/static/images/claim/bg-hours.svg")',
       },
       lineHeight: {
@@ -55,8 +56,8 @@ const config: Config = {
           '200': '#474C51',
           '300': '#393E44',
           '400': '#292D32', // main
-          '500': '#1C1F21',
-          '600': '#0D0F10',
+          '500': '#16181a',
+          '600': '#0A0A0A',
           '700': '#000000',
           '800': '#000000',
           '900': '#111315',

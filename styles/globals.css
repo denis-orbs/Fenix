@@ -5,7 +5,7 @@
 @import url('./boxes.css');
 
 body {
-  @apply h-full text-base bg-[#0A0A0A];
+  @apply h-full text-base bg-shark-600;
   scroll-behavior: smooth;
   font-family: 'Poppins', sans-serif;
 }
@@ -105,4 +105,14 @@ body {
   after:bg-right
   after:-z-10
   max-md:after:bg-cover
+}
+
+.slider-bottom{
+
+  -webkit-appearance: none;
+  width: 100%; /* Ajusta el ancho según necesites */
+  height: 10px; /* Ajusta la altura según necesites */
+  background: #ccc; /* Color del riel */
+  border-radius: 5px; /* Borde redondeado */
+
 }

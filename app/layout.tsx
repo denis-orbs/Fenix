@@ -3,11 +3,12 @@ import Image from 'next/image'
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import Head from 'next/head'
-import { Poppins, Michroma } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 
 import Footer from '@/components/Common/Layout/Footer'
 import Header from '@/components/Common/Layout/Header'
 import MobileHeader from '@/components/Common/Layout/Header/Mobile'
+import Decorator from '@/components/Common/Layout/Background'
 
 export const metadata: Metadata = {
   title: 'Fenix',
@@ -37,7 +38,7 @@ export default function RootLayout({
         <MobileHeader />
         {children}
         <Footer />
-
+        <Decorator />
       </body>
     </html>
   )
