@@ -351,7 +351,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#16181a]
+  before:border-[transparent_transparent_#1a1d21]
 
   after:hidden
   xl:after:block
@@ -365,7 +365,7 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#16181a];
+  after:border-[transparent_transparent_#1a1d21];
 }
 
 /* Background for select token modal */
@@ -466,7 +466,7 @@
   before:border-t-[30px]
   before:border-r-[30px]
   before:border-b-[30px]
-  before:border-[transparent_transparent_#16181a]
+  before:border-[transparent_transparent_#1a1d21]
 
   after:hidden
   xl:after:block
@@ -480,7 +480,7 @@
   after:border-t-[25px]
   after:border-r-[25px]
   after:border-b-[25px]
-  after:border-[transparent_transparent_#16181a];
+  after:border-[transparent_transparent_#1a1d21];
 }
 
 /* Background for exchange box of trade panel */
@@ -499,7 +499,7 @@
   before:border-t-[25px]
   before:border-l-[25px]
   before:border-b-[25px]
-  before:border-[transparent_transparent_#16181a]
+  before:border-[transparent_transparent_#1a1d21]
 
   after:hidden
   xl:after:block
@@ -513,7 +513,7 @@
   after:border-t-[30px]
   after:border-r-[30px]
   after:border-b-[30px]
-  after:border-[transparent_transparent_#16181a];
+  after:border-[transparent_transparent_#1a1d21];
 }
 
 .order-item-box {
@@ -531,7 +531,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#16181a]
+  before:border-[transparent_transparent_#1a1d21]
 
   after:hidden
   xl:after:block
@@ -545,5 +545,5 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#16181a];
+  after:border-[transparent_transparent_#1a1d21];
 }
