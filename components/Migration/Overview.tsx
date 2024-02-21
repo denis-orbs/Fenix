@@ -9,14 +9,14 @@ import { TOKENS_LIST } from './data'
 
 interface OverviewProps {
   migrateStatus: string | undefined
-  setMigrateStatus: (props: string | undefined) => void
+  setMigrateStatus: (status: string) => void
 }
 
 const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
   return (
     <div className="relative">
       <h5 className="mb-4 text-lg text-white">Migration Overview</h5>
-      <div className="flex flex-col gap-5 mb-5 md:items-center md:justify-between xl:flex-row">
+      <div className="flex flex-col gap-5 mb-5 md:items-center md:justify-between 2xl:flex-row">
         <AddressCheck migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
         <TotalMigrated />
       </div>

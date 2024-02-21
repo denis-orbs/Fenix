@@ -3,14 +3,14 @@
 const TotalMigrated = () => {
 
   return (
-    <div className="relative flex items-center w-full xl:w-2/4 2xl:w-1/3 md:h-[62px] px-4 py-2 rounded-lg gap-2 total-migrated-box min-h-[86px]">
-      <div className="p-3 justify-center w-10 h-10 rounded-lg bg-shark-400 bg-opacity-60 hidden xl:flex">
+    <div className="relative flex items-center w-full md:h-[62px] px-4 py-2 rounded-lg gap-2 total-migrated-box min-h-[86px] 2xl:w-2/5">
+      <div className="justify-center hidden w-10 h-10 p-3 rounded-lg bg-shark-400 bg-opacity-60 xl:flex">
         <span
           className={` text-xl text-transparent bg-gradient-to-r items-center flex justify-center from-outrageous-orange-500 to-festival-500 bg-clip-text icon-compass`}
         />
       </div>
       <div className="w-full">
-        <p className="mb-3 text-xs text-shark-100 md:mb-0">Total Migrated Amount to FNX</p>
+        <p className="mb-1 text-xs text-shark-100">Total Migrated Amount to FNX</p>
         <div className="flex flex-wrap items-center gap-3 md:gap-2 md:flex-nowrap">
           <div className="flex items-center justify-between w-full gap-2 mb-2 md:w-auto md:mb-0 md:justify-start">
             <h3 className="text-sm text-white">0 CHR</h3>

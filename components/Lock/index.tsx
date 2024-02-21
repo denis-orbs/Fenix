@@ -38,9 +38,11 @@ const Lock = () => {
           </div>
         </div>
       ) : (
-        <section className="p-5 py-20">
-          <div className="flex items-center gap-6  flex-col xl:flex-row mb-10 xl:h-[450px]">
-            <LockTokens changeState={changeState} setChangeState={setChangeState} />
+        <section className="">
+          <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row mb-4">
+            <div className="w-full 2xl:w-3/4">
+              <LockTokens changeState={changeState} setChangeState={setChangeState} />
+            </div>
             <Steps steps={LOCK_STEPS} />
           </div>
           <div className="flex items-center gap-2 mb-4">
@@ -48,8 +50,12 @@ const Lock = () => {
             <span className="text-xl text-white icon-info"></span>
           </div>
           <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
-            <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => {}} />
-            <Search />
+            <div className="w-full xl:w-2/3">
+              <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => {}} />
+            </div>
+            <div className="w-full xl:w-1/3">
+              <Search />
+            </div>
           </div>
           <div className="hidden w-full mb-20 xl:block">
             <MyLocks />

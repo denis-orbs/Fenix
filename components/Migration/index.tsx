@@ -13,16 +13,18 @@ const Claim = () => {
   const [migrateStatus, setMigrateStatus] = useState<string | undefined>(undefined)
 
   return (
-    <section className="my-5 xl:my-10">
-      <div className="flex justify-between flex-col items-center gap-6 mb-10 xl:flex-row">
-        <Migration isConnected={isConnected} />
+    <section>
+      <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
+        <div className="w-full 2xl:w-3/4">
+          <Migration isConnected={isConnected} />
+        </div>
         <Steps steps={STEPS} />
       </div>
       <div className="hidden lg:block">
-      <Overview migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus}/>
+        <Overview migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
       </div>
-      <div className='block lg:hidden  xl:hidden'>
-        <OverviewMobile migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus}/>
+      <div className="block lg:hidden  xl:hidden">
+        <OverviewMobile migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
       </div>
     </section>
   )

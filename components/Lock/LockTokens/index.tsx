@@ -13,7 +13,7 @@ const LockTokens = ({ changeState, setChangeState }: LockTokensProps) => {
   const handlerChangeState = () => (changeState ? setChangeState(false) : setChangeState(true))
   return (
     <MainBox>
-      <div className="flex flex-col items-center justify-between w-full px-10 py-8 xl:flex-row bg-shark-400 bg-opacity-40 rounded-2xl xl:rounded-none xl:py-0">
+      <div className="flex flex-col items-center justify-between w-full xl:flex-row z-10 relative xl:min-h-[350px]">
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-xl text-white">Lock your Tokens</h4>
           <p className="mb-4 text-sm text-shark-100">
