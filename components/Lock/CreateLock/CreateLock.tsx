@@ -12,8 +12,8 @@ const CreateLock = () => {
   const OPTIONS = ['7D', '3M', '6M', '1Y', '2Y']
 
   return (
-    <MainBox>
-      <div className="flex flex-col w-full xl:flex-row relative z-10">
+    <MainBox className='xl:min-w-[1300px]'>
+      <div className="flex flex-col w-full xl:flex-row relative z-10 pb-60 xl:pb-0 xl:py-8">
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex justify-between">
             <h4 className="text-xl text-white">Create new Lock</h4>
@@ -114,7 +114,7 @@ const CreateLock = () => {
           </div>
 
           {CREATE_LOCK_LIST.map((exchange, index) => (
-            <InfoBox bgBox='exchange-box-x1' key={index} data={exchange} textColor={'text-shark-100'} />
+            <InfoBox bgBox='exchange-box-info' key={index} data={exchange} textColor={'text-shark-100'} />
           ))}
           <div className="flex gap-3 justify-center mt-10">
             <span className="h-2 w-2 rounded-full bg-shark-400"></span>
