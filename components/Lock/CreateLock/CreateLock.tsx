@@ -13,8 +13,7 @@ const CreateLock = () => {
 
   return (
     <MainBox>
-      <div className="flex flex-col pt-10  w-full px-6 xl:px-10 pb-60 xl:flex-row
-       bg-shark-400 bg-opacity-40 rounded-2xl xl:rounded-none xl:py-0">
+      <div className="flex flex-col w-full xl:flex-row relative z-10">
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex justify-between">
             <h4 className="text-xl text-white">Create new Lock</h4>

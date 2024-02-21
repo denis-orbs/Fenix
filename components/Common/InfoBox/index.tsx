@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 interface Items {
   label: string
   amount: string | number
