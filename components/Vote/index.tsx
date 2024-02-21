@@ -1,20 +1,18 @@
 /* eslint-disable no-console */
 'use client'
+import { useState, useEffect, Fragment } from 'react'
 import Deposit from '@/components/Vote/Deposit'
 import VoteNow from './VoteNow/VoteNow'
-import Filter from '../Common/Filter'
-import Search from '../Common/Search'
-import { FILTER_OPTIONS } from './data'
-import Voted from './Voted'
-import { PaginationMobile, TableSkeleton, TableBody, TableHead } from '../UI'
-import { Pagination } from '../UI'
-import { Fragment } from 'react'
+import Filter from '@/components/Common/Filter'
+import Search from '@/components/Common/Search'
+import { PaginationMobile, TableSkeleton, TableBody, TableHead } from '@/components/UI'
+import { Pagination } from '@/components/UI'
 import RowDataVote from './Tables/RowVote'
 import { DATA_ROW } from '../Liquidity/data'
-import { useState, useEffect } from 'react'
 import VotePools from './VoteNow/VotePools'
 import SelectVote from '../Modals/SelectVote'
 import Overlay from './Overlay'
+import { FILTER_OPTIONS } from './data'
 
 const Vote = () => {
   const [currentTab, setCurrentTab] = useState<string>('CONCENTRATED')
