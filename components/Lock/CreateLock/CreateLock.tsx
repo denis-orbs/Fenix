@@ -12,7 +12,7 @@ const CreateLock = () => {
         <div className="w-full xl:w-1/2 mb-5">
           <div className="flex justify-between">
             <h4 className="text-xl text-white">Create new Lock</h4>
-            <span className="icon-reflesh text-shark-100 text-xl"></span>
+            <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
           </div>
           <div className="flex items-center gap-3 justify-center mt-10 box p-5">
             <div className="w-1/2 flex flex-col gap-2">
@@ -44,7 +44,6 @@ const CreateLock = () => {
                 />
               </div>
             </div>
-
           </div>
           <div className="flex flex-col gap-3  mt-10 box p-5">
             <p className="text-white text-sm text-left">Locking for 6 months for 0.0 veFNX voting power</p>

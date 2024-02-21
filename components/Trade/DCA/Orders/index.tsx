@@ -14,7 +14,7 @@ const Orders = () => {
           </Button>
         </div>
         <div className="flex items-center justify-end gap-4 md:w-1/3 text-shark-100 xl:w-full">
-          <span className="icon-reflesh"></span>
+          <span className="icon-reflesh cursor-pointer"></span>
           <p className="text-xs">Refresh Data</p>
         </div>
       </div>
