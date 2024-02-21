@@ -31,7 +31,7 @@ export const EXCHANGE_LIST = [
   {
     label: 'Total Rewards',
     amount: 4868076544,
-    icon: 'icon-coins',
+    icon: 'icon-trophy',
   },
   {
     label: 'New Emissions',
