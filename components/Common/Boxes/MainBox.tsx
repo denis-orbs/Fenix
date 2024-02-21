@@ -3,7 +3,7 @@ import cn from '@/utils/cn'
 
 interface MainBoxProps {
   children: React.ReactNode
-  className: string
+  className?: string
 }
 
 const MainBox = ({ children, className }: MainBoxProps) => {
