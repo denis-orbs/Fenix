@@ -16,7 +16,7 @@ const Lock = () => {
   return (
     <>
       {changeState ? (
-        <div className="flex flex-col items-center py-10">
+        <div className="flex flex-col items-center py-10 px-20">
           <div className="box-notification p-5  justify-between rounded-lg w-2/5 mb-5 me-20 hidden xl:flex">
             <div className="flex items-center gap-2 w-2/3 ">
               <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
