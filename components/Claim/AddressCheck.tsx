@@ -62,29 +62,29 @@ const AddressCheck = ({
       contracts: [
         {
           abi: chrmigrateabi,
-          address: '0xC138616F08BB95EB59bB00A4Fa4890084f230A9E',
+          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
           functionName: 'depositDuration',
         },
         {
           abi: chrmigrateabi,
-          address: '0xC138616F08BB95EB59bB00A4Fa4890084f230A9E',
+          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
           functionName: 'deploymentTimestamp',
         },
         {
           abi: chrmigrateabi,
-          address: '0xC138616F08BB95EB59bB00A4Fa4890084f230A9E',
+          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
           functionName: 'userBalances',
           args: [account],
         },
         {
           abi: chrnftmigrateabi,
-          address: '0x5fCA02D045aBc311b6073215e549D40a2aFBC1d3',
+          address: '0x0372Fd0930f0956766bC61933ceD9daC9Fe6b8b8',
           functionName: 'totalids',
           args: [account],
         },
         {
           abi: vechrmigrateabi,
-          address: '0x55Eb7F89c6250101B7BCAa2652bF1e3DaC4F3463',
+          address: '0x1bFd1e832Be53D423d1F5b8f91C37FBB492af322',
           functionName: 'totalids',
           args: [account],
         },
@@ -102,7 +102,7 @@ const AddressCheck = ({
         },
         {
           abi: chrmigrateabi,
-          address: '0xC138616F08BB95EB59bB00A4Fa4890084f230A9E',
+          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
           functionName: 'isWithinDepositPeriod',
         },
         {
@@ -127,7 +127,7 @@ const AddressCheck = ({
     }).then((data) => {
       if (data) {
         setchramount(data[2]?.result ?? BigInt(0))
-        setChrNftIds(data[3]?.result ?? BigInt(0))
+        setChrNftIds(data[9]?.result ?? BigInt(0))
         setveChrIds(data[4]?.result ?? BigInt(0))
         setelChramount(data[5]?.result ?? BigInt(0))
         setspChramount(data[6]?.result ?? BigInt(0))

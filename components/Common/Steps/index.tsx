@@ -26,10 +26,7 @@ const Steps = ({ steps }: StepsProps) => {
         <h4 className="w-full mb-3 text-sm text-white">Start now</h4>
         <div className="relative flex flex-col w-auto">
           {steps.map((step, index) => (
-            <div
-              key={index}
-              className="xl:h-[97px] flex gap-3 items-center p-3 mb-3 relative box"
-            >
+            <div key={index} className="xl:h-[97px] flex gap-3 items-center p-3 mb-3 relative box">
               <div className="flex items-center justify-center w-[32px] h-[32px] p-2 lg:w-12 lg:h-12 lg:p-3 rounded-lg bg-shark-400 bg-opacity-60">
                 <span
                   className={`inline-block lg:text-2xl text-transparent
@@ -54,8 +51,8 @@ const Steps = ({ steps }: StepsProps) => {
           className="flex items-center justify-end gap-3 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
           onClick={handleReadMore}
         >
-          <span className="text-lg icon-link"></span>
-          Read More
+          {/* <span className="text-lg icon-link"></span>
+          Read More */}
         </p>
       </div>
       <ReadMoreModal />

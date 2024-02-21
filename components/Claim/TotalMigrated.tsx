@@ -45,31 +45,31 @@ const TotalMigrated = ({
       contracts: [
         {
           abi: chrmigrateabi,
-          address: '0xC138616F08BB95EB59bB00A4Fa4890084f230A9E',
+          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
           functionName: 'depositedAmount',
           args: [acc],
         },
         {
           abi: chrnftmigrateabi,
-          address: '0x5fCA02D045aBc311b6073215e549D40a2aFBC1d3',
+          address: '0x0372Fd0930f0956766bC61933ceD9daC9Fe6b8b8',
           functionName: 'totalids',
           args: [acc],
         },
         {
           abi: vechrmigrateabi,
-          address: '0x55Eb7F89c6250101B7BCAa2652bF1e3DaC4F3463',
+          address: '0x1bFd1e832Be53D423d1F5b8f91C37FBB492af322',
           functionName: 'totalids',
           args: [acc],
         },
         {
           abi: elchrmigrateabi,
-          address: '0x98e778795366C0be2bC4aB603A51ebe7eAbf0725',
+          address: '0x2d36289E80F5E135bdc10edF491F84905109a37f',
           functionName: 'depositedAmount',
           args: [acc],
         },
         {
           abi: spchrmigrateabi,
-          address: '0xD5d3F7d9cE52094f4BE5BCeb2d52D801541A97A2',
+          address: '0x1F8fCdd07711d6631069edE517583ABECC273819',
           functionName: 'depositedAmount',
           args: [acc],
         },
@@ -83,6 +83,8 @@ const TotalMigrated = ({
         setspChramount((data[4]?.result as BigInt) ?? BigInt(0))
 
         setChrNftsTotal((data[1]?.result as BigInt) ?? BigInt(0))
+        setchrDeposited((data[1]?.result as BigInt) ?? BigInt(0))
+        setChrNftDeposited((data[1]?.result as BigInt) ?? BigInt(0))
         setveChrNftsTotal(data[2]?.result as BigInt) ?? BigInt(0)
         setchramountDeposited((data[0]?.result as BigInt) ?? BigInt(0))
         setelChramountDeposited((data[3]?.result as BigInt) ?? BigInt(0))
@@ -97,7 +99,7 @@ const TotalMigrated = ({
         for (let i = 0; i < parseInt(((data[1]?.result as BigInt) ?? BigInt(0)).toString()); i++) {
           chrnftcontractsArray.push({
             abi: chrnftmigrateabi,
-            address: '0x5fCA02D045aBc311b6073215e549D40a2aFBC1d3',
+            address: '0x0372Fd0930f0956766bC61933ceD9daC9Fe6b8b8',
             functionName: 'addressToNftIds',
             args: [acc, i],
           })
@@ -105,7 +107,7 @@ const TotalMigrated = ({
         for (let i = 0; i < parseInt(((data[2]?.result as BigInt) ?? BigInt(0)).toString()) ?? 0; i++) {
           vechrnftcontractsArray.push({
             abi: vechrmigrateabi,
-            address: '0x55Eb7F89c6250101B7BCAa2652bF1e3DaC4F3463',
+            address: '0x1bFd1e832Be53D423d1F5b8f91C37FBB492af322',
             functionName: 'addressToNftIds',
             args: [acc, i],
           })
@@ -123,7 +125,7 @@ const TotalMigrated = ({
           for (let i = 0; i < ids.length ?? 0; i++) {
             deposited.push({
               abi: chrnftmigrateabi,
-              address: '0x5fCA02D045aBc311b6073215e549D40a2aFBC1d3',
+              address: '0x0372Fd0930f0956766bC61933ceD9daC9Fe6b8b8',
               functionName: 'deposited',
               args: [parseInt((ids[i]?.result as BigInt).toString()), acc],
             })
@@ -140,8 +142,6 @@ const TotalMigrated = ({
                 count++
               }
             })
-            setchrDeposited(count)
-            setChrNftDeposited(count)
           })
         })
 
@@ -157,7 +157,7 @@ const TotalMigrated = ({
           for (let i = 0; i < ids.length ?? 0; i++) {
             deposited.push({
               abi: vechrmigrateabi,
-              address: '0x55Eb7F89c6250101B7BCAa2652bF1e3DaC4F3463',
+              address: '0x1bFd1e832Be53D423d1F5b8f91C37FBB492af322',
               functionName: 'deposited',
               args: [parseInt((ids[i]?.result as BigInt).toString()), acc],
             })
@@ -201,7 +201,7 @@ const TotalMigrated = ({
           <p className="mb-3 text-xs text-shark-100 md:mb-0">Share of veFNX given to non snapshot CHR Migrators</p>
           <div className="flex flex-wrap items-center gap-3 md:gap-2 md:flex-nowrap">
             <div className="flex items-center justify-between w-full gap-2 mb-2 md:w-auto md:mb-0 md:justify-start">
-              <h3 className="text-sm text-white">20k$ worth of veFNX</h3>
+              <h3 className="text-sm text-white">40k$ worth of veFNX</h3>
               <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"></span>
             </div>
             <div className="flex items-center justify-between w-full gap-2 mb-2 md:w-auto md:mb-0 md:justify-start">
@@ -227,9 +227,7 @@ const TotalMigrated = ({
               <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"></span>
             </div>
             <div className="flex items-center justify-between w-full gap-2 mb-2 md:w-auto md:mb-0 md:justify-start">
-              <h3 className="text-sm text-white">
-                {parseInt(ChrNftIds.toString()) - parseInt(chrDeposited.toString())} chrNFTs
-              </h3>
+              <h3 className="text-sm text-white">{parseInt(chrDeposited.toString())} chrNFTs</h3>
               <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"></span>
             </div>
             <div className="flex items-center justify-between w-full gap-2 mb-2 md:w-auto md:mb-0 md:justify-start">

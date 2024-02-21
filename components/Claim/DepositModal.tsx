@@ -49,7 +49,7 @@ interface DepositModalProp {
   item: Item | undefined
   setOpenModal: (openModal: boolean) => void
   acc: string | undefined
-  migrateAmount: BigInt | undefined
+  migrateAmount: string | undefined
   migrateStatus: string | undefined
 }
 
@@ -105,7 +105,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
   }
   useEffect(() => {
     if (item.token === 'veCHR' || item.token === 'chrNFT') {
-      if (migrateStatus == 'success') {
+      if (migrateStatus === 'success' && item.token === 'veCHR') {
         multicall({
           contracts: [
             {
@@ -203,7 +203,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
           {
             abi: item.abi,
             address: item.address,
-            functionName: item.token == 'CHR' || 'spCHR' || 'elCHR' ? 'balanceOf' : 'balanceOf',
+            functionName: 'balanceOf',
             args: [acc],
           },
         ],
@@ -249,12 +249,12 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
         <div className="p-5 text-center">
           <div className="w-100 my-2">
             <input
-              className="me-8 px-3 py-1 text-xs  justify-center md:text-sm border rounded-lg text-center text-shark-100 bg-shark-400 border-shark-300 truncate max-w-[200px]"
+              className="me-8 px-3 py-1 text-xs md:text-sm border rounded-lg text-center text-shark-100 bg-shark-400 border-shark-300 truncate max-w-[200px]"
               type="text"
               value={depositAmount}
               onChange={(e) => setdepositAmount(e.target.value)}
             />
-            <span
+            <div
               onClick={() => {
                 if (migrateAmount >= balance) setdepositAmount(balance)
                 else setdepositAmount(migrateAmount)
@@ -275,14 +275,14 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
                     ? tokenIds.join(',')
                     : null}
               </label>
-            </span>
+            </div>
           </div>
-        </div>
-        <div className="w-100 flex justify-center items-center my-5">
-          <Button onClick={handlerdepositCheck}>
-            {approvalIsLoading ? 'Approving...' : depositIsLoading ? 'Migrating...' : 'Migrate'}
-          </Button>
-          <Toaster />
+          <div className="w-100 flex justify-center items-center my-5">
+            <Button onClick={handlerdepositCheck}>
+              {approvalIsLoading ? 'Approving...' : depositIsLoading ? 'Migrating...' : 'Migrate'}
+            </Button>
+            <Toaster />
+          </div>
         </div>
       </div>
       {depositiserror ? toast(`${depositError?.cause}`) : null}

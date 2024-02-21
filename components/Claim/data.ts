@@ -14,27 +14,27 @@ import spchrabi from '../../abi/spchr.json'
 export const EXCHANGE_LIST = [
   {
     label: 'Exchange Ratio',
-    amount: '102.65 CHR: 1 veFNX',
+    amount: '166 CHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {
     label: 'Exchange Ratio',
-    amount: '102.65 spCHR: 1 veFNX',
+    amount: '166 spCHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {
     label: 'Exchange Ratio',
-    amount: '102.65 elCHR: 1 veFNX',
+    amount: '166 elCHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {
     label: 'Exchange Ratio',
-    amount: '113.88 veCHR: 1 veFNX',
+    amount: '76 veCHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {
     label: 'Exchange Ratio',
-    amount: '102.65 chrNFT: 1 veFNX',
+    amount: '1 chrNFT: 76 veFNX',
     icon: 'icon-lucide',
   },
 ]
@@ -44,7 +44,7 @@ export const TOKENS_LIST = [
     token: 'CHR',
     abi:chrabi,
     address:'0x15b2fb8f08e4ac1ce019eadae02ee92aedf06851',
-    migrateAddress:"0xC138616F08BB95EB59bB00A4Fa4890084f230A9E",
+    migrateAddress:"0x5152875C0982b57dd9515A8230eE3621E774aCB1",
     migrateabi:chrmigrateabi,
     icon: 'CHR',
     migrated: {
@@ -60,7 +60,7 @@ export const TOKENS_LIST = [
     token: 'veCHR',
     abi:vechrabi,
     address:'0x9A01857f33aa382b1d5bb96C3180347862432B0d',
-    migrateAddress:"0x55Eb7F89c6250101B7BCAa2652bF1e3DaC4F3463",
+    migrateAddress:"0x1bFd1e832Be53D423d1F5b8f91C37FBB492af322",
     migrateabi:vechrmigrateabi,
     icon: 'CHR',
     migrated: {
@@ -76,7 +76,7 @@ export const TOKENS_LIST = [
     token: 'chrNFT',
     abi:chrnftabi,
     address:'0x55d26d7e20bfb42948a05d6d9a69af8fd5400fa0',
-    migrateAddress:"0x5fCA02D045aBc311b6073215e549D40a2aFBC1d3",
+    migrateAddress:"0x0372Fd0930f0956766bC61933ceD9daC9Fe6b8b8",
     migrateabi:chrnftmigrateabi,
     icon: 'chrNFT',
     migrated: {
@@ -92,7 +92,7 @@ export const TOKENS_LIST = [
     token: 'elCHR',
     abi:elchrabi,
     address:'0xD600Ec98cf6418c50EE051ACE53219D95AeAa134',
-    migrateAddress:"0x98e778795366C0be2bC4aB603A51ebe7eAbf0725",
+    migrateAddress:"0x2d36289E80F5E135bdc10edF491F84905109a37f",
     migrateabi:elchrmigrateabi,
     icon: 'CHR',
     migrated: {
@@ -108,7 +108,7 @@ export const TOKENS_LIST = [
     token: 'spCHR',
     abi:spchrabi,
     address:'0xFEA2906087D82BD8Da630E7E2c7D9a4dEb061097',
-    migrateAddress:"0xD5d3F7d9cE52094f4BE5BCeb2d52D801541A97A2",
+    migrateAddress:"0x1F8fCdd07711d6631069edE517583ABECC273819",
     migrateabi:spchrmigrateabi,
     icon: 'CHR',
     migrated: {
@@ -127,7 +127,7 @@ export const NONSNAPSHOT_TOKENS_LIST = [
     token: 'CHR',
     abi:chrabi,
     address:'0x15b2fb8f08e4ac1ce019eadae02ee92aedf06851',
-    migrateAddress:"0xC138616F08BB95EB59bB00A4Fa4890084f230A9E",
+    migrateAddress:"0x5152875C0982b57dd9515A8230eE3621E774aCB1",
     migrateabi:chrmigrateabi,
     icon: 'CHR',
     migrated: {
@@ -143,7 +143,7 @@ export const NONSNAPSHOT_TOKENS_LIST = [
     token: 'veCHR',
     abi:vechrabi,
     address:'0x9A01857f33aa382b1d5bb96C3180347862432B0d',
-    migrateAddress:"0x55Eb7F89c6250101B7BCAa2652bF1e3DaC4F3463",
+    migrateAddress:"0x1bFd1e832Be53D423d1F5b8f91C37FBB492af322",
     migrateabi:vechrmigrateabi,
     icon: 'CHR',
     migrated: {
@@ -155,22 +155,22 @@ export const NONSNAPSHOT_TOKENS_LIST = [
       icon: 'FNX',
     },
   },
-  {
-    token: 'chrNFT',
-    abi:chrnftabi,
-    address:'0x55d26d7e20bfb42948a05d6d9a69af8fd5400fa0',
-    migrateAddress:"0x5fCA02D045aBc311b6073215e549D40a2aFBC1d3",
-    migrateabi:chrnftmigrateabi,
-    icon: 'chrNFT',
-    migrated: {
-      amount: 3,
-      icon: 'chrNFT',
-    },
-    claimable: {
-      amount: 3.18,
-      icon: 'FNX',
-    },
-  },
+  // {
+  //   token: 'chrNFT',
+  //   abi:chrnftabi,
+  //   address:'0x55d26d7e20bfb42948a05d6d9a69af8fd5400fa0',
+  //   migrateAddress:"0x0372Fd0930f0956766bC61933ceD9daC9Fe6b8b8",
+  //   migrateabi:chrnftmigrateabi,
+  //   icon: 'chrNFT',
+  //   migrated: {
+  //     amount: 3,
+  //     icon: 'chrNFT',
+  //   },
+  //   claimable: {
+  //     amount: 3.18,
+  //     icon: 'FNX',
+  //   },
+  // },
  
 ]
 

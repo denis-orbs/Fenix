@@ -1,9 +1,9 @@
 // @ts-nocheck
 'use client'
-import MainBox from '@/components/Common/Boxes/MainBox'
-import { EXCHANGE_LIST } from '../data'
-import { Button } from '@/components/UI'
+
 import { useEffect, useState } from 'react'
+import { MainBox } from '@/components/UI'
+import { EXCHANGE_LIST } from '../data'
 import InfoBox from '@/components/Common/InfoBox'
 import Countdown from 'react-countdown'
 import { useAccount } from 'wagmi'
@@ -60,12 +60,12 @@ const Migration = () => {
       contracts: [
         {
           abi: chrmigrateabi,
-          address: '0xC138616F08BB95EB59bB00A4Fa4890084f230A9E',
+          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
           functionName: 'depositDuration',
         },
         {
           abi: chrmigrateabi,
-          address: '0xC138616F08BB95EB59bB00A4Fa4890084f230A9E',
+          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
           functionName: 'deploymentTimestamp',
         },
       ],
@@ -75,36 +75,37 @@ const Migration = () => {
   }, [])
 
   return (
-    <MainBox>
-      <div className="flex flex-col justify-between w-full md:gap-10 md:flex-row md:items-center">
-        <div className="w-full my-5 md:w-[50%] xl:w-[40%] md:m-0">
-          <h4 className="mb-3 text-xl text-white">Migration Claim</h4>
-          <p className="mb-4 text-sm text-shark-100">
-            Deposit your CHR Tokens in order to migrate to our new Protocol!
-          </p>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center justify-between w-full gap-3 px-4 py-2 rounded-lg md:gap-5 2xl:gap-8 2xl:justify-start bg-shark-400 bg-opacity-40">
-              <div>
-                <h5 className="mb-1 text-xs text-shark-100">Migration</h5>
-                <p className="text-xs text-green-500">Open</p>
-              </div>
-              <Countdown date={new Date(finalDate * 1000)} daysInHours={true} autoStart={true} renderer={renderer} />
+    <div className="flex flex-col justify-between w-full md:gap-10 md:flex-row md:items-center">
+      <div className="w-full my-5 md:w-[50%] xl:w-[40%] md:m-0">
+        <h4 className="mb-3 text-xl text-white">Migration Claim</h4>
+        <p className="mb-4 text-sm text-shark-100">Deposit your CHR Tokens in order to migrate to our new Protocol!</p>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center justify-between w-full gap-3 px-4 py-2 rounded-lg md:gap-5 2xl:gap-8 2xl:justify-start bg-shark-400 bg-opacity-40">
+            <div>
+              <h5 className="mb-1 text-xs text-shark-100">Migration</h5>
+              <p className="text-xs text-green-500">Open</p>
             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <p className="flex items-center gap-3 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
-              <span className="text-lg icon-link"></span>
-              About Migration
-            </p>
+            <Countdown date={new Date(finalDate * 1000)} daysInHours={true} autoStart={true} renderer={renderer} />
           </div>
         </div>
-        <div className="relative flex flex-col w-full md:w-[40%] max-h-[390px] overflow-y-auto overflow-x-none pr-4">
-          {EXCHANGE_LIST.map((exchange, index) => (
-            <InfoBox key={index} data={exchange} setShowTooltip={setShow} hasTooltip />
-          ))}
+        <div className="flex items-center gap-3">
+          <a
+            href="https://medium.com/@Fenix_Finance/the-migration-to-fenix-005cf5f757d8"
+            className="flex items-center gap-3 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="text-lg icon-link"></span>
+            About Migration
+          </a>
         </div>
       </div>
-    </MainBox>
+      <div className="relative flex flex-col w-full md:w-[40%] max-h-[390px] overflow-y-auto overflow-x-none pr-4">
+        {EXCHANGE_LIST.map((exchange, index) => (
+          <InfoBox key={index} data={exchange} setShowTooltip={setShow} hasTooltip />
+        ))}
+      </div>
+    </div>
   )
 }
 

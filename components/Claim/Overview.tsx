@@ -154,18 +154,27 @@ const Overview = () => {
 
                           <p className="text-sm text-white">
                             {item.token === 'CHR'
-                              ? new BigNumber(parseInt(chramount.toString())).dividedBy(10 ** 18).toString()
+                              ? new BigNumber(parseInt(chramount.toString()))
+                                  .dividedBy(10 ** 18)
+                                  .toFixed(2)
+                                  .toString()
                               : item.token === 'elCHR'
-                                ? new BigNumber(parseInt(elChramount.toString())).dividedBy(10 ** 18).toString()
+                                ? new BigNumber(parseInt(elChramount.toString()))
+                                    .dividedBy(10 ** 18)
+                                    .toFixed(2)
+                                    .toString()
                                 : item.token === 'spCHR'
-                                  ? new BigNumber(parseInt(spChramount.toString())).dividedBy(10 ** 18).toString()
+                                  ? new BigNumber(parseInt(spChramount.toString()))
+                                      .dividedBy(10 ** 18)
+                                      .toFixed(2)
+                                      .toString()
                                   : item.token === 'veCHR'
                                     ? parseInt(veChrNftDeposited.toString())
                                       ? parseInt(veChrNftDeposited.toString())
                                       : 0
                                     : item.token === 'chrNFT'
-                                      ? parseInt(ChrNftDeposited.toString())
-                                        ? parseInt(ChrNftDeposited.toString())
+                                      ? parseInt(chrNftBalanceOf.toString())
+                                        ? parseInt(chrNftBalanceOf.toString())
                                         : 0
                                       : 0}
                           </p>
@@ -186,19 +195,19 @@ const Overview = () => {
                             {' '}
                             {item.token === 'CHR'
                               ? new BigNumber(parseInt(chramountDeposited.toString()))
-                                  .dividedBy(102.65)
+                                  .dividedBy(166)
                                   .dividedBy(10 ** 18)
                                   .toFixed(2)
                                   .toString()
                               : item.token === 'elCHR'
                                 ? new BigNumber(parseInt(elChramountDeposited.toString()))
-                                    .dividedBy(102.65)
+                                    .dividedBy(166)
                                     .dividedBy(10 ** 18)
                                     .toFixed(2)
                                     .toString()
                                 : item.token === 'spCHR'
                                   ? new BigNumber(parseInt(spChramountDeposited.toString()))
-                                      .dividedBy(102.65)
+                                      .dividedBy(166)
                                       .dividedBy(10 ** 18)
                                       .toFixed(2)
                                       .toString()
@@ -207,16 +216,12 @@ const Overview = () => {
                                       ? (
                                           (parseInt(veChrNftsTotal?.toString()) -
                                             parseInt(veChrNftDeposited?.toString())) /
-                                          113.88
+                                          76
                                         ).toFixed(4)
                                       : 0
                                     : item.token === 'chrNFT'
                                       ? parseInt(ChrNftDeposited.toString())
-                                        ? (
-                                            (parseInt(ChrNftsTotal?.toString()) -
-                                              parseInt(ChrNftDeposited?.toString())) /
-                                            102.65
-                                          ).toFixed(4)
+                                        ? (parseInt(ChrNftDeposited?.toString()) * 76).toFixed(0)
                                         : 0
                                       : 0}
                           </p>
@@ -252,20 +257,20 @@ const Overview = () => {
                 migrateStatus={migrateStatus}
                 migrateAmount={
                   item?.token === 'CHR'
-                    ? BigInt(new BigNumber(parseInt(chramount.toString())).dividedBy(10 ** 18).toString())
+                    ? new BigNumber(parseInt(chramount.toString())).dividedBy(10 ** 18).toString()
                     : item?.token === 'elCHR'
-                      ? BigInt(new BigNumber(parseInt(elChramount.toString())).dividedBy(10 ** 18).toString())
+                      ? new BigNumber(parseInt(elChramount.toString())).dividedBy(10 ** 18).toString()
                       : item?.token === 'spCHR'
-                        ? BigInt(new BigNumber(parseInt(spChramount.toString())).dividedBy(10 ** 18).toString())
+                        ? new BigNumber(parseInt(spChramount.toString())).dividedBy(10 ** 18).toString()
                         : item?.token === 'veCHR'
-                          ? BigInt(veChrIds.toString())
-                            ? BigInt(veChrIds.toString())
-                            : BigInt(0)
+                          ? veChrIds.toString()
+                            ? veChrIds.toString()
+                            : '0'
                           : item?.token === 'chrNFT'
-                            ? BigInt(ChrNftIds.toString())
-                              ? BigInt(ChrNftIds.toString())
-                              : BigInt(0)
-                            : BigInt(0)
+                            ? ChrNftIds.toString()
+                              ? ChrNftIds.toString()
+                              : '0'
+                            : '0'
                 }
               />
             )}
@@ -309,7 +314,10 @@ const Overview = () => {
 
                           <p className="text-sm text-white">
                             {item.token === 'CHR'
-                              ? new BigNumber(parseInt(chrBalanceOf.toString())).dividedBy(10 ** 18).toString()
+                              ? new BigNumber(parseInt(chrBalanceOf.toString()))
+                                  .dividedBy(10 ** 18)
+                                  .toFixed(2)
+                                  .toString()
                               : item.token === 'elCHR'
                                 ? new BigNumber(parseInt(elChramount.toString())).dividedBy(10 ** 18).toString()
                                 : item.token === 'spCHR'
@@ -357,20 +365,20 @@ const Overview = () => {
                 migrateStatus={migrateStatus}
                 migrateAmount={
                   item?.token === 'CHR'
-                    ? BigInt(new BigNumber(parseInt(chramount.toString())).dividedBy(10 ** 18).toString())
+                    ? new BigNumber(parseInt(chramount.toString())).dividedBy(10 ** 18).toString()
                     : item?.token === 'elCHR'
-                      ? BigInt(new BigNumber(parseInt(elChramount.toString())).dividedBy(10 ** 18).toString())
+                      ? new BigNumber(parseInt(elChramount.toString())).dividedBy(10 ** 18).toString()
                       : item?.token === 'spCHR'
-                        ? BigInt(new BigNumber(parseInt(spChramount.toString())).dividedBy(10 ** 18).toString())
+                        ? new BigNumber(parseInt(spChramount.toString())).dividedBy(10 ** 18).toString()
                         : item?.token === 'veCHR'
-                          ? BigInt(veChrIds.toString())
-                            ? BigInt(veChrIds.toString())
-                            : BigInt(0)
+                          ? veChrIds.toString()
+                            ? veChrIds.toString()
+                            : '0'
                           : item?.token === 'chrNFT'
-                            ? BigInt(ChrNftIds.toString())
-                              ? BigInt(ChrNftIds.toString())
-                              : BigInt(0)
-                            : BigInt(0)
+                            ? ChrNftIds.toString()
+                              ? ChrNftIds.toString()
+                              : '0'
+                            : '0'
                 }
               />
             )}
