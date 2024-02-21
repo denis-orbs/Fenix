@@ -99,7 +99,9 @@ const config: Config = {
         },
       },
       screens: {
-        xxs: '320px',
+        xxxs: '256px',
+        xxs: '384px',
+        xs: '512px'
       },
     },
     container: {
