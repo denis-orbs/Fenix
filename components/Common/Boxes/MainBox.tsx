@@ -6,10 +6,8 @@ interface MainBoxProps {
 
 const MainBox = ({ children }: MainBoxProps) => {
   return (
-    <div className="relative w-full rounded-2xl xl:max-w-[1168px]">
-      <div className="main-box-top"></div>
+    <div className="main-box">
       {children}
-      <div className="main-box-bottom"></div>
     </div>
   )
 }

@@ -20,7 +20,7 @@ const InfoBox = ({ data, setShowTooltip,textColor, hasTooltip = false }: InfoBox
 
   return (
     <div className="relative">
-      <div className="2xl:min-w-[400px] h-[77px] flex gap-3 items-center p-3 mb-3 relative box ">
+      <div className="h-[77px] flex gap-3 items-center p-3 mb-3 relative box">
         <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
           <span
             className={`inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${data.icon}`}
@@ -31,7 +31,7 @@ const InfoBox = ({ data, setShowTooltip,textColor, hasTooltip = false }: InfoBox
           <div className="flex items-center gap-1">
             <div className="text-white flex gap-2">
               <p className={`text-[12px] lg:text-[14px] ${textColor}`}>{data.amount}{' '}</p>
-             
+
             </div>
             {hasTooltip && (
               <span

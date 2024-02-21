@@ -8,7 +8,7 @@ import { EXCHANGE_LIST } from './data'
 const Deposit = () => {
   return (
     <MainBox>
-      <div className="flex flex-col items-center justify-between w-full xl:flex-row bg-shark-400 bg-opacity-40 rounded-2xl xl:rounded-none py-8 xl:py-0 px-10">
+      <div className="flex flex-col items-center justify-between w-full xl:flex-row relative z-10">
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-2xl text-white">Vote</h4>
           <p className="mb-4 text-sm text-shark-100">
