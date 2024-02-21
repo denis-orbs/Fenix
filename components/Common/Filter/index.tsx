@@ -15,7 +15,8 @@ const Filter = ({ options, currentTab, setCurrentTab }: FilterProps) => {
   }
   return (
     <div
-      className="flex flex-col items-center justify-start w-full gap-2 px-3 py-2 rounded-lg xl:flex-row filter-box md:gap-5 xl:w-2/3 bg-opacity-40"
+      className="flex flex-col items-center justify-start w-full gap-2 px-3 
+      py-2 rounded-lg xl:flex-row filter-box md:gap-5 xl:w-full bg-opacity-40"
     >
       {options.map((option, index) => {
         return (
@@ -25,7 +26,7 @@ const Filter = ({ options, currentTab, setCurrentTab }: FilterProps) => {
               handlerChange(option.toUpperCase())
             }}
             variant={currentTab === option.toString().toUpperCase() ? 'primary' : 'default'}
-            className="h-[40px] md:h-auto w-full xl-w-auto"
+            className="h-[40px] md:h-auto w-full xl:w-auto"
           >
             {option}
           </Button>

@@ -44,6 +44,7 @@ const config: Config = {
         'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%)',
         'error-404': 'url("/static/images/404/Background_1.svg")',
         'modal-signin': 'url("/static/images/modals/modal-signin.svg")',
+        'fenix-slider':'url("/static/images/vote/fenix-slider.svg")',
         hours: 'url("/static/images/claim/bg-hours.svg")',
       },
       lineHeight: {
