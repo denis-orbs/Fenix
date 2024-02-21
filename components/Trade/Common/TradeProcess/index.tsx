@@ -14,7 +14,9 @@ const TradeProcess = ({ title, steps }: TradeProcessProps) => {
     <div className="relative mb-10">
       <div className="flex items-center justify-between">
         <h5 className="mb-4 text-lg text-white">{title} Process</h5>
-        <ProgressBar progress={20} />
+        <div className="w-[200px]">
+          <ProgressBar progress={20} />
+        </div>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-3 xl:flex-nowrap">
         {steps.map((step, index) => (
