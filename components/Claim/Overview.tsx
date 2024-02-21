@@ -216,7 +216,7 @@ const Overview = () => {
                                       ? (
                                           (parseInt(veChrNftsTotal?.toString()) -
                                             parseInt(veChrNftDeposited?.toString())) /
-                                          76
+                                          166
                                         ).toFixed(4)
                                       : 0
                                     : item.token === 'chrNFT'

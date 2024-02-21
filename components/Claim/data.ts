@@ -29,7 +29,7 @@ export const EXCHANGE_LIST = [
   },
   {
     label: 'Exchange Ratio',
-    amount: '76 veCHR: 1 veFNX',
+    amount: '166 veCHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {

@@ -39,6 +39,7 @@ const TotalMigrated = ({
   const [veChrIds, setveChrIdsCount] = useState<BigInt>(BigInt(0))
   const [chrDeposited, setchrDeposited] = useState<BigInt>(BigInt(0))
   const [vechrDeposited, setvechrDeposited] = useState<BigInt>(BigInt(0))
+  const [totalDepositedNSH, settotalDepositedNSH] = useState<BigInt>(BigInt(0))
 
   const init = async () => {
     await multicall({
@@ -184,9 +185,39 @@ const TotalMigrated = ({
       }
     })
   }
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://api.studio.thegraph.com/query/66327/chr-deposit/0.0.3', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `
+            {
+              depositeds(first: 1000) {
+               
+                amount
+               
+              }
+            }
+          `,
+        }),
+      })
+      const responseData = await response.json()
+      let add = 0
+      for (let i = 0; i < responseData.data.depositeds.length; i++) {
+        add = add + Number(responseData.data.depositeds[i].amount)
+      }
+      settotalDepositedNSH((add / 10 ** 18).toFixed(2))
+    } catch (error) {
+      settotalDepositedNSH(0)
+    }
+  }
 
   useEffect(() => {
     init()
+    fetchData()
   }, [acc])
 
   return (
@@ -205,7 +236,7 @@ const TotalMigrated = ({
               <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"></span>
             </div>
             <div className="flex items-center justify-between w-full gap-2 mb-2 md:w-auto md:mb-0 md:justify-start">
-              <h3 className="text-sm text-white">Total CHR Deposited Non-Snapshot:</h3>
+              <h3 className="text-sm text-white">Total CHR Deposited Non-Snapshot: {totalDepositedNSH} $CHR</h3>
               <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"></span>
             </div>
           </div>
