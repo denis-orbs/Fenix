@@ -106,3 +106,13 @@ body {
   after:-z-10
   max-md:after:bg-cover
 }
+
+.slider-bottom{
+
+  -webkit-appearance: none;
+  width: 100%; /* Ajusta el ancho según necesites */
+  height: 10px; /* Ajusta la altura según necesites */
+  background: #ccc; /* Color del riel */
+  border-radius: 5px; /* Borde redondeado */
+
+}
