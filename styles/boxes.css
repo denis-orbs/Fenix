@@ -454,8 +454,7 @@
   bg-opacity-40
   xl:bg-transparent
   xl:bg-opacity-100
-  pt-12
-  pb-20
+  py-12
   px-8
 
   before:content-[""]
