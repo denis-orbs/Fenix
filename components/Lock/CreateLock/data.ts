@@ -23,7 +23,7 @@
     {
         label: '',
         amount: 'Your lock will be available on the Dashboard.',
-        icon: 'icon-lock-off',
+        icon: 'icon-qr',
         primary_color: '',
         secondary_color: '',
       },
