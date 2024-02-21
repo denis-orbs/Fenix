@@ -127,7 +127,7 @@
   before:border-t-[30px]
   before:border-r-[30px]
   before:border-b-[30px]
-  before:border-[transparent_transparent_#0a0a0a]
+  before:border-[transparent_transparent_#111315]
 
   after:hidden
   xl:after:block
@@ -141,7 +141,7 @@
   after:border-t-[30px]
   after:border-r-[30px]
   after:border-b-[30px]
-  after:border-[transparent_transparent_#0a0a0a];
+  after:border-[transparent_transparent_#111315];
 }
 
 .box {

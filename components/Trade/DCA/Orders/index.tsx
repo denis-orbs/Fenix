@@ -5,7 +5,7 @@ import OrderItem from '@/components/Trade/DCA/Orders/OrderItem'
 const Orders = () => {
 
   return (
-    <section className="w-full bg-shark-400 bg-opacity-40 p-5 h-[700px]">
+    <section className="w-full bg-shark-400 bg-opacity-40 p-5 h-[700px] rounded-2xl">
       <div className="flex flex-col items-center justify-between gap-5 md:flex-row md:gap-0 mb-10">
         <div className="flex items-center justify-start w-full gap-2 px-3 py-2 md:w-2/3 filter-orders-box md:gap-5 xl:w-full">
           <Button className="h-[40px] md:h-auto w-full xl-w-auto">Active DCAs</Button>
