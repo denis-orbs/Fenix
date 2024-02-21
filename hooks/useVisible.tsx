@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client'
 import { useState, useEffect, useRef } from 'react'
 
 const ComponentVisible = (initialIsVisible: boolean) => {
   const [isVisible, setIsVisible] = useState(initialIsVisible)
-  const ref: any = useRef(null)
+  const ref = useRef<HTMLElement>(null)
 
-  const handleClickOutside = (event: { target: any }) => {
-    if (ref.current && !ref?.current?.contains(event.target)) {
+  const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+    if (ref.current && !ref?.current?.contains(event.target as Node)) {
       setIsVisible(false)
     }
   }
