@@ -31,16 +31,20 @@ const Vote = () => {
 
   return (
     <section>
-      <div className="flex flex-col items-center gap-5 py-5  xl:flex-row">
-        <div className="w-full xl:w-3/4">
+      <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
+        <div className="w-full 2xl:w-3/4">
           <Deposit />
         </div>
         <VoteNow openModal={openModal} setOpenModal={setOpenModal} activeVote={activeVote} />
       </div>
       <h1 className="text-xl text-white">Select Liquidity Pools for Voting</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
-        <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => console.log()} />
-        <Search />
+        <div className="w-full xl:w-2/3">
+          <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => console.log()} />
+        </div>
+        <div className="w-full xl:w-1/3">
+          <Search />
+        </div>
       </div>
       {activeVote && (
         <div className="xl:block hidden">
@@ -97,10 +101,7 @@ const Vote = () => {
         <div className="xl:hidden">
           <PaginationMobile />
         </div>
-        <div className="p-5">
-          {activeVote && <Overlay />}
-          
-        </div>
+        <div className="p-5">{activeVote && <Overlay />}</div>
       </div>
 
       <SelectVote

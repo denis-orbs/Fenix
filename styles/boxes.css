@@ -88,7 +88,7 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#1a1d21];
+  after:border-[transparent_transparent_#1e2022];
 }
 
 .address-check-box {
@@ -570,15 +570,15 @@
   relative
   w-full
   rounded-2xl
-  xl:max-w-[615px]
+  2xl:max-w-[615px]
   flex-shrink-0
-  xl:w-[615px]
+  2xl:w-[615px]
   bg-shark-400
   bg-opacity-40
-  xl:bg-transparent
-  xl:bg-opacity-100
+  2xl:bg-transparent
+  2xl:bg-opacity-100
   py-8
-  xl:py-12
+  2xl:py-12
   px-8
 
   before:content-[""]
@@ -591,7 +591,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:xl:block
+  before:2xl:block
 
   after:content-[""]
   after:absolute
@@ -604,7 +604,7 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:xl:block
+  after:2xl:block
 }
 
 .main-box {
@@ -612,15 +612,16 @@
   relative
   w-full
   rounded-2xl
-  xl:max-w-[1168px]
+  2xl:max-w-[1168px]
   flex-shrink-0
   bg-shark-400
   bg-opacity-40
-  xl:bg-transparent
-  xl:bg-opacity-100
+  2xl:bg-transparent
+  2xl:bg-opacity-100
   py-8
-  xl:py-12
-  px-12
+  2xl:py-12
+  px-8
+  2xl:px-12
 
   before:content-[""]
   before:absolute
@@ -632,7 +633,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:xl:block
+  before:2xl:block
 
   after:content-[""]
   after:absolute
@@ -645,5 +646,5 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:xl:block
+  after:2xl:block
 }
