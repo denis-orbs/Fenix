@@ -5,7 +5,6 @@ import { useState } from 'react'
 import SelectToken from '@/components/Modals/SelectToken'
 
 import { IToken } from '@/types'
-import ExchangeBox from '@/components/Trade/Common/ExchangeBox'
 
 interface PairSelectorProps {
   firstToken: IToken

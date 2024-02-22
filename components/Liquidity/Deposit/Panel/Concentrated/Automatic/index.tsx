@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-import PairSelector from '../common/PairSelector'
-import CLMProviderSelector from './CLMProviderSelector'
-import DepositAmountsICHI from './DepositAmountsICHI'
-import DepositAmountsGAMMA from './DepositAmountsGAMMA'
+import PairSelector from '@/components/Liquidity/Common/PairSelector'
+import CLMProviderSelector from '@/components/Liquidity/Deposit/Panel/Concentrated/Automatic/CLMProviderSelector'
+import DepositAmountsICHI from '@/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsICHI'
+import DepositAmountsGAMMA from '@/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsGAMMA'
 
 const providers = [
   {
@@ -30,7 +30,7 @@ const providers = [
   },
 ]
 
-const ConcentratedDepositLiquidityAutomatic = () => {
+const Automatic = () => {
   const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX' })
   const [secondToken, setSecondToken] = useState({ name: 'ethereum', symbol: 'ETH' })
   const [currentProvider, setCurrentProvider] = useState<string>('1')
@@ -56,4 +56,4 @@ const ConcentratedDepositLiquidityAutomatic = () => {
   )
 }
 
-export default ConcentratedDepositLiquidityAutomatic
+export default Automatic
