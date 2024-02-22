@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import TokensSelector from '../common/TokensSelector'
+import TokensSelector from '@/components/Liquidity/Common/TokensSelector'
 import SetRange from './SetRange'
 
 const ConcentratedDepositLiquidityManual = () => {

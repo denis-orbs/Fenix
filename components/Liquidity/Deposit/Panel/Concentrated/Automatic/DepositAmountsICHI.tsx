@@ -3,10 +3,8 @@ import Image from 'next/image'
 
 const DepositAmountsICHI = ({
   token,
-  onOpenModal,
 }: {
   token: { name: string; symbol: string }
-  onOpenModal?: () => void
 }) => {
   return (
     <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">

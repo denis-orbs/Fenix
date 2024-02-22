@@ -1,45 +1,24 @@
-/* eslint-disable max-len */
 'use client'
-import { useState } from 'react'
-import Image from 'next/image'
 
-// import IWantToAllocate from './IWantToAllocate'
-// import ToBuy from './ToBuy'
-// import Frequency from './Frequency'
-// import AdvancedDCA from './AdvancedDCA'
-// import Summary from './Summary'
-// import Separator from '../../Common/Separator'
+import { useState } from 'react'
 
 import { Button, Switch } from '@/components/UI'
-
+import Classic from '@/components/Liquidity/Deposit/Panel/Classic'
+import Automatic from '@/components/Liquidity/Deposit/Panel/Concentrated/Automatic'
+import Manual from '@/components/Liquidity/Deposit/Panel/Concentrated/Manual'
 import { IToken } from '@/types'
 
-import ClasicalDepositLiquidity from './Classic'
-import ConcentratedDepositLiquidityAutomatic from './Concentrated/Automatic'
-import ConcentratedDepositLiquidityManual from './Concentrated/Manual'
-
 const Panel = () => {
-  const [tokenSell, setTokenSell] = useState<IToken>({ name: 'Fenix', symbol: 'FNX' })
-  const [tokenGet, setTokenGet] = useState<IToken>({ name: 'USDC', symbol: 'USDC' })
-  const [allocateValue, setAllocateValue] = useState<number>(0)
-  const [over, setOver] = useState<number>(0)
-  const [showSummary, setShowSummary] = useState<boolean>(false)
-  const [advancedDCA, setAdvancedDCA] = useState<boolean>(false)
-  const [currentTab, setCurrentTab] = useState<string>('CONCENTRATED')
   const [depositType, setDepositType] = useState<
     'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
   >('VOLATILE')
 
-  const summary = {
-    sell: (allocateValue || 0) + '' + tokenGet.symbol,
-    get: tokenSell.symbol,
-    receive: tokenGet.symbol,
-    frequency: '12 Day(s)',
-  }
-
-  const handleShowSummary = () => setShowSummary(!showSummary)
   const [tokenSwap, setTokenSwap] = useState<IToken>({ name: 'Fenix', symbol: 'FNX' })
   const [tokenFor, setTokenFor] = useState<IToken>({ name: 'ethereum', symbol: 'ETH' })
+
+  const handlerSwitch = () => setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
+
+  const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
 
   return (
     <section className="box-panel-trade">
@@ -49,16 +28,11 @@ const Panel = () => {
             <h4 className="text-lg md:text-xl text-white font-medium">New Position</h4>
             <div className="flex items-center gap-[13px]">
               <div className="flex items-center gap-[9px] h-10">
-                <Switch
-                  active={depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'}
-                  setActive={() =>
-                    setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
-                  }
-                />
+                <Switch active={activeSwitch} setActive={handlerSwitch} />
                 <span className="text-shark-100 text-xs leading-normal">Concentrated</span>
               </div>
-              <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-oxford-blue-900 bg-limed-spruce-900 bg-opacity-40 rounded-[10px] flex items-center justify-center text-white">
-                <span className="icon-cog"></span>
+              <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
+                <span className="icon-cog text-white"></span>
               </div>
             </div>
           </div>
@@ -102,11 +76,11 @@ const Panel = () => {
           </div>
 
           {(depositType === 'VOLATILE' || depositType === 'STABLE') && (
-            <ClasicalDepositLiquidity depositType={depositType} tokenSwap={tokenSwap} tokenFor={tokenFor} />
+            <Classic depositType={depositType} tokenSwap={tokenSwap} tokenFor={tokenFor} />
           )}
 
-          {depositType === 'CONCENTRATED_AUTOMATIC' && <ConcentratedDepositLiquidityAutomatic />}
-          {depositType === 'CONCENTRATED_MANUAL' && <ConcentratedDepositLiquidityManual />}
+          {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
+          {depositType === 'CONCENTRATED_MANUAL' && <Manual />}
 
           <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
             Create Position

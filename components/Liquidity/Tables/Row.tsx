@@ -161,12 +161,12 @@ const RowData = ({ row }: RowDataProps) => {
         </TableCell>
 
         <TableCell className="flex justify-end w-[15%]">
-          <div className="flex gap-2">
-            <Button variant="tertiary" className="flex items-center gap-2">
+          <div className="flex gap-2 w-full">
+            <Button variant="tertiary" className="flex items-center gap-2 w-full">
               <span className="icon-info"></span>
               Info
             </Button>
-            <Button variant="tertiary" className="flex items-center gap-2">
+            <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity/deposit">
               <span className="icon-circles"></span>
               Deposit
             </Button>

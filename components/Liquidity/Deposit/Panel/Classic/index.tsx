@@ -1,16 +1,13 @@
 import Image from 'next/image'
-import ExchangeBox from '@/components/Trade/Common/ExchangeBox'
 import Separator from '@/components/Trade/Common/Separator'
 import { Button } from '@/components/UI'
-import SelectToken from '@/components/Modals/SelectToken'
 import { useState } from 'react'
 
-import TokenSelector from './TokenSelector'
+import TokenSelector from '@/components/Liquidity/Common/TokenSelector'
+import TokensSelector from '@/components/Liquidity/Common/TokensSelector'
 
-const ClasicalDepositLiquidity = ({
+const Classic = ({
   depositType,
-  tokenSwap,
-  tokenFor,
 }: {
   depositType: 'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
   tokenSwap: { name: string; symbol: string }
@@ -64,13 +61,13 @@ const ClasicalDepositLiquidity = ({
 
                 <Button
                   variant="tertiary"
-                  className="!px-5 !py-0 h-[28px] !border-opacity-100 [&:not(:hover)]:border-oxford-blue-900 !bg-limed-spruce-900 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
+                  className="!px-5 !py-0 h-[28px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
                 >
                   0.3%
                 </Button>
                 <Button
                   variant="tertiary"
-                  className="!p-0 h-[28px] w-[33px] !border-opacity-100 [&:not(:hover)]:border-oxford-blue-900 !bg-limed-spruce-900 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
+                  className="!p-0 h-[28px] w-[33px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
                 >
                   <span className="icon-info"></span>
                 </Button>
@@ -79,7 +76,7 @@ const ClasicalDepositLiquidity = ({
           </div>
           <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]">
             <div className="text-white">Liquidity</div>
-            <div className='flex items-center gap-2.5'>
+            <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image
                   src="/static/images/tokens/FNX.png"
@@ -114,22 +111,19 @@ const ClasicalDepositLiquidity = ({
       </div>
 
       <div className="flex flex-col gap-1 mb-5 relative">
-        <TokenSelector
-          token={firstToken}
-          value={firstValue}
-          setToken={(token) => setFirstToken(token)}
-          setValue={(value) => setFirstValue(value)}
-        />
-        <Separator />
-        <TokenSelector
-          token={secondToken}
-          value={secondValue}
-          setToken={(token) => setSecondToken(token)}
-          setValue={(value) => setSecondValue(value)}
+        <TokensSelector
+          firstToken={firstToken}
+          setFirstToken={setFirstToken}
+          firstValue={firstValue}
+          setFirstValue={setFirstValue}
+          secondToken={secondToken}
+          setSecondToken={setSecondToken}
+          secondValue={secondValue}
+          setSecondValue={setSecondValue}
         />
       </div>
     </>
   )
 }
 
-export default ClasicalDepositLiquidity
+export default Classic
