@@ -66,7 +66,7 @@ const StrategyButton = ({
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         onClick={() => onClick(strategyType === currentStrategy ? null : strategyType)}
-        className={`bg-limed-spruce-900 bg-opacity-40 px-5 pt-[17px] pb-[7px] rounded-[10px] border border-oxford-blue-900 w-full flex flex-col gap-1 items-center justify-center hover:bg-limed-spruce-950 mb-2.5 max-md:w-[46.166px] max-md:h-[36.716px] ${
+        className={`bg-shark-300 bg-opacity-40 px-5 pt-[17px] pb-[7px] rounded-[10px] border border-shark-200 w-full flex flex-col gap-1 items-center justify-center hover:bg-shark-400 mb-2.5 max-md:w-[46.166px] max-md:h-[36.716px] ${
           strategyType === currentStrategy ? 'bg-button-primary-hover' : ''
         }`}
       >

@@ -103,7 +103,7 @@ const DefaultOptions = ({ options, onSelectedChange }: { options: IOption[]; onS
       {options.map((option, i) => (
         <ItemWrapper
           key={i}
-          className="!bg-limed-spruce-900 !bg-opacity-40 !border-oxford-blue-900 !h-[45px] md:!h-[69px] !cursor-auto max-md:gap-1"
+          className="!bg-shark-300 !bg-opacity-40 !border-shark-200 !h-[45px] md:!h-[69px] !cursor-auto max-md:gap-1"
         >
           <Item option={option} />
           <div
@@ -136,7 +136,7 @@ const Dropdown = (props: IDropdownProps) => {
   return (
     <div ref={ref} className={`relative select-none ${className}`}>
       <ItemWrapper
-        className={isVisible ? `!bg-limed-spruce-900 !bg-opacity-40 !border-oxford-blue-900` : ''}
+        className={isVisible ? `!bg-shark-300 !bg-opacity-40 !border-shark-200` : ''}
         onClick={() => setIsVisible(!isVisible)}
       >
         <SingleDropdownSelected options={options} selected={selected} />

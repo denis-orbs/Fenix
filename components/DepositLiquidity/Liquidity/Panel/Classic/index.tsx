@@ -64,13 +64,13 @@ const ClasicalDepositLiquidity = ({
 
                 <Button
                   variant="tertiary"
-                  className="!px-5 !py-0 h-[28px] !border-opacity-100 [&:not(:hover)]:border-oxford-blue-900 !bg-limed-spruce-900 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
+                  className="!px-5 !py-0 h-[28px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
                 >
                   0.3%
                 </Button>
                 <Button
                   variant="tertiary"
-                  className="!p-0 h-[28px] w-[33px] !border-opacity-100 [&:not(:hover)]:border-oxford-blue-900 !bg-limed-spruce-900 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
+                  className="!p-0 h-[28px] w-[33px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
                 >
                   <span className="icon-info"></span>
                 </Button>
