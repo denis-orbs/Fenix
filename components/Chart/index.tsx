@@ -35,7 +35,7 @@ export default function Chart({ className = '' }: { className?: string }) {
   return (
     <div
       ref={divRef}
-      className={`w-full h-auto max-h-[845px] min-h-[345px] p-0 relative bg-shark-400 bg-opacity-40 rounded-[5px] border border-shark-950 flex items-center justify-center ${className}`}
+      className={`w-full h-auto max-h-[845px] min-h-[345px] p-0 relative bg-shark-400 bg-opacity-40 rounded-xl border border-shark-950 flex items-center justify-center ${className}`}
     >
       <BasicChartWidget height={divHeight} width={divWidth} />
     </div>

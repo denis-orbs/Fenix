@@ -21,9 +21,9 @@ const PairSelector = ({ firstToken, setFirstToken, secondToken, setSecondToken }
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[15px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="text-xs leading-normal text-white mb-2">Select a Pair</div>
 
-      <div className="flex">
+      <div className="flex items-center gap-3">
         <div
-          className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-2.5 md:px-4 flex items-center justify-between h-[45px] md:h-[50px] max-w-[203px] w-full"
+          className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-2.5 md:px-4 flex items-center justify-between h-[45px] md:h-[50px] w-full"
           onClick={() => setOpenSelectFirstToken(true)}
         >
           <div className="flex items-center gap-2.5 md:gap-2">
@@ -38,7 +38,7 @@ const PairSelector = ({ firstToken, setFirstToken, secondToken, setSecondToken }
           </div>
           <span className="icon-chevron text-xs md:text-sm inline-block ml-2" />
         </div>
-        <div className="flex-grow flex justify-center items-center min-w-[50px]">
+        <div className="flex-grow flex justify-center items-center w-[50px]">
           <button
             type="button"
             className="flex justify-center items-center"
@@ -52,7 +52,7 @@ const PairSelector = ({ firstToken, setFirstToken, secondToken, setSecondToken }
           </button>
         </div>
         <div
-          className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-2.5 md:px-4 flex items-center justify-between h-[45px] md:h-[50px] max-w-[203px] w-full"
+          className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-2.5 md:px-4 flex items-center justify-between h-[45px] md:h-[50px] w-full"
           onClick={() => setOpenSelectSecondToken(true)}
         >
           <div className="flex items-center gap-2.5 md:gap-2">
