@@ -1,11 +1,11 @@
 
-import DepositLiquidity from '@/components/DepositLiquidity'
+import Deposit from '@/components/Liquidity/Deposit'
 import LiquidityLayout from '@/components/Liquidity/Common/Layout'
 
 const DepositPage = () => {
   return (
     <LiquidityLayout>
-      <DepositLiquidity />
+      <Deposit />
     </LiquidityLayout>
   )
 }
