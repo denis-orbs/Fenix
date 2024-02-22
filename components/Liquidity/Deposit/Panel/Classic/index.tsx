@@ -4,6 +4,7 @@ import { Button } from '@/components/UI'
 import { useState } from 'react'
 
 import TokenSelector from '@/components/Liquidity/Common/TokenSelector'
+import TokensSelector from '@/components/Liquidity/Common/TokensSelector'
 
 const Classic = ({
   depositType,
@@ -75,7 +76,7 @@ const Classic = ({
           </div>
           <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]">
             <div className="text-white">Liquidity</div>
-            <div className='flex items-center gap-2.5'>
+            <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image
                   src="/static/images/tokens/FNX.png"
@@ -110,18 +111,15 @@ const Classic = ({
       </div>
 
       <div className="flex flex-col gap-1 mb-5 relative">
-        <TokenSelector
-          token={firstToken}
-          value={firstValue}
-          setToken={(token) => setFirstToken(token)}
-          setValue={(value) => setFirstValue(value)}
-        />
-        <Separator />
-        <TokenSelector
-          token={secondToken}
-          value={secondValue}
-          setToken={(token) => setSecondToken(token)}
-          setValue={(value) => setSecondValue(value)}
+        <TokensSelector
+          firstToken={firstToken}
+          setFirstToken={setFirstToken}
+          firstValue={firstValue}
+          setFirstValue={setFirstValue}
+          secondToken={secondToken}
+          setSecondToken={setSecondToken}
+          secondValue={secondValue}
+          setSecondValue={setSecondValue}
         />
       </div>
     </>
