@@ -1,9 +1,7 @@
 import Image from 'next/image'
-import Separator from '@/components/Trade/Common/Separator'
 import { Button } from '@/components/UI'
 import { useState } from 'react'
 
-import TokenSelector from '@/components/Liquidity/Common/TokenSelector'
 import TokensSelector from '@/components/Liquidity/Common/TokensSelector'
 
 const Classic = ({
