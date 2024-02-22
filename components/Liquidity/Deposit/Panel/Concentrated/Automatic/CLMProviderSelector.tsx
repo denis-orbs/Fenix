@@ -134,7 +134,7 @@ const Dropdown = (props: IDropdownProps) => {
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
 
   return (
-    <div ref={ref} className={`relative select-none ${className}`}>
+    <div ref={ref as React.RefObject<HTMLDivElement>} className={`relative select-none ${className}`}>
       <ItemWrapper
         className={isVisible ? `!bg-shark-300 !bg-opacity-40 !border-shark-200` : ''}
         onClick={() => setIsVisible(!isVisible)}
