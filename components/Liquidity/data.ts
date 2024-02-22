@@ -96,7 +96,7 @@ export const NAV_LIST = [
     name: 'My Positions',
     description: 'Set and Forget',
     icon: 'icon-auto-graph',
-    path: 'my-positions',
+    path: 'positions',
     active: true,
   },
 ]
