@@ -2,6 +2,8 @@ import StepBox from '@/components/Common/Boxes/StepBox'
 import Image from 'next/image'
 import useStore from '@/store'
 import ReadMoreModal from '@/components/Modals/Liquidity/ReadMore'
+import ActiveVote from '../ActiveVote'
+import InactiveVote from '../InactiveVote'
 
 interface VoteNowProps {
   openModal: boolean
@@ -22,70 +24,9 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
         </div>
         <div className="relative flex flex-col w-auto">
           {activeVote ? (
-            <div className={`flex ${activeVote && 'items-center'} gap-8 p-5 text-white border-solid border-1 border-shark-400 bg-shark-400 bg-opacity-40 rounded-xl`}>
-              <div className="flex items-center gap-2 w-full xl:w-auto">
-                <Image
-                  alt="logo-fenix"
-                  src={'/static/images/vote/fenix-logo.svg'}
-                  className="h-[32px] w-[32px]"
-                  width={61}
-                  height={61}
-                  onClick={handlerChange}
-                />
-                <div className="flex flex-col  ">
-                  <div className="flex gap-2 items-center">
-                    <p className="text-shark-100 text-xs">Selected Position</p>
-                    <span className="icon-chevron"></span>
-                  </div>
-                  <div className="flex text-xs gap-2 ">
-                    <p>9339</p>
-                    <p className="text-green-500">•Active</p>
-                  </div>
-                </div>
-              </div>
-              <div className="text-xs w-full xl:w-auto">
-                <p className="text-shark-100">Position</p>
-                <p>981 FNX</p>
-              </div>
-              <div className="text-xs w-full xl:w-auto">
-                <p className="text-shark-100">Voting Power</p>
-                <p>981 veFNX</p>
-              </div>
-              <div className="text-xs w-full xl:w-auto">
-                <p className="text-shark-100">Rewards</p>
-                <p className="text-green-300">$12.98!</p>
-              </div>
-            </div>
+            <ActiveVote handlerChange={handlerChange}/>
           ) : (
-            <div className="flex  gap-8 p-5 text-white border-solid border-1 border-shark-400 bg-shark-400 bg-opacity-40 rounded-xl">
-              <div className="flex items-center gap-2">
-                <Image
-                  alt="logo-fenix"
-                  src={'/static/images/vote/fenix-logo.svg'}
-                  className="h-[48px] w-[48px]"
-                  width={61}
-                  height={61}
-                  onClick={handlerChange}
-                />
-                <div className="flex items-center gap-2 text-sm">
-                  <p>
-                    Select your <span className="font-bold">FNX</span>
-                  </p>
-                  <span className="icon-chevron"></span>
-                </div>
-              </div>
-
-              <div
-                className="flex gap-2
-
-              p-2 top-0 bg-shark-100 text-shark-100 bg-opacity-40
-              mt-2 border border-solid rounded-lg
-              border-shark-400 absolute right-0 me-2 text-sm"
-              >
-                <span className="icon-wallet"></span>
-                <p>Positions Locked: 0</p>
-              </div>
-            </div>
+           <InactiveVote handlerChange={handlerChange}/>
           )}
         </div>
         <div className="flex gap-3 p-1 mt-5">

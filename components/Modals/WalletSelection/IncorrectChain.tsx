@@ -12,9 +12,12 @@ const IncorrectChain = ({ setOpenModal }: SlippageToleranceProps) => {
   const handlerClose = () => setOpenModal(false)
 
   return (
-    <div className="w-[478px] h-[468px] px-8 py-8 bg-no-repeat bg-[length:100%] bg-modal-signin flex flex-col items-center justify-center relative">
-      <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
-      <div className="relative w-full h-full">
+    <div className="common-modal">
+      <span
+        className="absolute text-2xl cursor-pointer top-2 right-2 xl:top-0 xl:right-0 icon-x text-shark-100"
+        onClick={handlerClose}
+      />
+      <div className="relative z-10 w-full h-full">
         <div className="flex items-center justify-center w-12 h-12 border border-solid rounded-lg bg-shark-400 border-shark-400">
           <span className="text-lg text-transparent icon-unplug bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text"></span>
         </div>
