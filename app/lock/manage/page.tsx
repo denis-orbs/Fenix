@@ -1,6 +1,5 @@
 import Decorator from '@/components/Common/Layout/Background'
 import LockManage from '@/components/Lock/Common/LockManage'
-import React from 'react'
 
 const ManagePage = () => {
   return (
