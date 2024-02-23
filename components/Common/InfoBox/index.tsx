@@ -21,7 +21,7 @@ const InfoBox = ({ data, setShowTooltip, textColor, bgBox = '', hasTooltip = fal
   return (
     <div className="relative">
       <div
-        className={`2xl:min-w-[400px] h-[77px] flex gap-3 items-center p-6 mb-3 relative ${
+        className={` h-[77px] flex gap-3 items-center p-6 mb-3 relative ${
           bgBox === '' ? 'box' : bgBox
         } `}
       >

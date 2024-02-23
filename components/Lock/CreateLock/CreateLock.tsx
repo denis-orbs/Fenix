@@ -4,7 +4,7 @@ import InfoBox from '@/components/Common/InfoBox'
 import CREATE_LOCK_LIST from './data'
 import Image from 'next/image'
 import InputRange from '@/components/UI/SliderRange/InputRange'
-import { Button } from '@/components/UI'
+import { Button , ProgressBar } from '@/components/UI'
 import { useState } from 'react'
 
 const CreateLock = () => {
@@ -105,7 +105,7 @@ const CreateLock = () => {
             </Button>
           </div>
         </div>
-        <div className="flex justify-center items-center w-[10%] ">
+        <div className="flex justify-center items-center w-[10%] relative ">
           <div className="bg-shark-400 h-4/5 w-[1px]"></div>
         </div>
         <div className="relative flex flex-col w-full xl:w-[45%] max-h-[390px]  overflow-x-none">
@@ -116,13 +116,12 @@ const CreateLock = () => {
           {CREATE_LOCK_LIST.map((exchange, index) => (
             <InfoBox bgBox='exchange-box-info' key={index} data={exchange} textColor={'text-shark-100'} />
           ))}
-          <div className="flex gap-3 justify-center mt-10">
-            <span className="h-2 w-2 rounded-full bg-shark-400"></span>
-            <span className="h-2 w-2 rounded-full bg-shark-400"></span>
-            <span className="h-2 w-2 rounded-full bg-shark-400"></span>
-          </div>
+          
           <div className='mt-16 '>
             <p className='flex gap-2 justify-center text-shark-100'><span className='icon-discord'></span>Need some help?</p>
+          </div>
+          <div className="absolute top-0 z-10 w-28 right-0">
+            <ProgressBar progress={50} />
           </div>
         </div>
       </div>
