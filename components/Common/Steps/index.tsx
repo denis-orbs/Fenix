@@ -22,7 +22,7 @@ const Steps = ({ steps }: StepsProps) => {
 
   return (
     <StepBox>
-      <div className="flex flex-col justify-center w-full bg-shark-400 bg-opacity-40 px-5 xl:px-10 py-5 xl:py-0 rounded-2xl xl:rounded-none">
+      <div className="flex flex-col justify-center w-full relative z-10">
         <h4 className="w-full mb-3 text-sm text-white">Start now</h4>
         <div className="relative flex flex-col w-auto">
           {steps.map((step, index) => (

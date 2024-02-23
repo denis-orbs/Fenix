@@ -8,7 +8,7 @@ const PaginationMobile = () => {
     <div className="flex items-center justify-between text-sm ">
       <div className="flex items-center gap-2">
         <div
-          className="flex gap-2 pagination-mobile-box h-12 bg-opacity-40 
+          className="flex gap-2 pagination-mobile-box h-12 bg-opacity-40
          w-[168px]  text-white items-center justify-center"
         >
           <div>
@@ -21,7 +21,7 @@ const PaginationMobile = () => {
         </div>
         <div
           className="flex items-center justify-center
-       flex-shrink-0 w-12 h-12 px-4 text-white transition-colors 
+       flex-shrink-0 w-12 h-12 px-4 text-white transition-colors
         border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
           onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
         >
@@ -29,7 +29,7 @@ const PaginationMobile = () => {
 
           {isOpenItemsPerPage && (
             <div
-              className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-limed-spruce-900 bg-opacity-40 absolute left-full bottom-0 translate-x-1"
+              className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute left-full bottom-0 translate-x-1"
               onClick={(e) => e.stopPropagation()}
             >
               <Button variant="tertiary" className="!py-1 !h-[33px] !text-xs">

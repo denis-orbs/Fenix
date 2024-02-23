@@ -44,7 +44,7 @@ const MobileRow = ({ row }: RowDataProps) => {
               {'VOLATILE' === row.type && (
                 <Button
                   variant="tertiary"
-                  className="!py-1 !text-xs border !border-oxford-blue-900 !rounded-[10px] !bg-limed-spruce-900 !bg-opacity-40 !h-[30px] !px-[7px]"
+                  className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
                 >
                   Volatile Pool
                 </Button>
@@ -60,7 +60,7 @@ const MobileRow = ({ row }: RowDataProps) => {
               {'STABLE' === row.type && (
                 <Button
                   variant="tertiary"
-                  className="!py-1 !text-xs border !border-oxford-blue-900 !rounded-[10px] !bg-limed-spruce-900 !bg-opacity-40 !h-[30px] !px-[7px]"
+                  className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
                 >
                   Stable Pool
                 </Button>
@@ -68,13 +68,13 @@ const MobileRow = ({ row }: RowDataProps) => {
 
               <Button
                 variant="tertiary"
-                className="!py-1 !text-xs border !border-oxford-blue-900 !rounded-[10px] !bg-limed-spruce-900 !bg-opacity-40 !h-[30px] !px-[7px]"
+                className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
               >
                 0.3%
               </Button>
               <Button
                 variant="tertiary"
-                className="!py-1 !text-xs border !border-oxford-blue-900 !rounded-[10px] !bg-limed-spruce-900 !bg-opacity-40 !h-[30px] !px-[7px]"
+                className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
               >
                 <span className="icon-info"></span>
               </Button>
@@ -236,7 +236,7 @@ const MobileRow = ({ row }: RowDataProps) => {
             <div className="px-2.5 pb-[3px]">
               <Button
                 variant="tertiary"
-                className="!py-1 !text-xs border !border-oxford-blue-900 !rounded-[10px] !bg-limed-spruce-900 !bg-opacity-40 !h-[36px] !px-[7px] !w-full"
+                className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[36px] !px-[7px] !w-full"
               >
                 <span className="icon-circles text-lg mr-2.5"></span>
                 <span>Deposit Liquidity</span>

@@ -9,15 +9,15 @@ export const MENU_LINKS = [
   },
   {
     name: 'Liquidity',
-    href: '/',
+    href: '/liquidity',
   },
   {
     name: 'Vote',
-    href: '/',
+    href: '/vote',
   },
   {
     name: 'Lock',
-    href: '/',
+    href: '/lock',
   },
   {
     name: 'Migration',

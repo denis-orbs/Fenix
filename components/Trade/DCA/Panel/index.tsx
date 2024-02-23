@@ -35,7 +35,7 @@ const Panel = () => {
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-5">
             <h4 className="mb-3 text-lg text-white font-medium">DCA</h4>
-            <span className="icon-reflesh text-shark-100 text-xl"></span>
+            <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
           </div>
           <div className="flex flex-col gap-1 mb-5 relative">
             <div className="mb-3">

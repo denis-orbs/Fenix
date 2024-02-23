@@ -1,17 +1,16 @@
 'use client'
+import cn from '@/utils/cn'
 
 interface MainBoxProps {
   children: React.ReactNode
+  className?: string
 }
 
-const MainBox = ({ children }: MainBoxProps) => {
-  return (
-    <div className="relative w-full rounded-2xl xl:max-w-[1168px]">
-      <div className="main-box-top"></div>
-      {children}
-      <div className="main-box-bottom"></div>
-    </div>
-  )
+const MainBox = ({ children, className }: MainBoxProps) => {
+
+  const mergeClassName = cn('main-box', className)
+
+  return <div className={mergeClassName}>{children}</div>
 }
 
 export default MainBox

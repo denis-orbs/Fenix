@@ -28,7 +28,7 @@ const Panel = () => {
               <h4 className="text-white font-medium text-lg">Recurring Order</h4>
               <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"></span>
             </div>
-            <span className="icon-reflesh text-shark-100 text-xl"></span>
+            <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
           </div>
           <div className="flex flex-col gap-1 mb-5 relative">
             <div className="mb-3">

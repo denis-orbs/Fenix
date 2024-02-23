@@ -1,117 +1,5 @@
 /************* Boxes ***********/
 
-
-.header-box {
-  @apply relative h-[15px] w-[337px] hidden xl:block ml-auto mr-[60px]
-
-  after:content-[""]
-  after:absolute
-  after:bg-[url("/static/images/header/header.svg")]
-  after:bg-no-repeat
-  after:h-full
-  after:w-full
-  after:right-0
-  after:bottom-0
-}
-
-.footer-box {
-  @apply relative h-[15px] w-[337px] hidden xl:block ml-5
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/footer/footer.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:w-full
-  before:left-0
-  before:top-0
-}
-
-.main-box-top {
-  @apply relative
-  left-0
-  right-0
-  hidden
-  xl:block
-  bottom-full
-  h-[80px]
-  overflow-hidden
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/main/top.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:bg-cover
-  before:w-full
-  before:left-0
-  before:top-0
-}
-
-.main-box-bottom {
-  @apply relative
-  left-0
-  right-0
-  hidden
-  xl:block
-  top-full
-  h-[80px]
-  overflow-hidden
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/main/bottom.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:bg-cover
-  before:w-full
-  before:left-0
-  before:top-0
-}
-
-.steps-box-top {
-  @apply relative
-  left-0
-  right-0
-  hidden
-  xl:block
-  bottom-full
-  h-[60px]
-  overflow-hidden
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/steps/top.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:bg-cover
-  before:w-full
-  before:left-0
-  before:top-0
-}
-
-.steps-box-bottom {
-  @apply relative
-  left-0
-  right-0
-  hidden
-  xl:block
-  top-full
-  h-[60px]
-  overflow-hidden
-  rotate-180
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/steps/top.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:bg-cover
-  before:w-full
-  before:left-0
-  before:top-0
-}
-
 .process-box {
   @apply relative flex flex-col items-center justify-center p-4 px-3 rounded-lg bg-shark-400 bg-opacity-40
 
@@ -173,7 +61,7 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#1a1d21];
+  after:border-[transparent_transparent_#1e2022];
 }
 
 .address-check-box {
@@ -242,34 +130,6 @@
 
 .search-box {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center h-[62px]
-
-  before:hidden
-  xl:before:block
-  before:absolute
-  before:w-0
-  before:h-0
-  before:bottom-[0px]
-  before:left-[-1px]
-  before:rotate-[-1deg]
-  before:border-solid
-  before:border-t-[20px]
-  before:border-r-[20px]
-  before:border-b-[20px]
-  before:border-[transparent_transparent_#111315]
-
-  after:hidden
-  xl:after:block
-  after:absolute
-  after:w-0
-  after:h-0
-  after:top-[-1px]
-  after:right-[-1px]
-  after:rotate-[181deg]
-  after:border-solid
-  after:border-t-[20px]
-  after:border-r-[20px]
-  after:border-b-[20px]
-  after:border-[transparent_transparent_#251613];
 }
 
 .search-mini-box {
@@ -303,8 +163,6 @@
   after:border-b-[20px]
   after:border-[transparent_transparent_#171a1d];
 }
-
-
 
 .filter-box {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
@@ -402,6 +260,34 @@
   after:border-[transparent_transparent_#1a1d21];
 }
 
+/* Background for header */
+.header-box {
+  @apply relative h-[15px] w-[337px] hidden xl:block ml-auto mr-[60px]
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/header/header.svg")]
+  after:bg-no-repeat
+  after:h-full
+  after:w-full
+  after:right-0
+  after:bottom-0
+}
+
+/* Background for footer */
+.footer-box {
+  @apply relative h-[15px] w-[337px] hidden xl:block ml-5
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/footer/footer.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:w-full
+  before:left-0
+  before:top-0
+}
+
 /* Background for select token modal */
 .box-select-token {
   @apply relative
@@ -454,8 +340,7 @@
   bg-opacity-40
   xl:bg-transparent
   xl:bg-opacity-100
-  pt-12
-  pb-20
+  py-12
   px-8
 
   before:content-[""]
@@ -517,7 +402,7 @@
   after:border-[transparent_transparent_#1a1d21];
 }
 
-
+/* Background forvote box */
 .vote-box {
   @apply relative bg-shark-400 bg-opacity-40 w-auto rounded-xl px-4 xl:px-6 py-6
 
@@ -549,7 +434,6 @@
   after:border-b-[25px]
   after:border-[transparent_transparent_#111315];
 }
-
 
 /* Background for exchange box of trade panel */
 .exchange-box-x2 {
@@ -584,6 +468,7 @@
   after:border-[transparent_transparent_#1a1d21];
 }
 
+/* Background order item */
 .order-item-box {
   @apply relative w-full rounded-xl bg-shark-400 bg-opacity-40 p-6
 
@@ -613,6 +498,161 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
+  after:border-[transparent_transparent_#1a1d21];
+}
+
+/* Background for steps */
+.steps-box {
+  @apply
+  relative
+  w-full
+  rounded-2xl
+  2xl:max-w-[615px]
+  flex-shrink-0
+  2xl:w-[615px]
+  bg-shark-400
+  bg-opacity-40
+  2xl:bg-transparent
+  2xl:bg-opacity-100
+  py-8
+  2xl:py-12
+  px-8
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/step.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:2xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/steps/step.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:2xl:block
+}
+
+/* Background for main box */
+.main-box {
+  @apply
+  relative
+  w-full
+  rounded-2xl
+  2xl:max-w-[1168px]
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  2xl:bg-transparent
+  2xl:bg-opacity-100
+  py-8
+  2xl:py-12
+  px-8
+  2xl:px-12
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/main/main.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:2xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/main/main.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:2xl:block
+}
+
+
+/* Background for notification */
+.box-notification {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:top-[-15px]
+  before:left-[15px]
+  before:rotate-[89deg]
+  before:border-solid
+  before:border-t-[30px]
+  before:border-r-[31px]
+  before:border-b-[31px]
+  before:border-[transparent_transparent_#201914]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:bottom-[-14px]
+  after:right-[12px]
+  after:rotate-[-91deg]
+  after:border-solid
+  after:border-t-[25px]
+  after:border-r-[25px]
+  after:border-b-[25px]
+  after:border-[transparent_transparent_#131517];
+}
+
+
+
+
+.exchange-box-info {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
+
+  before:hidden
+  2xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:top-[-15px]
+  before:left-[15px]
+  before:rotate-[89deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[30px]
+  before:border-[transparent_transparent_#1a1d21]
+
+  after:hidden
+  2xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:bottom-[-14px]
+  after:right-[12px]
+  after:rotate-[-91deg]
+  after:border-solid
+  after:border-t-[25px]
+  after:border-r-[25px]
+  after:border-b-[25px]
   after:border-[transparent_transparent_#1a1d21];
 }
 

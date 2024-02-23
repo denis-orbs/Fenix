@@ -179,7 +179,7 @@ const RowDataVote = ({ row, activeVote }: RowDataProps) => {
                 value={changeValue}
                 onChange={setChangeValue}
                   thumbSize={18}
-                 disabled={activeVote}   
+                 disabled={!activeVote}   
               />
               <div className="flex justify-between text-sm text-shark-100">
                 <p>0%</p>

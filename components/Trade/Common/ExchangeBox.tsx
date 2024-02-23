@@ -9,15 +9,21 @@ interface IToken {
 }
 
 interface ExchangeBoxProps {
-  title: string
+  title?: string
   token: IToken
+  onOpenModal?: () => void
+  variant?: 'primary' | 'secondary'
 }
 
-const ExchangeBox = ({ title, token }: ExchangeBoxProps) => {
+const ExchangeBox = ({ title, token, onOpenModal, variant }: ExchangeBoxProps) => {
+
+  const boxVariant = variant === 'secondary' ? 'exchange-box-x2' : 'exchange-box-x1'
+  const availableAlign = title ? 'justify-between' : 'justify-end'
+
   return (
-    <div className="exchange-box-x1">
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-white font-medium">{title}</p>
+    <div className={boxVariant}>
+      <div className={`flex items-center mb-3 ${availableAlign}`}>
+        {title && <p className="text-white font-medium">{title}</p>}
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
           <span>Available: 0.00 ETH</span>
@@ -25,7 +31,10 @@ const ExchangeBox = ({ title, token }: ExchangeBoxProps) => {
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3">
         <div className="relative w-full xl:w-2/5">
-          <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
+          <div
+            className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]"
+            onClick={onOpenModal ? () => onOpenModal() : undefined}
+          >
             <div className="flex items-center gap-2">
               <Image
                 src={`/static/images/tokens/${token.symbol}.png`}

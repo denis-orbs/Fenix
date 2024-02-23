@@ -6,36 +6,42 @@ export const NAV_LIST = [
     description: 'The Best Price',
     icon: 'icon-swap',
     path: 'swap',
+    active: true,
   },
   {
     name: 'DCA',
     description: 'Set and Forget',
     icon: 'icon-sand-clock',
     path: 'dca',
+    active: true,
   },
   {
     name: 'Limit / Range Orders',
     description: 'Set Your Price or Your Range',
     icon: 'icon-auto-graph',
     path: 'limit-range',
+    active: true,
   },
   {
     name: 'Recurring Orders',
     description: 'Create, buy and sell orders within a range',
     icon: 'icon-recurring',
     path: 'recurring',
+    active: true,
   },
   {
     name: 'Bridge',
     description: 'Transfer assets to Blast',
     icon: 'icon-bridge',
     path: 'bridge',
+    active: false,
   },
   {
     name: 'Perpetuals',
     description: 'Perpetuals Aggregator',
     icon: 'icon-chart-stock',
     path: 'perpetuals',
+    active: false,
   },
 ]
 
