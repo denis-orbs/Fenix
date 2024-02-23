@@ -116,3 +116,7 @@ body {
   border-radius: 5px; /* Borde redondeado */
 
 }
+
+#fenix_graph {
+  @apply w-full h-full [&>div]:w-full [&>div]:h-full;
+}

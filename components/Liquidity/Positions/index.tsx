@@ -1,9 +1,9 @@
 'use client'
 
-import Panel from '@/components/Liquidity/Deposit/Panel'
+import Panel from '@/components/Liquidity/Positions/Panel'
 import Chart from '@/components/Chart'
 
-const DepositLiquidity = () => {
+const Positions = () => {
   return (
     <div className="flex flex-col items-start gap-6 mb-4 xl:gap-10 xl:flex-row">
       <div className="flex flex-col w-full">
@@ -16,4 +16,4 @@ const DepositLiquidity = () => {
   )
 }
 
-export default DepositLiquidity
+export default Positions

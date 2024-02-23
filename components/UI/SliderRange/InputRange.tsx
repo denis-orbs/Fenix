@@ -47,7 +47,7 @@ const InputRange = ({
       value={value}
       onMouseDown={(e) => window.getSelection()?.removeAllRanges()}
       onChange={(e) => onChange && onChange(Number(e.target.value))}
-      disabled={disabled ? false : true}
+      disabled={disabled}
     />
   )
 }

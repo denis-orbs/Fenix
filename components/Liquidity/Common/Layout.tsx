@@ -1,11 +1,11 @@
+import Navigation from '@/components/Liquidity/Common/Navigation'
 import Decorator from '@/components/Common/Layout/Background'
-import Navigation from '@/components/Trade/Common/Navigation'
 
-interface TradeLayoutProps {
+interface LiquidityLayoutProps {
   children: React.ReactNode
 }
 
-const TradeLayout = ({ children }: TradeLayoutProps) => {
+const LiquidityLayout = ({ children }: LiquidityLayoutProps) => {
   return (
     <section className="container py-5">
       <Navigation />
@@ -15,4 +15,4 @@ const TradeLayout = ({ children }: TradeLayoutProps) => {
   )
 }
 
-export default TradeLayout
+export default LiquidityLayout
