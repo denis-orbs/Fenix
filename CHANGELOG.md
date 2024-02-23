@@ -3,7 +3,7 @@
 
 ### Bug Fixes
 
-* 修改 Responsive Manage Position 脚本 ([5667def](https://github.com/Esthetiqo/Fenix/commit/34bc9397810a9037d030ed5ffd910b927e68016a))
+* Header Menu 脚本 ([5667def](https://github.com/Esthetiqo/Fenix/commit/34bc9397810a9037d030ed5ffd910b927e68016a))
 
 ### Features
 
@@ -15,7 +15,7 @@
 
 ### Bug Fixes
 
-* 修改 Responsive Manage Position 脚本 ([5667def](https://github.com/Esthetiqo/Fenix/commit/34bc9397810a9037d030ed5ffd910b927e68016a))
+* Responsive Manage Position ([5667def](https://github.com/Esthetiqo/Fenix/commit/34bc9397810a9037d030ed5ffd910b927e68016a))
 
 ### Features
 
