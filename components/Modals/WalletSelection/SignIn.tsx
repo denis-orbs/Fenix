@@ -24,15 +24,16 @@ const SignIn = ({ setOpenModal }: SignInProps) => {
   }, [])
 
   return (
-    <div className="w-[478px] h-[468px] px-8 py-8 bg-no-repeat bg-[length:100%] bg-modal-signin flex flex-col items-center justify-center relative">
-      <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
-      <div className="relative w-full h-full">
+    <div className="common-modal">
+      <span
+        className="absolute text-2xl cursor-pointer top-2 right-2 xl:top-0 xl:right-0 icon-x text-shark-100"
+        onClick={handlerClose}
+      />
+      <div className="relative z-10 w-full h-full">
         <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-40">
           <span className="text-xl text-chilean-fire-600 icon-wallet"></span>
         </div>
-        <div className='h-[254px] w-[240px] mx-auto absolute top-0 left-0 right-0'>
-        {View}
-        </div>
+        <div className="h-[254px] w-[240px] mx-auto absolute top-0 left-0 right-0">{View}</div>
         <h4 className="mb-3 text-lg text-center mt-[150px] text-white">Approve Signature</h4>
         <p className="text-shark-100 text-sm text-center mb-6 max-w-[300px] mx-auto">
           Please approve the wallet signature in order to log into the Platform.

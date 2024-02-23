@@ -25,14 +25,11 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
-      <div className="box-select-token">
-        <span
-          className="absolute top-2 xl:top-0 right-3 xl:right-0 text-2xl cursor-pointer icon-x text-shark-100"
-          onClick={handlerClose}
-        />
-        <div className="relative w-full h-full z-10">
+      <div className="common-modal">
+        <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
+        <div className="relative z-10 w-full h-full">
           <h1 className="text-lg font-medium text-white">Select a Token</h1>
-          <p className="text-shark-100 text-sm mb-4">
+          <p className="mb-4 text-sm text-shark-100">
             Select a token from our default list or search for a token by symbol or address.
           </p>
 
@@ -40,13 +37,13 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
             <Search />
           </div>
 
-          <div className="text-white text-sm mb-2">Common Tokens</div>
-          <div className="flex items-center gap-1 mb-4 flex-col xl:flex-row">
+          <div className="mb-2 text-sm text-white">Common Tokens</div>
+          <div className="flex flex-col items-center gap-1 mb-4 xl:flex-row">
             {COMMON_TOKENS_LIST.map((token, index) => (
               <div
                 key={index}
                 onClick={() => handlerSelectToken(token)}
-                className="flex gap-2 items-center bg-shark-400 bg-opacity-40 py-2 xl:py-1 px-2 rounded-lg cursor-pointer w-full xl:w-auto"
+                className="flex items-center w-full gap-2 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-1 xl:w-auto"
               >
                 <Image
                   src={`/static/images/tokens/${token.symbol}.png`}
@@ -55,7 +52,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
                   height={30}
                   className="w-5 h-5"
                 />
-                <p className="text-white text-xs">{token.symbol}</p>
+                <p className="text-xs text-white">{token.symbol}</p>
               </div>
             ))}
           </div>
@@ -65,9 +62,9 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
               <div
                 key={index}
                 onClick={() => handlerSelectToken(token)}
-                className="flex items-center justify-between cursor-pointer bg-shark-400 bg-opacity-40 p-3 rounded-lg"
+                className="flex items-center justify-between p-3 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
               >
-                <div className="flex gap-2 items-center">
+                <div className="flex items-center gap-2">
                   <Image
                     src={`/static/images/tokens/${token.symbol}.png`}
                     alt="token"
@@ -76,14 +73,14 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
                     className="w-7 h-7"
                   />
                   <div className="relative">
-                    <p className="text-white text-xs">{token.symbol}</p>
-                    <p className="text-shark-100 text-xs">{token.name}</p>
+                    <p className="text-xs text-white">{token.symbol}</p>
+                    <p className="text-xs text-shark-100">{token.name}</p>
                   </div>
                 </div>
-                <div className="flex flex-col justify-start items-end">
+                <div className="flex flex-col items-end justify-start">
                   <div className="flex items-center gap-2">
-                    <span className="icon-wallet text-sm text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
-                    <p className="text-white text-xs">Balance: {token.balance}</p>
+                    <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+                    <p className="text-xs text-white">Balance: {token.balance}</p>
                   </div>
                   <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
                     ${token.amount}

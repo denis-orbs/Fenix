@@ -14,7 +14,7 @@ const Slippage = ({ setOpenModal, openModal }: SlippageProps) => {
 
   return (
     <Modal className="mx-auto" openModal={openModal} setOpenModal={setOpenModal}>
-      <div className="w-[478px] h-[468px] px-8 py-8 bg-no-repeat bg-[length:100%] bg-modal-signin flex flex-col items-center justify-center relative">
+      <div className="common-modal">
         <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
         <div className="relative w-full h-full">
           <h1 className="mt-5 text-xl font-bold text-center text-white sm:mt-10 lg:mt-10">Slippage Tolerance</h1>
