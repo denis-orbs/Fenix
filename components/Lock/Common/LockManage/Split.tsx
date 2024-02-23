@@ -17,7 +17,7 @@ const Split = () => {
         <div className="text-sm flex justify-between">
           <p className="text-white text-sm text-left">Split in</p>
         </div>
-        <div className="flex justify-between text-white gap-3">
+        <div className="flex flex-wrap xl:flex-nowrap justify-between text-white gap-3">
           <div className="flex items-center gap-2 w-full">
             <span className="icon-lock  inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
             <InputRange
@@ -34,25 +34,25 @@ const Split = () => {
           </div>
           <input
             type="number"
-            value={changeValue}
+            // value={changeValue}
             onChange={handlerValue}
             placeholder="Enter Amount"
-            className="bg-shark-400 text-sm text-center rounded-lg bg-opacity-40 outline-none"
+            className="bg-shark-400 text-sm text-center mx-auto rounded-lg bg-opacity-40 outline-none"
           />
         </div>
       </div>
       <div className="flex  flex-col gap-3 text-white mt-5 exchange-box-x1 p-5">
-        <div className="flex justify-between bg-shark-400 p-2 bg-opacity-40 rounded-xl border-shark-400 border ">
+        <div className="flex text-xs justify-between  bg-shark-400 p-2 bg-opacity-40 rounded-xl border-shark-400 border ">
           <div className="flex items-center gap-2">
             <Image src={'/static/images/vote/fenix-logo.svg'} alt="fenix-logo" height={24} width={24} />
             <p>01</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap justify-end">
             <div className="flex items-center gap-2">
               <Image src={'/static/images/vote/fenix-logo.svg'} alt="fenix-logo" height={14} width={14} />
               <p>744,621.46</p>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center  w-3/4 xl:w-auto">
               <span className="icon-lock  inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
               <InputRange
                 step={1}
@@ -68,17 +68,17 @@ const Split = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-between bg-shark-400 p-2 bg-opacity-40 rounded-xl border-shark-400 border ">
+        <div className="flex text-xs justify-between  bg-shark-400 p-2 bg-opacity-40 rounded-xl border-shark-400 border ">
           <div className="flex items-center gap-2">
             <Image src={'/static/images/vote/fenix-logo.svg'} alt="fenix-logo" height={24} width={24} />
             <p>01</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap justify-end">
             <div className="flex items-center gap-2">
               <Image src={'/static/images/vote/fenix-logo.svg'} alt="fenix-logo" height={14} width={14} />
               <p>744,621.46</p>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center w-3/4 xl:w-auto">
               <span className="icon-lock  inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
               <InputRange
                 step={1}
