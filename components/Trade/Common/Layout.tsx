@@ -1,3 +1,4 @@
+import Decorator from '@/components/Common/Layout/Background'
 import Navigation from '@/components/Trade/Common/Navigation'
 
 interface TradeLayoutProps {
@@ -9,6 +10,7 @@ const TradeLayout = ({ children }: TradeLayoutProps) => {
     <section className="container py-5">
       <Navigation />
       {children}
+      <Decorator />
     </section>
   )
 }

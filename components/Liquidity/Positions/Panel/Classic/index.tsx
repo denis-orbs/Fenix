@@ -3,8 +3,6 @@ import { Button } from '@/components/UI'
 import { useState } from 'react'
 
 import TokensSelector from '@/components/Liquidity/Common/TokensSelector'
-import ExchangeBox from '@/components/Trade/Common/ExchangeBox'
-import SelectToken from '@/components/Modals/SelectToken'
 
 const Classic = ({
   depositType,
@@ -17,10 +15,6 @@ const Classic = ({
   const [firstValue, setFirstValue] = useState(0)
   const [secondToken, setSecondToken] = useState({ name: 'ethereum', symbol: 'ETH' })
   const [secondValue, setSecondValue] = useState(0)
-  const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
-  const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
-
-  const handlerOption = (option: 'ADD' | 'WITHDRAW') => setOptionActive(option)
 
   return (
     <>
@@ -114,24 +108,7 @@ const Classic = ({
         </div>
       </div>
 
-      <div className="bg-shark-400 bg-opacity-40 p-[13px] md:py-[11px] md:px-[19px] flex gap-1.5 md:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5">
-        <Button
-          onClick={() => handlerOption('ADD')}
-          className="w-full h-[38px] mx-auto !text-xs"
-          variant={optionActive === 'ADD' ? 'primary' : 'secondary'}
-        >
-          Add
-        </Button>
-        <Button
-          onClick={() => handlerOption('WITHDRAW')}
-          className="w-full h-[38px] mx-auto !text-xs"
-          variant={optionActive === 'WITHDRAW' ? 'primary' : 'secondary'}
-        >
-          Withdraw
-        </Button>
-      </div>
-
-      <div className="flex flex-col gap-1 relative">
+      <div className="flex flex-col gap-1 mb-5 relative">
         <TokensSelector
           firstToken={firstToken}
           setFirstToken={setFirstToken}
@@ -142,13 +119,6 @@ const Classic = ({
           secondValue={secondValue}
           setSecondValue={setSecondValue}
         />
-        {optionActive === 'WITHDRAW' && (
-          <div className="mb-3">
-            <ExchangeBox token={firstToken} onOpenModal={() => setOpenSelectToken(true)} variant="secondary" />
-
-            <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
-          </div>
-        )}
       </div>
     </>
   )

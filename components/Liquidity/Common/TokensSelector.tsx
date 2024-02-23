@@ -13,14 +13,15 @@ interface TokenSelectorProps {
   value: number
   setToken: (token: IToken) => void
   setValue: (value: number) => void
+  variant?: 'primary' | 'secondary'
 }
 
-const TokenSelector = ({ token, setToken, setValue, value }: TokenSelectorProps) => {
+const TokenSelector = ({ token, setToken, variant }: TokenSelectorProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
 
   return (
     <div>
-      <ExchangeBox token={token} onOpenModal={() => setOpenSelectToken(true)} />
+      <ExchangeBox token={token} onOpenModal={() => setOpenSelectToken(true)} variant={variant} />
 
       <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
     </div>
@@ -47,19 +48,21 @@ const TokensSelector = ({
   setSecondValue: (value: number) => void
 }) => {
   return (
-    <div className="flex flex-col gap-1 mb-5 relative">
+    <div className="flex flex-col gap-1 mb-2 relative">
       <TokenSelector
         token={firstToken}
         value={firstValue}
         setToken={(token) => setFirstToken(token)}
         setValue={(value) => setFirstValue(value)}
+        variant="primary"
       />
-      <Separator />
+      <Separator single />
       <TokenSelector
         token={secondToken}
         value={secondValue}
         setToken={(token) => setSecondToken(token)}
         setValue={(value) => setSecondValue(value)}
+        variant="secondary"
       />
     </div>
   )

@@ -82,7 +82,7 @@ export const NAV_LIST = [
     name: 'Liquidity',
     description: 'The Best Price',
     icon: 'icon-swap',
-    path: 'liquidity',
+    path: '/liquidity',
     active: true,
   },
   {

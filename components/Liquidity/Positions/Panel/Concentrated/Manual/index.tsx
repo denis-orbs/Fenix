@@ -10,7 +10,6 @@ const ConcentratedDepositLiquidityManual = () => {
 
   return (
     <>
-      <SetRange />
       <TokensSelector
         firstToken={firstToken}
         secondToken={secondToken}
@@ -21,6 +20,7 @@ const ConcentratedDepositLiquidityManual = () => {
         setFirstValue={(value) => setFirstValue(value)}
         setSecondValue={(value) => setSecondValue(value)}
       />
+      <SetRange />
     </>
   )
 }

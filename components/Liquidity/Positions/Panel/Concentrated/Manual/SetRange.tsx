@@ -11,7 +11,7 @@ const SetRange = () => {
 
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
-      <div className="mb-2 text-xs leading-normal text-white">Selected Range</div>
+      <div className="text-xs leading-normal text-white mb-2">Set Range</div>
 
       <div className="flex gap-[7px] mb-3">
         <Button
@@ -52,7 +52,7 @@ const SetRange = () => {
       </div>
 
       <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
-        <div className="flex items-center gap-2 text-white opacity-75">
+        <div className="text-white opacity-75 flex items-center gap-2">
           <span>±</span>
           <span className="text-[30px] leading-normal font-light">{currentPercentage}%</span>
         </div>

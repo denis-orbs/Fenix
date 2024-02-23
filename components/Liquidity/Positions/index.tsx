@@ -1,6 +1,6 @@
 'use client'
 
-import Panel from '@/components/Liquidity/Deposit/Panel'
+import Panel from '@/components/Liquidity/Positions/Panel'
 import Chart from '@/components/Chart'
 
 const Positions = () => {

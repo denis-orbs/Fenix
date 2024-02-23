@@ -12,12 +12,17 @@ interface ExchangeBoxProps {
   title?: string
   token: IToken
   onOpenModal?: () => void
+  variant?: 'primary' | 'secondary'
 }
 
-const ExchangeBox = ({ title, token, onOpenModal }: ExchangeBoxProps) => {
+const ExchangeBox = ({ title, token, onOpenModal, variant }: ExchangeBoxProps) => {
+
+  const boxVariant = variant === 'secondary' ? 'exchange-box-x2' : 'exchange-box-x1'
+  const availableAlign = title ? 'justify-between' : 'justify-end'
+
   return (
-    <div className="exchange-box-x1">
-      <div className="flex items-center justify-between mb-3">
+    <div className={boxVariant}>
+      <div className={`flex items-center mb-3 ${availableAlign}`}>
         {title && <p className="text-white font-medium">{title}</p>}
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
