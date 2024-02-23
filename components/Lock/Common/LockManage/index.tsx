@@ -11,7 +11,7 @@ import AboutFnx from '../AboutFnx'
 import Merge from './Merge'
 import Split from './Split'
 import Transfer from './Transfer'
-import ConfirmMergeSplit from '@/components/Modals/ConfirmMergeSplit'
+import ConfirmMerge from '@/components/Modals/ConfirmMerge'
 import NotificationLock from '@/components/Lock/Notification'
 
 const LockManage = () => {
@@ -85,7 +85,7 @@ const LockManage = () => {
             {currentTab === 'SPLIT' && (
               <>
                 <Split />
-                <ConfirmMergeSplit
+                <ConfirmMerge
                   option={currentTab}
                   openModal={openModalMergeSplit}
                   setOpenModal={setOpenModalMergeSplit}
@@ -96,7 +96,7 @@ const LockManage = () => {
               <div className="">
                 <p className="text-white text-xs ms-1 mb-1">Merge With</p>
                 <Merge activeVote={activeVote} handlerChange={handlerChange} />
-                <ConfirmMergeSplit
+                <ConfirmMerge
                   option={currentTab}
                   openModal={openModalMergeSplit}
                   setOpenModal={setOpenModalMergeSplit}
