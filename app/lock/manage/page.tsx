@@ -4,8 +4,8 @@ import React from 'react'
 
 const ManagePage = () => {
   return (
-    <main className="container flex justify-center py-10 px-10 " >
-        <LockManage/>
+    <main className="container flex justify-center py-10 px-10 ">
+      <LockManage />
       <Decorator />
     </main>
   )
