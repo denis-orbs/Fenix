@@ -3,7 +3,7 @@
 
 ### Bug Fixes
 
-* Header Menu 脚本 ([5667def](https://github.com/Esthetiqo/Fenix/commit/34bc9397810a9037d030ed5ffd910b927e68016a))
+* Header Menu ([5667def](https://github.com/Esthetiqo/Fenix/commit/34bc9397810a9037d030ed5ffd910b927e68016a))
 
 ### Features
 
