@@ -35,7 +35,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
       </div>
       {!activeVote && (
         <>
-          <div className={` h-[77px] flex   gap-3 items-center justify-between xl:p-6  mb-14 xl:mb-3 relative exchange-box-info `}>
+          <div className={` h-[77px] flex   gap-3 items-center justify-between xl:p-6  mb-3 relative exchange-box-info `}>
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center xl:w-12 xl:h-12 w-[32px] h-[32px] p-3 rounded-lg bg-shark-400 bg-opacity-60">
                 <span
@@ -120,7 +120,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
                   <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center xl:w-12 xl:h-12 w-[32px] h-[32px] p-3 rounded-lg bg-shark-400 bg-opacity-60">
                       <span
-                        className={` icon-check inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text`}
+                        className={` icon-party inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text`}
                       ></span>
                     </div>
                     <div className="fw ">
@@ -179,7 +179,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
                   </div>
                 </div>
               </div>
-             <Button variant="tertiary" className="!py-2 !text-xs ">
+             <Button variant="tertiary" className="!py-2 !text-xs w-32 ">
                 Go it
               </Button>
             </div>
