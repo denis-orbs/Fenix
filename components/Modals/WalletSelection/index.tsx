@@ -18,7 +18,7 @@ const WalletSelection = () => {
     <Modal openModal={openModal} setOpenModal={setWalletSelectionModal}>
       {isConnecting ? (
         <div className="flex items-center justify-center gap-10">
-          <SignIn setOpenModal={setWalletSelectionModal} openModal={openModal} />
+          <SignIn setOpenModal={setWalletSelectionModal} />
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center w-full md:gap-10 xl:flex-row xl:w-auto">
