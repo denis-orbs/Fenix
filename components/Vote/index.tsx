@@ -28,7 +28,7 @@ const Vote = () => {
   }, [])
 
   return (
-    <section>
+    <section className='relative'>
       <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
         <div className="w-full 2xl:w-3/4">
           <Deposit />
@@ -99,7 +99,6 @@ const Vote = () => {
         <div className="xl:hidden">
           <PaginationMobile />
         </div>
-        <div className="p-5">{activeVote && <Overlay />}</div>
       </div>
 
       <SelectVote
@@ -108,6 +107,8 @@ const Vote = () => {
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
+        <div className="p-5 fixed  bottom-60 left-0 right-0 z-10 hidden md:block ">{activeVote && <Overlay />}</div>
+
     </section>
   )
 }

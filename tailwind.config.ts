@@ -44,6 +44,7 @@ const config: Config = {
         'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%)',
         'error-404': 'url("/static/images/404/Background_1.svg")',
         'fenix-slider': 'url("/static/images/vote/fenix-slider.svg")',
+        'overlay-fixed':'url("/static/images/vote/overlay-fixed.svg")',
         hours: 'url("/static/images/claim/bg-hours.svg")',
       },
       lineHeight: {
