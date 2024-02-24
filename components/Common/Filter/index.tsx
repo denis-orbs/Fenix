@@ -16,8 +16,9 @@ const Filter = ({ options, currentTab, setCurrentTab, bgBox = "", justifyCenter 
     setCurrentTab(parameter)
   }
   return (
+    <>
     <div
-      className={`flex  flex-wrap items-center justify-center xl:${justifyCenter === "" ? "justify-start": justifyCenter } w-full gap-2 px-3 
+      className={`lg:flex hidden  flex-wrap items-center justify-center xl:${justifyCenter === "" ? "justify-start": justifyCenter } w-full gap-2 px-3 
       py-2 rounded-lg xl:flex-row ${bgBox === "" ? "filter-box" : bgBox} md:gap-5 xl:w-full bg-opacity-40`}
     >
       {options.map((option, index) => {
@@ -35,6 +36,28 @@ const Filter = ({ options, currentTab, setCurrentTab, bgBox = "", justifyCenter 
         )
       })}
     </div>
+    {/* Desktop */}
+    <div
+      className={`flex lg:hidden  flex-wrap items-center justify-center xl:${justifyCenter === "" ? "justify-start": justifyCenter } w-full gap-2 px-3 
+      py-2 rounded-lg xl:flex-row ${bgBox === "" ? "filter-box" : bgBox} md:gap-5 xl:w-full bg-opacity-40`}
+    >
+      {options.map((option, index) => {
+        return (
+          <Button
+            key={index}
+            onClick={()=>{
+              handlerChange(option.toUpperCase())
+            }}
+            variant={currentTab === option.toString().toUpperCase() ? 'primary' : 'tertiary'}
+            className="h-[40px]  md:h-auto w-2/5  xl:w-auto"
+          >
+            {option}
+          </Button>
+        )
+      })}
+    </div>
+    {/* Mobile */}
+    </>
   )
 }
 
