@@ -10,6 +10,8 @@ import { LOCK_STEPS, FILTER_OPTIONS } from './data'
 import Filter from '../Common/Filter'
 import Search from '../Common/Search'
 import CreateLock from './CreateLock/CreateLock'
+import MylocksMobile from './Mobile/MylocksMobile'
+import NestMobile from './Mobile/NestMobile'
 const Lock = () => {
   const [changeState, setChangeState] = useState<boolean>(false)
 
@@ -57,10 +59,12 @@ const Lock = () => {
               <Search />
             </div>
           </div>
-          <div className="hidden w-full mb-20 xl:block">
-            <MyLocks />
+          <div className="lg:hidden">
+            <MylocksMobile />
+            <NestMobile/>
           </div>
-          <div className="hidden w-full xl:block">
+          <div className="hidden w-full mb-20 lg:flex lg:flex-col">
+            <MyLocks />
             <Nest />
           </div>
         </section>
