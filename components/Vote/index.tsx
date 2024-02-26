@@ -15,7 +15,7 @@ import Overlay from './Overlay'
 import { FILTER_OPTIONS } from './data'
 
 const Vote = () => {
-  const [currentTab, setCurrentTab] = useState<string>('CONCENTRATED')
+  const [currentTab, setCurrentTab] = useState('CONCENTRATED')  
   const [activeVote, setActiveVote] = useState(false)
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
@@ -38,7 +38,7 @@ const Vote = () => {
       <h1 className="text-xl text-white">Select Liquidity Pools for Voting</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full xl:w-2/3">
-          <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => console.log()} />
+          <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         </div>
         <div className="w-full xl:w-1/3">
           <Search />

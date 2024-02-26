@@ -14,7 +14,7 @@ import MylocksMobile from './Mobile/MylocksMobile'
 import NestMobile from './Mobile/NestMobile'
 const Lock = () => {
   const [changeState, setChangeState] = useState<boolean>(false)
-
+  const [currentTab, setCurrentTab] = useState("Everything")
   return (
     <>
       {changeState ? (
@@ -53,7 +53,7 @@ const Lock = () => {
           </div>
           <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
             <div className="w-full xl:w-2/3">
-              <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => {}} />
+              <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
             </div>
             <div className="w-full xl:w-1/3">
               <Search />
