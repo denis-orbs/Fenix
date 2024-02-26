@@ -3,7 +3,7 @@ import { Button } from '@/components/UI'
 import Image from 'next/image'
 const VotePools = () => {
   return (
-    <div className="flex items-end  justify-between  vote-box   p-8 gap-10">
+    <div className="flex items-end  justify-between  vote-box   p-8 gap-10 ">
       <div className="flex items-center gap-2 ">
         <div className="flex items-center">
           <Image
