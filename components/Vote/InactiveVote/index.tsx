@@ -12,7 +12,7 @@ const InactiveVote = ({ handlerChange }: InactiveVoteProps) => {
           <Image
             alt="logo-fenix"
             src={'/static/images/vote/fenix-logo.svg'}
-            className="h-[48px] w-[48px]"
+            className="h-[48px] w-[48px] cursor-pointer"
             width={61}
             height={61}
             onClick={handlerChange}

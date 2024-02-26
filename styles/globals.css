@@ -37,7 +37,6 @@ body {
 }
 
 /************* Button ***********/
-
 .button {
   @apply flex items-center justify-center px-5 py-3 text-sm font-normal transition rounded-lg focus:outline-none;
 }

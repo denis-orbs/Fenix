@@ -43,7 +43,7 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote }: Sele
             <div className="max-h-[220px] overflow-y-auto">
               {Array.from({ length: 4 }).map((_, index) => {
                 return (
-                  <div key={index} className="flex flex-col gap-3">
+                  <div key={index} className="flex flex-col gap-3 cursor-pointer">
                     <div
                       onClick={handlerChange}
                       className="flex flex-wrap items-center justify-between p-4 mt-2 text-xs rounded-lg xl:flex-nowrap bg-shark-400 bg-opacity-40"
