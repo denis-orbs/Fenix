@@ -11,15 +11,14 @@ interface FilterProps {
   setCurrentTab: (parameter: string) => void
 }
 
-const Filter = ({ options, currentTab, setCurrentTab, bgBox = '', align = "start" }: FilterProps) => {
+const Filter = ({ options, currentTab, setCurrentTab, align = "start" }: FilterProps) => {
   const handlerChange = (parameter: string) => {
     setCurrentTab(parameter)
   }
 
   const mergeClassName = cn(
-    'flex flex-wrap items-center w-full gap-2 px-3 py-2 rounded-lg xl:flex-row 2xl:gap-3 xl:w-full bg-opacity-40',
+    'flex flex-wrap items-center w-full gap-2 px-2 py-2 rounded-xl xl:flex-row 2xl:gap-3 xl:w-full bg-opacity-40 bg-shark-400',
     align === 'center' ? 'justify-center' : align === 'start' ? 'justify-start' : 'justify-end',
-    bgBox === '' ? 'filter-box' : bgBox
   )
 
   return (
