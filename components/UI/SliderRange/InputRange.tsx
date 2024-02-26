@@ -28,17 +28,21 @@ const InputRange = ({
     [value, min, max]
   )
 
+  const isDisabledClass = disabled
+    ? '[&::-webkit-slider-thumb]:bg-[#333A43] [&::-webkit-slider-thumb]:pointer-events-none'
+    : '[&::-webkit-slider-thumb]:bg-fenix-slider'
+
   return (
     <input
       type="range"
-      className="w-full h-[var(--height)] rounded-lg cursor-pointer appearance-none
-       [&::-webkit-slider-thumb]:transition-transform [&:active::-webkit-slider-thumb]:scale-[1.2] 
-       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-[var(--thumb-size)]
-        [&::-webkit-slider-thumb]:w-[var(--thumb-size)] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-fenix-slider [&::-webkit-slider-thumb]:bg-cover "
+      className={`w-full h-[var(--height)] rounded-lg cursor-pointer appearance-none
+        [&::-webkit-slider-thumb]:transition-transform [&:active::-webkit-slider-thumb]:scale-[1.2]
+        [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-[var(--thumb-size)]
+        [&::-webkit-slider-thumb]:w-[var(--thumb-size)] [&::-webkit-slider-thumb]:rounded-full ${isDisabledClass} [&::-webkit-slider-thumb]:bg-cover`}
       style={{
         // @ts-ignore
-        "--thumb-size": `${thumbSize}px`,
-        "--height": `${height}px`,
+        '--thumb-size': `${thumbSize}px`,
+        '--height': `${height}px`,
         background: `linear-gradient(to right, #FE5E35 ${percent}%, #333A43 ${percent}%, #333A43 100%)`,
       }}
       min={min}

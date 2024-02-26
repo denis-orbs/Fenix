@@ -113,7 +113,7 @@ const Vote = () => {
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
-      <div className="p-5 fixed  bottom-60 left-0 right-0 z-10 hidden md:block ">{activeVote && <Overlay />}</div>
+      <div className="p-5 fixed bottom-5 left-0 right-0 z-50 hidden md:block">{activeVote && <Overlay />}</div>
     </section>
   )
 }

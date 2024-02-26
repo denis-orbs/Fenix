@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/UI'
 import useIsMobile from '@/hooks/useIsMobile'
-import cn from '@/utils/cn'
 
 interface FilterProps {
   options: string[]
