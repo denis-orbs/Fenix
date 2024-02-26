@@ -3,7 +3,7 @@ import React from 'react'
 
 const Overlay = () => {
   return (
-    <div className=" p-4 flex justify-between items-center w-2/5 vote-box mx-auto">
+    <div className=" p-8 flex justify-between items-center w-[626px] bg-overlay-fixed  mx-auto backdrop-blur-sm">
       <div className='flex flex-col'>
         <p className="text-shark-100">Voting Power Used</p>
         <p className="text-2xl text-white">3878 (100%)</p>

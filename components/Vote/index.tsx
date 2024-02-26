@@ -15,12 +15,12 @@ import Overlay from './Overlay'
 import { FILTER_OPTIONS } from './data'
 
 const Vote = () => {
-  const [currentTab, setCurrentTab] = useState<string>('CONCENTRATED')
+  const [currentTab, setCurrentTab] = useState('CONCENTRATED')
   const [activeVote, setActiveVote] = useState(false)
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
   const filterData = currentTab !== 'ALL POOLS' ? DATA_ROW.filter((row) => row.type === currentTab) : DATA_ROW
-
+  const [showTooltip, setShowTooltip] = useState(false)
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
@@ -28,7 +28,7 @@ const Vote = () => {
   }, [])
 
   return (
-    <section>
+    <section className="relative">
       <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
         <div className="w-full 2xl:w-3/4">
           <Deposit />
@@ -38,7 +38,7 @@ const Vote = () => {
       <h1 className="text-xl text-white">Select Liquidity Pools for Voting</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full xl:w-2/3">
-          <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={() => console.log()} />
+          <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         </div>
         <div className="w-full xl:w-1/3">
           <Search />
@@ -63,7 +63,13 @@ const Vote = () => {
                 { text: 'Assets', className: 'w-[30%]', sortable: true },
                 { text: 'APR', className: 'text-center  w-[10%]', sortable: true },
                 { text: 'Your Votes', className: 'w-[20%] text-right', sortable: true },
-                { text: 'Total Rewards', className: 'w-[20%] text-right', sortable: true },
+                {
+                  text: 'Total Rewards',
+                  className: 'w-[20%] text-right',
+                  sortable: true,
+                  showTooltip: showTooltip,
+                  setShowTooltip: setShowTooltip,
+                },
                 { text: 'Vote', className: 'w-[20%] text-right', sortable: true },
               ]}
             />
@@ -99,7 +105,6 @@ const Vote = () => {
         <div className="xl:hidden">
           <PaginationMobile />
         </div>
-        <div className="p-5">{activeVote && <Overlay />}</div>
       </div>
 
       <SelectVote
@@ -108,6 +113,7 @@ const Vote = () => {
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
+      <div className="p-5 fixed  bottom-60 left-0 right-0 z-10 hidden md:block ">{activeVote && <Overlay />}</div>
     </section>
   )
 }
