@@ -22,11 +22,7 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
           <h4 className="w-full mb-3 text-sm text-white">Vote now</h4>
         </div>
         <div className="relative flex flex-col w-auto">
-          {activeVote ? (
-            <ActiveVote handlerChange={handlerChange}/>
-          ) : (
-           <InactiveVote handlerChange={handlerChange}/>
-          )}
+          {activeVote ? <ActiveVote handlerChange={handlerChange} /> : <InactiveVote handlerChange={handlerChange} />}
         </div>
         <div className="flex flex-wrap xl:flex-nowrap gap-3 p-1 mt-5">
           <div className="mini-box-vote text-sm flex flex-col items-center justify-center xl:w-[30%]">
@@ -41,7 +37,7 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
             <div className="flex text-xs text-white mini-box-vote justify-evenly">
               <p className="text-shark-100">Vating Apr</p> <p>0%</p>
             </div>
-            <div className="flex text-xs text-white mini-box-vote justify-evenly">
+            <div className="flex text-xs text-white relative bg-shark-400 bg-opacity-40 w-full rounded-lg pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 justify-evenly">
               <p className="text-shark-100">Epoch 1</p> <p className="text-white">6d 12h 43m</p>
             </div>
           </div>
