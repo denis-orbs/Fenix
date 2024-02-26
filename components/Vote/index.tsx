@@ -15,7 +15,7 @@ import Overlay from './Overlay'
 import { FILTER_OPTIONS } from './data'
 
 const Vote = () => {
-  const [currentTab, setCurrentTab] = useState('CONCENTRATED')  
+  const [currentTab, setCurrentTab] = useState('CONCENTRATED')
   const [activeVote, setActiveVote] = useState(false)
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
@@ -55,7 +55,6 @@ const Vote = () => {
           </div>
         </div>
       )}
-     
       <div className="relative">
         <div className="w-full mb-2.5 xl:mb-10">
           <div className="max-xl:hidden">
