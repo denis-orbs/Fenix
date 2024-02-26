@@ -41,19 +41,19 @@ const Nest = () => {
                 </Button>
                 <div className="flex flex-col text-center gap-2 ">
                   <div className="flex gap-2 items-center">
-                    <h1 className="text-sm font-bold">veFNX Maxi</h1>{' '}
-                    <p className="text-xs w-[71px] h-[21px] bg-shark-400 flex items-center justify-center  rounded-lg  border-[#53606A] border-solid border-2">
+                    <h1 className="text-sm">veFNX Maxi</h1>{' '}
+                    <p className="text-xs w-[71px] h-[21px] bg-shark-400 flex items-center justify-center rounded-lg border-shark-300 border">
                       ID 11230
                     </p>
                   </div>
-                  <div className="flex gap-1">
+                  <div className="flex gap-2">
                     <p
                       className="text-xs flex justify-center items-center text-shark-100 w-[159px] h-[27px]
-                    bg-shark-400  rounded-lg  border-shark-100 border-solid border-2"
+                    bg-shark-400 rounded-lg border-shark-300 border"
                     >
                       Updated 2 days ago
                     </p>
-                    <p className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 w-[111px] h-[27px] rounded-lg border border-[#53606A] border-solid border-1">
+                    <p className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 w-[111px] h-[27px] rounded-lg border border-shark-300">
                       0xc981...EF14f
                       <span className="icon-document"></span>
                     </p>

@@ -24,12 +24,12 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
         <div className="relative flex flex-col w-auto">
           {activeVote ? <ActiveVote handlerChange={handlerChange} /> : <InactiveVote handlerChange={handlerChange} />}
         </div>
-        <div className="flex flex-wrap xl:flex-nowrap gap-3 py-3 mt-5 items-center">
-          <div className="bg-shark-400 bg-opacity-40 text-sm rounded-lg py-5 flex flex-col items-center justify-center xl:w-[30%]">
+        <div className="flex flex-wrap xl:flex-nowrap gap-3 py-3 mt-5 items-center w-full">
+          <div className="bg-shark-400 bg-opacity-40 text-sm rounded-lg py-5 flex flex-col items-center justify-center w-full xl:w-[30%]">
             <p className="text-shark-100">Fenix Balance</p>
             <p className="text-white text-2xl">0.00</p>
           </div>
-          <div className="bg-shark-400 bg-opacity-40  rounded-lg text-sm py-5 flex flex-col items-center xl:w-[30%]">
+          <div className="bg-shark-400 bg-opacity-40 rounded-lg text-sm py-5 flex flex-col items-center w-full xl:w-[30%]">
             <p className="text-shark-100">Emissions / % of Vote</p>
             <p className="text-2xl text-white">0%</p>
           </div>
