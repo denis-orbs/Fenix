@@ -32,7 +32,7 @@ const Liquidity = () => {
 
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
         <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
-        <div className="xl:w-1/3">
+        <div className="w-full xl:w-1/3">
           <Search />
         </div>
       </div>

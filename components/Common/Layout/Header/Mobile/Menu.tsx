@@ -27,7 +27,7 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
         <span className="icon-x text-white text-xl" onClick={handleCloseMenu}></span>
       </div>
       <h5 className="text-white text-sm font-normal mb-4">Main menu</h5>
-      <div className="flex items-center gap-2 mb-4 hidden">
+      <div className="items-center gap-2 mb-4 flex xl:hidden">
         <Image src="/static/images/tokens/ETH.png" className="w-6 h-6" alt="token" width={43} height={26} />
         <p className="text-white text-xs">1.987 ETH</p>
       </div>
