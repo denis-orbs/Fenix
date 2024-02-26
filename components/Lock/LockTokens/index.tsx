@@ -26,8 +26,7 @@ const LockTokens = ({ changeState, setChangeState }: LockTokensProps) => {
                 Create a Lock
               </div>
             </Button>
-            <Button variant="default">Vote</Button>
-            <Button variant="default">Rewards</Button>
+            <Button variant="default" href='/vote'>Vote</Button>
           </div>
           <p className="flex text-sm gap-2 p-2 xl:mt-8 text-[#53606A]">
             <span className="icon-discord"></span>
