@@ -38,7 +38,7 @@ const Vote = () => {
       <h1 className="text-xl text-white">Select Liquidity Pools for Voting</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full xl:w-2/3">
-          <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => console.log()} />
+          <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={() => console.log()} />
         </div>
         <div className="w-full xl:w-1/3">
           <Search />
