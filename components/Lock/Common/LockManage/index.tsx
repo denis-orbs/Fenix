@@ -52,7 +52,6 @@ const LockManage = () => {
                 options={OPTIONS_TAB}
                 currentTab={currentTab}
                 setCurrentTab={setCurrentTab}
-                justifyCenter="justify-center"
               />
             </div>
             {/* tab options manage */}
@@ -223,7 +222,7 @@ const LockManage = () => {
               <h1 className="text-white text-center text-xl mb-10 mt-5">About your veFNX</h1>
             </div>
             <AboutFnx />
-            <div className="justify-center xl:flex hidden mt-2">
+            <div className="justify-center xl:flex hidden mt-2 cursor-pointer">
               <p className="flex gap-2 text-shark-100 mt-10">
                 <span className="icon-discord"></span> Need some help?
               </p>

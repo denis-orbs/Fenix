@@ -12,7 +12,7 @@ const CreateLock = () => {
   const OPTIONS = ['7D', '3M', '6M', '1Y', '2Y']
 
   return (
-    <MainBox className='xl:min-w-[1300px]'>
+    <MainBox className="xl:min-w-[1300px]">
       <div className="flex flex-col w-full xl:flex-row relative z-10 pb-60 xl:pb-0 xl:py-8">
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex justify-between">
@@ -114,11 +114,13 @@ const CreateLock = () => {
           </div>
 
           {CREATE_LOCK_LIST.map((exchange, index) => (
-            <InfoBox bgBox='exchange-box-info' key={index} data={exchange} textColor={'text-shark-100'} />
+            <InfoBox bgBox="exchange-box-info" key={index} data={exchange} textColor={'text-shark-100'} />
           ))}
-          
-          <div className='mt-16 '>
-            <p className='flex gap-2 justify-center text-shark-100'><span className='icon-discord'></span>Need some help?</p>
+
+          <div className="mt-16 cursor-pointer">
+            <p className="flex gap-2 justify-center text-shark-100">
+              <span className="icon-discord"></span>Need some help?
+            </p>
           </div>
           <div className="absolute top-0 z-10 w-28 right-0">
             <ProgressBar progress={50} />
