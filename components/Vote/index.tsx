@@ -91,9 +91,9 @@ const Vote = () => {
           <Pagination className="mx-auto" numberPages={7} />
           <div
             className="flex items-center justify-center
-           flex-shrink-0 w-12 h-12 px-4 text-white transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
+          cursor-pointer w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
           >
-            <span className="text-lg icon-cog"></span>
+            <span className="text-lg icon-cog text-white"></span>
           </div>
         </div>
         <div className="xl:hidden">
