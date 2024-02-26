@@ -18,14 +18,14 @@ const Nest = () => {
     <div className="relative">
       <div className="flex items-center gap-3">
         <h5 className=" text-2xl text-white ms-2">Nest</h5>
-        <span className="icon-info text-white text-xl"></span>
+        {/* <span className="icon-info text-white text-xl"></span> */}
       </div>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row"></div>
       <div className="w-full mb-10">
         <TableHead
           items={[
             { text: 'Your Nests', className: 'text-left w-[50%] ', sortable: true },
-            { text: 'Rebase APR ', className: 'w-[10%]', sortable: true },
+            { text: 'APR ', className: 'w-[10%] text-center', sortable: true },
             { text: 'Reward', className: ' w-[10%]', sortable: true },
             { text: 'Voting Power', className: ' text-center w-[10%] ', sortable: true },
             { text: 'Action', className: 'text-right w-[20%]', sortable: false },

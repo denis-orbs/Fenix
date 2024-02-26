@@ -8,7 +8,8 @@ import { EXCHANGE_LIST } from '../data'
 const LiquidityPools = () => {
   return (
     <MainBox>
-      <div className="flex flex-col items-center justify-between w-full xl:flex-row relative z-10 xl:min-h-[350px]">
+      <div className="flex flex-col items-center justify-between
+       w-full xl:flex-row relative z-10 xl:min-h-[350px]">
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
           <p className="mb-4 text-sm text-shark-100">

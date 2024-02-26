@@ -16,7 +16,8 @@ const Migration = ({ isConnected }: MigrationsProps) => {
 
   return (
     <MainBox>
-      <div className="flex flex-col items-center justify-between w-full xl:flex-row relative z-10">
+      <div className="flex flex-col items-center justify-between w-full
+       xl:flex-row relative z-10">
         <div className="lg:ms-5 w-full xl:w-1/2">
           <h4 className="mb-3 text-xl text-white">Migration Claim</h4>
           <p className="mb-4 text-sm text-shark-100">Deposit your CHR ecosystem tokens to migrate.</p>

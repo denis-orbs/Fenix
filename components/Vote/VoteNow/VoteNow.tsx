@@ -5,11 +5,13 @@ import ReadMoreModal from '@/components/Modals/Liquidity/ReadMore'
 import ActiveVote from '../ActiveVote'
 import InactiveVote from '../InactiveVote'
 
+
 interface VoteNowProps {
   openModal: boolean
   activeVote: boolean
   setOpenModal: (parameter: boolean) => void
 }
+
 const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
   const { setReadMoreModal } = useStore()
   const handlerChange = () => (openModal ? setOpenModal(false) : setOpenModal(true))
@@ -25,11 +27,11 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
           {activeVote ? <ActiveVote handlerChange={handlerChange} /> : <InactiveVote handlerChange={handlerChange} />}
         </div>
         <div className="flex flex-wrap xl:flex-nowrap gap-3 py-3 mt-5 items-center">
-          <div className="bg-shark-400 bg-opacity-40 text-sm rounded-lg py-5 flex flex-col items-center justify-center xl:w-[30%]">
+          <div className="bg-shark-400 bg-opacity-40 text-sm rounded-lg py-5 flex w-full flex-col items-center justify-center xl:w-[30%]">
             <p className="text-shark-100">Fenix Balance</p>
             <p className="text-white text-2xl">0.00</p>
           </div>
-          <div className="bg-shark-400 bg-opacity-40  rounded-lg text-sm py-5 flex flex-col items-center xl:w-[30%]">
+          <div className="bg-shark-400 bg-opacity-40  rounded-lg text-sm py-5 w-full flex flex-col items-center xl:w-[30%]">
             <p className="text-shark-100">Emissions / % of Vote</p>
             <p className="text-2xl text-white">0%</p>
           </div>
@@ -48,10 +50,10 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
             className="flex items-center gap-2 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
             onClick={handleReadMore}
           >
-            <span className="text-lg icon-link"></span>
+            <span className=" icon-link"></span>
             Read More
           </p>
-          <p className="flex items-center gap-2 text-shark-100 cursor-pointer">
+          <p className="flex items-center text-sm gap-2 text-shark-100 cursor-pointer ">
             <span className="icon-discord"></span>Need some help?
           </p>
         </div>
