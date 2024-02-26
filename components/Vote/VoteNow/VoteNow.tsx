@@ -20,7 +20,6 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
       <div className="flex flex-col justify-center w-full rounded-2xl xl:rounded-none relative z-10">
         <div className="flex items-center mb-3 justify-evenly">
           <h4 className="w-full mb-3 text-sm text-white">Vote now</h4>
-          {/* <span className="text-2xl icon-reflesh text-shark-100"></span> */}
         </div>
         <div className="relative flex flex-col w-auto">
           {activeVote ? (
@@ -29,16 +28,16 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
            <InactiveVote handlerChange={handlerChange}/>
           )}
         </div>
-        <div className="flex gap-3 p-1 mt-5">
-          <div className="mini-box-vote text-sm flex flex-col items-center justify-center w-[30%]">
+        <div className="flex flex-wrap xl:flex-nowrap gap-3 p-1 mt-5">
+          <div className="mini-box-vote text-sm flex flex-col items-center justify-center xl:w-[30%]">
             <p className="text-shark-100">Fenix Balance</p>
             <p className="text-white text-2xl">0.00</p>
           </div>
-          <div className="mini-box-vote text-sm flex flex-col  items-center w-[30%]">
+          <div className="mini-box-vote text-sm flex flex-col  items-center xl:w-[30%]">
             <p className="text-shark-100">Emissions / % of Vote</p>
             <p className="text-2xl text-white">0%</p>
           </div>
-          <div className="w-[40%] flex flex-col gap-3">
+          <div className="xl:w-[40%] flex flex-col gap-3 w-full">
             <div className="flex text-xs text-white mini-box-vote justify-evenly">
               <p className="text-shark-100">Vating Apr</p> <p>0%</p>
             </div>
