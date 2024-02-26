@@ -15,7 +15,7 @@ import Overlay from './Overlay'
 import { FILTER_OPTIONS } from './data'
 
 const Vote = () => {
-  const [currentTab, setCurrentTab] = useState('CONCENTRATED')  
+  const [currentTab, setCurrentTab] = useState('CONCENTRATED')
   const [activeVote, setActiveVote] = useState(false)
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
@@ -55,7 +55,6 @@ const Vote = () => {
           </div>
         </div>
       )}
-     
       <div className="relative">
         <div className="w-full mb-2.5 xl:mb-10">
           <div className="max-xl:hidden">
@@ -98,9 +97,9 @@ const Vote = () => {
           <Pagination className="mx-auto" numberPages={7} />
           <div
             className="flex items-center justify-center
-           flex-shrink-0 w-12 h-12 px-4 text-white transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
+          cursor-pointer w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
           >
-            <span className="text-lg icon-cog"></span>
+            <span className="text-lg icon-cog text-white"></span>
           </div>
         </div>
         <div className="xl:hidden">

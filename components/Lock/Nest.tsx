@@ -55,7 +55,7 @@ const Nest = () => {
                     </p>
                     <p className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 w-[111px] h-[27px] rounded-lg border border-[#53606A] border-solid border-1">
                       0xc981...EF14f
-                      <span className='icon-document'></span>
+                      <span className="icon-document"></span>
                     </p>
                   </div>
                 </div>
@@ -93,38 +93,38 @@ const Nest = () => {
             </TableCell>
             {/* fourths */}
             <TableCell className="w-[20%] flex justify-end">
-              <div className="flex items-center gap-2 ">
+              <div className="flex items-center gap-2">
                 <Button variant="tertiary" className="w-full h-[38px] !bg-opacity-40">
                   {' '}
                   <span className="text-sm">Deposit Lock</span>
                 </Button>
                 {activeAccordion ? (
-                  <span onClick={handlerAccordion} className="icon-chevron rotate-180"></span>
+                  <span onClick={handlerAccordion} className="icon-chevron rotate-180 cursor-pointer"></span>
                 ) : (
-                  <span onClick={handlerAccordion} className="icon-chevron"></span>
+                  <span onClick={handlerAccordion} className="icon-chevron cursor-pointer"></span>
                 )}
               </div>
             </TableCell>
             {/* fifth*/}
             {activeAccordion && (
-              <div className='w-[93%] text-sm mx-auto border border-shark-400 p-2 rounded-lg'>
-              <div className='text-white flex items-center justify-between  w-full'>
-                <div className='flex gap-2 items-center'>
-                  <span className="icon-lock text-white"></span>
-                  <p>Lock #11462</p>
+              <div className="w-[93%] text-sm mx-auto border border-shark-400 p-2 rounded-lg">
+                <div className="text-white flex items-center justify-between  w-full">
+                  <div className="flex gap-2 items-center">
+                    <span className="icon-lock text-white"></span>
+                    <p>Lock #11462</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <p>0.0</p>
+                    <p>FNX locked for 3 years</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <p>0.0</p>
+                    <p>FNX compouned</p>
+                  </div>
+                  <div>
+                    <p>Withdraw available after first epoch</p>
+                  </div>
                 </div>
-                <div className='flex gap-3'>
-                  <p>0.0</p>
-                  <p>FNX locked for 3 years</p>
-                </div>
-                <div className='flex gap-3'>
-                  <p>0.0</p>
-                  <p>FNX compouned</p>
-                </div>
-                <div>
-                  <p>Withdraw available after first epoch</p>
-                </div>
-              </div>
               </div>
             )}
           </TableRow>
@@ -133,11 +133,8 @@ const Nest = () => {
       <div className="items-center hidden md:flex">
         <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
         <Pagination className="mx-auto" numberPages={7} />
-        <div
-          className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4
-             text-white transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
-        >
-          <span className="text-lg icon-cog"></span>
+        <div className="flex items-center justify-center w-12 h-12 px-4 cursor-pointer transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
+          <span className="text-lg icon-cog text-white"></span>
         </div>
       </div>
     </div>
