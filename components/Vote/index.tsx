@@ -45,9 +45,9 @@ const Vote = () => {
         </div>
       </div>
       {activeVote && (
-        <div className="xl:block hidden">
+        <div className="">
           <h1 className="text-2xl text-white">Vote Pools</h1>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 justify-center">
             <VotePools />
             <VotePools />
             <VotePools />
@@ -101,9 +101,6 @@ const Vote = () => {
           >
             <span className="text-lg icon-cog text-white"></span>
           </div>
-        </div>
-        <div className="xl:hidden">
-          <PaginationMobile />
         </div>
       </div>
 
