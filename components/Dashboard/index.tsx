@@ -5,10 +5,10 @@ import StrategiesDCA from '@/components/Dashboard/StrategiesDCA'
 
 const Dashboard = () => {
   return (
-    <section className="relative my-10 mx-10">
+    <section className="relative">
       {/* <InactiveDashboard /> */}
       <ActiveDashboard/>
-      {/* <StrategiesDCA /> */}
+      <StrategiesDCA />
     </section>
   )
 }

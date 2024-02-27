@@ -701,6 +701,7 @@
   rounded-2xl
   2xl:max-w-[1800px]
   flex
+  flex-col
   gap-5
   min-h-[470px]
 
@@ -709,8 +710,8 @@
   2xl:bg-transparent
   2xl:bg-opacity-100
   py-8
+  px-4
   2xl:py-12
-  px-8
   2xl:px-12
 
   before:content-[""]

@@ -7,7 +7,7 @@ import StrategiesItem from '@/components/Dashboard/StrategiesDCA/StrategiesItem'
 const StrategiesDCA = () => {
 
   return (
-    <div className="dashboard-box">
+    <div className="dashboard-box mt-10">
       <div className="relative w-full z-10">
         <div className="text-lg text-white mb-2">Active DCAs:</div>
         {Array.from({ length: 4 }).map((_, index) => (
