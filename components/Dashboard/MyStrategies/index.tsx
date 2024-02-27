@@ -68,7 +68,7 @@ const MyStrategies = () => {
                         )}
                       </div>
                     </div>
-                    <div className="flex gap-2 mt-5 ">
+                    <div className="flex gap-2 my-2">
                       <div className="flex flex-col gap-2 w-1/2 items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
                         <p className="text-white">
                           ROI <span className="icon-info text-xs"></span>
@@ -84,7 +84,7 @@ const MyStrategies = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="border border-shark-400 rounded-lg">
+                  <div className="bg-shark-400 bg-opacity-40 rounded-lg">
                     <div className="relative text-white flex items-center justify-center border-b border-shark-400">
                       <div className="flex items-start flex-col p-4 w-1/2">
                         <h4 className="text-sm text-green-400">Buy ETH</h4>

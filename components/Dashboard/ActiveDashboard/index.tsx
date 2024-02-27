@@ -15,8 +15,8 @@ const ActiveDashboard = () => {
   return (
     <div>
       <div>
-        <div className="flex justify-between mb-2 px-10 mt-10">
-          <h1 className="text-white text-2xl">Liquidity Positions</h1>
+        <div className="flex justify-between mb-2">
+          <h1 className="text-white text-xl">Liquidity Positions</h1>
           <Button variant="tertiary" className="!py-3">
             <span className="icon-logout"></span>New deposit
           </Button>
@@ -62,7 +62,7 @@ const ActiveDashboard = () => {
       </div>
 
 
-      <div className="mt-10 ">
+      <div className="mt-10">
         <div className="flex justify-between mb-2">
           <h1 className="text-white text-xl">Nest</h1>
         </div>
