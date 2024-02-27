@@ -18,7 +18,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
       <h5 className="mb-4 text-lg text-white">Migration Overview</h5>
       <div className="flex flex-col gap-5 mb-5 md:items-center md:justify-between 2xl:flex-row">
         <AddressCheck migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
-        <TotalMigrated  state={migrateStatus}/>
+        <TotalMigrated state={migrateStatus}/>
       </div>
       {migrateStatus !== 'success' && migrateStatus !== 'wrong' && (
         <>

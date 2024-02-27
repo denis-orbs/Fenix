@@ -2,14 +2,16 @@
 import ActiveDashboard from './ActiveDashboard'
 import InactiveDashboard from './InactiveDashboard'
 import StrategiesDCA from '@/components/Dashboard/StrategiesDCA'
+import MyStrategies from '@/components/Dashboard/MyStrategies'
 
 const Dashboard = () => {
   return (
-    <section className="relative">
+    <div className="py-5">
       {/* <InactiveDashboard /> */}
-      <ActiveDashboard/>
+      <ActiveDashboard />
+      <MyStrategies />
       <StrategiesDCA />
-    </section>
+    </div>
   )
 }
 

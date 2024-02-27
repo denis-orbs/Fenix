@@ -1,7 +1,7 @@
 'use client'
 
 interface TotalMigratedProps {
-  state: string | undefined
+  state?: string | undefined
 }
 
 const TotalMigrated = ({ state }: TotalMigratedProps) => {
