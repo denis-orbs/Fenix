@@ -21,7 +21,7 @@ const Migration = ({ isConnected }: MigrationsProps) => {
         <div className="lg:ms-5 w-full xl:w-1/2">
           <h4 className="mb-3 text-xl text-white">Migration Claim</h4>
           <p className="mb-4 text-sm text-shark-100">Deposit your CHR ecosystem tokens to migrate.</p>
-          <div className="flex lg:gap-5 gap-3 box bg-shark-400 bg-opacity-40 w-full 2xl:w-[280px] lg:h-auto lg:w-96 rounded-lg mb-5 items-center justify-center lg:justify-normal">
+          <div className="flex lg:gap-5 gap-3 box bg-shark-400 bg-opacity-40 w-full 2xl:w-[390px] lg:h-auto lg:w-96 rounded-lg mb-5 items-center justify-center lg:justify-normal">
             <div>
               <p className="text-shark-100 font-bold text-[12px]">Migration</p>
               <p className="text-green-400 text-[12px]">Open</p>

@@ -11,7 +11,7 @@ interface AddressCheckProps {
 const AddressCheck = ({ migrateStatus, setMigrateStatus }: AddressCheckProps) => {
   const isConnected = useStore((state) => state.isConnected)
 
-  const handlerMigrateCheck = () => setMigrateStatus('success')
+  const handlerMigrateCheck = () => setMigrateStatus('wrong')
 
   return (
     <div className="flex flex-col items-center w-full gap-4 px-5 py-4 2xl:w-3/5 md:flex-row rounded-lg xl:min-h-[86px] address-check-box">
