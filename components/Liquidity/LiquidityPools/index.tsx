@@ -34,7 +34,7 @@ const LiquidityPools = () => {
           ))}
         </div>
       </div>
-      <div className="hidden xl:block text-shark-100 rounded-2xl xl:rounded-none">
+      <div className="hidden xl:block text-shark-100 rounded-2xl xl:rounded-none relative z-10">
         <div className="flex gap-3 justify-end cursor-pointer">
           <span className="icon-discord"></span>
           <p className="me-10">Need some help?</p>
