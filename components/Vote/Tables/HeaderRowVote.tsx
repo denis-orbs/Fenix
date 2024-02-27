@@ -21,7 +21,7 @@ const HeaderRowVote = ({ activeVote, filterData, loading, activePagination = tru
   const [showTooltip, setShowTooltip] = useState(false)
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <div className="w-full mb-2.5 xl:mb-10">
         <div className="max-xl:hidden">
           <TableHead

@@ -16,7 +16,6 @@ interface RowDataProps {
 }
 
 const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, activeRange }: RowDataProps) => {
-  // console.log(titleHeader)
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -168,7 +167,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
               <div className="flex items-start justify-between border border-shark-300 p-4 rounded-lg">
                 <div className="flex items-center gap-1">
                   <span className="text-xs font-medium leading-normal">
-                    {titleHeader === '' ? 'Volume' : titleHeader}
+                    {titleHeader?.length === 0 ? 'Volume' : titleHeader}
                   </span>
                 </div>
                 <div className="flex flex-col">

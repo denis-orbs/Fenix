@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 'use client'
-
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useState } from 'react'
 import Image from 'next/image'

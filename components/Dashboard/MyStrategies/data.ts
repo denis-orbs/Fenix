@@ -7,5 +7,5 @@ const OPTIONS_STRATEGIES = [
     'Pause Strategy',
     'Delete Strategy',
   ]
-
+//test
   export default OPTIONS_STRATEGIES
