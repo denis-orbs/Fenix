@@ -38,29 +38,18 @@ const NestMobile = () => {
                         </div>
                         <div className="flex flex-col gap-2">
                           <div className="flex gap-2 items-center">
-                            <h1 className="text-sm font-bold">veFNX Maxi</h1>{' '}
-                            <p
-                              className="text-xs  bg-shark-400 
-                            flex items-center justify-center  rounded-lg  
-                            p-1
-                            border-[#53606A] border-solid border-2"
-                            >
+                            <h1 className="text-sm">veFNX Maxi</h1>{' '}
+                            <p className="text-xs bg-shark-400 flex items-center justify-center rounded-lg py-1 px-3 border-shark-300 border-solid border-2">
                               ID 11230
                             </p>
                           </div>
-                          <div className="flex gap-1">
-                            <p
-                              className="text-xs flex justify-center items-center text-shark-100 
-                    bg-shark-400  rounded-lg  border-shark-100 border-solid border-2"
-                            >
+                          <div className="flex items-center gap-3">
+                            <p className="text-xs flex justify-center items-center text-shark-100 bg-shark-400 py-1 px-3 rounded-lg border-shark-100 border-solid border">
                               Updated 2 days ago
                             </p>
-                            <p
-                              className="text-xs flex items-center  justify-center 
-                            text-shark-100 bg-shark-400 p-1 rounded-lg border border-[#53606A] border-solid border-1"
-                            >
+                            <p className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 py-1 px-3 rounded-lg border-[#53606A] border-solid border">
                               0xc981...EF14f
-                              <span className="icon-document"></span>
+                              <span className="icon-document ml-1 cursor-pointer"></span>
                             </p>
                           </div>
                         </div>
@@ -96,16 +85,18 @@ const NestMobile = () => {
                             </div>
                           </div>
                           <Button variant="tertiary" className="w-full flex gap-4">
-                            Deposit Lock <span className='icon-link text-xlg'></span>
+                            Deposit Lock <span className="icon-link text-xlg"></span>
                           </Button>
-                          <div className='flex flex-col gap-2 border border-shark-100 rounded-lg p-2'>
-                            <div >
-                              <p className='text-shark-100 flex gap-2 text-sm'><span className='icon-lock'></span>Lock #11462</p>
+                          <div className="flex flex-col gap-2 border border-shark-100 rounded-lg p-2">
+                            <div>
+                              <p className="text-shark-100 flex gap-2 text-sm">
+                                <span className="icon-lock"></span>Lock #11462
+                              </p>
                             </div>
-                            <div className='text-sm text-white flex-col flex gap-2'>
-                            <p>0.0 FNX locked for 3 years</p>
-                            <p>0.0 FNX compouned</p>
-                            <p>Withdraw available after first epoch</p>
+                            <div className="text-sm text-white flex-col flex gap-2">
+                              <p>0.0 FNX locked for 3 years</p>
+                              <p>0.0 FNX compouned</p>
+                              <p>Withdraw available after first epoch</p>
                             </div>
                           </div>
                         </div>

@@ -38,9 +38,9 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
 
       <div className="flex flex-col mb-4">
         {MENU_LINKS.map((link, index) => (
-          <div key={index} className="text-white text-xs list-none py-4">
+          <Link href={link.href} key={index} className="text-white text-xs list-none py-4">
             <span>{link.name}</span>
-          </div>
+          </Link>
         ))}
       </div>
 
