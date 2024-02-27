@@ -6,7 +6,6 @@ import HeaderRowVote from '@/components/Vote/Tables/HeaderRowVote'
 import NestMobile from '@/components/Lock/Mobile/NestMobile'
 import MylocksMobile from '@/components/Lock/Mobile/MylocksMobile'
 import HeaderRow from '@/components/Liquidity/Tables/HeaderRow'
-
 import StrategiesDCA from '@/components/Dashboard/StrategiesDCA'
 import MyStrategies from '@/components/Dashboard/MyStrategies'
 import { PROPS_CLASSIC_LIQUIDITY, PROPS_CONCENTRATED_LIQUIDITY, PROPS_HEADER_ROW_VOTE } from './type.props'
