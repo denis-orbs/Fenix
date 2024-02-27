@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 'use client'
-
+import Image from 'next/image'
 import { Button } from '@/components/UI'
 import StepBox from '@/components/Common/Boxes/StepBox'
 import Image from 'next/image'

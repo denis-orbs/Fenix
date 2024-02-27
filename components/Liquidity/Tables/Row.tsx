@@ -211,7 +211,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
           </div>
         </TableCell>
       </TableRow>
-      <MobileRow row={row} titleHeader={titleHeader} titleHeader2={titleHeader2} activeRange={activeRange} />
+      <MobileRow row={row} titleHeader={titleHeader} titleButton={titleButton} titleButton2={titleButton2} titleHeader2={titleHeader2} activeRange={activeRange} />
     </>
   )
 }

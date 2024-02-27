@@ -19,7 +19,7 @@ const MyLocks = ({ activePagination = true }: MyLocksProps) => {
   }, [])
 
   return (
-    <div className="relative hidden xl:block">
+    <div className="relative hidden xl:block z-10">
       <div className="w-full">
         <TableHead
           items={[

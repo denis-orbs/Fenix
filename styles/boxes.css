@@ -661,51 +661,6 @@
   after:2xl:block
 }
 
-/* Background for dashboard box */
-.dashboard-box {
-  @apply
-  relative
-  w-full
-  rounded-2xl
-  2xl:max-w-[1800px]
-  flex
-  gap-5
-  min-h-[470px]
-
-  bg-shark-400
-  bg-opacity-40
-  2xl:bg-transparent
-  2xl:bg-opacity-100
-  py-8
-  2xl:py-12
-  px-8
-  2xl:px-12
-
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/components/box/dashboard/dashboard.svg")]
-  before:bg-no-repeat
-  before:h-[50%]
-  before:bg-cover
-  before:w-full
-  before:top-0
-  before:left-0
-  before:hidden
-  before:2xl:block
-
-  after:content-[""]
-  after:absolute
-  after:bg-[url("/static/images/components/box/dashboard/dashboard.svg")]
-  after:bg-no-repeat
-  after:bg-bottom
-  after:h-[50%]
-  after:bg-cover
-  after:w-full
-  after:bottom-0
-  after:left-0
-  after:hidden
-  after:2xl:block
-}
 
 .box-dashboard {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
@@ -737,4 +692,83 @@
   after:border-r-[20px]
   after:border-b-[20px]
   after:border-[transparent_transparent_#131517];
+}
+/* Background for dashboard box */
+.dashboard-box {
+  @apply
+  relative
+  w-full
+  rounded-2xl
+  2xl:max-w-[1800px]
+  flex
+  flex-col
+  gap-5
+  min-h-[470px]
+
+  bg-shark-400
+  bg-opacity-40
+  2xl:bg-transparent
+  2xl:bg-opacity-100
+  py-8
+  px-4
+  2xl:py-12
+  2xl:px-12
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/dashboard/dashboard.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:2xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/dashboard/dashboard.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:2xl:block
+}
+
+
+.box-strategies {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:top-[-15px]
+  before:left-[15px]
+  before:rotate-[89deg]
+  before:border-solid
+  before:border-t-[30px]
+  before:border-r-[30px]
+  before:border-b-[30px]
+  before:border-[transparent_transparent_#202328]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:bottom-[-14px]
+  after:right-[12px]
+  after:rotate-[-91deg]
+  after:border-solid
+  after:border-t-[25px]
+  after:border-r-[25px]
+  after:border-b-[25px]
+  after:border-[transparent_transparent_#202328];
 }

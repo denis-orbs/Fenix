@@ -1,5 +1,5 @@
-import Dashboard from '@/components/Dashboard'
 import Decorator from '@/components/Common/Layout/Background'
+import Dashboard from '@/components/Dashboard'
 
 const DashboardPage = () => {
   return (
