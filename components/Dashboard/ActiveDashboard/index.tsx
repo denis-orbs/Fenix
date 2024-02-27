@@ -1,4 +1,5 @@
 'use client'
+
 import MyLocks from '@/components/Lock/MyLocks'
 import Nest from '@/components/Lock/Nest'
 import { Button } from '@/components/UI'
@@ -10,12 +11,13 @@ import HeaderRow from '@/components/Liquidity/Tables/HeaderRow'
 
 import StrategiesDCA from '@/components/Dashboard/StrategiesDCA'
 import MyStrategies from '@/components/Dashboard/MyStrategies'
+
 const ActiveDashboard = () => {
   return (
     <div>
       <div>
         <div className="flex justify-between mb-2 ">
-          <h1 className="text-white text-2xl">Liquidity Positions</h1>
+          <h1 className="text-white text-xl">Liquidity Positions</h1>
           <Button variant="tertiary" className="!py-3">
             <span className="icon-logout"></span>New deposit
           </Button>
@@ -60,10 +62,10 @@ const ActiveDashboard = () => {
           </div>
         </div>
       </div>
-      {/* //// */}
+
       <div className="mt-10">
         <div className="flex justify-between mb-2">
-          <h1 className="text-white text-2xl">Locks</h1>
+          <h1 className="text-white text-xl">Locks</h1>
           <Button variant="tertiary" className="!py-3">
             <span className="icon-logout"></span>New deposit
           </Button>
@@ -77,10 +79,11 @@ const ActiveDashboard = () => {
           </Button>
         </div>
       </div>
-      {/* //// */}
+
+
       <div className="mt-10 ">
         <div className="flex justify-between mb-2">
-          <h1 className="text-white text-2xl">Nest</h1>
+          <h1 className="text-white text-xl">Nest</h1>
         </div>
         <div className="bg-shark-400 bg-opacity-40 p-5 rounded-lg">
           <Nest activePagination={false} />
@@ -91,10 +94,10 @@ const ActiveDashboard = () => {
           </Button>
         </div>
       </div>
-      {/* //// */}
+
       <div className="my-10">
-        <div className="flex justify-between mb-2">
-          <h1 className="text-white text-2xl">Voting Rewards</h1>
+        <div className="flex justify-between mb-4">
+          <h1 className="text-white text-xl">Voting Rewards</h1>
         </div>
         <div className="bg-shark-400 bg-opacity-40 p-5 rounded-lg">
           <HeaderRowVote
@@ -110,7 +113,6 @@ const ActiveDashboard = () => {
           </Button>
         </div>
       </div>
-      {/* //// */}
       <MyStrategies />
       <StrategiesDCA />
     </div>
