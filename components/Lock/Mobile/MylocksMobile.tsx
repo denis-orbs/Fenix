@@ -5,7 +5,11 @@ import Image from 'next/image'
 import RowSkeleton from '@/components/UI/Table/TableSkeleton'
 import { TableBody, TableCell, TableRow, PaginationMobile, Button } from '@/components/UI'
 
-const MylocksMobile = () => {
+interface MylocksMobileProps {
+  activePagination?: boolean
+}
+
+const MylocksMobile = ({ activePagination = true }: MylocksMobileProps) => {
   const [loading, setLoading] = useState(true)
   const [accordion, setAccordion] = useState(false)
 
@@ -17,7 +21,7 @@ const MylocksMobile = () => {
   }, [])
 
   return (
-    <div className="relative">
+    <div className="relative xl:hidden">
       <div className="w-full">
         <TableBody>
           {loading ? (
@@ -99,9 +103,11 @@ const MylocksMobile = () => {
           )}
         </TableBody>
       </div>
-      <div className="mt-5">
-        <PaginationMobile />
-      </div>
+      {activePagination && (
+        <div className="mt-5">
+          <PaginationMobile />
+        </div>
+      )}
     </div>
   )
 }

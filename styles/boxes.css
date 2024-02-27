@@ -706,3 +706,35 @@
   after:hidden
   after:2xl:block
 }
+
+.box-dashboard {
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:bottom-[0px]
+  before:left-[-1px]
+  before:rotate-[-1deg]
+  before:border-solid
+  before:border-t-[20px]
+  before:border-r-[20px]
+  before:border-b-[20px]
+  before:border-[transparent_transparent_#131517]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:top-[-1px]
+  after:right-[-1px]
+  after:rotate-[181deg]
+  after:border-solid
+  after:border-t-[20px]
+  after:border-r-[20px]
+  after:border-b-[20px]
+  after:border-[transparent_transparent_#131517];
+}

@@ -11,13 +11,18 @@ type IRow = {
 }
 interface RowDataProps {
   row: IRow
+  titleHeader?: string
+  titleHeader2?: string
+  titleButton?: string
+  titleButton2?: string
+  activeRange?: boolean
 }
 
-const RowData = ({ row }: RowDataProps) => {
+const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, activeRange }: RowDataProps) => {
   return (
     <>
-      <TableRow className="max-xl:hidden">
-        <TableCell className="w-[30%]">
+      <TableRow className="hidden 2xl:flex">
+        <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[30%]'}`}>
           <div className="flex items-center gap-2">
             <div className="flex items-center">
               <Image
@@ -67,9 +72,27 @@ const RowData = ({ row }: RowDataProps) => {
             </div>
           </div>
         </TableCell>
-
-        <TableCell className="w-[10%]">
-          <div className="flex items-center ">
+        {activeRange && (
+          <TableCell className={`w-[10%] flex items-center justify-center`}>
+            <div className="flex gap-2 items-center">
+              <span className="bg-green-600 w-4 h-4 rounded-full border-4 border-black"></span>
+              <div className="text-xs flex flex-col">
+                <p className="text-shark-100">Min Price</p>
+                <span className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                  $0.00
+                </span>
+              </div>
+              <div className="text-xs flex flex-col">
+                <p className="text-shark-100">Max Price</p>
+                <span className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                  $0.00
+                </span>
+              </div>
+            </div>
+          </TableCell>
+        )}
+        <TableCell className="w-[10%] flex justify-center">
+          <div className="flex items-center  ">
             <p className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {row.APR}%
             </p>
@@ -162,18 +185,33 @@ const RowData = ({ row }: RowDataProps) => {
 
         <TableCell className="flex justify-end w-[15%]">
           <div className="flex gap-2 w-full">
-            <Button variant="tertiary" className="flex items-center gap-2 w-full">
-              <span className="icon-info"></span>
-              Info
-            </Button>
-            <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity/deposit">
-              <span className="icon-circles"></span>
-              Deposit
-            </Button>
+            {titleButton === '' ? (
+              <Button variant="tertiary" className="flex items-center gap-2 w-full">
+                <span className="icon-info"></span>
+                Info
+              </Button>
+            ) : (
+              <Button variant="tertiary" className="flex items-center gap-2 w-full">
+                <span className="icon-coin"></span>
+                Claim
+              </Button>
+            )}
+
+            {titleButton2 === '' ? (
+              <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity/deposit">
+                <span className="icon-circles"></span>
+                Deposit
+              </Button>
+            ) : (
+              <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity/deposit">
+                <span className="icon-logout"></span>
+                Manage
+              </Button>
+            )}
           </div>
         </TableCell>
       </TableRow>
-      <MobileRow row={row} />
+      <MobileRow row={row} titleHeader={titleHeader} titleHeader2={titleHeader2} activeRange={activeRange} />
     </>
   )
 }

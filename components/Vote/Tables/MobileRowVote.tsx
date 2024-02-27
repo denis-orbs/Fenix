@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
-import { Button, PaginationMobile } from '@/components/UI'
+import { Button } from '@/components/UI'
 import InputRange from '@/components/UI/SliderRange/InputRange'
 type IRow = {
   type: string
@@ -11,9 +11,10 @@ interface RowDataProps {
   changeValue: number
   setChangeValue: (value: number) => void
   activeVote: boolean
+  activeSlider?: boolean
 }
 
-const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote }: RowDataProps) => {
+const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote, activeSlider }: RowDataProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -177,29 +178,37 @@ const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote }: RowData
               </div>
 
               <div className="flex items-start justify-between border border-shark-300 p-4 rounded-lg">
-                <div className="w-full">
-                  <div>
-                    <InputRange
-                      step={1}
-                      max={100}
-                      min={0}
-                      height={7}
-                      value={changeValue}
-                      onChange={setChangeValue}
-                      thumbSize={18}
-                      disabled={!activeVote}
-                    />
-                    <div className="flex justify-between text-sm text-shark-100">
-                      <p>0%</p>
-                      <p>100%</p>
+                {activeSlider ? (
+                  <div className="w-full">
+                    <div>
+                      <InputRange
+                        step={1}
+                        max={100}
+                        min={0}
+                        height={7}
+                        value={changeValue}
+                        onChange={setChangeValue}
+                        thumbSize={18}
+                        disabled={!activeVote}
+                      />
+                      <div className="flex justify-between text-sm text-shark-100">
+                        <p>0%</p>
+                        <p>100%</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="w-full">
+                    <Button variant="tertiary" className="flex gap-2 w-full items-center">
+                      <span className="icon-logout"></span>
+                      Claim Rewards
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </>
         )}
-
       </div>
     </>
   )
