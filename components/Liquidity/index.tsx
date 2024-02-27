@@ -22,8 +22,10 @@ const Liquidity = () => {
 
   return (
     <section>
-      <div className="flex items-center gap-10 justify-around flex-col xl:flex-row mb-10 xl:h-[450px]">
-        <Deposit />
+      <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
+        <div className="w-full 2xl:w-3/4">
+          <Deposit />
+        </div>
         <Steps steps={STEPS} />
       </div>
       <h5 className="mb-4 text-lg text-white">Liquidity Pools</h5>

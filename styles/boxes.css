@@ -693,3 +693,48 @@
   after:border-b-[20px]
   after:border-[transparent_transparent_#131517];
 }
+/* Background for dashboard box */
+.dashboard-box {
+  @apply
+  relative
+  w-full
+  rounded-2xl
+  2xl:max-w-[1800px]
+  flex
+  gap-5
+  min-h-[470px]
+
+  bg-shark-400
+  bg-opacity-40
+  2xl:bg-transparent
+  2xl:bg-opacity-100
+  py-8
+  2xl:py-12
+  px-8
+  2xl:px-12
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/dashboard/dashboard.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:2xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/dashboard/dashboard.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:2xl:block
+}
