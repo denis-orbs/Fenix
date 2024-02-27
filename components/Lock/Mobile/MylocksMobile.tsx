@@ -31,7 +31,7 @@ const MylocksMobile = () => {
               {Array.from({ length: 10 }).map((_, index) => (
                 <TableRow key={index}>
                   <TableCell className="flex-col  w-full">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2">
                         <Image
                           src={'/static/images/vote/fenix-logo.svg'}
@@ -49,10 +49,10 @@ const MylocksMobile = () => {
                         <p className="text-sm text-shark-100">Unlock Date</p>
                         <p className="text-sm">24-06-2025</p>
                       </div>
-                      <div >
+                      <div>
                         <span
                           onClick={handlerAccordion}
-                          className={`icon-chevron block  ${accordion ? 'rotate-180' : ''}`}
+                          className={`cursor-pointer icon-chevron block  ${accordion ? 'rotate-180' : ''}`}
                         ></span>
                       </div>
                     </div>
@@ -60,22 +60,22 @@ const MylocksMobile = () => {
                       <>
                         <div className="flex flex-col gap-3 p-2 mt-5 text-xs">
                           <div className="flex items-center justify-between">
-                            <div className="flex flex-col items-center">
+                            <div className="flex flex-col gap-1 items-center">
                               <p className="text-shark-100">Lock Amount</p>
-                              <p className="flex">
+                              <p className="flex gap-2 items-center">
                                 <Image src={'/static/images/vote/fenix-logo.svg'} alt="" height={17} width={17} />
                                 744,621.46
                               </p>
                             </div>
-                            <div>
+                            <div className="flex flex-col gap-1 items-center">
                               <p className="text-shark-100 text-center">Lock Amount</p>
-                              <p className="flex">
+                              <p className="flex gap-2 items-center">
                                 <Image src={'/static/images/vote/fenix-logo.svg'} alt="" height={17} width={17} />
                                 744,621.46
                               </p>
                             </div>
                             <div>
-                              <p className="text-shark-100 text-center">Vote Status</p>
+                              <p className="text-shark-100 text-center mb-2">Vote Status</p>
                               <Button
                                 variant="secondary"
                                 className="button button-tertiary !py-1 hover:!border-none
