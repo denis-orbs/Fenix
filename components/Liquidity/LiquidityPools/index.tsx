@@ -8,14 +8,15 @@ import { EXCHANGE_LIST } from '../data'
 const LiquidityPools = () => {
   return (
     <MainBox>
-      <div className="flex flex-col items-center justify-between w-full xl:flex-row py-8 xl:py-0 px-10 relative z-10 xl:min-h-[350px]">
+      <div className="flex flex-col items-center justify-between
+       w-full xl:flex-row relative z-10 xl:min-h-[350px]">
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
           <p className="mb-4 text-sm text-shark-100">
             Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and Stake liquidity to earn FNX.
           </p>
           <div className="flex flex-col gap-2 mb-8 md:flex-row">
-            <Button>
+            <Button href="liquidity/deposit">
               <div className="flex gap-2">
                 <span className="icon-send"></span>
                 Create Position
@@ -33,8 +34,8 @@ const LiquidityPools = () => {
           ))}
         </div>
       </div>
-      <div className="hidden xl:block text-shark-100 rounded-2xl xl:rounded-none">
-        <div className="flex gap-3 justify-end">
+      <div className="hidden xl:block text-shark-100 rounded-2xl xl:rounded-none relative z-10">
+        <div className="flex gap-3 justify-end cursor-pointer">
           <span className="icon-discord"></span>
           <p className="me-10">Need some help?</p>
         </div>

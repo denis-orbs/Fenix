@@ -2,11 +2,14 @@
 
 import { useState } from 'react'
 import cn from '@/utils/cn'
+import TotalRewardsTooltip from '@/components/Vote/TotalRewardsTooltip'
 
 interface IItems {
   text: string
   sortable?: boolean
   className?: string
+  showTooltip?: boolean
+  setShowTooltip?: (showTooltip: boolean) => void
 }
 interface TableHeadProps {
   items: IItems[]
@@ -26,11 +29,7 @@ const TableHead = ({ items }: TableHeadProps) => {
   }
 
   const mergeClassName = (item: IItems) => {
-    return cn(
-      'p-2.5 ',
-      item.sortable ? 'cursor-pointer relative select-none' : '',
-      item.className
-    )
+    return cn('p-2.5 ', item.sortable ? 'cursor-pointer relative select-none' : '', item.className)
   }
 
   const sortClassName = (item: IItems, index: number) => {
@@ -42,10 +41,32 @@ const TableHead = ({ items }: TableHeadProps) => {
   }
 
   return (
-    <div className="flex text-white text-sm mb-3.5 px-1.5">
+    <div className="flex text-white text-sm mb-3.5 px-1.5 relative">
       {items.map((item, index) => {
         return (
-          <div key={index} className={mergeClassName(item)} onClick={() => handleSort(index, item)}>
+          <div
+            key={index}
+            className={mergeClassName(item)}
+            onMouseOver={() => {
+              if (item.text === 'Total Rewards') {
+                item.setShowTooltip && item.setShowTooltip(true)
+              }
+            }}
+            onMouseOut={() => {
+              if (item.text === 'Total Rewards') {
+                item.setShowTooltip && item.setShowTooltip(false)
+              }
+            }}
+            onClick={() => {
+              handleSort(index, item)
+            }}
+          >
+            {item.showTooltip && (
+              <div className="absolute z-50 text-left bottom-0">
+                <TotalRewardsTooltip show={item.showTooltip} setShow={() => {}} />
+              </div>
+            )}
+
             <span className="leading-normal">{item.text}</span>
             {item.sortable && <span className={sortClassName(item, index)}></span>}
           </div>

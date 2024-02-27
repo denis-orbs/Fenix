@@ -5,7 +5,7 @@ const PaginationMobile = () => {
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
 
   return (
-    <div className="flex items-center justify-between text-sm ">
+    <div className="flex items-center justify-between text-sm w-full ">
       <div className="flex items-center gap-2">
         <div
           className="flex gap-2 pagination-mobile-box h-12 bg-opacity-40
@@ -20,12 +20,12 @@ const PaginationMobile = () => {
           </div>
         </div>
         <div
-          className="flex items-center justify-center
-       flex-shrink-0 w-12 h-12 px-4 text-white transition-colors
+          className="flex items-center justify-center cursor-default
+       flex-shrink-0 w-12 h-12 px-4 transition-colors
         border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
           onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
         >
-          <span className="text-lg icon-circles"></span>
+          <span className="text-lg icon-cog text-white "></span>
 
           {isOpenItemsPerPage && (
             <div

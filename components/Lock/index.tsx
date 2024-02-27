@@ -10,9 +10,11 @@ import { LOCK_STEPS, FILTER_OPTIONS } from './data'
 import Filter from '../Common/Filter'
 import Search from '../Common/Search'
 import CreateLock from './CreateLock/CreateLock'
+import MylocksMobile from './Mobile/MylocksMobile'
+import NestMobile from './Mobile/NestMobile'
 const Lock = () => {
   const [changeState, setChangeState] = useState<boolean>(false)
-
+  const [currentTab, setCurrentTab] = useState("Everything")
   return (
     <>
       {changeState ? (
@@ -46,21 +48,24 @@ const Lock = () => {
             <Steps steps={LOCK_STEPS} />
           </div>
           <div className="flex items-center gap-2 mb-4">
-            <h5 className="text-xl text-white">My Locks</h5>
-            <span className="text-xl text-white icon-info"></span>
+            <h5 className="text-xl text-white">Locks</h5>
           </div>
           <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
             <div className="w-full xl:w-2/3">
-              <Filter options={FILTER_OPTIONS} currentTab={''} setCurrentTab={() => {}} />
+              <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
             </div>
             <div className="w-full xl:w-1/3">
               <Search />
             </div>
           </div>
-          <div className="hidden w-full mb-20 xl:block">
-            <MyLocks />
+          <div className="lg:hidden">
+            <MylocksMobile />
+            <NestMobile/>
           </div>
-          <div className="hidden w-full xl:block">
+          <div className="hidden w-full mb-20 lg:flex lg:flex-col">
+            <MyLocks />
+            <h5 className=" text-2xl text-white ms-2">Nest</h5>
+
             <Nest />
           </div>
         </section>

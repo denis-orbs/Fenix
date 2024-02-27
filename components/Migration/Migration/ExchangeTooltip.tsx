@@ -16,7 +16,7 @@ interface ExchangeTooltipProps {
 const ExchangeTooltip = ({ show, setShow, info }: ExchangeTooltipProps) => {
   return (
     <Tooltip show={show} setShow={setShow}>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 iam">
         <span className="icon-lock-off text-lg text-shark-100"></span>
         <div>
           <p className="text-xs text-shark-100">Unlocked</p>

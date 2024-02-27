@@ -1,11 +1,14 @@
 import React from 'react'
 import { Button } from '@/components/UI'
 import Image from 'next/image'
+
+
+
 const VotePools = () => {
   return (
-    <div className="flex items-end  justify-between  vote-box   p-8 gap-10">
+    <div className="flex items-end relative justify-between vote-box p-8 gap-10 w-full xl:w-auto ">
       <div className="flex items-center gap-2 ">
-        <div className="flex items-center">
+        <div className="flex items-center w-full">
           <Image
             src="/static/images/tokens/FNX.png"
             alt="token"
@@ -38,7 +41,7 @@ const VotePools = () => {
           0.3%
         </Button>
       </div>
-      <div className='icon-x absolute mb-10 ms-72 p-2 text-shark-100'></div>
+      <div className='icon-x absolute iam p-2 right-0 top-0 text-shark-100'></div>
     </div>
   )
 }
