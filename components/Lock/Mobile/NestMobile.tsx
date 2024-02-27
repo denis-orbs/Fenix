@@ -5,7 +5,11 @@ import Image from 'next/image'
 import RowSkeleton from '@/components/UI/Table/TableSkeleton'
 import { TableBody, TableCell, TableRow, PaginationMobile, Button } from '@/components/UI'
 
-const NestMobile = () => {
+interface NestMobileProps {
+  activePagination?: boolean
+}
+
+const NestMobile = ({ activePagination = true }: NestMobileProps) => {
   const [loading, setLoading] = useState(true)
   const [accordion, setAccordion] = useState(false)
 
@@ -17,7 +21,7 @@ const NestMobile = () => {
   }, [])
 
   return (
-    <div className="relative mt-5">
+    <div className="relative mt-5  xl:hidden">
       <div className="w-full">
         <TableBody>
           {loading ? (
@@ -110,9 +114,11 @@ const NestMobile = () => {
           )}
         </TableBody>
       </div>
-      <div className="mt-5">
-        <PaginationMobile />
-      </div>
+      {activePagination && (
+        <div className="mt-5">
+          <PaginationMobile />
+        </div>
+      )}
     </div>
   )
 }

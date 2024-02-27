@@ -10,7 +10,7 @@ const ActiveVote = ({ handlerChange }: ActiveVoteProps) => {
       className={`flex flex-wrap  xl:flex-nowrap items-center gap-8 p-5 text-white border-solid border-1
        border-shark-400 bg-shark-400 bg-opacity-40 rounded-xl`}
     >
-      <div className="flex justify-between w-full items-center">
+      <div className="flex justify-between w-full items-center cursor-pointer"  onClick={handlerChange}>
         <div className="flex items-center gap-2  ">
           <Image
             alt="logo-fenix"
@@ -18,7 +18,6 @@ const ActiveVote = ({ handlerChange }: ActiveVoteProps) => {
             className="h-[32px] w-[32px]"
             width={61}
             height={61}
-            onClick={handlerChange}
           />
           <div className="flex flex-col">
             <div className="flex gap-2 items-center ">
