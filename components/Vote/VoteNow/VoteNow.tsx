@@ -1,15 +1,16 @@
 import StepBox from '@/components/Common/Boxes/StepBox'
-import Image from 'next/image'
 import useStore from '@/store'
 import ReadMoreModal from '@/components/Modals/Liquidity/ReadMore'
 import ActiveVote from '../ActiveVote'
 import InactiveVote from '../InactiveVote'
+
 
 interface VoteNowProps {
   openModal: boolean
   activeVote: boolean
   setOpenModal: (parameter: boolean) => void
 }
+
 const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
   const { setReadMoreModal } = useStore()
   const handlerChange = () => (openModal ? setOpenModal(false) : setOpenModal(true))
@@ -48,10 +49,10 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
             className="flex items-center gap-2 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
             onClick={handleReadMore}
           >
-            <span className="text-lg icon-link"></span>
+            <span className=" icon-link"></span>
             Read More
           </p>
-          <p className="flex items-center gap-2 text-shark-100 cursor-pointer">
+          <p className="flex items-center text-sm gap-2 text-shark-100 cursor-pointer ">
             <span className="icon-discord"></span>Need some help?
           </p>
         </div>

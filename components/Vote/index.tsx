@@ -5,7 +5,7 @@ import Deposit from '@/components/Vote/Deposit'
 import VoteNow from './VoteNow/VoteNow'
 import Filter from '@/components/Common/Filter'
 import Search from '@/components/Common/Search'
-import { PaginationMobile, TableSkeleton, TableBody, TableHead } from '@/components/UI'
+import { TableSkeleton, TableBody, TableHead, PaginationMobile } from '@/components/UI'
 import { Pagination } from '@/components/UI'
 import RowDataVote from './Tables/RowVote'
 import { DATA_ROW } from '../Liquidity/data'
@@ -15,11 +15,11 @@ import Overlay from './Overlay'
 import { FILTER_OPTIONS } from './data'
 
 const Vote = () => {
-  const [currentTab, setCurrentTab] = useState('CONCENTRATED')
+  const [currentTab, setCurrentTab] = useState('VOLATILE')
   const [activeVote, setActiveVote] = useState(false)
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
-  const filterData = currentTab !== 'ALL POOLS' ? DATA_ROW.filter((row) => row.type === currentTab) : DATA_ROW
+  const filterData = DATA_ROW.filter((row) => row.type === currentTab)
   const [showTooltip, setShowTooltip] = useState(false)
   useEffect(() => {
     setTimeout(() => {
@@ -45,7 +45,7 @@ const Vote = () => {
         </div>
       </div>
       {activeVote && (
-        <div className="">
+        <div className="mb-5">
           <h1 className="text-2xl text-white">Vote Pools</h1>
           <div className="flex flex-wrap gap-2 justify-center">
             <VotePools />
@@ -102,6 +102,9 @@ const Vote = () => {
             <span className="text-lg icon-cog text-white"></span>
           </div>
         </div>
+        <div className="block xl:hidden">
+          <PaginationMobile />
+        </div>
       </div>
 
       <SelectVote
@@ -110,7 +113,7 @@ const Vote = () => {
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
-      <div className="p-5 fixed bottom-5 left-0 right-0 z-50 hidden md:block">{activeVote && <Overlay />}</div>
+      <div className="p-5 fixed bottom-5 left-0 right-0 z-50  md:block">{activeVote && <Overlay />}</div>
     </section>
   )
 }

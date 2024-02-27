@@ -48,8 +48,7 @@ const Lock = () => {
             <Steps steps={LOCK_STEPS} />
           </div>
           <div className="flex items-center gap-2 mb-4">
-            <h5 className="text-xl text-white">My Locks</h5>
-            <span className="text-xl text-white icon-info"></span>
+            <h5 className="text-xl text-white">Locks</h5>
           </div>
           <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
             <div className="w-full xl:w-2/3">

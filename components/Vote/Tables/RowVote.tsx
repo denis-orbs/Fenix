@@ -5,12 +5,14 @@ import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/components/UI'
 import InputRange from '../../UI/SliderRange/InputRange'
 import { useState } from 'react'
-// import MobileRow from './MobileRow'
+import MobileRowVote from './MobileRowVote'
+
 
 type IRow = {
   type: string
   APR: string
 }
+
 interface RowDataProps {
   row: IRow
   activeVote: boolean
@@ -18,7 +20,6 @@ interface RowDataProps {
 
 const RowDataVote = ({ row, activeVote }: RowDataProps) => {
   const [changeValue, setChangeValue] = useState(0)
-
   return (
     <>
       <TableRow className="max-xl:hidden">
@@ -140,33 +141,6 @@ const RowDataVote = ({ row, activeVote }: RowDataProps) => {
           </div>
         </TableCell>
 
-        {/* <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-sm text-white">$98.751.23</p>
-            <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 text-sm text-shark-100">
-                <Image
-                  src="/static/images/tokens/FNX.png"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                82,334.52
-              </p>
-              <p className="flex items-center gap-2 text-sm text-shark-100">
-                <Image
-                  src="/static/images/tokens/ETH.png"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                132.49
-              </p>
-            </div>
-          </div>
-        </TableCell> */}
 
         <TableCell className="flex items-center justify-end w-[20%]">
           <div className="w-4/5">
@@ -189,7 +163,8 @@ const RowDataVote = ({ row, activeVote }: RowDataProps) => {
           </div>
         </TableCell>
       </TableRow>
-      {/* <MobileRow row={row} /> */}
+      <MobileRowVote changeValue={changeValue} 
+      activeVote={activeVote} setChangeValue={setChangeValue}  row={row} />
     </>
   )
 }

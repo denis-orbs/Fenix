@@ -1,16 +1,19 @@
 import { useState } from 'react'
 import Image from 'next/image'
-import { Button } from '@/components/UI'
-
+import { Button, PaginationMobile } from '@/components/UI'
+import InputRange from '@/components/UI/SliderRange/InputRange'
 type IRow = {
   type: string
   APR: string
 }
 interface RowDataProps {
   row: IRow
+  changeValue: number
+  setChangeValue: (value: number) => void
+  activeVote: boolean
 }
 
-const MobileRow = ({ row }: RowDataProps) => {
+const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote }: RowDataProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -75,7 +78,7 @@ const MobileRow = ({ row }: RowDataProps) => {
                 variant="tertiary"
                 className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
               >
-                <span className='icon-info'></span>
+                <span className="icon-info"></span>
               </Button>
             </div>
           </div>
@@ -89,8 +92,8 @@ const MobileRow = ({ row }: RowDataProps) => {
             <div className="flex flex-col gap-2.5 mt-[21px] mb-2.5">
               <div
                 className="flex items-start justify-between border border-shark-300 p-4 rounded-lg
-              
-              "
+                  
+                  "
               >
                 <div className="flex items-center gap-1">
                   <span className="text-xs font-medium leading-normal">APR</span>
@@ -100,28 +103,18 @@ const MobileRow = ({ row }: RowDataProps) => {
                   <div className="ml-auto text-xs leading-normal">34.58%</div>
                   <div
                     className="flex items-center gap-[5px] cursor-pointer
-                     text-shark-100 hover:text-transparent hover:bg-gradient-to-r hover:from-outrageous-orange-500 hover:to-festival-500 hover:bg-clip-text"
+                         text-shark-100 hover:text-transparent hover:bg-gradient-to-r hover:from-outrageous-orange-500 hover:to-festival-500 hover:bg-clip-text"
                   ></div>
                 </div>
               </div>
 
               <div className="flex items-start justify-between border  border-shark-300 p-4 rounded-lg">
                 <div className="flex items-center gap-1">
-                  <span className="text-xs font-medium leading-normal">TVL</span>
+                  <span className="text-xs font-medium leading-normal">Your Votes</span>
                 </div>
                 <div className="flex flex-col">
-                  <div className="ml-auto text-xs leading-normal">$1,234.404.11</div>
+                  <div className="ml-auto text-xs leading-normal">0%</div>
                   <div className="flex gap-2.5 text-shark-100">
-                    <div className="flex items-center gap-[5px]">
-                      <Image
-                        src="/static/images/tokens/FNX.png"
-                        alt="token"
-                        className="w-2.5 h-2.5 rounded-full"
-                        width={10}
-                        height={10}
-                      />
-                      <span className="text-xs leading-normal">2,313,873.46</span>
-                    </div>
                     <div className="flex items-center gap-[5px]">
                       <Image
                         src="/static/images/tokens/ETH.png"
@@ -137,89 +130,79 @@ const MobileRow = ({ row }: RowDataProps) => {
               </div>
 
               <div className="flex items-start justify-between border border-shark-300 p-4 rounded-lg">
-                <div className="flex items-center gap-1">
-                  <span className="text-xs font-medium leading-normal">Volume</span>
+                <div>
+                  <span className="text-xs font-medium leading-normal">Total Rewards</span>
                 </div>
-                <div className="flex flex-col">
-                  <div className="ml-auto text-xs leading-normal">$1,234.404.11</div>
-                  <div className="flex gap-2.5 text-shark-100">
-                    <div className="flex items-center gap-[5px]">
-                      <Image
-                        src="/static/images/tokens/FNX.png"
-                        alt="token"
-                        className="w-2.5 h-2.5 rounded-full"
-                        width={10}
-                        height={10}
-                      />
-                      <span className="text-xs leading-normal">2,313,873.46</span>
-                    </div>
-                    <div className="flex items-center gap-[5px]">
+                <div className="flex flex-col gap-3">
+                  <div>
+                    <p className="text-white text-sm">Reward</p>
+
+                    <p className="flex gap-2 mt-2 text-sm text-shark-100">
                       <Image
                         src="/static/images/tokens/ETH.png"
                         alt="token"
-                        className="w-2.5 h-2.5 rounded-full"
-                        width={10}
-                        height={10}
+                        className="w-5 h-5 rounded-full"
+                        width={20}
+                        height={20}
                       />
-                      <span className="text-xs leading-normal">225.38</span>
+                      2,313,873.46
+                    </p>
+                    <div>
+                      <p className="mb-1 text-sm text-white">Fees</p>
+                      <div className="flex gap-2">
+                        <p className="flex items-center gap-2 text-sm text-shark-100">
+                          <Image
+                            src="/static/images/tokens/FNX.png"
+                            alt="token"
+                            className="w-5 h-5 rounded-full"
+                            width={20}
+                            height={20}
+                          />
+                          744,621.46
+                        </p>
+                        <p className="flex items-center gap-2 text-sm text-shark-100">
+                          <Image
+                            src="/static/images/tokens/ETH.png"
+                            alt="token"
+                            className="w-5 h-5 rounded-full"
+                            width={20}
+                            height={20}
+                          />
+                          132.49
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-start justify-between border border-shark-300 p-4 rounded-lg">
-                <div className="flex items-center gap-1">
-                  <span className="text-xs font-medium leading-normal">Fees</span>
-                </div>
-                <div className="flex flex-col">
-                  <div className="ml-auto text-xs leading-normal">$1,234.404.11</div>
-                  <div className="flex gap-2.5 text-shark-100">
-                    <div className="flex items-center gap-[5px]">
-                      <Image
-                        src="/static/images/tokens/FNX.png"
-                        alt="token"
-                        className="w-2.5 h-2.5 rounded-full"
-                        width={10}
-                        height={10}
-                      />
-                      <span className="text-xs leading-normal">2,313,873.46</span>
-                    </div>
-                    <div className="flex items-center gap-[5px]">
-                      <Image
-                        src="/static/images/tokens/ETH.png"
-                        alt="token"
-                        className="w-2.5 h-2.5 rounded-full"
-                        width={10}
-                        height={10}
-                      />
-                      <span className="text-xs leading-normal">225.38</span>
+                <div className="w-full">
+                  <div>
+                    <InputRange
+                      step={1}
+                      max={100}
+                      min={0}
+                      height={7}
+                      value={changeValue}
+                      onChange={setChangeValue}
+                      thumbSize={18}
+                      disabled={!activeVote}
+                    />
+                    <div className="flex justify-between text-sm text-shark-100">
+                      <p>0%</p>
+                      <p>100%</p>
                     </div>
                   </div>
                 </div>
               </div>
-
-            </div>
-            <div className="px-2.5 pb-[3px] flex gap-2">
-            <Button
-                variant="tertiary"
-                className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[36px] !px-[7px] !w-full"
-              >
-                <span className="icon-info text-lg mr-2.5"></span>
-                <span>Info</span>
-              </Button>
-              <Button
-                variant="tertiary"
-                className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[36px] !px-[7px] !w-full"
-              >
-                <span className="icon-circles text-lg mr-2.5"></span>
-                <span>Deposit</span>
-              </Button>
             </div>
           </>
         )}
+
       </div>
     </>
   )
 }
 
-export default MobileRow
+export default MobileRowVote
