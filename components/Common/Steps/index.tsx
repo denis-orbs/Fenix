@@ -38,8 +38,8 @@ const Steps = ({ steps }: StepsProps) => {
                 ></span>
               </div>
               <div className="">
-                <h5 className="text-sm text-shark-100">{step.title}</h5>
-                <p className="text-sm text-white line-clamp-2">{step.description}</p>
+                <h5 className={`text-xs text-shark-100`}>{step.title}</h5>
+                <p className="text-xs text-white line-clamp-2">{step.description}</p>
               </div>
             </div>
           ))}

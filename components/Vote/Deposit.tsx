@@ -31,7 +31,7 @@ const Deposit = () => {
           </p>
           <div className="text-sm flex gap-2 text-shark-100 mb-4 xl:mb-0">
             <p className="flex gap-2">
-              <span className="icon-trophy"></span>
+              <span className="icon-link"></span>
               View Tokens
             </p>
             <p className="flex gap-2">
