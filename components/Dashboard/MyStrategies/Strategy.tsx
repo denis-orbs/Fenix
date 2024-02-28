@@ -9,7 +9,7 @@ const Strategy = () => {
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
-      <div className="min-h-[400px] relative z-10">
+      <div className="relative z-10">
         <div className="relative text-white flex flex-col">
           <div className="flex justify-between items-center box-strategies">
             <div className="flex gap-4 items-center">
@@ -86,7 +86,14 @@ const Strategy = () => {
               <p className="text-xs text-white">$0.00</p>
             </div>
           </div>
-          <div className="h-[100px]">content</div>
+          <div className="h-auto">
+            <div className="flex items-center w-full justify-between px-10 py-3 border-t mt-24 border-shark-300">
+              <p className="text-white text-xs">0.00</p>
+              <p className="text-white text-xs">1,328.19</p>
+              <p className="text-white text-xs">3,672.06</p>
+              <p className="text-white text-xs">6,015.93</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
