@@ -47,7 +47,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                   <TableCell className="w-[20%]">
                     <div className="flex items-center gap-2">
                       <Image
-                        src={`/static/images/tokens/${item.icon}.png`}
+                        src={`/static/images/tokens/${item.icon}.svg`}
                         alt="token"
                         className="rounded-full w-7 h-7"
                         width={20}
@@ -60,7 +60,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                     <div className="flex items-center justify-end w-full px-3">
                       <div className="flex gap-2">
                         <Image
-                          src={`/static/images/tokens/${item.migrated.icon}.png`}
+                          src={`/static/images/tokens/${item.migrated.icon}.svg`}
                           alt="token"
                           className="w-5 h-5 rounded-full"
                           width={20}
@@ -74,7 +74,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                     <div className="flex items-center justify-end w-full px-3">
                       <div className="flex gap-2">
                         <Image
-                          src={`/static/images/tokens/${item.migrated.icon}.png`}
+                          src={`/static/images/tokens/${item.migrated.icon}.svg`}
                           alt="token"
                           className="w-5 h-5 rounded-full"
                           width={20}
@@ -88,7 +88,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                     <div className="flex items-center justify-end w-full px-3">
                       <div className="flex gap-2">
                         <Image
-                          src={`/static/images/tokens/${item.claimable.icon}.png`}
+                          src={`/static/images/tokens/${item.claimable.icon}.svg`}
                           alt="token"
                           className="w-5 h-5 rounded-full"
                           width={20}
@@ -135,7 +135,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                   <TableCell className="w-[50%]">
                     <div className="flex items-center gap-2">
                       <Image
-                        src={`/static/images/tokens/${item.icon}.png`}
+                        src={`/static/images/tokens/${item.icon}.svg`}
                         alt="token"
                         className="rounded-full w-7 h-7"
                         width={20}
@@ -148,7 +148,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                     <div className="flex items-center justify-end w-full px-3">
                       <div className="flex gap-2">
                         <Image
-                          src={`/static/images/tokens/${item.migrated.icon}.png`}
+                          src={`/static/images/tokens/${item.migrated.icon}.svg`}
                           alt="token"
                           className="w-5 h-5 rounded-full"
                           width={20}

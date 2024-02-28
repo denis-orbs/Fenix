@@ -10,12 +10,12 @@ import PaginationMobile from '@/components/UI/Pagination/PaginationMobile'
 
 interface OverviewMobileProps {
   migrateStatus: string | undefined
-  setMigrateStatus: (props: string | undefined) => void
+  setMigrateStatus: (status: string | undefined) => void
 }
 
 const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps) => {
   const [activeAccordion, setActiveAccordion] = useState<boolean>(false)
- 
+
   const handlerActive = () => (activeAccordion ? setActiveAccordion(false) : setActiveAccordion(true))
 
   return (
@@ -47,7 +47,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center w-1/2 gap-2 px-3 py-[18px] rounded-lg bg-shark-400 bg-opacity-40">
                           <Image
-                            src={`/static/images/tokens/${item.icon}.png`}
+                            src={`/static/images/tokens/${item.icon}.svg`}
                             alt="token"
                             className="w-5 h-5 rounded-full"
                             width={40}
@@ -60,7 +60,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
                             <p className="mb-1 text-xs text-shark-100 line-clamp-1">Mi Migrated Amount</p>
                             <div className="flex items-center gap-2">
                               <Image
-                                src={`/static/images/tokens/${item.migrated.icon}.png`}
+                                src={`/static/images/tokens/${item.migrated.icon}.svg`}
                                 alt="token"
                                 className="w-4 h-4 rounded-full"
                                 width={20}
@@ -85,7 +85,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
                               <p className="text-xs text-shark-100 line-clamp-1">Mi Migrated Amount</p>
                               <div className="flex gap-2">
                                 <Image
-                                  src={`/static/images/tokens/${item.migrated.icon}.png`}
+                                  src={`/static/images/tokens/${item.migrated.icon}.svg`}
                                   alt="token"
                                   className="w-5 h-5 rounded-full"
                                   width={20}
@@ -98,7 +98,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
                               <p className="text-xs text-shark-100 line-clamp-1">Mi Migrated Amount</p>
                               <div className="flex gap-2">
                                 <Image
-                                  src={`/static/images/tokens/${item.migrated.icon}.png`}
+                                  src={`/static/images/tokens/${item.migrated.icon}.svg`}
                                   alt="token"
                                   className="w-5 h-5 rounded-full"
                                   width={20}
@@ -124,7 +124,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
           </div>
         </>
       )}
-      
+
       {migrateStatus === 'wrong' && (
         <>
           <div className="w-full mb-10">
@@ -136,7 +136,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
                   <TableCell className="w-[30%] ">
                     <div className="flex items-center gap-2">
                       <Image
-                        src={`/static/images/tokens/${item.icon}.png`}
+                        src={`/static/images/tokens/${item.icon}.svg`}
                         alt="token"
                         className="rounded-full w-[40px] h-[40px]"
                         width={40}
@@ -151,7 +151,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
                         <p className="text-[12px] text-shark-100 ms-2">Mi Migrated Amount</p>
                         <div className="flex gap-2 ms-2">
                           <Image
-                            src={`/static/images/tokens/${item.migrated.icon}.png`}
+                            src={`/static/images/tokens/${item.migrated.icon}.svg`}
                             alt="token"
                             className="w-5 h-5 rounded-full"
                             width={20}

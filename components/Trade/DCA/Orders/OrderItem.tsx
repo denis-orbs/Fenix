@@ -14,8 +14,8 @@ const OrderItem = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="flex items-center">
-            <Image src="/static/images/tokens/USDC.png" width={20} height={20} alt="token" className="w-6 h-6" />
-            <Image src="/static/images/tokens/FNX.png" width={20} height={20} alt="token" className="w-6 h-6 -ml-2" />
+            <Image src="/static/images/tokens/USDC.svg" width={20} height={20} alt="token" className="w-6 h-6" />
+            <Image src="/static/images/tokens/FNX.svg" width={20} height={20} alt="token" className="w-6 h-6 -ml-2" />
           </div>
           <div className="">
             <h3 className="text-white text-base">USDC/FNX</h3>

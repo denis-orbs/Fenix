@@ -54,14 +54,14 @@ const ReadMoreModal = () => {
                     <div>correlated - for example stable coins</div>
                     <div className="flex items-center gap-[11.92px]">
                       <Image
-                        src="/static/images/tokens/ETH.png"
+                        src="/static/images/tokens/ETH.svg"
                         className="w-6 h-6"
                         alt="logo"
                         width={23.843}
                         height={23.843}
                       />
                       <Image
-                        src="/static/images/tokens/DAI.png"
+                        src="/static/images/tokens/BTC.svg"
                         className="w-6 h-6"
                         alt="logo"
                         width={23.843}
@@ -74,14 +74,14 @@ const ReadMoreModal = () => {
                     <div>uncorrelated - for example</div>
                     <div className="flex items-center gap-[11.92px]">
                       <Image
-                        src="/static/images/tokens/ETH.png"
+                        src="/static/images/tokens/ETH.svg"
                         className="w-6 h-6"
                         alt="logo"
                         width={23.843}
                         height={23.843}
                       />
                       <Image
-                        src="/static/images/tokens/DAI.png"
+                        src="/static/images/tokens/BTC.svg"
                         className="w-6 h-6"
                         alt="logo"
                         width={23.843}

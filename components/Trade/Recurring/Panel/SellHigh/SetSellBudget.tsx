@@ -34,7 +34,7 @@ const SetSellBudget = ({ token, setToken, setValue, value }: SetSellBudgetProps)
         <div className="relative w-full xl:w-2/6">
           <div
             onClick={handlerSelectToken}
-            className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]"
+            className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px] cursor-pointer"
           >
             <div className="flex items-center gap-2">
               <Image

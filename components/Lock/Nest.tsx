@@ -21,8 +21,7 @@ const Nest = ({ activePagination = true }: NestProps) => {
 
   return (
     <div className="relative hidden xl:block z-10">
-      <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row"></div>
-      <div className="w-full mb-10">
+      <div className="w-full mb-5">
         <TableHead
           items={[
             { text: 'Your Nests', className: 'text-left w-[50%] ', sortable: true },
@@ -74,7 +73,7 @@ const Nest = ({ activePagination = true }: NestProps) => {
                   <TableCell className="w-[10%] flex  ">
                     <div className="flex items-center gap-2 me-4">
                       <Image
-                        src={`/static/images/tokens/FNX.png`}
+                        src={`/static/images/tokens/FNX.svg`}
                         alt="token"
                         className="rounded-full w-[20px] h-[20px]"
                         width={20}
@@ -87,7 +86,7 @@ const Nest = ({ activePagination = true }: NestProps) => {
                   <TableCell className="w-[10%] flex justify-center">
                     <div className="flex items-center gap-2">
                       <Image
-                        src={`/static/images/tokens/FNX.png`}
+                        src={`/static/images/tokens/FNX.svg`}
                         alt="token"
                         className="rounded-full w-[20px] h-[20px]"
                         width={20}

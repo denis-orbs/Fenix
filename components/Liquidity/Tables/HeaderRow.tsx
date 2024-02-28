@@ -29,12 +29,12 @@ const HeaderRow = ({
   titleHeader2 = '',
   activeRange = false,
 }: HeaderRowProps) => {
-  const RANGE = activeRange ? 
+  const RANGE = activeRange ?
     { text: 'Range', className: 'w-[10%] text-center', sortable: true }
    :  { text: '', className: 'w-[0%]', sortable: true }
   return (
     <div className="relative">
-      <div className="w-full mb-2.5 xl:mb-10">
+      <div className="w-full mb-2.5 xl:mb-5">
         <div className="hidden 2xl:block">
           <TableHead
             items={[

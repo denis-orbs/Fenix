@@ -19,7 +19,7 @@ const MyLocks = ({ activePagination = true }: MyLocksProps) => {
   }, [])
 
   return (
-    <div className="relative hidden xl:block z-10">
+    <div className="relative hidden xl:block z-10 xl:mb-5">
       <div className="w-full">
         <TableHead
           items={[
@@ -70,7 +70,7 @@ const MyLocks = ({ activePagination = true }: MyLocksProps) => {
                     <TableCell className="w-[10%]">
                       <div className="flex items-center gap-2">
                         <Image
-                          src={`/static/images/tokens/FNX.png`}
+                          src={`/static/images/tokens/FNX.svg`}
                           alt="token"
                           className="w-5 h-5 rounded-full"
                           width={20}
@@ -83,7 +83,7 @@ const MyLocks = ({ activePagination = true }: MyLocksProps) => {
                     <TableCell className="w-[10%]">
                       <div className="flex items-center gap-2">
                         <Image
-                          src={`/static/images/tokens/FNX.png`}
+                          src={`/static/images/tokens/FNX.svg`}
                           alt="token"
                           className="w-5 h-5 rounded-full"
                           width={20}
