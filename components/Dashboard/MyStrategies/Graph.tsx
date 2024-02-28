@@ -10,7 +10,7 @@ const Graph = () => {
             <span key={index} className="h-5 w-5 border-l border-shark-300 block"></span>
           ))}
         </div>
-        <div className="absolute bottom-0 left-[50%] w-[200px] h-1/2 bg-gradient-to-b from-shark-400 to-green-500 border-x-2 border-green-500 opacity-30"></div>
+        <div className="absolute bottom-0 left-[50%] w-[20%] h-1/2 bg-gradient-to-b from-shark-400 to-green-500 border-x-2 border-green-500 opacity-30"></div>
       </div>
       <div className="flex items-center w-full justify-between px-10 py-3 border-t border-shark-400">
         <p className="text-white text-xs">0.00</p>

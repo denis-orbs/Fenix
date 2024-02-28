@@ -23,40 +23,11 @@ const Welcome = () => {
           />
           <p className="mb-4 text-shark-100">Welcome to fenix</p>
           <h3 className="mb-4 text-2xl text-white md:text-4xl">
-            The core trading and{' '}
-            <span className="inline-block text-transparent bg-gradient-to-r from-festival-500 to-outrageous-orange-500 bg-clip-text">
-              liquidity marketplace
-            </span>{' '}
-            on{' '}
+            The Unified Trading and {' '}
+            <span className="text-2xl inline-block text-transparent bg-gradient-to-r from-festival-500 to-outrageous-orange-500 bg-clip-text">
+              liquidity marketplace for
+            </span>
           </h3>
-          <p className="mb-4 text-sm text-shark-100">
-            Fenix is a community-owned decentralized exchange (DEX) and liquidity provider constructed on the Arbitrum
-            Layer 2 (L2) network, aimed at fostering DeFi growth.
-          </p>
-        </div>
-        <div className="flex flex-col items-center gap-5 mb-4 md:flex-row">
-          <div className="relative flex items-center w-1/2 gap-4 p-4 rounded-lg bg-shark-400 bg-opacity-80">
-            <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-500">
-              <span className="text-sm text-white icon-wallet"></span>
-            </div>
-            <div className="relative">
-              <h6 className="text-xs text-white line-clamp-1">You`ll need an Ethereum Wallet to sign-in.</h6>
-              <p className="text-xs text-shark-100">
-                <span className="mr-2 text-base icon-link"></span>
-                Learn More
-              </p>
-            </div>
-          </div>
-          <div className="relative flex items-center w-1/2 gap-4 p-4 rounded-lg bg-shark-400 bg-opacity-80">
-            <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-500">
-              <span className="text-xl text-white icon-document"></span>
-            </div>
-            <div className="relative">
-              <p className="text-xs text-white line-clamp-1">
-                Once connected, you will have to sign a message to confirm that you agree to our Legal Disclaimer.
-              </p>
-            </div>
-          </div>
         </div>
         <div className="items-center hidden gap-2 md:flex">
           <p className="text-xs text-shark-100">2023 © Fenix Finance</p>

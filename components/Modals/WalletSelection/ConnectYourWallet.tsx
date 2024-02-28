@@ -11,7 +11,7 @@ const ConnectYourWallet = ({ setIsConnecting }: ConnectYourWalletProps) => {
   const handlerSelectWallet = () => setIsConnecting(true)
 
   return (
-    <div className="w-full p-10 xl:w-[40%] bg-shark-400 bg-opacity-40 relative rounded-2xl">
+    <div className="w-full px-6 py-8 xl:w-[40%] bg-shark-400 bg-opacity-40 relative rounded-2xl">
       <h4 className="mb-4 text-base text-white md:mb-8 md:text-xl">Connect your Wallet</h4>
       <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4 mb-4 max-h-[400px] md:max-h-auto overflow-y-auto md:overscroll-none">
         {WALLETS.map((wallet, index) => (
@@ -20,11 +20,10 @@ const ConnectYourWallet = ({ setIsConnecting }: ConnectYourWalletProps) => {
             onClick={handlerSelectWallet}
             className="relative flex items-center justify-between w-full p-3 border cursor-pointer md:p-4 bg-shark-400 border-shark-400 bg-opacity-40 rounded-xl hover:bg-opacity-60"
           >
-            <div className="flex items-center gap-4">
-              <Image src={wallet.image} alt="wallet" className="w-5 h-5 md:w-10 md:h-10" width={42} height={42} />
-              <h5 className="text-sm text-white">{wallet.name}</h5>
+            <div className="flex items-center gap-2">
+              <Image src={wallet.image} alt="wallet" className="w-5 h-5 md:w-8 md:h-8" width={42} height={42} />
+              <h5 className="text-xs text-white">{wallet.name}</h5>
             </div>
-            {index < 1 && <span className="px-2 text-[10px] rounded-lg button-primary">Recent</span>}
           </div>
         ))}
       </div>
