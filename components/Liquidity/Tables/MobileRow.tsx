@@ -28,14 +28,14 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
         <div className="flex gap-[9px] items-center">
           <div className="relative flex items-center">
             <Image
-              src="/static/images/tokens/FNX.png"
+              src="/static/images/tokens/FNX.svg"
               alt="token"
               className="w-8 h-8 rounded-full"
               width={32}
               height={32}
             />
             <Image
-              src="/static/images/tokens/ETH.png"
+              src="/static/images/tokens/ETH.svg"
               alt="token"
               className="w-8 h-8 -ml-5 rounded-full"
               width={32}
@@ -111,13 +111,13 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                       </div>
                     </div>
                   </div>
-               
+
               </div>
             )}
             <div className="flex flex-col gap-2.5  mb-2.5">
               <div
                 className="flex items-start justify-between border border-shark-300 p-4 rounded-lg
-              
+
               "
               >
                 <div className="flex items-center gap-1">
@@ -142,7 +142,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/FNX.png"
+                        src="/static/images/tokens/FNX.svg"
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
@@ -152,7 +152,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                     </div>
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/ETH.png"
+                        src="/static/images/tokens/ETH.svg"
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
@@ -175,7 +175,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/FNX.png"
+                        src="/static/images/tokens/FNX.svg"
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
@@ -185,7 +185,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                     </div>
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/ETH.png"
+                        src="/static/images/tokens/ETH.svg"
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
@@ -208,7 +208,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/FNX.png"
+                        src="/static/images/tokens/FNX.svg"
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
@@ -218,7 +218,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                     </div>
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/ETH.png"
+                        src="/static/images/tokens/ETH.svg"
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}

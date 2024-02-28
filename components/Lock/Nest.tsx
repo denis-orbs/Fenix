@@ -74,7 +74,7 @@ const Nest = ({ activePagination = true }: NestProps) => {
                   <TableCell className="w-[10%] flex  ">
                     <div className="flex items-center gap-2 me-4">
                       <Image
-                        src={`/static/images/tokens/FNX.png`}
+                        src={`/static/images/tokens/FNX.svg`}
                         alt="token"
                         className="rounded-full w-[20px] h-[20px]"
                         width={20}
@@ -87,7 +87,7 @@ const Nest = ({ activePagination = true }: NestProps) => {
                   <TableCell className="w-[10%] flex justify-center">
                     <div className="flex items-center gap-2">
                       <Image
-                        src={`/static/images/tokens/FNX.png`}
+                        src={`/static/images/tokens/FNX.svg`}
                         alt="token"
                         className="rounded-full w-[20px] h-[20px]"
                         width={20}

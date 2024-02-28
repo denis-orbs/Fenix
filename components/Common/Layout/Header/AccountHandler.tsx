@@ -18,7 +18,7 @@ const AccountHandler = () => {
     <div className="flex items-center gap-[15px] w-full xl:w-auto">
       {isConnected && (
         <div className="items-center flex-shrink-0 hidden gap-2 xl:flex">
-          <Image src="/static/images/tokens/ETH.png" className="w-6 h-6" alt="logo" width={24} height={24} />
+          <Image src="/static/images/tokens/ETH.svg" className="w-6 h-6" alt="logo" width={24} height={24} />
           <p className="text-xs text-white">1.987 ETH</p>
         </div>
       )}

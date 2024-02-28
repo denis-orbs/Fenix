@@ -10,14 +10,14 @@ const VotePools = () => {
       <div className="flex items-center gap-2 ">
         <div className="flex items-center w-full">
           <Image
-            src="/static/images/tokens/FNX.png"
+            src="/static/images/tokens/FNX.svg"
             alt="token"
             className="rounded-full w-7 h-7"
             width={20}
             height={20}
           />
           <Image
-            src="/static/images/tokens/ETH.png"
+            src="/static/images/tokens/ETH.svg"
             alt="token"
             className="-ml-4 rounded-full w-7 h-7"
             width={20}
