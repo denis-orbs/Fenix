@@ -22,7 +22,7 @@ const HeaderRowVote = ({ activeVote, filterData, loading, activePagination = tru
 
   return (
     <div className="relative z-10">
-      <div className="w-full mb-2.5 xl:mb-10">
+      <div className="w-full mb-2.5 xl:mb-5">
         <div className="max-xl:hidden">
           <TableHead
             items={[
