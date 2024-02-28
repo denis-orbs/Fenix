@@ -1,11 +1,9 @@
-
 'use client'
 
 import { Button } from '@/components/UI'
 import StrategiesItem from '@/components/Dashboard/StrategiesDCA/StrategiesItem'
 
 const StrategiesDCA = () => {
-
   return (
     <div className="dashboard-box flex-col xl:flex-row">
       <div className="relative w-full z-10">
