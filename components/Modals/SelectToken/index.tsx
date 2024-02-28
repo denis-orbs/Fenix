@@ -46,7 +46,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
                 className="flex items-center w-full gap-2 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-1 xl:w-auto"
               >
                 <Image
-                  src={`/static/images/tokens/${token.symbol}.png`}
+                  src={`/static/images/tokens/${token.symbol}.svg`}
                   alt="token"
                   width={30}
                   height={30}
@@ -66,7 +66,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
               >
                 <div className="flex items-center gap-2">
                   <Image
-                    src={`/static/images/tokens/${token.symbol}.png`}
+                    src={`/static/images/tokens/${token.symbol}.svg`}
                     alt="token"
                     width={30}
                     height={30}

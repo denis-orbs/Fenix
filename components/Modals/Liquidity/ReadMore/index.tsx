@@ -61,7 +61,7 @@ const ReadMoreModal = () => {
                         height={23.843}
                       />
                       <Image
-                        src="/static/images/tokens/DAI.png"
+                        src="/static/images/tokens/BTC.svg"
                         className="w-6 h-6"
                         alt="logo"
                         width={23.843}
@@ -81,7 +81,7 @@ const ReadMoreModal = () => {
                         height={23.843}
                       />
                       <Image
-                        src="/static/images/tokens/DAI.png"
+                        src="/static/images/tokens/BTC.svg"
                         className="w-6 h-6"
                         alt="logo"
                         width={23.843}
