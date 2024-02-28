@@ -691,7 +691,8 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#131517];
+  after:border-[transparent_transparent_#131517]
+  after:pointer-events-none
 }
 /* Background for dashboard box */
 .dashboard-box {
@@ -738,6 +739,7 @@
   after:left-0
   after:hidden
   after:2xl:block
+  after:pointer-events-none
 }
 
 
