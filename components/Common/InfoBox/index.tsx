@@ -3,6 +3,7 @@ interface Items {
   label: string
   amount: string | number
   icon: string
+  textColor?: string
 }
 
 interface InfoBoxProps {
@@ -17,7 +18,7 @@ interface InfoBoxProps {
 const InfoBox = ({ data, setShowTooltip, textColor, bgBox = '', hasTooltip = false }: InfoBoxProps) => {
   const handleShowTooltip = () => setShowTooltip && setShowTooltip(true)
   const handleHiddenTooltip = () => setShowTooltip && setShowTooltip(false)
-
+  
   return (
     <div className="relative">
       <div
@@ -34,7 +35,7 @@ const InfoBox = ({ data, setShowTooltip, textColor, bgBox = '', hasTooltip = fal
           <h5 className="text-xs text-shark-100">{data.label}</h5>
           <div className="flex items-center gap-1">
             <div className="text-white flex gap-2">
-              <p className={`text-xs lg:text-[14px] ${textColor}`}>{data.amount} </p>
+              <p className={`text-xs lg:text-sm ${data.textColor}`}>{data.amount} </p>
             </div>
             {hasTooltip && (
               <span

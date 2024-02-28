@@ -1,7 +1,5 @@
 'use client'
-
 import { useState } from 'react'
-
 import Steps from '../Common/Steps'
 import LockTokens from './LockTokens'
 import MyLocks from './MyLocks'
@@ -12,6 +10,7 @@ import Search from '../Common/Search'
 import CreateLock from './CreateLock/CreateLock'
 import MylocksMobile from './Mobile/MylocksMobile'
 import NestMobile from './Mobile/NestMobile'
+
 const Lock = () => {
   const [changeState, setChangeState] = useState<boolean>(false)
   const [currentTab, setCurrentTab] = useState("Everything")
