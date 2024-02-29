@@ -2,11 +2,12 @@ import Image from 'next/image'
 
 const Articles = () => {
   return (
-    <div className="relative pb-[200px] ">
+    <div className="relative pb-[200px]">
       <div className="container relative z-10 flex flex-col items-center justify-center gap-5 xl:gap-10 xl:flex-row">
         <div className="flex max-lg:flex-col  xl:flex-col gap-4 xl:gap-8 max-xl:justify-between max-xl:w-full">
-          <div className="bg-shark-400 bg-opacity-20 flex-wrap xl:flex-nowrap rounded-lg
-           p-5 border border-shark-400 flex items-center gap-5">
+          <div
+            className="flex-wrap xl:flex-nowrap p-5 flex items-center gap-5 xl:bg-rectangle bg-cover h-[250px]"
+          >
             <Image
               src="/static/images/landing/articles/fenix.svg"
               alt="img"
@@ -21,7 +22,7 @@ const Articles = () => {
               height={160}
               className="w-full sm:hidden rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
             />
-            <div className="flex flex-col ">
+            <div className="flex flex-col">
               <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 veFNX Voters
               </h1>
