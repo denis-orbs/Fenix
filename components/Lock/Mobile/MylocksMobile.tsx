@@ -11,9 +11,11 @@ interface MylocksMobileProps {
 
 const MylocksMobile = ({ activePagination = true }: MylocksMobileProps) => {
   const [loading, setLoading] = useState(true)
-  const [accordion, setAccordion] = useState(false)
+  const [accordion, setAccordion] = useState<{ [key: number]: boolean }>({})
 
-  const handlerAccordion = () => (accordion ? setAccordion(false) : setAccordion(true))
+  const handlerAccordion = (index: number) => {
+    setAccordion((prevState) => ({ ...prevState, [index]: !prevState[index] }))
+  }
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
@@ -55,12 +57,12 @@ const MylocksMobile = ({ activePagination = true }: MylocksMobileProps) => {
                       </div>
                       <div>
                         <span
-                          onClick={handlerAccordion}
-                          className={`cursor-pointer icon-chevron block  ${accordion ? 'rotate-180' : ''}`}
+                          onClick={()=> handlerAccordion(index)}
+                          className={`cursor-pointer icon-chevron block  ${accordion[index] ? 'rotate-180' : ''}`}
                         ></span>
                       </div>
                     </div>
-                    {accordion && (
+                    {accordion[index] && (
                       <>
                         <div className="flex flex-col gap-3 p-2 mt-5 text-xs">
                           <div className="flex items-center justify-between">

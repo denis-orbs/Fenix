@@ -64,7 +64,6 @@ const Lock = () => {
           <div className="hidden w-full mb-20 lg:flex lg:flex-col">
             <MyLocks />
             <h5 className=" text-2xl text-white ms-2">Nest</h5>
-
             <Nest />
           </div>
         </section>
