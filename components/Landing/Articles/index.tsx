@@ -1,97 +1,46 @@
+/* eslint-disable max-len */
 import Image from 'next/image'
-
+import ARTICLES from './data'
 const Articles = () => {
   return (
-    <div className="relative pb-[200px]">
-      <div className="container relative z-10 flex flex-col items-center justify-center gap-5 xl:gap-10 xl:flex-row">
+    <div className="relative pb-[200px] ">
+      <div className="container relative  z-10 flex flex-col items-center justify-center gap-5 xl:gap-10 2xl:flex-row">
         <div className="flex max-lg:flex-col  xl:flex-col gap-4 xl:gap-8 max-xl:justify-between max-xl:w-full">
-          <div
-            className="flex-wrap xl:flex-nowrap p-5 flex items-center gap-5 xl:bg-rectangle bg-cover h-[250px]"
-          >
-            <Image
-              src="/static/images/landing/articles/fenix.svg"
-              alt="img"
-              width={190}
-              height={160}
-              className="w-full xl:w-[190px] hidden sm:block xl:h-[160px] rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
-            />
-            <Image
-              src="/static/images/landing/articles/fenix-mobile.png"
-              alt="img"
-              width={190}
-              height={160}
-              className="w-full sm:hidden rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
-            />
-            <div className="flex flex-col">
-              <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                veFNX Voters
-              </h1>
-              <p className="text-sm text-white xl:line-clamp-none ">
-                veFNX voters are an essential component to the Fenix economy. You can obtain veFNX by locking FNX that
-                is purchased from the open market or from emissions received as a liquidity provider to receive 100% of
-                protocol revenue.
-              </p>
-            </div>
-          </div>
-          <div className="bg-shark-400 bg-opacity-20 flex-wrap xl:flex-nowrap rounded-lg p-5 border border-shark-400 flex items-center gap-5">
-            <Image
-              src="/static/images/landing/articles/blast.svg"
-              alt="img"
-              width={190}
-              height={160}
-              className="w-full xl:w-[190px] hidden sm:block xl:h-[160px] rounded-lg  max-h-[159px] max-lg:mx-auto object-contain"
-            />
-            <Image
-              src="/static/images/landing/articles/blast-mobile.png"
-              alt="img"
-              width={190}
-              height={160}
-              className="w-full sm:hidden rounded-lg  max-h-[159px] max-lg:mx-auto object-contain"
-            />
-            <div className="flex flex-col">
-              <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                Traders
-              </h1>
-              <p className="text-sm text-white xl:line-clamp-none">
-                Fenix provides traders with the best spot prices on Blast and the most comprehensive toolset for that
-                includes limit orders, DCA and can operate as on-chain market makers by being able to run range and
-                recurring orders to buy and sell tokens over predefined ranges without impermanent loss.
-              </p>
-            </div>
-          </div>
-          <div className="bg-shark-400 bg-opacity-20 flex-wrap xl:flex-nowrap rounded-lg p-5 border border-shark-400 flex items-center gap-5">
-            <Image
-              src="/static/images/landing/articles/protocols.svg"
-              alt="img"
-              width={190}
-              height={160}
-              className="w-full xl:w-[190px] hidden sm:block xl:h-[160px] rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
-            />
-            <Image
-              src="/static/images/landing/articles/protocols-mobile.png"
-              alt="img"
-              width={190}
-              height={160}
-              className="w-full sm:hidden rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
-            />
-            <div className="flex flex-col">
-              <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                Protocols
-              </h1>
-              <p className="text-sm text-white line-clamp-4 xl:line-clamp-none">
-                Deposit bribe incentives onto Fenix to attract emissions to your pools at the lowest possible cost.
-                Through a complete suite of AMM pools, customisable fees and UNIV4 plugins and hooks, protocols will be
-                able to deploy their liquidity strategies with maximum functionality to ensure the best trading
-                conditions.
-              </p>
-            </div>
-          </div>
+          {ARTICLES.map((article, index) => {
+            return (
+              <div
+                key={index}
+                className="bg-shark-400 w-full bg-opacity-40 xl:bg-rectangle xl:bg-contain xl:bg-no-repeat xl:w-[1080px] xl:h-[250px] transition-shadow brightness-50 hover:brightness-100  hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] flex-wrap xl:flex-nowrap rounded-lg p-8 border border-shark-400 flex items-center gap-8"
+              >
+                <Image
+                  src={article.imageDesktop}
+                  alt="img"
+                  width={190}
+                  height={160}
+                  className="w-full xl:w-[190px] hidden sm:block xl:h-[160px] rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
+                />
+                <Image
+                  src={article.imageMobile}
+                  alt="img"
+                  width={190}
+                  height={160}
+                  className="w-full sm:hidden rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
+                />
+                <div className="flex flex-col ">
+                  <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
+                    {article.title}
+                  </h1>
+                  <p className="text-sm text-white xl:line-clamp-none ">{article.info}</p>
+                </div>
+              </div>
+            )
+          })}
         </div>
-        <div className="bg-shark-400 bg-opacity-20 rounded-lg p-8 border relative border-shark-400 flex flex-col gap-5">
-          <div className="absolute  border-gray-400 top-0 border w-1/2 right-0"></div>
-          <div className="absolute  border-gray-400 border h-1/2 right-0 top-0 "></div>
-          <div className="absolute border-gray-400 border h-1/2 left-0 bottom-0 "></div>
-          <div className="absolute border-gray-400 bottom-0 border w-1/2 left-0"></div>
+        <div
+          className=" brightness-50 hover:brightness-100 bg-shark-400 bg-opacity-40 rounded-lg p-8 border relative xl:bg-rectangle-big
+          xl:bg-cover h-[780px] xl:w-[678px] xl:bg-no-repeat
+          hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] transition-shadow border-shark-400 flex flex-col gap-8"
+        >
           <h1 className="mb-3 text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
             Liquidity Providers
           </h1>
