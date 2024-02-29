@@ -3,7 +3,7 @@
 import { Button } from '@/components/UI'
 import Locks from '@/components/Lock/MyLocks'
 import MylocksMobile from '@/components/Lock/Mobile/MylocksMobile'
-
+import { LOCKS } from '@/components/Lock/data'
 const MyLocks = () => {
   return (
     <div className="mb-10">
@@ -15,8 +15,8 @@ const MyLocks = () => {
       </div>
       <div className="dashboard-box rounded-lg">
         <div className="relative z-10">
-          <Locks activePagination={false} />
-          <MylocksMobile activePagination={false} />
+          <Locks Locks={LOCKS} activePagination={false} />
+          <MylocksMobile activePagination={false} Locks={LOCKS} />
           <div>
             <Button variant="tertiary" className="!py-3 flex gap-2">
               Ver mas

@@ -2,10 +2,11 @@ import Image from 'next/image'
 
 const Articles = () => {
   return (
-    <div className="relative pb-[200px]">
+    <div className="relative pb-[200px] ">
       <div className="container relative z-10 flex flex-col items-center justify-center gap-5 xl:gap-10 xl:flex-row">
         <div className="flex max-lg:flex-col  xl:flex-col gap-4 xl:gap-8 max-xl:justify-between max-xl:w-full">
-          <div className="article-box">
+          <div className="bg-shark-400 bg-opacity-20 flex-wrap xl:flex-nowrap rounded-lg
+           p-5 border border-shark-400 flex items-center gap-5">
             <Image
               src="/static/images/landing/articles/fenix.svg"
               alt="img"
@@ -20,18 +21,18 @@ const Articles = () => {
               height={160}
               className="w-full sm:hidden rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col ">
               <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 veFNX Voters
               </h1>
-              <p className="text-sm text-white xl:line-clamp-none">
+              <p className="text-sm text-white xl:line-clamp-none ">
                 veFNX voters are an essential component to the Fenix economy. You can obtain veFNX by locking FNX that
                 is purchased from the open market or from emissions received as a liquidity provider to receive 100% of
                 protocol revenue.
               </p>
             </div>
           </div>
-          <div className="article-box">
+          <div className="bg-shark-400 bg-opacity-20 flex-wrap xl:flex-nowrap rounded-lg p-5 border border-shark-400 flex items-center gap-5">
             <Image
               src="/static/images/landing/articles/blast.svg"
               alt="img"
@@ -57,7 +58,7 @@ const Articles = () => {
               </p>
             </div>
           </div>
-          <div className="article-box">
+          <div className="bg-shark-400 bg-opacity-20 flex-wrap xl:flex-nowrap rounded-lg p-5 border border-shark-400 flex items-center gap-5">
             <Image
               src="/static/images/landing/articles/protocols.svg"
               alt="img"
@@ -85,7 +86,11 @@ const Articles = () => {
             </div>
           </div>
         </div>
-        <div className="article-big-box">
+        <div className="bg-shark-400 bg-opacity-20 rounded-lg p-8 border relative border-shark-400 flex flex-col gap-5">
+          <div className="absolute  border-gray-400 top-0 border w-1/2 right-0"></div>
+          <div className="absolute  border-gray-400 border h-1/2 right-0 top-0 "></div>
+          <div className="absolute border-gray-400 border h-1/2 left-0 bottom-0 "></div>
+          <div className="absolute border-gray-400 bottom-0 border w-1/2 left-0"></div>
           <h1 className="mb-3 text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
             Liquidity Providers
           </h1>
