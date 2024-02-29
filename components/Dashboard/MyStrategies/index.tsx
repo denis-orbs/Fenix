@@ -1,14 +1,16 @@
-/* eslint-disable max-len */
 'use client'
-import 'swiper/css'
+
 import { useRef } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Strategy from '@/components/Dashboard/MyStrategies/Strategy'
 import StrategyMobile from './StrategyMobile'
+
 import type { Swiper as SwiperCore } from 'swiper'
+import 'swiper/css'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
+
   const slideToLeft = () => {
     if (swiperRef.current) {
       swiperRef.current.slidePrev()
@@ -45,8 +47,6 @@ const MyStrategies = () => {
       </div>
       <div className="dashboard-box mb-10 block xl:hidden">
         <div className="">
-          <StrategyMobile />
-          <StrategyMobile />
           <StrategyMobile />
         </div>
       </div>
