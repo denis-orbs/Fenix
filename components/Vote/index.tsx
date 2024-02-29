@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use client'
 import { useState, useEffect } from 'react'
 import Deposit from '@/components/Vote/Deposit'

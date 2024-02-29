@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 'use client'
 
 import Image from 'next/image'
@@ -13,15 +12,6 @@ const Landing = () => {
     <main>
       <Info />
       <div className="w-full relative">
-        {/* <div className="w-[163px] h-[163px] bg-black rounded-full border-[2px] border-white absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2" /> */}
-
-        {/* <Image
-          src="/static/images/landing/support/center.png"
-          alt="img"
-          width={163}
-          height={163}
-          className="w-[163px] h-[163px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
-        /> */}
         <div className="z-20 w-full mx-auto [&>div]:max-w-[2360px] [&>div]:text-center overflow-hidden [&>div]:min-w-[660px] [&>div]:relative [&>div]:left-1/2 [&>div]:-translate-x-1/2 pointer-events-none select-none">
           <Lottie animationData={animation} />
         </div>
@@ -42,26 +32,6 @@ const Landing = () => {
             className="md:hidden min-w-[300px] min-h-[111px]"
           />
         </div>
-
-        {/* <div className="mx-auto flex justify-center absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[2244px] mix-blend-color-dodge">
-          <Image
-            src="/static/images/landing/support/sun.png"
-            alt="img"
-            width={2244}
-            height={1864}
-            className="w-[2244px]"
-          />
-        </div>
-
-        <div className="w-[556px] h-[412px] absolute mix-blend-plus-lighter z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <Image src="/static/images/landing/support/sun-wrapper.png" alt="img" width={556} height={412} />
-        </div>
-
-        <div className="z-20 w-full mx-auto [&>div]:max-w-[2360px] [&>div]:mx-auto ">
-          <Lottie animationData={animation} />
-        </div>
-
-        */}
       </div>
 
       <HowItWorks />

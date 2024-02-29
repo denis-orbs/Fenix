@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 import Image from 'next/image'
 
 const Background = () => {

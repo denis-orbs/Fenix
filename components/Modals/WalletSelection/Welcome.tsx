@@ -1,4 +1,3 @@
-/* eslint-disable import/no-default-export */
 import Image from 'next/image'
 
 const Welcome = () => {

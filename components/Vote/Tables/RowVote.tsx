@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 'use client'
 import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/components/UI'
