@@ -46,36 +46,27 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
             <h5 className="text-sm font-semibold leading-normal mb-1.5">FNX/ETH</h5>
             <div className="flex items-center gap-2">
               {'VOLATILE' === row.type && (
-                <Button
-                  variant="tertiary"
-                  className="!py-2 !px-4 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 "
-                >
+                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                   Volatile Pool
-                </Button>
+                </span>
               )}
               {'CONCENTRATED' === row.type && (
-                <Button
-                  variant="tertiary"
-                  className="!py-2 !px-4 hover:!border-none !bg-green-500 !border !border-solid !border-1 !border-green-400 !bg-opacity-40 !text-xs "
+                <span
+                  className="py-1 px-2  text-xs rounded-lg 
+                bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
                 >
                   Concentrated
-                </Button>
+                </span>
               )}
               {'STABLE' === row.type && (
-                <Button
-                  variant="tertiary"
-                  className="!py-2 !px-4 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 "
-                >
+                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                   Stable Pool
-                </Button>
+                </span>
               )}
 
-              <Button
-                variant="tertiary"
-                className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
-              >
+              <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                 0.3%
-              </Button>
+              </span>
               <Button
                 variant="tertiary"
                 className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
@@ -92,26 +83,25 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
         {isOpen && (
           <>
             {activeRange && (
-              <div className='flex justify-between border mt-[21px] items-center   mb-2.5 border-shark-300 p-4 rounded-lg'>
-                <h1>Range</h1>
-                  <div className={`flex items-center justify-center`}>
-                    <div className="flex gap-2 items-center">
-                      <span className="bg-green-600 w-4 h-4 rounded-full border-4 border-black"></span>
-                      <div className="text-xs flex flex-col">
-                        <p className="text-shark-100">Min Price</p>
-                        <span className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                          $0.00
-                        </span>
-                      </div>
-                      <div className="text-xs flex flex-col">
-                        <p className="text-shark-100">Max Price</p>
-                        <span className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                          $0.00
-                        </span>
-                      </div>
+              <div className="flex justify-between border mt-[21px] items-center  mb-2.5 border-shark-300 p-4 rounded-lg">
+                <h1 className='text-xs'>Range</h1>
+                <div className={`flex items-center justify-center`}>
+                  <div className="flex gap-2 items-center">
+                    <span className="bg-green-600 w-4 h-4 rounded-full border-4 border-black"></span>
+                    <div className="text-xs flex flex-col">
+                      <p className="text-shark-100 text-xs">Min Price</p>
+                      <span className="p-2  text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300 text-xs">
+                        $0.00
+                      </span>
+                    </div>
+                    <div className="text-xs flex flex-col">
+                      <p className="text-shark-100 text-xs">Max Price</p>
+                      <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                        $0.00
+                      </span>
                     </div>
                   </div>
-
+                </div>
               </div>
             )}
             <div className="flex flex-col gap-2.5  mb-2.5">
