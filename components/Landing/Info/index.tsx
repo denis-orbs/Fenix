@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-/* eslint-disable react/no-multi-comp */
 'use client'
 
 import Image from 'next/image'

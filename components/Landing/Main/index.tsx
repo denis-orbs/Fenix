@@ -1,5 +1,4 @@
 'use client'
-/* eslint-disable max-len */
 /* eslint-disable react/no-multi-comp */
 import { Button } from '@/components/UI'
 import { Michroma } from 'next/font/google'

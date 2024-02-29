@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 'use client'
 
 import { TableCell, TableRow } from '@/components/UI'

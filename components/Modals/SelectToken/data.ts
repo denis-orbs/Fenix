@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 export const COMMON_TOKENS_LIST = [
   {
     name: 'Blast',

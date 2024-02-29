@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export const EXCHANGE_LIST = [
   {
     label: 'Minimum Exchange Ratio',

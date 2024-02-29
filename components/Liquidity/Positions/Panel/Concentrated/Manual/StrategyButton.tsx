@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { Button } from '@/components/UI'
 
 import BalancedIcon from './Icons/BalancedIcon'

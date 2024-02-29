@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { TableHead, TableBody, TableSkeleton, Pagination, PaginationMobile } from '@/components/UI'
 import { Fragment } from 'react'
 import Row from './Row'
