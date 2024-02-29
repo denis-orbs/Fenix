@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { FenixIcon } from '@/components/UI/Icons/'
 import { NAV_LINKS, SOCIAL_LINKS } from './data'
 
@@ -19,26 +20,27 @@ const Footer = () => {
             </div>
             <div className="grid grid-cols-3 md:w-1/2 md:grid-cols-6">
               {NAV_LINKS.map((link, index) => (
-                <a
+                <Link
                   href={link.href}
                   key={index}
                   className="flex justify-center py-3 text-sm leading-normal text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
                 >
                   {link.title}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
           <div className="flex gap-2.5 items-center">
             {SOCIAL_LINKS.map((link, index) => (
-              <a
+              <Link
                 title={link.title}
                 href={link.href}
                 key={index}
+                target="_blank"
                 className="text-base text-white w-9 h-9 flex items-center justify-center border border-shark-400 rounded-[10px] flex-shrink-0 bg-shark-400 bg-opacity-40 transition-colors hover:border-outrageous-orange-500 hover:bg-button-primary-hover hover:bg-opacity-80"
               >
                 <i className={`icon-${link.iconName}`}></i>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

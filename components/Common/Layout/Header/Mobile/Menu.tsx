@@ -46,12 +46,14 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
 
       <div className="flex items-center gap-3">
         {SOCIAL_LINKS.map((link, index) => (
-          <div
+          <Link
             key={index}
+            target="_blank"
+            href={link.href}
             className="bg-shark-400 border border-shark-300 rounded-lg p-1 w-8 h-8 flex items-center justify-center"
           >
             <span className={`text-white text-xs icon-${link.iconName}`}></span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

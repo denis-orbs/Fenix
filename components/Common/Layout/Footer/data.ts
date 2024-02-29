@@ -1,7 +1,7 @@
 const NAV_LINKS = [
   {
     title: 'Documentation',
-    href: '#',
+    href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
   },
   {
     title: 'Security',
@@ -9,7 +9,7 @@ const NAV_LINKS = [
   },
   {
     title: 'Gitbook',
-    href: '#',
+    href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
   },
   {
     title: 'Brandkit',
@@ -28,28 +28,23 @@ const NAV_LINKS = [
 const SOCIAL_LINKS = [
   {
     title: 'Twitter',
-    href: '#',
+    href: 'https://twitter.com/fenixfinance',
     iconName: 'twitter',
   },
   {
     title: 'Discord',
-    href: '#',
+    href: 'https://discord.com/invite/fenixfi',
     iconName: 'discord',
   },
   {
     title: 'Medium',
-    href: '#',
+    href: 'https://medium.com/@Fenix_Finance',
     iconName: 'medium',
   },
   {
     title: 'Git',
-    href: '#',
+    href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
     iconName: 'git',
-  },
-  {
-    title: 'Telegram',
-    href: '#',
-    iconName: 'telegram',
   },
 ]
 

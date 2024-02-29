@@ -29,28 +29,23 @@ export const MENU_LINKS = [
 export const SOCIAL_LINKS = [
   {
     title: 'Twitter',
-    href: '#',
+    href: 'https://twitter.com/fenixfinance',
     iconName: 'twitter',
   },
   {
     title: 'Discord',
-    href: '#',
+    href: 'https://discord.com/invite/fenixfi',
     iconName: 'discord',
   },
   {
     title: 'Medium',
-    href: '#',
+    href: 'https://medium.com/@Fenix_Finance',
     iconName: 'medium',
   },
   {
     title: 'Git',
-    href: '#',
+    href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
     iconName: 'git',
-  },
-  {
-    title: 'Telegram',
-    href: '#',
-    iconName: 'telegram',
-  },
+  }
 ]
 
