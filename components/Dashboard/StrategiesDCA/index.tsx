@@ -12,7 +12,7 @@ const StrategiesDCA = () => {
           <StrategiesItem key={index} />
         ))}
         <Button variant="tertiary" className="gap-2 !py-3 !text-xs">
-          Ver más
+        Review more
           <span className="icon-link"></span>
         </Button>
       </div>
@@ -21,10 +21,12 @@ const StrategiesDCA = () => {
         {Array.from({ length: 2 }).map((_, index) => (
           <StrategiesItem key={index} />
         ))}
-        <Button variant="tertiary" className="gap-2 !py-3 !text-xs">
-          Ver más
-          <span className="icon-link"></span>
-        </Button>
+        <div className="xl:px-5 mt-2">
+          <Button variant="tertiary" className="!py-3 flex gap-2">
+            Review more
+            <span className="icon-link"></span>
+          </Button>
+        </div>
       </div>
     </div>
   )
