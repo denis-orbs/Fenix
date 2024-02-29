@@ -3,15 +3,12 @@ import Image from 'next/image'
 import ARTICLES from './data'
 const Articles = () => {
   return (
-    <div className="relative pb-[200px] ">
-      <div className="container relative  z-10 flex flex-col items-center justify-center gap-5 xl:gap-10 2xl:flex-row">
+    <div className="relative pb-[200px]">
+      <div className="container relative z-10 flex flex-col items-center justify-center gap-5 xl:gap-10 xl:flex-row">
         <div className="flex max-lg:flex-col  xl:flex-col gap-4 xl:gap-8 max-xl:justify-between max-xl:w-full">
           {ARTICLES.map((article, index) => {
             return (
-              <div
-                key={index}
-                className="bg-shark-400 w-full bg-opacity-40 xl:bg-rectangle xl:bg-contain xl:bg-no-repeat xl:w-[1080px] xl:h-[250px] transition-shadow brightness-50 hover:brightness-100  hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] flex-wrap xl:flex-nowrap rounded-lg p-8 border border-shark-400 flex items-center gap-8"
-              >
+              <div key={index} className="article-box">
                 <Image
                   src={article.imageDesktop}
                   alt="img"
@@ -26,21 +23,19 @@ const Articles = () => {
                   height={160}
                   className="w-full sm:hidden rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
                 />
-                <div className="flex flex-col ">
+                <div className="flex flex-col">
                   <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                     {article.title}
                   </h1>
-                  <p className="text-sm text-white xl:line-clamp-none ">{article.info}</p>
+                  <p className="text-sm text-white xl:line-clamp-none">
+                    {article.info}
+                  </p>
                 </div>
               </div>
             )
           })}
         </div>
-        <div
-          className=" brightness-50 hover:brightness-100 bg-shark-400 bg-opacity-40 rounded-lg p-8 border relative xl:bg-rectangle-big
-          xl:bg-cover h-[780px] xl:w-[678px] xl:bg-no-repeat
-          hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] transition-shadow border-shark-400 flex flex-col gap-8"
-        >
+        <div className="article-big-box">
           <h1 className="mb-3 text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
             Liquidity Providers
           </h1>
