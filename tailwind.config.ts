@@ -47,6 +47,7 @@ const config: Config = {
         'fenix-slider': 'url("/static/images/vote/fenix-slider.svg")',
         'overlay-fixed':'url("/static/images/vote/overlay-fixed.svg")',
         'rectangle':'url("/static/images/landing/Rectangle.svg")',
+        'rectangle-big':'url("/static/images/landing/Rectangle-big.svg")',
         hours: 'url("/static/images/claim/bg-hours.svg")',
       },
       lineHeight: {
