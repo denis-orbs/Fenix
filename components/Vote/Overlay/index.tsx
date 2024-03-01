@@ -3,23 +3,52 @@ import React from 'react'
 
 const Overlay = () => {
   return (
-    <div className='bg-shark-400 rounded-xl bg-opacity-40 lg:bg-none lg:bg-opacity-0 '>
-    <div className=" p-8 flex flex-wrap  lg:flex-nowrap justify-between  items-center lg:w-[626px] lg:bg-overlay-fixed  mx-auto backdrop-blur-sm">
-      <div className='flex flex-col w-full lg:w-auto'>
-        <p className="text-white text-xs ">Voting Power Used</p>
-        <p className="text-lg lg:text-2xl text-white">3878 (100%)</p>
-      </div>
-      <div className='flex justify-end lg:gap-10 gap-2 items-center flex-wrap lg:flex-nowrap'>
-        <div className=''>
-          <span className="py-1 border border-green-400 bg-none bg-green-500 bg-opacity-20 text-white rounded-lg px-5 text-xs">Voting</span>
+    <>
+      <div className="md:flex justify-center hidden">
+        <div className=" p-8 flex  justify-between  items-center w-[626px] bg-overlay-fixed backdrop-blur-md">
+          <div className="flex flex-col w-full lg:w-auto">
+            <p className="text-white text-xs text-nowrap">Voting Power Used</p>
+            <p className="text-xl text-white">3878 (100%)</p>
+          </div>
+          <div className="flex justify-end gap-10 items-center ">
+            <div className="">
+              <span className="py-1 border border-green-400 bg-none bg-green-500 bg-opacity-20 text-white rounded-lg px-5 text-xs">
+                Voting
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <Button className="!h-[38px] !text-xs w-[130px] ">Cast Votes</Button>
+              <Button className="!py-2 !text-xs" variant="secondary">
+                Reset
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-2 lg:gap-4">
-          <Button className='!h-[38px] !text-xs w-[130px] lg:w-auto'>Cast Votes</Button>
-          <Button className='!py-2 !text-xs' variant="secondary">Reset</Button>
+      </div>
+      {/* Desktop */}
+      <div className="flex justify-center md:hidden ">
+        <div className=" p-8 flex  justify-between  items-center w-[363px] h-[118px] bg-overlay-mobile backdrop-blur-md  ">
+          <div className="flex flex-col w-full">
+            <p className="text-white text-[10px] ">Voting Power Used</p>
+            <p className="text-sm text-white">3878 (100%)</p>
+          </div>
+          <div className="flex flex-col items-end gap-2 ">
+            <div className="">
+              <span className="py-1 border border-green-400 bg-none bg-green-500 bg-opacity-20 text-white rounded-lg px-5 text-[10px]">
+                Voting
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Button className="!h-[28px] !text-[10px] w-[100px]">Cast Votes</Button>
+              <Button className="!py-2 !text-[10px] w-[80px]" variant="secondary">
+                Reset
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    </div>
+      {/* Mobile */}
+    </>
   )
 }
 

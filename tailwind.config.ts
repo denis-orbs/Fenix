@@ -48,6 +48,7 @@ const config: Config = {
         'overlay-fixed':'url("/static/images/vote/overlay-fixed.svg")',
         'rectangle':'url("/static/images/landing/Rectangle.svg")',
         'rectangle-big':'url("/static/images/landing/Rectangle-big.svg")',
+        'overlay-mobile':'url("/static/images/vote/overlay-mobile.svg")',
         hours: 'url("/static/images/claim/bg-hours.svg")',
       },
       lineHeight: {

@@ -1,5 +1,4 @@
 'use client'
-
 import StrategiesDCA from '@/components/Dashboard/StrategiesDCA'
 import MyNest from '@/components/Dashboard/MyNest'
 import LiquidityPositions from '@/components/Dashboard/LiquidityPositions'
