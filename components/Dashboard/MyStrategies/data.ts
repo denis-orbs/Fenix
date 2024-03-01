@@ -1,26 +1,26 @@
 const OPTIONS_STRATEGIES = [
   {
-    id: 1,
+    value: "duplicate",
     label: 'Duplicate Strategy',
   },
   {
-    id: 2,
+    value: "notifications",
     label: 'Manage Notifications',
   },
   {
-    id: 3,
+    value: "deposit",
     label: 'Deposit Funds',
   },
   {
-    id: 4,
+    value: "withdraw",
     label: 'Withdraw Funds',
   },
   {
-    id: 5,
+    value: "pause",
     label: 'Pause Strategy',
   },
   {
-    id: 6,
+    value: "delete",
     label: 'Delete Strategy',
   },
 ]

@@ -7,6 +7,7 @@ import StrategyMobile from './StrategyMobile'
 import type { Swiper as SwiperCore } from 'swiper'
 import 'swiper/css'
 import WithdrawFunds from '@/components/Modals/WithdrawFunds'
+import DuplicateStrategy from '@/components/Modals/DuplicateStrategy'
 import PauseStrategy from '@/components/Modals/PauseStrategy'
 import ManageNotifications from '@/components/Modals/ManageNotifications'
 import DeleteStrategy from '@/components/Modals/DeleteStrategy'
@@ -14,19 +15,22 @@ import OPTIONS_STRATEGIES from './data'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
-  const [id, setID] = useState(0)
+  const [modalSelected, setModalSelected] = useState("delete")
   const [openModal, setOpenModal] = useState(false)
-  const MODALS = [
-    {
-      id: 2,
-      modal: <ManageNotifications openModal={openModal} setOpenModal={setOpenModal} />,
-    },
-    {
-      id: 4,
-      modal: <WithdrawFunds openModal={openModal} setOpenModal={setOpenModal} />,
-    },
-  ]
-  const MODALS_FILTER = MODALS.filter((modal) => modal.id === id)
+
+  type ModalList = {
+    [key: string]: JSX.Element;
+  };
+
+  const MODAL_LIST: ModalList = {
+    notifications: <ManageNotifications openModal={openModal} setOpenModal={setOpenModal} />,
+    withdraw: <WithdrawFunds openModal={openModal} setOpenModal={setOpenModal} />,
+    duplicate: <DuplicateStrategy openModal={openModal} setOpenModal={setOpenModal} />,
+    deposit: <DeleteStrategy openModal={openModal} setOpenModal={setOpenModal} />,
+    pause: <PauseStrategy openModal={openModal} setOpenModal={setOpenModal} />,
+    delete: <WithdrawFunds openModal={openModal} setOpenModal={setOpenModal} />,
+  }
+
   const slideToLeft = () => {
     if (swiperRef.current) {
       swiperRef.current.slidePrev()
@@ -51,7 +55,7 @@ const MyStrategies = () => {
           {Array.from({ length: 5 }).map((_, index) => {
             return (
               <SwiperSlide key={index}>
-                <Strategy Options={OPTIONS_STRATEGIES} setID={setID} setOpenModal={setOpenModal} />
+                <Strategy options={OPTIONS_STRATEGIES} setModalSelected={setModalSelected} setOpenModal={setOpenModal} />
               </SwiperSlide>
             )
           })}
@@ -66,10 +70,7 @@ const MyStrategies = () => {
           <StrategyMobile />
         </div>
       </div>
-
-      {MODALS_FILTER.map((modal) => {
-        return <div key={modal.id}>{modal.modal}</div>
-      })}
+      {MODAL_LIST[modalSelected]}
     </div>
   )
 }
