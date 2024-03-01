@@ -31,7 +31,7 @@ const MyStrategies = () => {
     duplicate: <DuplicateStrategy openModal={openModal} setOpenModal={setOpenModal} />,
     deposit: <DeleteStrategy openModal={openModal} setOpenModal={setOpenModal} />,
     pause: <PauseStrategy openModal={openModal} setOpenModal={setOpenModal} />,
-    delete: <WithdrawFunds openModal={openModal} setOpenModal={setOpenModal} />,
+    delete: <DeleteStrategy openModal={openModal} setOpenModal={setOpenModal} />,
   }
 
   const slideToLeft = () => {
@@ -48,7 +48,7 @@ const MyStrategies = () => {
   return (
     <div className="relative">
       <h4 className="text-lg text-white mb-4">My Strategies</h4>
-      <div className="dashboard-box mb-10 hidden xl:block">
+      <div className="dashboard-box mb-10 hidden xl:block pointer-events-none">
         <Swiper
           spaceBetween={50}
           slidesPerView={3}
@@ -57,9 +57,11 @@ const MyStrategies = () => {
         >
           {Array.from({ length: 5 }).map((_, index) => {
             return (
-              <SwiperSlide key={index}>
+              <>
+               <SwiperSlide key={index}>
                 <Strategy options={OPTIONS_STRATEGIES} setModalSelected={setModalSelected} setOpenModal={setOpenModal} />
-              </SwiperSlide>
+               </SwiperSlide>
+              </>
             )
           })}
         </Swiper>
@@ -70,7 +72,7 @@ const MyStrategies = () => {
       </div>
       <div className="dashboard-box mb-10 block xl:hidden">
         <div className="">
-          <StrategyMobile />
+          <StrategyMobile options={OPTIONS_STRATEGIES} setOpenModal={setOpenModal} setModalSelected={setModalSelected} />
         </div>
       </div>
       {MODAL_LIST[modalSelected]}
