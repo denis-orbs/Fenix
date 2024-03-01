@@ -4,6 +4,10 @@ import Image from 'next/image'
 import { Button } from '@/components/UI'
 import OPTIONS_STRATEGIES from './data'
 
+
+
+
+
 const StrategyMobile = () => {
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [isOpen, setIsOpen] = useState(false)

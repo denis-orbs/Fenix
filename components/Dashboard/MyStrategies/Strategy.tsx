@@ -3,10 +3,25 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
 import Graph from './Graph'
-import OPTIONS_STRATEGIES from './data'
 
-const Strategy = () => {
+type Options = {
+  id: number
+  label: string
+}
+
+interface StrategyProps {
+  Options: Options[]
+  setID: (id: number) => void
+  setOpenModal: (modal: boolean) => void
+}
+
+const Strategy = ({ Options, setID, setOpenModal }: StrategyProps) => {
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
+
+  const handlerModal = (id: number) => {
+    setID(id)
+    setOpenModal(true)
+  }
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
       <div className="relative z-10">
@@ -45,12 +60,19 @@ const Strategy = () => {
                 <div
                   className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px]
                         bg-shark-400 absolute top-14 z-30 left--1 translate-x-1"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
                 >
-                  {OPTIONS_STRATEGIES.map((option, index) => {
+                  {Options.map((option, index) => {
                     return (
-                      <Button variant="default" key={index} className="!py-1 !h-[33px]  !text-xs">
-                        {option}
+                      <Button
+                        variant="default"
+                        onClick={() => handlerModal(option.id)}
+                        key={index}
+                        className="!py-1 !h-[33px]  !text-xs"
+                      >
+                        {option.label}
                       </Button>
                     )
                   })}

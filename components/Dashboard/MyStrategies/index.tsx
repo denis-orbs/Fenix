@@ -1,16 +1,32 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Strategy from '@/components/Dashboard/MyStrategies/Strategy'
 import StrategyMobile from './StrategyMobile'
-
 import type { Swiper as SwiperCore } from 'swiper'
 import 'swiper/css'
+import WithdrawFunds from '@/components/Modals/WithdrawFunds'
+import PauseStrategy from '@/components/Modals/PauseStrategy'
+import ManageNotifications from '@/components/Modals/ManageNotifications'
+import DeleteStrategy from '@/components/Modals/DeleteStrategy'
+import OPTIONS_STRATEGIES from './data'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
-
+  const [id, setID] = useState(0)
+  const [openModal, setOpenModal] = useState(false)
+  const MODALS = [
+    {
+      id: 2,
+      modal: <ManageNotifications openModal={openModal} setOpenModal={setOpenModal} />,
+    },
+    {
+      id: 4,
+      modal: <WithdrawFunds openModal={openModal} setOpenModal={setOpenModal} />,
+    },
+  ]
+  const MODALS_FILTER = MODALS.filter((modal) => modal.id === id)
   const slideToLeft = () => {
     if (swiperRef.current) {
       swiperRef.current.slidePrev()
@@ -35,7 +51,7 @@ const MyStrategies = () => {
           {Array.from({ length: 5 }).map((_, index) => {
             return (
               <SwiperSlide key={index}>
-                <Strategy />
+                <Strategy Options={OPTIONS_STRATEGIES} setID={setID} setOpenModal={setOpenModal} />
               </SwiperSlide>
             )
           })}
@@ -50,6 +66,10 @@ const MyStrategies = () => {
           <StrategyMobile />
         </div>
       </div>
+
+      {MODALS_FILTER.map((modal) => {
+        return <div key={modal.id}>{modal.modal}</div>
+      })}
     </div>
   )
 }
