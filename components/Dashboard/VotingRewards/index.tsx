@@ -14,11 +14,11 @@ const VotingRewards = () => {
       <div className="dashboard-box">
         <div className="relative z-10">
           <HeaderRowVote {...PROPS_HEADER_ROW_VOTE} />
-          <div>
-            <Button variant="tertiary" className="!py-3 flex gap-2">
-              Ver mas
-              <span className="icon-link"></span>
-            </Button>
+          <div className='xl:px-5 mt-2'>
+          <Button variant="tertiary" className="!py-3 flex gap-2">
+          Review more
+            <span className="icon-link"></span>
+          </Button>
           </div>
         </div>
       </div>
