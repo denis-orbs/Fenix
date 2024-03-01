@@ -18,12 +18,12 @@ import OPTIONS_STRATEGIES from './data'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
-  const [modalSelected, setModalSelected] = useState("delete")
+  const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
 
   type ModalList = {
-    [key: string]: JSX.Element;
-  };
+    [key: string]: JSX.Element
+  }
 
   const MODAL_LIST: ModalList = {
     notifications: <ManageNotifications openModal={openModal} setOpenModal={setOpenModal} />,
@@ -58,9 +58,13 @@ const MyStrategies = () => {
           {Array.from({ length: 5 }).map((_, index) => {
             return (
               <>
-               <SwiperSlide key={index}>
-                <Strategy options={OPTIONS_STRATEGIES} setModalSelected={setModalSelected} setOpenModal={setOpenModal} />
-               </SwiperSlide>
+                <SwiperSlide key={index}>
+                  <Strategy
+                    options={OPTIONS_STRATEGIES}
+                    setModalSelected={setModalSelected}
+                    setOpenModal={setOpenModal}
+                  />
+                </SwiperSlide>
               </>
             )
           })}
@@ -72,7 +76,11 @@ const MyStrategies = () => {
       </div>
       <div className="dashboard-box mb-10 block xl:hidden">
         <div className="">
-          <StrategyMobile options={OPTIONS_STRATEGIES} setOpenModal={setOpenModal} setModalSelected={setModalSelected} />
+          <StrategyMobile
+            options={OPTIONS_STRATEGIES}
+            setOpenModal={setOpenModal}
+            setModalSelected={setModalSelected}
+          />
         </div>
       </div>
       {MODAL_LIST[modalSelected]}
