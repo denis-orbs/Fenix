@@ -23,7 +23,7 @@ const DuplicateStrategy = ({ setOpenModal, openModal }: DuplicateStrategyProps) 
             </div>
             <div className="">
               <h6 className="text-white text-xs font-medium">Copy as Is</h6>
-              <p className="text-white text-xs font-thin">Duplicate the strategy with the existing values (price, budget).</p>
+              <p className="text-white text-xs font-thin line-clamp-1 xl:line-clamp-2">Duplicate the strategy with the existing values (price, budget).</p>
             </div>
             <Button variant="tertiary">Select</Button>
           </div>
@@ -33,7 +33,7 @@ const DuplicateStrategy = ({ setOpenModal, openModal }: DuplicateStrategyProps) 
             </div>
             <div className="">
               <h6 className="text-white text-xs font-medium">Undercurt the Strategy</h6>
-              <p className="text-white text-xs font-thin">Set prices at 0.1% tighter spread and try to get filled ahead.</p>
+              <p className="text-white text-xs font-thin line-clamp-1 xl:line-clamp-2">Set prices at 0.1% tighter spread and try to get filled ahead.</p>
             </div>
             <Button variant="tertiary">Select</Button>
           </div>

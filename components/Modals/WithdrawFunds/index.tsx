@@ -18,15 +18,15 @@ const WithdrawFunds = ({ openModal, setOpenModal }: WithdrawFundsProps) => {
             <div className='flex items-center justify-between bg-shark-400  bg-opacity-40 p-2 py-4 rounded-xl '>
                 <div className='px-3'>
                     <p className='text-sm text-white font-medium'>Did you know?</p>
-                    <p className='text-xs text-white font-light'>Editing prices is cheaper and keeps your strategy working for you.</p>
+                    <p className='text-xs text-white font-light line-clamp-2 md:line-clamp-3'>Editing prices is cheaper and keeps your strategy working for you.</p>
 
                 </div>
                 <div className=''>
-                    <Button variant='tertiary' className='!py-3 w-28 !text-xs'>Edit Prices</Button>
+                    <Button variant='tertiary' className='!py-2 w-28 !text-xs'>Edit Prices</Button>
                 </div>
             </div>
             <div className='mt-10'>
-                <Button className='mx-auto !py-3'>Withdraw Funds</Button>
+                <Button className='mx-auto !py-2'>Withdraw Funds</Button>
             </div>
         </div>
       </div>

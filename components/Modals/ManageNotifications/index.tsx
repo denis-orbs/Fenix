@@ -15,7 +15,7 @@ const ManageNotifications = ({ openModal, setOpenModal }: ManageNotificationsPro
         <div className="relative z-10 w-auto h-auto">
           <h1 className="mb-10 text-2xl text-center text-white">Strategy Notification</h1>
           <div>
-            <p className="text-white text-center text-sm px-2 font-light">
+            <p className="text-white text-center text-sm px-2 font-light line-clamp-3">
               Elevate your experience by customizing notifications that keep you in the loop with every trade executed
               against this strategy. A 3rd party service managed by Hal.xyz
             </p>

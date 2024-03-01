@@ -1,18 +1,35 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
-import OPTIONS_STRATEGIES from './data'
+import { useOnClickOutside } from 'usehooks-ts'
+type options = {
+  value: string
+  label: string
+}
 
+interface StrategyMobileProps {
+  options: options[]
+  setModalSelected: (modal: string) => void
+  setOpenModal: (modal: boolean) => void
+}
 
-
-
-
-const StrategyMobile = () => {
+const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const outsideRef = useRef(null)
 
-  const handlerOpen = ()=> isOpen ? setIsOpen(false): setIsOpen(true)
+  const handleClickOutside = ()=>{
+    setIsOpenItemsPerPage(false)
+}
+  const handlerOpenModal = (option: string) => {
+    setOpenModal(true)
+    setModalSelected(option)
+  }
+  useOnClickOutside(outsideRef,handleClickOutside)
+
+
+  const handlerOpen = () => (isOpen ? setIsOpen(false) : setIsOpen(true))
   return (
     <div className="w-full bg-shark-400 bg-opacity-40 p-4">
       <div className="relative z-50">
@@ -42,8 +59,9 @@ const StrategyMobile = () => {
                 </p>
               </div>
             </div>
-            <div className='flex items-center gap-4'>
+            <div className="flex items-center gap-4">
               <div
+              ref={outsideRef}
                 className="flex items-center justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
                 onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
               >
@@ -54,17 +72,22 @@ const StrategyMobile = () => {
                           bg-shark-400 absolute top-14 z-50 left--1 translate-x-1"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {OPTIONS_STRATEGIES.map((option, index) => {
+                    {options.map((option, index) => {
                       return (
-                        <Button variant="default" key={index} className="!py-1 !h-[33px]  !text-xs">
-                          {option}
+                        <Button 
+                        onClick={()=>handlerOpenModal(option.value)}
+                        variant="default" key={index} className="!py-1 !h-[33px]  !text-xs">
+                          {option.label}
                         </Button>
                       )
                     })}
                   </div>
                 )}
               </div>
-              <span onClick={handlerOpen} className={`icon-chevron cursor-pointer ${isOpen && 'rotate-180 transition-all'}`}></span>
+              <span
+                onClick={handlerOpen}
+                className={`icon-chevron cursor-pointer ${isOpen && 'rotate-180 transition-all'}`}
+              ></span>
             </div>
           </div>
         </div>

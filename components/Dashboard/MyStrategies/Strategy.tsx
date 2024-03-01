@@ -1,8 +1,9 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
 import Graph from './Graph'
+import { useOnClickOutside } from 'usehooks-ts'
 
 type options = {
   value: string
@@ -16,12 +17,17 @@ interface StrategyProps {
 }
 
 const Strategy = ({ options, setModalSelected, setOpenModal }: StrategyProps) => {
+  const outsideRef = useRef(null)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
+
+  const handleClickOutside = ()=> setIsOpenItemsPerPage(false)
 
   const handlerOpenModal = (option: string) => {
     setOpenModal(true)
     setModalSelected(option)
   }
+
+  useOnClickOutside(outsideRef, handleClickOutside)
 
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
@@ -53,17 +59,13 @@ const Strategy = ({ options, setModalSelected, setOpenModal }: StrategyProps) =>
               </div>
             </div>
             <div
-              className="flex items-center justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
+              ref={outsideRef}
               onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
+              className="flex items-center justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
             >
-              <span className="text-lg icon-cog text-white "></span>
+              <span className="text-lg icon-cog text-white"></span>
               {isOpenItemsPerPage && (
-                <div
-                  className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px]
-                        bg-shark-400 absolute top-14 z-30 left--1 translate-x-1"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                  }}
+                <div ref={outsideRef} className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 absolute top-14 z-50  translate-x-1"
                 >
                   {options.map((option, index) => {
                     return (
