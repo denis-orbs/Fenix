@@ -4,24 +4,25 @@ import Image from 'next/image'
 import { Button } from '@/components/UI'
 import Graph from './Graph'
 
-type Options = {
-  id: number
+type options = {
+  value: string
   label: string
 }
 
 interface StrategyProps {
-  Options: Options[]
-  setID: (id: number) => void
+  options: options[]
+  setModalSelected: (modal: string) => void
   setOpenModal: (modal: boolean) => void
 }
 
-const Strategy = ({ Options, setID, setOpenModal }: StrategyProps) => {
+const Strategy = ({ options, setModalSelected, setOpenModal }: StrategyProps) => {
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
 
-  const handlerModal = (id: number) => {
-    setID(id)
+  const handlerOpenModal = (option: string) => {
     setOpenModal(true)
+    setModalSelected(option)
   }
+
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
       <div className="relative z-10">
@@ -64,11 +65,11 @@ const Strategy = ({ Options, setID, setOpenModal }: StrategyProps) => {
                     e.stopPropagation()
                   }}
                 >
-                  {Options.map((option, index) => {
+                  {options.map((option, index) => {
                     return (
                       <Button
                         variant="default"
-                        onClick={() => handlerModal(option.id)}
+                        onClick={() => handlerOpenModal(option.value)}
                         key={index}
                         className="!py-1 !h-[33px]  !text-xs"
                       >
