@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import Button from './Button'
 import Modal from './Modal'
 import Tooltip from './Tooltip'

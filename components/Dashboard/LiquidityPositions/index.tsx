@@ -18,19 +18,23 @@ const LiquidityPositions = () => {
         <div className="  rounded-lg z-10">
           <h1 className="text-white p-3">Classic liquidity</h1>
           <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} />
-          <Button variant="tertiary" className="!py-3 flex gap-2 mt-2">
-            Ver mas
+          <div className='xl:px-5 mt-2'>
+          <Button variant="tertiary" className="!py-3 flex gap-2">
+          Review more
             <span className="icon-link"></span>
           </Button>
+          </div>
         </div>
 
         <div className="rounded-lg z-10">
           <h1 className="text-white p-3">Concentrated Liquidity</h1>
           <HeaderRow {...PROPS_CONCENTRATED_LIQUIDITY} />
+          <div className='xl:px-5 mt-2'>
           <Button variant="tertiary" className="!py-3 flex gap-2">
-            Ver mas
+          Review more
             <span className="icon-link"></span>
           </Button>
+          </div>
         </div>
       </div>
     </div>

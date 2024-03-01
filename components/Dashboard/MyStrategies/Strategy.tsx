@@ -1,15 +1,15 @@
-/* eslint-disable max-len */
 'use client'
 import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
+import Graph from './Graph'
 import OPTIONS_STRATEGIES from './data'
 
 const Strategy = () => {
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
-      <div className="min-h-[400px] relative z-10">
+      <div className="relative z-10">
         <div className="relative text-white flex flex-col">
           <div className="flex justify-between items-center box-strategies">
             <div className="flex gap-4 items-center">
@@ -86,7 +86,7 @@ const Strategy = () => {
               <p className="text-xs text-white">$0.00</p>
             </div>
           </div>
-          <div className="h-[100px]">content</div>
+          <Graph />
         </div>
       </div>
     </div>

@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 'use client'
 import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/components/UI'
@@ -22,7 +20,7 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
   const [changeValue, setChangeValue] = useState(0)
   return (
     <>
-      <TableRow className="max-xl:hidden">
+      <TableRow className="hidden xl:flex">
         <TableCell className="w-[30%]">
           <div className="flex items-center gap-2">
             <div className="flex items-center">
@@ -45,27 +43,28 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
               <h5 className="text-sm text-white">FNX / ETH</h5>
               <div className="flex items-center gap-2">
                 {'VOLATILE' === row.type && (
-                  <Button variant="tertiary" className="!py-1">
+                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                     Volatile Pool{' '}
-                  </Button>
+                  </span>
                 )}
 
                 {'CONCENTRATED' === row.type ? (
-                  <Button
-                    variant="tertiary"
-                    className="!py-1 hover:!border-none !bg-green-500 !border !border-solid !border-1 !border-green-400 !bg-opacity-40 "
+                  <span
+                    className="py-1 px-2  text-xs rounded-lg 
+                    bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
                   >
                     Concentrated
-                  </Button>
+                  </span>
                 ) : 'STABLE' === row.type ? (
-                  <Button variant="tertiary" className="!py-1">
+                  <span
+                   className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
                     Stable Pool
-                  </Button>
+                  </span>
                 ) : null}
 
-                <Button variant="tertiary" className="!py-1">
+                <span className="py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                   0.3%
-                </Button>
+                </span>
                 <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
                 </Button>
@@ -76,17 +75,17 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
 
         <TableCell className="w-[10%] flex justify-center">
           <div className="flex items-center">
-            <p className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+            <p className="py-2 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {row.APR}%
             </p>
           </div>
         </TableCell>
 
-        <TableCell className="w-[20%]">
+        <TableCell className="w-[10%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-sm text-white">0%</p>
+            <p className="mb-1 text-xs text-white">0%</p>
             <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-sm text-shark-100">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
                   src="/static/images/tokens/ETH.svg"
                   alt="token"
@@ -100,14 +99,12 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
           </div>
         </TableCell>
 
-        <TableCell className="w-[20%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
-            <div className="flex gap-24 mb-2">
-              <p className="text-white text-sm">Reward</p>
-              <p className="mb-1 text-sm text-white">Fees</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 text-sm text-shark-100">
+        <TableCell className="w-[30%]">
+          <div className="flex items-center justify-end w-full gap-3">
+            <div className="flex flex-col items-end gap-3">
+              <p className="text-white text-xs">Reward</p>
+
+              <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
                   src="/static/images/tokens/ETH.svg"
                   alt="token"
@@ -117,26 +114,34 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
                 />
                 2,313,873.46
               </p>
-              <p className="flex items-center gap-2 text-sm text-shark-100">
-                <Image
-                  src="/static/images/tokens/FNX.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                744,621.46
-              </p>
-              <p className="flex items-center gap-2 text-sm text-shark-100">
-                <Image
-                  src="/static/images/tokens/ETH.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                132.49
-              </p>
+            </div>
+
+            <div className="flex flex-col items-end gap-2">
+              <div className="flex">
+                <p className="mb-1 text-xs text-white">Fees</p>
+              </div>
+              <div className="flex gap-2 items-center">
+                <p className="flex items-center gap-2 text-xs text-shark-100">
+                  <Image
+                    src="/static/images/tokens/FNX.svg"
+                    alt="token"
+                    className="w-5 h-5 rounded-full"
+                    width={20}
+                    height={20}
+                  />
+                  744,621.46
+                </p>
+                <p className="flex items-center gap-2 text-xs text-shark-100">
+                  <Image
+                    src="/static/images/tokens/ETH.svg"
+                    alt="token"
+                    className="w-5 h-5 rounded-full"
+                    width={20}
+                    height={20}
+                  />
+                  132.49
+                </p>
+              </div>
             </div>
           </div>
         </TableCell>
@@ -163,17 +168,21 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
             </div>
           ) : (
             <div>
-
-              <Button variant='tertiary' className='flex gap-2 items-center'>
-                <span className='icon-logout'></span>
-                Claim Rewards</Button>
+              <Button variant="tertiary" className="flex gap-2 items-center !text-xs">
+                <span className="icon-logout"></span>
+                Claim Rewards
+              </Button>
             </div>
           )}
         </TableCell>
       </TableRow>
-      <MobileRowVote changeValue={changeValue} activeVote={activeVote}
-      activeSlider={activeSlider}
-      setChangeValue={setChangeValue} row={row} />
+      <MobileRowVote
+        changeValue={changeValue}
+        activeVote={activeVote}
+        activeSlider={activeSlider}
+        setChangeValue={setChangeValue}
+        row={row}
+      />
     </>
   )
 }

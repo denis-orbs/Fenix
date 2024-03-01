@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
 'use client'
+
 import React from 'react'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
@@ -11,8 +11,12 @@ interface NestProps {
 
 const Nest = ({ activePagination = true }: NestProps) => {
   const [loading, setLoading] = useState(true)
-  const [activeAccordion, setActiveAccordion] = useState<boolean>(false)
-  const handlerAccordion = () => (activeAccordion ? setActiveAccordion(false) : setActiveAccordion(true))
+  const [activeAccordion, setActiveAccordion] = useState<{ [key: number]: boolean }>({})
+
+  const handlerAccordion = (index: number) => {
+    setActiveAccordion((prevState) => ({ ...prevState, [index]: !prevState[index] }))
+  }
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
@@ -65,11 +69,9 @@ const Nest = ({ activePagination = true }: NestProps) => {
                       </div>
                     </div>
                   </TableCell>
-                  {/* first */}
                   <TableCell className="w-[10%] flex items-center justify-center ">
                     <h1 className="text-sm me-4">34.58%</h1>
                   </TableCell>
-                  {/* second */}
                   <TableCell className="w-[10%] flex  ">
                     <div className="flex items-center gap-2 me-4">
                       <Image
@@ -82,7 +84,6 @@ const Nest = ({ activePagination = true }: NestProps) => {
                       <p className="text-sm text-white">FNX</p>
                     </div>
                   </TableCell>
-                  {/* third */}
                   <TableCell className="w-[10%] flex justify-center">
                     <div className="flex items-center gap-2">
                       <Image
@@ -95,22 +96,30 @@ const Nest = ({ activePagination = true }: NestProps) => {
                       <p className="text-sm text-white">744,621.46</p>
                     </div>
                   </TableCell>
-                  {/* fourths */}
                   <TableCell className="w-[20%] flex justify-end">
                     <div className="flex items-center gap-2">
                       <Button variant="tertiary" className="w-full h-[38px] !bg-opacity-40">
                         {' '}
                         <span className="text-sm">Deposit Lock</span>
                       </Button>
-                      {activeAccordion ? (
-                        <span onClick={handlerAccordion} className="icon-chevron rotate-180 cursor-pointer"></span>
+                      {activeAccordion[index] ? (
+                        <span
+                          onClick={() => {
+                            handlerAccordion(index)
+                          }}
+                          className="icon-chevron rotate-180 cursor-pointer"
+                        ></span>
                       ) : (
-                        <span onClick={handlerAccordion} className="icon-chevron cursor-pointer"></span>
+                        <span
+                          onClick={() => {
+                            handlerAccordion(index)
+                          }}
+                          className="icon-chevron cursor-pointer"
+                        ></span>
                       )}
                     </div>
                   </TableCell>
-                  {/* fifth*/}
-                  {activeAccordion && (
+                  {activeAccordion[index] && (
                     <div className="w-[93%] text-sm mx-auto border border-shark-400 p-2 rounded-lg">
                       <div className="text-white flex items-center justify-between  w-full">
                         <div className="flex gap-2 items-center">

@@ -28,10 +28,10 @@ const HeaderRowVote = ({ activeVote, filterData, loading, activePagination = tru
             items={[
               { text: 'Assets', className: 'w-[30%]', sortable: true },
               { text: 'APR', className: 'text-center  w-[10%]', sortable: true },
-              { text: 'Your Votes', className: 'w-[20%] text-right', sortable: true },
+              { text: 'Your Votes', className: 'w-[10%] text-right', sortable: true },
               {
                 text: 'Total Rewards',
-                className: 'w-[20%] text-right',
+                className: 'w-[30%] text-right',
                 sortable: true,
                 showTooltip: showTooltip,
                 setShowTooltip: setShowTooltip,

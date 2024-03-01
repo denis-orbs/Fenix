@@ -2,10 +2,12 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
 import InputRange from '@/components/UI/SliderRange/InputRange'
+
 type IRow = {
   type: string
   APR: string
 }
+
 interface RowDataProps {
   row: IRow
   changeValue: number
@@ -45,36 +47,27 @@ const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote, activeSli
             <h5 className="text-sm font-semibold leading-normal mb-1.5">FNX/ETH</h5>
             <div className="flex items-center gap-2">
               {'VOLATILE' === row.type && (
-                <Button
-                  variant="tertiary"
-                  className="!py-2 !px-4 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 "
-                >
+                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                   Volatile Pool
-                </Button>
+                </span>
               )}
               {'CONCENTRATED' === row.type && (
-                <Button
-                  variant="tertiary"
-                  className="!py-2 !px-4 hover:!border-none !bg-green-500 !border !border-solid !border-1 !border-green-400 !bg-opacity-40 !text-xs "
+                <span
+                  className="py-1 px-2  text-xs rounded-lg 
+                bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
                 >
                   Concentrated
-                </Button>
+                </span>
               )}
               {'STABLE' === row.type && (
-                <Button
-                  variant="tertiary"
-                  className="!py-2 !px-4 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 "
-                >
+                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
                   Stable Pool
-                </Button>
+                </span>
               )}
 
-              <Button
-                variant="tertiary"
-                className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
-              >
+              <span className="py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                 0.3%
-              </Button>
+              </span>
               <Button
                 variant="tertiary"
                 className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
@@ -98,7 +91,6 @@ const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote, activeSli
               >
                 <div className="flex items-center gap-1">
                   <span className="text-xs font-medium leading-normal">APR</span>
-                  {/* <span className="icon-info text-[13px]"></span> */}
                 </div>
                 <div className="flex gap-[7px]">
                   <div className="ml-auto text-xs leading-normal">34.58%</div>
@@ -135,10 +127,10 @@ const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote, activeSli
                   <span className="text-xs font-medium leading-normal">Total Rewards</span>
                 </div>
                 <div className="flex flex-col gap-3">
-                  <div>
-                    <p className="text-white text-sm">Reward</p>
+                  <div className="flex flex-col items-end">
+                    <p className="text-white text-xs">Reward</p>
 
-                    <p className="flex gap-2 mt-2 text-sm text-shark-100">
+                    <p className="flex gap-2 mt-2 text-xs text-shark-100">
                       <Image
                         src="/static/images/tokens/ETH.svg"
                         alt="token"
@@ -148,30 +140,30 @@ const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote, activeSli
                       />
                       2,313,873.46
                     </p>
-                    <div>
-                      <p className="mb-1 text-sm text-white">Fees</p>
-                      <div className="flex gap-2">
-                        <p className="flex items-center gap-2 text-sm text-shark-100">
-                          <Image
-                            src="/static/images/tokens/FNX.svg"
-                            alt="token"
-                            className="w-5 h-5 rounded-full"
-                            width={20}
-                            height={20}
-                          />
-                          744,621.46
-                        </p>
-                        <p className="flex items-center gap-2 text-sm text-shark-100">
-                          <Image
-                            src="/static/images/tokens/ETH.svg"
-                            alt="token"
-                            className="w-5 h-5 rounded-full"
-                            width={20}
-                            height={20}
-                          />
-                          132.49
-                        </p>
-                      </div>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <p className="mb-1 text-xs text-white">Fees</p>
+                    <div className="flex gap-2">
+                      <p className="flex items-center gap-2 text-xs text-shark-100">
+                        <Image
+                          src="/static/images/tokens/FNX.svg"
+                          alt="token"
+                          className="w-5 h-5 rounded-full"
+                          width={20}
+                          height={20}
+                        />
+                        744,621.46
+                      </p>
+                      <p className="flex items-center gap-2 text-xs text-shark-100">
+                        <Image
+                          src="/static/images/tokens/ETH.svg"
+                          alt="token"
+                          className="w-5 h-5 rounded-full"
+                          width={20}
+                          height={20}
+                        />
+                        132.49
+                      </p>
                     </div>
                   </div>
                 </div>

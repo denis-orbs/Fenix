@@ -5,11 +5,18 @@ import Image from 'next/image'
 import RowSkeleton from '@/components/UI/Table/TableSkeleton'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
 
-interface MyLocksProps {
-  activePagination?: boolean
+type LOCK = {
+  LOCK_ID: string
+  STATUS: boolean
+  VOTE: boolean
 }
 
-const MyLocks = ({ activePagination = true }: MyLocksProps) => {
+interface MyLocksProps {
+  activePagination?: boolean
+  Locks: LOCK[]
+}
+
+const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -24,7 +31,6 @@ const MyLocks = ({ activePagination = true }: MyLocksProps) => {
         <TableHead
           items={[
             { text: 'Lock ID', className: 'text-left w-[30%]', sortable: true },
-            // { text: 'Rebase APR ', className: 'text-center w-[10%]', sortable: true },
             { text: 'Lock Amount', className: 'text-left w-[10%]', sortable: true },
             { text: 'Voting Power', className: 'text-left w-[10%]', sortable: true },
             { text: 'Unlock Date', className: 'text-left w-[10%]', sortable: true },
@@ -42,7 +48,7 @@ const MyLocks = ({ activePagination = true }: MyLocksProps) => {
             </>
           ) : (
             <>
-              {Array.from({ length: 5 }).map((_, index) => {
+              {Locks.map((lock, index) => {
                 return (
                   <TableRow key={index}>
                     <TableCell className="w-[30%]">
@@ -55,18 +61,19 @@ const MyLocks = ({ activePagination = true }: MyLocksProps) => {
                           height={40}
                         />
                         <div className="flex flex-col items-center">
-                          <h1 className="text-sm">10923</h1>
-                          <p className="text-sm text-green-400">
-                            <span>•</span> Active
-                          </p>
+                          <h1 className="text-xs">10923</h1>
+                          {lock.STATUS ? (
+                            <p className="text-xs text-green-400">
+                              <span>•</span> Active
+                            </p>
+                          ) : (
+                            <p className="text-xs text-red-700">
+                              <span>•</span> Expired
+                            </p>
+                          )}
                         </div>
                       </div>
                     </TableCell>
-                    {/* firts */}
-                    {/* <TableCell className="w-[10%]  flex items-center justify-center">
-                  <p className="text-sm">34.58%</p>
-              </TableCell> */}
-                    {/* second */}
                     <TableCell className="w-[10%]">
                       <div className="flex items-center gap-2">
                         <Image
@@ -76,10 +83,9 @@ const MyLocks = ({ activePagination = true }: MyLocksProps) => {
                           width={20}
                           height={20}
                         />
-                        <p className="text-sm text-white">744,621.46</p>
+                        <p className="text-xs text-white">744,621.46</p>
                       </div>
                     </TableCell>
-                    {/* third */}
                     <TableCell className="w-[10%]">
                       <div className="flex items-center gap-2">
                         <Image
@@ -89,35 +95,32 @@ const MyLocks = ({ activePagination = true }: MyLocksProps) => {
                           width={20}
                           height={20}
                         />
-                        <p className="text-sm text-white">744,621.46</p>
+                        <p className="text-xs text-white">744,621.46</p>
                       </div>
                     </TableCell>
-                    {/* fourth */}
                     <TableCell className="w-[10%]">
                       <div className="flex items-center gap-2">
-                        <p className="text-sm text-white">27-06-2025</p>
+                        <p className="text-xs text-white">27-06-2025</p>
                       </div>
                     </TableCell>
-                    {/* fifth */}
                     <TableCell className="w-[15%] flex justify-center">
-                      <span
-                        className="flex items-center bg-opacity-20 w-[105px] text-sm justify-center px-5 py-1
-                 text-white border border-solid border-green-400
-                 bg-green-500
-                 rounded-xl "
-                      >
-                        Voted
-                      </span>
+                      {lock.VOTE ? (
+                        <span className="flex items-center bg-opacity-20 w-[105px] text-xs justify-center px-5 py-1 text-white border border-solid border-green-400 bg-green-500 rounded-xl ">
+                          Voted
+                        </span>
+                      ) : (
+                        <span className="flex items-center bg-opacity-20 w-[105px] text-xs justify-center px-5 py-1 text-white border border-solid border-red-600 bg-red-700 rounded-xl ">
+                          Not Voted
+                        </span>
+                      )}
                     </TableCell>
-                    {/* sixth */}
                     <TableCell className="w-[25%]">
                       <div className="flex justify-end w-full">
                         <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40">
-                          <span className="text-sm">Manage</span>
+                          <span className="text-xs">Manage</span>
                         </Button>
                       </div>
                     </TableCell>
-                    {/* seventh */}
                   </TableRow>
                 )
               })}

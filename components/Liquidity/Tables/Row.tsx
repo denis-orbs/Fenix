@@ -1,6 +1,5 @@
-/* eslint-disable max-len */
-
 'use client'
+
 import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/components/UI'
 import MobileRow from './MobileRow'
@@ -44,27 +43,30 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
               <h5 className="text-sm text-white">FNX / ETH</h5>
               <div className="flex items-center gap-2">
                 {'VOLATILE' === row.type && (
-                  <Button variant="tertiary" className="!py-1">
+                  <span 
+                   className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                     Volatile Pool{' '}
-                  </Button>
+                  </span>
                 )}
 
                 {'CONCENTRATED' === row.type ? (
-                  <Button
-                    variant="tertiary"
-                    className="!py-1 hover:!border-none !bg-green-500 !border !border-solid !border-1 !border-green-400 !bg-opacity-40 "
+                  <span
+                    className="py-1 px-2  text-xs rounded-lg 
+                    bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
                   >
                     Concentrated
-                  </Button>
+                  </span>
                 ) : 'STABLE' === row.type ? (
-                  <Button variant="tertiary" className="!py-1">
+                  <span 
+                  className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400"
+                  >
                     Stable Pool
-                  </Button>
+                  </span>
                 ) : null}
 
-                <Button variant="tertiary" className="!py-1">
+                <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                   0.3%
-                </Button>
+                </span>
                 <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
                 </Button>
@@ -73,27 +75,27 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
           </div>
         </TableCell>
         {activeRange && (
-          <TableCell className={`w-[10%] flex items-center justify-center`}>
+          <TableCell className={`w-[12%] flex items-center justify-center`}>
             <div className="flex gap-2 items-center">
               <span className="bg-green-600 w-4 h-4 rounded-full border-4 border-black"></span>
               <div className="text-xs flex flex-col">
-                <p className="text-shark-100">Min Price</p>
-                <span className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                <p className="text-shark-100 text-center">Min Price</p>
+                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                   $0.00
                 </span>
               </div>
               <div className="text-xs flex flex-col">
-                <p className="text-shark-100">Max Price</p>
-                <span className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                <p className="text-shark-100 text-center">Max Price</p>
+                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                   $0.00
                 </span>
               </div>
             </div>
           </TableCell>
         )}
-        <TableCell className="w-[10%] flex justify-center">
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
           <div className="flex items-center  ">
-            <p className="p-2 text-sm text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+            <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {row.APR}%
             </p>
           </div>
@@ -101,9 +103,9 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
 
         <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-sm text-white">$1,289.863.54</p>
+            <p className="mb-1 text-xs text-white">$1,289.863.54</p>
             <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-sm text-shark-100">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
                   src="/static/images/tokens/FNX.svg"
                   alt="token"
@@ -113,7 +115,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 />
                 2,313,873.46
               </p>
-              <p className="flex items-center gap-2 text-sm text-shark-100">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
                   src="/static/images/tokens/ETH.svg"
                   alt="token"
@@ -129,9 +131,9 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
 
         <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-sm text-white">$539.863.54</p>
+            <p className="mb-1 text-xs text-white">$539.863.54</p>
             <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 text-sm text-shark-100">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
                   src="/static/images/tokens/FNX.svg"
                   alt="token"
@@ -141,7 +143,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 />
                 744,621.46
               </p>
-              <p className="flex items-center gap-2 text-sm text-shark-100">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
                   src="/static/images/tokens/ETH.svg"
                   alt="token"
@@ -157,9 +159,9 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
 
         <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-sm text-white">$98.751.23</p>
+            <p className="mb-1 text-xs text-white">$98.751.23</p>
             <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 text-sm text-shark-100">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
                   src="/static/images/tokens/FNX.svg"
                   alt="token"
@@ -169,7 +171,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 />
                 82,334.52
               </p>
-              <p className="flex items-center gap-2 text-sm text-shark-100">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
                   src="/static/images/tokens/ETH.svg"
                   alt="token"
@@ -183,27 +185,35 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
           </div>
         </TableCell>
 
-        <TableCell className="flex justify-end w-[15%]">
+        <TableCell className="flex justify-end items-center w-[15%]">
           <div className="flex gap-2 w-full">
             {titleButton === '' ? (
-              <Button variant="tertiary" className="flex items-center gap-2 w-full">
+              <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs ">
                 <span className="icon-info"></span>
                 Info
               </Button>
             ) : (
-              <Button variant="tertiary" className="flex items-center gap-2 w-full">
+              <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs">
                 <span className="icon-coin"></span>
                 Claim
               </Button>
             )}
 
             {titleButton2 === '' ? (
-              <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity/deposit">
+              <Button
+                variant="tertiary"
+                className="flex items-center gap-2  w-24 h-9 !text-xs"
+                href="/liquidity/deposit"
+              >
                 <span className="icon-circles"></span>
                 Deposit
               </Button>
             ) : (
-              <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity/deposit">
+              <Button
+                variant="tertiary"
+                className="flex items-center gap-2 w-24 h-9 !text-xs "
+                href="/liquidity/deposit"
+              >
                 <span className="icon-logout"></span>
                 Manage
               </Button>
@@ -211,7 +221,14 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
           </div>
         </TableCell>
       </TableRow>
-      <MobileRow row={row} titleHeader={titleHeader} titleButton={titleButton} titleButton2={titleButton2} titleHeader2={titleHeader2} activeRange={activeRange} />
+      <MobileRow
+        row={row}
+        titleHeader={titleHeader}
+        titleButton={titleButton}
+        titleButton2={titleButton2}
+        titleHeader2={titleHeader2}
+        activeRange={activeRange}
+      />
     </>
   )
 }

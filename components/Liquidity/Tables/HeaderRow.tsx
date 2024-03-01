@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { TableHead, TableBody, TableSkeleton, Pagination, PaginationMobile } from '@/components/UI'
 import { Fragment } from 'react'
 import Row from './Row'
@@ -30,7 +29,7 @@ const HeaderRow = ({
   activeRange = false,
 }: HeaderRowProps) => {
   const RANGE = activeRange ?
-    { text: 'Range', className: 'w-[10%] text-center', sortable: true }
+    { text: 'Range', className: 'w-[12%] text-center', sortable: true }
    :  { text: '', className: 'w-[0%]', sortable: true }
   return (
     <div className="relative">
@@ -40,7 +39,7 @@ const HeaderRow = ({
             items={[
               { text: 'Pair', className: `${activeRange ? 'w-[20%]' : 'w-[30%]' }`, sortable: true },
                 RANGE,
-              { text: 'APR', className: 'text-center  w-[10%]', sortable: true },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]' } text-center` , sortable: true },
               { text: 'TVL', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,

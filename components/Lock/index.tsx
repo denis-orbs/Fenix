@@ -1,20 +1,19 @@
 'use client'
-
 import { useState } from 'react'
-
 import Steps from '../Common/Steps'
 import LockTokens from './LockTokens'
 import MyLocks from './MyLocks'
 import Nest from './Nest'
-import { LOCK_STEPS, FILTER_OPTIONS } from './data'
+import { LOCK_STEPS, FILTER_OPTIONS, LOCKS } from './data'
 import Filter from '../Common/Filter'
 import Search from '../Common/Search'
 import CreateLock from './CreateLock/CreateLock'
 import MylocksMobile from './Mobile/MylocksMobile'
 import NestMobile from './Mobile/NestMobile'
+
 const Lock = () => {
   const [changeState, setChangeState] = useState<boolean>(false)
-  const [currentTab, setCurrentTab] = useState("Everything")
+  const [currentTab, setCurrentTab] = useState('Everything')
   return (
     <>
       {changeState ? (
@@ -58,14 +57,13 @@ const Lock = () => {
               <Search />
             </div>
           </div>
-          <div className="lg:hidden">
-            <MylocksMobile />
-            <NestMobile/>
-          </div>
-          <div className="hidden w-full mb-20 lg:flex lg:flex-col">
-            <MyLocks />
-            <h5 className=" text-2xl text-white ms-2">Nest</h5>
 
+          <MylocksMobile Locks={LOCKS} />
+          <NestMobile />
+
+          <div className=" w-full mb-20 ">
+            <MyLocks Locks={LOCKS} />
+            <h5 className=" text-2xl text-white ms-2">Nest</h5>
             <Nest />
           </div>
         </section>
