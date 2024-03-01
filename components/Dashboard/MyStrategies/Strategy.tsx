@@ -59,8 +59,7 @@ const Strategy = ({ options, setModalSelected, setOpenModal }: StrategyProps) =>
               <span className="text-lg icon-cog text-white "></span>
               {isOpenItemsPerPage && (
                 <div
-                  className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px]
-                        bg-shark-400 absolute top-14 z-30 left--1 translate-x-1"
+                  className="w-[200px] p-2 flex flex-col gap-1 rounded-lg bg-shark-400 absolute top-14 z-30 left--1 translate-x-1"
                   onClick={(e) => {
                     e.stopPropagation()
                   }}
