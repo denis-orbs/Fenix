@@ -17,7 +17,7 @@ const MyLocks = () => {
         <div className="relative z-10">
           <Locks Locks={LOCKS} activePagination={false} />
           <MylocksMobile activePagination={false} Locks={LOCKS} />
-          <div className='xl:px-5 mt-2'>
+          <div className='mt-2'>
           <Button variant="tertiary" className="!py-3 flex gap-2">
           Review more
             <span className="icon-link"></span>

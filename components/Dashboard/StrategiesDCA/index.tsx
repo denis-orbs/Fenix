@@ -21,7 +21,7 @@ const StrategiesDCA = () => {
         {Array.from({ length: 2 }).map((_, index) => (
           <StrategiesItem key={index} />
         ))}
-        <div className="xl:px-5 mt-2">
+        <div className="mt-2">
           <Button variant="tertiary" className="!py-3 flex gap-2">
             Review more
             <span className="icon-link"></span>
