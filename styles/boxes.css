@@ -671,8 +671,8 @@
   justify-center
   w-full
   rounded-2xl
-  xl:w-[480px]
-  xl:min-h-[470px]
+  sm:w-[480px]
+  sm:min-h-[470px]
   flex-shrink-0
   bg-shark-400
   bg-opacity-40

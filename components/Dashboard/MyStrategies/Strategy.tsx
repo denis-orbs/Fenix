@@ -1,12 +1,34 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
 import Graph from './Graph'
-import OPTIONS_STRATEGIES from './data'
+import { useOnClickOutside } from 'usehooks-ts'
 
-const Strategy = () => {
+type options = {
+  value: string
+  label: string
+}
+
+interface StrategyProps {
+  options: options[]
+  setModalSelected: (modal: string) => void
+  setOpenModal: (modal: boolean) => void
+}
+
+const Strategy = ({ options, setModalSelected, setOpenModal }: StrategyProps) => {
+  const outsideRef = useRef(null)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
+
+  const handleClickOutside = ()=> setIsOpenItemsPerPage(false)
+
+  const handlerOpenModal = (option: string) => {
+    setOpenModal(true)
+    setModalSelected(option)
+  }
+
+  useOnClickOutside(outsideRef, handleClickOutside)
+
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
       <div className="relative z-10">
@@ -37,20 +59,23 @@ const Strategy = () => {
               </div>
             </div>
             <div
-              className="flex items-center justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
+              ref={outsideRef}
               onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
+              className="flex items-center justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
             >
-              <span className="text-lg icon-cog text-white "></span>
+              <span className="text-lg icon-cog text-white"></span>
               {isOpenItemsPerPage && (
-                <div
-                  className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px]
-                        bg-shark-400 absolute top-14 z-30 left--1 translate-x-1"
-                  onClick={(e) => e.stopPropagation()}
+                <div ref={outsideRef} className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 absolute top-14 z-50  translate-x-1"
                 >
-                  {OPTIONS_STRATEGIES.map((option, index) => {
+                  {options.map((option, index) => {
                     return (
-                      <Button variant="default" key={index} className="!py-1 !h-[33px]  !text-xs">
-                        {option}
+                      <Button
+                        variant="default"
+                        onClick={() => handlerOpenModal(option.value)}
+                        key={index}
+                        className="!py-1 !h-[33px]  !text-xs"
+                      >
+                        {option.label}
                       </Button>
                     )
                   })}

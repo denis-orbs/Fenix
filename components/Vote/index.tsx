@@ -59,7 +59,8 @@ const Vote = () => {
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
-      <div className="p-5 fixed bottom-5 left-0 right-0 z-50  md:block">{activeVote && <Overlay />}</div>
+
+        <div className="p-5 mx-auto fixed bottom-4 z-50 left-0 xl:w-1/2 right-0 md:block">{activeVote && <Overlay />}</div>
     </section>
   )
 }

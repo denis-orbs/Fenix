@@ -1,5 +1,4 @@
 'use client'
-
 import { Button } from '@/components/UI'
 import StrategiesItem from '@/components/Dashboard/StrategiesDCA/StrategiesItem'
 
@@ -21,8 +20,8 @@ const StrategiesDCA = () => {
         {Array.from({ length: 2 }).map((_, index) => (
           <StrategiesItem key={index} />
         ))}
-        <div className="mt-2">
-          <Button variant="tertiary" className="!py-3 flex gap-2">
+        <div className=" mt-2">
+          <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs">
             Review more
             <span className="icon-link"></span>
           </Button>
