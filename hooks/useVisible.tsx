@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 
 const ComponentVisible = (initialIsVisible: boolean) => {
   const [isVisible, setIsVisible] = useState(initialIsVisible)
-  const ref = useRef<HTMLElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
 
   const handleClickOutside = (event: MouseEvent | TouchEvent) => {
     if (ref.current && !ref?.current?.contains(event.target as Node)) {

@@ -45,11 +45,13 @@ const MyStrategies = () => {
   return (
     <div className="relative">
       <h4 className="text-lg text-white mb-4">My Strategies</h4>
-      <div className="dashboard-box mb-10 hidden xl:block pointer-events-none">
+      <div 
+      className="dashboard-box mb-10 hidden xl:block 
+      ">
         <Swiper
           spaceBetween={50}
           slidesPerView={3}
-          navigation={true}
+          navigation={true}   
           onSwiper={(swiper) => (swiperRef.current = swiper)}
         >
           {Array.from({ length: 5 }).map((_, index) => {
