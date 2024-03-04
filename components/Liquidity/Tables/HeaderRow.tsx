@@ -27,6 +27,7 @@ const HeaderRow = ({
   titleButton2 = '',
   titleHeader2 = '',
   activeRange = false,
+  
 }: HeaderRowProps) => {
   const RANGE = activeRange ?
     { text: 'Range', className: 'w-[12%] text-center', sortable: true }

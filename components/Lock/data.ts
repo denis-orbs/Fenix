@@ -70,4 +70,7 @@ export const LOCKS = [
   },
 ]
 
+
+export const LOCKS_INFO_API = []
+
 export const FILTER_OPTIONS = ['Everything', 'Vote', 'Not Vote', 'Active', 'Expired']

@@ -4,7 +4,7 @@ import InfoBox from '@/components/Common/InfoBox'
 import CREATE_LOCK_LIST from './data'
 import Image from 'next/image'
 import InputRange from '@/components/UI/SliderRange/InputRange'
-import { Button , ProgressBar } from '@/components/UI'
+import { Button, ProgressBar } from '@/components/UI'
 import { useState } from 'react'
 
 const CreateLock = () => {
@@ -112,11 +112,9 @@ const CreateLock = () => {
           <div>
             <h1 className="text-white text-xl mb-20">How it works</h1>
           </div>
-
           {CREATE_LOCK_LIST.map((exchange, index) => (
             <InfoBox bgBox="exchange-box-info" key={index} data={exchange} textColor={'text-shark-100'} />
           ))}
-
           <div className="mt-16 cursor-pointer">
             <p className="flex gap-2 justify-center text-shark-100">
               <span className="icon-discord"></span>Need some help?

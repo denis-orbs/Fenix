@@ -17,7 +17,7 @@ const Lock = () => {
   return (
     <>
       {changeState ? (
-        <div className="flex flex-col items-center py-10 px-20">
+        <div className="flex flex-col items-center py-10 ">
           <div className="box-notification p-5  justify-between rounded-lg w-2/5 mb-5 me-20 hidden xl:flex">
             <div className="flex items-center gap-2 w-2/3 ">
               <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
@@ -39,7 +39,7 @@ const Lock = () => {
           </div>
         </div>
       ) : (
-        <section className="">
+        <section>
           <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row mb-4">
             <div className="w-full 2xl:w-3/4">
               <LockTokens changeState={changeState} setChangeState={setChangeState} />
@@ -57,15 +57,11 @@ const Lock = () => {
               <Search />
             </div>
           </div>
-
+          <MyLocks Locks={LOCKS} />
           <MylocksMobile Locks={LOCKS} />
+          <h5 className=" text-2xl text-white ms-2">Nest</h5>
+          <Nest />
           <NestMobile />
-
-          <div className=" w-full mb-20 ">
-            <MyLocks Locks={LOCKS} />
-            <h5 className=" text-2xl text-white ms-2">Nest</h5>
-            <Nest />
-          </div>
         </section>
       )}
     </>
