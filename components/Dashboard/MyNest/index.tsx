@@ -3,12 +3,12 @@
 import { Button } from '@/components/UI'
 import Nest from '@/components/Lock/Nest'
 import NestMobile from '@/components/Lock/Mobile/NestMobile'
+import INFO_API from '../data'
 
 const MyNest = () => {
-  const MYNEST_INFO_API = ["TEST"]
   return (
     <>
-      {MYNEST_INFO_API.length !== 0 ? (
+      {INFO_API.length !== 0 ? (
         <div className="mb-10">
           <div className="flex justify-between mb-4">
             <h1 className="text-white text-xl">Nest</h1>
@@ -30,7 +30,7 @@ const MyNest = () => {
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center flex-wrap ">
             <p className="flex gap-3 text-lg ms-2">
-              Nest <span className="icon-info"></span>
+              Nest 
             </p>
             <Button variant="tertiary" className="flex gap-2 !py-2">
               <span className="icon-logout"></span>My strategies

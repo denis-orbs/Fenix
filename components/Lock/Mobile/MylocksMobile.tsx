@@ -6,6 +6,7 @@ import RowSkeleton from '@/components/UI/Table/TableSkeleton'
 import { TableBody, TableCell, TableRow, PaginationMobile, Button } from '@/components/UI'
 import { LOCKS_INFO_API } from '../data'
 import NotFoundLock from '../NotFoundLock'
+import { useRouter } from 'next/navigation'
 
 type LOCK = {
   LOCK_ID: string
@@ -20,6 +21,8 @@ interface MylocksMobileProps {
 const MylocksMobile = ({ activePagination = true, Locks }: MylocksMobileProps) => {
   const [loading, setLoading] = useState(true)
   const [accordion, setAccordion] = useState<{ [key: number]: boolean }>({})
+  const { push } = useRouter()
+  const handlerNavigation = () => push('/lock/manage')
 
   const handlerAccordion = (index: number) => {
     setAccordion((prevState) => ({ ...prevState, [index]: !prevState[index] }))
@@ -111,8 +114,8 @@ const MylocksMobile = ({ activePagination = true, Locks }: MylocksMobileProps) =
                                     )}
                                   </div>
                                 </div>
-                                <Button variant="tertiary" className="w-full">
-                                  Mange
+                                <Button onClick={handlerNavigation} variant="tertiary" className="w-full">
+                                  Manage
                                 </Button>
                               </div>
                             </>

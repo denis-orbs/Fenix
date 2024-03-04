@@ -17,7 +17,7 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote }: Sele
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
       <div className="common-modal">
-        <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
+        <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x p-2 2xl:p-0 text-shark-100" onClick={handlerClose} />
         <div className="relative z-10 w-full h-full">
           <h1 className="mb-2 text-lg font-medium text-white">Select veFNX to Vote</h1>
           <div className="mb-4">
@@ -32,11 +32,11 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote }: Sele
           </div>
           <div>
             <div className="flex text-sm text-shark-100">
-              <p className="w-[45%]">Lock ID</p>
-              <div className="flex gap-2">
-                <p>Position</p>
-                <p>Voting Power</p>
-                <p>Rewards</p>
+              <p className="w-[45%] text-xs">Lock ID</p>
+              <div className="flex gap-4 text-xs">
+                <p className='text-center'>Position</p>
+                <p className='text-center'>Voting Power</p>
+                <p className='text-right'>Rewards</p>
               </div>
             </div>
 
@@ -48,7 +48,7 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote }: Sele
                       onClick={handlerChange}
                       className="flex flex-wrap items-center justify-between p-4 mt-2 text-xs rounded-lg xl:flex-nowrap bg-shark-400 bg-opacity-40"
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 w-2/6 sm:w-auto">
                         <Image alt="fenix-logo" src={'/static/images/vote/fenix-logo.svg'} height={32} width={32} />
                         <div className="flex flex-col">
                           <div className="flex gap-2">
@@ -56,21 +56,21 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote }: Sele
                             <p className="text-white">9339</p> <p className="text-green-500">•Active</p>
                           </div>
                           <div className="flex">
-                            <p className="text-shark-100">Expires 14/09/2024</p>
+                            <p className="text-shark-100 text-xs  ">Expires 14/09/2024</p>
                           </div>
                         </div>
                       </div>
                       {/* first */}
                       <div>
-                        <p className="text-white">981 FNX</p>
+                        <p className="text-white text-xs">981 FNX</p>
                       </div>
                       {/* second */}
                       <div>
-                        <p className="text-white">981 FNX</p>
+                        <p className="text-white text-xs">981 FNX</p>
                       </div>
                       {/* third */}
                       <div>
-                        <p className="text-green-400">$12.98 !</p>
+                        <p className="text-green-400 text-xs">$12.98 !</p>
                       </div>
                     </div>
                   </div>

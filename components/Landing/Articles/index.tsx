@@ -24,7 +24,7 @@ const Articles = () => {
                   className="w-full sm:hidden rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
                 />
                 <div className="flex flex-col">
-                  <h1 className="text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
+                  <h1 className="text-xl font-medium text-gradient-2">
                     {article.title}
                   </h1>
                   <p className="text-sm text-white xl:line-clamp-none">
@@ -36,7 +36,7 @@ const Articles = () => {
           })}
         </div>
         <div className="article-big-box">
-          <h1 className="mb-3 text-xl font-medium text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
+          <h1 className="mb-3 text-xl font-medium text-gradient-2">
             Liquidity Providers
           </h1>
           <p className="mb-5 xl:mb-10 text-sm text-white">

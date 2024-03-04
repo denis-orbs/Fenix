@@ -18,7 +18,7 @@ const Footer = () => {
               <FenixIcon className="text-[32px]" />
               <p className="text-shark-100 text-sm leading-normal font-semibold mb-[5px]">Navigation</p>
             </div>
-            <div className="grid grid-cols-3 md:w-1/2 md:grid-cols-6">
+            <div className="grid grid-cols-3 md:w-1/2 xl:grid-cols-6">
               {NAV_LINKS.map((link, index) => (
                 <Link
                   href={link.href}

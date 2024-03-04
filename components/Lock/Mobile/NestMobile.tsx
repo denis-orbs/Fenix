@@ -6,6 +6,7 @@ import RowSkeleton from '@/components/UI/Table/TableSkeleton'
 import { TableBody, TableCell, TableRow, PaginationMobile, Button } from '@/components/UI'
 import { LOCKS_INFO_API } from '../data'
 import NotFoundLock from '../NotFoundLock'
+import { useRouter } from 'next/navigation'
 
 interface NestMobileProps {
   activePagination?: boolean
@@ -14,7 +15,9 @@ interface NestMobileProps {
 const NestMobile = ({ activePagination = true }: NestMobileProps) => {
   const [loading, setLoading] = useState(true)
   const [accordion, setAccordion] = useState<{ [key: number]: boolean }>({})
+  const { push } = useRouter()
 
+  const handlerNavigation = () => push('/lock/deposit')
   const handlerAccordion = (index: number) => {
     setAccordion((prevState) => ({ ...prevState, [index]: !prevState[index] }))
   }
@@ -94,7 +97,7 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
                                   </p>
                                 </div>
                               </div>
-                              <Button variant="tertiary" className="w-full flex gap-4">
+                              <Button onClick={handlerNavigation} variant="tertiary" className="w-full  flex gap-4">
                                 Deposit Lock <span className="icon-link text-xlg"></span>
                               </Button>
                               <div className="flex flex-col gap-2 border border-shark-100 rounded-lg p-2">
@@ -113,7 +116,6 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
                           </>
                         )}
                       </TableCell>
-                      {/* firts */}
                     </TableRow>
                   ))}
                 </>

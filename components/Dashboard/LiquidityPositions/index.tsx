@@ -3,12 +3,12 @@
 import { Button } from '@/components/UI'
 import HeaderRow from '@/components/Liquidity/Tables/HeaderRow'
 import { PROPS_CLASSIC_LIQUIDITY, PROPS_CONCENTRATED_LIQUIDITY } from '../types'
+import INFO_API from '../data'
 
 const LiquidityPositions = () => {
-  const LIQUIDITY_INFO_API = ["TEST"]
   return (
     <>
-      {LIQUIDITY_INFO_API.length !== 0 ? (
+      {INFO_API.length !== 0 ? (
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">Liquidity Positions</h1>
@@ -45,7 +45,7 @@ const LiquidityPositions = () => {
           <div className="flex flex-col   gap-3 w-full lg:w-4/5 mx-auto">
             <div className="text-white flex justify-between items-center flex-wrap">
               <p className="flex gap-3 text-lg ms-2">
-                Liquidity Positions <span className="icon-info"></span>
+                Liquidity Positions 
               </p>
               <Button variant="tertiary" className="flex gap-2  !py-2">
                 {' '}

@@ -41,7 +41,7 @@ const Main = () => {
 
               <div className={`text-white text-base md:text-[32px] leading-[139%] mb-[21px] ${michroma.className}`}>
                 THE UNIFIED TRADING AND{' '}
-                <span className="text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
+                <span className="text-gradient-2">
                   LIQUIDITY MARKETPLACE{' '}
                 </span>
                 FOR

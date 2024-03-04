@@ -5,6 +5,7 @@ import RowSkeleton from '@/components/UI/Table/TableSkeleton'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
 import NotFoundLock from './NotFoundLock'
 import { LOCKS_INFO_API } from './data'
+import { useRouter } from 'next/navigation'
 
 type LOCK = {
   LOCK_ID: string
@@ -19,6 +20,8 @@ interface MyLocksProps {
 
 const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
   const [loading, setLoading] = useState(true)
+  const { push } = useRouter()
+  const handlerNavigation = () => push('/lock/manage')
 
   useEffect(() => {
     setTimeout(() => {
@@ -119,7 +122,11 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                           </TableCell>
                           <TableCell className="w-[25%]">
                             <div className="flex justify-end w-full">
-                              <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40">
+                              <Button
+                                onClick={handlerNavigation}
+                                variant="tertiary"
+                                className="h-[38px] w-[90px] bg-opacity-40"
+                              >
                                 <span className="text-xs">Manage</span>
                               </Button>
                             </div>
