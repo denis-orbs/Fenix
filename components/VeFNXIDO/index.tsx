@@ -8,7 +8,7 @@ const VeFNXIDO = () => {
 
   return (
     <section className="relative">
-      <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
+      <div className="flex flex-col items-start gap-5 py-5 2xl:flex-row">
         <div className="w-full 2xl:w-3/4">
           <Panel />
         </div>
