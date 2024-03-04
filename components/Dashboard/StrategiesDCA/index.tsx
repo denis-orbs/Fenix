@@ -1,12 +1,12 @@
 'use client'
 import { Button } from '@/components/UI'
 import StrategiesItem from '@/components/Dashboard/StrategiesDCA/StrategiesItem'
+import INFO_API from '../data'
 
 const StrategiesDCA = () => {
-  const STRATEGIES_INFO_API = ['TEST']
   return (
     <>
-      {STRATEGIES_INFO_API.length !== 0 && (
+      {INFO_API.length !== 0 ? (
         <div className="dashboard-box flex-col xl:flex-row">
           <div className="relative w-full z-10">
             <div className="text-lg text-white mb-2">Active DCAs:</div>
@@ -29,6 +29,15 @@ const StrategiesDCA = () => {
                 <span className="icon-link"></span>
               </Button>
             </div>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
+          <div className="text-white flex justify-between items-center">
+            <p className="flex gap-3 text-lg ms-2">My Strategies DCA</p>
+          </div>
+          <div className="box-dashboard p-6 flex gap-8 items-center ">
+            <p className="text-white text-sm">You have not created strategies.</p>
           </div>
         </div>
       )}

@@ -15,12 +15,13 @@ import PauseStrategy from '@/components/Modals/PauseStrategy'
 import ManageNotifications from '@/components/Modals/ManageNotifications'
 import DeleteStrategy from '@/components/Modals/DeleteStrategy'
 import OPTIONS_STRATEGIES from './data'
+import INFO_API from '../data'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
-  const MYSTRATEGIES_INFO_API = ["TEST"]
+  const MYSTRATEGIES_INFO_API = []
   type ModalList = {
     [key: string]: JSX.Element
   }
@@ -47,7 +48,7 @@ const MyStrategies = () => {
 
   return (
     <>
-      {MYSTRATEGIES_INFO_API.length !== 0 && (
+      {INFO_API.length !== 0 ? (
         <div className="relative">
           <h4 className="text-lg text-white mb-4">My Strategies</h4>
           <div className="dashboard-box mb-10 hidden xl:block">
@@ -86,6 +87,17 @@ const MyStrategies = () => {
             </div>
           </div>
           {MODAL_LIST[modalSelected]}
+        </div>
+      ) : (
+        <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
+          <div className="text-white flex justify-between items-center">
+            <p className="flex gap-3 text-lg ms-2">
+              My Strategies 
+            </p>
+          </div>
+          <div className="box-dashboard p-6 flex gap-8 items-center ">
+            <p className="text-white text-sm">You have not created strategies.</p>
+          </div>
         </div>
       )}
     </>

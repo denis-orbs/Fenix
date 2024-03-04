@@ -4,11 +4,11 @@ import { Button } from '@/components/UI'
 import Locks from '@/components/Lock/MyLocks'
 import MylocksMobile from '@/components/Lock/Mobile/MylocksMobile'
 import { LOCKS } from '@/components/Lock/data'
+import INFO_API from '../data'
 const MyLocks = () => {
-  const MYLOCKS_INFO_API = ["TEST"]
   return (
     <>
-      {MYLOCKS_INFO_API.length !== 0 ? (
+      {INFO_API.length !== 0 ? (
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">Locks</h1>

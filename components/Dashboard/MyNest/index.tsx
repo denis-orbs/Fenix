@@ -3,12 +3,12 @@
 import { Button } from '@/components/UI'
 import Nest from '@/components/Lock/Nest'
 import NestMobile from '@/components/Lock/Mobile/NestMobile'
+import INFO_API from '../data'
 
 const MyNest = () => {
-  const MYNEST_INFO_API = ["TEST"]
   return (
     <>
-      {MYNEST_INFO_API.length !== 0 ? (
+      {INFO_API.length !== 0 ? (
         <div className="mb-10">
           <div className="flex justify-between mb-4">
             <h1 className="text-white text-xl">Nest</h1>

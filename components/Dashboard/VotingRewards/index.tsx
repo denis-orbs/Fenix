@@ -4,12 +4,13 @@ import { Button } from '@/components/UI'
 import HeaderRowVote from '@/components/Vote/Tables/HeaderRowVote'
 
 import { PROPS_HEADER_ROW_VOTE } from '../types'
+import INFO_API from '../data'
 
 const VotingRewards = () => {
-  const VOTE_INFO_API = ["TEST"]
+  
   return (
     <>
-      {VOTE_INFO_API.length !== 0 ? (
+      {INFO_API.length !== 0 ? (
         <div className="mb-10">
           <div className="flex justify-between mb-4">
             <h1 className="text-white text-xl">Voting Rewards</h1>
