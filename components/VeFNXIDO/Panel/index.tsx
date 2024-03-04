@@ -6,7 +6,7 @@ import { Button } from '@/components/UI'
 const Panel = () => {
   return (
     <div className="veFNXIDO-box">
-      <div className="flex flex-col items-start justify-between w-full xl:flex-row relative z-10">
+      <div className="flex flex-col gap-5 items-start justify-between w-full xl:flex-row relative z-10">
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-2xl text-white">veFNX IDO</h4>
           <div className="flex gap-4 items-center mb-4">
@@ -22,7 +22,7 @@ const Panel = () => {
               <p className="text-sm text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">Finished</p>
             </div>
           </div>
-          <div className="flex lg:gap-5 gap-3 box bg-shark-400 bg-opacity-40 2xl:w-[340px] lg:h-auto lg:w-96 rounded-lg mb-5 items-center justify-center lg:justify-normal">
+          <div className="flex lg:gap-5 gap-3 box bg-shark-400 bg-opacity-40 2xl:w-[340px] lg:h-auto w-full rounded-lg mb-5 items-center">
             <div>
               <p className="text-shark-100 font-bold text-[12px]">Starting</p>
               <p className="text-green-400 text-[12px]">Time</p>
@@ -52,7 +52,7 @@ const Panel = () => {
               <p className="text-shark-100 text-sm">Hours</p>
             </div>
           </div>
-          <div className="flex lg:gap-5 gap-3 box bg-shark-400 bg-opacity-40 2xl:w-[340px] lg:h-auto lg:w-96 rounded-lg mb-5 items-center justify-center lg:justify-normal">
+          <div className="flex lg:gap-5 gap-3 box bg-shark-400 bg-opacity-40 2xl:w-[340px] lg:h-auto w-full rounded-lg mb-5 items-center">
             <div>
               <p className="text-shark-100 font-bold text-[12px]">End</p>
               <p className="text-red-400 text-[12px]">Time</p>
