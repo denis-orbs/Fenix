@@ -13,7 +13,7 @@ const ManageNotifications = ({ openModal, setOpenModal }: ManageNotificationsPro
       <div className="common-modal">
       <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100 p-2 2xl:p-0" onClick={handlerClose} />
         <div className="relative z-10 w-auto h-auto">
-          <h1 className="mb-10 text-2xl text-center text-white">Strategy Notification</h1>
+          <h1 className="mb-6 text-xl text-center text-white">Strategy Notification</h1>
           <div>
             <p className="text-white text-center text-sm px-2 font-light line-clamp-3">
               Elevate your experience by customizing notifications that keep you in the loop with every trade executed

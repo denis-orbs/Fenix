@@ -1,5 +1,4 @@
 /* eslint-disable import/no-default-export */
-import Image from 'next/image'
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import Head from 'next/head'

@@ -56,8 +56,7 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
             <div className="flex items-center gap-4">
               <div
                 ref={ref}
-                className="flex items-center z-auto justify-center cursor-pointer
-                 flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
+                className="flex items-center z-auto justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
                 onClick={() => setIsVisible(!isVisible)}
               >
                 <span className="text-lg icon-cog text-white "></span>

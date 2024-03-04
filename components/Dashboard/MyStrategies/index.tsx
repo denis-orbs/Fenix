@@ -1,11 +1,14 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
+
 import Strategy from '@/components/Dashboard/MyStrategies/Strategy'
 import StrategyMobile from './StrategyMobile'
+
+import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperCore } from 'swiper'
 import 'swiper/css'
+
 import WithdrawFunds from '@/components/Modals/WithdrawFunds'
 import DuplicateStrategy from '@/components/Modals/DuplicateStrategy'
 import PauseStrategy from '@/components/Modals/PauseStrategy'
@@ -47,10 +50,7 @@ const MyStrategies = () => {
       {MYSTRATEGIES_INFO_API.length !== 0 && (
         <div className="relative">
           <h4 className="text-lg text-white mb-4">My Strategies</h4>
-          <div
-            className="dashboard-box mb-10 hidden xl:block 
-  "
-          >
+          <div className="dashboard-box mb-10 hidden xl:block">
             <Swiper
               spaceBetween={50}
               slidesPerView={3}

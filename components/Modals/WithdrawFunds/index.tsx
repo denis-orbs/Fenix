@@ -14,7 +14,7 @@ const WithdrawFunds = ({ openModal, setOpenModal }: WithdrawFundsProps) => {
       <div className="common-modal">
       <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100 p-2 2xl:p-0" onClick={handlerClose} />
         <div className="relative z-10 w-auto h-auto">
-          <h1 className="mb-10 text-2xl text-center text-white">Are you sure you would like to withdraw your funds?</h1>
+          <h1 className="mb-6 text-xl text-center text-white">Are you sure you would like to withdraw your funds?</h1>
             <div className='flex items-center justify-between bg-shark-400  bg-opacity-40 p-2 py-4 rounded-xl '>
                 <div className='px-3'>
                     <p className='text-sm text-white font-medium'>Did you know?</p>

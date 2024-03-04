@@ -64,8 +64,7 @@ const Info = () => {
             />
           </div>
 
-          <div className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start
-           md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow
+          <div className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow
             hover:shadow-[0px_4px_30px_0px_rgba(239,_239,_0,_0.50)] max-md:pb-[149px]">
             <div className="md:w-[80%] 2xl:w-[60%] max-md:pb-0 max-md:pt-10 p-8 relative z-10">
               <h3 className="text-base xl:text-lg font-medium leading-normal mb-2 xl:mb-3 text-[#EFEF00]">
@@ -127,7 +126,7 @@ const Info = () => {
           </div>
 
           <div className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg
-           items-start md:items-center flex backdrop-blur-[38px] overflow-hidden 
+           items-start md:items-center flex backdrop-blur-[38px] overflow-hidden
            landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] max-md:pb-[176px]">
             <div className="md:w-[90%] lg:w-[80%] max-md:pb-0 max-md:pt-10 p-8 relative z-10">
               <h3 className="text-base xl:text-lg font-medium leading-normal mb-1 md:mb-3 text-transparent bg-button-primary-hover bg-clip-text">
