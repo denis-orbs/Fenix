@@ -74,7 +74,7 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
                   >
                     {options.map((option, index) => {
                       return (
-                        <Button 
+                        <Button
                         onClick={()=>handlerOpenModal(option.value)}
                         variant="default" key={index} className="!py-1 !h-[33px]  !text-xs">
                           {option.label}
