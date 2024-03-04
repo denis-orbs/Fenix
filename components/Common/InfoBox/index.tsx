@@ -45,7 +45,7 @@ const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false, bgBox
         )}
       </div>
       {hasDecorator && (
-        <span className="absolute top-[60px] left-[10px] z-0">
+        <span className="absolute bottom-0 left-[10px] z-0">
           <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-8" width={1} height={35} />
         </span>
       )}

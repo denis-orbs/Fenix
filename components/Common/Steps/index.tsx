@@ -27,14 +27,8 @@ const Steps = ({ steps }: StepsProps) => {
         <h4 className="w-full mb-3 text-sm text-white">Start now</h4>
         <div className="relative flex flex-col w-auto">
           {steps.map((step, index) => (
-            <InfoBox data={step} key={index} />
+            <InfoBox data={step} key={index} hasDecorator={index !== steps.length - 1} />
           ))}
-          <span className="absolute top-[80px] left-[10px] z-0">
-            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-8" width={1} height={35} />
-          </span>
-          <span className="absolute z-0 bottom-[90px] left-[10px]">
-            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-8" width={1} height={35} />
-          </span>
         </div>
         <p
           className="flex items-center justify-end gap-3 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
