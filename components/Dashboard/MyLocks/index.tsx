@@ -33,7 +33,7 @@ const MyLocks = () => {
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
             <p className="flex gap-3 text-lg ms-2">
-              Locks <span className="icon-info"></span>
+              Locks 
             </p>
           </div>
           <div className="box-dashboard p-6">

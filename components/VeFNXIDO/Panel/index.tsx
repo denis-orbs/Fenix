@@ -20,7 +20,7 @@ const Panel = () => {
             />
             <div>
               <h4 className="text-white text-lg">USDC Offering</h4>
-              <p className="text-sm text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">Finished</p>
+              <p className="text-sm text-gradient-2">Finished</p>
             </div>
           </div>
         </div>

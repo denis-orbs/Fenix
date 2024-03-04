@@ -45,7 +45,7 @@ const LiquidityPositions = () => {
           <div className="flex flex-col   gap-3 w-full lg:w-4/5 mx-auto">
             <div className="text-white flex justify-between items-center flex-wrap">
               <p className="flex gap-3 text-lg ms-2">
-                Liquidity Positions <span className="icon-info"></span>
+                Liquidity Positions 
               </p>
               <Button variant="tertiary" className="flex gap-2  !py-2">
                 {' '}

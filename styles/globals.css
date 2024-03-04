@@ -21,6 +21,23 @@ body {
 
 .container {
   @apply mx-auto max-w-[1860px] px-5;
+
+}
+
+
+
+
+/************* Text Gradient ***********/
+
+.text-gradient {
+
+  @apply text-transparent bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text
+}
+
+
+.text-gradient-2 {
+
+  @apply text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text
 }
 
 /************* ScrollBar ***********/

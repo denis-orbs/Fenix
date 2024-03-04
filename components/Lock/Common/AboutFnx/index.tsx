@@ -15,7 +15,7 @@ const AboutFnx = () => {
       </div>
       <div className="flex justify-between">
         <div className="flex items-center gap-2">
-          <span className="icon-lock-off inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text "></span>{' '}
+          <span className="icon-lock-off inline-block text-2xl text-gradient-2 "></span>{' '}
           <div>
             <p className='text-xs text-shark-100'>Unlocks</p>
             <p className='text-sm text-white'>115 Nov, 2024</p>
