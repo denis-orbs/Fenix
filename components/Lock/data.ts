@@ -1,18 +1,18 @@
 export const LOCK_LIST = [
   {
-    label: 'Your Locks',
-    amount: '7 Locks',
+    title: 'Your Locks',
+    description: '7 Locks',
     icon: 'icon-hyperlink',
   },
   {
-    label: 'Active Locks',
-    amount: '1504 veFNX',
+    title: 'Active Locks',
+    description: '1504 veFNX',
     icon: 'icon-lock',
     textColor: 'text-green-500',
   },
   {
-    label: 'Inactive Locks',
-    amount: '3500 veFNX',
+    title: 'Inactive Locks',
+    description: '3500 veFNX',
     icon: 'icon-lock-off',
     textColor: 'text-red-500',
   },

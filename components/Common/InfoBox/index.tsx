@@ -15,6 +15,7 @@ interface InfoBoxProps {
   hasDecorator?: boolean
   textColor?: string
   fontSize?: string
+  
 }
 
 const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false }: InfoBoxProps) => {
