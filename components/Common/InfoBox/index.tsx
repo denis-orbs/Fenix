@@ -15,16 +15,16 @@ interface InfoBoxProps {
   hasDecorator?: boolean
   textColor?: string
   fontSize?: string
-  
+  bgBox?: string
 }
 
-const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false }: InfoBoxProps) => {
+const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false, bgBox = '' }: InfoBoxProps) => {
   const handleShowTooltip = () => setShowTooltip && setShowTooltip(true)
   const handleHiddenTooltip = () => setShowTooltip && setShowTooltip(false)
 
   return (
     <div className="relative">
-      <div className="xl:h-[97px] flex gap-3 items-center p-3 mb-3 relative box">
+      <div className={`xl:h-[97px] flex gap-3 items-center p-3 mb-3 relative ${bgBox === '' ? 'box' : bgBox}`}>
         <div className="flex items-center justify-center w-[32px] h-[32px] p-2 lg:w-12 lg:h-12 lg:p-3 rounded-lg bg-shark-400 bg-opacity-60">
           <span
             className={`inline-block lg:text-2xl text-transparent
