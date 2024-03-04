@@ -45,7 +45,7 @@ const Summary = ({ summary }: SummaryProps) => {
       </li>
       <li className="flex items-center justify-between">
         <p className="text-shark-100 text-sm">Platform Fee</p>
-        <p className="text-gradient-2 text-sm">
+        <p className="text-gradient text-sm">
           0.10%
         </p>
       </li>

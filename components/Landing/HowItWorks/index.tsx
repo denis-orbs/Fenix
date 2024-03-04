@@ -15,8 +15,8 @@ const HowItWorks = () => {
 
       <p className="text-white text-base md:text-lg md:mb-2 text-center font-light">How it Works</p>
 
-      <h3 className="text-4xl mb-2 md:mb-4 text-center 
-      text-gradient-2">
+      <h3 className="text-4xl mb-2 md:mb-4 text-center
+      text-gradient">
         Fenix Finance
       </h3>
 

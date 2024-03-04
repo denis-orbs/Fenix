@@ -22,7 +22,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
       <div className={` h-[77px] flex gap-3 items-center p-6 mb-3 relative exchange-box-info `}>
         <div className="flex items-center justify-center xl:w-12 xl:h-12 w-[32px] h-[32px] p-3 rounded-lg bg-shark-400 bg-opacity-60">
           <span
-            className={` icon-lock inline-block text-2xl text-gradient-2`}
+            className={` icon-lock inline-block text-2xl text-gradient`}
           ></span>
         </div>
         <div className="fw ">
@@ -39,7 +39,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center xl:w-12 xl:h-12 w-[32px] h-[32px] p-3 rounded-lg bg-shark-400 bg-opacity-60">
                 <span
-                  className={` icon-check inline-block text-2xl text-gradient-2`}
+                  className={` icon-check inline-block text-2xl text-gradient`}
                 ></span>
               </div>
               <div className="fw ">
@@ -59,7 +59,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center xl:w-12 xl:h-12 w-[32px] h-[32px] p-3 rounded-lg bg-shark-400 bg-opacity-60">
                 <span
-                  className={` icon-lock inline-block text-2xl text-gradient-2`}
+                  className={` icon-lock inline-block text-2xl text-gradient`}
                 ></span>
               </div>
               <div className="fw ">
@@ -82,7 +82,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
           <div className={` h-[77px] flex gap-3 items-center p-6 mb-3 relative exchange-box-info `}>
             <div className="flex items-center justify-center xl:w-12 xl:h-12 w-[32px] h-[32px] p-3 rounded-lg bg-shark-400 bg-opacity-60">
               <span
-                className={` icon-lock-off inline-block text-2xl text-gradient-2`}
+                className={` icon-lock-off inline-block text-2xl text-gradient`}
               ></span>
             </div>
             <div className="fw ">
@@ -99,7 +99,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
           <div className={` h-[77px] flex gap-3 items-center p-6 mb-3 relative exchange-box-info `}>
             <div className="flex items-center justify-center xl:w-12 xl:h-12 w-[32px] h-[32px] p-3 rounded-lg bg-shark-400 bg-opacity-60">
               <span
-                className={` icon-check inline-block text-2xl text-gradient-2`}
+                className={` icon-check inline-block text-2xl text-gradient`}
               ></span>
             </div>
             <div className="fw ">
@@ -120,7 +120,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
                   <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center xl:w-12 xl:h-12 w-[32px] h-[32px] p-3 rounded-lg bg-shark-400 bg-opacity-60">
                       <span
-                        className={` icon-party inline-block text-2xl text-gradient-2`}
+                        className={` icon-party inline-block text-2xl text-gradient`}
                       ></span>
                     </div>
                     <div className="fw ">
@@ -165,7 +165,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
               <div className="flex items-center gap-3">
                 <div className="flex items-center justify-center xl:w-12 xl:h-12 w-[32px] h-[32px] p-3 rounded-lg bg-shark-400 bg-opacity-60">
                   <span
-                    className={` icon-lock inline-block text-2xl text-gradient-2`}
+                    className={` icon-lock inline-block text-2xl text-gradient`}
                   ></span>
                 </div>
                 <div className="fw ">

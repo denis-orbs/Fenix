@@ -26,12 +26,12 @@ const Notification = ({ show = false }: NotificationProps) => {
       </div>
       <div className="flex items-center w-full gap-4 mb-3">
         <div className="flex items-center justify-center w-10 h-10 p-2 rounded-lg bg-shark-400 bg-opacity-40">
-          <span className="inline-block text-base text-gradient-2 icon-wallet"></span>
+          <span className="inline-block text-base text-gradient icon-wallet"></span>
         </div>
         <p className="text-white text-xs max-w-[150px]">Wallet (0x98b...6de3c) Connected Successfully</p>
       </div>
       <div className="flex items-center gap-3">
-        <p className="inline-block text-xs text-gradient-2">
+        <p className="inline-block text-xs text-gradient">
           <span className="mr-2 icon-link"></span>
           View In Explorer
         </p>
