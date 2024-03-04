@@ -44,7 +44,7 @@ const MyStrategies = () => {
 
   return (
     <>
-      {MYSTRATEGIES_INFO_API.length !== 0 ? (
+      {MYSTRATEGIES_INFO_API.length !== 0 && (
         <div className="relative">
           <h4 className="text-lg text-white mb-4">My Strategies</h4>
           <div
@@ -87,8 +87,6 @@ const MyStrategies = () => {
           </div>
           {MODAL_LIST[modalSelected]}
         </div>
-      ) : (
-        <></>
       )}
     </>
   )

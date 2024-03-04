@@ -3,10 +3,10 @@ import { Button } from '@/components/UI'
 import StrategiesItem from '@/components/Dashboard/StrategiesDCA/StrategiesItem'
 
 const StrategiesDCA = () => {
-  const STRATEGIES_INFO_API = ["TEST"]
+  const STRATEGIES_INFO_API = ['TEST']
   return (
     <>
-      {STRATEGIES_INFO_API.length !== 0 ? (
+      {STRATEGIES_INFO_API.length !== 0 && (
         <div className="dashboard-box flex-col xl:flex-row">
           <div className="relative w-full z-10">
             <div className="text-lg text-white mb-2">Active DCAs:</div>
@@ -31,8 +31,6 @@ const StrategiesDCA = () => {
             </div>
           </div>
         </div>
-      ) : (
-        <></>
       )}
     </>
   )
