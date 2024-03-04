@@ -1,8 +1,9 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
-import { useOnClickOutside } from 'usehooks-ts'
+import ComponentVisible from '@/hooks/useVisible'
+
 type options = {
   value: string
   label: string
@@ -15,19 +16,12 @@ interface StrategyMobileProps {
 }
 
 const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
-  const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const outsideRef = useRef(null)
-
-  const handleClickOutside = ()=>{
-    setIsOpenItemsPerPage(false)
-}
+  const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const handlerOpenModal = (option: string) => {
     setOpenModal(true)
     setModalSelected(option)
   }
-  useOnClickOutside(outsideRef,handleClickOutside)
-
 
   const handlerOpen = () => (isOpen ? setIsOpen(false) : setIsOpen(true))
   return (
@@ -61,22 +55,25 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
             </div>
             <div className="flex items-center gap-4">
               <div
-              ref={outsideRef}
-                className="flex items-center justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
-                onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
+                ref={ref}
+                className="flex items-center z-auto justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
+                onClick={() => setIsVisible(!isVisible)}
               >
                 <span className="text-lg icon-cog text-white "></span>
-                {isOpenItemsPerPage && (
+                {isVisible && (
                   <div
                     className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px]
-                          bg-shark-400 absolute top-14 z-50 left--1 translate-x-1"
+                          bg-shark-400 absolute top-14  left--1 translate-x-1"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {options.map((option, index) => {
                       return (
                         <Button
-                        onClick={()=>handlerOpenModal(option.value)}
-                        variant="default" key={index} className="!py-1 !h-[33px]  !text-xs">
+                          onClick={() => handlerOpenModal(option.value)}
+                          variant="default"
+                          key={index}
+                          className="!py-1 !h-[33px]  !text-xs"
+                        >
                           {option.label}
                         </Button>
                       )
