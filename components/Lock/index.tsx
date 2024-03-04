@@ -21,7 +21,7 @@ const Lock = () => {
           <div className="box-notification p-5  justify-between rounded-lg w-2/5 mb-5 me-20 hidden xl:flex">
             <div className="flex items-center gap-2 w-2/3 ">
               <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
-                <span className="inline-block text-2xl text-gradient-2 icon-bell"></span>
+                <span className="inline-block text-2xl text-gradient icon-bell"></span>
               </div>
               <p className="text-shark-100 text-xs">
                 Create a Lock for more than 2 years and enjoy the benefits of our APR Performance.

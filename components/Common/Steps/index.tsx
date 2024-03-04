@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import StepBox from '@/components/Common/Boxes/StepBox'
 import InfoBox from '@/components/Common/InfoBox'
 import ReadMoreModal from '@/components/Modals/Liquidity/ReadMore'

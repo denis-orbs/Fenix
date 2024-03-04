@@ -30,13 +30,6 @@ body {
 /************* Text Gradient ***********/
 
 .text-gradient {
-
-  @apply text-transparent bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text
-}
-
-
-.text-gradient-2 {
-
   @apply text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text
 }
 
@@ -95,7 +88,7 @@ body {
 }
 
 .landing-info-box {
-  @apply relative h-[400px] md:h-[268px] max-md:max-w-[350px] 
+  @apply relative h-[400px] md:h-[268px] max-md:max-w-[350px]
 
   before:content-['']
   before:absolute

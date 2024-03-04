@@ -12,7 +12,7 @@ const Separator = ({ single }: SeparatorProps) => {
     <div className="h-1 w-full flex items-center justify-center relative z-10">
       <div className="bg-shark-500 w-28 h-10 flex items-center justify-center rounded-lg">
         <span
-          className={`${singleClass} rotate-90 text-gradient-2`}
+          className={`${singleClass} rotate-90 text-gradient`}
         ></span>
       </div>
     </div>
