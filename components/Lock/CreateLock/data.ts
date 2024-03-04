@@ -5,6 +5,7 @@
       icon: 'icon-compass',
       primary_color: '',
       secondary_color: '',
+      hasDecorator: true,
     },
     {
       label: '',
@@ -12,6 +13,7 @@
       icon: 'icon-calendar',
       primary_color: '',
       secondary_color: '',
+      hasDecorator: true,
     },
     {
       label: '',
@@ -19,6 +21,7 @@
       icon: 'icon-check',
       primary_color: '',
       secondary_color: '',
+      hasDecorator: true,
     },
     {
         label: '',
