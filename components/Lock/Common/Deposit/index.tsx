@@ -33,7 +33,6 @@ const DepositLock = () => {
               </Button>
             </div>
           </div>
-          {/* section Header */}
           <div>
             <p className="text-white text-sm mb-2">Select lock you want to deposit</p>
 
@@ -46,7 +45,6 @@ const DepositLock = () => {
               setActiveVote={setActiveVote}
             />
           </div>
-          {/* InactiveVote */}
           <p className="text-white text-sm mt-5 mb-2">Nest Strategy</p>
           <div className="flex flex-col  exchange-box-x1">
             <div className="flex items-center gap-2">
@@ -54,7 +52,6 @@ const DepositLock = () => {
                 <span className="icon-lucide inline-block text-2xl text-gradient-2 "></span>
                 <span className="bg-green-600 p-1 rounded-full absolute bottom-2 right-2"></span>
               </div>
-              {/* //// */}
               <div>
                 <div className="flex gap-2">
                   <p className="text-white">veFnx Maxi</p>{' '}
@@ -73,7 +70,6 @@ const DepositLock = () => {
               </div>
             </div>
           </div>
-          {/* Nest Strategy */}
           <div className="flex gap-2 mt-5 items-center">
             <CheckBox
               checked={checked}
@@ -87,11 +83,9 @@ const DepositLock = () => {
             </p>
           </div>
         </div>
-        {/*  line black */}
         <div className="flex justify-center items-center w-[10%] relative ">
           <div className="bg-shark-400 h-4/5 w-[1px]"></div>
         </div>
-        {/* line black */}
         <div className="relative flex flex-col w-full xl:w-[45%] max-h-[390px]  overflow-x-none border-t-2 xl:border-none border-shark-400">
           <div className="mt-4">
             <h1 className="text-white text-xl mb-5">Nest Deposit</h1>
