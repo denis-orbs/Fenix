@@ -32,7 +32,7 @@ const IncorrectChain = ({ setOpenModal }: SlippageToleranceProps) => {
         </div>
         <div className="flex flex-col items-center justify-center mb-4">
           <h1 className="mb-2 text-xl font-bold text-center text-white">You are in the wrong network</h1>
-          <p className="text-sm text-[#53606A] w-[261px] text-center">
+          <p className="text-sm text-shark-100 w-[261px] text-center">
             Please switch to Blast Network to use Fenix Protocol.
           </p>
         </div>
