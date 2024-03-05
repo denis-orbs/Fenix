@@ -73,8 +73,8 @@ const MylocksMobile = ({ activePagination = true, Locks }: MylocksMobileProps) =
                               </div>
                             </div>
                             <div>
-                              <p className="text-sm text-shark-100">Unlock Date</p>
-                              <p className="text-sm">24-06-2025</p>
+                              <p className="lg:text-sm text-xs text-shark-100">Unlock Date</p>
+                              <p className="lg:text-sm text-xs">24-06-2025</p>
                             </div>
                             <div>
                               <span
@@ -102,19 +102,23 @@ const MylocksMobile = ({ activePagination = true, Locks }: MylocksMobileProps) =
                                     </p>
                                   </div>
                                   <div>
-                                    <p className="text-shark-100 text-center mb-2">Vote Status</p>
+                                    <p className="text-shark-100 text-center">Vote Status</p>
                                     {lock.VOTE ? (
-                                      <span className="flex items-center bg-opacity-20 w-[105px] text-xs justify-center px-5 py-1 text-white border border-solid border-green-400 bg-green-500 rounded-xl ">
+                                      <span className="flex items-center bg-opacity-20 lg:w-[105px] 
+                                      text-xs justify-center  py-1 px-2
+                                      text-white border border-solid border-green-400 bg-green-500 rounded-xl ">
                                         Voted
                                       </span>
                                     ) : (
-                                      <span className="flex items-center bg-opacity-20 w-[105px] text-xs justify-center px-5 py-1 text-white border border-solid border-red-600 bg-red-700 rounded-xl ">
+                                      <span className="flex items-center bg-opacity-20 px-2 lg:w-[105px]  
+                                      text-xs justify-center py-1 text-white border 
+                                      border-solid border-red-600 bg-red-700 rounded-xl ">
                                         Not Voted
                                       </span>
                                     )}
                                   </div>
                                 </div>
-                                <Button onClick={handlerNavigation} variant="tertiary" className="w-full">
+                                <Button onClick={handlerNavigation} variant="tertiary" className="w-full !text-xs">
                                   Manage
                                 </Button>
                               </div>

@@ -62,7 +62,7 @@ const TableHead = ({ items }: TableHeadProps) => {
             }}
           >
             {item.showTooltip && (
-              <div className="absolute z-50 text-left bottom-0">
+              <div className="absolute z-50 text-left bottom-6 right-32">
                 <TotalRewardsTooltip show={item.showTooltip} setShow={() => {}} />
               </div>
             )}

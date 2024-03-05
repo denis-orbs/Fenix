@@ -10,7 +10,8 @@ import { useRouter } from 'next/navigation'
 type LOCK = {
   LOCK_ID: string
   STATUS: boolean
-  VOTE: boolean
+  VOTE: boolean,
+  TYPE?: string
 }
 
 interface MyLocksProps {

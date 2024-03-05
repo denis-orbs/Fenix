@@ -19,7 +19,7 @@ const VotingRewards = () => {
             <div className="relative z-10">
               <HeaderRowVote {...PROPS_HEADER_ROW_VOTE} />
               <div className="mt-2">
-                <Button variant="tertiary" className="!py-3 flex gap-2">
+                <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
                   Review more
                   <span className="icon-link"></span>
                 </Button>

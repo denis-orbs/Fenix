@@ -13,7 +13,10 @@ import NestMobile from './Mobile/NestMobile'
 
 const Lock = () => {
   const [changeState, setChangeState] = useState<boolean>(false)
-  const [currentTab, setCurrentTab] = useState('Everything')
+  const [currentTab, setCurrentTab] = useState('ACTIVE')
+
+  const LOCKS_FILTER = LOCKS.filter((lock) => lock.TYPE === currentTab.toUpperCase())
+
   return (
     <>
       {changeState ? (
@@ -57,7 +60,7 @@ const Lock = () => {
               <Search />
             </div>
           </div>
-          <MyLocks Locks={LOCKS} />
+          <MyLocks Locks={LOCKS_FILTER} />
           <MylocksMobile Locks={LOCKS} />
           <h5 className=" text-2xl text-white ms-2">Nest</h5>
           <Nest />

@@ -58,10 +58,13 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
                               </div>
                               <div className="flex items-center gap-3">
                                 <p className="text-xs flex justify-center items-center text-shark-100 bg-shark-400 py-1 px-3 rounded-lg border-shark-100 border-solid border">
-                                  Updated 2 days ago
+                                  <span className='line-clamp-1'>Updated 2 days ago</span>
                                 </p>
-                                <p className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 py-1 px-3 rounded-lg border-[#53606A] border-solid border">
-                                  0xc981...EF14f
+                                <p
+                                  className="text-xs flex items-center justify-center text-shark-100 
+                                bg-shark-400 py-1 px-3 rounded-lg border-shark-100 border-solid border"
+                                >
+                                  0xc981..
                                   <span className="icon-document ml-1 cursor-pointer"></span>
                                 </p>
                               </div>
@@ -97,7 +100,7 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
                                   </p>
                                 </div>
                               </div>
-                              <Button onClick={handlerNavigation} variant="tertiary" className="w-full  flex gap-4">
+                              <Button onClick={handlerNavigation} variant="tertiary" className="w-full !text-xs  flex gap-4">
                                 Deposit Lock <span className="icon-link text-xlg"></span>
                               </Button>
                               <div className="flex flex-col gap-2 border border-shark-100 rounded-lg p-2">
@@ -106,7 +109,7 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
                                     <span className="icon-lock"></span>Lock #11462
                                   </p>
                                 </div>
-                                <div className="text-sm text-white flex-col flex gap-2">
+                                <div className="text-xs text-white flex-col flex gap-2">
                                   <p>0.0 FNX locked for 3 years</p>
                                   <p>0.0 FNX compouned</p>
                                   <p>Withdraw available after first epoch</p>

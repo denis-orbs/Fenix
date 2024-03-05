@@ -12,8 +12,8 @@ const MyLocks = () => {
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">Locks</h1>
-            <Button variant="tertiary" className="!py-3">
-              <span className="icon-logout"></span>New deposit
+            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm">
+              <span className="icon-logout "></span>New deposit
             </Button>
           </div>
           <div className="dashboard-box rounded-lg">
@@ -21,7 +21,7 @@ const MyLocks = () => {
               <Locks Locks={LOCKS} activePagination={false} />
               <MylocksMobile activePagination={false} Locks={LOCKS} />
               <div className="mt-2">
-                <Button variant="tertiary" className="!py-3 flex gap-2">
+                <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
                   Review more
                   <span className="icon-link"></span>
                 </Button>
