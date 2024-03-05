@@ -34,7 +34,7 @@ const StrategiesItem = () => {
             <ProgressBar progress={10} />
           </div>
           <Button variant="tertiary" className="!py-2 !px-3" onClick={handleOpen}>
-            <span className="icon-chevron text-xs"></span>
+            <span className={`icon-chevron text-xs ${open &&  'rotate-180'}`}></span>
           </Button>
         </div>
       </div>

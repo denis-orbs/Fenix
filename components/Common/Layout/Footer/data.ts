@@ -4,25 +4,26 @@ const NAV_LINKS = [
     href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
   },
   {
-    title: 'Security',
-    href: '#',
-  },
-  {
     title: 'Gitbook',
     href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
-  },
-  {
-    title: 'Brandkit',
-    href: '#',
   },
   {
     title: 'Articles',
     href: '#',
   },
   {
+    title: 'Security',
+    href: '#',
+  },
+  {
+    title: 'Brandkit',
+    href: '#',
+  },
+  {
     title: 'Support',
     href: '#',
   },
+
 ]
 
 const SOCIAL_LINKS = [

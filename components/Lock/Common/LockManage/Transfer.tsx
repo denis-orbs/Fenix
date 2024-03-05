@@ -4,7 +4,7 @@ const Transfer = () => {
   return (
     <div className='flex flex-col relative'>
     <div className="rotate-90 mx-auto bg-shark-400 p-1 rounded-lg bg-opacity-40">
-        <span className="icon-arrow text-2xl inline-block     text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+        <span className="icon-arrow text-2xl inline-block     text-gradient"></span>
       </div>
     <div className='p-8 exchange-box-x1 mt-2'>
         <p className='text-sm text-white  mb-2'>Transfer to</p>

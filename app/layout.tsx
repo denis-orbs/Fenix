@@ -32,7 +32,6 @@ export default function RootLayout({
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <body suppressHydrationWarning={true} className={`${poppins.className} relative pt-[26px] pb-5`}>
         <Header />
         <MobileHeader />

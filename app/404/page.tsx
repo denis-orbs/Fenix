@@ -41,7 +41,7 @@ const Page404 = () => {
       <div className="bg-background-404 z-10 p-24 rounded-2xl !bg-opacity-10 w-[960px] h-[659.34px]  flex flex-col justify-center items-center">
         <h1 className="lg:text-[150px] sm:text-[150px] text-white mb-14">
           ERC-
-          <span className="text-transparent bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text">404</span>
+          <span className="text-gradient">404</span>
         </h1>
         <p className="mt-5 text-2xl text-white ">Oh no, the page is gone!</p>
         <p className="mt-2 text-2xl font-light text-white">{`We’re sorry!`}</p>

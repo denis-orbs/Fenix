@@ -1,13 +1,20 @@
 'use client'
-
-import ActiveDashboard from './ActiveDashboard'
-import InactiveDashboard from './InactiveDashboard'
+import StrategiesDCA from '@/components/Dashboard/StrategiesDCA'
+import MyNest from '@/components/Dashboard/MyNest'
+import LiquidityPositions from '@/components/Dashboard/LiquidityPositions'
+import MyLocks from '@/components/Dashboard/MyLocks'
+import VotingRewards from '@/components/Dashboard/VotingRewards'
+import MyStrategies from '@/components/Dashboard/MyStrategies'
 
 const Dashboard = () => {
   return (
     <div className="py-5">
-      {/* <InactiveDashboard /> */}
-      <ActiveDashboard />
+      <LiquidityPositions />
+      <MyLocks />
+      <MyNest />
+      <VotingRewards />
+      <MyStrategies />
+      <StrategiesDCA />
     </div>
   )
 }

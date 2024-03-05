@@ -11,7 +11,7 @@ const Split = () => {
   return (
     <div className="flex flex-col">
       <div className="rotate-90 mx-auto bg-shark-400 p-1 rounded-lg bg-opacity-40">
-        <span className="icon-arrow text-2xl inline-block  text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+        <span className="icon-arrow text-2xl inline-block  text-gradient"></span>
       </div>
       <div className="flex flex-col gap-3  exchange-box-x1 p-5">
         <div className="text-sm flex justify-between">
@@ -19,7 +19,7 @@ const Split = () => {
         </div>
         <div className="flex flex-wrap xl:flex-nowrap justify-between text-white gap-3">
           <div className="flex items-center gap-2 w-full">
-            <span className="icon-lock  inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+            <span className="icon-lock  inline-block text-2xl text-gradient"></span>
             <InputRange
               step={1}
               max={100}
@@ -53,7 +53,7 @@ const Split = () => {
               <p>744,621.46</p>
             </div>
             <div className="flex gap-2 items-center  w-3/4 xl:w-auto">
-              <span className="icon-lock  inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+              <span className="icon-lock  inline-block text-2xl text-gradient"></span>
               <InputRange
                 step={1}
                 max={100}
@@ -79,7 +79,7 @@ const Split = () => {
               <p>744,621.46</p>
             </div>
             <div className="flex gap-2 items-center w-3/4 xl:w-auto">
-              <span className="icon-lock  inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+              <span className="icon-lock  inline-block text-2xl text-gradient"></span>
               <InputRange
                 step={1}
                 max={100}

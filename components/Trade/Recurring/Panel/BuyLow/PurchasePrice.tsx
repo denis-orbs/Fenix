@@ -27,7 +27,7 @@ const PurchasePrice = ({ setValue, value }: PurchasePriceProps) => {
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
           />
         </div>
-        <span className="icon-swap text-3xl rotate-180 text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+        <span className="icon-swap text-3xl rotate-180 text-gradient"></span>
         <div className="relative w-full">
           <input
             type="number"

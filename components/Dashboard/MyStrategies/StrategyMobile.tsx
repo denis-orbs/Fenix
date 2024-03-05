@@ -1,8 +1,10 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
-import { useOnClickOutside } from 'usehooks-ts'
+import ComponentVisible from '@/hooks/useVisible'
+import Graph from './Graph'
+
 type options = {
   value: string
   label: string
@@ -15,19 +17,12 @@ interface StrategyMobileProps {
 }
 
 const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
-  const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const outsideRef = useRef(null)
-
-  const handleClickOutside = ()=>{
-    setIsOpenItemsPerPage(false)
-}
+  const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const handlerOpenModal = (option: string) => {
     setOpenModal(true)
     setModalSelected(option)
   }
-  useOnClickOutside(outsideRef,handleClickOutside)
-
 
   const handlerOpen = () => (isOpen ? setIsOpen(false) : setIsOpen(true))
   return (
@@ -61,22 +56,24 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
             </div>
             <div className="flex items-center gap-4">
               <div
-              ref={outsideRef}
-                className="flex items-center justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
-                onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
+                ref={ref}
+                className="flex items-center z-20 justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
+                onClick={() => setIsVisible(!isVisible)}
               >
                 <span className="text-lg icon-cog text-white "></span>
-                {isOpenItemsPerPage && (
+                {isVisible && (
                   <div
-                    className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px]
-                          bg-shark-400 absolute top-14 z-50 left--1 translate-x-1"
+                    className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px]  bg-shark-400 absolute top-14  left--1 translate-x-1"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {options.map((option, index) => {
                       return (
-                        <Button 
-                        onClick={()=>handlerOpenModal(option.value)}
-                        variant="default" key={index} className="!py-1 !h-[33px]  !text-xs">
+                        <Button
+                          onClick={() => handlerOpenModal(option.value)}
+                          variant="default"
+                          key={index}
+                          className="!py-1 !h-[33px]  !text-xs"
+                        >
                           {option.label}
                         </Button>
                       )
@@ -96,14 +93,14 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
           <div>
             <div className="flex gap-2 my-2">
               <div className="flex flex-col gap-2 w-1/2 items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
-                <p className="text-white">
-                  ROI <span className="icon-info text-xs"></span>
+                <p className="text-white text-xs lg:text-sm">
+                  ROI <span className="icon-info"></span>
                 </p>
                 <h1 className="text-green-400 text-2xl">0.00%</h1>
               </div>
               <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
-                <p className="text-white">
-                  TOTAL BUDGET <span className="icon-info text-xs"></span>
+                <p className="text-white text-xs lg:text-sm" >
+                  TOTAL BUDGET <span className="icon-info"></span>
                 </p>
                 <h1 className="text-white text-2xl">$501.10</h1>
               </div>
@@ -121,14 +118,7 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
                   <p className="text-xs text-white">$0.00</p>
                 </div>
               </div>
-              <div className="h-auto">
-                <div className="flex items-center w-full justify-between px-10 py-3 border-t mt-24 border-shark-300">
-                  <p className="text-white text-xs">0.00</p>
-                  <p className="text-white text-xs">1,328.19</p>
-                  <p className="text-white text-xs">3,672.06</p>
-                  <p className="text-white text-xs">6,015.93</p>
-                </div>
-              </div>
+              <Graph />
             </div>
           </div>
         )}

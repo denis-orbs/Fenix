@@ -42,7 +42,7 @@ const NavItem = ({ item }: NavItemProps) => {
       <Link href={`${item.path}`} className="flex items-center gap-2" onClick={handleRedirect}>
         <div className="flex items-center justify-center w-10 h-10 p-2 border rounded-lg bg-shark-400 bg-opacity-40 border-shark-400">
           <span
-            className={`inline-block text-lg text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${item.icon}`}
+            className={`inline-block text-lg text-gradient ${item.icon}`}
           ></span>
         </div>
         <div>

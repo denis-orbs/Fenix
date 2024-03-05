@@ -13,15 +13,18 @@ import NestMobile from './Mobile/NestMobile'
 
 const Lock = () => {
   const [changeState, setChangeState] = useState<boolean>(false)
-  const [currentTab, setCurrentTab] = useState('Everything')
+  const [currentTab, setCurrentTab] = useState('ACTIVE')
+
+  const LOCKS_FILTER = LOCKS.filter((lock) => lock.TYPE === currentTab.toUpperCase())
+
   return (
     <>
       {changeState ? (
-        <div className="flex flex-col items-center py-10 px-20">
+        <div className="flex flex-col items-center py-10 ">
           <div className="box-notification p-5  justify-between rounded-lg w-2/5 mb-5 me-20 hidden xl:flex">
             <div className="flex items-center gap-2 w-2/3 ">
               <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
-                <span className="inline-block text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text icon-bell"></span>
+                <span className="inline-block text-2xl text-gradient icon-bell"></span>
               </div>
               <p className="text-shark-100 text-xs">
                 Create a Lock for more than 2 years and enjoy the benefits of our APR Performance.
@@ -39,7 +42,7 @@ const Lock = () => {
           </div>
         </div>
       ) : (
-        <section className="">
+        <section>
           <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row mb-4">
             <div className="w-full 2xl:w-3/4">
               <LockTokens changeState={changeState} setChangeState={setChangeState} />
@@ -47,7 +50,7 @@ const Lock = () => {
             <Steps steps={LOCK_STEPS} />
           </div>
           <div className="flex items-center gap-2 mb-4">
-            <h5 className="text-xl text-white">Locks</h5>
+            <h5 className="lg:text-2xl text-lg text-white">Locks</h5>
           </div>
           <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
             <div className="w-full xl:w-2/3">
@@ -57,15 +60,11 @@ const Lock = () => {
               <Search />
             </div>
           </div>
-
+          <MyLocks Locks={LOCKS_FILTER} />
           <MylocksMobile Locks={LOCKS} />
+          <h5 className="lg:text-2xl text-lg text-white pt-5">Nest</h5>
+          <Nest />
           <NestMobile />
-
-          <div className=" w-full mb-20 ">
-            <MyLocks Locks={LOCKS} />
-            <h5 className=" text-2xl text-white ms-2">Nest</h5>
-            <Nest />
-          </div>
         </section>
       )}
     </>

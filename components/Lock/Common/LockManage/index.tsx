@@ -78,7 +78,7 @@ const LockManage = () => {
             {currentTab === 'TRANSFER' && <Transfer />}
             {currentTab === 'MERGE' && (
               <div className="mx-auto rotate-90 bg-shark-400 bg-opacity-40 p-1 rounded-l-lg border border-shark-300">
-                <span className="icon-swap mx-auto rotate-90 text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+                <span className="icon-swap mx-auto rotate-90 text-2xl text-gradient"></span>
               </div>
             )}
             {currentTab === 'SPLIT' && (
@@ -197,7 +197,7 @@ const LockManage = () => {
             {currentTab === 'MERGE' && (
               <div className="exchange-box-x1 p-5 mt-5 flex justify-between items-center text-white text-sm">
                 <p className="flex gap-2 items-center text-xs">
-                  <span className="icon-info text-2xl inline-block text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text "></span>
+                  <span className="icon-info text-2xl inline-block text-gradient "></span>
                   Merging/splitting will cause a loss of unclaimed and pending rewards, make sure to claim everything
                   beforehand.
                 </p>

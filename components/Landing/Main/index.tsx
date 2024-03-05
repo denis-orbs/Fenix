@@ -5,6 +5,8 @@ import { Michroma } from 'next/font/google'
 import Image from 'next/image'
 import Decorator from '@/components/Common/Layout/BackgroundLanding'
 import useStore from '@/store'
+import Blast from '@/components/UI/Icons/Blast'
+import { useState } from 'react'
 
 const michroma = Michroma({
   weight: ['400'],
@@ -27,6 +29,10 @@ const Box = ({ text }: { text: string }) => {
 const Main = () => {
   const isConnected = useStore((state) => state.isConnected)
   const { setWalletSelectionModal } = useStore()
+  const [isHover, setIsHover] = useState(false)
+
+  const handleIsHoverActive = () => setIsHover(true)
+  const handleIsHoverInactive = () => setIsHover(false)
 
   const handlerConnectWallet = () => setWalletSelectionModal(true)
 
@@ -38,25 +44,21 @@ const Main = () => {
           <div className="flex max-xl:flex-col">
             <div className="xl:pl-[50px] pt-[14px] max-w-[345px] md:max-w-[670px] max-xl:mx-auto mr-auto mb-[20px] xl:mb-[400px] mt-5 md:mt-20 xl:my-[150px] 2xl:mt-[250px] 2xl:mb-[491px] max-xl:text-center shrink-0">
               <div className="text-base md:text-lg text-shark-100 leading-normal mb-2">Welcome to Fenix Finance</div>
-
               <div className={`text-white text-base md:text-[32px] leading-[139%] mb-[21px] ${michroma.className}`}>
-                THE UNIFIED TRADING AND{' '}
-                <span className="text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                  LIQUIDITY MARKETPLACE{' '}
+                THE UNIFIED TRADING AND <span className="text-gradient">LIQUIDITY MARKETPLACE </span>
+                <span className="flex items-center justify-center xl:justify-start xl:items-end gap-3">
+                  FOR
+                  <span className="svgcontainer pt-2 " onMouseOut={handleIsHoverInactive} onMouseOver={handleIsHoverActive}>
+                    <Blast isHover={isHover} />
+                  </span>
                 </span>
-                FOR
-                <Image
-                  src="/static/images/landing/main/blast.svg"
-                  width={163}
-                  height={39}
-                  alt="Blast"
-                  className="inline-block ml-2.5 md:ml-5 max-md:w-[100px] max-md:h-[24px]"
-                />
               </div>
 
               {!isConnected && (
                 <Button className="w-[112px] h-[44px] md:w-[123px] md:h-[41px] !text-sm !py-2.5 !px-0 max-xl:mx-auto">
-                  Launch App
+                  <span>
+                    Launch App
+                  </span>
                 </Button>
               )}
             </div>

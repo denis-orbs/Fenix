@@ -19,18 +19,18 @@ export const STEPS = [
 
 export const EXCHANGE_LIST = [
   {
-    label: 'Total Value Locked',
-    amount: "$92,837,327.32",
+    title: 'Total Value Locked',
+    description: "$92,837,327.32",
     icon: 'icon-lock',
   },
   {
-    label: 'Fees',
-    amount: "$64,789,445.82",
+    title: 'Fees',
+    description: "$64,789,445.82",
     icon: 'icon-pig',
   },
   {
-    label: 'Volume',
-    amount: "$48,680,765.44",
+    title: 'Volume',
+    description: "$48,680,765.44",
     icon: 'icon-coins',
   },
 ]
