@@ -37,6 +37,12 @@ body {
   @apply w-2 bg-white border-4 border-solid rounded-xl border-shark-400 bg-opacity-40;
 }
 
+/************* Text Gradient ***********/
+
+.text-gradient {
+  @apply text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text
+}
+
 /************* Button ***********/
 .button {
   @apply flex items-center justify-center px-5 py-3 text-sm font-normal transition rounded-lg focus:outline-none;
@@ -45,19 +51,14 @@ body {
   @apply text-white hover:text-outrageous-orange-400;
 }
 .button-primary {
-  @apply text-white border border-outrageous-orange-400 bg-button-primary hover:bg-button-primary-hover;
+  @apply text-white border border-outrageous-orange-400 bg-button-primary hover:bg-button-primary-hover transition-all;
 }
 .button-secondary {
-  @apply text-white bg-transparent border border-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-outrageous-orange-400;
+  @apply text-white bg-transparent border border-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-transparent hover:bg-gradient-to-r from-outrageous-orange-500 to-festival-500 hover:bg-clip-text;
 }
+
 .button-tertiary {
   @apply text-white border bg-shark-400 border-shark-400 hover:bg-button-primary hover:border-outrageous-orange-400;
-}
-
-/************* Text Gradient ***********/
-
-.text-gradient {
-  @apply text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text
 }
 
 #fenix_graph {
