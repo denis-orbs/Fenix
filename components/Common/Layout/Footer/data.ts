@@ -1,9 +1,5 @@
 const NAV_LINKS = [
   {
-    title: 'Documentation',
-    href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
-  },
-  {
     title: 'Security',
     href: '#',
   },
@@ -12,16 +8,16 @@ const NAV_LINKS = [
     href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
   },
   {
-    title: 'Brandkit',
-    href: '#',
-  },
-  {
     title: 'Articles',
     href: '#',
   },
   {
     title: 'Support',
     href: '#',
+  },
+  {
+    title: 'Documentation',
+    href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
   },
 ]
 
