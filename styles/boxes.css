@@ -957,7 +957,7 @@ opacity-70
   after:w-1/2
   after:h-[123px]
   after:bg-right
-  after:-z-10
+  after:-z-10;
 }
 
 .landing-info-box {
@@ -986,7 +986,7 @@ opacity-70
   md:after:h-[268px]
   after:bg-right
   after:-z-10
-  max-md:after:bg-cover
+  max-md:after:bg-cover;
 }
 
 .landing-info-box-big {
@@ -1015,5 +1015,5 @@ opacity-70
   md:after:h-[268px]
   after:bg-right
   after:-z-10
-  max-md:after:bg-cover
+  max-md:after:bg-cover;
 }
