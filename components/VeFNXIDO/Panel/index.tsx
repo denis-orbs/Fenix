@@ -9,7 +9,7 @@ const Panel = () => {
       <div className="flex flex-col gap-5 items-start justify-between w-full xl:flex-row relative z-10">
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-2xl text-white">veFNX IDO</h4>
-          <div className="flex gap-4 items-center mb-4">
+          <div className="flex gap-2 items-center mb-4">
             <Image
               src="/static/images/tokens/USDC.svg"
               alt="token"
@@ -18,7 +18,7 @@ const Panel = () => {
               height={20}
             />
             <div>
-              <h4 className="text-white text-lg">USDC Offering</h4>
+              <h4 className="text-white text-base">USDC Offering</h4>
               <p className="text-sm text-gradient">Finished</p>
             </div>
           </div>

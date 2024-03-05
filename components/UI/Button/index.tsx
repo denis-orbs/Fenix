@@ -16,7 +16,7 @@ interface ButtonProps {
 const Button = ({ children, onClick, href, disabled, className, variant = 'primary', ...props }: ButtonProps) => {
   const variantClasses = {
     default: 'button-default',
-    primary: 'button-primary',
+    primary: 'button-primary [&_*]:relative [&_*]:z-20',
     secondary: 'button-secondary',
     tertiary: 'button-tertiary',
   }[variant]
