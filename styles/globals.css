@@ -28,7 +28,6 @@ body {
   line-height: 0;
 }
 
-<<<<<<< HEAD
 .svgcontainer::after {
   content: '';
   position: absolute;
@@ -52,8 +51,6 @@ body {
   @apply text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text;
 }
 
-=======
->>>>>>> 843d2476a4b868228bcd166a4a66cf0ccdce7005
 /************* ScrollBar ***********/
 ::-webkit-scrollbar {
   @apply mr-[10px] w-[10px];
@@ -107,7 +104,6 @@ body {
   @apply text-white border bg-shark-400 border-shark-400 hover:bg-button-primary hover:border-outrageous-orange-400;
 }
 
-<<<<<<< HEAD
 .main-header-box {
   @apply relative
 
@@ -197,8 +193,6 @@ body {
   border-radius: 5px; /* Borde redondeado */
 }
 
-=======
->>>>>>> 843d2476a4b868228bcd166a4a66cf0ccdce7005
 #fenix_graph {
   @apply w-full h-full [&>div]:w-full [&>div]:h-full;
 }
