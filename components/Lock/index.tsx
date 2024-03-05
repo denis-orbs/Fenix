@@ -50,7 +50,7 @@ const Lock = () => {
             <Steps steps={LOCK_STEPS} />
           </div>
           <div className="flex items-center gap-2 mb-4">
-            <h5 className="text-xl text-white">Locks</h5>
+            <h5 className="lg:text-2xl text-lg text-white">Locks</h5>
           </div>
           <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
             <div className="w-full xl:w-2/3">
@@ -62,7 +62,7 @@ const Lock = () => {
           </div>
           <MyLocks Locks={LOCKS_FILTER} />
           <MylocksMobile Locks={LOCKS} />
-          <h5 className=" text-2xl text-white ms-2">Nest</h5>
+          <h5 className="lg:text-2xl text-lg text-white pt-5">Nest</h5>
           <Nest />
           <NestMobile />
         </section>

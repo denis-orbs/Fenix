@@ -28,7 +28,7 @@ const Liquidity = () => {
         </div>
         <Steps steps={STEPS} />
       </div>
-      <h5 className="mb-4 text-lg text-white">Liquidity Pools</h5>
+      <h5 className="mb-4 text-lg lg:text-2xl text-white">Liquidity Pools</h5>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
         <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         <div className="w-full xl:w-1/3">

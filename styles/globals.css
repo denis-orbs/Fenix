@@ -12,8 +12,8 @@ body {
 
 /* This Delete the arrows of inputs type number */
 @layer base {
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
@@ -21,16 +21,34 @@ body {
 
 .container {
   @apply mx-auto max-w-[1860px] px-5;
-
 }
 
+.svgcontainer {
+  position: relative;
+  line-height: 0;
+}
 
+.svgcontainer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.5) 30%, rgba(10, 10, 10, 1) 100%);
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 300ms;
+}
 
+.svgcontainer:hover::after {
+  opacity: 0;
+}
 
 /************* Text Gradient ***********/
 
 .text-gradient {
-  @apply text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text
+  @apply text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text;
 }
 
 /************* ScrollBar ***********/
@@ -63,7 +81,6 @@ body {
   @apply text-white border bg-shark-400 border-shark-400 hover:bg-button-primary hover:border-outrageous-orange-400;
 }
 
-
 .main-header-box {
   @apply relative
 
@@ -84,7 +101,7 @@ body {
   after:w-1/2
   after:h-[123px]
   after:bg-right
-  after:-z-10
+  after:-z-10;
 }
 
 .landing-info-box {
@@ -113,10 +130,8 @@ body {
   md:after:h-[268px]
   after:bg-right
   after:-z-10
-  max-md:after:bg-cover
+  max-md:after:bg-cover;
 }
-
-
 
 .landing-info-box-big {
   @apply relative  h-auto
@@ -144,17 +159,15 @@ body {
   md:after:h-[268px]
   after:bg-right
   after:-z-10
-  max-md:after:bg-cover
+  max-md:after:bg-cover;
 }
 
-.slider-bottom{
-
+.slider-bottom {
   -webkit-appearance: none;
   width: 100%; /* Ajusta el ancho según necesites */
   height: 10px; /* Ajusta la altura según necesites */
   background: #ccc; /* Color del riel */
   border-radius: 5px; /* Borde redondeado */
-
 }
 
 #fenix_graph {
