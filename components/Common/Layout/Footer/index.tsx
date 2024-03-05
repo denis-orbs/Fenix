@@ -9,23 +9,23 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="container relative mx-auto mt-3">
+    <footer className="container relative mx-auto mt-6">
       <div className="footer-box"></div>
       <div className="relative flex items-end mb-3.5 bg-shark-400 bg-opacity-40 rounded-lg py-5">
         <div className="relative z-10 flex flex-col w-full px-5 items-start xl:items-center xl:flex-row">
-          <div className="flex gap-[23px] md:items-center flex-col md:flex-row w-full mb-5 xl:mb-0">
+          <div className="flex gap-[10px] md:items-center flex-col md:flex-row w-full mb-5 xl:mb-0">
             <div className="flex items-center gap-4">
               <FenixIcon className="text-[32px]" />
               <p className="text-shark-100 text-sm leading-normal font-medium md:mb-0 block xl:hidden">Navigation</p>
             </div>
             <div className="flex flex-col items-start">
               <p className="text-shark-100 text-sm leading-normal font-medium hidden xl:inline-block mb-2 xl:mb-0">Navigation</p>
-              <div className="grid grid-cols-2 md:grid-cols-6 gap-5">
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-5 w-full">
                 {NAV_LINKS.map((link, index) => (
                   <Link
                     href={link.href}
                     key={index}
-                    className="flex py-1 text-sm leading-normal text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text transition-all"
+                    className="flex text-xs md:text-sm leading-normal text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text transition-all"
                   >
                     {link.title}
                   </Link>

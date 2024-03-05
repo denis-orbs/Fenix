@@ -1,7 +1,7 @@
 const NAV_LINKS = [
   {
-    title: 'Security',
-    href: '#',
+    title: 'Documentation',
+    href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
   },
   {
     title: 'Gitbook',
@@ -12,13 +12,18 @@ const NAV_LINKS = [
     href: '#',
   },
   {
-    title: 'Support',
+    title: 'Security',
     href: '#',
   },
   {
-    title: 'Documentation',
-    href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
+    title: 'Brandkit',
+    href: '#',
   },
+  {
+    title: 'Support',
+    href: '#',
+  },
+
 ]
 
 const SOCIAL_LINKS = [
