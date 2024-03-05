@@ -51,7 +51,25 @@ body {
   @apply text-white hover:text-outrageous-orange-400;
 }
 .button-primary {
-  @apply text-white border border-outrageous-orange-400 bg-button-primary hover:bg-button-primary-hover transition-all;
+  @apply
+  text-white
+  border
+  border-outrageous-orange-400
+  overflow-hidden
+  relative
+  bg-button-primary
+  after:w-full
+  after:h-full
+  after:absolute
+  after:top-0
+  after:left-0
+  after:z-[10]
+  after:bg-button-primary-hover
+  transition-all
+  hover:after:opacity-100
+  hover:after:visible
+  after:opacity-0
+  after:invisible
 }
 .button-secondary {
   @apply text-white bg-transparent border border-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-transparent hover:bg-gradient-to-r from-outrageous-orange-500 to-festival-500 hover:bg-clip-text;
