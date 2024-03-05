@@ -5,6 +5,7 @@ import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@
 import NotFoundLock from './NotFoundLock'
 import { LOCKS_INFO_API } from './data'
 import { useRouter } from 'next/navigation'
+import RowSkeleton from '../Vote/RowSkeleton'
 interface NestProps {
   activePagination?: boolean
 }
@@ -41,7 +42,15 @@ const Nest = ({ activePagination = true }: NestProps) => {
         {LOCKS_INFO_API.length !== 0 ? (
           <>
             <TableBody>
-              {Array.from({ length: 5 }).map((_, index) => {
+              
+              {loading ?
+            <>
+               {Array.from({ length: 1 }).map((_, index) => (
+                      <RowSkeleton key={index} />
+                    ))}
+            </>  :
+            <>
+            {Array.from({ length: 5 }).map((_, index) => {
                 return (
                   <TableRow key={index}>
                     <TableCell className="w-[50%]">
@@ -150,6 +159,11 @@ const Nest = ({ activePagination = true }: NestProps) => {
                   </TableRow>
                 )
               })}
+            
+            </>
+
+            }
+              
             </TableBody>
             {activePagination && (
               <div className="items-center hidden md:flex">

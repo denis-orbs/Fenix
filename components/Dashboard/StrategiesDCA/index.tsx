@@ -13,7 +13,7 @@ const StrategiesDCA = () => {
             {Array.from({ length: 4 }).map((_, index) => (
               <StrategiesItem key={index} />
             ))}
-            <Button variant="tertiary" className="gap-2 !py-3 !text-xs">
+            <Button variant="tertiary" className="gap-2 !py-3 !text-xs !lg:text-sm">
               Review more
               <span className="icon-link"></span>
             </Button>
@@ -24,7 +24,7 @@ const StrategiesDCA = () => {
               <StrategiesItem key={index} />
             ))}
             <div className=" mt-2">
-              <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs">
+              <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
                 Review more
                 <span className="icon-link"></span>
               </Button>

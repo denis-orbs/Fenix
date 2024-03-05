@@ -65,7 +65,20 @@ export const TOKENS_LIST = [
   },
   {
     token: 'elCHR',
-    icon: 'CHR',
+    icon: 'ELCHR',
+    migrated: {
+      amount: 30,
+      icon: 'CHR',
+    },
+    claimable: {
+      amount: 21,
+      icon: 'FNX',
+    },
+  },
+
+  {
+    token: 'spCHR',
+    icon: 'SPCHR',
     migrated: {
       amount: 30,
       icon: 'CHR',

@@ -42,31 +42,42 @@ export const LOCKS = [
     LOCK_ID: '10923',
     STATUS: true,
     VOTE: true,
+    TYPE: "ACTIVE"
   },
   {
     LOCK_ID: '10923',
     STATUS: true,
     VOTE: true,
+    TYPE: "ACTIVE"
+
   },
   {
     LOCK_ID: '10923',
     STATUS: true,
     VOTE: true,
+    TYPE: "ACTIVE"
+
   },
   {
     LOCK_ID: '10923',
     STATUS: false,
     VOTE: false,
+    TYPE: "EXPIRED"
+
   },
   {
     LOCK_ID: '10923',
     STATUS: false,
     VOTE: false,
+    TYPE: "EXPIRED"
+
   },
   {
     LOCK_ID: '10923',
     STATUS: false,
     VOTE: false,
+    TYPE: "EXPIRED"
+
   },
 ]
 

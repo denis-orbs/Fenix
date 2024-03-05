@@ -18,9 +18,9 @@ const MyNest = () => {
               <Nest activePagination={false} />
               <NestMobile activePagination={false} />
               <div className="mt-2">
-                <Button variant="tertiary" className="!py-3 flex gap-2">
+                <Button variant="tertiary" className="!py-3 !text-xs !lg:text-sm flex gap-2">
                   Review more
-                  <span className="icon-link"></span>
+                  <span className="icon-link"></span> 
                 </Button>
               </div>
             </div>

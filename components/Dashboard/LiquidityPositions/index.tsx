@@ -12,7 +12,7 @@ const LiquidityPositions = () => {
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">Liquidity Positions</h1>
-            <Button variant="tertiary" className="!py-3">
+            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm">
               <span className="icon-logout"></span>New deposit
             </Button>
           </div>
@@ -21,7 +21,7 @@ const LiquidityPositions = () => {
               <h1 className="text-white p-3">Classic liquidity</h1>
               <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} />
               <div className="mt-2">
-                <Button variant="tertiary" className="!py-3 flex gap-2">
+                <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
                   Review more
                   <span className="icon-link"></span>
                 </Button>
@@ -32,7 +32,7 @@ const LiquidityPositions = () => {
               <h1 className="text-white p-3">Concentrated Liquidity</h1>
               <HeaderRow {...PROPS_CONCENTRATED_LIQUIDITY} />
               <div className="mt-2">
-                <Button variant="tertiary" className="!py-3 flex gap-2">
+                <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
                   Review more
                   <span className="icon-link"></span>
                 </Button>
@@ -42,7 +42,7 @@ const LiquidityPositions = () => {
         </div>
       ) : (
         
-          <div className="flex flex-col   gap-3 w-full lg:w-4/5 mx-auto">
+          <div className="flex flex-col gap-3 w-full lg:w-4/5 mx-auto">
             <div className="text-white flex justify-between items-center flex-wrap">
               <p className="flex gap-3 text-lg ms-2">
                 Liquidity Positions 

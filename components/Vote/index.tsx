@@ -18,6 +18,7 @@ const Vote = () => {
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
   const filterData = DATA_ROW.filter((row) => row.type === currentTab)
+  
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
@@ -32,7 +33,7 @@ const Vote = () => {
         </div>
         <VoteNow openModal={openModal} setOpenModal={setOpenModal} activeVote={activeVote} />
       </div>
-      <h1 className="text-xl text-white">Select Liquidity Pools for Voting</h1>
+      <h1 className="text-lg lg:text-2xl text-white">Select Liquidity Pools for Voting</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full xl:w-2/3">
           <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />

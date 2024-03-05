@@ -1,14 +1,10 @@
 'use client'
-
 import { useRef, useState } from 'react'
-
 import Strategy from '@/components/Dashboard/MyStrategies/Strategy'
 import StrategyMobile from './StrategyMobile'
-
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperCore } from 'swiper'
 import 'swiper/css'
-
 import WithdrawFunds from '@/components/Modals/WithdrawFunds'
 import DuplicateStrategy from '@/components/Modals/DuplicateStrategy'
 import PauseStrategy from '@/components/Modals/PauseStrategy'
@@ -21,7 +17,6 @@ const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
-  const MYSTRATEGIES_INFO_API = []
   type ModalList = {
     [key: string]: JSX.Element
   }
@@ -73,7 +68,7 @@ const MyStrategies = () => {
               })}
             </Swiper>
             <div className="flex gap-2 justify-center">
-              <span className="icon-arrow rotate-180 text-white text-2xl cursor-pointer" onClick={slideToLeft}></span>
+              <span className="icon-arrow rotate-180 text-shark-400 text-2xl cursor-pointer" onClick={slideToLeft}></span>
               <span className="icon-arrow  text-white text-2xl cursor-pointer" onClick={slideToRight}></span>
             </div>
           </div>
