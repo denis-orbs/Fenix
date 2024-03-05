@@ -9,25 +9,28 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="container relative mx-auto mt-3">
+    <footer className="container relative mx-auto mt-6">
       <div className="footer-box"></div>
       <div className="relative flex items-end mb-3.5 bg-shark-400 bg-opacity-40 rounded-lg py-5">
-        <div className="relative z-10 flex flex-col w-full px-5 md:items-center md:flex-row">
-          <div className="flex gap-[23px] md:items-center flex-col md:flex-row w-full mb-5 md:mb-0">
+        <div className="relative z-10 flex flex-col w-full px-5 items-start xl:items-center xl:flex-row">
+          <div className="flex gap-[10px] md:items-center flex-col md:flex-row w-full mb-5 xl:mb-0">
             <div className="flex items-center gap-4">
               <FenixIcon className="text-[32px]" />
-              <p className="text-shark-100 text-sm leading-normal font-semibold mb-[5px]">Navigation</p>
+              <p className="text-shark-100 text-sm leading-normal font-medium md:mb-0 block xl:hidden">Navigation</p>
             </div>
-            <div className="grid grid-cols-3 md:w-1/2 xl:grid-cols-6">
-              {NAV_LINKS.map((link, index) => (
-                <Link
-                  href={link.href}
-                  key={index}
-                  className="flex justify-center py-3 text-sm leading-normal text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
-                >
-                  {link.title}
-                </Link>
-              ))}
+            <div className="flex flex-col items-start">
+              <p className="text-shark-100 text-sm leading-normal font-medium hidden xl:inline-block mb-2 xl:mb-0">Navigation</p>
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-5 w-full">
+                {NAV_LINKS.map((link, index) => (
+                  <Link
+                    href={link.href}
+                    key={index}
+                    className="flex text-xs md:text-sm leading-normal text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text transition-all"
+                  >
+                    {link.title}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
           <div className="flex gap-2.5 items-center">
@@ -37,9 +40,9 @@ const Footer = () => {
                 href={link.href}
                 key={index}
                 target="_blank"
-                className="text-base text-white w-9 h-9 flex items-center justify-center border border-shark-400 rounded-[10px] flex-shrink-0 bg-shark-400 bg-opacity-40 transition-colors hover:border-outrageous-orange-500 hover:bg-button-primary-hover hover:bg-opacity-80"
+                className="text-white w-9 h-9 flex items-center justify-center border border-shark-400 rounded-[10px] flex-shrink-0 bg-shark-400 bg-opacity-40 transition-colors hover:border-outrageous-orange-500 hover:bg-button-primary-hover hover:bg-opacity-80"
               >
-                <i className={`icon-${link.iconName}`}></i>
+                <i className={`icon-${link.iconName} ${link.iconName === 'git' ? 'mr-1 text-xs' : 'mr-0 text-sm'}`}></i>
               </Link>
             ))}
           </div>

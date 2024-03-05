@@ -244,8 +244,7 @@
 
 /* Background for footer */
 .footer-box {
-  @apply relative h-[15px] w-[337px] hidden xl:block ml-5
-
+  @apply relative h-[15px] w-[337px] ml-5 block
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/footer/footer.svg")]
