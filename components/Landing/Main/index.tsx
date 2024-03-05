@@ -56,7 +56,9 @@ const Main = () => {
 
               {!isConnected && (
                 <Button className="w-[112px] h-[44px] md:w-[123px] md:h-[41px] !text-sm !py-2.5 !px-0 max-xl:mx-auto">
-                  Launch App
+                  <span>
+                    Launch App
+                  </span>
                 </Button>
               )}
             </div>
