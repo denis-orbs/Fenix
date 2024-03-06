@@ -2,7 +2,7 @@
 
 import React from "react"
 import Link from 'next/link'
-import cn from '@/utils/cn'
+import cn from '@/library/utils/cn'
 
 interface ButtonProps {
   variant?: 'default' |'primary' | 'secondary' | 'tertiary'

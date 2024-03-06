@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import cn from '@/utils/cn'
+import cn from '@/library/utils/cn'
 import { usePathname } from 'next/navigation'
 
 interface IItem {

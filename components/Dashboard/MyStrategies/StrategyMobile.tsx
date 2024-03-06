@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/UI'
-import ComponentVisible from '@/hooks/useVisible'
+import ComponentVisible from '@/library/hooks/useVisible'
 import Graph from './Graph'
 
 type options = {

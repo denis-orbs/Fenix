@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import cn from '@/utils/cn'
+import cn from '@/library/utils/cn'
 
 import AccountHandler from '../AccountHandler'
 import { MENU_LINKS, SOCIAL_LINKS } from '../data'

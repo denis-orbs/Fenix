@@ -2,10 +2,10 @@
 /* eslint-disable max-len */
 /* eslint-disable react/no-multi-comp */
 import Image from 'next/image'
-import ComponentVisible from '@/hooks/useVisible'
+import ComponentVisible from '@/library/hooks/useVisible'
 import { useMemo } from 'react'
 import { Button } from '@/components/UI'
-import useIsMobile from '@/hooks/useIsMobile'
+import useIsMobile from '@/library/hooks/useIsMobile'
 
 export type IOption = {
   label: string

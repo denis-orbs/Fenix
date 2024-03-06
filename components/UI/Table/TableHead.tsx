@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import cn from '@/utils/cn'
+import cn from '@/library/utils/cn'
 import TotalRewardsTooltip from '@/components/Vote/TotalRewardsTooltip'
 
 interface IItems {

@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react'
 import { useOnClickOutside } from 'usehooks-ts'
-import cn from '@/utils/cn'
+import cn from '@/library/utils/cn'
 
 
 interface TooltipProps {

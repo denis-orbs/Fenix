@@ -6,7 +6,6 @@ interface ConnectYourWalletProps {
 }
 
 const ConnectYourWallet = ({ setIsConnecting }: ConnectYourWalletProps) => {
-
   const handlerSelectWallet = () => setIsConnecting(true)
 
   return (

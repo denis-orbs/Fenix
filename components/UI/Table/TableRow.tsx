@@ -2,7 +2,7 @@
 'use client'
 
 import React from 'react'
-import cn from '@/utils/cn'
+import cn from '@/library/utils/cn'
 
 interface TableRowProps {
   className?: string

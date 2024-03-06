@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { Button } from '@/components/UI'
 import Graph from './Graph'
-import ComponentVisible from '@/hooks/useVisible'
+import ComponentVisible from '@/library/hooks/useVisible'
 
 type options = {
   value: string

@@ -20,6 +20,7 @@ interface InfoBoxProps {
 
 const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false, bgBox = '' }: InfoBoxProps) => {
   const handleShowTooltip = () => setShowTooltip && setShowTooltip(true)
+
   const handleHiddenTooltip = () => setShowTooltip && setShowTooltip(false)
 
   return (

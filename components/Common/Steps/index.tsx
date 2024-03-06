@@ -33,8 +33,8 @@ const Steps = ({ steps }: StepsProps) => {
           className="flex items-center justify-end gap-3 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
           onClick={handleReadMore}
         >
-          <span className="text-lg icon-link"></span>
-          Read More
+          {/* <span className="text-lg icon-link"></span>
+          Read More */}
         </p>
       </div>
       <ReadMoreModal />
