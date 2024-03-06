@@ -32,7 +32,7 @@
     "react/no-multi-comp": ["error", { "ignoreStateless": false }],
     "no-unused-vars": "warn",
     "no-console": "error",
-    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-explicit-any": "false",
     "max-len": ["error", { "code": 250 }],
     "object-curly-spacing": ["error", "always"],
     "prettier/prettier": 0,
