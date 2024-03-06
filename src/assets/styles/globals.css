@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @import url('./fontello.css');
 @import url('./boxes.css');
@@ -195,6 +198,3 @@ body {
   @apply w-full h-full [&>div]:w-full [&>div]:h-full;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
