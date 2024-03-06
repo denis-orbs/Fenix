@@ -15,7 +15,7 @@ const AccountHandler = () => {
   const handlerConnectWallet = () => pathname !== '/' && setWalletSelectionModal(true)
 
   return (
-    <div className="flex items-center gap-[15px] w-full xl:w-auto">
+    <div className="flex items-center gap-[15px] w-full md:w-max-content xl:w-auto">
       {isConnected && (
         <div className="items-center flex-shrink-0 hidden gap-2 xl:flex">
           <Image src="/static/images/tokens/ETH.svg" className="w-6 h-6" alt="logo" width={24} height={24} />
@@ -50,7 +50,7 @@ const AccountHandler = () => {
             </div>
           </div>
         ) : (
-          <Button onClick={handlerConnectWallet} className="gap-3.5 w-full md:w-[300px] h-[40px] md:h-[49px]">
+          <Button onClick={handlerConnectWallet} className="gap-3.5 w-full xl:w-[300px] h-[40px] xl:h-[49px]">
             <span className="icon-wallet text-md"></span>
             <span className="text-xs md:text-sm">Connect your Wallet</span>
           </Button>

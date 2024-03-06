@@ -230,16 +230,59 @@
 
 /* Background for header */
 .header-box {
-  @apply relative h-[15px] w-[337px] hidden xl:block ml-auto mr-[60px]
+  @apply relative h-[110px] w-full
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/header/header.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-1/2
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
 
   after:content-[""]
   after:absolute
   after:bg-[url("/static/images/header/header.svg")]
   after:bg-no-repeat
+  after:bg-right
   after:h-full
-  after:w-full
+  after:bg-cover
+  after:w-1/2
+  after:top-0
   after:right-0
-  after:bottom-0;
+  after:hidden
+  after:xl:block;
+}
+
+.header-mobile-box {
+  @apply relative h-[95px] w-full
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/header/header-mobile.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-[calc(100%-310px)]
+  before:top-0
+  before:left-0
+  before:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/header/header-mobile.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:h-full
+  after:bg-cover
+  after:w-[310px]
+  after:top-0
+  after:right-0
+  after:block;
 }
 
 /* Background for footer */

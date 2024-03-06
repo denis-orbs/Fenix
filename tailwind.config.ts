@@ -14,6 +14,9 @@ const config: Config = {
       DEFAULT: 'linear',
     },
     extend: {
+      width: {
+        'max-content': 'max-content',
+      },
       keyframes: {
         'toast-in': {
           from: {
