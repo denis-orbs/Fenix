@@ -1,5 +1,5 @@
-import Decorator from '@/src/library/components/Common/Layout/Background'
-import Vote from '@/src/library/components/Vote'
+import Decorator from '@/src/app/components/Common/Layout/Background'
+import Vote from '@/src/app/components/Vote'
 
 const VotePage = () => {
   return (

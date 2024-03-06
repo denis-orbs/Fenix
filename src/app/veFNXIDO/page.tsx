@@ -1,5 +1,5 @@
-import Decorator from '@/src/library/components/Common/Layout/Background'
-import VeFNXIDO from '@/src/library/components/VeFNXIDO'
+import Decorator from '@/src/app/components/Common/Layout/Background'
+import VeFNXIDO from '@/src/app/components/VeFNXIDO'
 
 const veFNXIDOPage = () => {
   return (

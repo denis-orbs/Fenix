@@ -1,5 +1,5 @@
-import Decorator from '@/src/library/components/Common/Layout/Background'
-import Lock from '@/src/library/components/Lock'
+import Decorator from '@/src/app/components/Common/Layout/Background'
+import Lock from '@/src/app/components/Lock'
 
 const LockPage = () => {
   return (

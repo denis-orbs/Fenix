@@ -1,5 +1,5 @@
-import Positions from '@/src/library/components/Liquidity/Positions'
-import LiquidityLayout from '@/src/library/components/Liquidity/Common/Layout'
+import Positions from '@/src/app/components/Liquidity/Positions'
+import LiquidityLayout from '@/src/app/components/Liquidity/Common/Layout'
 
 const PositionsPage = () => {
   return (

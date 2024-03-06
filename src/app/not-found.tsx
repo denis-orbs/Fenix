@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/src/library/components/UI'
+import { Button } from '@/src/app/components/UI'
 
 const NotFound = () => {
   const router = useRouter()
