@@ -1,13 +1,13 @@
-// @ts-nocheck
+/* eslint-disable react/no-multi-comp */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useEffect, useState } from 'react'
-import { MainBox } from '@/src/app/components/UI'
 import { EXCHANGE_LIST } from '../data'
 import InfoBox from '@/src/app/components/Common/InfoBox'
 import Countdown from 'react-countdown'
 import { useAccount } from 'wagmi'
-import chrmigrateabi from '../../../abi/chrmigrate.json'
+import chrmigrateabi from '@/src/assets/abi/chrmigrate.json'
 import BigNumber from 'bignumber.js'
 import { multicall } from '@wagmi/core'
 
