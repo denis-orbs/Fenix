@@ -1,15 +1,15 @@
 /* eslint-disable import/prefer-default-export */
 
-import chrmigrateabi from '../../abi/chrmigrate.json'
-import chrnftmigrateabi from '../../abi/chrnftmigrate.json'
-import vechrmigrateabi from '../../abi/vechrmigrate.json'
-import elchrmigrateabi from '../../abi/elchrmigrate.json'
-import spchrmigrateabi from '../../abi/spchrmigrate.json'
-import chrabi from '../../abi/chr.json'
-import chrnftabi from '../../abi/chrnft.json'
-import vechrabi from '../../abi/vechr.json'
-import elchrabi from '../../abi/elchr.json'
-import spchrabi from '../../abi/spchr.json'
+import chrmigrateabi from '@/src/assets/abi/chrmigrate.json'
+import chrnftmigrateabi from '@/src/assets/abi/chrnftmigrate.json'
+import vechrmigrateabi from '@/src/assets/abi/vechrmigrate.json'
+import elchrmigrateabi from '@/src/assets/abi/elchrmigrate.json'
+import spchrmigrateabi from '@/src/assets/abi/spchrmigrate.json'
+import chrabi from '@/src/assets/abi/chr.json'
+import chrnftabi from '@/src/assets/abi/chrnft.json'
+import vechrabi from '@/src/assets/abi/vechr.json'
+import elchrabi from '@/src/assets/abi/elchr.json'
+import spchrabi from '@/src/assets/abi/spchr.json'
 
 export const EXCHANGE_LIST = [
   {
@@ -171,7 +171,7 @@ export const NONSNAPSHOT_TOKENS_LIST = [
   //     icon: 'FNX',
   //   },
   // },
- 
+
 ]
 
 export const STEPS = [

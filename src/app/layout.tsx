@@ -1,6 +1,6 @@
 'use client'
 
-import '@rainbow-me/rainbowkit/styles.css';
+import '@rainbow-me/rainbowkit/styles.css'
 import '@/src/assets/styles/globals.css'
 import type { Metadata } from 'next'
 import Head from 'next/head'
