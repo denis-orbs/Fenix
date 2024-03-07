@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react'
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 import { useLottie } from 'lottie-react'
 import animation from '@/src/assets/lottie/animation.json'
 interface SignInProps {

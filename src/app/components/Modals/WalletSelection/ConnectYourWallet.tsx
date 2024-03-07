@@ -11,7 +11,7 @@ const ConnectYourWallet = ({ setIsConnecting }: ConnectYourWalletProps) => {
   return (
     <div className="steps-box">
       <div className="relative z-10">
-        <h4 className="mb-4 text-base text-white md:mb-6 md:text-lg">Connect your Wallet</h4>
+        <h4 className="mb-4 text-base text-white md:mb-6 md:text-lg">Connaect your Wallet</h4>
         <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4 mb-4 max-h-[400px] md:max-h-auto overflow-y-auto md:overscroll-none">
           {WALLETS.map((wallet, index) => (
             <div

@@ -1,6 +1,5 @@
-import { CHAIN_IDS_TO_NAMES, SupportedChainId } from 'constants/chains'
-
-import { Address, useAccount, useNetwork } from 'wagmi'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 interface IActiveConnectionDetails {
   chainId?: number
@@ -16,18 +15,17 @@ export default function useActiveConnectionDetails(): IActiveConnectionDetails {
    * Used to display the current connection details, unifying account abstraction with defi
    * This hook should be the only one used in the application to interact with web3
    */
-
-  // FIXME: This still needs to be more robust, but it's a start
-  const { chain } = useNetwork()
-
-  const { address: wagmiAddress, isConnected: wagmiIsConnected, isConnecting: wagmiIsConnecting } = useAccount()
-  const { safeSelected: aaAddress, isConnected: aaIsConnected, isConnecting: aaIsConnecting } = useAA()
+  const {
+    chainId,
+    address: wagmiAddress,
+    isConnected: wagmiIsConnected,
+    isConnecting: wagmiIsConnecting,
+  } = useAccount()
 
   return {
-    chainId: SupportedChainId.BASE,
-    isConnected: aaIsConnected,
-    isConnecting: aaIsConnecting,
-    account: aaAddress,
-    
+    chainId,
+    isConnected: wagmiIsConnected,
+    isConnecting: wagmiIsConnecting,
+    account: wagmiAddress,
   }
 }

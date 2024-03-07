@@ -7,7 +7,7 @@ import ConnectYourWallet from '@/src/app/components/Modals/WalletSelection/Conne
 import Welcome from '@/src/app/components/Modals/WalletSelection/Welcome'
 import SignIn from '@/src/app/components/Modals/WalletSelection/SignIn'
 
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 
 const WalletSelection = () => {
   const [isConnecting, setIsConnecting] = useState<boolean>(false)

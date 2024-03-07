@@ -3,7 +3,7 @@ import MainBox from '@/src/app/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/app/components/Common/InfoBox'
 import { Button } from '@/src/app/components/UI'
 import { EXCHANGE_LIST } from '../data'
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 
 interface MigrationsProps {
   isConnected: boolean

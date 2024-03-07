@@ -3,7 +3,7 @@
 import StepBox from '@/src/app/components/Common/Boxes/StepBox'
 import InfoBox from '@/src/app/components/Common/InfoBox'
 import ReadMoreModal from '@/src/app/components/Modals/Liquidity/ReadMore'
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 
 interface Step {
   title: string

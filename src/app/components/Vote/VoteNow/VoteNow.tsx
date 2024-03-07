@@ -1,5 +1,5 @@
 import StepBox from '@/src/app/components/Common/Boxes/StepBox'
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 import ReadMoreModal from '@/src/app/components/Modals/Liquidity/ReadMore'
 import ActiveVote from '../ActiveVote'
 import InactiveVote from '../InactiveVote'

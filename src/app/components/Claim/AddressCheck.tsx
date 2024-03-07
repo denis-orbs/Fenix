@@ -3,7 +3,7 @@
 'use client'
 
 import { Button } from '@/src/app/components/UI'
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 import { useAccount } from 'wagmi'
 import { multicall } from '@wagmi/core'
 import { useEffect, useState } from 'react'

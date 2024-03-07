@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/src/app/components/UI'
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 
 interface AddressCheckProps {
   migrateStatus: string | undefined

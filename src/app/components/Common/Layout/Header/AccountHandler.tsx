@@ -4,15 +4,24 @@ import React from 'react'
 import Image from 'next/image'
 
 import { Button } from '@/src/app/components/UI'
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 import { usePathname } from 'next/navigation'
+import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import useActiveConnectionDetails from '@/src/hooks/web3/useActiveConnectionDetails'
 
 const AccountHandler = () => {
-  const isConnected = useStore((state) => state.isConnected)
+  const { isConnected, account } = useActiveConnectionDetails()
+
   const { setWalletSelectionModal } = useStore()
 
   const pathname = usePathname()
-  const handlerConnectWallet = () => pathname !== '/' && setWalletSelectionModal(true)
+
+  const { openConnectModal } = useConnectModal()
+  const { openAccountModal } = useAccountModal()
+
+  const handlerConnectWallet = () => {
+    openConnectModal && openConnectModal()
+  }
 
   return (
     <div className="flex items-center gap-[15px] w-full xl:w-auto">
@@ -24,7 +33,12 @@ const AccountHandler = () => {
       )}
       <div className="flex w-full xl:w-auto">
         {isConnected ? (
-          <div className="flex w-full xl:w-auto gap-2 md:gap-5 md:py-[13px] md:px-3.5 !pr-0 border rounded-[10px] cursor-pointer bg-shark-900 border-shark-400 bg-opacity-40 hover:bg-opacity-10 group">
+          <div
+            onClick={() => {
+              openAccountModal && openAccountModal()
+            }}
+            className="flex w-full xl:w-auto gap-2 md:gap-5 md:py-[13px] md:px-3.5 !pr-0 border rounded-[10px] cursor-pointer bg-shark-900 border-shark-400 bg-opacity-40 hover:bg-opacity-10 group"
+          >
             <div className="w-full flex items-center gap-2.5">
               <div className="relative flex items-center justify-center w-10 md:w-12 h-10 md:h-12 rounded-[10px] bg-shark-400 bg-opacity-40">
                 <span className="text-[17px] icon-wallet text-outrageous-orange-500"></span>
@@ -41,7 +55,7 @@ const AccountHandler = () => {
                 <p className="hidden text-xs font-medium md:block text-shark-100">Welcome</p>
                 <p className="flex items-center text-xs text-white">
                   <span className="block w-2 h-2 mr-1.5 bg-green-400 rounded-full"></span>
-                  <span className="truncate max-w-[70px] md:max-w-[150px]">0x98b36ab87c6de3c</span>
+                  <span className="truncate max-w-[70px] md:max-w-[150px]">{account?.slice(0, 10)}...</span>
                 </p>
               </div>
             </div>

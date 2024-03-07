@@ -4,7 +4,7 @@ import Migration from '@/src/app/components/Migration/Migration'
 import Steps from '@/src/app/components/Common/Steps'
 import Overview from '@/src/app/components/Migration/Overview'
 import { STEPS } from './data'
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 import OverviewMobile from './OverviewMobile/OverviewMobile'
 import { useState } from 'react'
 

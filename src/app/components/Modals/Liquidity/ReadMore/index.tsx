@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Image from 'next/image'
-import useStore from '@/src/state'
+import useStore from '@/src/state/zustand'
 
 import { Modal } from '@/src/app/components/UI'
 
