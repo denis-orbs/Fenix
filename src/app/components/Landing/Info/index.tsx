@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 'use client'
-
 import Image from 'next/image'
 
 const Info = () => {
@@ -20,14 +19,14 @@ const Info = () => {
               </p>
             </div>
             <Image
-              src="/static/images/landing/info/01.png"
+              src="/static/images/landing/info/01.svg"
               alt="img"
               width={792}
               height={674}
               className="min-w-[792px] min-h-[674px] absolute right-[-500px] xl:right-[-400px] 2xl:right-[-228px] top-[-278px] max-md:hidden"
             />
             <Image
-              src="/static/images/landing/info/01-mobile.png"
+              src="/static/images/landing/info/01.svg"
               alt="img"
               width={649}
               height={336}
@@ -49,14 +48,14 @@ const Info = () => {
             </div>
 
             <Image
-              src="/static/images/landing/info/02.png"
+              src="/static/images/landing/info/02.svg"
               alt="img"
               width={862}
               height={765}
               className="absolute min-w-[862px] min-h-[765px] right-[-500px] xl:right-[-350px] 2xl:right-[-218px] top-[-300px] max-md:hidden"
             />
             <Image
-              src="/static/images/landing/info/02-mobile.png"
+              src="/static/images/landing/info/02.svg"
               alt="img"
               width={365}
               height={276}
@@ -85,7 +84,7 @@ const Info = () => {
             </div>
 
             <Image
-              src="/static/images/landing/info/03.png"
+              src="/static/images/landing/info/03.svg"
               alt="img"
               width={1229}
               height={844}
@@ -93,7 +92,7 @@ const Info = () => {
             />
 
             <Image
-              src="/static/images/landing/info/03-mobile.png"
+              src="/static/images/landing/info/03.svg"
               alt="img"
               width={462}
               height={299}
@@ -114,7 +113,7 @@ const Info = () => {
             </div>
 
             <Image
-              src="/static/images/landing/info/04.png"
+              src="/static/images/landing/info/04.svg"
               alt="img"
               width={1132}
               height={831}
@@ -122,7 +121,7 @@ const Info = () => {
             />
 
             <Image
-              src="/static/images/landing/info/04-mobile.png"
+              src="/static/images/landing/info/04.svg"
               alt="img"
               width={600}
               height={362}
@@ -131,9 +130,7 @@ const Info = () => {
           </div>
 
           <div
-            className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg
-           items-start md:items-center flex backdrop-blur-[38px] overflow-hidden
-           landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] max-md:pb-[176px]"
+            className="md:w-[calc(50%-20px)] bg-shark-400 bg-opacity-[0.35] rounded-lg  items-start md:items-center flex backdrop-blur-[38px] overflow-hidden landing-info-box transition-shadow hover:shadow-[0px_4px_30px_0px_rgba(246,_119,_2,_0.50)] max-md:pb-[176px]"
           >
             <div className="md:w-[90%] lg:w-[80%] max-md:pb-0 max-md:pt-10 p-8 relative z-10">
               <h3 className="text-base xl:text-lg font-medium leading-normal mb-1 md:mb-3 text-transparent bg-button-primary-hover bg-clip-text">
@@ -149,14 +146,14 @@ const Info = () => {
             </div>
 
             <Image
-              src="/static/images/landing/info/05.png"
+              src="/static/images/landing/info/05.svg"
               alt="img"
               width={803}
               height={809}
               className="absolute min-w-[803px] h-[809px] top-[-297px]  xl:right-[-250px] 2xl:right-[-154px] max-md:hidden"
             />
             <Image
-              src="/static/images/landing/info/05-mobile.png"
+              src="/static/images/landing/info/05.svg"
               alt="img"
               width={617.489}
               height={395.489}

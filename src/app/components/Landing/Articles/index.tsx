@@ -1,9 +1,10 @@
 /* eslint-disable max-len */
 import Image from 'next/image'
 import ARTICLES from './data'
+import React from 'react'
 const Articles = () => {
   return (
-    <div className="relative pb-[200px]">
+    <div className="relative pb-[100px] xl:pb-[200px]">
       <div className="container relative z-10 flex flex-col items-center justify-center gap-5 xl:gap-10 xl:flex-row">
         <div className="flex max-lg:flex-col  xl:flex-col gap-4 xl:gap-8 max-xl:justify-between max-xl:w-full">
           {ARTICLES.map((article, index) => {
@@ -27,16 +28,16 @@ const Articles = () => {
                   className="w-full sm:hidden rounded-lg max-h-[159px] max-lg:mx-auto object-contain"
                 />
                 <div className="flex flex-col">
-                  <h1 className="text-xl font-medium text-gradient">{article.title}</h1>
-                  <p className="text-sm font-light text-white xl:line-clamp-none">{article.info}</p>
+                  <h1 className="xl:text-xl text-lg font-medium text-gradient">{article.title}</h1>
+                  <p className="xl:text-sm text-xs font-light text-white xl:line-clamp-none">{article.info}</p>
                 </div>
               </div>
             )
           })}
         </div>
         <div className="article-big-box">
-          <h1 className="mb-3 text-xl font-medium text-gradient">Liquidity Providers</h1>
-          <p className="mb-5 xl:mb-10 text-sm text-white font-light">
+          <h1 className="mb-3 text-lg xl:text-xl font-medium text-gradient">Liquidity Providers</h1>
+          <p className="mb-5 xl:mb-10 text-xs lg:text-sm text-white font-light">
             Competitive farming means LPs are encouraged to tighten their ranges to earn more FNX emissions according to
             fees generated.
             <br />
@@ -66,7 +67,7 @@ const Articles = () => {
           </div>
         </div>
       </div>
-      <div className="max-w-[1932px] max-h-[1060px]   absolute  bottom-[-220px]  mix-blend-lighten overflow-hidden">
+      <div className="max-w-[1932px] max-h-[1060px]   absolute  bottom-[-280px]  mix-blend-lighten overflow-hidden">
         <Image
           src="/static/images/landing/articles/world.svg"
           alt="img"
