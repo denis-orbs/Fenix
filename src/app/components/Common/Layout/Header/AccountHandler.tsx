@@ -35,6 +35,7 @@ const AccountHandler = () => {
         {isConnected ? (
           <div
             onClick={() => {
+              openConnectModal && openConnectModal()
               openAccountModal && openAccountModal()
             }}
             className="flex w-full xl:w-auto gap-2 md:gap-5 md:py-[13px] md:px-3.5 !pr-0 border rounded-[10px] cursor-pointer bg-shark-900 border-shark-400 bg-opacity-40 hover:bg-opacity-10 group"
