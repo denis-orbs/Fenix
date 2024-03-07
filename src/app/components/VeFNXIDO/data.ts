@@ -4,11 +4,13 @@ export const STEPS = [
     title: 'Connect your wallet',
     description: 'You all require a compatible wallet to participate in the IDO sale!',
     icon: 'icon-wallet',
+    hasButton: true,
   },
   {
     title: 'Get USDC',
     description: "You'll use them to purchase tokens during the sale.",
     icon: 'icon-coin',
+    hasButton: true,
   },
   {
     title: 'Commit USDC',
