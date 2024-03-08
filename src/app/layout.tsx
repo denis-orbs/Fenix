@@ -6,10 +6,10 @@ import type { Metadata } from 'next'
 import Head from 'next/head'
 import { Poppins } from 'next/font/google'
 
-import Decorator from '@/src/app/components/Common/Layout/Background'
-import Footer from '@/src/app/components/Common/Layout/Footer'
-import Header from '@/src/app/components/Common/Layout/Header'
-import MobileHeader from '@/src/app/components/Common/Layout/Header/Mobile'
+import Decorator from '@/src/components/Common/Layout/Background'
+import Footer from '@/src/components/Common/Layout/Footer'
+import Header from '@/src/components/Common/Layout/Header'
+import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
 
 import {
   getDefaultConfig,

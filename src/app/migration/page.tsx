@@ -1,5 +1,5 @@
-import Migration from '@/src/app/components/Migration'
-import Decorator from '@/src/app/components/Common/Layout/Background'
+import Migration from '@/src/components/Migration'
+import Decorator from '@/src/components/Common/Layout/Background'
 
 const MigrationPage = () => {
   return (

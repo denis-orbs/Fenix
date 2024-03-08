@@ -1,5 +1,5 @@
-import LimitRange from '@/src/app/components/Trade/LimitRange'
-import TradeLayout from '@/src/app/components/Trade/Common/Layout'
+import LimitRange from '@/src/components/Trade/LimitRange'
+import TradeLayout from '@/src/components/Trade/Common/Layout'
 
 const LimitRangePage = () => {
   return (

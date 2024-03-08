@@ -1,5 +1,5 @@
-import Recurring from '@/src/app/components/Trade/Recurring'
-import TradeLayout from '@/src/app/components/Trade/Common/Layout'
+import Recurring from '@/src/components/Trade/Recurring'
+import TradeLayout from '@/src/components/Trade/Common/Layout'
 
 const RecurringPage = () => {
   return (
