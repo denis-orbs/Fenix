@@ -285,19 +285,6 @@
   after:block;
 }
 
-/* Background for footer */
-.footer-box {
-  @apply relative h-[10px] md:h-[15px] w-[215px] md:w-[337px] ml-5 block
-  before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/footer/footer.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:w-full
-  before:left-0
-  before:top-0;
-}
-
 /* Background for panel trade */
 .box-panel-trade {
   @apply relative
@@ -586,13 +573,12 @@
   after:2xl:block;
 }
 
-/* Background for veFNXIDO box */
-.veFNXIDO-box {
+/* Background for veFNXIDO boxes */
+.offering-box {
   @apply relative
   w-full
-  xl:min-h-[680px]
   rounded-2xl
-  2xl:max-w-[1168px]
+  2xl:max-w-[480px]
   flex-shrink-0
   bg-shark-400
   bg-opacity-40
@@ -605,7 +591,7 @@
 
   before:content-[""]
   before:absolute
-  before:bg-[url("/static/images/components/box/veFNXIDO/veFNXIDO.svg")]
+  before:bg-[url("/static/images/components/box/veFNXIDO/offering.svg")]
   before:bg-no-repeat
   before:h-[40%]
   before:bg-cover
@@ -617,7 +603,48 @@
 
   after:content-[""]
   after:absolute
-  after:bg-[url("/static/images/components/box/veFNXIDO/veFNXIDO.svg")]
+  after:bg-[url("/static/images/components/box/veFNXIDO/offering.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[60%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:2xl:block;
+}
+
+.detail-box {
+  @apply relative
+  w-full
+  rounded-2xl
+  2xl:max-w-[615px]
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  2xl:bg-transparent
+  2xl:bg-opacity-100
+  py-8
+  2xl:py-12
+  px-8
+  2xl:px-12
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/veFNXIDO/detail.svg")]
+  before:bg-no-repeat
+  before:h-[40%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:2xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/veFNXIDO/detail.svg")]
   after:bg-no-repeat
   after:bg-bottom
   after:h-[60%]
@@ -1059,4 +1086,35 @@ opacity-70
   after:bg-right
   after:-z-10
   max-md:after:bg-cover;
+}
+
+.footer-box {
+  @apply  relative
+  before:bg-[url("/static/images/footer/footer-mobile.svg")]
+  before:h-[50%]
+  before:w-full
+  before:md:bg-[url("/static/images/footer/footer.svg")]
+  before:md:h-[80%]
+  before:xl:w-[510px]
+  before:md:w-[690px]
+  before:absolute
+  before:bg-no-repeat
+  before:bg-cover
+  before:left-0
+  
+  after:md:bg-[url("/static/images/footer/footer.svg")]
+  after:bg-[url("/static/images/footer/footer-mobile.svg")]
+  after:w-full
+  after:h-[50%]
+  after:bg-bottom
+  after:xl:w-[calc(100%-510px)]
+  after:md:w-[calc(100%-690px)]
+  after:md:h-[80%]
+  after:right-0
+  after:md:top-0
+  after:bottom-0
+  after:md:bg-right
+  after:bg-cover
+  after:absolute
+  after:bg-no-repeat
 }

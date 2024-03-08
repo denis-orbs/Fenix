@@ -1,7 +1,7 @@
 import React from 'react'
-import Landing from '@/src/app/components/Landing'
+import Landing from '@/src/components/Landing'
 
-import Main from '@/src/app/components/Landing/Main'
+import Main from '@/src/components/Landing/Main'
 
 const HomePage = () => {
   return (

@@ -1,5 +1,5 @@
-import Decorator from '@/src/app/components/Common/Layout/Background'
-import LockManage from '@/src/app/components/Lock/Common/LockManage'
+import Decorator from '@/src/components/Common/Layout/Background'
+import LockManage from '@/src/components/Lock/Common/LockManage'
 
 const ManagePage = () => {
   return (

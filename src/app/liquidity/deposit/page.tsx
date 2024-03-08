@@ -1,6 +1,6 @@
 
-import Deposit from '@/src/app/components/Liquidity/Deposit'
-import LiquidityLayout from '@/src/app/components/Liquidity/Common/Layout'
+import Deposit from '@/src/components/Liquidity/Deposit'
+import LiquidityLayout from '@/src/components/Liquidity/Common/Layout'
 
 const DepositPage = () => {
   return (

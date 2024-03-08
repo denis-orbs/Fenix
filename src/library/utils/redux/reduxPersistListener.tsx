@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getStoredState, REHYDRATE } from 'redux-persist'
 
 export default function crossBrowserListener(store: any, persistConfig: any) {

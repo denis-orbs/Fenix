@@ -1,6 +1,6 @@
 'use client'
-import DCA from '@/src/app/components/Trade/DCA'
-import TradeLayout from '@/src/app/components/Trade/Common/Layout'
+import DCA from '@/src/components/Trade/DCA'
+import TradeLayout from '@/src/components/Trade/Common/Layout'
 const TradePage = () => {
   return (
     <TradeLayout>
