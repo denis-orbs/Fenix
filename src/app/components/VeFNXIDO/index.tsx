@@ -3,6 +3,7 @@
 import Steps from '@/src/app/components/Common/Steps'
 import Offering from '@/src/app/components/VeFNXIDO/Offering'
 import Detail from '@/src/app/components/VeFNXIDO/Detail'
+import Faq from '@/src/app/components/VeFNXIDO/Faq'
 import { STEPS } from './data'
 
 const VeFNXIDO = () => {
@@ -13,6 +14,7 @@ const VeFNXIDO = () => {
         <Detail />
         <Steps steps={STEPS} title="How to take part?" />
       </div>
+      <Faq/>
     </section>
   )
 }
