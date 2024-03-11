@@ -1,5 +1,5 @@
-import Decorator from '@/src/app/components/Common/Layout/Background'
-import DepositLock from '@/src/app/components/Lock/Common/Deposit'
+import Decorator from '@/src/components/Common/Layout/Background'
+import DepositLock from '@/src/components/Lock/Common/Deposit'
 
 const DepositPage = () => {
   return (

@@ -1,5 +1,5 @@
-import Liquidity from '@/src/app/components/Liquidity'
-import Decorator from '@/src/app/components/Common/Layout/Background'
+import Decorator from '@/src/components/Common/Layout/Background'
+import Liquidity from '@/src/components/Liquidity'
 
 const LiquidityPage = () => {
   return (

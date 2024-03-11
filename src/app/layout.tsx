@@ -1,27 +1,29 @@
 'use client'
 
-import '@rainbow-me/rainbowkit/styles.css'
 import '@/src/assets/styles/globals.css'
-import type { Metadata } from 'next'
-import Head from 'next/head'
+import '@rainbow-me/rainbowkit/styles.css'
 import { Poppins } from 'next/font/google'
+import Head from 'next/head'
 
-import Decorator from '@/src/app/components/Common/Layout/Background'
-import Footer from '@/src/app/components/Common/Layout/Footer'
-import Header from '@/src/app/components/Common/Layout/Header'
-import MobileHeader from '@/src/app/components/Common/Layout/Header/Mobile'
+import Decorator from '@/src/components/Common/Layout/Background'
+import Footer from '@/src/components/Common/Layout/Footer'
+import Header from '@/src/components/Common/Layout/Header'
+import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
 
 import {
   getDefaultConfig,
   getDefaultWallets,
-  lightTheme,
   midnightTheme,
-  RainbowKitProvider,
+  RainbowKitProvider
 } from '@rainbow-me/rainbowkit'
-import { createConfig, WagmiConfig, WagmiProvider } from 'wagmi'
-import { mainnet, polygon, optimism, arbitrum, arbitrumSepolia, blast, blastSepolia } from 'wagmi/chains'
-import { argentWallet, trustWallet, ledgerWallet } from '@rainbow-me/rainbowkit/wallets'
+import { argentWallet, ledgerWallet, trustWallet } from '@rainbow-me/rainbowkit/wallets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import dynamic from 'next/dynamic'
+import { Provider as ReduxProvider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import { WagmiProvider } from 'wagmi'
+import { blast, blastSepolia } from 'wagmi/chains'
+import store, { persistor } from '../state'
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '900'],
@@ -47,6 +49,8 @@ const config = getDefaultConfig({
 
 const queryClient = new QueryClient()
 
+const Updaters = dynamic(() => import('@/src/state/updater'), { ssr: false })
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -55,25 +59,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </Head>
 
       <body suppressHydrationWarning={true} className={`${poppins.className} relative pt-[26px] pb-5`}>
-        <WagmiProvider config={config}>
-          <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider
-              theme={midnightTheme({
-                accentColor:
-                  'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%)',
-                accentColorForeground: 'white',
-                fontStack: 'system',
-                overlayBlur: 'small',
-              })}
-            >
-              <Header />
-              <MobileHeader />
-              {children}
-              <Footer />
-              <Decorator />
-            </RainbowKitProvider>
-          </QueryClientProvider>
-        </WagmiProvider>
+        <ReduxProvider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <WagmiProvider config={config}>
+              <QueryClientProvider client={queryClient}>
+                <RainbowKitProvider
+                  theme={midnightTheme({
+                    accentColor:
+                      'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%)',
+                    accentColorForeground: 'white',
+                    fontStack: 'system',
+                    overlayBlur: 'small',
+                  })}
+                >
+                  <Updaters />
+                  <Header />
+                  <MobileHeader />
+                  {children}
+                  <Footer />
+                  <Decorator />
+                </RainbowKitProvider>
+              </QueryClientProvider>
+            </WagmiProvider>
+          </PersistGate>
+        </ReduxProvider>
       </body>
     </html>
   )
