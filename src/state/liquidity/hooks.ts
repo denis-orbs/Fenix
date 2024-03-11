@@ -1,11 +1,11 @@
 import { ApiState } from '@/src/library/types/connection'
 import { useAppSelector } from '..'
-import { LiquidityV2PairData } from './types'
+import { LiquidityV2PairDetails } from './types'
 
 export function useV2PairsData() {
   const v2Pairs: {
     state: ApiState
-    data: LiquidityV2PairData[]
+    data: LiquidityV2PairDetails[]
   } = useAppSelector((state) => state.liquidity.v2Pairs)
 
   return {

@@ -114,7 +114,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                   width={20}
                   height={20}
                 />
-                2,313,873.46
+                
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
