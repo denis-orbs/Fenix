@@ -11,6 +11,7 @@
     "format": "prettier --write \"{,!(.next)/**/}*.{ts, tsx}\""
   },
   "dependencies": {
+    "@apollo/client": "^3.9.6",
     "@rainbow-me/rainbowkit": "^2.0.1",
     "@reduxjs/toolkit": "^2.2.1",
     "@tanstack/query-core": "^5.25.0",

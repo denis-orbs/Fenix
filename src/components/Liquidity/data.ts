@@ -75,7 +75,7 @@ export const DATA_ROW = [
   },
 ]
 
-export const OPTIONS_FILTER = ["Concentrated", "Stable", "Volatile", "Single Token Deposit", "All Pools"]
+export const OPTIONS_FILTER = ["Stable", "Volatile", "Concentrated", "Single Token Deposit", "All Pools"]
 
 export const NAV_LIST = [
   {
