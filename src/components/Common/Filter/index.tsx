@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/src/components/UI'
-import useIsMobile from '@/src/hooks/useIsMobile'
+import useIsMobile from '@/src/library/hooks/useIsMobile'
 
 interface FilterProps {
   options: string[]

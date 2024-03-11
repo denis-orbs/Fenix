@@ -7,7 +7,7 @@ import { Button } from '@/src/components/UI'
 import useStore from '@/src/state/zustand'
 import { usePathname } from 'next/navigation'
 import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
-import useActiveConnectionDetails from '@/src/hooks/web3/useActiveConnectionDetails'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
 const AccountHandler = () => {
   const { isConnected, account } = useActiveConnectionDetails()

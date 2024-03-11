@@ -8,9 +8,10 @@ import { STEPS } from './data'
 import { OPTIONS_FILTER } from './data'
 import { DATA_ROW } from './data'
 import HeaderRow from './Tables/HeaderRow'
+import { useV2PairsData } from '@/src/state/liquidity/hooks'
 
 const Liquidity = () => {
-  const [currentTab, setCurrentTab] = useState<string>('CONCENTRATED')
+  const [currentTab, setCurrentTab] = useState<string>('STABLE')
   const [loading, setLoading] = useState(true)
   useEffect(() => {
     setTimeout(() => {
@@ -19,6 +20,8 @@ const Liquidity = () => {
   }, [])
 
   const filterData = currentTab !== 'ALL POOLS' ? DATA_ROW.filter((row) => row.type === currentTab) : DATA_ROW
+
+  const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
 
   return (
     <section>
@@ -35,7 +38,7 @@ const Liquidity = () => {
           <Search />
         </div>
       </div>
-      <HeaderRow loading={loading} filterData={filterData} />
+      <HeaderRow loading={loadingV2Pairs} filterData={filterData} />
     </section>
   )
 }

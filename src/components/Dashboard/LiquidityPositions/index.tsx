@@ -4,6 +4,7 @@ import { Button } from '@/src/components/UI'
 import HeaderRow from '@/src/components/Liquidity/Tables/HeaderRow'
 import { PROPS_CLASSIC_LIQUIDITY, PROPS_CONCENTRATED_LIQUIDITY } from '../types'
 import INFO_API from '../data'
+import { useV2PairsData } from '@/src/state/liquidity/hooks'
 
 const LiquidityPositions = () => {
   return (
@@ -41,25 +42,21 @@ const LiquidityPositions = () => {
           </div>
         </div>
       ) : (
-        
-          <div className="flex flex-col gap-3 w-full lg:w-4/5 mx-auto">
-            <div className="text-white flex justify-between items-center flex-wrap">
-              <p className="flex gap-3 text-lg ms-2">
-                Liquidity Positions 
-              </p>
-              <Button variant="tertiary" className="flex gap-2  !py-2">
-                {' '}
-                <span className="icon-logout "></span>New Deposit
-              </Button>
-            </div>
-            <div className="box-dashboard p-6">
-              <p className="text-white text-sm">
-                To receive emissions <span className="text-green-400 underline">deposit and stake</span> your liquidity
-                first.
-              </p>
-            </div>
+        <div className="flex flex-col gap-3 w-full lg:w-4/5 mx-auto">
+          <div className="text-white flex justify-between items-center flex-wrap">
+            <p className="flex gap-3 text-lg ms-2">Liquidity Positions</p>
+            <Button variant="tertiary" className="flex gap-2  !py-2">
+              {' '}
+              <span className="icon-logout "></span>New Deposit
+            </Button>
           </div>
-        
+          <div className="box-dashboard p-6">
+            <p className="text-white text-sm">
+              To receive emissions <span className="text-green-400 underline">deposit and stake</span> your liquidity
+              first.
+            </p>
+          </div>
+        </div>
       )}
     </>
   )
