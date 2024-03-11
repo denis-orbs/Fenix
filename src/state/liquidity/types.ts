@@ -1,4 +1,8 @@
-export type LiquidityV2PairData = {
+export type PoolData = {
+  pairDetails: LiquidityV2PairDetails
+}
+
+export type LiquidityV2PairDetails = {
   id: string
   isStable: boolean
   token0: {

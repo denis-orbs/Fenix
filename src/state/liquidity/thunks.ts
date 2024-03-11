@@ -5,11 +5,15 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { LiquidityV2PairData } from './types'
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async () => {
-  const client = getProtocolCoreClient()
+  try {
+    const client = getProtocolCoreClient()
+    if (!client) return []
 
-  if (!client) return []
+    const pairsV2 = await queryAllForClient<LiquidityV2PairData>(client, GET_V2_PAIRS, {})
 
-  const pairsV2 = await queryAllForClient<LiquidityV2PairData>(client, GET_V2_PAIRS, {})
-
-  return pairsV2
+    return pairsV2
+  } catch (error) {
+    console.error(error)
+    throw new Error(`Unable to query data from Client`)
+  }
 })

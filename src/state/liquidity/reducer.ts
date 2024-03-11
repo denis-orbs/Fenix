@@ -1,13 +1,13 @@
 import { ApiState } from '@/src/library/types/connection'
-import { LiquidityV2PairData } from './types'
 import { createReducer } from '@reduxjs/toolkit'
 import { getLiquidityV2Pairs } from './thunks'
+import { LiquidityV2PairDetails } from './types'
 
 export interface LiquidityState {
   // Liquidity V2 Pairs
   v2Pairs: {
     state: ApiState
-    data: LiquidityV2PairData[]
+    data: LiquidityV2PairDetails[]
   }
 }
 
@@ -26,5 +26,8 @@ export default createReducer(initialState, (builder) => {
     .addCase(getLiquidityV2Pairs.fulfilled, (state, action) => {
       state.v2Pairs.state = ApiState.SUCCESS
       state.v2Pairs.data = action.payload
+    })
+    .addCase(getLiquidityV2Pairs.rejected, (state) => {
+      state.v2Pairs.state = ApiState.ERROR
     })
 })

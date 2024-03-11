@@ -1,14 +1,13 @@
 'use client'
-import { useEffect, useState } from 'react'
-import Deposit from '@/src/components/Liquidity/LiquidityPools'
-import Steps from '@/src/components/Common/Steps'
 import Filter from '@/src/components/Common/Filter'
 import Search from '@/src/components/Common/Search'
-import { STEPS } from './data'
-import { OPTIONS_FILTER } from './data'
-import { DATA_ROW } from './data'
-import HeaderRow from './Tables/HeaderRow'
+import Steps from '@/src/components/Common/Steps'
+import Deposit from '@/src/components/Liquidity/LiquidityPools'
 import { useV2PairsData } from '@/src/state/liquidity/hooks'
+import { PoolData } from '@/src/state/liquidity/types'
+import { useEffect, useMemo, useState } from 'react'
+import HeaderRow from './Tables/LiquidityTable/HeaderRow'
+import { DATA_ROW, OPTIONS_FILTER, STEPS } from './data'
 
 const Liquidity = () => {
   const [currentTab, setCurrentTab] = useState<string>('STABLE')
@@ -22,6 +21,25 @@ const Liquidity = () => {
   const filterData = currentTab !== 'ALL POOLS' ? DATA_ROW.filter((row) => row.type === currentTab) : DATA_ROW
 
   const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
+
+  useEffect(() => {
+    console.log('Loading ', loading)
+    console.log('v2PairsData ', v2PairsData)
+  }, [v2PairsData, loading])
+
+  const poolsData = useMemo<PoolData[]>(() => {
+    if (loading) {
+      return []
+    }
+
+    return v2PairsData.map((pair) => {
+      const pd: PoolData = {
+        pairDetails: pair,
+      }
+
+      return pd
+    })
+  }, [loading, v2PairsData])
 
   return (
     <section>
@@ -38,7 +56,7 @@ const Liquidity = () => {
           <Search />
         </div>
       </div>
-      <HeaderRow loading={loadingV2Pairs} filterData={filterData} />
+      <HeaderRow loading={loadingV2Pairs} poolsData={poolsData} />
     </section>
   )
 }

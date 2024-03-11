@@ -1,7 +1,5 @@
-import { useDispatch } from 'react-redux'
-import { useAppSelector } from '..'
-import { LiquidityState } from './reducer'
 import { ApiState } from '@/src/library/types/connection'
+import { useAppSelector } from '..'
 import { LiquidityV2PairData } from './types'
 
 export function useV2PairsData() {

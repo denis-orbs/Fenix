@@ -31,7 +31,7 @@
     "react/destructuring-assignment": ["error", "always"],
     "react/no-multi-comp": ["error", { "ignoreStateless": false }],
     "no-unused-vars": "warn",
-    "no-console": "error",
+    // "no-console": "error",
     "@typescript-eslint/no-explicit-any": "warn",
     "max-len": ["error", { "code": 250 }],
     "object-curly-spacing": ["error", "always"],

@@ -1,10 +1,9 @@
 'use client'
 
-import '@rainbow-me/rainbowkit/styles.css'
 import '@/src/assets/styles/globals.css'
-import type { Metadata } from 'next'
-import Head from 'next/head'
+import '@rainbow-me/rainbowkit/styles.css'
 import { Poppins } from 'next/font/google'
+import Head from 'next/head'
 
 import Decorator from '@/src/components/Common/Layout/Background'
 import Footer from '@/src/components/Common/Layout/Footer'
@@ -14,18 +13,17 @@ import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
 import {
   getDefaultConfig,
   getDefaultWallets,
-  lightTheme,
   midnightTheme,
-  RainbowKitProvider,
+  RainbowKitProvider
 } from '@rainbow-me/rainbowkit'
-import { createConfig, WagmiConfig, WagmiProvider } from 'wagmi'
-import { mainnet, polygon, optimism, arbitrum, arbitrumSepolia, blast, blastSepolia } from 'wagmi/chains'
-import { argentWallet, trustWallet, ledgerWallet } from '@rainbow-me/rainbowkit/wallets'
+import { argentWallet, ledgerWallet, trustWallet } from '@rainbow-me/rainbowkit/wallets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Provider as ReduxProvider } from 'react-redux'
-import store, { persistor } from '../state'
-import { PersistGate } from 'redux-persist/integration/react'
 import dynamic from 'next/dynamic'
+import { Provider as ReduxProvider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import { WagmiProvider } from 'wagmi'
+import { blast, blastSepolia } from 'wagmi/chains'
+import store, { persistor } from '../state'
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '900'],
