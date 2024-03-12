@@ -44,7 +44,7 @@ const Classic = ({
               />
             </div>
             <div className="flex flex-col gap-px">
-              <h5 className="text-xs md:text-sm text-white leading-normal font-semibold">FNX / ETH</h5>
+              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">FNX / ETH</h5>
               <div className="flex items-center gap-[5px] max-md:flex-wrap">
                 {'VOLATILE' === depositType ? (
                   <Button variant="tertiary" className="!py-1 h-[28px] max-md:!text-xs flex-shrink-0">

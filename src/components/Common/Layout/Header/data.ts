@@ -23,6 +23,10 @@ export const MENU_LINKS = [
     name: 'Migration',
     href: '/migration',
   },
+  {
+    name: 'Bribes',
+    href: '/bribes',
+  },
 ]
 
 
