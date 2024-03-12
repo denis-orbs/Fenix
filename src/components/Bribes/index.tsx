@@ -51,7 +51,7 @@ const Bribes = () => {
 
           <div className="mt-4">
             <Button className="w-full" variant="primary">
-              Create Bribe
+              <span>Create Bribe</span>
             </Button>
           </div>
         </div>
