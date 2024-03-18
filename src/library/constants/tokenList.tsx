@@ -1,6 +1,8 @@
 // File containing all the token list references for Fenix
 
-export const tokenList = [
+import { IToken } from '../types'
+
+export const tokenList: IToken[] = [
   {
     id: 0,
     name: 'Fenix',
