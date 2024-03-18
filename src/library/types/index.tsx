@@ -1,8 +1,9 @@
+export type Address = `0x${string}` | undefined | null
 export interface IToken {
   id?: number // make mandatory
   name: string
   symbol: string
-  address?: string // make mandatory
+  address?: Address // make mandatory
   decimals?: number // make mandatory
 }
 export interface IOption {
