@@ -1,10 +1,10 @@
-export type Address = `0x${string}` | undefined | null
+export type Address = `0x${string}` | undefined
 export interface IToken {
-  id?: number // make mandatory
+  id: number
   name: string
   symbol: string
-  address?: Address // make mandatory
-  decimals?: number // make mandatory
+  address: Address
+  decimals: number
 }
 export interface IOption {
   label: string
