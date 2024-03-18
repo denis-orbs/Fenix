@@ -6,7 +6,8 @@ import Image from 'next/image'
 
 import { IToken } from '@/src/library/types'
 
-import { COMMON_TOKENS_LIST, TOKENS_LIST } from './data'
+import { COMMON_TOKENS_LIST } from './data'
+import { tokenList } from '@/src/library/constants/tokenList'
 
 interface SelectTokenProps {
   openModal: boolean
@@ -57,7 +58,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
           </div>
 
           <div className="flex flex-col gap-2 max-h-[130px] overflow-y-auto">
-            {TOKENS_LIST.map((token, index) => (
+            {tokenList.map((token, index) => (
               <div
                 key={index}
                 onClick={() => handlerSelectToken(token)}
@@ -79,10 +80,12 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
                 <div className="flex flex-col items-end justify-start">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
-                    <p className="text-xs text-white">Balance: {token.balance}</p>
+                    {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
+                    {/* todo fetch balance */}
+                    <p className="text-xs text-white">Balance: TODO</p>
                   </div>
                   <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
-                    ${token.amount}
+                    {/* ${token.amount} */}0
                   </div>
                 </div>
               </div>
