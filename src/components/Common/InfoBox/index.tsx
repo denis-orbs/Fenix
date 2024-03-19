@@ -3,12 +3,10 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 
 interface Items {
-  title?: string
-  description?: string
-  amount?: string | number
-  icon?: string
+  label: string
+  amount: string | number
+  icon: string
   textColor?: string
-  hasButton?: boolean
 }
 
 interface InfoBoxProps {
@@ -37,14 +35,9 @@ const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false, bgBox
         </div>
         <div className="flex items-center justify-between w-full">
           <div className="max-w-[270px]">
-            <h5 className={`text-xs text-shark-100`}>{data.title}</h5>
-            <p className="text-xs text-white line-clamp-2">{data.description}</p>
+            <h5 className={`text-xs text-shark-100`}>{data.label}</h5>
+            <p className="text-xs text-white line-clamp-2">{data.amount}</p>
           </div>
-          {
-            data.hasButton && (
-              <Button className="!text-xs">{data.title}</Button>
-            )
-          }
         </div>
         {hasTooltip && (
           <span

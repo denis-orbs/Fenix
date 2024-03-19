@@ -26,7 +26,6 @@ const HeaderRowReward = ({
   activeSlider = true,
 }: HeaderRowRewardProps) => {
   const [showTooltip, setShowTooltip] = useState(false)
-  console.log(activeVote)
   return (
     <div className="relative z-10">
       <div className="w-full mb-2.5 xl:mb-5">

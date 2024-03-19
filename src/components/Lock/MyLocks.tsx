@@ -4,13 +4,18 @@ import Image from 'next/image'
 import RowSkeleton from '@/src/components/UI/Table/TableSkeleton'
 import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/src/components/UI'
 import NotFoundLock from './NotFoundLock'
-import { LOCKS_INFO_API } from './data'
 import { useRouter } from 'next/navigation'
+import { useAccount } from 'wagmi'
+import { AppThunkDispatch, useAppSelector } from '@/src/state'
+import { fetchNftsAsync } from '@/src/state/lock/reducer'
+import { useDispatch } from 'react-redux'
+import { lockState } from '@/src/state/lock/types'
+import formatDate from '@/src/library/utils/foramatDate'
 
 type LOCK = {
   LOCK_ID: string
   STATUS: boolean
-  VOTE: boolean,
+  VOTE: boolean
   TYPE?: string
 }
 
@@ -20,15 +25,23 @@ interface MyLocksProps {
 }
 
 const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
-  const [loading, setLoading] = useState(true)
+  const [nowTime, setnowTime] = useState<Number>(0)
   const { push } = useRouter()
+  const router = useRouter()
+  const { address } = useAccount()
+  const dispatch = useDispatch<AppThunkDispatch>()
+  const lock = useAppSelector<lockState>((state) => state.lock)
   const handlerNavigation = () => push('/lock/manage')
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, [])
+    if (address) dispatch(fetchNftsAsync(address))
+    const now = new Date().getTime() / 1000
+    setnowTime(now)
+  }, [address])
+
+  const handleManage = (id: Number) => {
+    router.push(`lock/${id}`)
+  }
 
   return (
     <>
@@ -44,10 +57,10 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
               { text: 'Action', className: 'text-right w-[25%]', sortable: false },
             ]}
           />
-          {LOCKS_INFO_API.length !== 0 ? (
+          {lock.positions.length !== 0 ? (
             <>
               <TableBody>
-                {loading ? (
+                {lock.appState == 'loading' ? (
                   <>
                     {Array.from({ length: 1 }).map((_, index) => (
                       <RowSkeleton key={index} />
@@ -55,7 +68,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                   </>
                 ) : (
                   <>
-                    {Locks.map((lock, index) => {
+                    {lock.positions.map((lock, index) => {
                       return (
                         <TableRow key={index}>
                           <TableCell className="w-[30%]">
@@ -68,8 +81,8 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                                 height={40}
                               />
                               <div className="flex flex-col items-center">
-                                <h1 className="text-xs">10923</h1>
-                                {lock.STATUS ? (
+                                <h1 className="text-xs">{lock.veNFTInfo.id.toString()}</h1>
+                                {BigInt(nowTime.toFixed(0).toString()) < lock.veNFTInfo.lockEnd ? (
                                   <p className="text-xs text-green-400">
                                     <span>•</span> Active
                                   </p>
@@ -90,7 +103,9 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                                 width={20}
                                 height={20}
                               />
-                              <p className="text-xs text-white">744,621.46</p>
+                              <p className="text-xs text-white">
+                                {(Number(lock.veNFTInfo.amount) / 10 ** 18).toFixed(2)}
+                              </p>
                             </div>
                           </TableCell>
                           <TableCell className="w-[10%]">
@@ -102,16 +117,18 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                                 width={20}
                                 height={20}
                               />
-                              <p className="text-xs text-white">744,621.46</p>
+                              <p className="text-xs text-white">
+                                {(Number(lock.veNFTInfo.voting_amount) / 10 ** 18).toFixed(2)}
+                              </p>
                             </div>
                           </TableCell>
                           <TableCell className="w-[10%]">
                             <div className="flex items-center gap-2">
-                              <p className="text-xs text-white">27-06-2025</p>
+                              <p className="text-xs text-white">{formatDate(Number(lock.veNFTInfo.lockEnd))}</p>
                             </div>
                           </TableCell>
                           <TableCell className="w-[15%] flex justify-center">
-                            {lock.VOTE ? (
+                            {lock.veNFTInfo.voted ? (
                               <span className="flex items-center bg-opacity-20 w-[105px] text-xs justify-center px-5 py-1 text-white border border-solid border-green-400 bg-green-500 rounded-xl ">
                                 Voted
                               </span>
@@ -124,9 +141,9 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                           <TableCell className="w-[25%]">
                             <div className="flex justify-end w-full">
                               <Button
-                                onClick={handlerNavigation}
                                 variant="tertiary"
                                 className="h-[38px] w-[90px] bg-opacity-40"
+                                onClick={() => handleManage(Number(lock.veNFTInfo.id))}
                               >
                                 <span className="text-xs">Manage</span>
                               </Button>

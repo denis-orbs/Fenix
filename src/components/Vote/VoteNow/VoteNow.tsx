@@ -4,7 +4,6 @@ import ReadMoreModal from '@/src/components/Modals/Liquidity/ReadMore'
 import ActiveVote from '../ActiveVote'
 import InactiveVote from '../InactiveVote'
 
-
 interface VoteNowProps {
   openModal: boolean
   activeVote: boolean
@@ -23,7 +22,7 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
           <h4 className="w-full mb-3 text-sm text-white">Vote now</h4>
         </div>
         <div className="relative flex flex-col w-auto">
-          {activeVote ? <ActiveVote handlerChange={handlerChange} /> : <InactiveVote handlerChange={handlerChange} />}
+          <ActiveVote handlerChange={handlerChange} />
         </div>
         <div className="flex flex-wrap xl:flex-nowrap gap-3 py-3 mt-5 items-center w-full">
           <div className="bg-shark-400 bg-opacity-40 text-sm rounded-lg py-5 flex flex-col items-center justify-center w-full xl:w-[30%]">

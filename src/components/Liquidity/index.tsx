@@ -22,10 +22,7 @@ const Liquidity = () => {
 
   const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
 
-  useEffect(() => {
-    console.log('Loading ', loading)
-    console.log('v2PairsData ', v2PairsData)
-  }, [v2PairsData, loading])
+  useEffect(() => {}, [v2PairsData, loading])
 
   const poolsData = useMemo<PoolData[]>(() => {
     if (loading) {

@@ -4,20 +4,24 @@ import { TableCell, TableRow, Button } from '@/src/components/UI'
 import InputRange from '../../UI/SliderRange/InputRange'
 import { useState } from 'react'
 import MobileRowVote from './MobileRowVote'
-
-type IRow = {
-  type: string
-  APR: string
-}
+import { AppThunkDispatch } from '@/src/state'
+import { useDispatch } from 'react-redux'
+import { setpercentage } from '@/src/state/vote/reducer'
+import { VoteTableElement } from '@/src/state/vote/types'
+import { BigDecimal } from '@/src/library/web3/common/BigDecimal'
 
 interface RowDataProps {
-  row: IRow
+  index: number
+  row: VoteTableElement
   activeVote: boolean
   activeSlider?: boolean
+  onRangeUpdate: (index: number, value: number) => void
 }
 
-const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
+const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: RowDataProps) => {
   const [changeValue, setChangeValue] = useState(0)
+  const dispatch = useDispatch<AppThunkDispatch>()
+
   return (
     <>
       <TableRow className="hidden xl:flex">
@@ -32,7 +36,7 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
                 height={20}
               />
               <Image
-                src="/static/images/tokens/ETH.svg"
+                src={'/static/images/tokens/ETH.svg'}
                 alt="token"
                 className="-ml-4 rounded-full w-7 h-7"
                 width={20}
@@ -40,15 +44,15 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
               />
             </div>
             <div className="flex flex-col">
-              <h5 className="text-sm text-white">FNX / ETH</h5>
+              <h5 className="text-sm text-white">
+                {row.token0Symbol} / {row.token1Symbol}
+              </h5>
               <div className="flex items-center gap-2">
-                {'VOLATILE' === row.type && (
-                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
-                    Volatile Pool{' '}
-                  </span>
-                )}
+                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
+                  {!row.pair.stable ? 'Volatile Pool' : 'Stable Pool'}
+                </span>
 
-                {'CONCENTRATED' === row.type ? (
+                {/* {'CONCENTRATED' === row.type ? (
                   <span
                     className="py-1 px-2  text-xs rounded-lg 
                     bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
@@ -56,11 +60,10 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
                     Concentrated
                   </span>
                 ) : 'STABLE' === row.type ? (
-                  <span
-                   className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
+                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
                     Stable Pool
                   </span>
-                ) : null}
+                ) : null} */}
 
                 <span className="py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                   0.3%
@@ -76,24 +79,26 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
         <TableCell className="w-[10%] flex justify-center">
           <div className="flex items-center">
             <p className="py-2 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.APR}%
+              {row.poolAPR.toFixed(2)}%
             </p>
           </div>
         </TableCell>
 
         <TableCell className="w-[10%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">0%</p>
+            <p className="mb-1 text-xs text-white">
+              {row.yourVoteWeightPercentage.mulNumber(100).toString({ maxDecimalPlaces: 2 }) + '%'}
+            </p>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
+                {/* <Image
                   src="/static/images/tokens/ETH.svg"
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
-                2,313,873.46
+                /> */}
+                {new BigDecimal(row.yourVoteWeight, 18).toString({ maxDecimalPlaces: 2 }) + ' veFnx'}
               </p>
             </div>
           </div>
@@ -156,14 +161,14 @@ const RowDataVote = ({ row, activeVote, activeSlider }: RowDataProps) => {
                   min={0}
                   height={7}
                   value={changeValue}
-                  onChange={setChangeValue}
+                  onChange={(value) => {
+                    setChangeValue(value)
+                    onRangeUpdate(index, value)
+                  }}
                   thumbSize={18}
                   disabled={!activeVote}
                 />
-                <div className="flex justify-between text-sm text-shark-100">
-                  <p>0%</p>
-                  <p>100%</p>
-                </div>
+                <div className="flex justify-between text-sm text-shark-100">{changeValue} %</div>
               </div>
             </div>
           ) : (

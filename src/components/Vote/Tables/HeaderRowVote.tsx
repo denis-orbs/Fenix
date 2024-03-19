@@ -1,8 +1,14 @@
 'use client'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { TableSkeleton, TableBody, TableHead, PaginationMobile } from '@/src/components/UI'
 import { Pagination } from '@/src/components/UI'
 import RowDataVote from './RowVote'
+import { useDispatch } from 'react-redux'
+import { AppThunkDispatch, useAppDispatch, useAppSelector } from '@/src/state'
+import { setvotes, setpercentage, fetchGaugesAsync } from '@/src/state/vote/reducer'
+import { useAccount } from 'wagmi'
+import { voteState } from '@/src/state/vote/types'
+import { lockState } from '@/src/state/lock/types'
 
 type filterData = {
   type: string
@@ -14,11 +20,39 @@ interface HeaderRowVoteProps {
   filterData: filterData[]
   activeVote: boolean
   activePagination?: boolean
-  activeSlider?:boolean
+  activeSlider?: boolean
 }
 
-const HeaderRowVote = ({ activeVote, filterData, loading, activePagination = true, activeSlider = true }: HeaderRowVoteProps) => {
+const HeaderRowVote = ({
+  activeVote,
+  filterData,
+  loading,
+  activePagination = true,
+  activeSlider = true,
+}: HeaderRowVoteProps) => {
   const [showTooltip, setShowTooltip] = useState(false)
+  const [selectedRanges, setSelectedRanges] = useState<number[]>([])
+  const { address } = useAccount()
+  const dispatch = useDispatch<AppThunkDispatch>()
+  const vote = useAppSelector((state) => state.vote as voteState)
+  const lock = useAppSelector((state) => state.lock as lockState)
+  console.log(
+    vote.voteTableElement.map((row) => row.pair.pair_address),
+    'voteTableElement'
+  )
+
+  useEffect(() => {
+    if (address) dispatch(fetchGaugesAsync(address))
+  }, [address, lock])
+
+  // Function to handle when a subcomponent updates its range
+  const handleRangeUpdate = (index: number, value: number) => {
+    const newRanges = [...selectedRanges]
+    newRanges[index] = value
+    setSelectedRanges(newRanges)
+    dispatch(setpercentage(newRanges.reduce((a, b) => a + b, 0)))
+    dispatch(setvotes(newRanges))
+  }
 
   return (
     <div className="relative z-10">
@@ -42,16 +76,22 @@ const HeaderRowVote = ({ activeVote, filterData, loading, activePagination = tru
         </div>
 
         <TableBody>
-          {loading ? (
+          {vote.appState == 'loading' ? (
             <>
               {Array.from({ length: filterData.length }).map((_, index) => (
                 <TableSkeleton key={index} />
               ))}
             </>
           ) : (
-            filterData.map((row, index) => (
+            vote.voteTableElement.map((row, index) => (
               <Fragment key={index}>
-                <RowDataVote row={row} activeVote={activeVote} activeSlider={activeSlider} />
+                <RowDataVote
+                  index={index}
+                  row={row}
+                  activeVote={activeVote}
+                  activeSlider={activeSlider}
+                  onRangeUpdate={handleRangeUpdate}
+                />
                 {/* <RowDataVote row={row} activeVote={activeVote} /> */}
               </Fragment>
             ))

@@ -1,21 +1,21 @@
 const STEPS = [
   {
-    title: 'Choose the Pool you want to incentivise.',
+    label: 'Choose the Pool you want to incentivise.',
     icon: 'icon-compass',
     hasDecorator: true,
   },
   {
-    title: 'Select the Rewards Token you want to Reward the Pool.',
+    label: 'Select the Rewards Token you want to Reward the Pool.',
     icon: 'icon-coin',
     hasDecorator: true,
   },
   {
-    title: 'Set the Reward Amount.',
+    label: 'Set the Reward Amount.',
     icon: 'icon-compass',
     hasDecorator: true,
   },
   {
-    title: 'Bribe the Pool!',
+    label: 'Bribe the Pool!',
     icon: 'icon-check',
   },
 ]

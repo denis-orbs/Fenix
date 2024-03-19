@@ -6,10 +6,10 @@ import ReadMoreModal from '@/src/components/Modals/Liquidity/ReadMore'
 import useStore from '@/src/state/zustand'
 
 interface Step {
-  title: string
-  description: string
+  label: string
+  amount: string
   icon: string
-  hasButton?: boolean,
+  hasButton?: boolean
 }
 
 interface StepsProps {
@@ -17,7 +17,7 @@ interface StepsProps {
   title?: string
 }
 
-const Steps = ({ steps, title = "Start now" }: StepsProps) => {
+const Steps = ({ steps, title = 'Start now' }: StepsProps) => {
   const { setReadMoreModal } = useStore()
 
   const handleReadMore = () => setReadMoreModal(true)
