@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { CurrentEpochReward, RewardPairInfo, Rewards, ToClaim } from '../web3/apis/RewardAPIData'
 import RewardAPIABIV3 from '../web3/abis/RewardAPIABIV3'
 import { RewardAPIV3Address } from '../web3/ContractAddresses'

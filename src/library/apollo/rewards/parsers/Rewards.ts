@@ -40,13 +40,13 @@ export async function getCurrentEpochRewardTokens(availableTokensDictionary: {
 
     const parsedBribeList: Bribes[] = []
 
-    for (let bribeAddr of Object.keys(joinedBribes)) {
+    for (const bribeAddr of Object.keys(joinedBribes)) {
       const tokensList: Address[] = []
       const symbolsList: string[] = []
       const decimalsList: bigint[] = []
       const amountsList: bigint[] = []
 
-      for (let tokenAddr of Object.keys(joinedBribes[bribeAddr])) {
+      for (const tokenAddr of Object.keys(joinedBribes[bribeAddr])) {
         const token = availableTokensDictionary[tokenAddr]
         if (!token) {
           continue

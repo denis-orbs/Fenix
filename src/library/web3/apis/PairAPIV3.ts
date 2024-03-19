@@ -54,7 +54,7 @@ export async function getPositionsOfOwnerInGauge(owner: Address, gauge: Address)
     maturity_time: bigint
     maturity_multiplier: bigint
   }[]
-  let parsedPositions: MaNFTInfoV3[] = []
+  const parsedPositions: MaNFTInfoV3[] = []
   for (let i = 0; i < positions.length; i++) {
     const position = positions[i]
 

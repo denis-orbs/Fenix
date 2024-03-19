@@ -1515,6 +1515,6 @@ const abi = [
     stateMutability: 'view',
     type: 'function',
   },
-];
+]
 
-export default abi;
+export default abi

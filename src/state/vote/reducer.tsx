@@ -144,7 +144,7 @@ export const fetchGaugesAsync = createAsyncThunk('voteInfo/fetchGaugesAsync', as
       //   console.log('Total votes on gauge: ', reward.totalVotesOnGauge);
       // }
       if (reward.totalVotesOnGauge > 0n) {
-        let totalVotesOnGaugeBigDecimal = new BigDecimal(reward.totalVotesOnGauge, 18)
+        const totalVotesOnGaugeBigDecimal = new BigDecimal(reward.totalVotesOnGauge, 18)
           .mulNumber(chrTokenPrice)
           .toRoundedFloat()
 

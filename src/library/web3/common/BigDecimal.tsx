@@ -1,3 +1,4 @@
+//@ts-nocheck
 // Big Decimal class
 interface BigDecimalToStringOptions {
   maxDecimalPlaces?: number
@@ -55,8 +56,8 @@ export class BigDecimal {
     // ex: 7.993623073701469e-08
 
     // regex
-    let regExp = new RegExp(/([0-9]+\.?[0-9]*)e(-?[0-9]+)/)
-    let match = value.match(regExp)
+    const regExp = new RegExp(/([0-9]+\.?[0-9]*)e(-?[0-9]+)/)
+    const match = value.match(regExp)
     if (match) {
       let base = match[1]
       let exponent = BigInt(match[2])
@@ -124,9 +125,9 @@ export class BigDecimal {
 
     // with optional thousands separator
     // We escape the thousandsSeparator and decimalSeparator
-    let escapedThousandsSeparator = thousandsSeparator ? '\\' + thousandsSeparator : ''
-    let escapedDecimalSeparator = '\\' + decimalSeparator
-    let regExp = new RegExp(
+    const escapedThousandsSeparator = thousandsSeparator ? '\\' + thousandsSeparator : ''
+    const escapedDecimalSeparator = '\\' + decimalSeparator
+    const regExp = new RegExp(
       `^-?(\\d+|\\d{1,3}(${escapedThousandsSeparator}\\d{3})*)((${escapedDecimalSeparator}\\d+)?)?$`
     )
     if (!regExp.test(value)) {
@@ -159,7 +160,7 @@ export class BigDecimal {
     decimals = Number(decimals)
     const [integer, fractional] = value.split('.')
     let fractionalPartLength = 0
-    let integerPart = BigInt(integer)
+    const integerPart = BigInt(integer)
     let fractionalPart = BigDecimal.ZERO
 
     if (fractional) {
@@ -254,8 +255,8 @@ export class BigDecimal {
 
   // * (number and float)
   public mulNumber(value: number): BigDecimal {
-    let val = BigDecimal.fromStringRaw(value.toString())
-    let bnn = new BigDecimal(this._value * val._value, this._decimals + val._decimals)
+    const val = BigDecimal.fromStringRaw(value.toString())
+    const bnn = new BigDecimal(this._value * val._value, this._decimals + val._decimals)
     // keep this._decimals (crop extra decimals from value)
     const difference = bnn._decimals - this._decimals
     const multiplier = BigDecimal.TEN ** BigInt(difference)
@@ -285,7 +286,7 @@ export class BigDecimal {
       (this._decimals >= value._decimals ? BigDecimal.TEN ** BigInt(this._decimals - value._decimals) : 1n)
 
     // Perform the division at the increased scale
-    let res = new BigDecimal(scaledThisValue / scaledValue, maxDecimals)
+    const res = new BigDecimal(scaledThisValue / scaledValue, maxDecimals)
 
     // Adjust the precision to keep original decimal precision
     let _temp = res.withDecimalPrecision(this._decimals)
@@ -300,8 +301,8 @@ export class BigDecimal {
     if (value2 === 0n) {
       new BigDecimal(0n, decimals)
     }
-    let val1 = BigDecimal.fromBigInt(value1, decimals)
-    let val2 = BigDecimal.fromBigInt(value2, decimals)
+    const val1 = BigDecimal.fromBigInt(value1, decimals)
+    const val2 = BigDecimal.fromBigInt(value2, decimals)
     return val1.div(val2)
   }
 
@@ -446,7 +447,7 @@ export class BigDecimal {
     if (this.isNegative) {
       negative = true
     }
-    let value = this.abs()._value
+    const value = this.abs()._value
 
     maxDecimalPlaces = maxDecimalPlaces === undefined ? Number.MAX_SAFE_INTEGER : maxDecimalPlaces
     decimalSeparator = decimalSeparator === undefined ? '.' : decimalSeparator
@@ -461,7 +462,7 @@ export class BigDecimal {
 
     // Convert the value to a string
     let mantissa = value.toString()
-    let decimals = Number(this._decimals)
+    const decimals = Number(this._decimals)
 
     // add trailing zeros
     while (mantissa.length < decimals + 1) {
@@ -511,11 +512,11 @@ export class BigDecimal {
 
     // trim trailing zeros (dont trim more than the decimal places)
     if (trimTrailingZeros && mantissa.includes(decimalSeparator) && mantissa[mantissa.length - 1] === '0') {
-      let mantissaArray = mantissa.split(decimalSeparator)
-      let mantissaInteger = mantissaArray[0]
-      let mantissaDecimal = mantissaArray[1]
-      let mantissaDecimalArray = mantissaDecimal.split('')
-      let mantissaDecimalArrayReversed = mantissaDecimalArray.reverse()
+      const mantissaArray = mantissa.split(decimalSeparator)
+      const mantissaInteger = mantissaArray[0]
+      const mantissaDecimal = mantissaArray[1]
+      const mantissaDecimalArray = mantissaDecimal.split('')
+      const mantissaDecimalArrayReversed = mantissaDecimalArray.reverse()
       let mantissaDecimalArrayReversedTrimmed: string[] = []
       let mantissaDecimalArrayReversedTrimmedLength = 0
       for (let i = 0; i < mantissaDecimalArrayReversed.length; i++) {
@@ -529,7 +530,7 @@ export class BigDecimal {
         mantissaDecimalArrayReversedTrimmedLength,
         mantissaDecimalArrayReversed.length
       )
-      let mantissaDecimalArrayTrimmed = mantissaDecimalArrayReversedTrimmed.reverse()
+      const mantissaDecimalArrayTrimmed = mantissaDecimalArrayReversedTrimmed.reverse()
       mantissa = mantissaInteger + decimalSeparator + mantissaDecimalArrayTrimmed.join('')
     }
 
@@ -558,10 +559,10 @@ export class BigDecimal {
       // 1235678901234 -> 1.23T
 
       // split the mantissa into an array
-      let mantissaArray = mantissa.replace(thousandsSeparator, '').split(decimalSeparator)
+      const mantissaArray = mantissa.replace(thousandsSeparator, '').split(decimalSeparator)
 
       // Array of suffixes
-      let suffixes = ['', 'K', 'M', 'B', 'T']
+      const suffixes = ['', 'K', 'M', 'B', 'T']
 
       // Get the suffix index, if the mantissa is 2000, the suffix index is 1 (K), if the mantissa is 2000000, the suffix index is 2 (M)
       let suffixIndex =

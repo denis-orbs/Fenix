@@ -124,7 +124,7 @@ export function eToNumber(num, decimals = true) {
   const t = () => {
     let sign = ''
     ;(num += '').charAt(0) == '-' && ((num = num.substring(1)), (sign = '-'))
-    let arr = num.split(/[e]/gi)
+    arr = num.split(/[e]/gi)
     if (arr.length < 2) return sign + num
     let dot = (0.1).toLocaleString().substr(1, 1),
       n = arr[0],
