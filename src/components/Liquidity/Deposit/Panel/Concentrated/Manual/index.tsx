@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import SetRange from './SetRange'
+import { Button } from '@/src/components/UI'
 
 const ConcentratedDepositLiquidityManual = () => {
   const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX' })
@@ -21,6 +22,9 @@ const ConcentratedDepositLiquidityManual = () => {
         setFirstValue={(value) => setFirstValue(value)}
         setSecondValue={(value) => setSecondValue(value)}
       />
+      <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
+        Create Position
+      </Button>
     </>
   )
 }

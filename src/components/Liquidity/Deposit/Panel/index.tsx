@@ -81,10 +81,6 @@ const Panel = () => {
 
           {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
           {depositType === 'CONCENTRATED_MANUAL' && <Manual />}
-
-          <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
-            Create Position
-          </Button>
         </div>
       </div>
     </section>
