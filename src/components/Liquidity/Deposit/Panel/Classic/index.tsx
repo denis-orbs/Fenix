@@ -43,13 +43,8 @@ const Classic = ({
     const asyncGetReserve = async () => {
         const reserve: any = await getTokenReserve(firstToken.address as Address, secondToken.address as Address, depositType === 'STABLE')
 
-        if(reserve[0] == 0 || reserve[1] == 0) {
-          setFirstReserve(1)
-          setSecondReserve(1)
-        } else {
-          setFirstReserve(reserve[0])
-          setSecondReserve(reserve[1])
-        }
+        setFirstReserve(reserve[0])
+        setSecondReserve(reserve[1])
     }
 
     asyncGetReserve();
@@ -63,10 +58,10 @@ const Classic = ({
     if(optionActive == "ADD") {
       // TODO: handle if pair is not created
       if(firstToken.address === token.address) {
-        setSecondValue(parseFloat(input) * Number(secondReserve) / Number(firstReserve))
+        setSecondValue(parseFloat(input) * Number(secondReserve === 0 ? 1 : secondReserve) / Number(firstReserve === 0 ? 1 : firstReserve))
         setFirstValue(input)
       } else {
-        setFirstValue(parseFloat(input) * Number(firstReserve) / Number(secondReserve))
+        setFirstValue(parseFloat(input) * Number(firstReserve === 0 ? 1 : firstReserve) / Number(secondReserve === 0 ? 1 : secondReserve))
         setSecondValue(input)
       }
     }
@@ -201,7 +196,7 @@ const Classic = ({
                   width={20}
                   height={20}
                 />
-                <span>2,313,873.46</span>
+                <span>{(firstReserve/1e18).toFixed(2)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image
@@ -211,7 +206,7 @@ const Classic = ({
                   width={20}
                   height={20}
                 />
-                <span>225.38</span>
+                <span>{(secondReserve/1e18).toFixed(2)}</span>
               </p>
             </div>
           </div>
