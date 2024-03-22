@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import ExchangeBox from '@/src/components/Liquidity/Common/ExchangeBox'
 import SelectToken from '@/src/components/Modals/SelectToken'
-import { getLiquidityRemoveQuote, getTokenReserve } from '@/src/library/hooks/liquidity/useClassic'
+import { getLiquidityRemoveQuote, getPair, getTokenAllowance, getTokenReserve } from '@/src/library/hooks/liquidity/useClassic'
 import { Address } from 'viem'
 import { IToken } from '@/src/library/types'
 import Separator from '@/src/components/Trade/Common/Separator'
 import { useAccount, useWriteContract } from 'wagmi'
-import { ROUTERV2_ABI } from '@/src/library/constants/abi'
+import { ERC20_ABI, ROUTERV2_ABI } from '@/src/library/constants/abi'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { ethers } from 'ethers'
 
@@ -20,15 +20,21 @@ const Classic = ({
   tokenSwap: { name: string; symbol: string }
   tokenFor: { name: string; symbol: string }
 }) => {
-  const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX', id: 0, decimals: 18, address: "0x52f847356b38720B55ee18Cb3e094ca11C85A192" as Address } as IToken)
+  const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934';
+
+  const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX', id: 0, decimals: 18, address: "0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9" as Address } as IToken)
   const [firstValue, setFirstValue] = useState(0)
-  const [secondToken, setSecondToken] = useState({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4300000000000000000000000000000000000004" as Address } as IToken)
+  const [secondToken, setSecondToken] = useState({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4200000000000000000000000000000000000023" as Address } as IToken)
   const [secondValue, setSecondValue] = useState(0)
   const [firstReserve, setFirstReserve] = useState(0)
   const [secondReserve, setSecondReserve] = useState(0)
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
   const [lpValue, setLpValue] = useState(0)
+  const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
+  const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
+  const [pairAddress, setPairAddress] = useState("0x0000000000000000000000000000000000000000")
+  const [shouldApprovePair, setShouldApprovePair] = useState(true)
   
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
@@ -47,9 +53,31 @@ const Classic = ({
         setSecondReserve(reserve[1])
     }
 
-    asyncGetReserve();
-  }, [firstToken, secondToken])
+    const asyncGetPair = async () => {
+      const pair: any = await getPair(firstToken.address as Address, secondToken.address as Address, depositType === 'STABLE')
 
+      if(pair != "0x0") setPairAddress(pair)
+      else setPairAddress("0x0000000000000000000000000000000000000000")
+
+    }
+
+    asyncGetReserve()
+    asyncGetPair()
+  }, [firstToken, secondToken, depositType])
+
+  useEffect(()=> {
+    const asyncGetAllowance = async () => {
+        const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
+        const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
+        const allowanceLp: any = pairAddress != "0x0000000000000000000000000000000000000000" ? await getTokenAllowance(pairAddress as Address, account.address as Address, contractAddressList.v2router as Address) : {}
+
+        setShouldApproveFirst(allowanceFirst == "0")
+        setShouldApproveSecond(allowanceSecond == "0")
+        setShouldApprovePair(allowanceLp == "0")
+    }
+
+    asyncGetAllowance();
+  }, [firstToken, secondToken, account, pairAddress])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
     if(input.length > 0 && !input.endsWith(".")) input = parseFloat(input).toString()
@@ -129,6 +157,24 @@ const Classic = ({
     })
   }
 
+  const handleApprove = async (token: Address) => {
+    writeContractAsync({ 
+      abi: ERC20_ABI,
+      address: token,
+      functionName: 'approve', 
+      args: [
+        contractAddressList.v2router,
+        maxUint256
+      ], 
+    }).then(async () => {
+      const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
+      const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
+
+      setShouldApproveFirst(allowanceFirst == "0")
+      setShouldApproveSecond(allowanceSecond == "0")
+    })
+  }
+
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
@@ -196,7 +242,7 @@ const Classic = ({
                   width={20}
                   height={20}
                 />
-                <span>{(firstReserve/1e18).toFixed(2)}</span>
+                <span>{(Number(firstReserve)/1e18).toFixed(2)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image
@@ -206,7 +252,7 @@ const Classic = ({
                   width={20}
                   height={20}
                 />
-                <span>{(secondReserve/1e18).toFixed(2)}</span>
+                <span>{(Number(secondReserve)/1e18).toFixed(2)}</span>
               </p>
             </div>
           </div>
@@ -267,10 +313,19 @@ const Classic = ({
 
       <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={
         () => {
-          optionActive == 'ADD' ? handleAddLiquidity() : handleRemoveLiquidity()
+          optionActive == 'ADD' ? 
+            shouldApproveFirst ? 
+              handleApprove(firstToken.address as Address)
+            : shouldApproveSecond ?
+              handleApprove(secondToken.address as Address)
+            : handleAddLiquidity()
+          : 
+            shouldApprovePair ? 
+              handleApprove(pairAddress as Address)
+            : handleRemoveLiquidity()
         }
       }>
-        Create Position
+        {shouldApproveFirst ? `Approve ${firstToken.symbol}` : shouldApproveSecond ? `Approve ${secondToken.symbol}` : "Create Position"}
       </Button>
     </>
   )

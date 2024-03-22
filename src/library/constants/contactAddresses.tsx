@@ -1,4 +1,4 @@
 export const contractAddressList = {
-    v2router: "0xc1792D8C5ec987f2E801A8B39D87DF569118F605",
-    pairs_factory: "0x6E5A858a65AF18BC85935944E6BaE9A97ee2f59c"
+    v2router: "0x58DA44Da9af06d43378440549cEd8712125D49B5",
+    pairs_factory: "0xe19D414E2A994D21d2b2c495812fBf4fdA38558f"
 }
