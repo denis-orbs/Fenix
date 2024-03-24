@@ -1,3 +1,5 @@
+import { FeeAmount } from '../constants/trade'
+
 export type Address = `0x${string}` | undefined
 export interface IToken {
   id: number
@@ -16,4 +18,17 @@ export interface IStep {
   label?: string
   icon: string
   status?: string
+}
+
+export interface GammaPair {
+  address: string
+  title: string
+  // type: Presets
+  token0Address: string
+  token1Address: string
+  ableToFarm?: boolean
+  pid?: number
+  masterChefIndex?: number
+  withdrawOnly?: boolean
+  fee?: FeeAmount
 }
