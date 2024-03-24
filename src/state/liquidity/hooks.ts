@@ -13,3 +13,15 @@ export function useV2PairsData() {
     data: v2Pairs.data,
   }
 }
+
+export function useConcentratedPools() {
+  const concentratedPools: {
+    state: ApiState
+    data: any
+  } = useAppSelector((state) => state.liquidity.concentratedPools)
+
+  return {
+    loading: concentratedPools.state === ApiState.LOADING,
+    data: concentratedPools.data,
+  }
+}

@@ -1,18 +1,14 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
-import { getLiquidityV2Pairs } from './thunks'
-import { LiquidityV2PairDetails } from './types'
-
-export interface LiquidityState {
-  // Liquidity V2 Pairs
-  v2Pairs: {
-    state: ApiState
-    data: LiquidityV2PairDetails[]
-  }
-}
+import { getConcentratedPools, getLiquidityV2Pairs } from './thunks'
+import { LiquidityState, LiquidityV2PairDetails } from './types'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
+    state: ApiState.LOADING,
+    data: [],
+  },
+  concentratedPools: {
     state: ApiState.LOADING,
     data: [],
   },
@@ -29,5 +25,15 @@ export default createReducer(initialState, (builder) => {
     })
     .addCase(getLiquidityV2Pairs.rejected, (state) => {
       state.v2Pairs.state = ApiState.ERROR
+    })
+    .addCase(getConcentratedPools.pending, (state) => {
+      state.concentratedPools.state = ApiState.LOADING
+    })
+    .addCase(getConcentratedPools.fulfilled, (state, action) => {
+      state.concentratedPools.state = ApiState.SUCCESS
+      state.concentratedPools.data = action.payload
+    })
+    .addCase(getConcentratedPools.rejected, (state) => {
+      state.concentratedPools.state = ApiState.ERROR
     })
 })
