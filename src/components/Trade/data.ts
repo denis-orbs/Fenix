@@ -32,7 +32,7 @@ export const NAV_LIST = [
     description: 'Transfer assets to Blast',
     icon: 'icon-bridge',
     path: 'bridge',
-    active: false,
+    active: true,
   },
   {
     name: 'Perpetuals',
