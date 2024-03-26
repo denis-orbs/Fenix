@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 
 import { Button } from '@/src/components/UI'
@@ -10,6 +10,7 @@ import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
 const AccountHandler = () => {
+  const [openPoints, setOpenPoints] = useState<boolean>(false)
   const { isConnected, account } = useActiveConnectionDetails()
 
   const { setWalletSelectionModal } = useStore()
@@ -24,7 +25,41 @@ const AccountHandler = () => {
   }
 
   return (
-    <div className="flex items-center gap-[15px] w-full md:w-max-content xl:w-auto">
+    <div className="flex items-center gap-8 w-full md:w-max-content xl:w-auto flex-col xl:flex-row">
+      {isConnected && (
+        <div className="relative w-full">
+          <div
+            onMouseEnter={() => setOpenPoints(true)}
+            onMouseLeave={() => setOpenPoints(false)}
+            className="flex px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200"
+            >
+            <p className="text-xs text-white">0.0 Points</p>
+            <Image src="/static/images/tokens/BLAST.svg" className="w-8 h-8" alt="logo" width={30} height={30} />
+          </div>
+          {
+            openPoints &&
+            <div className="absolute bg-shark-400 rounded-lg border border-shark-300 w-full xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex flex-col justify-center items-center">
+                  <p className="text-shark-100 text-xs mb-2">PTC Received</p>
+                  <p className="text-white text-sm">0.0</p>
+                </div>
+                <div className="flex flex-col justify-center items-center">
+                  <p className="text-shark-100 text-xs mb-2">PTC Received</p>
+                  <p className="text-white text-sm">0.0</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-center flex-col">
+                <p className="text-xs text-shark-100 mb-2">Pending points will be sent in:</p>
+                <span className="flex items-center gap-2">
+                  <i className="icon-time text-white text-sm"></i>
+                  <p className="text-white text-xs underline">30 Minutes</p>
+                </span>
+              </div>
+            </div>
+          }
+        </div>
+      )}
       {isConnected && (
         <div className="items-center flex-shrink-0 hidden gap-2 xl:flex">
           <Image src="/static/images/tokens/ETH.svg" className="w-6 h-6" alt="logo" width={24} height={24} />
