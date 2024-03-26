@@ -24,15 +24,15 @@ const Steps = ({ steps, title = "Start now" }: StepsProps) => {
 
   return (
     <StepBox>
-      <div className="flex flex-col justify-center w-full relative z-10">
-        <h4 className="w-full mb-3 text-sm text-white">{title}</h4>
-        <div className="relative flex flex-col w-auto">
+      <div className="flex flex-col justify-center w-full">
+        <h4 className="w-full mb-3 text-sm text-white relative">{title}</h4>
+        <div className="relative flex flex-col w-auto z-10">
           {steps.map((step, index) => (
             <InfoBox data={step} key={index} hasDecorator={index !== steps.length - 1} />
           ))}
         </div>
         <p
-          className="flex items-center justify-end gap-3 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
+          className="flex items-center justify-end gap-3 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500 relative z-10"
           onClick={handleReadMore}
         >
           <span className="text-lg icon-link"></span>
