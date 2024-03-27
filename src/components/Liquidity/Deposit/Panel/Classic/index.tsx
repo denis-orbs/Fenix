@@ -186,16 +186,18 @@ const Classic = ({
         console.log("success", x, +new Date())
         const transaction = await publicClient.waitForTransactionReceipt({hash: x});
         console.log(transaction.status)
+
+        const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
+        const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
+        const allowanceLp: any = pairAddress != "0x0000000000000000000000000000000000000000" ? await getTokenAllowance(pairAddress as Address, account.address as Address, contractAddressList.v2router as Address) : {}
+
+        setShouldApproveFirst(allowanceFirst == "0")
+        setShouldApproveSecond(allowanceSecond == "0")
+        setShouldApprovePair(allowanceLp == "0")
       },
       onError: (e) => {
         console.log("error", e)
       },
-    }).then(async () => {
-      const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
-      const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
-
-      setShouldApproveFirst(allowanceFirst == "0")
-      setShouldApproveSecond(allowanceSecond == "0")
     })
   }
 
