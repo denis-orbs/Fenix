@@ -26,8 +26,6 @@ export function useContract<T extends Abi>(
           public: publicClient,
           wallet: (walletClient as WalletClient) ?? publicClient,
         },
-        // client: publicClient,
-        // walletClient: (walletClient as WalletClient) ?? publicClient,
       })
     } catch (error) {
       console.error('Failed to get contract', error)
