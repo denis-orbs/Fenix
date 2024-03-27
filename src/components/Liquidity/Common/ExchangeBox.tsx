@@ -68,11 +68,11 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
         </div>
         <div className="relative w-full xl:w-3/5">
           <input
-            type="text"
+            type="number"
             placeholder="0"
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             onChange={handleOnChange}
-            value={value == 0 ? "" : value}
+            value={value}
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
             <Button variant="tertiary" className="!py-1 !px-3">

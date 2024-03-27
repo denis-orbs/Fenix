@@ -8,6 +8,7 @@ import { IToken } from '@/src/library/types'
 
 import { COMMON_TOKENS_LIST } from './data'
 import { tokenList } from '@/src/library/constants/tokenList'
+import { useEffect, useState } from 'react'
 
 interface SelectTokenProps {
   openModal: boolean
@@ -16,12 +17,46 @@ interface SelectTokenProps {
 }
 
 const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) => {
+  
+  const [tokenList, setTokenList] = useState<IToken[]>([])
+  const [commonList, setCommonList] = useState<IToken[]>([])
+
   const handlerClose = () => setOpenModal(false)
 
   const handlerSelectToken = (token: IToken) => {
     setToken(token)
     setOpenModal(false)
   }
+
+  useEffect(() => {
+      const getList = async () => {
+        try {
+          const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
+            method: 'GET',
+          })
+          const responseData = await response.json()
+          const parsedData = responseData.map((item: any) => {
+            return {
+              id: 0,
+              name: item.basetoken.name,
+              symbol: item.basetoken.symbol,
+              address: item.basetoken.address,
+              decimals: 18,
+              img: item.logourl,
+              isCommon: item.common
+            }
+          })
+
+          const commonList = parsedData.filter((item: any) => item.isCommon)
+
+          setCommonList(commonList)
+          setTokenList(parsedData)
+        } catch (error) {
+        }
+      }
+
+      getList()
+  }, [])
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
@@ -39,14 +74,14 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
 
           <div className="mb-2 text-sm text-white">Common Tokens</div>
           <div className="flex flex-col items-center gap-1 mb-4 xl:flex-row">
-            {COMMON_TOKENS_LIST.map((token, index) => (
+            {commonList.map((token, index) => (
               <div
                 key={index}
                 onClick={() => handlerSelectToken(token)}
                 className="flex items-center w-full gap-2 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-1 xl:w-auto"
               >
                 <Image
-                  src={`/static/images/tokens/${token.symbol}.svg`}
+                  src={`${token.img}`}
                   alt="token"
                   width={30}
                   height={30}
@@ -66,7 +101,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
               >
                 <div className="flex items-center gap-2">
                   <Image
-                    src={`/static/images/tokens/${token.symbol}.svg`}
+                    src={`${token.img}`}
                     alt="token"
                     width={30}
                     height={30}

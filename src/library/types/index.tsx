@@ -5,6 +5,7 @@ export interface IToken {
   symbol: string
   address: Address
   decimals: number
+  img: string
 }
 export interface IOption {
   label: string

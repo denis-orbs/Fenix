@@ -101,7 +101,7 @@ export async function getPair(token1: Address, token2: Address, stable: boolean)
      * This hook is used to get token aproved amount for spender
      */
   
-    const allowance = await multicall(
+    const pairAddress = await multicall(
     createConfig({
         chains: [blastSepolia],
         transports: {
@@ -121,10 +121,8 @@ export async function getPair(token1: Address, token2: Address, stable: boolean)
       )
 
   
-      if((allowance)[0].status === 'failure') return "0x0"
-      const a: string = allowance[0].result as string;
+      if((pairAddress)[0].status === 'failure') return "0x0"
+      const a: string = pairAddress[0].result as string;
 
       return a;
 }
-
-getPair

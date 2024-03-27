@@ -10,9 +10,9 @@ import Separator from '@/src/components/Trade/Common/Separator'
 
 interface TokenSelectorProps {
   token: IToken
-  value: number
+  value: string
   setToken: (token: IToken) => void
-  setValue: (value: number) => void
+  setValue: (value: string) => void
   variant?: 'primary' | 'secondary'
   onTokenValueChange?: (arg0: any, token: IToken) => void
 }
@@ -42,12 +42,12 @@ const TokensSelector = ({
 }: {
   firstToken: IToken
   secondToken: IToken
-  firstValue: number
-  secondValue: number
+  firstValue: string
+  secondValue: string
   setFirstToken: (token: IToken) => void
   setSecondToken: (token: IToken) => void
-  setFirstValue: (value: number) => void
-  setSecondValue: (value: number) => void
+  setFirstValue: (value: string) => void
+  setSecondValue: (value: string) => void
   onTokenValueChange:(arg0: any, token: IToken) => void
 }) => {
   return (

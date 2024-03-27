@@ -12,6 +12,7 @@ import { useAccount, useWriteContract } from 'wagmi'
 import { ERC20_ABI, ROUTERV2_ABI } from '@/src/library/constants/abi'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { ethers } from 'ethers'
+import { publicClient } from '@/src/library/constants/viemClient'
 
 const Classic = ({
   depositType,
@@ -23,9 +24,9 @@ const Classic = ({
   const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934';
 
   const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX', id: 0, decimals: 18, address: "0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9" as Address } as IToken)
-  const [firstValue, setFirstValue] = useState(0)
+  const [firstValue, setFirstValue] = useState("")
   const [secondToken, setSecondToken] = useState({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4200000000000000000000000000000000000023" as Address } as IToken)
-  const [secondValue, setSecondValue] = useState(0)
+  const [secondValue, setSecondValue] = useState("")
   const [firstReserve, setFirstReserve] = useState(0)
   const [secondReserve, setSecondReserve] = useState(0)
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
@@ -41,8 +42,8 @@ const Classic = ({
 
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
-    setFirstValue(0);
-    setSecondValue(0);
+    setFirstValue("");
+    setSecondValue("");
   }
 
   useEffect(()=> {
@@ -80,32 +81,29 @@ const Classic = ({
   }, [firstToken, secondToken, account, pairAddress])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
-    if(input.length > 0 && !input.endsWith(".")) input = parseFloat(input).toString()
-    if(input.length > 0 && input.endsWith("..")) input = input.slice(0, -1)
-
+    
     if(optionActive == "ADD") {
       // TODO: handle if pair is not created
       if(firstToken.address === token.address) {
-        setSecondValue(parseFloat(input) * Number(secondReserve === 0 ? 1 : secondReserve) / Number(firstReserve === 0 ? 1 : firstReserve))
-        setFirstValue(input)
+        if(parseFloat(input) != 0) setSecondValue((parseFloat(input) * Number(secondReserve === 0 ? 1 : secondReserve) / Number(firstReserve === 0 ? 1 : firstReserve)).toString())
+        if(parseFloat(input) == 0) setSecondValue("")
+        setFirstValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
       } else {
-        setFirstValue(parseFloat(input) * Number(firstReserve === 0 ? 1 : firstReserve) / Number(secondReserve === 0 ? 1 : secondReserve))
-        setSecondValue(input)
+        if(parseFloat(input) != 0) setFirstValue((parseFloat(input) * Number(firstReserve === 0 ? 1 : firstReserve) / Number(secondReserve === 0 ? 1 : secondReserve)).toString())
+        if(parseFloat(input) == 0) setFirstValue("")
+        setSecondValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
       }
     }
   }
 
   const handleOnLPTokenValueChange = (input: any, token: IToken) => {
-    if(input.length > 0 && !input.endsWith(".")) input = parseFloat(input).toString()
-    if(input.length > 0 && input.endsWith("..")) input = input.slice(0, -1)
-
     setLpValue(input)
 
     if(optionActive == "WITHDRAW") {
       const asyncGetWithdrawTokens = async () => {
         const tokens: any = await getLiquidityRemoveQuote(input, firstToken.address as Address, secondToken.address as Address, depositType === 'STABLE')
-        setFirstValue(Number(tokens[0])/1e18)
-        setSecondValue(Number(tokens[1])/1e18)
+        setFirstValue((Number(tokens[0])/1e18).toString())
+        setSecondValue((Number(tokens[1])/1e18).toString())
       }
 
       asyncGetWithdrawTokens();
@@ -130,8 +128,16 @@ const Classic = ({
         account.address as Address, 
         parseInt((+new Date()/1000).toString())+60*60
       ], 
-    }).then(() => {
-      console.log("Add LP tx is sent.")
+    },
+    {
+      onSuccess: async (x) => {
+        console.log("success", x, +new Date())
+        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
+        console.log(transaction.status)
+      },
+      onError: (e) => {
+        console.log("error", e)
+      },
     })
   }
 
@@ -152,8 +158,16 @@ const Classic = ({
         account.address as Address, 
         parseInt((+new Date()/1000).toString())+60*60
       ], 
-    }).then(() => {
-      console.log("Remove LP tx is sent.")
+    },
+    {
+      onSuccess: async (x) => {
+        console.log("success", x, +new Date())
+        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
+        console.log(transaction.status)
+      },
+      onError: (e) => {
+        console.log("error", e)
+      },
     })
   }
 
@@ -166,6 +180,16 @@ const Classic = ({
         contractAddressList.v2router,
         maxUint256
       ], 
+    },
+    {
+      onSuccess: async (x) => {
+        console.log("success", x, +new Date())
+        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
+        console.log(transaction.status)
+      },
+      onError: (e) => {
+        console.log("error", e)
+      },
     }).then(async () => {
       const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
       const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
@@ -325,7 +349,18 @@ const Classic = ({
             : handleRemoveLiquidity()
         }
       }>
-        {shouldApproveFirst ? `Approve ${firstToken.symbol}` : shouldApproveSecond ? `Approve ${secondToken.symbol}` : "Create Position"}
+        {
+          optionActive == 'ADD' ? 
+            shouldApproveFirst ? 
+              `Approve ${firstToken.symbol}`
+            : shouldApproveSecond ?
+              `Approve ${secondToken.symbol}`
+            : `Add Liquidity`
+          : 
+            shouldApprovePair ? 
+              `Approve LP`
+            : `Remove Liquidity`
+        }
       </Button>
     </>
   )
