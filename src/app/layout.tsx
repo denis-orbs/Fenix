@@ -4,39 +4,44 @@ import '@/src/assets/styles/globals.css'
 import '@rainbow-me/rainbowkit/styles.css'
 import { Poppins } from 'next/font/google'
 import Head from 'next/head'
+import { http, type Chain } from 'viem'
 
 import Decorator from '@/src/components/Common/Layout/Background'
 import Footer from '@/src/components/Common/Layout/Footer'
 import Header from '@/src/components/Common/Layout/Header'
 import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
 
-import {
-  getDefaultConfig,
-  getDefaultWallets,
-  midnightTheme,
-  RainbowKitProvider
-} from '@rainbow-me/rainbowkit'
+import { getDefaultConfig, getDefaultWallets, midnightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { argentWallet, ledgerWallet, trustWallet } from '@rainbow-me/rainbowkit/wallets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { WagmiProvider } from 'wagmi'
-import { blast, blastSepolia } from 'wagmi/chains'
+import { blast, blastSepolia, localhost, polygon } from 'wagmi/chains'
 import store, { persistor } from '../state'
 
+console.log(typeof localhost)
+
+const polygonFork = {
+  id: 31337,
+  name: 'Polygon Fork',
+  nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
+  rpcUrls: {
+    default: { http: ['http://localhost:8545'] },
+  },
+} as const satisfies Chain
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '900'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap',
 })
-
 const { wallets } = getDefaultWallets()
 const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
-  chains: [blast, blastSepolia],
+  chains: [polygonFork, blast, blastSepolia],
   wallets: [
     ...wallets,
     {
