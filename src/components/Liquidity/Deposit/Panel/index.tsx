@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button, Switch } from '@/src/components/UI'
 import Classic from '@/src/components/Liquidity/Deposit/Panel/Classic'
@@ -19,7 +19,7 @@ const Panel = () => {
   const handlerSwitch = () => setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
 
   const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
-
+  
   return (
     <section className="box-panel-trade">
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
@@ -76,7 +76,7 @@ const Panel = () => {
           </div>
 
           {(depositType === 'VOLATILE' || depositType === 'STABLE') && (
-            <Classic depositType={depositType} tokenSwap={tokenSwap} tokenFor={tokenFor} />
+            <Classic depositType={depositType} tokenSwap={tokenSwap} tokenFor={tokenFor} setDepositType={setDepositType} />
           )}
 
           {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}

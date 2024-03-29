@@ -10,17 +10,18 @@ import { contractAddressList } from '../../constants/contactAddresses'
 import { injected } from 'wagmi/connectors'
 
 export async function getTokenReserve(token1: Address, token2: Address, stable: boolean) {
+
   /**
    * This hook is used to get token reserve for a v2 pool through RouterV2 using both token addresses
    */
 
     const reserves = await multicall(
-    createConfig({
-        chains: [blastSepolia],
-        transports: {
-        [blastSepolia.id]: http()
-        },
-    }),
+        createConfig({
+            chains: [blastSepolia],
+            transports: {
+            [blastSepolia.id]: http()
+            },
+        }),
         {
             contracts: [
                 {
@@ -43,12 +44,12 @@ export async function getLiquidityRemoveQuote(amount: Number, token1: Address, t
      */
   
     const lpTokens = await multicall(
-    createConfig({
-        chains: [blastSepolia],
-        transports: {
-        [blastSepolia.id]: http()
-        },
-    }),
+        createConfig({
+            chains: [blastSepolia],
+            transports: {
+            [blastSepolia.id]: http()
+            },
+        }),
         {
             contracts: [
                 {
@@ -66,63 +67,65 @@ export async function getLiquidityRemoveQuote(amount: Number, token1: Address, t
 }
 
 export async function getTokenAllowance(token: Address, owner: Address, spender: Address) {
+    if(!token || !owner || !spender) return "0"
     /**
      * This hook is used to get token aproved amount for spender
      */
   
     const allowance = await multicall(
-    createConfig({
-        chains: [blastSepolia],
-        transports: {
-        [blastSepolia.id]: http()
-        },
-    }),
-          {
-              contracts: [
-                  {
-                      abi: ERC20_ABI,
-                      address: token,
-                      functionName: 'allowance',
-                      args: [owner, spender],
-                  },
-              ],
-          }
-      )
+        createConfig({
+            chains: [blastSepolia],
+            transports: {
+            [blastSepolia.id]: http()
+            },
+        }),
+        {
+            contracts: [
+                {
+                    abi: ERC20_ABI,
+                    address: token,
+                    functionName: 'allowance',
+                    args: [owner, spender],
+                },
+            ],
+        }
+    )
 
-  
-      if((allowance)[0].status === 'failure') return "0"
-      const a: string = allowance[0].result as string;
 
-      return a;
+    if((allowance)[0].status === 'failure') return "0"
+    const a: string = allowance[0].result as string;
+
+    return a;
 }
 
 export async function getPair(token1: Address, token2: Address, stable: boolean) {
+    if(!token1 || !token2) return "0x0"
     /**
      * This hook is used to get token aproved amount for spender
      */
   
     const pairAddress = await multicall(
-    createConfig({
-        chains: [blastSepolia],
-        transports: {
-        [blastSepolia.id]: http()
-        },
-    }),
-          {
-              contracts: [
-                  {
-                      abi: FACTORY_ABI,
-                      address: contractAddressList.pairs_factory as Address,
-                      functionName: 'getPair',
-                      args: [token1, token2, stable],
-                  },
-              ],
-          }
-      )
+        createConfig({
+            chains: [blastSepolia],
+            transports: {
+            [blastSepolia.id]: http()
+            },
+        }),
+        {
+            contracts: [
+                {
+                    abi: FACTORY_ABI,
+                    address: contractAddressList.pairs_factory as Address,
+                    functionName: 'getPair',
+                    args: [token1, token2, stable],
+                },
+            ],
+        }
+    )
 
-  
-      if((pairAddress)[0].status === 'failure') return "0x0"
-      const a: string = pairAddress[0].result as string;
 
-      return a;
+    if((pairAddress)[0].status === 'failure') return "0x0"
+    const a: string = pairAddress[0].result as string;
+
+    return a;
 }

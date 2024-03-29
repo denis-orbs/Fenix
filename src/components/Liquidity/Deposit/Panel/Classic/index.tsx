@@ -5,7 +5,7 @@ import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import ExchangeBox from '@/src/components/Liquidity/Common/ExchangeBox'
 import SelectToken from '@/src/components/Modals/SelectToken'
 import { getLiquidityRemoveQuote, getPair, getTokenAllowance, getTokenReserve } from '@/src/library/hooks/liquidity/useClassic'
-import { Address } from 'viem'
+import { Address, isAddress } from 'viem'
 import { IToken } from '@/src/library/types'
 import Separator from '@/src/components/Trade/Common/Separator'
 import { useAccount, useWriteContract } from 'wagmi'
@@ -13,19 +13,23 @@ import { ERC20_ABI, ROUTERV2_ABI } from '@/src/library/constants/abi'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { ethers } from 'ethers'
 import { publicClient } from '@/src/library/constants/viemClient'
+import { Toaster, toast } from 'react-hot-toast'
+import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 
 const Classic = ({
   depositType,
+  setDepositType
 }: {
   depositType: 'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
   tokenSwap: { name: string; symbol: string }
   tokenFor: { name: string; symbol: string }
+  setDepositType: any
 }) => {
   const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934';
 
-  const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX', id: 0, decimals: 18, address: "0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9" as Address } as IToken)
+  const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX', id: 0, decimals: 18, address: "0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9" as Address, img: "/static/images/tokens/FNX.svg" } as IToken)
   const [firstValue, setFirstValue] = useState("")
-  const [secondToken, setSecondToken] = useState({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4200000000000000000000000000000000000023" as Address } as IToken)
+  const [secondToken, setSecondToken] = useState({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4200000000000000000000000000000000000023" as Address, img: "/static/images/tokens/ETH.svg" } as IToken)
   const [secondValue, setSecondValue] = useState("")
   const [firstReserve, setFirstReserve] = useState(0)
   const [secondReserve, setSecondReserve] = useState(0)
@@ -36,7 +40,12 @@ const Classic = ({
   const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
   const [pairAddress, setPairAddress] = useState("0x0000000000000000000000000000000000000000")
   const [shouldApprovePair, setShouldApprovePair] = useState(true)
+  const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
   
+  const [tokenList, setTokenList] = useState<IToken[]>([])
+  const [commonList, setCommonList] = useState<IToken[]>([])
+  const [tokenBalances, setTokenBalances] = useState<{ [key: `0x${string}`]: string }>({})
+
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
 
@@ -46,12 +55,82 @@ const Classic = ({
     setSecondValue("");
   }
 
+  useEffect(() => {
+    const hash = window.location.hash;
+    const hashValue = hash.substring(1);
+    const pairString = hashValue.split("-")
+
+    if(pairString.length == 3) {
+      if(pairString[0] == "stable") setDepositType("STABLE")
+      if(pairString[0] == "volatile") setDepositType("VOLATILE")
+
+      if(!isAddress(pairString[1]) || !isAddress(pairString[2])) return
+
+      setDefaultPairs([pairString[1], pairString[2]])
+    }
+
+    window.location.hash = ""
+  }, []);
+
+  useEffect(() => {
+    if(defaultPairs.length > 0) {
+      tokenList.map((item) => {
+        if(item.address == defaultPairs[0]) setFirstToken(item)
+        if(item.address == defaultPairs[1]) setSecondToken(item)
+      })
+      setDefaultPairs([])
+    }
+  }, [tokenList])
+
+  useEffect(() => {
+    const getList = async () => {
+      if(tokenList.length > 0 ) {
+        if(Object.keys(tokenBalances).length > 0) return;
+
+        const balances = await getTokensBalance(tokenList.map((item: any) => { return item.address as Address}), account.address as Address)
+        setTokenBalances(balances)
+      } else {
+        try {
+          const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
+            method: 'GET',
+          })
+          const responseData = await response.json()
+          const parsedData = responseData.map((item: any) => {
+            return {
+              id: 0,
+              name: item.basetoken.name,
+              symbol: item.basetoken.symbol,
+              address: item.basetoken.address,
+              decimals: 18,
+              img: item.logourl,
+              isCommon: item.common,
+              price: parseFloat(item.priceUSD)
+            }
+          })
+
+          const commonList = parsedData.filter((item: any) => item.isCommon)
+
+          setCommonList(commonList)
+          setTokenList(parsedData)
+        } catch (error) {
+        }
+      }
+    }
+
+    getList()  
+  }, [account.address])
+
   useEffect(()=> {
     const asyncGetReserve = async () => {
         const reserve: any = await getTokenReserve(firstToken.address as Address, secondToken.address as Address, depositType === 'STABLE')
 
-        setFirstReserve(reserve[0])
-        setSecondReserve(reserve[1])
+        if(reserve[0] == 0 || reserve[1] == 0) {
+          setFirstReserve(1)
+          setSecondReserve(1)
+        } else {
+          setFirstReserve(reserve[0])
+          setSecondReserve(reserve[1])
+        }
     }
 
     const asyncGetPair = async () => {
@@ -78,7 +157,7 @@ const Classic = ({
     }
 
     asyncGetAllowance();
-  }, [firstToken, secondToken, account, pairAddress])
+  }, [firstToken, secondToken, account.address, pairAddress])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
     
@@ -133,10 +212,14 @@ const Classic = ({
       onSuccess: async (x) => {
         console.log("success", x, +new Date())
         const transaction = await publicClient.waitForTransactionReceipt({hash: x});
-        console.log(transaction.status)
+        if(transaction.status == "success") {
+          toast(`Added successfully.`);
+        } else {
+          toast(`Add LP TX failed, hash: ${transaction.transactionHash}`);
+        }
       },
       onError: (e) => {
-        console.log("error", e)
+        toast(`Add LP failed. ${e}`);
       },
     })
   }
@@ -161,12 +244,15 @@ const Classic = ({
     },
     {
       onSuccess: async (x) => {
-        console.log("success", x, +new Date())
         const transaction = await publicClient.waitForTransactionReceipt({hash: x});
-        console.log(transaction.status)
+        if(transaction.status == "success") {
+          toast(`Removed successfully.`);
+        } else {
+          toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`);
+        }
       },
       onError: (e) => {
-        console.log("error", e)
+        toast(`Remove LP failed. ${e}`);
       },
     })
   }
@@ -183,9 +269,12 @@ const Classic = ({
     },
     {
       onSuccess: async (x) => {
-        console.log("success", x, +new Date())
         const transaction = await publicClient.waitForTransactionReceipt({hash: x});
-        console.log(transaction.status)
+        if(transaction.status == "success") {
+          toast(`Approved successfully`);
+        } else {
+          toast(`Approve TX failed, tx: ${transaction.transactionHash}`);
+        }
 
         const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
         const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
@@ -196,26 +285,27 @@ const Classic = ({
         setShouldApprovePair(allowanceLp == "0")
       },
       onError: (e) => {
-        console.log("error", e)
+        toast(`Approve failed. ${e}`);
       },
     })
   }
 
   return (
     <>
+      <div><Toaster position="bottom-right" reverseOrder={false}/></div>
       <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
         <div>
           <div className="flex items-center gap-2.5 mb-2.5">
             <div className="flex items-center flex-shrink-0">
               <Image
-                src="/static/images/tokens/FNX.svg"
+                src={firstToken.img}
                 alt="token"
                 className="rounded-full max-md:w-5 max-md:h-5"
                 width={30.5}
                 height={30.5}
               />
               <Image
-                src="/static/images/tokens/ETH.svg"
+                src={secondToken.img}
                 alt="token"
                 className="-ml-2.5 md:-ml-4 rounded-full max-md:w-5 max-md:h-5"
                 width={30.5}
@@ -223,7 +313,7 @@ const Classic = ({
               />
             </div>
             <div className="flex flex-col gap-px">
-              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">FNX / ETH</h5>
+              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">{firstToken.symbol} / {secondToken.symbol}</h5>
               <div className="flex items-center gap-[5px] max-md:flex-wrap">
                 {'VOLATILE' === depositType ? (
                   <Button variant="tertiary" className="!py-1 h-[28px] max-md:!text-xs flex-shrink-0">
@@ -262,7 +352,7 @@ const Classic = ({
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image
-                  src="/static/images/tokens/FNX.svg"
+                  src={firstToken.img}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -272,7 +362,7 @@ const Classic = ({
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image
-                  src="/static/images/tokens/ETH.svg"
+                  src={secondToken.img}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -317,9 +407,9 @@ const Classic = ({
               {
                 // TODO: handle LP tokens list
               }
-              <ExchangeBox token={{ name: 'Fenix/Ether LP', symbol: 'FNX/ETH LP', id: 0, decimals: 18, address: "0x2AA504586d6CaB3C59Fa629f74c586d78b93A025" as Address } as IToken} onOpenModal={() => setOpenSelectToken(true)} variant="primary" onTokenValueChange={handleOnLPTokenValueChange} />
+              <ExchangeBox token={{ name: 'Fenix/Ether LP', symbol: `${firstToken.symbol}/${secondToken.symbol} LP`, id: 0, decimals: 18, address: pairAddress as Address, img: "/static/images/tokens/FNX.svg" } as IToken} onOpenModal={() => setOpenSelectToken(true)} variant="primary" onTokenValueChange={handleOnLPTokenValueChange} />
 
-              <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
+              <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} tokenList={tokenList} tokenBalances={tokenBalances} commonList={commonList} />
             </div>
             <Separator single />
           </>
@@ -334,6 +424,9 @@ const Classic = ({
           secondValue={secondValue}
           setSecondValue={setSecondValue}
           onTokenValueChange={handleOnTokenValueChange}
+          tokenBalances={tokenBalances}
+          tokenList={tokenList}
+          commonList={commonList}
         />
       </div>
 

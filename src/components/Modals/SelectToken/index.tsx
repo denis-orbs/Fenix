@@ -9,17 +9,22 @@ import { IToken } from '@/src/library/types'
 import { COMMON_TOKENS_LIST } from './data'
 import { tokenList } from '@/src/library/constants/tokenList'
 import { useEffect, useState } from 'react'
+import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
+import toast from 'react-hot-toast'
 
 interface SelectTokenProps {
   openModal: boolean
   setOpenModal: (openModal: boolean) => void
   setToken: (token: IToken) => void
+  commonList: IToken[]
+  tokenList: IToken[]
+  tokenBalances: { [key: `0x${string}`]: string }
 }
 
-const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) => {
+const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalances, tokenList }: SelectTokenProps) => {
   
-  const [tokenList, setTokenList] = useState<IToken[]>([])
-  const [commonList, setCommonList] = useState<IToken[]>([])
 
   const handlerClose = () => setOpenModal(false)
 
@@ -27,36 +32,6 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
     setToken(token)
     setOpenModal(false)
   }
-
-  useEffect(() => {
-      const getList = async () => {
-        try {
-          const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
-            method: 'GET',
-          })
-          const responseData = await response.json()
-          const parsedData = responseData.map((item: any) => {
-            return {
-              id: 0,
-              name: item.basetoken.name,
-              symbol: item.basetoken.symbol,
-              address: item.basetoken.address,
-              decimals: 18,
-              img: item.logourl,
-              isCommon: item.common
-            }
-          })
-
-          const commonList = parsedData.filter((item: any) => item.isCommon)
-
-          setCommonList(commonList)
-          setTokenList(parsedData)
-        } catch (error) {
-        }
-      }
-
-      getList()
-  }, [])
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
@@ -117,10 +92,10 @@ const SelectToken = ({ setOpenModal, openModal, setToken }: SelectTokenProps) =>
                     <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
                     {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
                     {/* todo fetch balance */}
-                    <p className="text-xs text-white">Balance: TODO</p>
+                    <p className="text-xs text-white">Balance: {tokenBalances ? `${(parseInt(tokenBalances[token.address as Address])/(10**token.decimals)).toFixed(2).replace('NaN', '0')}` : `0`}</p>
                   </div>
                   <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
-                    {/* ${token.amount} */}0
+                    {tokenBalances ? `$${(parseInt(tokenBalances[token.address as Address])/(10**token.decimals)*token.price).toFixed(2).replace('NaN', '0')}` : `0`}
                   </div>
                 </div>
               </div>

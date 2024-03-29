@@ -22,20 +22,28 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
 
   const boxVariant = variant === 'secondary' ? 'exchange-box-x2' : 'exchange-box-x1'
   const availableAlign = title ? 'justify-between' : 'justify-end'
-  const accounts = useAccount()
+  const account = useAccount()
   const [balance, setBalance] = useState("0")
 
   useEffect(() => {
     const asyncFn = async () => {
-      const b = await getTokenBalance(token.address as Address, accounts.address as Address)
+      const b = await getTokenBalance(token.address as Address, account.address as Address)
       setBalance(b)
     }
 
     asyncFn();
-  }, [token, accounts]);
+  }, [token, account.address]);
 
   const handleOnChange = (e: any) => {
     if(onTokenValueChange) onTokenValueChange(e.target.value.length > 0 ? e.target.value : 0, token)
+  }
+
+  const handleHalf = () => {
+    if(onTokenValueChange) onTokenValueChange((Number(balance)/1e18/2).toFixed(2), token)
+  }
+
+  const handleMax = () => {
+    if(onTokenValueChange) onTokenValueChange((Number(balance)/1e18).toFixed(2), token)
   }
 
   return (
@@ -55,7 +63,7 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
           >
             <div className="flex items-center gap-2">
               <Image
-                src={`/static/images/tokens/${token.symbol}.svg`}
+                src={`${token.img}`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}
@@ -75,10 +83,10 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
             value={value}
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button variant="tertiary" className="!py-1 !px-3">
+            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
               Half
             </Button>
-            <Button variant="tertiary" className="!py-1 !px-3">
+            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
               Max
             </Button>
           </div>

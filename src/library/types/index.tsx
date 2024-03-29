@@ -6,6 +6,7 @@ export interface IToken {
   address: Address
   decimals: number
   img: string
+  price: number
 }
 export interface IOption {
   label: string

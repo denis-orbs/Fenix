@@ -8,6 +8,7 @@ import { blastSepolia } from 'viem/chains'
 import { ethers } from 'ethers'
 
 export async function getTokenBalance(token1: Address, user: Address) {
+    if(!token1 || !user) return "0"
   /**
    * This hook is used to get token balance for a user address
    */
@@ -36,3 +37,40 @@ export async function getTokenBalance(token1: Address, user: Address) {
     const b: string = balance[0].result as string;
     return b;
 }
+
+export async function getTokensBalance(tokens: Address[], user: Address) {
+    if(tokens.length < 1 || !user) return {}
+
+    /**
+     * This hook is used to get tokens balance for a user address
+     */
+  
+    const contractsList = tokens.map((item) => {
+        return {
+            abi: ERC20_ABI,
+            address: item,
+            functionName: 'balanceOf',
+            args: [user],
+        }
+    })
+
+    const balance = await multicall(
+        createConfig({
+            chains: [blastSepolia],
+            transports: {
+            [blastSepolia.id]: http()
+            },
+        }),
+        {
+            contracts: contractsList,
+        }
+    )
+
+    const balances:any = {}
+    for(let i=0; i<balance.length; i++) {
+        balances[tokens[i]] = balance[i].result
+    }
+        
+    if(balance.length == 0 || balance[0].status === 'failure') return {};
+    return balances;
+  }
