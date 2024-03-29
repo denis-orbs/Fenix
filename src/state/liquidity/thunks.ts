@@ -1,8 +1,8 @@
 import getProtocolCoreClient from '@/src/library/apollo/client/protocolCoreClient'
 import { GET_V2_PAIRS } from '@/src/library/apollo/queries/LIQUIDITY'
 import { queryAllForClient } from '@/src/library/apollo/utils'
+import { LiquidityV2PairDetails } from '@/src/library/types/liquidity'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { LiquidityV2PairDetails } from './types'
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async () => {
   try {

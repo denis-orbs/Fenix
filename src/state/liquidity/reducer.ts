@@ -1,7 +1,9 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
 import { getConcentratedPools, getLiquidityV2Pairs } from './thunks'
-import { LiquidityState, LiquidityV2PairDetails } from './types'
+import { LiquidityState } from './types'
+import { ClmProvider } from '@/src/library/types/liquidity'
+import { updateToken0, updateToken0Value, updateToken1, updateToken1Value, updateClmProvider } from './actions'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -12,10 +14,30 @@ export const initialState: LiquidityState = {
     state: ApiState.LOADING,
     data: [],
   },
+  token0: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', // WETH
+  token0Value: '',
+  token1: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', // WMATIC
+  token1Value: '',
+  clmProvider: ClmProvider.ICHI,
 }
 
 export default createReducer(initialState, (builder) => {
   builder
+    .addCase(updateToken0, (state, action) => {
+      state.token0 = action.payload
+    })
+    .addCase(updateToken0Value, (state, action) => {
+      state.token0Value = action.payload
+    })
+    .addCase(updateToken1, (state, action) => {
+      state.token1 = action.payload
+    })
+    .addCase(updateToken1Value, (state, action) => {
+      state.token1Value = action.payload
+    })
+    .addCase(updateClmProvider, (state, action) => {
+      state.clmProvider = action.payload
+    })
     .addCase(getLiquidityV2Pairs.pending, (state) => {
       state.v2Pairs.state = ApiState.LOADING
     })
