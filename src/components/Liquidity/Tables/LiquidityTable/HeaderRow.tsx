@@ -1,7 +1,8 @@
 import { Pagination, PaginationMobile, TableBody, TableHead, TableSkeleton } from '@/src/components/UI'
 import { PoolData } from '@/src/state/liquidity/types'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import Row from './Row'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 interface HeaderRowProps {
   loading: boolean
@@ -24,6 +25,8 @@ const HeaderRow = ({
   titleHeader2 = '',
   activeRange = false,
 }: HeaderRowProps) => {
+  const tokensData = fetchTokens()
+
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
     : { text: '', className: 'w-[0%]', sortable: true }
@@ -38,7 +41,7 @@ const HeaderRow = ({
               { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-center`, sortable: true },
               { text: 'TVL', className: 'w-[15%] text-right', sortable: true },
               {
-                text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
+                text: `${titleHeader === '' ? 'My Pool Amount' : titleHeader}`,
                 className: 'w-[15%] text-right',
                 sortable: true,
               },
@@ -56,7 +59,7 @@ const HeaderRow = ({
         <TableBody>
           {loading ? (
             <>
-              {Array.from({ length: poolsData.length }).map((_, index) => (
+              {Array.from({ length: 5 }).map((_, index) => (
                 <TableSkeleton key={index} />
               ))}
             </>
@@ -65,6 +68,7 @@ const HeaderRow = ({
               <Fragment key={index}>
                 <Row
                   row={row}
+                  tokensData={tokensData}
                   activeRange={activeRange}
                   titleHeader={titleHeader}
                   titleHeader2={titleHeader2}

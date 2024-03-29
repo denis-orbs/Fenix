@@ -4,9 +4,13 @@ import { Button, TableCell, TableRow } from '@/src/components/UI'
 import { PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRow'
+import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useEffect, useState } from 'react'
+import { formatCurrency } from '@/src/library/utils/numbers'
 
 interface RowDataProps {
   row: PoolData
+  tokensData: Promise<Token[]>
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string
@@ -14,7 +18,20 @@ interface RowDataProps {
   activeRange?: boolean
 }
 
-const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, activeRange }: RowDataProps) => {
+const RowData = ({
+  row,
+  tokensData,
+  titleButton2,
+  titleButton,
+  titleHeader,
+  titleHeader2,
+  activeRange,
+}: RowDataProps) => {
+  const [tokens, setTokens] = useState<Token[]>()
+  tokensData.then((data) => {
+    setTokens(data)
+  })
+
   return (
     <>
       <TableRow className="hidden 2xl:flex">
@@ -22,14 +39,14 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
           <div className="flex items-center gap-2">
             <div className="flex items-center">
               <Image
-                src="/static/images/tokens/FNX.svg"
+                src={`/static/images/tokens/${row.pairDetails.pairInformationV2?.token0_symbol}.svg`}
                 alt="token"
                 className="rounded-full w-7 h-7"
                 width={20}
                 height={20}
               />
               <Image
-                src="/static/images/tokens/ETH.svg"
+                src={`/static/images/tokens/${row.pairDetails.pairInformationV2?.token1_symbol}.svg`}
                 alt="token"
                 className="-ml-4 rounded-full w-7 h-7"
                 width={20}
@@ -38,15 +55,15 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
             </div>
             <div className="flex flex-col">
               <h5 className="text-sm text-white">
-                {row.pairDetails.token0.symbol} / {row.pairDetails.token1.symbol}
+                {row.pairDetails.pairInformationV2?.token0_symbol} / {row.pairDetails.pairInformationV2?.token1_symbol}
               </h5>
               <div className="flex items-center gap-2">
-                {!row.pairDetails.isStable && (
+                {!row.pairDetails.pairInformationV2?.stable && (
                   <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                     Volatile Pool{' '}
                   </span>
                 )}
-                {row.pairDetails.isStable && (
+                {row.pairDetails.pairInformationV2?.stable && (
                   <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
                     Stable Pool
                   </span>
@@ -97,34 +114,33 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
           <div className="flex items-center  ">
             <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              APR%
+              {row.pairDetails.maxAPR} %
             </p>
           </div>
         </TableCell>
 
         <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$1,289.863.54</p>
+            <p className="mb-1 text-xs text-white">$ {formatCurrency(Number(row.pairDetails.tvl))}</p>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
+                {/* <Image
                   src="/static/images/tokens/FNX.svg"
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
-                
+                /> */}
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
+                {/* <Image
                   src="/static/images/tokens/ETH.svg"
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 />
-                225.38
+                225.38 */}
               </p>
             </div>
           </div>
@@ -132,7 +148,35 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
 
         <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$539.863.54</p>
+            <p className="mb-1 text-xs text-white">$ {formatCurrency(Number(row.pairDetails.myPoolAmountValue))}</p>
+            <div className="flex items-center gap-2">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
+                <Image
+                  src={`/static/images/tokens/${row.pairDetails.pairInformationV2?.token0_symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
+                0
+              </p>
+              <p className="flex items-center gap-2 text-xs text-shark-100">
+                <Image
+                  src={`/static/images/tokens/${row.pairDetails.pairInformationV2?.token1_symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
+                0
+              </p>
+            </div>
+          </div>
+        </TableCell>
+
+        <TableCell className="w-[15%]">
+          <div className="flex flex-col items-end justify-end w-full px-3">
+            <p className="mb-1 text-xs text-white">$0</p>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
@@ -142,7 +186,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                   width={20}
                   height={20}
                 />
-                744,621.46
+                0
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
@@ -152,35 +196,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                   width={20}
                   height={20}
                 />
-                132.49
-              </p>
-            </div>
-          </div>
-        </TableCell>
-
-        <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$98.751.23</p>
-            <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
-                  src="/static/images/tokens/FNX.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                82,334.52
-              </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
-                  src="/static/images/tokens/ETH.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                132.49
+                0
               </p>
             </div>
           </div>

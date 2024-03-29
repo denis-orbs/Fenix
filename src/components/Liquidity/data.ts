@@ -20,62 +20,62 @@ export const STEPS = [
 export const EXCHANGE_LIST = [
   {
     title: 'Total Value Locked',
-    description: "$92,837,327.32",
+    description: '$92,837,327.32',
     icon: 'icon-lock',
   },
   {
     title: 'Fees',
-    description: "$64,789,445.82",
+    description: '$64,789,445.82',
     icon: 'icon-pig',
   },
   {
     title: 'Volume',
-    description: "$48,680,765.44",
+    description: '$48,680,765.44',
     icon: 'icon-coins',
   },
 ]
 
 export const DATA_ROW = [
   {
-    type: "CONCENTRATED",
-    APR: "35.00"
+    type: 'CONCENTRATED',
+    APR: '35.00',
   },
   {
-    type: "CONCENTRATED",
-    APR: "40.00"
+    type: 'CONCENTRATED',
+    APR: '40.00',
   },
   {
-    type: "CONCENTRATED",
-    APR: "48.00"
+    type: 'CONCENTRATED',
+    APR: '48.00',
   },
 
   {
-    type: "STABLE",
-    APR: "35.00"
+    type: 'STABLE',
+    APR: '35.00',
   },
   {
-    type: "STABLE",
-    APR: "40.00"
+    type: 'STABLE',
+    APR: '40.00',
   },
   {
-    type: "STABLE",
-    APR: "555.00"
+    type: 'STABLE',
+    APR: '555.00',
   },
   {
-    type: "VOLATILE",
-    APR: "35.00"
+    type: 'VOLATILE',
+    APR: '35.00',
   },
   {
-    type: "VOLATILE",
-    APR: "999.00"
+    type: 'VOLATILE',
+    APR: '999.00',
   },
   {
-    type: "VOLATILE",
-    APR: "48.00"
+    type: 'VOLATILE',
+    APR: '48.00',
   },
 ]
 
-export const OPTIONS_FILTER = ["Stable", "Volatile", "Concentrated", "Single Token Deposit", "All Pools"]
+export const OPTIONS_FILTER = ['Stable', 'Volatile', 'Concentrated', 'All Pools']
 
 export const NAV_LIST = [
   {

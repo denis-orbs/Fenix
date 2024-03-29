@@ -10,12 +10,7 @@ import Footer from '@/src/components/Common/Layout/Footer'
 import Header from '@/src/components/Common/Layout/Header'
 import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
 
-import {
-  getDefaultConfig,
-  getDefaultWallets,
-  midnightTheme,
-  RainbowKitProvider
-} from '@rainbow-me/rainbowkit'
+import { getDefaultConfig, getDefaultWallets, midnightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { argentWallet, ledgerWallet, trustWallet } from '@rainbow-me/rainbowkit/wallets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
@@ -33,7 +28,7 @@ const poppins = Poppins({
 })
 
 const { wallets } = getDefaultWallets()
-const config = getDefaultConfig({
+export const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
   chains: [blast, blastSepolia],
