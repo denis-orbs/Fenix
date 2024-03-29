@@ -2,7 +2,7 @@ import { ApiState } from '@/src/library/types/connection'
 import { useAppDispatch, useAppSelector } from '..'
 import { LiquidityV2PairDetails } from '@/src/library/types/liquidity'
 import { useCallback } from 'react'
-import { updateToken0, updateToken0Value, updateToken1, updateToken1Value } from './actions'
+import { updateToken0, updateToken0TypedValue, updateToken1, updateToken1TypedValue } from './actions'
 import { Address } from '@/src/library/types'
 
 export function useV2PairsData() {
@@ -33,18 +33,18 @@ export function useToken0() {
   const token0 = useAppSelector((state) => state.liquidity.token0)
   return token0
 }
-export function useToken0Value() {
-  const token0Value = useAppSelector((state) => state.liquidity.token0Value)
-  return token0Value
+export function useToken0TypedValue() {
+  const token0TypedValue = useAppSelector((state) => state.liquidity.token0TypedValue)
+  return token0TypedValue
 }
 
 export function useToken1() {
   const token1 = useAppSelector((state) => state.liquidity.token1)
   return token1
 }
-export function useToken1Value() {
-  const token1Value = useAppSelector((state) => state.liquidity.token1Value)
-  return token1Value
+export function useToken1TypedValue() {
+  const token1TypedValue = useAppSelector((state) => state.liquidity.token1TypedValue)
+  return token1TypedValue
 }
 export function useClmProvider() {
   const clmProvider = useAppSelector((state) => state.liquidity.clmProvider)
@@ -71,11 +71,11 @@ export function useSetToken0() {
     [dispatch]
   )
 }
-export function useSetToken0Value() {
+export function useSetToken0TypedValue() {
   const dispatch = useAppDispatch()
   return useCallback(
-    (token0Value: string) => {
-      dispatch(updateToken0Value(token0Value))
+    (token0TypedValue: string) => {
+      dispatch(updateToken0TypedValue(token0TypedValue))
     },
     [dispatch]
   )
@@ -90,11 +90,11 @@ export function useSetToken1() {
     [dispatch]
   )
 }
-export function useSetToken1Value() {
+export function useSetToken1TypedValue() {
   const dispatch = useAppDispatch()
   return useCallback(
-    (token1Value: string) => {
-      dispatch(updateToken1Value(token1Value))
+    (token1TypedValue: string) => {
+      dispatch(updateToken1TypedValue(token1TypedValue))
     },
     [dispatch]
   )

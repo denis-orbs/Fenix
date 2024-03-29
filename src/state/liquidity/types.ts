@@ -5,9 +5,9 @@ import { ClmProvider, LiquidityV2PairDetails } from '@/src/library/types/liquidi
 export interface LiquidityState {
   // Liquidity V2 Pairs
   token0: Address
-  token0Value: string
+  token0TypedValue: string
   token1: Address
-  token1Value: string
+  token1TypedValue: string
   clmProvider: ClmProvider
   v2Pairs: {
     state: ApiState
