@@ -1,6 +1,5 @@
 import { Button } from '@/src/components/UI'
 import Image from 'next/image'
-import { createConfig, http, useSendTransaction, useWriteContract } from 'wagmi'
 import { toBN } from '@/src/library/utils/numbers'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { useGammaSmartContracts, useGammaToken1Range } from '@/src/library/hooks/web3/useGamma'
@@ -13,13 +12,13 @@ import {
   useToken1TypedValue,
 } from '@/src/state/liquidity/hooks'
 import { useToken0Balance, useToken1Balance } from '@/src/library/hooks/useTokenBalance'
-import { gammaUniProxyABI } from '@/src/library/constants/abi'
-import { simulateContract } from 'viem/actions'
-import { polygonFork } from '@/src/app/layout'
 import { erc20Abi, parseEther } from 'viem'
-import { polygon } from 'viem/chains'
+import { useAccount, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
+import { gammaUniProxyABI } from '@/src/library/constants/abi'
+import useERC20Allowance from '@/src/library/hooks/web3/erc20/useERC20Allowance'
 import { ethers } from 'ethers'
-import { useWalletClient } from 'wagmi'
+import { useApproveTokenIfNeeded } from '@/src/library/hooks/web3/erc20/userERC20ApproveIfNeeded'
+import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
 
 const DepositAmountsGAMMA = ({
   firstToken,
@@ -40,57 +39,84 @@ const DepositAmountsGAMMA = ({
   const { gammaProxySmartContract, gammaHypervisorSmartContract } = useGammaSmartContracts(token0, token1)
   const token0Amount = useToken0TypedValue()
   const token1Range = useGammaToken1Range()
-  const { writeContractAsync, writeContract } = useWriteContract()
   const result = useWalletClient()
-  console.log(result)
-  // simulateContract / WriteContract
-  // writeContractAsync
-  // necesito la config
+  const { writeContractAsync } = useWriteContract()
+  // const { approveIfNeeded: token0approveIfNeeded } = useApproveTokenIfNeeded({
+  //   tokenAddress: token0,
+  //   spenderAddress: gammaProxySmartContract,
+  //   userAddress,
+  //   amountNeeded: BigInt(token0Amount),
+  // })
+  // const { approveIfNeeded: token1approveIfNeeded } = useApproveTokenIfNeeded({
+  //   tokenAddress: token1,
+  //   spenderAddress: gammaProxySmartContract,
+  //   userAddress,
+  //   amountNeeded: BigInt(token1TypedValue),
+  // })
+  console.log(token1Range)
   const { data: hash, sendTransaction } = useSendTransaction()
-
+  // const token0Allowance = useERC20Allowance(token0, userAddress, gammaHypervisorSmartContract)
+  // const token1Allowance = useERC20Allowance(token1, userAddress, gammaHypervisorSmartContract)
   const createPosition = async () => {
     try {
-      sendTransaction({ to: '0x3BA4c387f786bFEE076A58914F5Bd38d668B42c3', value: parseEther('0.1') })
-      return
-      await writeContractAsync(
-        {
+      // Check if the user has enough allowance deposit the tokens in the gamma proxy contract
+      // TODO: We have the hook useApproveTokenIfNeeded but it's not working
+      const token0Allowance = await getTokenAllowance(token0, userAddress, gammaHypervisorSmartContract)
+      if (token0Allowance < token0Amount) {
+        await writeContractAsync({
           address: token0,
           abi: erc20Abi,
-          functionName: 'transfer',
-          args: ['0xe8F3450CA5f0a47B79EEce4AE1002b2e675B9aD0', parseEther('0.1')],
+          functionName: 'approve',
+          args: [gammaHypervisorSmartContract, ethers.MaxUint256],
+        })
+      }
+      const token1Allowance = await getTokenAllowance(token1, userAddress, gammaHypervisorSmartContract)
+      if (token1Allowance < token1TypedValue) {
+        await writeContractAsync({
+          address: token1,
+          abi: erc20Abi,
+          functionName: 'approve',
+          args: [gammaHypervisorSmartContract, ethers.MaxUint256],
+        })
+      }
+      // const result = await sendTransaction({
+      //   to: '0xd2135CfB216b74109775236E36d4b433F1DF507B',
+      //   value: parseEther('0.01'),
+      // })
+      // await writeContractAsync({
+      //   address: token0,
+      //   abi: erc20Abi,
+      //   functionName: 'transfer',
+      //   args: ['0xe8F3450CA5f0a47B79EEce4AE1002b2e675B9aD0', parseEther('0.1')],
+      // })
+
+      // LPToken.approve(staking_contract, amount)
+      // 6111220567744n, 1271204815n,
+      await writeContractAsync(
+        {
+          abi: gammaUniProxyABI,
+          address: gammaProxySmartContract,
+          functionName: 'deposit',
+          args: [
+            ethers.parseUnits(token1TypedValue, 18),
+            ethers.parseUnits(token0TypedValue, 18),
+            userAddress,
+            gammaHypervisorSmartContract,
+            [0n, 0n, 0n, 0n],
+          ],
         },
         {
-          onSuccess: async (x) => {
-            console.log('success', x, +new Date())
-            //  const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
-            //  console.log(transaction.status)
+          onSuccess: (data) => {
+            alert('Transaction sent! TxHash: ' + data)
           },
-          onError: (e) => {
-            console.log('error', e)
+          onError: (error) => {
+            console.error('Transaction error:', error)
           },
         }
       )
     } catch (error) {
       console.log(error)
     }
-
-    //  const handleAddLiquidity = async () => {
-    //    // TODO values check
-    //    await writeContractAsync(
-    //      {
-
-    //      },
-    //      {
-    //        onSuccess: async (x) => {
-    //          console.log('success', x, +new Date())
-    //         //  const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
-    //         //  console.log(transaction.status)
-    //        },
-    //        onError: (e) => {
-    //          console.log('error', e)
-    //        },
-    //      }
-    //    )
   }
   return (
     <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -108,14 +134,14 @@ const DepositAmountsGAMMA = ({
             <Button
               variant="tertiary"
               className="!py-1 !px-3"
-              onClick={() => setToken0TypedValue(token0Balance?.div(2).toString() || '0')}
+              onClick={() => setToken0TypedValue(token0Balance?.div(2).toFixed(18).toString() || '0')}
             >
               Half
             </Button>
             <Button
               variant="tertiary"
               className="!py-1 !px-3"
-              onClick={() => setToken0TypedValue(token0Balance?.toString() || '0')}
+              onClick={() => setToken0TypedValue(token0Balance?.toFixed(18).toString() || '0')}
             >
               Max
             </Button>
@@ -151,7 +177,7 @@ const DepositAmountsGAMMA = ({
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                setToken1TypedValue(toBN(Number(token1Range[1])).div(2).toString())
+                setToken1TypedValue(toBN(ethers.formatUnits(token1Range[1], 18)).div(2).toFixed(18).toString())
               }}
             >
               Half
@@ -160,7 +186,7 @@ const DepositAmountsGAMMA = ({
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                setToken1TypedValue(toBN(Number(token1Range[1])).toString())
+                setToken1TypedValue(toBN(ethers.formatUnits(token1Range[1], 18)).toFixed(18).toString())
               }}
             >
               Max

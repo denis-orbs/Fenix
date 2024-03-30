@@ -30,6 +30,11 @@ export const polygonFork = {
   rpcUrls: {
     default: { http: ['http://localhost:8545'] },
   },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    },
+  },
 } as const satisfies Chain
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '900'],

@@ -5,6 +5,7 @@ import { Address } from '../../types'
 import { useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
 import { useReadContract } from 'wagmi'
 import useActiveConnectionDetails from './useActiveConnectionDetails'
+import { ethers } from 'ethers'
 
 export const useGammaSmartContracts = (token0: Address, token1: Address) => {
   //   const gammaProxySmartContract = useContract('0xA42d55074869491D60Ac05490376B74cF19B00e6', gammaUniProxyABI)
@@ -29,7 +30,7 @@ export const useGammaToken1Range = () => {
     address: gammaProxySmartContract,
     abi: gammaUniProxyABI,
     functionName: 'getDepositAmount',
-    args: [gammaHypervisorSmartContract, token0, token0Amount],
+    args: [gammaHypervisorSmartContract, token0, ethers.parseUnits(token0Amount, 18)],
   })
   const range = token1DepositRange?.data || [0n, 0n]
   return range
