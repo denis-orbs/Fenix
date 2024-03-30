@@ -35,12 +35,12 @@ export function useToken0() {
 }
 export function useToken0TypedValue() {
   const token0TypedValue = useAppSelector((state) => state.liquidity.token0TypedValue)
-  return token0TypedValue || '0'
+  return token0TypedValue
 }
 
 export function useToken1() {
   const token1 = useAppSelector((state) => state.liquidity.token1)
-  return token1 || '0'
+  return token1
 }
 export function useToken1TypedValue() {
   const token1TypedValue = useAppSelector((state) => state.liquidity.token1TypedValue)

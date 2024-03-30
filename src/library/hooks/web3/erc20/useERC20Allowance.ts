@@ -13,7 +13,6 @@ function useERC20Allowance(tokenAddress: Address, ownerAddress: Address, spender
     abi: erc20Abi,
     functionName: 'allowance',
     args: [ownerAddress as `0x${string}`, spenderAddress as `0x${string}`],
-    query: {},
   })
 
   const allowance = data ? parseFloat(ethers.formatEther(data)) : 0

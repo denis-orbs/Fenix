@@ -30,7 +30,7 @@ export const useGammaToken1Range = () => {
     address: gammaProxySmartContract,
     abi: gammaUniProxyABI,
     functionName: 'getDepositAmount',
-    args: [gammaHypervisorSmartContract, token0, ethers.parseUnits(token0Amount, 18)],
+    args: [gammaHypervisorSmartContract, token0, ethers.parseUnits(token0Amount || '0', 18)],
   })
   const range = token1DepositRange?.data || [0n, 0n]
   return range

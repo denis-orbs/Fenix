@@ -17,8 +17,11 @@ import { useAccount, useSendTransaction, useWalletClient, useWriteContract } fro
 import { gammaUniProxyABI } from '@/src/library/constants/abi'
 import useERC20Allowance from '@/src/library/hooks/web3/erc20/useERC20Allowance'
 import { ethers } from 'ethers'
-import { useApproveTokenIfNeeded } from '@/src/library/hooks/web3/erc20/userERC20ApproveIfNeeded'
+import { useApproveERC20Token } from '@/src/library/hooks/web3/erc20/userERC20ApproveIfNeeded'
 import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
+import { useEffect, useState } from 'react'
+import { NumericalInput } from '@/src/components/UI/Input'
+import { INPUT_PRECISION } from '@/src/library/constants/misc'
 
 const DepositAmountsGAMMA = ({
   firstToken,
@@ -53,53 +56,65 @@ const DepositAmountsGAMMA = ({
   //   userAddress,
   //   amountNeeded: BigInt(token1TypedValue),
   // })
+  // const { approve: approveToken0 } = useApproveERC20Token({
+  //   tokenAddress: token0,
+  //   spenderAddress: gammaProxySmartContract,
+  // })
   console.log(token1Range)
   const { data: hash, sendTransaction } = useSendTransaction()
-  // const token0Allowance = useERC20Allowance(token0, userAddress, gammaHypervisorSmartContract)
-  // const token1Allowance = useERC20Allowance(token1, userAddress, gammaHypervisorSmartContract)
+  const token0Allowance = useERC20Allowance(token0, userAddress, gammaHypervisorSmartContract)
+  const token1Allowance = useERC20Allowance(token1, userAddress, gammaHypervisorSmartContract)
+  const [isToken0AlloanceGranted, setIsToken0AlloanceGranted] = useState(false)
+  const [isToken1AlloanceGranted, setIsToken1AlloanceGranted] = useState(false)
+
+  // console.log(ethers.parseUnits(token1TypedValue || '0', 18))
+  // console.log(ethers.parseUnits(token0TypedValue || '0', 18))
   const createPosition = async () => {
     try {
-      // Check if the user has enough allowance deposit the tokens in the gamma proxy contract
-      // TODO: We have the hook useApproveTokenIfNeeded but it's not working
-      const token0Allowance = await getTokenAllowance(token0, userAddress, gammaHypervisorSmartContract)
-      if (token0Allowance < token0Amount) {
-        await writeContractAsync({
-          address: token0,
-          abi: erc20Abi,
-          functionName: 'approve',
-          args: [gammaHypervisorSmartContract, ethers.MaxUint256],
-        })
+      if (!isToken0AlloanceGranted && token0Allowance.allowance < token0Amount) {
+        await writeContractAsync(
+          {
+            address: token0,
+            abi: erc20Abi,
+            functionName: 'approve',
+            args: [gammaHypervisorSmartContract, ethers.MaxUint256],
+          },
+          {
+            onSuccess: (data) => {
+              setIsToken0AlloanceGranted(true)
+            },
+            onError: (error) => {
+              console.error('Transaction error:', error)
+            },
+          }
+        )
       }
-      const token1Allowance = await getTokenAllowance(token1, userAddress, gammaHypervisorSmartContract)
-      if (token1Allowance < token1TypedValue) {
-        await writeContractAsync({
-          address: token1,
-          abi: erc20Abi,
-          functionName: 'approve',
-          args: [gammaHypervisorSmartContract, ethers.MaxUint256],
-        })
+      if (!isToken1AlloanceGranted && token1Allowance < token1TypedValue) {
+        await writeContractAsync(
+          {
+            address: token1,
+            abi: erc20Abi,
+            functionName: 'approve',
+            args: [gammaHypervisorSmartContract, ethers.MaxUint256],
+          },
+          {
+            onSuccess: (data) => {
+              setIsToken1AlloanceGranted(true)
+            },
+            onError: (error) => {
+              console.error('Transaction error:', error)
+            },
+          }
+        )
       }
-      // const result = await sendTransaction({
-      //   to: '0xd2135CfB216b74109775236E36d4b433F1DF507B',
-      //   value: parseEther('0.01'),
-      // })
-      // await writeContractAsync({
-      //   address: token0,
-      //   abi: erc20Abi,
-      //   functionName: 'transfer',
-      //   args: ['0xe8F3450CA5f0a47B79EEce4AE1002b2e675B9aD0', parseEther('0.1')],
-      // })
-
-      // LPToken.approve(staking_contract, amount)
-      // 6111220567744n, 1271204815n,
       await writeContractAsync(
         {
           abi: gammaUniProxyABI,
           address: gammaProxySmartContract,
           functionName: 'deposit',
           args: [
-            ethers.parseUnits(token1TypedValue, 18),
-            ethers.parseUnits(token0TypedValue, 18),
+            ethers.parseUnits(token1TypedValue || '0', 18),
+            ethers.parseUnits(token0TypedValue || '0', 18),
             userAddress,
             gammaHypervisorSmartContract,
             [0n, 0n, 0n, 0n],
@@ -118,30 +133,39 @@ const DepositAmountsGAMMA = ({
       console.log(error)
     }
   }
+  // useEffect(() => {
+  //   if (token1TypedValue > token1Range[1]) {
+  //     setToken1TypedValue(toBN(ethers.formatUnits(token1Range[1], 18)).toFixed(INPUT_PRECISION).toString())
+  //   } else if (token1TypedValue < token1Range[0]) {
+  //     setToken1TypedValue(toBN(ethers.formatUnits(token1Range[0], 18)).toFixed(INPUT_PRECISION).toString())
+  //   }
+  // }, [token1Range, setToken1TypedValue, token1TypedValue])
   return (
     <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="text-xs leading-normal text-white mb-2">Deposit amounts</div>
       <div className="flex items-center gap-3 mb-[14px]">
         <div className="relative w-full xl:w-3/5">
-          <input
-            type="text"
-            placeholder="0"
-            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+          <NumericalInput
             value={token0TypedValue}
-            onChange={(e) => setToken0TypedValue(e.target.value)}
+            onUserInput={(value) => {
+              setToken0TypedValue(value)
+            }}
+            precision={INPUT_PRECISION}
+            placeholder="0.0"
+            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-s"
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
             <Button
               variant="tertiary"
               className="!py-1 !px-3"
-              onClick={() => setToken0TypedValue(token0Balance?.div(2).toFixed(18).toString() || '0')}
+              onClick={() => setToken0TypedValue(token0Balance?.div(2).toFixed(INPUT_PRECISION).toString() || '0')}
             >
               Half
             </Button>
             <Button
               variant="tertiary"
               className="!py-1 !px-3"
-              onClick={() => setToken0TypedValue(token0Balance?.toFixed(18).toString() || '0')}
+              onClick={() => setToken0TypedValue(token0Balance?.toFixed(INPUT_PRECISION).toString() || '0')}
             >
               Max
             </Button>
@@ -165,19 +189,23 @@ const DepositAmountsGAMMA = ({
       </div>
       <div className="flex items-center gap-3">
         <div className="relative w-full xl:w-3/5">
-          <input
-            type="text"
-            placeholder="0"
-            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+          <NumericalInput
             value={token1TypedValue}
-            onChange={(e) => setToken1TypedValue(e.target.value)}
+            onUserInput={(value) => {
+              setToken1TypedValue(value)
+            }}
+            precision={INPUT_PRECISION}
+            placeholder="0.0"
+            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-s"
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
             <Button
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                setToken1TypedValue(toBN(ethers.formatUnits(token1Range[1], 18)).div(2).toFixed(18).toString())
+                setToken1TypedValue(
+                  toBN(ethers.formatUnits(token1Range[1], 18)).div(2).toFixed(INPUT_PRECISION).toString()
+                )
               }}
             >
               Half
@@ -186,7 +214,7 @@ const DepositAmountsGAMMA = ({
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                setToken1TypedValue(toBN(ethers.formatUnits(token1Range[1], 18)).toFixed(18).toString())
+                setToken1TypedValue(toBN(ethers.formatUnits(token1Range[1], 18)).toFixed(INPUT_PRECISION).toString())
               }}
             >
               Max
