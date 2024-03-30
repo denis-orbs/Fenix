@@ -64,6 +64,38 @@
   after:border-[transparent_transparent_#121315];
 }
 
+.point-summary-box {
+  @apply relative flex flex-col items-center justify-center p-5 rounded-lg bg-shark-400 bg-opacity-40 w-full min-h-[137px]
+
+  before:hidden
+  xl:before:block
+  before:absolute
+  before:w-0
+  before:h-0
+  before:top-[-16px]
+  before:left-[15px]
+  before:rotate-[89deg]
+  before:border-solid
+  before:border-t-[30px]
+  before:border-r-[30px]
+  before:border-b-[30px]
+  before:border-[transparent_transparent_#1a1d21]
+
+  after:hidden
+  xl:after:block
+  after:absolute
+  after:w-0
+  after:h-0
+  after:bottom-[-16px]
+  after:right-[15px]
+  after:rotate-[-91deg]
+  after:border-solid
+  after:border-t-[30px]
+  after:border-r-[30px]
+  after:border-b-[30px]
+  after:border-[transparent_transparent_#1a1d21];
+}
+
 .box {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
 
@@ -1149,4 +1181,43 @@ opacity-70
   after:bg-cover
   after:absolute
   after:bg-no-repeat
+}
+
+.your-point-box {
+  @apply
+  relative
+  w-full
+  p-5
+  xl:py-14
+  xl:px-10
+  mb-10
+  bg-shark-400
+  xl:bg-transparent
+  bg-opacity-40
+  rounded-lg
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/points/point-summary.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-1/2
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/points/point-summary.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:h-full
+  after:bg-cover
+  after:w-1/2
+  after:top-0
+  after:right-0
+  after:hidden
+  after:xl:block;
 }
