@@ -69,70 +69,7 @@ const DepositAmountsGAMMA = ({
 
   // console.log(ethers.parseUnits(token1TypedValue || '0', 18))
   // console.log(ethers.parseUnits(token0TypedValue || '0', 18))
-  const createPosition = async () => {
-    try {
-      if (!isToken0AlloanceGranted && token0Allowance.allowance < token0Amount) {
-        await writeContractAsync(
-          {
-            address: token0,
-            abi: erc20Abi,
-            functionName: 'approve',
-            args: [gammaHypervisorSmartContract, ethers.MaxUint256],
-          },
-          {
-            onSuccess: (data) => {
-              setIsToken0AlloanceGranted(true)
-            },
-            onError: (error) => {
-              console.error('Transaction error:', error)
-            },
-          }
-        )
-      }
-      if (!isToken1AlloanceGranted && token1Allowance < token1TypedValue) {
-        await writeContractAsync(
-          {
-            address: token1,
-            abi: erc20Abi,
-            functionName: 'approve',
-            args: [gammaHypervisorSmartContract, ethers.MaxUint256],
-          },
-          {
-            onSuccess: (data) => {
-              setIsToken1AlloanceGranted(true)
-            },
-            onError: (error) => {
-              console.error('Transaction error:', error)
-            },
-          }
-        )
-      }
-      await writeContractAsync(
-        {
-          abi: gammaUniProxyABI,
-          address: gammaProxySmartContract,
-          functionName: 'deposit',
-          args: [
-            ethers.parseUnits(token1TypedValue || '0', 18),
-            ethers.parseUnits(token0TypedValue || '0', 18),
-            userAddress,
-            gammaHypervisorSmartContract,
-            [0n, 0n, 0n, 0n],
-          ],
-        },
-        {
-          onSuccess: (data) => {
-            alert('Transaction sent! TxHash: ' + data)
-          },
-          onError: (error) => {
-            console.error('Transaction error:', error)
-          },
-        }
-      )
-    } catch (error) {
-      console.log(error)
-    }
-  }
+
   // useEffect(() => {
   //   if (token1TypedValue > token1Range[1]) {
   //     setToken1TypedValue(toBN(ethers.formatUnits(token1Range[1], 18)).toFixed(INPUT_PRECISION).toString())
@@ -237,7 +174,7 @@ const DepositAmountsGAMMA = ({
           </div>
         </div>
       </div>
-      <Button onClick={createPosition}>Create Position</Button>
+      {/* <Button onClick={createPosition}>Create Position</Button> */}
     </div>
   )
 }
