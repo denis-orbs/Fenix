@@ -59,4 +59,4 @@ export const gammaUniProxyABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-]
+] as const

@@ -1,15 +1,25 @@
 import { Button } from '@/src/components/UI'
 import Image from 'next/image'
-import { createConfig, useReadContract, useWriteContract } from 'wagmi'
-import { gammaUniProxyABI } from '../../../../../../library/constants/abi/gammaUniProxyABI'
-import { useEffect, useState } from 'react'
-import { erc20Abi, http } from 'viem'
-import { useERC20Balance } from '@/src/library/hooks/web3/erc20/useERC20Balance'
-import { BN_ONE, toBN } from '@/src/library/utils/numbers'
-import { call } from '@wagmi/core'
-import { mainnet, sepolia } from '@wagmi/core/chains'
-import { polygon } from 'wagmi/chains'
+import { createConfig, http, useSendTransaction, useWriteContract } from 'wagmi'
+import { toBN } from '@/src/library/utils/numbers'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import { useGammaSmartContracts, useGammaToken1Range } from '@/src/library/hooks/web3/useGamma'
+import {
+  useSetToken0TypedValue,
+  useSetToken1TypedValue,
+  useToken0,
+  useToken0TypedValue,
+  useToken1,
+  useToken1TypedValue,
+} from '@/src/state/liquidity/hooks'
+import { useToken0Balance, useToken1Balance } from '@/src/library/hooks/useTokenBalance'
+import { gammaUniProxyABI } from '@/src/library/constants/abi'
+import { simulateContract } from 'viem/actions'
+import { polygonFork } from '@/src/app/layout'
+import { erc20Abi, parseEther } from 'viem'
+import { polygon } from 'viem/chains'
+import { ethers } from 'ethers'
+import { useWalletClient } from 'wagmi'
 
 const DepositAmountsGAMMA = ({
   firstToken,
@@ -18,115 +28,70 @@ const DepositAmountsGAMMA = ({
   firstToken: { name: string; symbol: string }
   secondToken: { name: string; symbol: string }
 }) => {
-  const gammaUniProxy = '0xA42d55074869491D60Ac05490376B74cF19B00e6'
-  const gammaHypervisor = '0x02203f2351E7aC6aB5051205172D3f772db7D814'
-  const token1 = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270' // Wrapped Matic
-  const token0 = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619' // Wrapped Ether
-  const userAddress = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
-  const [token0DepositAmount, setToken0DepositAmount] = useState('')
-  const [token1DepositAmount, setToken1DepositAmount] = useState('')
-  const [token0UserBalance, setToken0UserBalance] = useState('')
-  const [token1UserBalance, setToken1UserBalance] = useState('')
-  // const [token1DepositAmountRange, setToken1DepositAmountRange] = useState<[number, number]>([0, 0])
-  // use input number formatter
-  const { account, chain, chainId } = useActiveConnectionDetails()
-  const [token1DepositRange, setToken1DepositRange] = useState<[number, number]>([0, 0])
-  const token1RangeResult = useReadContract({
-    address: gammaUniProxy,
-    abi: gammaUniProxyABI,
-    functionName: 'getDepositAmount',
-    args: [gammaHypervisor, token0, token0DepositAmount],
-    chainId: chainId,
-  })
-  // useEffect(() => {
-  //   setToken1DepositRange((token1RangeResult?.data || [0, 0]) as [number, number])
-  //   console.log('rendering')
-  // }, [token1RangeResult])
-  // const token1DepositRange = (token1RangeResult?.data || [0, 0]) as [number, number]
-  console.log(BN_ONE.div(999999999))
-  const { writeContract } = useWriteContract()
+  const { account: userAddress } = useActiveConnectionDetails() as { account: `0x${string}` }
+  const token0 = useToken0()
+  const token1 = useToken1()
+  const token0TypedValue = useToken0TypedValue()
+  const token1TypedValue = useToken1TypedValue()
+  const setToken0TypedValue = useSetToken0TypedValue()
+  const setToken1TypedValue = useSetToken1TypedValue()
+  const { tokenBalance: token0Balance } = useToken0Balance()
+  const { tokenBalance: token1Balance } = useToken1Balance()
+  const { gammaProxySmartContract, gammaHypervisorSmartContract } = useGammaSmartContracts(token0, token1)
+  const token0Amount = useToken0TypedValue()
+  const token1Range = useGammaToken1Range()
+  const { writeContractAsync, writeContract } = useWriteContract()
+  const result = useWalletClient()
+  console.log(result)
+  // simulateContract / WriteContract
+  // writeContractAsync
+  // necesito la config
+  const { data: hash, sendTransaction } = useSendTransaction()
 
-  const { tokenBalance: tokenBalance0 } = useERC20Balance({
-    tokenAddress: token0,
-    tokenDecimals: 18,
-    owner: userAddress,
-  })
-
-  const { tokenBalance: tokenBalance1 } = useERC20Balance({
-    tokenAddress: token1,
-    tokenDecimals: 18,
-    owner: userAddress,
-  })
-  useEffect(() => {
-    if (tokenBalance0) setToken0UserBalance(tokenBalance0?.toString())
-  }, [tokenBalance0])
-
-  useEffect(() => {
-    if (tokenBalance1) setToken1UserBalance(tokenBalance1?.toString())
-  }, [tokenBalance1])
   const createPosition = async () => {
     try {
-      // console.log(
-      //   toBN(token0DepositAmount)
-      //     .multipliedBy(10 ** 18)
-      //     .toNumber()
-      // )
-      // writeContract({
-      //   abi: erc20Abi,
-      //   address: token0,
-      //   functionName: 'approve',
-      //   args: [
-      //     gammaUniProxy,
-      //     BigInt(
-      //       toBN(1)
-      //         .multipliedBy(10 ** 18)
-      //         .toNumber()
-      //     ),
-      //   ],
-      // })
-      // writeContract({
-      //   abi: gammaUniProxyABI,
-      //   address: gammaUniProxy,
-      //   functionName: 'transferClearance',
-      //   args: [token0],
-      // })
-      writeContract({
-        abi: gammaUniProxyABI,
-        address: gammaUniProxy,
-        functionName: 'deposit',
-        args: [
-          toBN(token0DepositAmount)
-            .multipliedBy(10 ** 18)
-            .toNumber(),
-          toBN(token1DepositAmount)
-            .multipliedBy(10 ** 18)
-            .toNumber(),
-          userAddress,
-          gammaHypervisor,
-        ],
-      })
+      sendTransaction({ to: '0x3BA4c387f786bFEE076A58914F5Bd38d668B42c3', value: parseEther('0.1') })
+      return
+      await writeContractAsync(
+        {
+          address: token0,
+          abi: erc20Abi,
+          functionName: 'transfer',
+          args: ['0xe8F3450CA5f0a47B79EEce4AE1002b2e675B9aD0', parseEther('0.1')],
+        },
+        {
+          onSuccess: async (x) => {
+            console.log('success', x, +new Date())
+            //  const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
+            //  console.log(transaction.status)
+          },
+          onError: (e) => {
+            console.log('error', e)
+          },
+        }
+      )
     } catch (error) {
       console.log(error)
     }
+
+    //  const handleAddLiquidity = async () => {
+    //    // TODO values check
+    //    await writeContractAsync(
+    //      {
+
+    //      },
+    //      {
+    //        onSuccess: async (x) => {
+    //          console.log('success', x, +new Date())
+    //         //  const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
+    //         //  console.log(transaction.status)
+    //        },
+    //        onError: (e) => {
+    //          console.log('error', e)
+    //        },
+    //      }
+    //    )
   }
-  console.log(token1DepositRange)
-  // useEffect(() => {
-  //   console.log(token1DepositRange[0] == 0)
-  //   console.log()
-  //   if (Number(token0DepositAmount) < 0 || Number(token1DepositAmount) < 0) {
-  //     setBtnText('Create Position')
-  //   } else if (token1DepositRange[0] == 0 && token1DepositRange[1] == 0) {
-  //     console.log('entro')
-  //     setBtnText('Token 0 position has to be bigger')
-  //   } else if (
-  //     Number(token1DepositAmount) > token1DepositRange[1] ||
-  //     Number(token1DepositAmount) < token1DepositRange[0]
-  //   ) {
-  //     setBtnText(`The range of token 1 has to be between ${token1DepositRange[0]} and ${token1DepositRange[1]}`)
-  //   } else {
-  //     // setBtnText('Enter amounts')
-  //   }
-  // }, [token0DepositAmount, token1DepositAmount, token1DepositRange])
   return (
     <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="text-xs leading-normal text-white mb-2">Deposit amounts</div>
@@ -136,21 +101,21 @@ const DepositAmountsGAMMA = ({
             type="text"
             placeholder="0"
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
-            value={token0DepositAmount}
-            onChange={(e) => setToken0DepositAmount(e.target.value)}
+            value={token0TypedValue}
+            onChange={(e) => setToken0TypedValue(e.target.value)}
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
             <Button
               variant="tertiary"
               className="!py-1 !px-3"
-              onClick={() => setToken0DepositAmount(tokenBalance0?.div(2).toString() || '0')}
+              onClick={() => setToken0TypedValue(token0Balance?.div(2).toString() || '0')}
             >
               Half
             </Button>
             <Button
               variant="tertiary"
               className="!py-1 !px-3"
-              onClick={() => setToken0DepositAmount(token0UserBalance.toString() || '0')}
+              onClick={() => setToken0TypedValue(token0Balance?.toString() || '0')}
             >
               Max
             </Button>
@@ -178,15 +143,15 @@ const DepositAmountsGAMMA = ({
             type="text"
             placeholder="0"
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
-            value={token1DepositAmount}
-            onChange={(e) => setToken1DepositAmount(e.target.value)}
+            value={token1TypedValue}
+            onChange={(e) => setToken1TypedValue(e.target.value)}
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
             <Button
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                setToken1DepositAmount(toBN(token1DepositRange[1]).div(2).toString())
+                setToken1TypedValue(toBN(Number(token1Range[1])).div(2).toString())
               }}
             >
               Half
@@ -195,7 +160,7 @@ const DepositAmountsGAMMA = ({
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                setToken1DepositAmount(toBN(token1DepositRange[1]).toString())
+                setToken1TypedValue(toBN(Number(token1Range[1])).toString())
               }}
             >
               Max
@@ -218,6 +183,7 @@ const DepositAmountsGAMMA = ({
           </div>
         </div>
       </div>
+      <Button onClick={createPosition}>Create Position</Button>
     </div>
   )
 }

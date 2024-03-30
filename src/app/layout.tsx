@@ -23,7 +23,7 @@ import store, { persistor } from '../state'
 
 console.log(typeof localhost)
 
-const polygonFork = {
+export const polygonFork = {
   id: 31337,
   name: 'Polygon Fork',
   nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
