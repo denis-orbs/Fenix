@@ -25,15 +25,15 @@ const AccountHandler = () => {
   }
 
   return (
-    <div className="flex items-center gap-8 w-full md:w-max-content xl:w-auto flex-col xl:flex-row">
+    <div className="flex items-center gap-2 xl:gap-8 w-full md:w-max-content xl:w-auto flex-row">
       {isConnected && (
         <div className="relative w-full">
           <div
             onMouseEnter={() => setOpenPoints(true)}
             onMouseLeave={() => setOpenPoints(false)}
-            className="flex px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200"
+            className="flex px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200"
             >
-            <p className="text-xs text-white">0.0 Points</p>
+            <p className="text-xs text-white">0.0 <span className="hidden xl:inline">Points</span></p>
             <Image src="/static/images/tokens/BLAST.svg" className="w-8 h-8" alt="logo" width={30} height={30} />
           </div>
           {
