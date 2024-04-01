@@ -17,17 +17,17 @@ const providers = [
       height: 21,
     },
   },
-  {
-    label: 'GAMMA',
-    value: '2',
-    apr: 3.08,
-    src: 'https://www.gamma.xyz/',
-    logo: {
-      src: '/static/images/providers/gamma.svg',
-      width: 95.158,
-      height: 16,
-    },
-  },
+  // {
+  //   label: 'GAMMA',
+  //   value: '2',
+  //   apr: 3.08,
+  //   src: 'https://www.gamma.xyz/',
+  //   logo: {
+  //     src: '/static/images/providers/gamma.svg',
+  //     width: 95.158,
+  //     height: 16,
+  //   },
+  // },
 ]
 
 const Automatic = () => {
