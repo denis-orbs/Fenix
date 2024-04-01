@@ -6,7 +6,7 @@ import { Button } from "@/src/components/UI"
 const PointSummary = () => {
   return (
     <section className="your-point-box">
-      <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center">
+      <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center relative z-10">
         <h5 className="text-white text-lg mb-3 font-medium">Your point summary</h5>
         <Button className="w-full xl:w-auto">Claim rewards</Button>
       </div>
