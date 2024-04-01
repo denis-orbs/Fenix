@@ -5,6 +5,12 @@ export const GET_V2_PAIRS = gql`
     pairs(first: $first, skip: $skip) {
       id
       isStable
+
+      id
+      volumeToken0
+      volumeUSD
+      volumeToken1
+
       token0 {
         name
         id
@@ -15,6 +21,58 @@ export const GET_V2_PAIRS = gql`
         symbol
         name
       }
+    }
+  }
+`
+
+// Define the GraphQL query
+export const GET_V3_ALGEBRA_DATA = gql`
+  {
+    pools {
+      id
+      token1 {
+        id
+        name
+        symbol
+        decimals
+      }
+      token0 {
+        id
+        name
+        symbol
+        decimals
+      }
+      feesUSD
+      liquidity
+      token0Price
+      token1Price
+      volumeUSD
+      totalValueLockedToken0
+      totalValueLockedToken1
+      volumeToken1
+      volumeToken0
+      untrackedVolumeUSD
+      untrackedFeesUSD
+      txCount
+      totalValueLockedUSDUntracked
+      totalValueLockedUSD
+      totalValueLockedMatic
+      tickSpacing
+      tick
+      sqrtPrice
+      observationIndex
+      liquidityProviderCount
+      collectedFeesToken0
+      collectedFeesToken1
+      collectedFeesUSD
+      createdAtBlockNumber
+      communityFee
+      createdAtTimestamp
+      fee
+      feeGrowthGlobal0X128
+      feeGrowthGlobal1X128
+      feesToken0
+      feesToken1
     }
   }
 `

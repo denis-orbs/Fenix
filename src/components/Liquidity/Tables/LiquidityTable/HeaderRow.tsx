@@ -3,6 +3,7 @@ import { PoolData } from '@/src/state/liquidity/types'
 import { Fragment, useEffect } from 'react'
 import Row from './Row'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useAppSelector } from '@/src/state'
 
 interface HeaderRowProps {
   loading: boolean
@@ -41,7 +42,7 @@ const HeaderRow = ({
               { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-center`, sortable: true },
               { text: 'TVL', className: 'w-[15%] text-right', sortable: true },
               {
-                text: `${titleHeader === '' ? 'My Pool Amount' : titleHeader}`,
+                text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
                 className: 'w-[15%] text-right',
                 sortable: true,
               },
@@ -84,7 +85,7 @@ const HeaderRow = ({
       {activePagination && (
         <>
           <div className="items-center hidden xl:flex">
-            <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
+            {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
             <Pagination className="mx-auto" numberPages={7} />
             <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
               <span className="text-lg icon-cog text-white cursor-pointer"></span>

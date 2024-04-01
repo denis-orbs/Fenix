@@ -5,6 +5,9 @@ import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
 export type PoolData = {
   pairDetails: LiquidityTableElement
 }
+export type v3PoolData = {
+  pairDetails: V3PairInfo
+}
 
 export type LiquidityV2PairDetails = {
   id: string
@@ -70,8 +73,12 @@ export interface LiquidityTableElement {
   priceB: number
   isInactiveGauge?: boolean
   apr: number
+  volumeUSD: string
+  volumeToken0: string
+  volumeToken1: string
   maxAPR?: number
   tvl: BigDecimal
+  fee: string
   token0Symbol: string
   token1Symbol: string
   unmigrated: boolean
@@ -79,4 +86,58 @@ export interface LiquidityTableElement {
   myPoolAmountValue: BigDecimal
   myStackedAmountValueV3: BigDecimal
   myStackedAmountValueV2: BigDecimal
+}
+export interface V2PairInfo {
+  id: string
+  isStable: boolean
+  token0: {
+    name: string
+    id: string
+    symbol: string
+  }
+  token1: { name: string; id: string; symbol: string }
+  volumeToken0: string
+  volumeToken1: string
+  volumeUSD: string
+}
+export interface V3PairInfo {
+  id: Address
+  feesToken0: string
+  feesToken1: string
+  feesUSD: string
+  communityFee: string
+  createdAtBlockNumber: string
+  createdAtTimestamp: string
+  fee: string
+  feeGrowthGlobal0X128: string
+  feeGrowthGlobal1X128: string
+  liquidity: string
+  liquidityProviderCount: string
+  observationIndex: string
+  sqrtPrice: string
+  tick: string
+  tickSpacing: string
+  totalValueLockedMatic: string
+  totalValueLockedToken0: string
+  totalValueLockedToken1: string
+  totalValueLockedUSD: string
+  totalValueLockedUSDUntracked: string
+  txCount: string
+  untrackedFeesUSD: string
+  untrackedVolumeUSD: string
+  volumeToken0: string
+  volumeToken1: string
+  volumeUSD: string
+  token0: {
+    decimals: string
+    id: Address
+    name: string
+    symbol: string
+  }
+  token1: {
+    decimals: string
+    id: Address
+    name: string
+    symbol: string
+  }
 }
