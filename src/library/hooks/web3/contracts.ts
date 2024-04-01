@@ -4,20 +4,14 @@ import { usePublicClient, useWalletClient } from 'wagmi'
 import useActiveConnectionDetails from './useActiveConnectionDetails'
 import { AddressZero } from '../../constants/misc'
 
-export function useContract<T extends Abi>(
-  addressOrAddressMap: string | { [chainId: number]: string } | null | undefined,
-  ABI?: T
-) {
+export function useContract<T extends Abi>(address: string | null | undefined, ABI?: T) {
   const { chainId } = useActiveConnectionDetails()
   const publicClient = usePublicClient()
   const { data: walletClient } = useWalletClient()
 
   return useMemo(() => {
-    if (!addressOrAddressMap || !ABI || !chainId) return null
-    let address: string | undefined
-    if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
-    else address = addressOrAddressMap[chainId]
-    if (!address || address === AddressZero) return null
+    if (!address || !ABI || !chainId) return null
+    if (address === AddressZero) return null
     try {
       return getContract({
         address: address as Address,
@@ -31,5 +25,5 @@ export function useContract<T extends Abi>(
       console.error('Failed to get contract', error)
       return null
     }
-  }, [addressOrAddressMap, ABI, chainId, walletClient, publicClient])
+  }, [address, ABI, chainId, walletClient, publicClient])
 }
