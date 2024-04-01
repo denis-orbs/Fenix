@@ -1,5 +1,7 @@
 import { Button } from '@/src/components/UI'
+import { NumericalInput } from '@/src/components/UI/Input'
 import { ichiVaultABI } from '@/src/library/constants/abi'
+import { INPUT_PRECISION } from '@/src/library/constants/misc'
 import { useERC20Balance } from '@/src/library/hooks/web3/erc20/useERC20Balance'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import Image from 'next/image'
@@ -36,9 +38,11 @@ const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string }
       <div className="text-xs leading-normal text-white mb-2">Deposit amounts</div>
       <div className="flex items-center gap-3">
         <div className="relative w-full xl:w-3/5">
-          <input
-            type="text"
-            placeholder="0"
+          <NumericalInput
+            value={''}
+            onUserInput={() => {}}
+            precision={INPUT_PRECISION}
+            placeholder="0.0"
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
