@@ -4,7 +4,7 @@ import Search from '@/src/components/Common/Search'
 import Steps from '@/src/components/Common/Steps'
 import Deposit from '@/src/components/Liquidity/LiquidityPools'
 import { useV2PairsData } from '@/src/state/liquidity/hooks'
-import { PoolData } from '@/src/state/liquidity/types'
+import { PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import { useEffect, useMemo, useState } from 'react'
 import HeaderRow from './Tables/LiquidityTable/HeaderRow'
 import { DATA_ROW, OPTIONS_FILTER, STEPS } from './data'
@@ -23,12 +23,12 @@ const Liquidity = () => {
   const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
 
   useEffect(() => {
-    console.log('Loading ', loading)
-    console.log('v2PairsData ', v2PairsData)
+    // console.log('Loading ', loading)
+    // console.log('v2PairsData ', v2PairsData)
   }, [v2PairsData, loading])
 
   const poolsData = useMemo<PoolData[]>(() => {
-    if (loading) {
+    if (loading || !v2PairsData) {
       return []
     }
 

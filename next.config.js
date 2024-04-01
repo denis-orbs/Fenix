@@ -8,6 +8,9 @@ const nextConfig = {
     locales: ['en-US', 'zh-CN'],
     defaultLocale: 'en-US',
   },
+  images: {
+    domains: ['fenix-api-testnet.vercel.app'],
+  },
 }
 
 module.exports = nextConfig
