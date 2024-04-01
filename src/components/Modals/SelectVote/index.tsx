@@ -1,7 +1,15 @@
 'use client'
 
 import { Modal } from '@/src/components/UI'
+import { LockElement } from '@/src/library/structures/lock/LockElement'
+import formatDate from '@/src/library/utils/foramatDate'
+import { AppThunkDispatch, useAppDispatch, useAppSelector } from '@/src/state'
+import { fetchNftsAsync, setLock } from '@/src/state/lock/reducer'
+import { lockState } from '@/src/state/lock/types'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useAccount } from 'wagmi'
 
 interface SelectVoteProps {
   openModal: boolean
@@ -11,13 +19,26 @@ interface SelectVoteProps {
 }
 
 const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote }: SelectVoteProps) => {
+  const [nowTime, setnowTime] = useState<Number>(0)
   const handlerClose = () => setOpenModal(false)
   const handlerChange = () => (activeVote ? setActiveVote(false) : setActiveVote(true), setOpenModal(false))
+  const { address } = useAccount()
+  const locks = useAppSelector((state) => state.lock as lockState)
+  const dispatch = useDispatch<AppThunkDispatch>()
+
+  useEffect(() => {
+    if (address) dispatch(fetchNftsAsync(address))
+    const now = new Date().getTime() / 1000
+    setnowTime(now)
+  }, [address])
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
       <div className="common-modal">
-        <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x p-2 2xl:p-0 text-shark-100" onClick={handlerClose} />
+        <span
+          className="absolute top-0 right-0 text-2xl cursor-pointer icon-x p-2 2xl:p-0 text-shark-100"
+          onClick={handlerClose}
+        />
         <div className="relative z-10 w-full h-full">
           <h1 className="mb-2 text-lg font-medium text-white">Select veFNX to Vote</h1>
           <div className="mb-4">
@@ -34,43 +55,56 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote }: Sele
             <div className="flex text-sm text-shark-100">
               <p className="w-[45%] text-xs">Lock ID</p>
               <div className="flex gap-4 text-xs">
-                <p className='text-center'>Position</p>
-                <p className='text-center'>Voting Power</p>
-                <p className='text-right'>Rewards</p>
+                <p className="text-center">Position</p>
+                <p className="text-center">Voting Power</p>
+                <p className="text-right">Rewards</p>
               </div>
             </div>
 
             <div className="max-h-[220px] overflow-y-auto">
-              {Array.from({ length: 4 }).map((_, index) => {
+              {locks.positions.map((lock: LockElement, index: number) => {
                 return (
-                  <div key={index} className="flex flex-col gap-3 cursor-pointer">
+                  <div
+                    key={index}
+                    className="flex flex-col gap-3 cursor-pointer"
+                    onClick={() => dispatch(setLock(lock.veNFTInfo))}
+                  >
                     <div
                       onClick={handlerChange}
                       className="flex flex-wrap items-center justify-between p-4 mt-2 text-xs rounded-lg xl:flex-nowrap bg-shark-400 bg-opacity-40"
                     >
-                      <div className="flex items-center gap-2 w-2/6 sm:w-auto">
+                      <div className="flex items-center gap-2">
                         <Image alt="fenix-logo" src={'/static/images/vote/fenix-logo.svg'} height={32} width={32} />
                         <div className="flex flex-col">
                           <div className="flex gap-2">
                             {' '}
-                            <p className="text-white">9339</p> <p className="text-green-500">•Active</p>
+                            <p className="text-white">{lock.veNFTInfo.id.toString()}</p>{' '}
+                            {BigInt(nowTime.toFixed(0).toString()) < lock.veNFTInfo.lockEnd ? (
+                              <p className="text-green-400">
+                                <span>•</span> Active
+                              </p>
+                            ) : (
+                              <p className=" text-red-400">
+                                <span>•</span> Expired
+                              </p>
+                            )}
                           </div>
                           <div className="flex">
-                            <p className="text-shark-100 text-xs  ">Expires 14/09/2024</p>
+                            <p className="text-shark-100">Expires {formatDate(Number(lock.veNFTInfo.lockEnd))}</p>
                           </div>
                         </div>
                       </div>
                       {/* first */}
                       <div>
-                        <p className="text-white text-xs">981 FNX</p>
+                        <p className="text-white">{(Number(lock.veNFTInfo.amount) / 10 ** 18).toFixed(2)} FNX</p>
                       </div>
                       {/* second */}
                       <div>
-                        <p className="text-white text-xs">981 FNX</p>
+                        <p className="text-white">{(Number(lock.veNFTInfo.voting_amount) / 10 ** 18).toFixed(2)} FNX</p>
                       </div>
                       {/* third */}
                       <div>
-                        <p className="text-green-400 text-xs">$12.98 !</p>
+                        <p className="text-green-400">0.00</p>
                       </div>
                     </div>
                   </div>

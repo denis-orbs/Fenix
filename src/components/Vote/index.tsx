@@ -11,6 +11,8 @@ import SelectVote from '../Modals/SelectVote'
 import Overlay from './Overlay'
 import { FILTER_OPTIONS } from './data'
 import HeaderRowVote from './Tables/HeaderRowVote'
+import { useAppSelector } from '@/src/state'
+import { lockState } from '@/src/state/lock/types'
 
 const Vote = () => {
   const [currentTab, setCurrentTab] = useState('VOLATILE')
@@ -18,12 +20,16 @@ const Vote = () => {
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
   const filterData = DATA_ROW.filter((row) => row.type === currentTab)
-  
+  const [nowTime, setnowTime] = useState<Number>(0)
+  const lock = useAppSelector((state) => state.lock as lockState)
+
   useEffect(() => {
+    setnowTime(new Date().getTime() / 1000)
+    console.log(BigInt(nowTime.toFixed(0).toString()) < lock.veNFTInfo.lockEnd)
     setTimeout(() => {
       setLoading(false)
     }, 2000)
-  }, [])
+  }, [lock])
 
   return (
     <section className="relative">
@@ -46,10 +52,10 @@ const Vote = () => {
         <div className="mb-5">
           <h1 className="text-2xl text-white">Vote Pools</h1>
           <div className="flex flex-wrap gap-2 justify-center">
+            {/* <VotePools />
             <VotePools />
             <VotePools />
-            <VotePools />
-            <VotePools />
+            <VotePools /> */}
           </div>
         </div>
       )}
@@ -61,7 +67,9 @@ const Vote = () => {
         setOpenModal={setOpenModal}
       />
 
-        <div className="p-5 mx-auto fixed bottom-4 z-50 left-0 xl:w-1/2 right-0 md:block">{activeVote && <Overlay />}</div>
+      <div className="p-5 mx-auto fixed bottom-4 z-50 left-0 xl:w-1/2 right-0 md:block">
+        {BigInt(nowTime.toFixed(0).toString()) < lock.veNFTInfo.lockEnd && <Overlay />}
+      </div>
     </section>
   )
 }
