@@ -26,9 +26,6 @@ const Header = () => {
         </div>
         <div className="flex relative z-10 items-center gap-3.5 justify-end px-5 h-[95px] 2xl:w-[60%]">
           <AccountHandler />
-          <div className="p-2 cursor-pointer">
-            <span className="text-[26px] transition-all icon-logout text-shark-100 hover:text-outrageous-orange-400"></span>
-          </div>
         </div>
       </div>
       <WalletSelection />
