@@ -4,9 +4,9 @@ import SetRange from './SetRange'
 import { Button } from '@/src/components/UI'
 
 const ConcentratedDepositLiquidityManual = () => {
-  const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX' })
+  const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX', img: '/static/images/tokens/FNX.svg' })
   const [firstValue, setFirstValue] = useState(0)
-  const [secondToken, setSecondToken] = useState({ name: 'ethereum', symbol: 'ETH' })
+  const [secondToken, setSecondToken] = useState({ name: 'ethereum', symbol: 'ETH', img: '/static/images/tokens/FNX.svg' })
   const [secondValue, setSecondValue] = useState(0)
 
   return (

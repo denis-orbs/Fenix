@@ -18,13 +18,17 @@ interface SelectTokenProps {
   openModal: boolean
   setOpenModal: (openModal: boolean) => void
   setToken: (token: IToken) => void
-  commonList: IToken[]
-  tokenList: IToken[]
-  tokenBalances: { [key: `0x${string}`]: string }
+  commonList?: IToken[]
+  tokenList?: IToken[]
+  tokenBalances?: { [key: `0x${string}`]: string }
 }
 
 const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalances, tokenList }: SelectTokenProps) => {
-  
+
+  const [_tokenList, setTokenList] = useState<IToken[]>(tokenList ? tokenList : [])
+  const [_commonList, setCommonList] = useState<IToken[]>(commonList ? commonList : [])
+  const [_tokenBalances, setTokenBalances] = useState<{ [key: `0x${string}`]: string }>(tokenBalances ? tokenBalances : {})
+  const account = useAccount()
 
   const handlerClose = () => setOpenModal(false)
 
@@ -32,6 +36,40 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
     setToken(token)
     setOpenModal(false)
   }
+
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
+          method: 'GET',
+        })
+        const responseData = await response.json()
+        const parsedData = responseData.map((item: any) => {
+          return {
+            id: 0,
+            name: item.basetoken.name,
+            symbol: item.basetoken.symbol,
+            address: item.basetoken.address,
+            decimals: 18,
+            img: item.logourl,
+            isCommon: item.common,
+            price: parseFloat(item.priceUSD)
+          }
+        })
+
+        const commonList = parsedData.filter((item: any) => item.isCommon)
+
+        const balances = await getTokensBalance(parsedData.map((item: any) => { return item.address as Address}), account.address as Address)
+        setTokenBalances(balances)
+
+        setCommonList(commonList)
+        setTokenList(parsedData)
+      } catch (error) {
+      }
+    }
+
+    getList()  
+  }, [account.address])
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
@@ -49,7 +87,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
 
           <div className="mb-2 text-sm text-white">Common Tokens</div>
           <div className="flex flex-col items-center gap-1 mb-4 xl:flex-row">
-            {commonList.map((token, index) => (
+            {_commonList ? _commonList.map((token, index) => (
               <div
                 key={index}
                 onClick={() => handlerSelectToken(token)}
@@ -64,11 +102,11 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                 />
                 <p className="text-xs text-white">{token.symbol}</p>
               </div>
-            ))}
+            )) : <></>}
           </div>
 
           <div className="flex flex-col gap-2 max-h-[130px] overflow-y-auto">
-            {tokenList.map((token, index) => (
+            {_tokenList ? _tokenList.map((token, index) => (
               <div
                 key={index}
                 onClick={() => handlerSelectToken(token)}
@@ -92,14 +130,14 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                     <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
                     {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
                     {/* todo fetch balance */}
-                    <p className="text-xs text-white">Balance: {tokenBalances ? `${(parseInt(tokenBalances[token.address as Address])/(10**token.decimals)).toFixed(2).replace('NaN', '0')}` : `0`}</p>
+                    <p className="text-xs text-white">Balance: {_tokenBalances ? `${(parseInt(_tokenBalances[token.address as Address])/(10**token.decimals)).toFixed(2).replace('NaN', '0')}` : `0`}</p>
                   </div>
                   <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
-                    {tokenBalances ? `$${(parseInt(tokenBalances[token.address as Address])/(10**token.decimals)*token.price).toFixed(2).replace('NaN', '0')}` : `0`}
+                    {_tokenBalances ? `$${(parseInt(_tokenBalances[token.address as Address])/(10**token.decimals)*token.price).toFixed(2).replace('NaN', '0')}` : `0`}
                   </div>
                 </div>
               </div>
-            ))}
+            )) : <></>}
           </div>
           <div className="flex justify-center">
             <Button className="mt-2 mb-2 lg:w-full sm:w-full w-72" variant="tertiary">

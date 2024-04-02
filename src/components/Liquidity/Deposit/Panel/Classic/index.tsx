@@ -82,43 +82,6 @@ const Classic = ({
     }
   }, [tokenList])
 
-  useEffect(() => {
-    const getList = async () => {
-      if(tokenList.length > 0 ) {
-        if(Object.keys(tokenBalances).length > 0) return;
-
-        const balances = await getTokensBalance(tokenList.map((item: any) => { return item.address as Address}), account.address as Address)
-        setTokenBalances(balances)
-      } else {
-        try {
-          const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
-            method: 'GET',
-          })
-          const responseData = await response.json()
-          const parsedData = responseData.map((item: any) => {
-            return {
-              id: 0,
-              name: item.basetoken.name,
-              symbol: item.basetoken.symbol,
-              address: item.basetoken.address,
-              decimals: 18,
-              img: item.logourl,
-              isCommon: item.common,
-              price: parseFloat(item.priceUSD)
-            }
-          })
-
-          const commonList = parsedData.filter((item: any) => item.isCommon)
-
-          setCommonList(commonList)
-          setTokenList(parsedData)
-        } catch (error) {
-        }
-      }
-    }
-
-    getList()  
-  }, [account.address])
 
   useEffect(()=> {
     const asyncGetReserve = async () => {
