@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import StepBox from '@/src/components/Common/Boxes/StepBox'
 import useStore from '@/src/state/zustand'
 import ReadMoreModal from '@/src/components/Modals/Liquidity/ReadMore'
@@ -32,7 +33,6 @@ const RewardNow = ({ openModal, setOpenModal, activeVote }: RewardNowProps) => {
             <p className="text-shark-100">Rewards</p>
             <p className="text-2xl text-white">$0</p>
           </div>
-         
         </div>
 
         <div className="flex justify-center gap-4 mt-10">
@@ -43,9 +43,9 @@ const RewardNow = ({ openModal, setOpenModal, activeVote }: RewardNowProps) => {
             <span className=" icon-link"></span>
             Read More
           </p>
-          <p className="flex items-center text-sm gap-2 text-shark-100 cursor-pointer ">
+          <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex items-center text-sm gap-2 text-shark-100 cursor-pointer ">
             <span className="icon-discord"></span>Need some help?
-          </p>
+          </Link>
         </div>
       </div>
       <ReadMoreModal />

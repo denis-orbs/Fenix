@@ -1,4 +1,6 @@
 'use client'
+
+import Link from 'next/link'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import Image from 'next/image'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
@@ -223,9 +225,9 @@ const LockManage = () => {
             </div>
             <AboutFnx />
             <div className="justify-center xl:flex hidden mt-2 cursor-pointer">
-              <p className="flex gap-2 text-shark-100 mt-10">
+              <Link target="_blank" href="https://discord.com/invite/fenixfi"  className="flex gap-2 text-shark-100 mt-10">
                 <span className="icon-discord"></span> Need some help?
-              </p>
+              </Link>
             </div>
             <div className="absolute top-2 xl:top-0 z-10 w-28 right-0">
               <ProgressBar progress={50} />

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import StepBox from '@/src/components/Common/Boxes/StepBox'
 import useStore from '@/src/state/zustand'
 import ReadMoreModal from '@/src/components/Modals/Liquidity/ReadMore'
@@ -51,9 +52,9 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
             <span className=" icon-link"></span>
             Read More
           </p>
-          <p className="flex items-center text-sm gap-2 text-shark-100 cursor-pointer ">
+          <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex items-center text-sm gap-2 text-shark-100 cursor-pointer ">
             <span className="icon-discord"></span>Need some help?
-          </p>
+          </Link>
         </div>
       </div>
       <ReadMoreModal />
