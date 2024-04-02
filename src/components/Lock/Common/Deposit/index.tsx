@@ -1,4 +1,6 @@
 'use client'
+
+import Link from 'next/link'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import { Button, ProgressBar } from '@/src/components/UI'
 import { useState } from 'react'
@@ -111,9 +113,9 @@ const DepositLock = () => {
             </>
           )}
           <div className="mt-16 ">
-            <p className="flex gap-2 justify-center text-shark-100 cursor-pointer">
+            <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex gap-2 justify-center text-shark-100 cursor-pointer">
               <span className="icon-discord"></span>Need some help?
-            </p>
+            </Link>
           </div>
           <div className="absolute  top-7 xl:top-0 z-10 w-28 right-0">
             <ProgressBar progress={50} />

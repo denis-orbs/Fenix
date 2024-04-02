@@ -1,11 +1,13 @@
 'use client'
+
+import Link from 'next/link'
+import { useState } from 'react'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/components/Common/InfoBox'
 import CREATE_LOCK_LIST from './data'
 import Image from 'next/image'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import { Button, ProgressBar } from '@/src/components/UI'
-import { useState } from 'react'
 
 const CreateLock = () => {
   const [changeValue, setChangeValue] = useState(0)
@@ -116,9 +118,9 @@ const CreateLock = () => {
             <InfoBox hasDecorator={CREATE_LOCK_LIST.length === index + 1 ? false : true} bgBox="exchange-box-info" key={index} data={exchange} textColor={'text-shark-100'} />
           ))}
           <div className="mt-16 cursor-pointer">
-            <p className="flex gap-2 justify-center text-shark-100">
+            <Link target="_blank" href="https://discord.com/invite/fenixfi"  className="flex gap-2 justify-center text-shark-100">
               <span className="icon-discord"></span>Need some help?
-            </p>
+            </Link>
           </div>
           <div className="absolute top-0 z-10 w-28 right-0">
             <ProgressBar progress={50} />

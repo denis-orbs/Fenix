@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Button } from '@/src/components/UI'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/components/Common/InfoBox'
@@ -35,10 +36,10 @@ const LiquidityPools = () => {
         </div>
       </div>
       <div className="hidden xl:block text-shark-100 rounded-2xl xl:rounded-none relative z-10">
-        <div className="flex gap-3 justify-end cursor-pointer">
+        <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex gap-3 justify-end cursor-pointer">
           <span className="icon-discord"></span>
           <p className="me-10">Need some help?</p>
-        </div>
+        </Link>
       </div>
     </MainBox>
   )
