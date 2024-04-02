@@ -25,7 +25,7 @@ const AccountHandler = () => {
   }
 
   return (
-    <div className="flex items-center gap-2 xl:gap-8 w-full md:w-max-content xl:w-auto flex-row">
+    <div className="flex items-center gap-2 xl:gap-3 w-full md:w-max-content xl:w-auto flex-row">
       {isConnected && (
         <div className="relative w-full">
           <div
@@ -106,6 +106,12 @@ const AccountHandler = () => {
           </Button>
         )}
       </div>
+      {
+        isConnected &&
+        <div className="p-2 cursor-pointer">
+          <span className="text-[26px] transition-all icon-logout text-shark-100 hover:text-outrageous-orange-400"></span>
+        </div>
+      }
     </div>
   )
 }
