@@ -15,6 +15,20 @@ const Modal = ({ children, openModal, className = '', setOpenModal }: ModalProps
     !openModal && (document.body.style.overflow = 'unset')
   }, [openModal])
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenModal(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
   if (!openModal) return null
 
   const handleCloseModal = () => setOpenModal(false)
