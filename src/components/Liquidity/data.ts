@@ -1,16 +1,16 @@
 export const STEPS = [
   {
-    title: 'Select your Pool',
+    label: 'Select your Pool',
     description: 'Select the pair that suits better your strategy.',
     icon: 'icon-circles',
   },
   {
-    title: 'Deposit your Liquidity',
+    label: 'Deposit your Liquidity',
     description: 'The deeper the liquidity (TVL), the lower the slippage a pool will offer.',
     icon: 'icon-lock-up',
   },
   {
-    title: 'Receive Benefits',
+    label: 'Receive Benefits',
     description:
       'LPs get FNX emissions, while veFNX lockers get the pool trading fees as an incentive to vote on the most productive pools.',
     icon: 'icon-rocket',
@@ -19,17 +19,17 @@ export const STEPS = [
 
 export const EXCHANGE_LIST = [
   {
-    title: 'Total Value Locked',
+    label: 'Total Value Locked',
     description: "$92,837,327.32",
     icon: 'icon-lock',
   },
   {
-    title: 'Fees',
+    label: 'Fees',
     description: "$64,789,445.82",
     icon: 'icon-pig',
   },
   {
-    title: 'Volume',
+    label: 'Volume',
     description: "$48,680,765.44",
     icon: 'icon-coins',
   },

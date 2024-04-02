@@ -4,7 +4,8 @@ import { Button } from '@/src/components/UI'
 
 interface Items {
   label: string
-  amount: string | number
+  amount?: string | number
+  description?: string
   icon: string
   textColor?: string
 }
@@ -35,8 +36,8 @@ const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false, bgBox
         </div>
         <div className="flex items-center justify-between w-full">
           <div className="max-w-[270px]">
-            <h5 className={`text-xs text-shark-100`}>{data.label}</h5>
-            <p className="text-xs text-white line-clamp-2">{data.amount}</p>
+            <h5 className="text-xs text-shark-100">{data.label}</h5>
+            <p className="text-sm text-white line-clamp-2">{data.amount || data.description }</p>
           </div>
         </div>
         {hasTooltip && (
