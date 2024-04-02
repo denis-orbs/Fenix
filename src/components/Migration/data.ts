@@ -1,26 +1,26 @@
 export const EXCHANGE_LIST = [
   {
-    title: 'Minimum Exchange Ratio',
+    label: 'Minimum Exchange Ratio',
     description: '102.65 CHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {
-    title: 'Minimum Exchange Ratio',
+    label: 'Minimum Exchange Ratio',
     description: '102.65 spCHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {
-    title: 'Minimum Exchange Ratio',
+    label: 'Minimum Exchange Ratio',
     description: '102.65 elCHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {
-    title: 'Minimum Exchange Ratio',
+    label: 'Minimum Exchange Ratio',
     description: '113.88 veCHR: 1 veFNX',
     icon: 'icon-lucide',
   },
   {
-    title: 'Minimum Exchange Ratio',
+    label: 'Minimum Exchange Ratio',
     description: '102.65 chrNFT: 1 veFNX',
     icon: 'icon-lucide',
   },

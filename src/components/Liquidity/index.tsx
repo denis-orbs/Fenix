@@ -44,7 +44,7 @@ const Liquidity = () => {
         <div className="w-full 2xl:w-3/4">
           <Deposit />
         </div>
-        <Steps steps={STEPS} />
+        <Steps steps={STEPS} title="Start Now" />
       </div>
       <h5 className="mb-4 text-lg lg:text-2xl text-white">Liquidity Pools</h5>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">

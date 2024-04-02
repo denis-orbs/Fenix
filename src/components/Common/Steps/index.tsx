@@ -7,7 +7,7 @@ import useStore from '@/src/state/zustand'
 
 interface Step {
   label: string
-  amount: string
+  amount?: string
   icon: string
   hasButton?: boolean
 }

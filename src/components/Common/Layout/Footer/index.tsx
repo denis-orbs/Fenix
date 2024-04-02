@@ -27,6 +27,7 @@ const Footer = () => {
                     <Link
                       href={link.href}
                       key={index}
+                      target="_blank"
                       className="text-xs sm:text-sm text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text transition-all"
                     >
                       {link.title}
