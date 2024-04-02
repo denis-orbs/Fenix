@@ -68,20 +68,41 @@ const Classic = ({
 
       setDefaultPairs([pairString[1], pairString[2]])
     }
-
-    window.location.hash = ""
   }, []);
 
   useEffect(() => {
-    if(defaultPairs.length > 0) {
-      tokenList.map((item) => {
-        if(item.address == defaultPairs[0]) setFirstToken(item)
-        if(item.address == defaultPairs[1]) setSecondToken(item)
-      })
-      setDefaultPairs([])
-    }
-  }, [tokenList])
+    const getList = async () => {
+      try {
+        const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
+          method: 'GET',
+        })
+        const responseData = await response.json()
+        const parsedData = responseData.map((item: any) => {
+          return {
+            id: 0,
+            name: item.basetoken.name,
+            symbol: item.basetoken.symbol,
+            address: item.basetoken.address,
+            decimals: 18,
+            img: item.logourl,
+            isCommon: item.common,
+            price: parseFloat(item.priceUSD)
+          }
+        })
 
+        if(defaultPairs.length > 0) {
+          parsedData.map((item: any) => {
+            if(item.address == defaultPairs[0]) setFirstToken(item)
+            if(item.address == defaultPairs[1]) setSecondToken(item)
+          })
+          setDefaultPairs([])
+        }
+      } catch (error) {
+      }
+    }
+
+    defaultPairs.length > 0 ? getList() : {}
+  }, [defaultPairs])
 
   useEffect(()=> {
     const asyncGetReserve = async () => {
