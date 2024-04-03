@@ -14,6 +14,7 @@ export interface LiquidityState {
   v2Pairs: {
     state: ApiState
     data: LiquidityV2PairDetails[]
+    tableData?: LiquidityTableElement[]
   }
   concentratedPools: { state: ApiState; data: any }
 }
