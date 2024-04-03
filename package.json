@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.6",
-    "@ichidao/ichi-vaults-sdk": "^0.0.26",
+    "@ichidao/ichi-vaults-sdk": "^0.0.27",
     "@rainbow-me/rainbowkit": "^2.0.1",
     "@reduxjs/toolkit": "^2.2.1",
     "@steerprotocol/contracts": "^3.1.3",
