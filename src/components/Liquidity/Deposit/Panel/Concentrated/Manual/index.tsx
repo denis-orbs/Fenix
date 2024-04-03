@@ -9,6 +9,7 @@ import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { useAccount, useWriteContract } from 'wagmi'
 import { publicClient } from '@/src/library/constants/viemClient'
 import toast, { Toaster } from 'react-hot-toast'
+import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
 
 const ConcentratedDepositLiquidityManual = ({
   defaultPairs
@@ -19,6 +20,8 @@ const ConcentratedDepositLiquidityManual = ({
   const [firstValue, setFirstValue] = useState("")
   const [secondToken, setSecondToken] = useState({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4200000000000000000000000000000000000023" as Address, img: "/static/images/tokens/WETH.svg" } as IToken)
   const [secondValue, setSecondValue] = useState("")
+  const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
+  const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
 
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
@@ -30,34 +33,19 @@ const ConcentratedDepositLiquidityManual = ({
     }
   }, [defaultPairs])
   
-  const handleCLAdd = async () => {
-    // TODO check allowance and approve 
+  useEffect(()=> {
+    const asyncGetAllowance = async () => {
+        const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.cl_manager as Address)
+        const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.cl_manager as Address)
 
-    // writeContractAsync({ 
-    //   abi: ERC20_ABI,
-    //   address: firstToken.address as Address,
-    //   functionName: 'approve', 
-    //   args: [
-    //     contractAddressList.cl_manager as Address,
-    //     maxUint256
-    //   ], 
-    // },
-    // {
-    //   onSuccess: async (x) => {
-    //     const transaction = await publicClient.waitForTransactionReceipt({hash: x});
-    //     if(transaction.status == "success") {
-    //       toast(`Approved successfully`);
-    //     } else {
-    //       toast(`Approve TX failed, tx: ${transaction.transactionHash}`);
-    //     }
-    //   },
-    //   onError: (e) => {
-    //     toast(`Approve failed. ${e}`);
-    //   },
-    // })
-    // return
-    
-    //TODO: handle amount and range and order of tokens
+        setShouldApproveFirst(allowanceFirst == "0")
+        setShouldApproveSecond(allowanceSecond == "0")
+    }
+
+    asyncGetAllowance();
+  }, [firstToken, secondToken, account.address])
+  
+  const handleCLAdd = async () => {
     writeContractAsync({ 
       abi: CL_MANAGER_ABI,
       address: contractAddressList.cl_manager as Address,
@@ -91,6 +79,37 @@ const ConcentratedDepositLiquidityManual = ({
       },
     })
   }
+
+  const handleApprove = async (token: Address) => {
+    writeContractAsync({ 
+      abi: ERC20_ABI,
+      address: token,
+      functionName: 'approve', 
+      args: [
+        contractAddressList.cl_manager,
+        maxUint256
+      ], 
+    },
+    {
+      onSuccess: async (x) => {
+        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
+        if(transaction.status == "success") {
+          toast(`Approved successfully`);
+        } else {
+          toast(`Approve TX failed, tx: ${transaction.transactionHash}`);
+        }
+
+        const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.cl_manager as Address)
+        const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.cl_manager as Address)
+
+        setShouldApproveFirst(allowanceFirst == "0")
+        setShouldApproveSecond(allowanceSecond == "0")
+      },
+      onError: (e) => {
+        toast(`Approve failed. ${e}`);
+      },
+    })
+  }
   
   return (
     <>
@@ -109,10 +128,20 @@ const ConcentratedDepositLiquidityManual = ({
       />
       <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={
         () => {
-          handleCLAdd()
+          shouldApproveFirst ?
+          handleApprove(firstToken.address as Address) 
+          : shouldApproveSecond ? 
+          handleApprove(secondToken.address as Address) 
+          : handleCLAdd()
         }
       }>
-        Create Position
+        {
+          shouldApproveFirst ? 
+          `Approve ${firstToken.address}`
+          : shouldApproveSecond ?
+          `Approve ${secondToken.address}`
+          : `Create Position`
+        }
       </Button>
     </>
   )
