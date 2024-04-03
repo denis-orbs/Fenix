@@ -18,18 +18,18 @@ import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 
 const Classic = ({
   depositType,
-  setDepositType
+  defaultPairs
 }: {
   depositType: 'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
   tokenSwap: { name: string; symbol: string }
   tokenFor: { name: string; symbol: string }
-  setDepositType: any
+  defaultPairs: IToken[]
 }) => {
   const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934';
 
   const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX', id: 0, decimals: 18, address: "0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9" as Address, img: "/static/images/tokens/FNX.svg" } as IToken)
   const [firstValue, setFirstValue] = useState("")
-  const [secondToken, setSecondToken] = useState({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4200000000000000000000000000000000000023" as Address, img: "/static/images/tokens/ETH.svg" } as IToken)
+  const [secondToken, setSecondToken] = useState({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4200000000000000000000000000000000000023" as Address, img: "/static/images/tokens/WETH.svg" } as IToken)
   const [secondValue, setSecondValue] = useState("")
   const [firstReserve, setFirstReserve] = useState(0)
   const [secondReserve, setSecondReserve] = useState(0)
@@ -40,11 +40,6 @@ const Classic = ({
   const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
   const [pairAddress, setPairAddress] = useState("0x0000000000000000000000000000000000000000")
   const [shouldApprovePair, setShouldApprovePair] = useState(true)
-  const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
-  
-  const [tokenList, setTokenList] = useState<IToken[]>([])
-  const [commonList, setCommonList] = useState<IToken[]>([])
-  const [tokenBalances, setTokenBalances] = useState<{ [key: `0x${string}`]: string }>({})
 
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
@@ -56,52 +51,10 @@ const Classic = ({
   }
 
   useEffect(() => {
-    const hash = window.location.hash;
-    const hashValue = hash.substring(1);
-    const pairString = hashValue.split("-")
-
-    if(pairString.length == 3) {
-      if(pairString[0] == "stable") setDepositType("STABLE")
-      if(pairString[0] == "volatile") setDepositType("VOLATILE")
-
-      if(!isAddress(pairString[1]) || !isAddress(pairString[2])) return
-
-      setDefaultPairs([pairString[1], pairString[2]])
+    if(defaultPairs.length == 2) {
+      setFirstToken(defaultPairs[0])
+      setSecondToken(defaultPairs[1])
     }
-  }, []);
-
-  useEffect(() => {
-    const getList = async () => {
-      try {
-        const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
-          method: 'GET',
-        })
-        const responseData = await response.json()
-        const parsedData = responseData.map((item: any) => {
-          return {
-            id: 0,
-            name: item.basetoken.name,
-            symbol: item.basetoken.symbol,
-            address: item.basetoken.address,
-            decimals: 18,
-            img: item.logourl,
-            isCommon: item.common,
-            price: parseFloat(item.priceUSD)
-          }
-        })
-
-        if(defaultPairs.length > 0) {
-          parsedData.map((item: any) => {
-            if(item.address == defaultPairs[0]) setFirstToken(item)
-            if(item.address == defaultPairs[1]) setSecondToken(item)
-          })
-          setDefaultPairs([])
-        }
-      } catch (error) {
-      }
-    }
-
-    defaultPairs.length > 0 ? getList() : {}
   }, [defaultPairs])
 
   useEffect(()=> {
@@ -160,8 +113,8 @@ const Classic = ({
   }
 
   const handleOnLPTokenValueChange = (input: any, token: IToken) => {
-    setLpValue(input)
-
+    setLpValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
+  
     if(optionActive == "WITHDRAW") {
       const asyncGetWithdrawTokens = async () => {
         const tokens: any = await getLiquidityRemoveQuote(input, firstToken.address as Address, secondToken.address as Address, depositType === 'STABLE')
@@ -276,7 +229,7 @@ const Classic = ({
 
   return (
     <>
-      <div><Toaster position="bottom-right" reverseOrder={false}/></div>
+      <div><Toaster position="top-center" reverseOrder={false}/></div>
       <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
         <div>
           <div className="flex items-center gap-2.5 mb-2.5">
@@ -391,9 +344,9 @@ const Classic = ({
               {
                 // TODO: handle LP tokens list
               }
-              <ExchangeBox token={{ name: 'Fenix/Ether LP', symbol: `${firstToken.symbol}/${secondToken.symbol} LP`, id: 0, decimals: 18, address: pairAddress as Address, img: "/static/images/tokens/FNX.svg" } as IToken} onOpenModal={() => setOpenSelectToken(true)} variant="primary" onTokenValueChange={handleOnLPTokenValueChange} />
+              <ExchangeBox value={lpValue} token={{ name: 'Fenix/Ether LP', symbol: `${firstToken.symbol}/${secondToken.symbol} LP`, id: 0, decimals: 18, address: pairAddress as Address, img: "/static/images/tokens/FNX.svg" } as IToken} onOpenModal={() => setOpenSelectToken(true)} variant="primary" onTokenValueChange={handleOnLPTokenValueChange} />
 
-              <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} tokenList={tokenList} tokenBalances={tokenBalances} commonList={commonList} />
+              <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
             </div>
             <Separator single />
           </>
@@ -408,9 +361,6 @@ const Classic = ({
           secondValue={secondValue}
           setSecondValue={setSecondValue}
           onTokenValueChange={handleOnTokenValueChange}
-          tokenBalances={tokenBalances}
-          tokenList={tokenList}
-          commonList={commonList}
         />
       </div>
 

@@ -39,11 +39,15 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
   }
 
   const handleHalf = () => {
-    if(onTokenValueChange) onTokenValueChange((Number(balance)/1e18/2).toFixed(2), token)
+    if(onTokenValueChange) {
+      onTokenValueChange(ethers.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
+    }
   }
 
   const handleMax = () => {
-    if(onTokenValueChange) onTokenValueChange((Number(balance)/1e18).toFixed(2), token)
+    if(onTokenValueChange) {
+      onTokenValueChange(ethers.formatEther(balance.toString()), token)
+    }
   }
 
   return (
