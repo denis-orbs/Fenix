@@ -50,7 +50,15 @@ const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string }
 
   const slippage = 1
   // CHANGE
-  const web3Provider = new ethers.providers.Web3Provider(window.ethereum)
+
+  let web3Provider: any
+  if (window.ethereum) {
+    // Si window.ethereum está disponible, usa Web3Provider de ethers
+    web3Provider = new ethers.providers.Web3Provider(window.ethereum)
+  } else {
+    // Fallback al RPC si window.ethereum no está disponible
+    web3Provider = new ethers.providers.JsonRpcProvider('https://sepolia.blast.io')
+  }
   const dex = SupportedDex.Fenix
 
   const token0 = useToken0()
