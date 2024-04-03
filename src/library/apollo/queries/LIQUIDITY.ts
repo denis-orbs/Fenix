@@ -76,3 +76,32 @@ export const GET_V3_ALGEBRA_DATA = gql`
     }
   }
 `
+export const GET_POSITIONV3_USER = gql`
+  query GetPositionV3User($owner: String!) {
+    positions(where: { owner: $owner }) {
+      id
+      liquidity
+      owner
+      depositedToken0
+      depositedToken1
+      tickLower {
+        price0
+        price1
+      }
+      tickUpper {
+        price0
+        price1
+      }
+      token0 {
+        symbol
+        decimals
+        id
+      }
+      token1 {
+        symbol
+        id
+        decimals
+      }
+    }
+  }
+`

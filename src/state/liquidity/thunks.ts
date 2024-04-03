@@ -101,7 +101,6 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
         .withDecimalPrecision(18)
 
       const matchedPair = availablePairsV2Subgraph.find((t) => t.id.toLowerCase() === pair.pair_address.toLowerCase())
-      console.log(matchedPair?.volumeToken0, 'hellllloooooo')
 
       pairs[pair.pair_address] = {
         pairAddress: pair.pair_address,
@@ -127,6 +126,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
       }
     }
   })
+
   availablePairsV3.forEach((pair) => {
     const tokenA = pair.token0.id
     const tokenB = pair.token1.id
@@ -153,28 +153,41 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
       let maxAPR = 0.0
       let tvl = new BigDecimal(0n, 18)
       // Calculating emissions APR
-      tvl = new BigDecimal(BigInt(pair.totalValueLockedToken0), Number(pair.token0.decimals))
+      tvl = new BigDecimal(BigInt(Number(pair.totalValueLockedToken0).toFixed(0)), Number(pair.token0.decimals))
         .mulNumber(tokenAprice)
-        .add(new BigDecimal(BigInt(pair.totalValueLockedToken1), Number(pair.token1.decimals)).mulNumber(tokenBprice))
+        .add(
+          new BigDecimal(
+            BigInt(Number(pair.totalValueLockedToken1).toFixed(0)),
+            Number(pair.token1.decimals)
+          ).mulNumber(tokenBprice)
+        )
         .withDecimalPrecision(18)
+
       apr = (Number(pair.feesUSD) / Number(tvl) === 0 ? 1 : Number(tvl)) * 100
       maxAPR = apr * 2
+
       // if (BLACKLISTED.includes(tokenA.symbol) || BLACKLISTED.includes(tokenB.symbol)) {
       //   apr = 0.0
       //   maxAPR = 0.0
       // }
 
-      let totalPoolAmountValue = new BigDecimal(BigInt(pair.totalValueLockedToken0), Number(pair.token0.decimals))
+      let totalPoolAmountValue = new BigDecimal(
+        BigInt(Number(pair.totalValueLockedToken0).toFixed(0)),
+        Number(pair.token0.decimals)
+      )
         .mulNumber(tokenAprice || 0)
         .add(
-          new BigDecimal(BigInt(pair.totalValueLockedToken1), Number(pair.token1.decimals)).mulNumber(tokenBprice || 0)
+          new BigDecimal(
+            BigInt(Number(pair.totalValueLockedToken1).toFixed(0)),
+            Number(pair.token1.decimals)
+          ).mulNumber(tokenBprice || 0)
         )
         .withDecimalPrecision(18)
 
       let myPoolAmountValue = new BigDecimal(0n, 18).withDecimalPrecision(18)
 
       let myStackedAmountValueV2 = new BigDecimal(0n, 18).withDecimalPrecision(18)
-      console.log(pair, 'pair')
+
       pairs[pair.id] = {
         pairAddress: pair.id,
         pairSymbol: 'Concentrated pool',
@@ -200,6 +213,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
     }
   })
   const liqElements: LiquidityTableElement[] = Object.values(pairs)
+
   liqElements.sort((a, b) => {
     let pairInfoA = a.pairInformationV3 || a.pairInformationV2
     let pairInfoB = b.pairInformationV3 || b.pairInformationV2
@@ -220,6 +234,6 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
   })
 
   // setTotalUSDValue(_totalUSDValue)
-  console.log(liqElements, 'liqElements')
+
   return liqElements
 })

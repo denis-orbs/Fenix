@@ -241,7 +241,7 @@ const RowData = ({
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href="/liquidity/deposit"
+                href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable ? 'volatile' : 'stable'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
               >
                 <span className="icon-circles"></span>
                 Deposit

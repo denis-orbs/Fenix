@@ -2,12 +2,11 @@ import { DATA_ROW } from '@/src/components/Liquidity/data'
 
 export const PROPS_CLASSIC_LIQUIDITY = {
   titleHeader: 'In Wallet',
-  titleHeader2: 'Emissions',
+  titleHeader2: 'LP Balance',
   titleButton: 'claim',
   titleButton2: 'Manage',
   activePagination: false,
   activeRange: false,
-  filterData: DATA_ROW.filter((f) => f.type !== 'CONCENTRATED'),
   loading: false,
 }
 
@@ -18,7 +17,6 @@ export const PROPS_CONCENTRATED_LIQUIDITY = {
   titleButton2: 'Manage',
   activePagination: false,
   activeRange: true,
-  filterData: DATA_ROW.filter((f) => f.type === 'CONCENTRATED'),
   loading: false,
 }
 

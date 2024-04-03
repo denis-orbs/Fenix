@@ -3,13 +3,11 @@
 import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/src/components/UI'
 import MobileRow from './MobileRow'
+import { PoolData } from '@/src/state/liquidity/types'
+import { formatAmount, formatCurrency, fromWei } from '@/src/library/utils/numbers'
 
-type IRow = {
-  type: string
-  APR: string
-}
 interface RowDataProps {
-  row: IRow
+  row: PoolData
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string
@@ -25,14 +23,14 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
           <div className="flex items-center gap-2">
             <div className="flex items-center">
               <Image
-                src="/static/images/tokens/FNX.svg"
+                src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
                 alt="token"
                 className="rounded-full w-7 h-7"
                 width={20}
                 height={20}
               />
               <Image
-                src="/static/images/tokens/ETH.svg"
+                src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
                 alt="token"
                 className="-ml-4 rounded-full w-7 h-7"
                 width={20}
@@ -42,30 +40,26 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
             <div className="flex flex-col">
               <h5 className="text-sm text-white">FNX / ETH</h5>
               <div className="flex items-center gap-2">
-                {'VOLATILE' === row.type && (
-                  <span 
-                   className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
+                {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
+                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                     Volatile Pool{' '}
                   </span>
                 )}
-
-                {'CONCENTRATED' === row.type ? (
+                {row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
+                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
+                    Stable Pool
+                  </span>
+                )}
+                {row.pairDetails.pairSymbol === 'Concentrated pool' && (
                   <span
                     className="py-1 px-2  text-xs rounded-lg 
                     bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
                   >
                     Concentrated
                   </span>
-                ) : 'STABLE' === row.type ? (
-                  <span 
-                  className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400"
-                  >
-                    Stable Pool
-                  </span>
-                ) : null}
-
+                )}
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  0.3%
+                  {Number(row.pairDetails.fee) / 10000} %
                 </span>
                 <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
@@ -96,16 +90,16 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
           <div className="flex items-center  ">
             <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.APR}%
+              {row.pairDetails.apr} %
             </p>
           </div>
         </TableCell>
 
         <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$1,289.863.54</p>
+            <p className="mb-1 text-xs text-white">$ {formatCurrency(Number(row.pairDetails.tvl))}</p>
             <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-xs text-shark-100">
+              {/* <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
                   src="/static/images/tokens/FNX.svg"
                   alt="token"
@@ -124,6 +118,62 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                   height={20}
                 />
                 225.38
+              </p> */}
+            </div>
+          </div>
+        </TableCell>
+
+        <TableCell className="w-[15%]">
+          <div className="flex flex-col items-end justify-end w-full px-3">
+            <p className="mb-1 text-xs text-white">
+              ${' '}
+              {(
+                Number(
+                  fromWei(
+                    row.pairDetails.pairInformationV2?.account_token0_balance.toString(),
+                    row.pairDetails.pairInformationV2?.token0_decimals
+                  )
+                ) *
+                  row.pairDetails.priceA +
+                Number(
+                  fromWei(
+                    row.pairDetails.pairInformationV2?.account_token1_balance.toString(),
+                    row.pairDetails.pairInformationV2?.token1_decimals
+                  )
+                ) *
+                  row.pairDetails.priceB
+              ).toFixed(2)}
+            </p>
+            <div className="flex items-center gap-2">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
+                <Image
+                  src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
+                {Number(
+                  fromWei(
+                    row.pairDetails.pairInformationV2?.account_token0_balance.toString(),
+                    row.pairDetails.pairInformationV2?.token0_decimals
+                  )
+                ).toFixed(2)}
+              </p>
+              <p className="flex items-center gap-2 text-xs text-shark-100">
+                <Image
+                  src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
+                {Number(
+                  fromWei(
+                    row.pairDetails.pairInformationV2?.account_token1_balance.toString(),
+                    row.pairDetails.pairInformationV2?.token1_decimals
+                  )
+                ).toFixed(2)}
               </p>
             </div>
           </div>
@@ -131,56 +181,28 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
 
         <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$539.863.54</p>
+            <p className="mb-1 text-xs text-white">$ {row.pairDetails.myPoolAmountValue.toString()}</p>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
-                  src="/static/images/tokens/FNX.svg"
+                {/* <Image
+                  src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
-                744,621.46
+                /> */}
+                {fromWei(row.pairDetails.pairInformationV2?.account_lp_balance.toString(), 18)}
               </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
+              {/* <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
-                  src="/static/images/tokens/ETH.svg"
+                  src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 />
                 132.49
-              </p>
-            </div>
-          </div>
-        </TableCell>
-
-        <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$98.751.23</p>
-            <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
-                  src="/static/images/tokens/FNX.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                82,334.52
-              </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
-                  src="/static/images/tokens/ETH.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                132.49
-              </p>
+              </p> */}
             </div>
           </div>
         </TableCell>
