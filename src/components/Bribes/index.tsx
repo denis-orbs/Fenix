@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 'use client'
 
 import { useState } from 'react'
@@ -29,22 +30,12 @@ const Bribes = () => {
           </div>
 
           <div className="mb-3">
-            <ChoosePool
-              token={tokenSell}
-              setToken={setTokenSell}
-              value={poolValue}
-              setValue={setPoolValue}
-            />
+            <ChoosePool token={tokenSell} setToken={setTokenSell} value={poolValue} setValue={setPoolValue} />
             <Separator single />
             <RewardToken token={tokenGet} setToken={setTokenGet} />
           </div>
           <div className="mb-3">
-            <Total
-              token={tokenSell}
-              setToken={setTokenSell}
-              value={poolValue}
-              setValue={setPoolValue}
-            />
+            <Total token={tokenSell} setToken={setTokenSell} value={poolValue} setValue={setPoolValue} />
           </div>
           <div className="mb-3">
             <RewardSummary />
@@ -64,7 +55,13 @@ const Bribes = () => {
             <h1 className="text-white text-lg mb-5">How it works</h1>
           </div>
           {STEPS.map((exchange, index) => (
-            <InfoBox hasDecorator={STEPS.length === index + 1 ? false : true} bgBox="exchange-box-info" key={index} data={exchange} textColor={'text-shark-100'} />
+            <InfoBox
+              hasDecorator={STEPS.length === index + 1 ? false : true}
+              bgBox="exchange-box-info"
+              key={index}
+              data={exchange}
+              textColor={'text-shark-100'}
+            />
           ))}
           <Link target="_blank" href="https://discord.com/invite/fenixfi" className="mt-16 cursor-pointer">
             <p className="flex gap-2 justify-center text-shark-100">
