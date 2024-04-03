@@ -1,21 +1,38 @@
 'use client'
 
-import { use, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button, Switch } from '@/src/components/UI'
 import Classic from '@/src/components/Liquidity/Deposit/Panel/Classic'
 import Automatic from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic'
 import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual'
-import { IToken } from '@/src/library/types'
+import { IToken, Address } from '@/src/library/types'
 import { useGammaCreatePosition } from '@/src/library/hooks/web3/useGamma'
+import { isAddress } from 'viem'
 
 const Panel = () => {
   const [depositType, setDepositType] = useState<
     'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
-  >('VOLATILE')
+  >('CONCENTRATED_AUTOMATIC')
 
-  const [tokenSwap, setTokenSwap] = useState<IToken>({ name: 'Fenix', symbol: 'FNX' })
-  const [tokenFor, setTokenFor] = useState<IToken>({ name: 'ethereum', symbol: 'ETH' })
+  const [tokenSwap, setTokenSwap] = useState<IToken>({
+    name: 'Fenix',
+    symbol: 'FNX',
+    id: 0,
+    decimals: 18,
+    address: '0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9' as Address,
+    img: '/static/images/tokens/FNX.svg',
+  } as IToken)
+  const [tokenFor, setTokenFor] = useState<IToken>({
+    name: 'Ethereum',
+    symbol: 'ETH',
+    id: 1,
+    decimals: 18,
+    address: '0x4200000000000000000000000000000000000023' as Address,
+    img: '/static/images/tokens/WETH.svg',
+  } as IToken)
+  const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
+  const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
 
   const handlerSwitch = () =>
     setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
@@ -27,6 +44,56 @@ const Panel = () => {
       createGammaPosition()
     }
   }
+  useEffect(() => {
+    const hash = window.location.hash
+    const hashValue = hash.substring(1)
+    const pairString = hashValue.split('-')
+    if (pairString.length < 1) return
+
+    if (pairString[0] == 'auto') setDepositType('CONCENTRATED_AUTOMATIC')
+    if (pairString[0] == 'manual') setDepositType('CONCENTRATED_MANUAL')
+    if (pairString[0] == 'stable') setDepositType('STABLE')
+    if (pairString[0] == 'volatile') setDepositType('VOLATILE')
+
+    if (!isAddress(pairString[1]) || !isAddress(pairString[2])) return
+    setDefaultPairs([pairString[1], pairString[2]])
+  }, [])
+
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
+          method: 'GET',
+        })
+        const responseData = await response.json()
+        const parsedData = responseData.map((item: any) => {
+          return {
+            id: 0,
+            name: item.basetoken.name,
+            symbol: item.basetoken.symbol,
+            address: item.basetoken.address,
+            decimals: 18,
+            img: item.logourl,
+            isCommon: item.common,
+            price: parseFloat(item.priceUSD),
+          }
+        })
+
+        const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken]
+        if (defaultPairs.length > 0) {
+          parsedData.map((item: any) => {
+            if (item.address == defaultPairs[0]) newDefaultPairsTokens[0] = item
+            if (item.address == defaultPairs[1]) newDefaultPairsTokens[1] = item
+          })
+          setDefaultPairs([])
+        }
+        setDefaultPairsTokens(newDefaultPairsTokens)
+      } catch (error) {}
+    }
+
+    defaultPairs.length > 0 ? getList() : {}
+  }, [defaultPairs])
+
   return (
     <section className="box-panel-trade">
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
@@ -83,11 +150,16 @@ const Panel = () => {
           </div>
 
           {(depositType === 'VOLATILE' || depositType === 'STABLE') && (
-            <Classic depositType={depositType} tokenSwap={tokenSwap} tokenFor={tokenFor} />
+            <Classic
+              depositType={depositType}
+              tokenSwap={tokenSwap}
+              tokenFor={tokenFor}
+              defaultPairs={defaultPairsTokens}
+            />
           )}
 
           {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
-          {depositType === 'CONCENTRATED_MANUAL' && <Manual />}
+          {depositType === 'CONCENTRATED_MANUAL' && <Manual defaultPairs={defaultPairsTokens} />}
 
           <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={createPosition}>
             Create Position
