@@ -5,8 +5,10 @@ export interface IToken {
   id?: number
   name: string
   symbol: string
-  address?: Address
-  decimals?: number
+  address: Address
+  decimals: number
+  img: string
+  price: number
 }
 export interface IOption {
   label: string

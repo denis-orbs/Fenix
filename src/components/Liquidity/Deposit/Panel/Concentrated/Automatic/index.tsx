@@ -4,6 +4,7 @@ import PairSelector from '@/src/components/Liquidity/Common/PairSelector'
 import CLMProviderSelector from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/CLMProviderSelector'
 import DepositAmountsICHI from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsICHI'
 import DepositAmountsGAMMA from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsGAMMA'
+import { Button } from '@/src/components/UI'
 
 const providers = [
   {
@@ -52,6 +53,10 @@ const Automatic = () => {
 
       {currentProvider === '1' && <DepositAmountsICHI token={firstToken} />}
       {currentProvider === '2' && <DepositAmountsGAMMA firstToken={firstToken} secondToken={secondToken} />}
+      
+      <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
+        Create Position
+      </Button>
     </>
   )
 }

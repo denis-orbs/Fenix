@@ -1,15 +1,11 @@
 import { TableHead, TableBody, TableSkeleton, Pagination, PaginationMobile } from '@/src/components/UI'
 import { Fragment } from 'react'
 import Row from './Row'
-
-type filterData = {
-  type: string
-  APR: string
-}
+import { PoolData } from '@/src/state/liquidity/types'
 
 interface HeaderRowProps {
   loading: boolean
-  filterData: filterData[]
+  poolData: PoolData[]
   activePagination?: boolean
   titleHeader?: string
   titleHeader2?: string
@@ -19,7 +15,7 @@ interface HeaderRowProps {
 }
 
 const HeaderRow = ({
-  filterData,
+  poolData,
   loading,
   activePagination = true,
   titleHeader = '',
@@ -27,20 +23,21 @@ const HeaderRow = ({
   titleButton2 = '',
   titleHeader2 = '',
   activeRange = false,
-  
 }: HeaderRowProps) => {
-  const RANGE = activeRange ?
-    { text: 'Range', className: 'w-[12%] text-center', sortable: true }
-   :  { text: '', className: 'w-[0%]', sortable: true }
+  const RANGE = activeRange
+    ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
+    : { text: '', className: 'w-[0%]', sortable: true }
+
+  // console.log(poolData, 'polldata')
   return (
     <div className="relative">
       <div className="w-full mb-2.5 xl:mb-5">
         <div className="hidden 2xl:block">
           <TableHead
             items={[
-              { text: 'Pair', className: `${activeRange ? 'w-[20%]' : 'w-[30%]' }`, sortable: true },
-                RANGE,
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]' } text-center` , sortable: true },
+              { text: 'Pair', className: `${activeRange ? 'w-[20%]' : 'w-[30%]'}`, sortable: true },
+              RANGE,
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-center`, sortable: true },
               { text: 'TVL', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
@@ -61,12 +58,12 @@ const HeaderRow = ({
         <TableBody>
           {loading ? (
             <>
-              {Array.from({ length: filterData.length }).map((_, index) => (
+              {Array.from({ length: 5 }).map((_, index) => (
                 <TableSkeleton key={index} />
               ))}
             </>
           ) : (
-            filterData.map((row, index) => (
+            poolData.map((row, index) => (
               <Fragment key={index}>
                 <Row
                   row={row}
