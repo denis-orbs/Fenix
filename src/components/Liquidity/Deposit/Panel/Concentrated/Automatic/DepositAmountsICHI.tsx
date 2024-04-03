@@ -259,7 +259,7 @@ const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string }
         onClick={createPosition}
         className="w-full mt-3 bg-shark-500 hover:bg-shark-600 text-white text-sm font-semibold"
       >
-        Deposit. Pending to move the btn
+        Deposit.
       </Button>
     </div>
   )
