@@ -44,8 +44,8 @@ const Overlay = () => {
       const addresses = poolAddresses.filter((_, index) => !undefinedIndices.includes(index))
 
       setloading(true)
-      console.log(Number(lock?.veNFTInfo.id!), weights, addresses, 'cast vote')
-      const hash = await castVotes(Number(lock?.veNFTInfo.id!), addresses, weights)
+      // console.log(Number(lock?.veNFTInfo.id), weights, addresses, 'cast vote')
+      const hash = await castVotes(Number(lock?.veNFTInfo.id), addresses, weights)
       const transactionReceipt = await waitForTransactionReceipt(config, { hash: hash, confirmations: 1 })
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))
