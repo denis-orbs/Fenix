@@ -67,7 +67,7 @@ const Overlay = () => {
       // Filter both arrays based on undefinedIndices
 
       setloading(true)
-      const hash = await resetVotes(Number(lock?.veNFTInfo.id!))
+      const hash = await resetVotes(Number(lock?.veNFTInfo.id))
       const transactionReceipt = await waitForTransactionReceipt(config, { hash: hash, confirmations: 1 })
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))
