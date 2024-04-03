@@ -1,90 +1,82 @@
 'use client'
 
-import { useState } from 'react'
+import Image from 'next/image'
 
-import { Button, Switch } from '@/src/components/UI'
-import Classic from '@/src/components/Liquidity/Deposit/Panel/Classic'
-import Automatic from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic'
-import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual'
-import { IToken } from '@/src/library/types'
+import { Button } from '@/src/components/UI'
+import TopCurrentPosition from '@/src/components/Liquidity/MyPositions/Panel/TopCurrentPosition'
+import Liquidity from '@/src/components/Liquidity/MyPositions/Panel/Liquidity'
+import UnclaimedFees from '@/src/components/Liquidity/MyPositions/Panel/UnclaimedFees'
 
 const Panel = () => {
-  const [depositType, setDepositType] = useState<
-    'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
-  >('VOLATILE')
 
-  // const [tokenSwap, setTokenSwap] = useState<IToken>({ name: 'Fenix', symbol: 'FNX' })
-  // const [tokenFor, setTokenFor] = useState<IToken>({ name: 'ethereum', symbol: 'ETH' })
-
-  const handlerSwitch = () =>
-    setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
-
-  const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
   return (
     <section className="box-panel-trade">
       <div className="relative z-10 flex flex-col items-center justify-between w-full gap-12 xl:flex-row">
         <div className="relative w-full">
-          <div className="flex items-center justify-between mb-[25px] font-semibold">
-            <h4 className="text-lg font-medium text-white md:text-xl">Manage Position</h4>
-            <div className="flex items-center gap-[13px]">
-              <div className="flex items-center gap-[9px] h-10">
-                <Switch active={activeSwitch} setActive={handlerSwitch} />
-                <span className="text-xs leading-normal text-shark-100">Concentrated</span>
+          <div className="flex items-center justify-between mb-5 font-semibold">
+            <h4 className="text-lg font-medium text-white md:text-xl">My Manage Position</h4>
+          </div>
+          <p className="text-xs text-white mb-3">Current Position</p>
+
+          <TopCurrentPosition />
+          <Liquidity />
+          <UnclaimedFees />
+
+          <div className="flex items-center gap-3 mb-5 bg-shark-400 bg-opacity-40 p-3 rounded-lg">
+            <Button className="w-full mx-auto !py-3" variant="secondary">
+              Increase Liquidity
+            </Button>
+            <Button className="w-full mx-auto !py-3" variant="secondary">
+              Remove Liquidity
+            </Button>
+          </div>
+
+          <div className="relative mb-5">
+            <p className="text-xs text-white mb-3">Price range</p>
+            <div className="bg-shark-400 bg-opacity-40 p-5 rounded-lg">
+              <div className="flex w-full gap-5 items-center mb-3">
+                <div className="flex flex-col w-full">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-white mb-3">Min Price</p>
+                    <p className="text-xs text-shark-100 mb-3">FNX per ETH</p>
+                  </div>
+                  <div className="w-full">
+                    <input
+                      type="text"
+                      placeholder="0"
+                      className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col w-full">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-white mb-3">Max Price</p>
+                    <p className="text-xs text-shark-100 mb-3">FNX per ETH</p>
+                  </div>
+                  <div className="w-full">
+                    <input
+                      type="text"
+                      placeholder="0"
+                      className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
-                <span className="text-white icon-cog"></span>
+              <div className="flex flex-col">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-white mb-3">Current price</p>
+                  <p className="text-xs text-shark-100 mb-3">FNX per ETH</p>
+                </div>
+                <div className="w-full">
+                  <input
+                    type="text"
+                    placeholder="0"
+                    className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+                  />
+                </div>
               </div>
             </div>
           </div>
-
-          <div className="bg-shark-400 bg-opacity-40 p-[13px] md:py-[11px] md:px-[19px] flex gap-1.5 md:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5">
-            {depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL' ? (
-              <>
-                <Button
-                  className="w-full h-[38px] mx-auto !text-xs"
-                  variant={depositType === 'CONCENTRATED_AUTOMATIC' ? 'primary' : 'secondary'}
-                  onClick={() => setDepositType('CONCENTRATED_AUTOMATIC')}
-                >
-                  Automatic
-                </Button>
-                <Button
-                  className="w-full h-[38px] mx-auto !text-xs"
-                  variant={depositType === 'CONCENTRATED_MANUAL' ? 'primary' : 'secondary'}
-                  onClick={() => setDepositType('CONCENTRATED_MANUAL')}
-                >
-                  Manual
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  className="w-full h-[38px] mx-auto !text-xs"
-                  variant={depositType === 'STABLE' ? 'primary' : 'secondary'}
-                  onClick={() => setDepositType('STABLE')}
-                >
-                  Stable
-                </Button>
-                <Button
-                  className="w-full h-[38px] mx-auto !text-xs"
-                  variant={depositType === 'VOLATILE' ? 'primary' : 'secondary'}
-                  onClick={() => setDepositType('VOLATILE')}
-                >
-                  Volatile
-                </Button>
-              </>
-            )}
-          </div>
-
-          {(depositType === 'VOLATILE' || depositType === 'STABLE') && (
-            <Classic depositType={depositType} tokenSwap={tokenSwap} tokenFor={tokenFor} />
-          )}
-
-          {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
-          {depositType === 'CONCENTRATED_MANUAL' && <Manual />}
-
-          <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
-            Create Position
-          </Button>
         </div>
       </div>
     </section>
