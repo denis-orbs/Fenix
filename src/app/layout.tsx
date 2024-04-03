@@ -46,7 +46,7 @@ const { wallets } = getDefaultWallets()
 export const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
-  chains: [polygonFork, blast, blastSepolia],
+  chains: [polygonFork, polygon, blast, blastSepolia],
   wallets: [
     ...wallets,
     {

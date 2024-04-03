@@ -1,9 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import PairSelector from '@/src/components/Liquidity/Common/PairSelector'
 import CLMProviderSelector from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/CLMProviderSelector'
 import DepositAmountsICHI from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsICHI'
 import DepositAmountsGAMMA from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsGAMMA'
+import {
+  useSetToken0,
+  useSetToken1,
+  useToken0,
+  useToken0Data,
+  useToken1,
+  useToken1Data,
+} from '@/src/state/liquidity/hooks'
+import { tokenList } from '@/src/library/constants/tokenList'
 
 const providers = [
   {
@@ -34,14 +43,23 @@ const Automatic = () => {
   const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX' })
   const [secondToken, setSecondToken] = useState({ name: 'ethereum', symbol: 'ETH' })
   const [currentProvider, setCurrentProvider] = useState<string>('1')
-
+  const token0 = useToken0()
+  const token1 = useToken1()
+  const setToken0 = useSetToken0()
+  const setToken1 = useSetToken1()
+  const token0Data = useToken0Data()
+  const token1Data = useToken1Data()
+  useEffect(() => {
+    setToken0(tokenList[0].address)
+    setToken1(tokenList[1].address)
+  }, [])
   return (
     <>
       <PairSelector
-        firstToken={firstToken}
-        secondToken={secondToken}
-        setFirstToken={(token) => setFirstToken(token)}
-        setSecondToken={(token) => setSecondToken(token)}
+        firstToken={token0Data}
+        secondToken={token1Data}
+        setFirstToken={(token) => setToken0(token.address)}
+        setSecondToken={(token) => setToken1(token.address)}
       />
 
       <CLMProviderSelector
@@ -50,7 +68,7 @@ const Automatic = () => {
         setCurrentProvider={setCurrentProvider}
       />
 
-      {currentProvider === '1' && <DepositAmountsICHI token={firstToken} />}
+      {currentProvider === '1' && <DepositAmountsICHI token={token0Data} />}
       {currentProvider === '2' && <DepositAmountsGAMMA firstToken={firstToken} secondToken={secondToken} />}
     </>
   )

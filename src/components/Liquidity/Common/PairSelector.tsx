@@ -5,6 +5,7 @@ import { useState } from 'react'
 import SelectToken from '@/src/components/Modals/SelectToken'
 
 import { IToken } from '@/src/library/types'
+import { useSetToken0, useSetToken1 } from '@/src/state/liquidity/hooks'
 
 interface PairSelectorProps {
   firstToken: IToken
@@ -16,7 +17,8 @@ interface PairSelectorProps {
 const PairSelector = ({ firstToken, setFirstToken, secondToken, setSecondToken }: PairSelectorProps) => {
   const [openSelectFirstToken, setOpenSelectFirstToken] = useState<boolean>(false)
   const [openSelectSecondToken, setOpenSelectSecondToken] = useState<boolean>(false)
-
+  const setToken0 = useSetToken0()
+  const setToken1 = useSetToken1()
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[15px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="mb-2 text-xs leading-normal text-white">Select a Pair</div>
@@ -44,8 +46,10 @@ const PairSelector = ({ firstToken, setFirstToken, secondToken, setSecondToken }
             className="flex items-center justify-center"
             onClick={() => {
               const temp = firstToken
-              setFirstToken(secondToken)
-              setSecondToken(temp)
+              setToken0(secondToken.address)
+              setToken1(firstToken.address)
+              // setFirstToken(secondToken)
+              // setSecondToken(temp)
             }}
           >
             <span className="text-2xl text-transparent icon-swap bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
