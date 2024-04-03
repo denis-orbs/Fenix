@@ -50,7 +50,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
   console.log(availablePairsV2, availablePairsV3, 'liqElements', 'liqElements')
   if (!availablePairsV2 && !availableTokenData) return []
 
-  let pairs: { [pair: Address]: LiquidityTableElement } = {}
+  const pairs: { [pair: Address]: LiquidityTableElement } = {}
   availablePairsV2.forEach((pair) => {
     // console.log(pair)
     const tokenA = pair.token0

@@ -1,3 +1,4 @@
+//@ts-ignore
 //@ts-nocheck
 import { BACKEND_URL } from '../Constants'
 import { AvailableTokenData, TokenData } from '../structures/common/TokenData'
