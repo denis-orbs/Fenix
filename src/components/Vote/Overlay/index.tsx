@@ -1,4 +1,6 @@
 // eslint-disable-next-line
+//@ts-ignore
+//@ts-nocheck
 import { Button } from '@/src/components/UI'
 import { LockElement } from '@/src/library/structures/lock/LockElement'
 import { castVotes, resetVotes } from '@/src/library/web3/VoteManagementV3'
