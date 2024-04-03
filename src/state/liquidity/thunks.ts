@@ -10,7 +10,6 @@ import { getAllPairsForUser } from '@/src/library/web3/apis/PairAPIV3'
 import { AddressZero } from '@/src/library/constants/misc'
 import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
 import { fetchPoolData, fetchv2PoolData } from './reducer'
-require('dotenv').config
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async (address: Address) => {
   try {
@@ -90,17 +89,17 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
       }
 
       // console.log(apr, pair, 'liqElements')
-      let totalPoolAmountValue = new BigDecimal(pair.reserve0, pair.token0_decimals)
+      const totalPoolAmountValue = new BigDecimal(pair.reserve0, pair.token0_decimals)
         .mulNumber(tokenAprice || 0)
         .add(new BigDecimal(pair.reserve1, pair.token1_decimals).mulNumber(tokenBprice || 0))
         .withDecimalPrecision(18)
 
-      let myPoolAmountValue = new BigDecimal(pair.account_lp_balance, 18)
+      const myPoolAmountValue = new BigDecimal(pair.account_lp_balance, 18)
         .mul(totalPoolAmountValue)
         .div(new BigDecimal(pair.total_supply, 18))
         .withDecimalPrecision(18)
 
-      let myStackedAmountValueV2 = new BigDecimal(pair.account_gauge_balance, 18)
+      const myStackedAmountValueV2 = new BigDecimal(pair.account_gauge_balance, 18)
         .mul(totalPoolAmountValue)
         .div(new BigDecimal(pair.total_supply, 18))
         .withDecimalPrecision(18)
@@ -176,7 +175,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
       //   maxAPR = 0.0
       // }
 
-      let totalPoolAmountValue = new BigDecimal(
+      const totalPoolAmountValue = new BigDecimal(
         BigInt(Number(pair.totalValueLockedToken0).toFixed(0)),
         Number(pair.token0.decimals)
       )
@@ -189,9 +188,9 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
         )
         .withDecimalPrecision(18)
 
-      let myPoolAmountValue = new BigDecimal(0n, 18).withDecimalPrecision(18)
+      const myPoolAmountValue = new BigDecimal(0n, 18).withDecimalPrecision(18)
 
-      let myStackedAmountValueV2 = new BigDecimal(0n, 18).withDecimalPrecision(18)
+      const myStackedAmountValueV2 = new BigDecimal(0n, 18).withDecimalPrecision(18)
 
       pairs[pair.id!] = {
         pairAddress: pair.id,
@@ -221,8 +220,8 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
   const liqElements: LiquidityTableElement[] = Object.values(pairs)
 
   liqElements.sort((a, b) => {
-    let pairInfoA = a.pairInformationV3 || a.pairInformationV2
-    let pairInfoB = b.pairInformationV3 || b.pairInformationV2
+    const pairInfoA = a.pairInformationV3 || a.pairInformationV2
+    const pairInfoB = b.pairInformationV3 || b.pairInformationV2
     if (!pairInfoA || !pairInfoB) return -1
     if (a.totalPoolAmountValue.lt(b.totalPoolAmountValue)) {
       return 1
@@ -233,7 +232,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
 
   let _totalUSDValue = new BigDecimal(0n, 18)
   Object.values(pairs).forEach((e) => {
-    let pairInfoA = e.pairInformationV3 || e.pairInformationV2
+    const pairInfoA = e.pairInformationV3 || e.pairInformationV2
     if (e.priceA && e.priceB && pairInfoA) {
       _totalUSDValue = _totalUSDValue.add(e.totalPoolAmountValue)
     }

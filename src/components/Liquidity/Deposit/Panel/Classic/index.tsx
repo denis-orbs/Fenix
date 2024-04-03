@@ -4,7 +4,12 @@ import { useEffect, useState } from 'react'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import ExchangeBox from '@/src/components/Liquidity/Common/ExchangeBox'
 import SelectToken from '@/src/components/Modals/SelectToken'
-import { getLiquidityRemoveQuote, getPair, getTokenAllowance, getTokenReserve } from '@/src/library/hooks/liquidity/useClassic'
+import {
+  getLiquidityRemoveQuote,
+  getPair,
+  getTokenAllowance,
+  getTokenReserve,
+} from '@/src/library/hooks/liquidity/useClassic'
 import { Address, isAddress } from 'viem'
 import { IToken } from '@/src/library/types'
 import Separator from '@/src/components/Trade/Common/Separator'
@@ -18,19 +23,33 @@ import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 
 const Classic = ({
   depositType,
-  defaultPairs
+  defaultPairs,
 }: {
   depositType: 'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
   tokenSwap: { name: string; symbol: string }
   tokenFor: { name: string; symbol: string }
   defaultPairs: IToken[]
 }) => {
-  const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934';
+  const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934'
 
-  const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX', id: 0, decimals: 18, address: "0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9" as Address, img: "/static/images/tokens/FNX.svg" } as IToken)
-  const [firstValue, setFirstValue] = useState("")
-  const [secondToken, setSecondToken] = useState({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4200000000000000000000000000000000000023" as Address, img: "/static/images/tokens/WETH.svg" } as IToken)
-  const [secondValue, setSecondValue] = useState("")
+  const [firstToken, setFirstToken] = useState({
+    name: 'Fenix',
+    symbol: 'FNX',
+    id: 0,
+    decimals: 18,
+    address: '0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9' as Address,
+    img: '/static/images/tokens/FNX.svg',
+  } as IToken)
+  const [firstValue, setFirstValue] = useState('')
+  const [secondToken, setSecondToken] = useState({
+    name: 'Ethereum',
+    symbol: 'ETH',
+    id: 1,
+    decimals: 18,
+    address: '0x4200000000000000000000000000000000000023' as Address,
+    img: '/static/images/tokens/WETH.svg',
+  } as IToken)
+  const [secondValue, setSecondValue] = useState('')
   const [firstReserve, setFirstReserve] = useState(0)
   const [secondReserve, setSecondReserve] = useState(0)
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
@@ -38,7 +57,7 @@ const Classic = ({
   const [lpValue, setLpValue] = useState(0)
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
   const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
-  const [pairAddress, setPairAddress] = useState("0x0000000000000000000000000000000000000000")
+  const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
   const [shouldApprovePair, setShouldApprovePair] = useState(true)
 
   const account = useAccount()
@@ -46,67 +65,100 @@ const Classic = ({
 
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
-    setFirstValue("");
-    setSecondValue("");
+    setFirstValue('')
+    setSecondValue('')
   }
 
   useEffect(() => {
-    if(defaultPairs.length == 2) {
+    if (defaultPairs.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
     }
   }, [defaultPairs])
 
-  useEffect(()=> {
+  useEffect(() => {
     const asyncGetReserve = async () => {
-        const reserve: any = await getTokenReserve(firstToken.address as Address, secondToken.address as Address, depositType === 'STABLE')
+      const reserve: any = await getTokenReserve(
+        firstToken.address as Address,
+        secondToken.address as Address,
+        depositType === 'STABLE'
+      )
 
-        if(reserve[0] == 0 || reserve[1] == 0) {
-          setFirstReserve(1)
-          setSecondReserve(1)
-        } else {
-          setFirstReserve(reserve[0])
-          setSecondReserve(reserve[1])
-        }
+      if (reserve[0] == 0 || reserve[1] == 0) {
+        setFirstReserve(1)
+        setSecondReserve(1)
+      } else {
+        setFirstReserve(reserve[0])
+        setSecondReserve(reserve[1])
+      }
     }
 
     const asyncGetPair = async () => {
-      const pair: any = await getPair(firstToken.address as Address, secondToken.address as Address, depositType === 'STABLE')
+      const pair: any = await getPair(
+        firstToken.address as Address,
+        secondToken.address as Address,
+        depositType === 'STABLE'
+      )
 
-      if(pair != "0x0") setPairAddress(pair)
-      else setPairAddress("0x0000000000000000000000000000000000000000")
-
+      if (pair != '0x0') setPairAddress(pair)
+      else setPairAddress('0x0000000000000000000000000000000000000000')
     }
 
     asyncGetReserve()
     asyncGetPair()
   }, [firstToken, secondToken, depositType])
 
-  useEffect(()=> {
+  useEffect(() => {
     const asyncGetAllowance = async () => {
-        const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
-        const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
-        const allowanceLp: any = pairAddress != "0x0000000000000000000000000000000000000000" ? await getTokenAllowance(pairAddress as Address, account.address as Address, contractAddressList.v2router as Address) : {}
+      const allowanceFirst: any = await getTokenAllowance(
+        firstToken.address as Address,
+        account.address as Address,
+        contractAddressList.v2router as Address
+      )
+      const allowanceSecond: any = await getTokenAllowance(
+        secondToken.address as Address,
+        account.address as Address,
+        contractAddressList.v2router as Address
+      )
+      const allowanceLp: any =
+        pairAddress != '0x0000000000000000000000000000000000000000'
+          ? await getTokenAllowance(
+              pairAddress as Address,
+              account.address as Address,
+              contractAddressList.v2router as Address
+            )
+          : {}
 
-        setShouldApproveFirst(allowanceFirst == "0")
-        setShouldApproveSecond(allowanceSecond == "0")
-        setShouldApprovePair(allowanceLp == "0")
+      setShouldApproveFirst(allowanceFirst == '0')
+      setShouldApproveSecond(allowanceSecond == '0')
+      setShouldApprovePair(allowanceLp == '0')
     }
 
-    asyncGetAllowance();
+    asyncGetAllowance()
   }, [firstToken, secondToken, account.address, pairAddress])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
-    
-    if(optionActive == "ADD") {
+    if (optionActive == 'ADD') {
       // TODO: handle if pair is not created
-      if(firstToken.address === token.address) {
-        if(parseFloat(input) != 0) setSecondValue((parseFloat(input) * Number(secondReserve === 0 ? 1 : secondReserve) / Number(firstReserve === 0 ? 1 : firstReserve)).toString())
-        if(parseFloat(input) == 0) setSecondValue("")
+      if (firstToken.address === token.address) {
+        if (parseFloat(input) != 0)
+          setSecondValue(
+            (
+              (parseFloat(input) * Number(secondReserve === 0 ? 1 : secondReserve)) /
+              Number(firstReserve === 0 ? 1 : firstReserve)
+            ).toString()
+          )
+        if (parseFloat(input) == 0) setSecondValue('')
         setFirstValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
       } else {
-        if(parseFloat(input) != 0) setFirstValue((parseFloat(input) * Number(firstReserve === 0 ? 1 : firstReserve) / Number(secondReserve === 0 ? 1 : secondReserve)).toString())
-        if(parseFloat(input) == 0) setFirstValue("")
+        if (parseFloat(input) != 0)
+          setFirstValue(
+            (
+              (parseFloat(input) * Number(firstReserve === 0 ? 1 : firstReserve)) /
+              Number(secondReserve === 0 ? 1 : secondReserve)
+            ).toString()
+          )
+        if (parseFloat(input) == 0) setFirstValue('')
         setSecondValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
       }
     }
@@ -114,122 +166,147 @@ const Classic = ({
 
   const handleOnLPTokenValueChange = (input: any, token: IToken) => {
     setLpValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
-  
-    if(optionActive == "WITHDRAW") {
+
+    if (optionActive == 'WITHDRAW') {
       const asyncGetWithdrawTokens = async () => {
-        const tokens: any = await getLiquidityRemoveQuote(input, firstToken.address as Address, secondToken.address as Address, depositType === 'STABLE')
-        setFirstValue((Number(tokens[0])/1e18).toString())
-        setSecondValue((Number(tokens[1])/1e18).toString())
+        const tokens: any = await getLiquidityRemoveQuote(
+          input,
+          firstToken.address as Address,
+          secondToken.address as Address,
+          depositType === 'STABLE'
+        )
+        setFirstValue((Number(tokens[0]) / 1e18).toString())
+        setSecondValue((Number(tokens[1]) / 1e18).toString())
       }
 
-      asyncGetWithdrawTokens();
+      asyncGetWithdrawTokens()
     }
   }
 
   const handleAddLiquidity = async () => {
     // TODO values check
-    await writeContractAsync({ 
-      abi: ROUTERV2_ABI,
-      address: contractAddressList.v2router as Address,
-      functionName: 'addLiquidity', 
-      // TODO: handle deadline and slippage
-      args: [
-        firstToken.address as Address, 
-        secondToken.address as Address, 
-        depositType === 'STABLE', 
-        ethers.parseUnits(firstValue.toString(), 'ether'), 
-        ethers.parseUnits(secondValue.toString(), 'ether'), 
-        0, 
-        0, 
-        account.address as Address, 
-        parseInt((+new Date()/1000).toString())+60*60
-      ], 
-    },
-    {
-      onSuccess: async (x) => {
-        console.log("success", x, +new Date())
-        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
-        if(transaction.status == "success") {
-          toast(`Added successfully.`);
-        } else {
-          toast(`Add LP TX failed, hash: ${transaction.transactionHash}`);
-        }
+    await writeContractAsync(
+      {
+        abi: ROUTERV2_ABI,
+        address: contractAddressList.v2router as Address,
+        functionName: 'addLiquidity',
+        // TODO: handle deadline and slippage
+        args: [
+          firstToken.address as Address,
+          secondToken.address as Address,
+          depositType === 'STABLE',
+          ethers.parseUnits(firstValue.toString(), 'ether'),
+          ethers.parseUnits(secondValue.toString(), 'ether'),
+          0,
+          0,
+          account.address as Address,
+          parseInt((+new Date() / 1000).toString()) + 60 * 60,
+        ],
       },
-      onError: (e) => {
-        toast(`Add LP failed. ${e}`);
-      },
-    })
+      {
+        onSuccess: async (x) => {
+          console.log('success', x, +new Date())
+          const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
+          if (transaction.status == 'success') {
+            toast(`Added successfully.`)
+          } else {
+            toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
+          }
+        },
+        onError: (e) => {
+          toast(`Add LP failed. ${e}`)
+        },
+      }
+    )
   }
 
   const handleRemoveLiquidity = async () => {
     // TODO values check
-    writeContractAsync({ 
-      abi: ROUTERV2_ABI,
-      address: contractAddressList.v2router as Address,
-      functionName: 'removeLiquidity', 
-      // TODO: handle deadline and slippage
-      args: [
-        firstToken.address as Address, 
-        secondToken.address as Address, 
-        depositType === 'STABLE', 
-        ethers.parseUnits(lpValue.toString(), 'ether'), 
-        0, 
-        0, 
-        account.address as Address, 
-        parseInt((+new Date()/1000).toString())+60*60
-      ], 
-    },
-    {
-      onSuccess: async (x) => {
-        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
-        if(transaction.status == "success") {
-          toast(`Removed successfully.`);
-        } else {
-          toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`);
-        }
+    writeContractAsync(
+      {
+        abi: ROUTERV2_ABI,
+        address: contractAddressList.v2router as Address,
+        functionName: 'removeLiquidity',
+        // TODO: handle deadline and slippage
+        args: [
+          firstToken.address as Address,
+          secondToken.address as Address,
+          depositType === 'STABLE',
+          ethers.parseUnits(lpValue.toString(), 'ether'),
+          0,
+          0,
+          account.address as Address,
+          parseInt((+new Date() / 1000).toString()) + 60 * 60,
+        ],
       },
-      onError: (e) => {
-        toast(`Remove LP failed. ${e}`);
-      },
-    })
+      {
+        onSuccess: async (x) => {
+          const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
+          if (transaction.status == 'success') {
+            toast(`Removed successfully.`)
+          } else {
+            toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
+          }
+        },
+        onError: (e) => {
+          toast(`Remove LP failed. ${e}`)
+        },
+      }
+    )
   }
 
   const handleApprove = async (token: Address) => {
-    writeContractAsync({ 
-      abi: ERC20_ABI,
-      address: token,
-      functionName: 'approve', 
-      args: [
-        contractAddressList.v2router,
-        maxUint256
-      ], 
-    },
-    {
-      onSuccess: async (x) => {
-        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
-        if(transaction.status == "success") {
-          toast(`Approved successfully`);
-        } else {
-          toast(`Approve TX failed, tx: ${transaction.transactionHash}`);
-        }
-
-        const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
-        const allowanceSecond: any = await getTokenAllowance(secondToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
-        const allowanceLp: any = pairAddress != "0x0000000000000000000000000000000000000000" ? await getTokenAllowance(pairAddress as Address, account.address as Address, contractAddressList.v2router as Address) : {}
-
-        setShouldApproveFirst(allowanceFirst == "0")
-        setShouldApproveSecond(allowanceSecond == "0")
-        setShouldApprovePair(allowanceLp == "0")
+    writeContractAsync(
+      {
+        abi: ERC20_ABI,
+        address: token,
+        functionName: 'approve',
+        args: [contractAddressList.v2router, maxUint256],
       },
-      onError: (e) => {
-        toast(`Approve failed. ${e}`);
-      },
-    })
+      {
+        onSuccess: async (x) => {
+          const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
+          if (transaction.status == 'success') {
+            toast(`Approved successfully`)
+          } else {
+            toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+          }
+
+          const allowanceFirst: any = await getTokenAllowance(
+            firstToken.address as Address,
+            account.address as Address,
+            contractAddressList.v2router as Address
+          )
+          const allowanceSecond: any = await getTokenAllowance(
+            secondToken.address as Address,
+            account.address as Address,
+            contractAddressList.v2router as Address
+          )
+          const allowanceLp: any =
+            pairAddress != '0x0000000000000000000000000000000000000000'
+              ? await getTokenAllowance(
+                  pairAddress as Address,
+                  account.address as Address,
+                  contractAddressList.v2router as Address
+                )
+              : {}
+
+          setShouldApproveFirst(allowanceFirst == '0')
+          setShouldApproveSecond(allowanceSecond == '0')
+          setShouldApprovePair(allowanceLp == '0')
+        },
+        onError: (e) => {
+          toast(`Approve failed. ${e}`)
+        },
+      }
+    )
   }
 
   return (
     <>
-      <div><Toaster position="top-center" reverseOrder={false}/></div>
+      <div>
+        <Toaster position="top-center" reverseOrder={false} />
+      </div>
       <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
         <div>
           <div className="flex items-center gap-2.5 mb-2.5">
@@ -250,7 +327,9 @@ const Classic = ({
               />
             </div>
             <div className="flex flex-col gap-px">
-              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">{firstToken.symbol} / {secondToken.symbol}</h5>
+              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">
+                {firstToken.symbol} / {secondToken.symbol}
+              </h5>
               <div className="flex items-center gap-[5px] max-md:flex-wrap">
                 {'VOLATILE' === depositType ? (
                   <Button variant="tertiary" className="!py-1 h-[28px] max-md:!text-xs flex-shrink-0">
@@ -288,24 +367,12 @@ const Classic = ({
             <div className="text-white">Liquidity</div>
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
-                <Image
-                  src={firstToken.img}
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                <span>{(Number(firstReserve)/1e18).toFixed(2)}</span>
+                <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
+                <span>{(Number(firstReserve) / 1e18).toFixed(2)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
-                <Image
-                  src={secondToken.img}
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                <span>{(Number(secondReserve)/1e18).toFixed(2)}</span>
+                <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
+                <span>{(Number(secondReserve) / 1e18).toFixed(2)}</span>
               </p>
             </div>
           </div>
@@ -344,7 +411,22 @@ const Classic = ({
               {
                 // TODO: handle LP tokens list
               }
-              <ExchangeBox value={lpValue} token={{ name: 'Fenix/Ether LP', symbol: `${firstToken.symbol}/${secondToken.symbol} LP`, id: 0, decimals: 18, address: pairAddress as Address, img: "/static/images/tokens/FNX.svg" } as IToken} onOpenModal={() => setOpenSelectToken(true)} variant="primary" onTokenValueChange={handleOnLPTokenValueChange} />
+              <ExchangeBox
+                value={lpValue}
+                token={
+                  {
+                    name: 'Fenix/Ether LP',
+                    symbol: `${firstToken.symbol}/${secondToken.symbol} LP`,
+                    id: 0,
+                    decimals: 18,
+                    address: pairAddress as Address,
+                    img: '/static/images/tokens/FNX.svg',
+                  } as IToken
+                }
+                onOpenModal={() => setOpenSelectToken(true)}
+                variant="primary"
+                onTokenValueChange={handleOnLPTokenValueChange}
+              />
 
               <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
             </div>
@@ -364,32 +446,30 @@ const Classic = ({
         />
       </div>
 
-      <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={
-        () => {
-          optionActive == 'ADD' ? 
-            shouldApproveFirst ? 
-              handleApprove(firstToken.address as Address)
-            : shouldApproveSecond ?
-              handleApprove(secondToken.address as Address)
-            : handleAddLiquidity()
-          : 
-            shouldApprovePair ? 
-              handleApprove(pairAddress as Address)
-            : handleRemoveLiquidity()
-        }
-      }>
-        {
-          optionActive == 'ADD' ? 
-            shouldApproveFirst ? 
-              `Approve ${firstToken.symbol}`
-            : shouldApproveSecond ?
-              `Approve ${secondToken.symbol}`
-            : `Add Liquidity`
-          : 
-            shouldApprovePair ? 
-              `Approve LP`
-            : `Remove Liquidity`
-        }
+      <Button
+        className="w-full mx-auto !text-xs !h-[49px]"
+        variant="tertiary"
+        onClick={() => {
+          optionActive == 'ADD'
+            ? shouldApproveFirst
+              ? handleApprove(firstToken.address as Address)
+              : shouldApproveSecond
+                ? handleApprove(secondToken.address as Address)
+                : handleAddLiquidity()
+            : shouldApprovePair
+              ? handleApprove(pairAddress as Address)
+              : handleRemoveLiquidity()
+        }}
+      >
+        {optionActive == 'ADD'
+          ? shouldApproveFirst
+            ? `Approve ${firstToken.symbol}`
+            : shouldApproveSecond
+              ? `Approve ${secondToken.symbol}`
+              : `Add Liquidity`
+          : shouldApprovePair
+            ? `Approve LP`
+            : `Remove Liquidity`}
       </Button>
     </>
   )
