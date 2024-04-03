@@ -156,14 +156,14 @@ export function updateParsedTokenValue(
 //   return result
 // }
 
-const createKeccakHash = require('keccak')
+import createKeccakHash from 'keccak'
 
 export function toChecksumAddress(address) {
   address = address.toLowerCase().replace('0x', '')
   const hash = createKeccakHash('keccak256').update(address).digest('hex')
   let ret = '0x'
 
-  for (var i = 0; i < address.length; i++) {
+  for (let i = 0; i < address.length; i++) {
     if (parseInt(hash[i], 16) >= 8) {
       ret += address[i].toUpperCase()
     } else {
