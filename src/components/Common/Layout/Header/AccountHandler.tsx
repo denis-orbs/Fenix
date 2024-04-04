@@ -40,8 +40,14 @@ const AccountHandler = () => {
       try {
         const response = await axios.get(`https://fenox-blastpoint-api.vercel.app/query/${address}`)
 
-        setData({ userLiqPoints: response.data.userLiqPoints, pendingSent: response.data.pendingSent })
-        console.log({ userLiqPoints: response.data.userLiqPoints, pendingSent: response.data.pendingSent })
+        setData({
+          userLiqPoints: response.data.userLiqPoints.reduce((a: number, b: number) => a + b, 0).toFixed(2),
+          pendingSent: response.data.pendingSent.reduce((a: number, b: number) => a + b, 0).toFixed(2),
+        })
+        console.log({
+          userLiqPoints: response.data.userLiqPoints.reduce((a: number, b: number) => a + b, 0),
+          pendingSent: response.data.pendingSent.reduce((a: number, b: number) => a + b, 0),
+        })
       } catch (error) {
         console.error('Error fetching data:', error)
         // Handle errors as needed
@@ -66,8 +72,7 @@ const AccountHandler = () => {
             className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden xl:flex"
           >
             <p className="text-xs text-white">
-              {data.userLiqPoints.reduce((a, b) => a + b, 0).toFixed(2)}{' '}
-              <span className="hidden xl:inline">Points</span>
+              {data.userLiqPoints} <span className="hidden xl:inline">Points</span>
             </p>
             <Image src="/static/images/tokens/BLAST.svg" className="w-8 h-8" alt="logo" width={30} height={30} />
           </div>
@@ -76,11 +81,11 @@ const AccountHandler = () => {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex flex-col justify-center items-center">
                   <p className="text-shark-100 text-xs mb-2">PTC Available</p>
-                  <p className="text-white text-sm">{data.userLiqPoints.reduce((a, b) => a + b, 0).toFixed(2)}</p>
+                  <p className="text-white text-sm">{data.userLiqPoints}</p>
                 </div>
                 <div className="flex flex-col justify-center items-center">
                   <p className="text-shark-100 text-xs mb-2">PTC Sent</p>
-                  <p className="text-white text-sm">{data.pendingSent.reduce((a, b) => a + b, 0).toFixed(2)}</p>
+                  <p className="text-white text-sm">{data.pendingSent}</p>
                 </div>
               </div>
               <div className="flex items-center justify-center flex-col">
