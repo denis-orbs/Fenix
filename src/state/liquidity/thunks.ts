@@ -47,7 +47,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
   const availableTokenData = await fetchTokens()
   const availablePairsV3 = await fetchPoolData()
   const availablePairsV2Subgraph = await fetchv2PoolData()
-  console.log(availablePairsV2, availablePairsV3, 'liqElements', 'liqElements')
+
   if (!availablePairsV2 && !availableTokenData) return []
 
   const pairs: { [pair: Address]: LiquidityTableElement } = {}

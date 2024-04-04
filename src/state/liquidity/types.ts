@@ -13,6 +13,7 @@ export interface LiquidityState {
   clmProvider: ClmProvider
   v2Pairs: {
     state: ApiState
+    tablestate: ApiState
     data: LiquidityV2PairDetails[]
     tableData?: LiquidityTableElement[]
   }

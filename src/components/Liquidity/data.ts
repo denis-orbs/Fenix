@@ -20,17 +20,17 @@ export const STEPS = [
 export const EXCHANGE_LIST = [
   {
     label: 'Total Value Locked',
-    description: '$92,837,327.32',
+    description: '$ 0',
     icon: 'icon-lock',
   },
   {
     label: 'Fees',
-    description: '$64,789,445.82',
+    description: '$ 0',
     icon: 'icon-pig',
   },
   {
     label: 'Volume',
-    description: '$48,680,765.44',
+    description: '$ 0',
     icon: 'icon-coins',
   },
 ]
@@ -75,7 +75,7 @@ export const DATA_ROW = [
   },
 ]
 
-export const OPTIONS_FILTER = ['Stable', 'Volatile', 'Concentrated', 'All Pools']
+export const OPTIONS_FILTER = ['All Pools', 'Stable', 'Volatile', 'Concentrated']
 
 export const NAV_LIST = [
   {

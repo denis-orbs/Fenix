@@ -11,7 +11,7 @@ const Swap = () => {
       {/* <div className="flex flex-col w-full"> */}
       {/* <div className="flex flex-wrap w-full gap-5 mb-10 xl:flex-nowrap"> */}
       <iframe
-        width="18000"
+        width="1000"
         height="600"
         src={
           'https://widget.openocean.finance?p=JTIzMTkxMzEzJTI0KiUyNCUyMzFDMUYyMiUyNColMjQl' +
@@ -22,6 +22,15 @@ const Swap = () => {
           'MjRVU0RCJTI0KiUyNA=='
         }
       ></iframe>
+      <br></br>
+      <iframe
+        id="dextools-widget"
+        title="DEXTools Trading Chart"
+        width="10000"
+        height="600"
+        src="https://www.dextools.io/widget-chart/en/ether/pe-light/0xa29fe6ef9592b5d408cca961d0fb9b1faf497d6d?theme=light&chartType=2&chartResolution=30&drawingToolbars=false"
+      ></iframe>
+
       {/* <Panel /> */}
 
       {/* <Chart className="w-full xl:w-full" /> */}

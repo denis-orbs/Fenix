@@ -21,6 +21,7 @@ import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 export const initialState: LiquidityState = {
   v2Pairs: {
     state: ApiState.LOADING,
+    tablestate: ApiState.LOADING,
     data: [],
     tableData: [],
   },
@@ -74,15 +75,15 @@ export default createReducer(initialState, (builder) => {
       state.concentratedPools.state = ApiState.ERROR
     })
     .addCase(getLiquidityTableElements.pending, (state) => {
-      state.v2Pairs.state = ApiState.LOADING
+      state.v2Pairs.tablestate = ApiState.LOADING
     })
     .addCase(getLiquidityTableElements.fulfilled, (state, action) => {
-      state.v2Pairs.state = ApiState.LOADING
+      state.v2Pairs.tablestate = ApiState.LOADING
       state.v2Pairs.tableData = action.payload
-      state.v2Pairs.state = ApiState.SUCCESS
+      state.v2Pairs.tablestate = ApiState.SUCCESS
     })
     .addCase(getLiquidityTableElements.rejected, (state) => {
-      state.v2Pairs.state = ApiState.ERROR
+      state.v2Pairs.tablestate = ApiState.ERROR
     })
 })
 

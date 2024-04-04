@@ -48,7 +48,9 @@ export default function MobileRow({
             />
           </div>
           <div className="flex flex-col">
-            <h5 className="text-sm font-semibold leading-normal mb-1.5">FNX/ETH</h5>
+            <h5 className="text-sm font-semibold leading-normal mb-1.5">
+              {row.pairDetails.token0Symbol} / {row.pairDetails.token1Symbol}
+            </h5>
             <div className="flex items-center gap-2">
               {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
                 <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
