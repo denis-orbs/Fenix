@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import ComponentVisible from '@/src/library/hooks/useVisible'
 import Graph from './Graph'
+import { positions } from './Strategy'
 
 type options = {
   value: string
@@ -11,12 +12,13 @@ type options = {
 }
 
 interface StrategyMobileProps {
+  row: positions
   options: options[]
   setModalSelected: (modal: string) => void
   setOpenModal: (modal: boolean) => void
 }
 
-const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
+const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const handlerOpenModal = (option: string) => {
@@ -25,6 +27,8 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
   }
 
   const handlerOpen = () => (isOpen ? setIsOpen(false) : setIsOpen(true))
+
+  console.log(row, 'row')
   return (
     <div className="w-full bg-shark-400 bg-opacity-40 p-4">
       <div className="relative z-50">
@@ -50,7 +54,7 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
               <div className="flex flex-col">
                 <p>USDC / FNX</p>
                 <p className="text-xs">
-                  ID: 158 - <span className="text-green-400">ACTIVE</span>
+                  ID: {row?.id} - <span className="text-green-400">ACTIVE</span>
                 </p>
               </div>
             </div>
@@ -99,7 +103,7 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
                 <h1 className="text-green-400 text-2xl">0.00%</h1>
               </div>
               <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
-                <p className="text-white text-xs lg:text-sm" >
+                <p className="text-white text-xs lg:text-sm">
                   TOTAL BUDGET <span className="icon-info"></span>
                 </p>
                 <h1 className="text-white text-2xl">$501.10</h1>
@@ -118,7 +122,12 @@ const StrategyMobile = ({ options, setModalSelected, setOpenModal }: StrategyMob
                   <p className="text-xs text-white">$0.00</p>
                 </div>
               </div>
-              <Graph />
+              <Graph
+                tickLower={row.tickLower}
+                tickUpper={row.tickUpper}
+                token0Symbol={row.token0.symbol}
+                token1Symbol={row.token1.symbol}
+              />
             </div>
           </div>
         )}

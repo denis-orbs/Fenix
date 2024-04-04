@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState } from 'react'
 
 import PairSelector from '@/src/components/Liquidity/Common/PairSelector'

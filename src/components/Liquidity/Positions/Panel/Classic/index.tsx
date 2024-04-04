@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import { useState } from 'react'

@@ -1,4 +1,5 @@
 import { Button } from '@/src/components/UI'
+import { formatCurrency } from '@/src/library/utils/numbers'
 import { PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -32,14 +33,14 @@ export default function MobileRow({
         <div className="flex gap-[9px] items-center">
           <div className="relative flex items-center">
             <Image
-              src="/static/images/tokens/FNX.svg"
+              src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
               alt="token"
               className="w-8 h-8 rounded-full"
               width={32}
               height={32}
             />
             <Image
-              src="/static/images/tokens/ETH.svg"
+              src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
               alt="token"
               className="w-8 h-8 -ml-5 rounded-full"
               width={32}
@@ -49,14 +50,19 @@ export default function MobileRow({
           <div className="flex flex-col">
             <h5 className="text-sm font-semibold leading-normal mb-1.5">FNX/ETH</h5>
             <div className="flex items-center gap-2">
-              {!row.pairDetails.isStable && (
+              {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
                 <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                   Volatile Pool
                 </span>
               )}
-              {row.pairDetails.isStable && (
+              {row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
                 <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                   Stable Pool
+                </span>
+              )}
+              {row.pairDetails.pairSymbol === 'Concentrated pool' && (
+                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-green-400 border-green-400 ">
+                  Concentrated Pool
                 </span>
               )}
 
@@ -70,7 +76,7 @@ export default function MobileRow({
               ) */}
 
               <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                0.3%
+                {Number(row.pairDetails.fee) / 10000} %
               </span>
               <Button
                 variant="tertiary"
@@ -120,7 +126,7 @@ export default function MobileRow({
                   {/* <span className="icon-info text-[13px]"></span> */}
                 </div>
                 <div className="flex gap-[7px]">
-                  <div className="ml-auto text-xs leading-normal">34.58%</div>
+                  <div className="ml-auto text-xs leading-normal">{row.pairDetails.apr} %</div>
                   <div
                     className="flex items-center gap-[5px] cursor-pointer
                      text-shark-100 hover:text-transparent hover:bg-gradient-to-r hover:from-outrageous-orange-500 hover:to-festival-500 hover:bg-clip-text"
@@ -133,27 +139,27 @@ export default function MobileRow({
                   <span className="text-xs font-medium leading-normal">TVL</span>
                 </div>
                 <div className="flex flex-col">
-                  <div className="ml-auto text-xs leading-normal">$1,234.404.11</div>
+                  <div className="ml-auto text-xs leading-normal">$ {formatCurrency(Number(row.pairDetails.tvl))}</div>
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
-                      <Image
+                      {/* <Image
                         src="/static/images/tokens/FNX.svg"
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
                         height={10}
                       />
-                      <span className="text-xs leading-normal">2,313,873.46</span>
+                      <span className="text-xs leading-normal">2,313,873.46</span> */}
                     </div>
                     <div className="flex items-center gap-[5px]">
-                      <Image
+                      {/* <Image
                         src="/static/images/tokens/ETH.svg"
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
                         height={10}
                       />
-                      <span className="text-xs leading-normal">225.38</span>
+                      <span className="text-xs leading-normal">225.38</span> */}
                     </div>
                   </div>
                 </div>
@@ -166,27 +172,34 @@ export default function MobileRow({
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <div className="ml-auto text-xs leading-normal">$1,234.404.11</div>
+                  <div className="ml-auto text-xs leading-normal">
+                    $ {formatCurrency(Number(row.pairDetails.volumeUSD))}
+                  </div>
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/FNX.svg"
+                        src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
                         height={10}
                       />
-                      <span className="text-xs leading-normal">2,313,873.46</span>
+                      <span className="text-xs leading-normal">
+                        {' '}
+                        {formatCurrency(Number(row.pairDetails.volumeToken0))} {row.pairDetails.token0Symbol}
+                      </span>
                     </div>
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/ETH.svg"
+                        src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
                         height={10}
                       />
-                      <span className="text-xs leading-normal">225.38</span>
+                      <span className="text-xs leading-normal">
+                        {formatCurrency(Number(row.pairDetails.volumeToken1))} {row.pairDetails.token1Symbol}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -199,34 +212,45 @@ export default function MobileRow({
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <div className="ml-auto text-xs leading-normal">$1,234.404.11</div>
+                  <div className="ml-auto text-xs leading-normal">
+                    $ {formatCurrency(Number(row.pairDetails.volumeUSD) * (Number(row.pairDetails.fee) / 1000000))}{' '}
+                  </div>
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/FNX.svg"
+                        src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
                         height={10}
                       />
-                      <span className="text-xs leading-normal">2,313,873.46</span>
+                      <span className="text-xs leading-normal">
+                        {formatCurrency(Number(row.pairDetails.volumeToken0) * (Number(row.pairDetails.fee) / 1000000))}{' '}
+                        {row.pairDetails.token0Symbol}
+                      </span>
                     </div>
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src="/static/images/tokens/ETH.svg"
+                        src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
                         height={10}
                       />
-                      <span className="text-xs leading-normal">225.38</span>
+                      <span className="text-xs leading-normal">
+                        {' '}
+                        {formatCurrency(
+                          Number(row.pairDetails.volumeToken1) * (Number(row.pairDetails.fee) / 1000000)
+                        )}{' '}
+                        {row.pairDetails.token1Symbol}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="px-2.5 pb-[3px] flex gap-2">
-              {titleButton === '' ? (
+              {/* {titleButton === '' ? (
                 <Button variant="tertiary" className="flex items-center gap-2 w-full">
                   <span className="icon-info"></span>
                   Info
@@ -236,10 +260,14 @@ export default function MobileRow({
                   <span className="icon-coin"></span>
                   Claim
                 </Button>
-              )}
+              )} */}
 
               {titleButton2 === '' ? (
-                <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity/deposit">
+                <Button
+                  variant="tertiary"
+                  className="flex items-center gap-2 w-full"
+                  href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable ? 'volatile' : 'stable'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
+                >
                   <span className="icon-circles"></span>
                   Deposit
                 </Button>

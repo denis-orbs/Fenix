@@ -49,6 +49,7 @@ const MyStrategies = () => {
 
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
+    console.log(positions, 'positions')
     setposition(positions)
   }
 
@@ -92,11 +93,20 @@ const MyStrategies = () => {
           </div>
           <div className="dashboard-box mb-10 block xl:hidden">
             <div className="">
-              <StrategyMobile
-                options={OPTIONS_STRATEGIES}
-                setOpenModal={setOpenModal}
-                setModalSelected={setModalSelected}
-              />
+              {Array.from({ length: position.length }).map((_, index) => {
+                return (
+                  <>
+                    <SwiperSlide key={index}>
+                      <StrategyMobile
+                        row={position[index]}
+                        options={OPTIONS_STRATEGIES}
+                        setOpenModal={setOpenModal}
+                        setModalSelected={setModalSelected}
+                      />
+                    </SwiperSlide>
+                  </>
+                )
+              })}
             </div>
           </div>
           {MODAL_LIST[modalSelected]}

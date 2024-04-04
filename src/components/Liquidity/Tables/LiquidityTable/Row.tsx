@@ -107,8 +107,36 @@ const RowData = ({
         )} */}
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
           <div className="flex items-center  ">
+            <Image
+              src={`/static/images/tokens/blastgold.png`}
+              alt="token"
+              className="-ml-4 rounded-full w-7 h-7"
+              width={20}
+              height={20}
+            />
+            <Image
+              src={`/static/images/tokens/blastpoints.png`}
+              alt="token"
+              className="-ml-4 rounded-full w-7 h-7"
+              width={20}
+              height={20}
+            />
+            <Image
+              src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+              alt="token"
+              className="-ml-4 rounded-full w-7 h-7"
+              width={20}
+              height={20}
+            />
+            <Image
+              src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+              alt="token"
+              className="-ml-4 rounded-full w-7 h-7"
+              width={20}
+              height={20}
+            />
             <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.apr} %
+              {row.pairDetails.apr} %{' '}
             </p>
           </div>
         </TableCell>

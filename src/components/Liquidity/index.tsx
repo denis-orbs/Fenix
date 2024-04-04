@@ -54,7 +54,7 @@ const Liquidity = () => {
     }
 
     const filteredPoolsData = poolsData.filter((pool) =>
-      pool?.pairDetails?.token0?.symbol.toLowerCase().includes(value.toLowerCase())
+      pool?.pairDetails?.token0Symbol.toLowerCase().includes(value.toLowerCase())
     )
 
     setSearchResults(filteredPoolsData)
