@@ -57,8 +57,8 @@ const Panel = () => {
         const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken];
         if(defaultPairs.length > 0) {
           parsedData.map((item: any) => {
-            if(item.address == defaultPairs[0]) newDefaultPairsTokens[0] = item
-            if(item.address == defaultPairs[1]) newDefaultPairsTokens[1] = item
+            if(item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
+            if(item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
           })
           setDefaultPairs([])
         }
