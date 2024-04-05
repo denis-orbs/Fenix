@@ -65,7 +65,6 @@ const Liquidity = () => {
       } else {
         setSearchResults(poolsData)
       }
-      console.log(currentTab)
     }
   }, [currentTab, poolsData])
 

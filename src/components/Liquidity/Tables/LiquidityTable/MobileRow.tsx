@@ -78,7 +78,7 @@ export default function MobileRow({
               ) */}
 
               <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                {Number(row.pairDetails.fee) / 10000} %
+                {row.pairDetails.fee} %
               </span>
               <Button
                 variant="tertiary"

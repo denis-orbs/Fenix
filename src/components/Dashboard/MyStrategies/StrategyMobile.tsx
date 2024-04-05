@@ -28,7 +28,6 @@ const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: Strate
 
   const handlerOpen = () => (isOpen ? setIsOpen(false) : setIsOpen(true))
 
-  console.log(row, 'row')
   return (
     <div className="w-full bg-shark-400 bg-opacity-40 p-4">
       <div className="relative z-50">

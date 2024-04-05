@@ -9,6 +9,9 @@ import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual
 import { IToken, Address } from '@/src/library/types'
 import { useGammaCreatePosition } from '@/src/library/hooks/web3/useGamma'
 import { isAddress } from 'viem'
+import { fetchv2PairId } from '@/src/state/liquidity/reducer'
+import { useAppSelector } from '@/src/state'
+import { V2PairId } from '@/src/state/liquidity/types'
 
 const Panel = () => {
   const [depositType, setDepositType] = useState<
@@ -23,6 +26,7 @@ const Panel = () => {
     address: '0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9' as Address,
     img: '/static/images/tokens/FNX.svg',
   } as IToken)
+
   const [tokenFor, setTokenFor] = useState<IToken>({
     name: 'Ethereum',
     symbol: 'ETH',
@@ -31,8 +35,10 @@ const Panel = () => {
     address: '0x4200000000000000000000000000000000000023' as Address,
     img: '/static/images/tokens/WETH.svg',
   } as IToken)
+
   const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
   const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
+  const [pair, setPair] = useState<V2PairId>()
 
   const handlerSwitch = () =>
     setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
@@ -161,9 +167,9 @@ const Panel = () => {
           {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
           {depositType === 'CONCENTRATED_MANUAL' && <Manual defaultPairs={defaultPairsTokens} />}
 
-          <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={createPosition}>
+          {/* <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={createPosition}>
             Create Position
-          </Button>
+          </Button> */}
         </div>
       </div>
     </section>

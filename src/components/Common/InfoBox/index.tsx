@@ -1,6 +1,5 @@
 'use client'
 import Image from 'next/image'
-import { Button } from '@/src/components/UI'
 
 interface Items {
   label: string

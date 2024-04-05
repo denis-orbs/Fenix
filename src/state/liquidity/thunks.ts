@@ -112,7 +112,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
         pairInformationV2: pair,
         priceA: tokenAprice ? tokenAprice : 0,
         priceB: tokenBprice ? tokenBprice : 0,
-        fee: pair.feeAmount.toString(),
+        fee: (Number(pair.feeAmount) / 100).toString(),
         volumeUSD: matchedPair?.volumeUSD || '0',
         volumeToken0: matchedPair?.volumeToken0 || '0',
         volumeToken1: matchedPair?.volumeToken1 || '0',
@@ -191,7 +191,6 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
       const myPoolAmountValue = new BigDecimal(0n, 18).withDecimalPrecision(18)
 
       const myStackedAmountValueV2 = new BigDecimal(0n, 18).withDecimalPrecision(18)
-
       pairs[pair.id!] = {
         pairAddress: pair.id,
         pairSymbol: 'Concentrated pool',
@@ -199,7 +198,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
         priceA: tokenAprice ? tokenAprice : 0,
         priceB: tokenBprice ? tokenBprice : 0,
         isInactiveGauge: false,
-        fee: pair.fee,
+        fee: (Number(pair.fee) / 10000).toString(),
         volumeUSD: pair.volumeUSD,
         volumeToken0: pair.volumeToken0,
         volumeToken1: pair.volumeToken1,

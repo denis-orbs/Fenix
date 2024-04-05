@@ -77,7 +77,7 @@ const RowData = ({
                   </span>
                 )}
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  {Number(row.pairDetails.fee) / 10000} %
+                  {row.pairDetails.fee} %
                 </span>
                 {/* <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
@@ -199,7 +199,7 @@ const RowData = ({
         <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
             <p className="mb-1 text-xs text-white">
-              $ {formatCurrency(Number(row.pairDetails.volumeUSD) * (Number(row.pairDetails.fee) / 1000000))}{' '}
+              $ {formatCurrency(Number(row.pairDetails.volumeUSD) * (Number(row.pairDetails.fee) / 100))}{' '}
             </p>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 text-xs text-shark-100">
@@ -210,7 +210,7 @@ const RowData = ({
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.pairDetails.volumeToken0) * (Number(row.pairDetails.fee) / 1000000))}{' '}
+                {formatCurrency(Number(row.pairDetails.volumeToken0) * (Number(row.pairDetails.fee) / 100))}{' '}
                 {row.pairDetails.token0Symbol}
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
@@ -221,33 +221,10 @@ const RowData = ({
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.pairDetails.volumeToken1) * (Number(row.pairDetails.fee) / 1000000))}{' '}
+                {formatCurrency(Number(row.pairDetails.volumeToken1) * (Number(row.pairDetails.fee) / 100))}{' '}
                 {row.pairDetails.token1Symbol}
               </p>
             </div>
-            &nbsp;
-            {/* <div>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
-                  src={`/static/images/tokens/blastpoints.png`}
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                {formatCurrency(Number(row.pairDetails.volumeToken1) * (Number(row.pairDetails.fee) / 1000000))}{' '}
-                {'Points'}
-                <Image
-                  src={`/static/images/tokens/blastgold.png`}
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                {formatCurrency(Number(row.pairDetails.volumeToken1) * (Number(row.pairDetails.fee) / 1000000))}{' '}
-                {'Gold'}
-              </p>
-            </div> */}
           </div>
         </TableCell>
 

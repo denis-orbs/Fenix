@@ -16,12 +16,14 @@ export async function getTokenAllowance(token: Address, owner: Address, spender:
   /**
    * This hook is used to get token aproved amount for spender
    */
-
+  console.log(token, owner, spender, 'here')
   const allowance = await multicall(
     createConfig({
-      chains: [polygonFork],
+      chains: [blastSepolia, blast, polygonFork],
       transports: {
         [polygonFork.id]: http(),
+        [blastSepolia.id]: http(),
+        [blast.id]: http(),
       },
     }),
     {
@@ -35,7 +37,7 @@ export async function getTokenAllowance(token: Address, owner: Address, spender:
       ],
     }
   )
-
+  console.log(allowance, 'here')
   if (allowance[0].status === 'failure') return '0'
   const a: string = allowance[0].result as string
 

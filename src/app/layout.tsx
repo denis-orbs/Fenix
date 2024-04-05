@@ -28,7 +28,7 @@ export const polygonFork = {
   name: 'Polygon Fork',
   nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
   rpcUrls: {
-    default: { http: ['http://localhost:8545'] },
+    default: { http: ['https://rpc.blast.io'] },
   },
   contracts: {
     multicall3: {

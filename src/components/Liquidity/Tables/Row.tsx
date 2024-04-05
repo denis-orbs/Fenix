@@ -38,7 +38,9 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
               />
             </div>
             <div className="flex flex-col">
-              <h5 className="text-sm text-white">FNX / ETH</h5>
+              <h5 className="text-sm text-white">
+                {row.pairDetails.pairInformationV2?.token0_symbol} / {row.pairDetails.pairInformationV2?.token1_symbol}
+              </h5>
               <div className="flex items-center gap-2">
                 {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
                   <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
@@ -59,7 +61,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                   </span>
                 )}
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  {Number(row.pairDetails.fee) / 10000} %
+                  {row.pairDetails.fee} %
                 </span>
                 <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
@@ -181,7 +183,9 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
 
         <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$ {row.pairDetails.myPoolAmountValue.toString()}</p>
+            <p className="mb-1 text-xs text-white">
+              $ {Number(row.pairDetails.myPoolAmountValue.toString()).toFixed(2)}
+            </p>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 {/* <Image
@@ -191,7 +195,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                   width={20}
                   height={20}
                 /> */}
-                {fromWei(row.pairDetails.pairInformationV2?.account_lp_balance.toString(), 18)}
+                {Number(fromWei(row.pairDetails.pairInformationV2?.account_lp_balance.toString(), 18)).toFixed(5)} LP
               </p>
               {/* <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
@@ -234,7 +238,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2 w-24 h-9 !text-xs "
-                href="/liquidity/deposit"
+                href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'volatile' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'stable' : 'manual'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
               >
                 <span className="icon-logout"></span>
                 Manage

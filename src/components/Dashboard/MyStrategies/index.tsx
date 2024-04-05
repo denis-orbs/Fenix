@@ -49,7 +49,6 @@ const MyStrategies = () => {
 
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
-    console.log(positions, 'positions')
     setposition(positions)
   }
 

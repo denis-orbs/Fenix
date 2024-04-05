@@ -20,17 +20,17 @@ export const STEPS = [
 export const EXCHANGE_LIST = [
   {
     label: 'Total Value Locked',
-    description: '$ 0',
+    description: '$ 0.00',
     icon: 'icon-lock',
   },
   {
     label: 'Fees',
-    description: '$ 0',
+    description: '$ 0.00',
     icon: 'icon-pig',
   },
   {
     label: 'Volume',
-    description: '$ 0',
+    description: '$ 0.00',
     icon: 'icon-coins',
   },
 ]
@@ -96,7 +96,7 @@ export const NAV_LIST = [
     name: 'My Positions',
     description: 'Set and Forget',
     icon: 'icon-auto-graph',
-    path: 'positions',
+    path: '/dashboard',
     active: true,
   },
 ]

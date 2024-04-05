@@ -20,6 +20,8 @@ import { ethers } from 'ethers'
 import { publicClient } from '@/src/library/constants/viemClient'
 import { Toaster, toast } from 'react-hot-toast'
 import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
+import { LiquidityTableElement } from '@/src/state/liquidity/types'
+import { useAppSelector } from '@/src/state'
 
 const Classic = ({
   depositType,
@@ -61,6 +63,8 @@ const Classic = ({
   const [shouldApprovePair, setShouldApprovePair] = useState(true)
 
   const account = useAccount()
+  const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
+
   const { writeContractAsync } = useWriteContract()
 
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
@@ -128,7 +132,7 @@ const Classic = ({
               contractAddressList.v2router as Address
             )
           : {}
-
+      console.log(allowanceFirst, allowanceSecond, allowanceLp, 'allowance')
       setShouldApproveFirst(allowanceFirst == '0')
       setShouldApproveSecond(allowanceSecond == '0')
       setShouldApprovePair(allowanceLp == '0')
@@ -352,7 +356,12 @@ const Classic = ({
                   variant="tertiary"
                   className="!px-5 !py-0 h-[28px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
                 >
-                  0.3%
+                  {
+                    pairs.find(
+                      (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
+                    )?.fee
+                  }{' '}
+                  %
                 </Button>
                 <Button
                   variant="tertiary"
@@ -382,7 +391,12 @@ const Classic = ({
           <div className="md:mb-[5px] text-right">APR</div>
 
           <p className="py-[5px] px-5 border border-solid bg-shark-400 rounded-[10px] bg-opacity-40 border-1 border-shark-300">
-            0%
+            {
+              pairs.find(
+                (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
+              )?.apr
+            }{' '}
+            %
           </p>
         </div>
       </div>

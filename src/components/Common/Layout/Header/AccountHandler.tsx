@@ -44,10 +44,6 @@ const AccountHandler = () => {
           userLiqPoints: response.data.userLiqPoints.reduce((a: number, b: number) => a + b, 0).toFixed(2),
           pendingSent: response.data.pendingSent.reduce((a: number, b: number) => a + b, 0).toFixed(2),
         })
-        console.log({
-          userLiqPoints: response.data.userLiqPoints.reduce((a: number, b: number) => a + b, 0),
-          pendingSent: response.data.pendingSent.reduce((a: number, b: number) => a + b, 0),
-        })
       } catch (error) {
         console.error('Error fetching data:', error)
         // Handle errors as needed
