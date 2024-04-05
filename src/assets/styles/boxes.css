@@ -321,6 +321,76 @@
   after:hidden
   after:xl:block;
 }
+.header-box-landing {
+  @apply relative /* h-[60px] */ px-5 py-3
+  2xl:bg-[url("/static/images/header/header-landing2.svg")]
+  bg-[url("/static/images/header/header-landing3.svg")]
+  bg-no-repeat
+  bg-cover
+  2xl:w-[620px]
+  w-[620px]
+  h-[72px]
+
+  /* before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/header/header-landing2.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-[50%]
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/header/header-landing2.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:h-full
+  after:bg-cover
+  after:w-[50%]
+  after:top-0
+  after:right-0
+  after:hidden
+  after:xl:block */;
+  /* after:z-1; */
+}
+
+/* .rectangulo {
+  @apply 
+  w-[500px]
+  h-[70px]
+  bg-white
+  relative
+  rounded-tr-2xl
+  rounded-bl-2xl
+  rounded-tl-[35px]
+  rounded-br-[35px]
+
+  before:content-[""]
+  before:absolute
+  before:bg-black
+  before:w-[50px]
+  before:h-[50px]
+  before:top-[-30px]
+  before:left-[-27px]
+  before:rounded-tl-2xl
+  before:rotate-[55deg]
+  
+  after:content-[""]
+  after:absolute
+  after:bg-black
+  after:w-[50px]
+  after:h-[50px]
+  after:bottom-[-30px]
+  after:right-[-27px]
+  after:rounded-br-2xl
+  after:rotate-[55deg]
+
+  ;
+} */
 
 .header-mobile-box {
   @apply relative h-[95px] w-full
@@ -1071,6 +1141,13 @@ opacity-70
   xl:after:bg-cover;
 }
 
+.module {
+  border-width: 3px;
+  border-style: solid;
+  border-image: linear-gradient(to left, red, rgba(0, 0, 0, 0)) 1;
+  border-radius: 24px;
+}
+
 .main-header-box {
   @apply relative
 
@@ -1092,6 +1169,56 @@ opacity-70
   after:h-[123px]
   after:bg-right
   after:-z-10;
+}
+.info-box {
+  @apply relative px-5 py-3
+  2xl:bg-[url("/static/images/landing/main/info-box.svg")]
+  bg-[url("/static/images/landing/main/info-box.svg")]
+  max-2xl:bg-[url("/static/images/landing/main/tablet-info-box.svg")]
+  bg-no-repeat
+  bg-cover
+  2xl:w-[1135px]
+  2xl:h-[133px]
+  max-2xl:w-[532px]
+  max-2xl:h-[420px];
+}
+
+.mobile-info-box {
+  @apply relative px-5 py-3
+  bg-[url("/static/images/landing/main/mobile-info-box.svg")]
+  max-sm:bg-[url("/static/images/landing/main/mobile-info-box2.svg")]
+  max-xs:bg-[url("/static/images/landing/main/mobile-info-box3.svg")]
+  max-xxs:bg-[url("/static/images/landing/main/mobile-info-box4.svg")]
+  bg-no-repeat
+  bg-cover
+  w-[481px]
+  max-sm:w-[401px]
+  max-xs:w-[307px]
+  max-xxs:w-[229px]
+  h-[504px]
+
+  /* before:content-['']
+  before:absolute
+  before:left-0
+  before:top-0
+  before:bg-[url(/static/images/landing/main/mobile-info-box.svg)]
+  before:w-[100%]
+  before:h-1/2
+  before:-z-10
+  before:bg-no-repeat
+  before:bg-cover
+
+  after:content-['']
+  after:absolute
+  after:left-0
+  after:bottom-0
+  after:bg-[url(/static/images/landing/main/mobile-info-box.svg)]
+  after:w-[100%]
+  after:h-1/2
+  after:bg-bottom
+  after:bg-no-repeat
+  after:bg-cover
+  after:-z-10 */;
 }
 
 .landing-info-box {
@@ -1153,7 +1280,7 @@ opacity-70
 }
 
 .footer-box {
-  @apply  relative
+  @apply relative
   before:bg-[url("/static/images/footer/footer-mobile.svg")]
   before:h-[50%]
   before:w-full
@@ -1180,7 +1307,7 @@ opacity-70
   after:md:bg-right
   after:bg-cover
   after:absolute
-  after:bg-no-repeat
+  after:bg-no-repeat;
 }
 
 .your-point-box {
