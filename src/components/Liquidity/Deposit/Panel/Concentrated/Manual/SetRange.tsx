@@ -1,13 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button } from '@/src/components/UI'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import StrategyButton, { StrategyType } from './StrategyButton'
 import Input from './Input'
 
-const SetRange = () => {
-  const [currentPercentage, setCurrentPercentage] = useState(5)
+const SetRange = ({setCurrentPercentage, currentPercentage, price1, price2}: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any}) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
+
+  useEffect(() => {
+    if(currentStrategy == StrategyType.NARROW) setCurrentPercentage(2.5)
+    if(currentStrategy == StrategyType.BALANCED) setCurrentPercentage(6)
+    if(currentStrategy == StrategyType.WIDE) setCurrentPercentage(15)
+    if(currentStrategy == StrategyType.FULL_RANGE) setCurrentPercentage(999) //inf
+  }, [currentStrategy])
 
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -93,8 +99,8 @@ const SetRange = () => {
       </div>
 
       <div className="flex gap-[21px]">
-        <Input title="Min Price" />
-        <Input title="Max Price" />
+        <Input title="Min Price" percent={`-${currentPercentage}`} value={price1} />
+        <Input title="Max Price" percent={`+${currentPercentage}`} value={price2} />
       </div>
     </div>
   )

@@ -10,6 +10,12 @@ import { useAccount, useWriteContract } from 'wagmi'
 import { publicClient } from '@/src/library/constants/viemClient'
 import toast, { Toaster } from 'react-hot-toast'
 import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
+import { getAlgebraPoolPrice } from '@/src/library/hooks/liquidity/useCL'
+
+interface StateType {
+  price: number;
+  currentTick: number;
+}
 
 const ConcentratedDepositLiquidityManual = ({
   defaultPairs
@@ -22,6 +28,11 @@ const ConcentratedDepositLiquidityManual = ({
   const [secondValue, setSecondValue] = useState("")
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
   const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
+  const [poolState, setPoolState] = useState<StateType>({price: 0, currentTick: 0})
+
+  const [currentPercentage, setCurrentPercentage] = useState(5)
+  const [rangePrice1, setRangePrice1] = useState(0)
+  const [rangePrice2, setRangePrice2] = useState(0)
 
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
@@ -45,16 +56,34 @@ const ConcentratedDepositLiquidityManual = ({
     asyncGetAllowance();
   }, [firstToken, secondToken, account.address])
   
+  useEffect(() => {
+    const asyncFn = async () => {
+      const state = await getAlgebraPoolPrice(firstToken.address as Address, secondToken.address as Address)
+      setPoolState(state as StateType)
+      console.log("1 ETH =", Number((state as StateType).price)/1e18, "FNX")
+      setRangePrice1(Number((state as StateType).price)/1e18*0.95)
+      setRangePrice2(Number((state as StateType).price)/1e18*1.05)
+    }
+
+    if(poolState.price == 0) asyncFn()
+  }, [firstToken, secondToken])
+
+  useEffect(() => {
+    setRangePrice1(Number(poolState.price)/1e18*(1-(currentPercentage/100)))
+    setRangePrice2(Number(poolState.price)/1e18*(1+(currentPercentage/100)))
+  }, [currentPercentage])
+  // min/max ticks = -887220/887220;
+
   const handleCLAdd = async () => {
     writeContractAsync({ 
       abi: CL_MANAGER_ABI,
       address: contractAddressList.cl_manager as Address,
       functionName: 'mint', 
       args: [[
-        secondToken.address as Address, 
         firstToken.address as Address, 
-        "-81780", 
-        "-81720",
+        secondToken.address as Address, 
+        "-887220", 
+        "887220",
         "10000000000000000",
         "10000000000000000",
         0, 
@@ -114,7 +143,7 @@ const ConcentratedDepositLiquidityManual = ({
   return (
     <>
       <div><Toaster position="top-center" reverseOrder={false}/></div>
-      <SetRange />
+      <SetRange currentPercentage={currentPercentage} setCurrentPercentage={setCurrentPercentage} price1={rangePrice1} price2={rangePrice2}/>
       <TokensSelector
         firstToken={firstToken}
         secondToken={secondToken}
@@ -137,9 +166,9 @@ const ConcentratedDepositLiquidityManual = ({
       }>
         {
           shouldApproveFirst ? 
-          `Approve ${firstToken.address}`
+          `Approve ${firstToken.symbol}`
           : shouldApproveSecond ?
-          `Approve ${secondToken.address}`
+          `Approve ${secondToken.symbol}`
           : `Create Position`
         }
       </Button>
