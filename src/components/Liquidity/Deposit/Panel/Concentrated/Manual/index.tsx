@@ -27,12 +27,12 @@ const ConcentratedDepositLiquidityManual = ({
   const { writeContractAsync } = useWriteContract()
 
   useEffect(() => {
-    if(defaultPairs.length == 2) {
+    if(defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
     }
   }, [defaultPairs])
-  
+
   useEffect(()=> {
     const asyncGetAllowance = async () => {
         const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.cl_manager as Address)
@@ -44,24 +44,24 @@ const ConcentratedDepositLiquidityManual = ({
 
     asyncGetAllowance();
   }, [firstToken, secondToken, account.address])
-  
+
   const handleCLAdd = async () => {
-    writeContractAsync({ 
+    writeContractAsync({
       abi: CL_MANAGER_ABI,
       address: contractAddressList.cl_manager as Address,
-      functionName: 'mint', 
+      functionName: 'mint',
       args: [[
-        secondToken.address as Address, 
-        firstToken.address as Address, 
-        "-81780", 
+        secondToken.address as Address,
+        firstToken.address as Address,
+        "-81780",
         "-81720",
         "10000000000000000",
         "10000000000000000",
-        0, 
-        0, 
-        account.address as Address, 
+        0,
+        0,
+        account.address as Address,
         parseInt((+new Date()/1000).toString())+60*60
-      ]], 
+      ]],
     },
     {
       onSuccess: async (x) => {
@@ -81,14 +81,14 @@ const ConcentratedDepositLiquidityManual = ({
   }
 
   const handleApprove = async (token: Address) => {
-    writeContractAsync({ 
+    writeContractAsync({
       abi: ERC20_ABI,
       address: token,
-      functionName: 'approve', 
+      functionName: 'approve',
       args: [
         contractAddressList.cl_manager,
         maxUint256
-      ], 
+      ],
     },
     {
       onSuccess: async (x) => {
@@ -110,7 +110,7 @@ const ConcentratedDepositLiquidityManual = ({
       },
     })
   }
-  
+
   return (
     <>
       <div><Toaster position="top-center" reverseOrder={false}/></div>
@@ -129,14 +129,14 @@ const ConcentratedDepositLiquidityManual = ({
       <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={
         () => {
           shouldApproveFirst ?
-          handleApprove(firstToken.address as Address) 
-          : shouldApproveSecond ? 
-          handleApprove(secondToken.address as Address) 
+          handleApprove(firstToken.address as Address)
+          : shouldApproveSecond ?
+          handleApprove(secondToken.address as Address)
           : handleCLAdd()
         }
       }>
         {
-          shouldApproveFirst ? 
+          shouldApproveFirst ?
           `Approve ${firstToken.address}`
           : shouldApproveSecond ?
           `Approve ${secondToken.address}`
