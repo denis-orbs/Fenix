@@ -32,7 +32,7 @@ const DepositLiquidity = () => {
             title="DEXTools Trading Chart"
             width="10000"
             height="730"
-            src={`https://www.dextools.io/widget-chart/en/blast/pe-light/0xf00da13d2960cf113edcef6e3f30d92e52906537?theme=light&chartType=2&chartResolution=30&drawingToolbars=false`}
+            src={`https://www.dextools.io/widget-chart/en/blast/pe-dark/0xf00da13d2960cf113edcef6e3f30d92e52906537?theme=light&chartType=2&chartResolution=30&drawingToolbars=false`}
           ></iframe>
 
           {/* <Chart className="w-full xl:w-full" /> */}
