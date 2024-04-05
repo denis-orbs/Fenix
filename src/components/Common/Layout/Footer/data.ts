@@ -1,29 +1,28 @@
 const NAV_LINKS = [
-  {
-    title: 'Documentation',
-    href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
-  },
+  // {
+  //   title: 'Documentation',
+  //   href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
+  // },
   {
     title: 'Gitbook',
     href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
   },
   {
     title: 'Articles',
-    href: '#',
+    href: 'https://medium.com/@Fenix_Finance',
   },
   {
     title: 'Security',
-    href: '#',
+    href: 'https://docs.fenixfinance.io/fenix/additional-information/security',
   },
-  {
-    title: 'Brandkit',
-    href: '#',
-  },
+  // {
+  //   title: 'Brandkit',
+  //   href: '#',
+  // },
   {
     title: 'Support',
-    href: '#',
+    href: 'https://discord.com/invite/fenixfi',
   },
-
 ]
 
 const SOCIAL_LINKS = [

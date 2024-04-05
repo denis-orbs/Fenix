@@ -6,8 +6,8 @@ import Main from '@/src/components/Landing/Main'
 const HomePage = () => {
   return (
     <main>
-      <div className="py-10 mx-auto">
-        <Main />
+      <div className="pt-10 mx-auto">
+        <Main/>
         <Landing />
       </div>
     </main>

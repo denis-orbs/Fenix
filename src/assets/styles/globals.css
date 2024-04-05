@@ -8,6 +8,8 @@ body {
   @apply h-full text-base bg-shark-600;
   scroll-behavior: smooth;
   font-family: 'Poppins', sans-serif;
+  /* background-image: url('/static/images/background.png');
+  background-size: cover; */
 }
 
 /* This Delete the arrows of inputs type number */
@@ -17,6 +19,22 @@ body {
     -webkit-appearance: none;
     margin: 0;
   }
+}
+
+@keyframes changeColor {
+  from {
+    color: white;
+  }
+
+  to {
+    color: #fe5e35;
+  }
+}
+
+.animate-color-change {
+  transition-property: all;
+  transition-duration: 0.5s;
+  animation: changeColor 2s linear infinite;
 }
 
 .container {
@@ -67,7 +85,31 @@ body {
 /************* Text Gradient ***********/
 
 .text-gradient {
-  @apply text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text
+  @apply text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text;
+}
+
+.text-gradient2 {
+  background: var(--Fenix-Gradient, linear-gradient(90deg, #fe5e35 10.49%, #f67702 92.04%, #ffef76 158.76%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-gradient3 {
+  background: linear-gradient(270deg, #fe5e35 -5.39%, #f67702 80.53%, #ffef76 150.83%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-gradient4 {
+  background: linear-gradient(
+    90deg,
+    rgba(254, 94, 53, 0.8) 10.49%,
+    rgba(246, 119, 2, 0.8) 92.04%,
+    rgba(255, 239, 118, 0.8) 158.76%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /************* Button ***********/
@@ -78,8 +120,7 @@ body {
   @apply text-white hover:text-outrageous-orange-400;
 }
 .button-primary {
-  @apply
-  text-white
+  @apply text-white
   border
   border-outrageous-orange-400
   overflow-hidden
@@ -94,7 +135,7 @@ body {
   after:bg-button-primary-hover
   after:transition-all
   hover:after:opacity-100
-  after:opacity-0
+  after:opacity-0;
 }
 .button-secondary {
   @apply text-white bg-transparent border border-transparent hover:bg-shark-400 hover:border-shark-300 hover:text-transparent hover:bg-gradient-to-r from-outrageous-orange-500 to-festival-500 hover:bg-clip-text;
@@ -195,4 +236,175 @@ body {
 
 #fenix_graph {
   @apply w-full h-full [&>div]:w-full [&>div]:h-full;
+}
+
+.article {
+  width: 100%;
+  margin: 0;
+  background: black;
+  font-family: Verdana, sans-serif;
+  color: white;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  min-height: 100vh;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.blob {
+  /* @apply bg-gradient-to-bl from-orange-500 to-red-600; */
+  @apply bg-gradient-to-r from-outrageous-orange-500 to-festival-500;
+  filter: blur(30px);
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  opacity: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  /* background: rgb(255, 255, 255, 0.5); */
+  transition: all 300ms ease-in-out;
+}
+
+.fakeblob {
+  display: hidden;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.card {
+  overflow: hidden;
+  padding: 3px;
+  margin: 0;
+  background: rgb(138, 44, 51 / 0.8);
+  border-radius: 25px;
+  position: relative;
+  transition: all 300ms ease-in-out;
+}
+
+.inner {
+  border-radius: 25px;
+  border: solid 1px rgba(123, 138, 152, 0.2);
+  background: linear-gradient(101deg, rgba(41, 45, 50, 0.8) 33.56%, rgba(123, 138, 152, 0.5) 158.95%);
+  backdrop-filter: blur(80px);
+  transition: all 300ms ease-in-out;
+}
+
+.card:hover > .inner {
+  border: solid 1px transparent;
+  background: linear-gradient(101deg, rgba(41, 45, 50, 0.8) 33.56%, rgba(123, 138, 152, 0.5) 158.95%);
+  backdrop-filter: blur(80px);
+}
+.blob2 {
+  /* @apply bg-gradient-to-bl from-orange-500 to-red-600; */
+  @apply bg-gradient-to-r from-outrageous-orange-500 to-festival-500;
+  filter: blur(30px);
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  opacity: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  /* background: rgb(255, 255, 255, 0.5); */
+  transition: all 300ms ease-in-out;
+}
+
+.fakeblob2 {
+  display: hidden;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.card2 {
+  overflow: hidden;
+  padding: 3px;
+  margin: 0;
+  background: rgb(138, 44, 51 / 0.8);
+  border-radius: 25px;
+  position: relative;
+  transition: all 300ms ease-in-out;
+}
+
+.inner2 {
+  border-radius: 25px;
+  border: solid 1px rgba(123, 138, 152, 0.2);
+  background: linear-gradient(101deg, rgba(41, 45, 50, 0.8) 33.56%, rgba(123, 138, 152, 0.5) 158.95%);
+  backdrop-filter: blur(80px);
+  transition: all 300ms ease-in-out;
+}
+
+.card2:hover > .inner2 {
+  border: solid 1px transparent;
+  background: linear-gradient(101deg, rgba(41, 45, 50, 0.8) 33.56%, rgba(123, 138, 152, 0.5) 158.95%);
+  backdrop-filter: blur(80px);
+}
+.blob3 {
+  /* @apply bg-gradient-to-bl from-orange-500 to-red-600; */
+  @apply bg-gradient-to-r from-outrageous-orange-500 to-festival-500;
+  filter: blur(30px);
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  opacity: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  /* background: rgb(255, 255, 255, 0.5); */
+  transition: all 300ms ease-in-out;
+}
+
+.fakeblob3 {
+  display: hidden;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.card3 {
+  overflow: hidden;
+  padding: 3px;
+  margin: 0;
+  background: rgb(138, 44, 51 / 0.8);
+  border-radius: 25px;
+  position: relative;
+  transition: all 300ms ease-in-out;
+}
+
+.inner3 {
+  border-radius: 25px;
+  border: solid 1px rgba(123, 138, 152, 0.2);
+  background: linear-gradient(101deg, rgba(41, 45, 50, 0.8) 33.56%, rgba(123, 138, 152, 0.5) 158.95%);
+  backdrop-filter: blur(80px);
+  transition: all 300ms ease-in-out;
+}
+
+.card3:hover > .inner3 {
+  border: solid 1px transparent;
+  background: linear-gradient(101deg, rgba(41, 45, 50, 0.8) 33.56%, rgba(123, 138, 152, 0.5) 158.95%);
+  backdrop-filter: blur(80px);
+}
+
+.video-landing {
+  background: linear-gradient(101deg, rgba(41, 45, 50, 0.4) 33.56%, rgba(123, 138, 152, 0.4) 158.95%);
 }
