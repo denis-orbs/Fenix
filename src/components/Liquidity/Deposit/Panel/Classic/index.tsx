@@ -51,7 +51,7 @@ const Classic = ({
   }
 
   useEffect(() => {
-    if(defaultPairs.length == 2) {
+    if(defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
     }
@@ -97,7 +97,7 @@ const Classic = ({
   }, [firstToken, secondToken, account.address, pairAddress])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
-    
+
     if(optionActive == "ADD") {
       // TODO: handle if pair is not created
       if(firstToken.address === token.address) {
@@ -114,7 +114,7 @@ const Classic = ({
 
   const handleOnLPTokenValueChange = (input: any, token: IToken) => {
     setLpValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
-  
+
     if(optionActive == "WITHDRAW") {
       const asyncGetWithdrawTokens = async () => {
         const tokens: any = await getLiquidityRemoveQuote(input, firstToken.address as Address, secondToken.address as Address, depositType === 'STABLE')
@@ -128,22 +128,22 @@ const Classic = ({
 
   const handleAddLiquidity = async () => {
     // TODO values check
-    await writeContractAsync({ 
+    await writeContractAsync({
       abi: ROUTERV2_ABI,
       address: contractAddressList.v2router as Address,
-      functionName: 'addLiquidity', 
+      functionName: 'addLiquidity',
       // TODO: handle deadline and slippage
       args: [
-        firstToken.address as Address, 
-        secondToken.address as Address, 
-        depositType === 'STABLE', 
-        ethers.parseUnits(firstValue.toString(), 'ether'), 
-        ethers.parseUnits(secondValue.toString(), 'ether'), 
-        0, 
-        0, 
-        account.address as Address, 
+        firstToken.address as Address,
+        secondToken.address as Address,
+        depositType === 'STABLE',
+        ethers.parseUnits(firstValue.toString(), 'ether'),
+        ethers.parseUnits(secondValue.toString(), 'ether'),
+        0,
+        0,
+        account.address as Address,
         parseInt((+new Date()/1000).toString())+60*60
-      ], 
+      ],
     },
     {
       onSuccess: async (x) => {
@@ -163,21 +163,21 @@ const Classic = ({
 
   const handleRemoveLiquidity = async () => {
     // TODO values check
-    writeContractAsync({ 
+    writeContractAsync({
       abi: ROUTERV2_ABI,
       address: contractAddressList.v2router as Address,
-      functionName: 'removeLiquidity', 
+      functionName: 'removeLiquidity',
       // TODO: handle deadline and slippage
       args: [
-        firstToken.address as Address, 
-        secondToken.address as Address, 
-        depositType === 'STABLE', 
-        ethers.parseUnits(lpValue.toString(), 'ether'), 
-        0, 
-        0, 
-        account.address as Address, 
+        firstToken.address as Address,
+        secondToken.address as Address,
+        depositType === 'STABLE',
+        ethers.parseUnits(lpValue.toString(), 'ether'),
+        0,
+        0,
+        account.address as Address,
         parseInt((+new Date()/1000).toString())+60*60
-      ], 
+      ],
     },
     {
       onSuccess: async (x) => {
@@ -195,14 +195,14 @@ const Classic = ({
   }
 
   const handleApprove = async (token: Address) => {
-    writeContractAsync({ 
+    writeContractAsync({
       abi: ERC20_ABI,
       address: token,
-      functionName: 'approve', 
+      functionName: 'approve',
       args: [
         contractAddressList.v2router,
         maxUint256
-      ], 
+      ],
     },
     {
       onSuccess: async (x) => {
@@ -366,27 +366,27 @@ const Classic = ({
 
       <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={
         () => {
-          optionActive == 'ADD' ? 
-            shouldApproveFirst ? 
+          optionActive == 'ADD' ?
+            shouldApproveFirst ?
               handleApprove(firstToken.address as Address)
             : shouldApproveSecond ?
               handleApprove(secondToken.address as Address)
             : handleAddLiquidity()
-          : 
-            shouldApprovePair ? 
+          :
+            shouldApprovePair ?
               handleApprove(pairAddress as Address)
             : handleRemoveLiquidity()
         }
       }>
         {
-          optionActive == 'ADD' ? 
-            shouldApproveFirst ? 
+          optionActive == 'ADD' ?
+            shouldApproveFirst ?
               `Approve ${firstToken.symbol}`
             : shouldApproveSecond ?
               `Approve ${secondToken.symbol}`
             : `Add Liquidity`
-          : 
-            shouldApprovePair ? 
+          :
+            shouldApprovePair ?
               `Approve LP`
             : `Remove Liquidity`
         }
