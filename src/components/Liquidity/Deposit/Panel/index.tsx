@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button, Switch } from '@/src/components/UI'
 import Classic from '@/src/components/Liquidity/Deposit/Panel/Classic'
@@ -8,14 +8,50 @@ import Automatic from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Aut
 import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual'
 import { IToken } from '@/src/library/types'
 import { useGammaCreatePosition } from '@/src/library/hooks/web3/useGamma'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { isAddress } from '@/src/library/utils/validate'
+import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import { Address } from 'viem'
+
+const DepositTypeValues = {
+  VOLATILE: 'VOLATILE',
+  STABLE: 'STABLE',
+  CONCENTRATED_AUTOMATIC: 'CONCENTRATED_AUTOMATIC',
+  CONCENTRATED_MANUAL: 'CONCENTRATED_MANUAL',
+} as const
+
+type DepositType = (typeof DepositTypeValues)[keyof typeof DepositTypeValues]
 
 const Panel = () => {
-  const [depositType, setDepositType] = useState<
-    'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
-  >('VOLATILE')
-
+  const [depositType, setDepositType] = useState<DepositType>('VOLATILE')
+  console.log(DepositTypeValues)
   const [tokenSwap, setTokenSwap] = useState<IToken>({ name: 'Fenix', symbol: 'FNX' })
   const [tokenFor, setTokenFor] = useState<IToken>({ name: 'ethereum', symbol: 'ETH' })
+  const searchParams = useSearchParams()
+  const setToken0 = useSetToken0()
+  const setToken1 = useSetToken1()
+  const token0 = useToken0()
+  const token1 = useToken1()
+  const router = useRouter()
+  const pathname = usePathname()
+  useEffect(() => {
+    const searchParamToken0 = searchParams.get('token0')
+    const searchParamToken1 = searchParams.get('token1')
+    const typeSearch = searchParams.get('type')
+    if (searchParamToken0 && isAddress(searchParamToken0)) setToken0(searchParamToken0 as Address)
+    if (searchParamToken1 && isAddress(searchParamToken1)) setToken1(searchParamToken1 as Address)
+    if (typeSearch && Object.values(DepositTypeValues).includes(typeSearch as DepositType)) {
+      setDepositType(typeSearch as DepositType)
+    }
+  }, [])
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('type', depositType)
+    params.set('token0', token0)
+    params.set('token1', token1)
+    router.push(pathname + '?' + params.toString())
+  }, [token0, token1, depositType])
 
   const handlerSwitch = () =>
     setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
