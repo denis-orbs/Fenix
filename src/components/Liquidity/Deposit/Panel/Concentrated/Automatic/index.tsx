@@ -38,10 +38,10 @@ const Automatic = () => {
   const token0Data = useToken0Data()
   const token1Data = useToken1Data()
   // Defaults tokens
-  useEffect(() => {
-    setToken0(tokenList[0].address)
-    setToken1(tokenList[1].address)
-  }, [])
+  // useEffect(() => {
+  //   setToken0(tokenList[0].address)
+  //   setToken1(tokenList[1].address)
+  // }, [])
 
   return (
     <>
