@@ -13,12 +13,11 @@ import {
   useToken1Data,
 } from '@/src/state/liquidity/hooks'
 import { tokenList } from '@/src/library/constants/tokenList'
-
 const providers = [
   {
     label: 'ICHI',
     value: '1',
-    apr: 5.08,
+    apr: -1,
     src: 'https://ichi.org/',
     logo: {
       src: '/static/images/providers/ichi.svg',
@@ -26,17 +25,6 @@ const providers = [
       height: 21,
     },
   },
-  // {
-  //   label: 'GAMMA',
-  //   value: '2',
-  //   apr: 3.08,
-  //   src: 'https://www.gamma.xyz/',
-  //   logo: {
-  //     src: '/static/images/providers/gamma.svg',
-  //     width: 95.158,
-  //     height: 16,
-  //   },
-  // },
 ]
 
 const Automatic = () => {
@@ -49,10 +37,12 @@ const Automatic = () => {
   const setToken1 = useSetToken1()
   const token0Data = useToken0Data()
   const token1Data = useToken1Data()
+  // Defaults tokens
   useEffect(() => {
     setToken0(tokenList[0].address)
     setToken1(tokenList[1].address)
   }, [])
+
   return (
     <>
       <PairSelector
@@ -61,7 +51,6 @@ const Automatic = () => {
         setFirstToken={(token) => setToken0(token.address)}
         setSecondToken={(token) => setToken1(token.address)}
       />
-
       <CLMProviderSelector
         providers={providers}
         currentProvider={currentProvider}
