@@ -29,14 +29,14 @@ export const useGammaToken1Range = () => {
     gammaProxySmartContract: `0x${string}`
     gammaHypervisorSmartContract: `0x${string}`
   }
-  const token1DepositRange = useReadContract({
-    address: gammaProxySmartContract,
-    abi: gammaUniProxyABI,
-    functionName: 'getDepositAmount',
-    args: [gammaHypervisorSmartContract, token0, ethers.parseUnits(token0Amount || '0', 18)],
-  })
-  const range = token1DepositRange?.data || [0n, 0n]
-  return range
+  // const token1DepositRange = useReadContract({
+  //   address: gammaProxySmartContract,
+  //   abi: gammaUniProxyABI,
+  //   functionName: 'getDepositAmount',
+  //   args: [gammaHypervisorSmartContract, token0, ethers.parseUnits(token0Amount || '0', 18)],
+  // })
+  // const range = token1DepositRange?.data || [0n, 0n]
+  // return range
 }
 
 export const useGammaCreatePosition = () => {
@@ -54,68 +54,68 @@ export const useGammaCreatePosition = () => {
   const [isToken0AlloanceGranted, setIsToken0AlloanceGranted] = useState(false)
   const [isToken1AlloanceGranted, setIsToken1AlloanceGranted] = useState(false)
   const createPosition = async () => {
-    try {
-      if (!isToken0AlloanceGranted && token0Allowance.allowance < token0Amount) {
-        await writeContractAsync(
-          {
-            address: token0,
-            abi: erc20Abi,
-            functionName: 'approve',
-            args: [gammaHypervisorSmartContract, ethers.MaxUint256],
-          },
-          {
-            onSuccess: (data) => {
-              setIsToken0AlloanceGranted(true)
-            },
-            onError: (error) => {
-              console.error('Transaction error:', error)
-            },
-          }
-        )
-      }
-      if (!isToken1AlloanceGranted && token1Allowance < token1TypedValue) {
-        await writeContractAsync(
-          {
-            address: token1,
-            abi: erc20Abi,
-            functionName: 'approve',
-            args: [gammaHypervisorSmartContract, ethers.MaxUint256],
-          },
-          {
-            onSuccess: (data) => {
-              setIsToken1AlloanceGranted(true)
-            },
-            onError: (error) => {
-              console.error('Transaction error:', error)
-            },
-          }
-        )
-      }
-      await writeContractAsync(
-        {
-          abi: gammaUniProxyABI,
-          address: gammaProxySmartContract,
-          functionName: 'deposit',
-          args: [
-            ethers.parseUnits(token1TypedValue || '0', 18),
-            ethers.parseUnits(token0TypedValue || '0', 18),
-            userAddress,
-            gammaHypervisorSmartContract,
-            [0n, 0n, 0n, 0n],
-          ],
-        },
-        {
-          onSuccess: (data) => {
-            alert('Transaction sent! TxHash: ' + data)
-          },
-          onError: (error) => {
-            console.error('Transaction error:', error)
-          },
-        }
-      )
-    } catch (error) {
-      console.log(error)
-    }
+    // try {
+    //   if (!isToken0AlloanceGranted && token0Allowance.allowance < token0Amount) {
+    //     await writeContractAsync(
+    //       {
+    //         address: token0,
+    //         abi: erc20Abi,
+    //         functionName: 'approve',
+    //         args: [gammaHypervisorSmartContract, ethers.constants.MaxUint256],
+    //       },
+    //       {
+    //         onSuccess: (data) => {
+    //           setIsToken0AlloanceGranted(true)
+    //         },
+    //         onError: (error) => {
+    //           console.error('Transaction error:', error)
+    //         },
+    //       }
+    //     )
+    //   }
+    //   if (!isToken1AlloanceGranted && token1Allowance < token1TypedValue) {
+    //     await writeContractAsync(
+    //       {
+    //         address: token1,
+    //         abi: erc20Abi,
+    //         functionName: 'approve',
+    //         args: [gammaHypervisorSmartContract, ethers.utils.MaxUint256],
+    //       },
+    //       {
+    //         onSuccess: (data) => {
+    //           setIsToken1AlloanceGranted(true)
+    //         },
+    //         onError: (error) => {
+    //           console.error('Transaction error:', error)
+    //         },
+    //       }
+    //     )
+    //   }
+    //   await writeContractAsync(
+    //     {
+    //       abi: gammaUniProxyABI,
+    //       address: gammaProxySmartContract,
+    //       functionName: 'deposit',
+    //       args: [
+    //         ethers.utils.parseUnits(token1TypedValue || '0', 18),
+    //         ethers.utils.parseUnits(token0TypedValue || '0', 18),
+    //         userAddress,
+    //         gammaHypervisorSmartContract,
+    //         [0n, 0n, 0n, 0n],
+    //       ],
+    //     },
+    //     {
+    //       onSuccess: (data) => {
+    //         alert('Transaction sent! TxHash: ' + data)
+    //       },
+    //       onError: (error) => {
+    //         console.error('Transaction error:', error)
+    //       },
+    //     }
+    //   )
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
 
   return { createPosition }

@@ -7,7 +7,7 @@ export const tokenList: IToken[] = [
     id: 0,
     name: 'Fenix',
     symbol: 'FNX',
-    address: '0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9',
+    address: '0xA12E4649fdDDEFD0FB390e4D4fb34fFbd2834fA6',
     decimals: 18,
   },
   {
@@ -19,8 +19,8 @@ export const tokenList: IToken[] = [
   },
   {
     id: 2,
-    name: 'ETH',
-    symbol: 'ETH',
+    name: 'WETH',
+    symbol: 'WETH',
     address: '0x4200000000000000000000000000000000000023',
     decimals: 18,
   },
@@ -30,5 +30,12 @@ export const tokenList: IToken[] = [
     symbol: 'WBTC',
     address: '0x9Fe9D260262331807D0aa0fb06Fda1fa1b5E2ce5',
     decimals: 8,
+  },
+  {
+    id: 4,
+    name: 'fnUSDT',
+    symbol: 'fnUSDT',
+    address: '0x9e0f170B90b66C8a0f32A2FDBfc06FC479970e3a',
+    decimals: 6,
   },
 ]
