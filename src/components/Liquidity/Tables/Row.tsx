@@ -129,22 +129,24 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
           <div className="flex flex-col items-end justify-end w-full px-3">
             <p className="mb-1 text-xs text-white">
               ${' '}
-              {(
-                Number(
-                  fromWei(
-                    row.pairDetails.pairInformationV2?.account_token0_balance.toString(),
-                    row.pairDetails.pairInformationV2?.token0_decimals
-                  )
-                ) *
-                  row.pairDetails.priceA +
-                Number(
-                  fromWei(
-                    row.pairDetails.pairInformationV2?.account_token1_balance.toString(),
-                    row.pairDetails.pairInformationV2?.token1_decimals
-                  )
-                ) *
-                  row.pairDetails.priceB
-              ).toFixed(2)}
+              {formatCurrency(
+                (
+                  Number(
+                    fromWei(
+                      row.pairDetails.pairInformationV2?.account_token0_balance.toString(),
+                      row.pairDetails.pairInformationV2?.token0_decimals
+                    )
+                  ) *
+                    row.pairDetails.priceA +
+                  Number(
+                    fromWei(
+                      row.pairDetails.pairInformationV2?.account_token1_balance.toString(),
+                      row.pairDetails.pairInformationV2?.token1_decimals
+                    )
+                  ) *
+                    row.pairDetails.priceB
+                ).toFixed(2)
+              )}
             </p>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 text-xs text-shark-100">

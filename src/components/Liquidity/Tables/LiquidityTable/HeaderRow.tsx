@@ -29,6 +29,11 @@ const HeaderRow = ({
   const [itemsPerPage, setItemPerPage] = useState<any>(5)
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
+  const [paginationResult, setPaginationResult] = useState<PoolData[]>(poolsData)
+  const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
+  const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
+  // State for sort index
+  const [sortIndex, setSortIndex] = useState<number>(0)
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
@@ -47,9 +52,30 @@ const HeaderRow = ({
 
     return paginatedItems
   }
-
-  const paginationResult = paginate(poolsData, activePage, itemsPerPage)
-
+  useEffect(() => {
+    if (paginationStatus && paginationResult && paginationResult.length > 0) {
+      if (sort === 'asc') {
+        setPaginationResult(
+          paginationResult.sort((a, b) => {
+            return compareBigDecimal(Number(a.pairDetails.tvl), Number(b.pairDetails.tvl))
+          })
+        )
+      } else {
+        setPaginationResult(
+          paginationResult.sort((a, b) => {
+            return compareBigDecimal(Number(b.pairDetails.tvl), Number(a.pairDetails.tvl))
+          })
+        )
+      }
+    } else {
+      setPaginationResult(poolsData)
+      setPaginationStatus(true)
+    }
+  }, [sort, poolsData])
+  function compareBigDecimal(a: any, b: any) {
+    return a - b
+  }
+  const pagination = paginate(paginationResult, activePage, itemsPerPage)
   return (
     <div className="relative">
       <div className="w-full mb-2.5 xl:mb-5">
@@ -61,18 +87,22 @@ const HeaderRow = ({
               { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-center`, sortable: true },
               { text: 'TVL', className: 'w-[15%] text-right', sortable: true },
               {
-                text: titleHeader === '' ? 'Volume' : titleHeader,
+                text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
                 className: 'w-[15%] text-right',
                 sortable: true,
               },
               // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
               {
-                text: titleHeader2 === '' ? 'Fees' : titleHeader2,
+                text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
                 className: 'w-[15%] text-right',
                 sortable: true,
               },
-              { text: 'Action', className: 'w-[15%] text-right', sortable: true },
+              { text: 'Action', className: 'w-[15%] text-right', sortable: false },
             ]}
+            setSort={setSort}
+            sort={sort}
+            sortIndex={sortIndex}
+            setSortIndex={setSortIndex}
           />
         </div>
 

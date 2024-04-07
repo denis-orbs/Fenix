@@ -13,15 +13,15 @@ interface IItems {
 }
 interface TableHeadProps {
   items: IItems[]
+  setSort: (sort: 'asc' | 'desc' | null) => void
+  setSortIndex: (sortIndex: number) => void
+  sortIndex: number
+  sort: 'asc' | 'desc' | null
 }
 
-const TableHead = ({ items }: TableHeadProps) => {
-  const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
-  const [sortIndex, setSortIndex] = useState<number | null>(null)
-
+const TableHead = ({ items, setSort, setSortIndex, sortIndex, sort }: TableHeadProps) => {
   const handleSort = (index: number, items: IItems) => {
     const newSort = sort === 'asc' ? 'desc' : 'asc'
-
     if (items.sortable) {
       setSort(newSort)
       setSortIndex(index)
