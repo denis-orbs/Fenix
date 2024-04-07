@@ -1,7 +1,9 @@
 import { Pagination, PaginationMobile, TableBody, TableHead, TableSkeleton } from '@/src/components/UI'
 import { PoolData } from '@/src/state/liquidity/types'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import Row from './Row'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useAppSelector } from '@/src/state'
 
 interface HeaderRowProps {
   loading: boolean
@@ -24,6 +26,8 @@ const HeaderRow = ({
   titleHeader2 = '',
   activeRange = false,
 }: HeaderRowProps) => {
+  const tokensData = fetchTokens()
+
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
     : { text: '', className: 'w-[0%]', sortable: true }
@@ -56,7 +60,7 @@ const HeaderRow = ({
         <TableBody>
           {loading ? (
             <>
-              {Array.from({ length: poolsData.length }).map((_, index) => (
+              {Array.from({ length: 5 }).map((_, index) => (
                 <TableSkeleton key={index} />
               ))}
             </>
@@ -65,6 +69,7 @@ const HeaderRow = ({
               <Fragment key={index}>
                 <Row
                   row={row}
+                  tokensData={tokensData}
                   activeRange={activeRange}
                   titleHeader={titleHeader}
                   titleHeader2={titleHeader2}
@@ -80,7 +85,7 @@ const HeaderRow = ({
       {activePagination && (
         <>
           <div className="items-center hidden xl:flex">
-            <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
+            {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
             <Pagination className="mx-auto" numberPages={7} />
             <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
               <span className="text-lg icon-cog text-white cursor-pointer"></span>

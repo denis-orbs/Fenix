@@ -1,12 +1,43 @@
 'use client'
 
-import { Button } from '@/src/components/UI'
+import { Button, TableSkeleton } from '@/src/components/UI'
 import HeaderRow from '@/src/components/Liquidity/Tables/HeaderRow'
 import { PROPS_CLASSIC_LIQUIDITY, PROPS_CONCENTRATED_LIQUIDITY } from '../types'
 import INFO_API from '../data'
 import { useV2PairsData } from '@/src/state/liquidity/hooks'
+import { useEffect, useMemo, useState } from 'react'
+import { PoolData } from '@/src/state/liquidity/types'
 
 const LiquidityPositions = () => {
+  const [loading, setLoading] = useState(true)
+  const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 5000)
+  }, [])
+
+  useEffect(() => {
+    // console.log('Loading ', loading)
+    // console.log('v2PairsData ', v2PairsData)
+  }, [v2PairsData, loading])
+
+  const poolsData = useMemo<PoolData[]>(() => {
+    if (loading || !v2PairsData) {
+      return []
+    }
+
+    return v2PairsData.map((pair) => {
+      const pd: PoolData = {
+        pairDetails: pair,
+      }
+
+      return pd
+    })
+  }, [loading, v2PairsData])
+
+  const poolsDataClassic = poolsData.filter((pool) => pool.pairDetails.pairSymbol !== 'Concentrated pool')
+
   return (
     <>
       {INFO_API.length !== 0 ? (
@@ -20,7 +51,15 @@ const LiquidityPositions = () => {
           <div className="dashboard-box">
             <div className="  rounded-lg z-10">
               <h1 className="text-white p-3">Classic liquidity</h1>
-              <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} />
+              {loading ? (
+                <>
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <TableSkeleton key={index} />
+                  ))}
+                </>
+              ) : (
+                <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassic} />
+              )}
               <div className="mt-2">
                 <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
                   Review more
@@ -29,16 +68,16 @@ const LiquidityPositions = () => {
               </div>
             </div>
 
-            <div className="rounded-lg z-10">
+            {/* <div className="rounded-lg z-10">
               <h1 className="text-white p-3">Concentrated Liquidity</h1>
-              <HeaderRow {...PROPS_CONCENTRATED_LIQUIDITY} />
+              <HeaderRow {...PROPS_CONCENTRATED_LIQUIDITY} poolData={poolsDataConcentrated} />
               <div className="mt-2">
                 <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
                   Review more
                   <span className="icon-link"></span>
                 </Button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       ) : (

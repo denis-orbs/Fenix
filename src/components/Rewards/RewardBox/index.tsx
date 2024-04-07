@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Button } from '@/src/components/UI'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/components/Common/InfoBox'
@@ -27,10 +28,10 @@ const RewardBox = () => {
             <InfoBox key={index} data={exchange} hasTooltip={false} />
           ))}
           <div className='mx-auto text-sm mt-5'>
-            <p className="text-shark-100 gap-2 flex items-center">
+            <Link target="_blank" href="https://discord.com/invite/fenixfi" className="text-shark-100 gap-2 flex items-center">
               <span className="icon-discord"></span>
               Need some help?
-            </p>
+            </Link>
           </div>
         </div>
       </div>

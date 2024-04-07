@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/components/Common/InfoBox'
 import STEPS from './data'
@@ -65,11 +66,11 @@ const Bribes = () => {
           {STEPS.map((exchange, index) => (
             <InfoBox hasDecorator={STEPS.length === index + 1 ? false : true} bgBox="exchange-box-info" key={index} data={exchange} textColor={'text-shark-100'} />
           ))}
-          <div className="mt-16 cursor-pointer">
+          <Link target="_blank" href="https://discord.com/invite/fenixfi" className="mt-16 cursor-pointer">
             <p className="flex gap-2 justify-center text-shark-100">
               <span className="icon-discord"></span>Need some help?
             </p>
-          </div>
+          </Link>
           <div className="absolute top-0 z-10 w-28 right-0">
             <ProgressBar progress={50} />
           </div>

@@ -1,4 +1,6 @@
 'use client'
+
+import Link from 'next/link'
 import { Button } from '@/src/components/UI'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/components/Common/InfoBox'
@@ -45,10 +47,10 @@ const LockTokens = ({ changeState, setChangeState }: LockTokensProps) => {
               Vote
             </Button>
           </div>
-          <p className="flex text-sm gap-2 p-2 xl:mt-8 text-[#53606A]">
+          <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex text-sm gap-2 p-2 xl:mt-8 text-[#53606A]">
             <span className="icon-discord"></span>
             Need some help?
-          </p>
+          </Link>
         </div>
         <div className="relative flex flex-col w-full xl:w-[40%] max-h-[390px]  overflow-x-none">
           {LOCK_LIST.map((exchange, index) => (

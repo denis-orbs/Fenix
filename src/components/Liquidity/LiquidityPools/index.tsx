@@ -1,15 +1,29 @@
 'use client'
 
+import Link from 'next/link'
 import { Button } from '@/src/components/UI'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/components/Common/InfoBox'
 import { EXCHANGE_LIST } from '../data'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useEffect, useState } from 'react'
 
 const LiquidityPools = () => {
+  const [tokens, setTokens] = useState<Number>(0)
+
+  const tokensData = async () => {
+    setTokens((await fetchTokens()).length)
+  }
+
+  useEffect(() => {
+    tokensData()
+  }, [])
   return (
     <MainBox>
-      <div className="flex flex-col items-center justify-between
-       w-full xl:flex-row relative z-10 xl:min-h-[350px]">
+      <div
+        className="flex flex-col items-center justify-between
+       w-full xl:flex-row relative z-10 xl:min-h-[350px]"
+      >
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
           <p className="mb-4 text-sm text-shark-100">
@@ -25,7 +39,7 @@ const LiquidityPools = () => {
           </div>
           <p className="flex items-center gap-3 mb-4 text-sm text-shark-100">
             <span className="inline-block text-lg text-transparent icon-circles bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
-            There are currently 54 tokens listed.
+            There are currently {tokens.toString()} tokens listed.
           </p>
         </div>
         <div className="relative flex flex-col w-full xl:w-[40%]">
@@ -35,10 +49,10 @@ const LiquidityPools = () => {
         </div>
       </div>
       <div className="hidden xl:block text-shark-100 rounded-2xl xl:rounded-none relative z-10">
-        <div className="flex gap-3 justify-end cursor-pointer">
+        <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex gap-3 justify-end cursor-pointer">
           <span className="icon-discord"></span>
           <p className="me-10">Need some help?</p>
-        </div>
+        </Link>
       </div>
     </MainBox>
   )

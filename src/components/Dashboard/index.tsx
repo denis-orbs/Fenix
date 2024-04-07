@@ -10,11 +10,11 @@ const Dashboard = () => {
   return (
     <div className="py-5">
       <LiquidityPositions />
-      <MyLocks />
+      {/* <MyLocks />
       <MyNest />
-      <VotingRewards />
+      <VotingRewards /> */}
       <MyStrategies />
-      <StrategiesDCA />
+      {/* <StrategiesDCA /> */}
     </div>
   )
 }

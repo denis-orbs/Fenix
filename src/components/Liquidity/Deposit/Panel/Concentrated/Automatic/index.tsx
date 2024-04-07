@@ -13,6 +13,9 @@ import {
   useToken1Data,
 } from '@/src/state/liquidity/hooks'
 import { tokenList } from '@/src/library/constants/tokenList'
+
+import { Button } from '@/src/components/UI'
+
 const providers = [
   {
     label: 'ICHI',
@@ -59,6 +62,10 @@ const Automatic = () => {
 
       {currentProvider === '1' && <DepositAmountsICHI token={token0Data} />}
       {currentProvider === '2' && <DepositAmountsGAMMA firstToken={firstToken} secondToken={secondToken} />}
+      
+      <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
+        Create Position
+      </Button>
     </>
   )
 }

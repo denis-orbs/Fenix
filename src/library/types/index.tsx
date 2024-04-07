@@ -2,11 +2,13 @@ import { FeeAmount } from '../constants/trade'
 
 export type Address = `0x${string}` | undefined
 export interface IToken {
-  id: number
+  id?: number
   name: string
   symbol: string
   address: Address
   decimals: number
+  img: string
+  price: number
 }
 export interface IOption {
   label: string

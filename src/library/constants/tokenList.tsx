@@ -28,7 +28,7 @@ export const tokenList: IToken[] = [
     id: 3,
     name: 'WBTC',
     symbol: 'WBTC',
-    address: '0x0',
+    address: '0x9Fe9D260262331807D0aa0fb06Fda1fa1b5E2ce5',
     decimals: 8,
   },
   {
