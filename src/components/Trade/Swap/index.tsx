@@ -11,10 +11,19 @@ const Swap = () => {
       {/* <div className="flex flex-col w-full"> */}
       {/* <div className="flex flex-wrap w-full gap-5 mb-10 xl:flex-nowrap"> */}
       <iframe
-        width="18000"
+        width="1000"
         height="600"
-        src="https://widget.openocean.finance?p=JTIzMTkxMzEzJTI0KiUyNCUyMzFDMUYyMiUyNColMjQlMjMxOTEzMTMlMjQqJTI0JTIzMTkxMzEzJTI0KiUyNCUyM2ZmZiUyNColMjQlMjM4QzdGOEMlMjQqJTI0JTIzZmI1MzRmJTI0KiUyNCUyM2ZmZmZmZiUyNColMjQlMjMzMzMxNDclMjQqJTI0JTIzYjFhN2IxJTI0KiUyNCUyMzQ3OWE0YiUyNColMjQlMjNmNzUwMjklMjQqJTI0RmVuaXglMjBGaW5hbmNlJTI0KiUyNFJvYm90byUyNColMjQlMjQqJTI0JTI0KiUyNCUyNColMjQlMjQqJTI0Ymxhc3QlMjQqJTI0V0VUSCUyNColMjRVU0RCJTI0KiUyNA=="
+        src={
+          'https://widget.openocean.finance?p=JTIzMTkxMzEzJTI0KiUyNCUyMzFDMUYyMiUyNColMjQl' +
+          'MjMxOTEzMTMlMjQqJTI0JTIzMTkxMzEzJTI0KiUyNCUyM2ZmZiUyNColMjQlMjM4QzdGOEMlMjQqJTI0' +
+          'JTIzZmI1MzRmJTI0KiUyNCUyM2ZmZmZmZiUyNColMjQlMjMzMzMxNDclMjQqJTI0JTIzYjFhN2IxJTI0' +
+          'KiUyNCUyMzQ3OWE0YiUyNColMjQlMjNmNzUwMjklMjQqJTI0RmVuaXglMjBGaW5hbmNlJTI0KiUyNFJv' +
+          'Ym90byUyNColMjQlMjQqJTI0JTI0KiUyNCUyNColMjQlMjQqJTI0Ymxhc3QlMjQqJTI0V0VUSCUyNCol' +
+          'MjRVU0RCJTI0KiUyNA=='
+        }
       ></iframe>
+      <br></br>
+
       {/* <Panel /> */}
 
       {/* <Chart className="w-full xl:w-full" /> */}

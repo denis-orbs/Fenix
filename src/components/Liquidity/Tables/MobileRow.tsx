@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
+import { PoolData } from '@/src/state/liquidity/types'
 
 type IRow = {
   type: string
   APR: string
 }
 interface RowDataProps {
-  row: IRow
+  row: PoolData
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string
@@ -28,14 +29,14 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
         <div className="flex gap-[9px] items-center">
           <div className="relative flex items-center">
             <Image
-              src="/static/images/tokens/FNX.svg"
+              src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
               alt="token"
               className="w-8 h-8 rounded-full"
               width={32}
               height={32}
             />
             <Image
-              src="/static/images/tokens/ETH.svg"
+              src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
               alt="token"
               className="w-8 h-8 -ml-5 rounded-full"
               width={32}
@@ -45,12 +46,12 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
           <div className="flex flex-col">
             <h5 className="text-sm font-semibold leading-normal mb-1.5">FNX/ETH</h5>
             <div className="flex items-center gap-2">
-              {'VOLATILE' === row.type && (
+              {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
                 <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                   Volatile Pool
                 </span>
               )}
-              {'CONCENTRATED' === row.type && (
+              {row.pairDetails.pairSymbol === 'Concentrated pool' && (
                 <span
                   className="py-1 px-2  text-xs rounded-lg 
                 bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
@@ -58,7 +59,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                   Concentrated
                 </span>
               )}
-              {'STABLE' === row.type && (
+              {row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
                 <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                   Stable Pool
                 </span>
@@ -84,7 +85,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
           <>
             {activeRange && (
               <div className="flex justify-between border mt-[21px] items-center  mb-2.5 border-shark-300 p-4 rounded-lg">
-                <h1 className='text-xs'>Range</h1>
+                <h1 className="text-xs">Range</h1>
                 <div className={`flex items-center justify-center`}>
                   <div className="flex gap-2 items-center">
                     <span className="bg-green-600 w-4 h-4 rounded-full border-4 border-black"></span>

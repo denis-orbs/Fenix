@@ -22,7 +22,13 @@ const TokenSelector = ({ token, setToken, variant, onTokenValueChange, value }: 
 
   return (
     <div>
-      <ExchangeBox token={token} onOpenModal={() => setOpenSelectToken(true)} variant={variant} onTokenValueChange={onTokenValueChange} value={value} />
+      <ExchangeBox
+        token={token}
+        onOpenModal={() => setOpenSelectToken(true)}
+        variant={variant}
+        onTokenValueChange={onTokenValueChange}
+        value={value}
+      />
 
       <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
     </div>
@@ -48,7 +54,7 @@ const TokensSelector = ({
   setSecondToken: (token: IToken) => void
   setFirstValue: (value: string) => void
   setSecondValue: (value: string) => void
-  onTokenValueChange:(arg0: any, token: IToken) => void
+  onTokenValueChange: (arg0: any, token: IToken) => void
 }) => {
   return (
     <div className="flex flex-col gap-1 mb-2 relative">

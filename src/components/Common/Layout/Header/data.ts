@@ -11,22 +11,22 @@ export const MENU_LINKS = [
     name: 'Liquidity',
     href: '/liquidity',
   },
-  {
-    name: 'Vote',
-    href: '/vote',
-  },
-  {
-    name: 'Lock',
-    href: '/lock',
-  },
+  // {
+  //   name: 'Vote',
+  //   href: '/vote',
+  // },
+  // {
+  //   name: 'Lock',
+  //   href: '/lock',
+  // },
   {
     name: 'Migration',
     href: '/migration',
   },
-  {
-    name: 'Bribes',
-    href: '/bribes',
-  },
+  // {
+  //   name: 'Bribes',
+  //   href: '/bribes',
+  // },
 ]
 
 export const SOCIAL_LINKS = [

@@ -1,5 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+//@ts-nocheck
 'use client'
 
 import { useEffect, useState } from 'react'

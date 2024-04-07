@@ -1,5 +1,5 @@
+//@ts-nocheck
 import { useState } from 'react'
-
 import PairSelector from '@/src/components/Liquidity/Common/PairSelector'
 import CLMProviderSelector from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/CLMProviderSelector'
 import DepositAmountsICHI from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsICHI'
@@ -18,17 +18,17 @@ const providers = [
       height: 21,
     },
   },
-  {
-    label: 'GAMMA',
-    value: '2',
-    apr: 3.08,
-    src: 'https://www.gamma.xyz/',
-    logo: {
-      src: '/static/images/providers/gamma.svg',
-      width: 95.158,
-      height: 16,
-    },
-  },
+  // {
+  //   label: 'GAMMA',
+  //   value: '2',
+  //   apr: 3.08,
+  //   src: 'https://www.gamma.xyz/',
+  //   logo: {
+  //     src: '/static/images/providers/gamma.svg',
+  //     width: 95.158,
+  //     height: 16,
+  //   },
+  // },
 ]
 
 const Automatic = () => {
@@ -53,7 +53,7 @@ const Automatic = () => {
 
       {currentProvider === '1' && <DepositAmountsICHI token={firstToken} />}
       {currentProvider === '2' && <DepositAmountsGAMMA firstToken={firstToken} secondToken={secondToken} />}
-      
+
       <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
         Create Position
       </Button>

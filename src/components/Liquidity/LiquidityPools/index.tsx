@@ -1,11 +1,31 @@
 'use client'
 
+import Link from 'next/link'
 import { Button } from '@/src/components/UI'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/components/Common/InfoBox'
 import { EXCHANGE_LIST } from '../data'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
+import { fetchv2Factories, fetchv3Factories } from '@/src/state/liquidity/reducer'
+import { v2FactoryData, v3FactoryData } from '@/src/state/liquidity/types'
+// const [v2data, setV2Data] = useState<v2FactoryData[]>([])
+// const [v3data, setV3Data] = useState<v3FactoryData[]>([])
+
+const fetchData = async () => {
+  const v2data = await fetchv2Factories()
+  const v3data = await fetchv3Factories()
+
+  if (v2data && v3data) {
+    EXCHANGE_LIST[0].description =
+      '$ ' + (Number(v2data[0].totalLiquidityUSD) + Number(v3data[0].totalValueLockedUSD)).toFixed(2).toString()
+    EXCHANGE_LIST[1].description = '$ ' + Number(v3data[0].totalFeesUSD).toFixed(2).toString()
+    EXCHANGE_LIST[2].description =
+      '$ ' + (Number(v2data[0].totalVolumeUSD) + Number(v3data[0].totalVolumeUSD)).toFixed(2).toString()
+    // setV2Data(v2data)
+    // setV3Data(v3data)
+  }
+}
 
 const LiquidityPools = () => {
   const [tokens, setTokens] = useState<Number>(0)
@@ -16,6 +36,7 @@ const LiquidityPools = () => {
 
   useEffect(() => {
     tokensData()
+    fetchData()
   }, [])
   return (
     <MainBox>
@@ -48,10 +69,14 @@ const LiquidityPools = () => {
         </div>
       </div>
       <div className="hidden xl:block text-shark-100 rounded-2xl xl:rounded-none relative z-10">
-        <div className="flex gap-3 justify-end cursor-pointer">
+        <Link
+          target="_blank"
+          href="https://discord.com/invite/fenixfi"
+          className="flex gap-3 justify-end cursor-pointer"
+        >
           <span className="icon-discord"></span>
           <p className="me-10">Need some help?</p>
-        </div>
+        </Link>
       </div>
     </MainBox>
   )

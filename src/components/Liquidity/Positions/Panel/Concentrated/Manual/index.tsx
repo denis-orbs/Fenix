@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState } from 'react'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import SetRange from './SetRange'

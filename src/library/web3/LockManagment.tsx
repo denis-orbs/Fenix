@@ -173,7 +173,7 @@ export async function withdraw(tokenId: BigInt): Promise<Hash> {
     to: VotingEscrowAddress,
     account: signer.account,
   })
-
+  console.log('gas', gas?.toString())
   const data = await writeContract(config, {
     address: VotingEscrowAddress,
     abi: votingEscrowABI,

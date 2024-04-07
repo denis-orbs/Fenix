@@ -6,33 +6,64 @@ import { Button, Switch } from '@/src/components/UI'
 import Classic from '@/src/components/Liquidity/Deposit/Panel/Classic'
 import Automatic from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic'
 import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual'
-import { Address, IToken } from '@/src/library/types'
+import { IToken, Address } from '@/src/library/types'
+import { useGammaCreatePosition } from '@/src/library/hooks/web3/useGamma'
 import { isAddress } from 'viem'
+import { fetchv2PairId } from '@/src/state/liquidity/reducer'
+import { useAppSelector } from '@/src/state'
+import { V2PairId } from '@/src/state/liquidity/types'
 
 const Panel = () => {
   const [depositType, setDepositType] = useState<
     'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
   >('CONCENTRATED_AUTOMATIC')
 
-  const [tokenSwap, setTokenSwap] = useState<IToken>({ name: 'Fenix', symbol: 'FNX', id: 0, decimals: 18, address: "0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9" as Address, img: "/static/images/tokens/FNX.svg" } as IToken)
-  const [tokenFor, setTokenFor] = useState<IToken>({ name: 'Ethereum', symbol: 'ETH', id: 1, decimals: 18, address: "0x4200000000000000000000000000000000000023" as Address, img: "/static/images/tokens/WETH.svg" } as IToken)
+  const [tokenSwap, setTokenSwap] = useState<IToken>({
+    name: 'Fenix',
+    symbol: 'FNX',
+    id: 0,
+    decimals: 18,
+    address: '0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9' as Address,
+    img: '/static/images/tokens/FNX.svg',
+  } as IToken)
+
+  const [tokenFor, setTokenFor] = useState<IToken>({
+    name: 'Ethereum',
+    symbol: 'ETH',
+    id: 1,
+    decimals: 18,
+    address: '0x4200000000000000000000000000000000000023' as Address,
+    img: '/static/images/tokens/WETH.svg',
+  } as IToken)
+
   const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
   const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
+  const [pair, setPair] = useState<V2PairId>()
 
+  const handlerSwitch = () =>
+    setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
+
+  const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
+  const { createPosition: createGammaPosition } = useGammaCreatePosition()
+  const createPosition = async () => {
+    if (depositType === 'CONCENTRATED_AUTOMATIC') {
+      createGammaPosition()
+    }
+  }
   useEffect(() => {
-    const hash = window.location.hash;
-    const hashValue = hash.substring(1);
-    const pairString = hashValue.split("-")
-    if(pairString.length < 1) return
+    const hash = window.location.hash
+    const hashValue = hash.substring(1)
+    const pairString = hashValue.split('-')
+    if (pairString.length < 1) return
 
-    if(pairString[0] == "auto") setDepositType("CONCENTRATED_AUTOMATIC")
-    if(pairString[0] == "manual") setDepositType("CONCENTRATED_MANUAL")
-    if(pairString[0] == "stable") setDepositType("STABLE")
-    if(pairString[0] == "volatile") setDepositType("VOLATILE")
+    if (pairString[0] == 'auto') setDepositType('CONCENTRATED_AUTOMATIC')
+    if (pairString[0] == 'manual') setDepositType('CONCENTRATED_MANUAL')
+    if (pairString[0] == 'stable') setDepositType('STABLE')
+    if (pairString[0] == 'volatile') setDepositType('VOLATILE')
 
-    if(!isAddress(pairString[1]) || !isAddress(pairString[2])) return
+    if (!isAddress(pairString[1]) || !isAddress(pairString[2])) return
     setDefaultPairs([pairString[1], pairString[2]])
-  }, []);
+  }, [])
 
   useEffect(() => {
     const getList = async () => {
@@ -50,30 +81,25 @@ const Panel = () => {
             decimals: 18,
             img: item.logourl,
             isCommon: item.common,
-            price: parseFloat(item.priceUSD)
+            price: parseFloat(item.priceUSD),
           }
         })
 
-        const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken];
-        if(defaultPairs.length > 0) {
+        const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken]
+        if (defaultPairs.length > 0) {
           parsedData.map((item: any) => {
-            if(item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
-            if(item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
+            if (item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
+            if (item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
           })
           setDefaultPairs([])
         }
         setDefaultPairsTokens(newDefaultPairsTokens)
-      } catch (error) {
-      }
+      } catch (error) {}
     }
 
     defaultPairs.length > 0 ? getList() : {}
   }, [defaultPairs])
 
-  const handlerSwitch = () => setDepositType(('CONCENTRATED_AUTOMATIC' === depositType || 'CONCENTRATED_MANUAL' === depositType) ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
-
-  const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
-  
   return (
     <section className="box-panel-trade">
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
@@ -130,11 +156,20 @@ const Panel = () => {
           </div>
 
           {(depositType === 'VOLATILE' || depositType === 'STABLE') && (
-            <Classic depositType={depositType} tokenSwap={tokenSwap} tokenFor={tokenFor} defaultPairs={defaultPairsTokens} />
+            <Classic
+              depositType={depositType}
+              tokenSwap={tokenSwap}
+              tokenFor={tokenFor}
+              defaultPairs={defaultPairsTokens}
+            />
           )}
 
           {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
-          {depositType === 'CONCENTRATED_MANUAL' && <Manual defaultPairs={defaultPairsTokens}/>}
+          {depositType === 'CONCENTRATED_MANUAL' && <Manual defaultPairs={defaultPairsTokens} />}
+
+          {/* <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={createPosition}>
+            Create Position
+          </Button> */}
         </div>
       </div>
     </section>

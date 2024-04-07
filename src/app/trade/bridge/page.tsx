@@ -1,12 +1,9 @@
-'use client'
-import Bridge from '@/src/components/Trade/Bridge'
 import TradeLayout from '@/src/components/Trade/Common/Layout'
-const BridgePage = () => {
+
+export default function page() {
   return (
     <TradeLayout>
-      <Bridge />
+      <iframe height={700} width={'100%'} src="https://fenix-crosschain.vercel.app/"></iframe>
     </TradeLayout>
   )
 }
-
-export default BridgePage

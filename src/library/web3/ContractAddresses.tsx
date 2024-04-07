@@ -28,4 +28,5 @@ export const PairAPIV3Address = process.env.NEXT_PUBLIC_PAIR_API_V3_ADDRESS as A
 export const RewardAPIV3Address = process.env.NEXT_PUBLIC_REWARD_API_V3_ADDRESS as Address
 export const MaNFTMigratorAddress = process.env.NEXT_PUBLIC_MANFT_MIGRATION_ADDRESS as Address
 export const VeNFTAPIV3Address = process.env.NEXT_PUBLIC_VE_NFT_V3_API_ADDRESS as Address
+export const ArbitrumTVLBreakdownAddress = '0xb26Bb0F38064798aC6a1e15679F2640361DF66e0' as Address
 export const AlgebraSubgraph = process.env.NEXT_PUBLIC_ALGEBRA_SUBGRAPH_URL as string

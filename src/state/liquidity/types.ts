@@ -1,7 +1,26 @@
-import { Address } from 'viem'
+import { Address } from '@/src/library/types'
+import { ApiState } from '@/src/library/types/connection'
+import { ClmProvider } from '@/src/library/types/liquidity'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
 
+export interface LiquidityState {
+  // Liquidity V2 Pairs
+  token0: Address
+  token0TypedValue: string
+  token1: Address
+  token1TypedValue: string
+  clmProvider: ClmProvider
+  v2Pairs: {
+    state: ApiState
+    tablestate: ApiState
+    data: LiquidityV2PairDetails[]
+    tableData?: LiquidityTableElement[]
+  }
+  concentratedPools: { state: ApiState; data: any }
+}
+
+// TODO: Move this type to types/liquidity.ts
 export type PoolData = {
   pairDetails: LiquidityTableElement
 }
@@ -100,6 +119,9 @@ export interface V2PairInfo {
   volumeToken1: string
   volumeUSD: string
 }
+export interface V2PairId {
+  id: string
+}
 export interface V3PairInfo {
   id: Address
   feesToken0: string
@@ -140,4 +162,15 @@ export interface V3PairInfo {
     name: string
     symbol: string
   }
+}
+
+export interface v3FactoryData {
+  totalFeesUSD: string
+  totalVolumeUSD: string
+  totalValueLockedUSD: string
+}
+
+export interface v2FactoryData {
+  totalLiquidityUSD: string
+  totalVolumeUSD: string
 }

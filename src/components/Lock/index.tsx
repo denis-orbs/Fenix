@@ -63,8 +63,8 @@ const Lock = () => {
           <MyLocks Locks={LOCKS_FILTER} />
           <MylocksMobile Locks={LOCKS} />
           <h5 className="lg:text-2xl text-lg text-white pt-5">Nest</h5>
-          <Nest />
-          <NestMobile />
+          {/* <Nest /> */}
+          {/* <NestMobile /> */}
         </section>
       )}
     </>

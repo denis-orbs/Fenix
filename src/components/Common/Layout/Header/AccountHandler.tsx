@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import { Button } from '@/src/components/UI'
@@ -8,8 +8,17 @@ import useStore from '@/src/state/zustand'
 import { usePathname } from 'next/navigation'
 import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import axios from 'axios'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
+
+interface Points {
+  userLiqPoints: number[]
+  pendingSent: number[]
+}
 
 const AccountHandler = () => {
+  const [openPoints, setOpenPoints] = useState<boolean>(false)
   const { isConnected, account } = useActiveConnectionDetails()
 
   const { setWalletSelectionModal } = useStore()
@@ -23,12 +32,73 @@ const AccountHandler = () => {
     openConnectModal && openConnectModal()
   }
 
+  const [data, setData] = useState<Points>({} as Points)
+  const { address } = useAccount()
+
+  useEffect(() => {
+    const fetchData = async (address: Address) => {
+      try {
+        const response = await axios.get(`https://fenox-blastpoint-api.vercel.app/query/${address}`)
+
+        setData({
+          userLiqPoints: response.data.userLiqPoints.reduce((a: number, b: number) => a + b, 0).toFixed(2),
+          pendingSent: response.data.pendingSent.reduce((a: number, b: number) => a + b, 0).toFixed(2),
+        })
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        // Handle errors as needed
+      }
+    }
+
+    if (address) fetchData(address)
+
+    // Cleanup function if needed
+    return () => {
+      // Cleanup code here
+    }
+  }, [address])
+
   return (
-    <div className="flex items-center gap-[15px] w-full md:w-max-content xl:w-auto">
+    <div className="flex items-center gap-2 xl:gap-3 w-full md:w-max-content xl:w-auto flex-row">
+      {isConnected && (
+        <div className="relative w-full">
+          <div
+            onMouseEnter={() => setOpenPoints(true)}
+            onMouseLeave={() => setOpenPoints(false)}
+            className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden xl:flex"
+          >
+            <p className="text-xs text-white">
+              {data.userLiqPoints} <span className="hidden xl:inline">Points</span>
+            </p>
+            <Image src="/static/images/tokens/BLAST.svg" className="w-8 h-8" alt="logo" width={30} height={30} />
+          </div>
+          {openPoints && (
+            <div className="absolute bg-shark-400 rounded-lg border border-shark-300 w-full xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex flex-col justify-center items-center">
+                  <p className="text-shark-100 text-xs mb-2">PTC Available</p>
+                  <p className="text-white text-sm">{data.userLiqPoints}</p>
+                </div>
+                <div className="flex flex-col justify-center items-center">
+                  <p className="text-shark-100 text-xs mb-2">PTC Sent</p>
+                  <p className="text-white text-sm">{data.pendingSent}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-center flex-col">
+                <p className="text-xs text-shark-100 mb-2">Pending points will be sent in:</p>
+                <span className="flex items-center gap-2">
+                  <i className="icon-time text-white text-sm"></i>
+                  <p className="text-white text-xs underline">1 Hour</p>
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
       {isConnected && (
         <div className="items-center flex-shrink-0 hidden gap-2 xl:flex">
-          {/* <Image src="/static/images/tokens/ETH.svg" className="w-6 h-6" alt="logo" width={24} height={24} />
-          <p className="text-xs text-white">1.987 ETH</p> */}
+          {/* <Image src="/static/images/tokens/ETH.svg" className="w-6 h-6" alt="logo" width={24} height={24} /> */}
+          {/* <p className="text-xs text-white">1.987 ETH</p> */}
         </div>
       )}
       <div className="flex w-full xl:w-auto">
@@ -71,6 +141,11 @@ const AccountHandler = () => {
           </Button>
         )}
       </div>
+      {isConnected && (
+        <div className="p-2 cursor-pointer">
+          <span className="text-[26px] transition-all icon-logout text-shark-100 hover:text-outrageous-orange-400"></span>
+        </div>
+      )}
     </div>
   )
 }

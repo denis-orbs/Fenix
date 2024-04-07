@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppThunkDispatch } from '..'
+import { getConcentratedPools } from './thunks'
 import { getLiquidityTableElements, getLiquidityV2Pairs } from './thunks'
 import { useAccount } from 'wagmi'
 
@@ -11,7 +12,8 @@ export default function LiquidityUpdater() {
   useEffect(() => {
     if (address) thunkDispatch(getLiquidityV2Pairs(address))
     if (address) thunkDispatch(getLiquidityTableElements(address))
-  }, [thunkDispatch, address])
+    thunkDispatch(getConcentratedPools())
+  }, [thunkDispatch])
 
   return null
 }

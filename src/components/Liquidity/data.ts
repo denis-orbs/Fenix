@@ -1,16 +1,16 @@
 export const STEPS = [
   {
-    title: 'Select your Pool',
+    label: 'Select your Pool',
     description: 'Select the pair that suits better your strategy.',
     icon: 'icon-circles',
   },
   {
-    title: 'Deposit your Liquidity',
+    label: 'Deposit your Liquidity',
     description: 'The deeper the liquidity (TVL), the lower the slippage a pool will offer.',
     icon: 'icon-lock-up',
   },
   {
-    title: 'Receive Benefits',
+    label: 'Receive Benefits',
     description:
       'LPs get FNX emissions, while veFNX lockers get the pool trading fees as an incentive to vote on the most productive pools.',
     icon: 'icon-rocket',
@@ -19,18 +19,18 @@ export const STEPS = [
 
 export const EXCHANGE_LIST = [
   {
-    title: 'Total Value Locked',
-    description: '$92,837,327.32',
+    label: 'Total Value Locked',
+    description: '$ 0.00',
     icon: 'icon-lock',
   },
   {
-    title: 'Fees',
-    description: '$64,789,445.82',
+    label: 'Fees',
+    description: '$ 0.00',
     icon: 'icon-pig',
   },
   {
-    title: 'Volume',
-    description: '$48,680,765.44',
+    label: 'Volume',
+    description: '$ 0.00',
     icon: 'icon-coins',
   },
 ]
@@ -75,7 +75,7 @@ export const DATA_ROW = [
   },
 ]
 
-export const OPTIONS_FILTER = ['Stable', 'Volatile', 'Concentrated', 'All Pools']
+export const OPTIONS_FILTER = ['All Pools', 'Stable', 'Volatile', 'Concentrated']
 
 export const NAV_LIST = [
   {
@@ -96,7 +96,7 @@ export const NAV_LIST = [
     name: 'My Positions',
     description: 'Set and Forget',
     icon: 'icon-auto-graph',
-    path: 'positions',
+    path: '/dashboard',
     active: true,
   },
 ]
