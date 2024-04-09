@@ -104,8 +104,8 @@ const SetRange = ({setCurrentPercentage, currentPercentage, price1, price2, show
       </div>
 
       <div className="flex gap-[21px]">
-        <Input title="Min Price" percent={`-${currentPercentage == -1 ? 0 : shownPercentage[0]}`} value={currentPercentage == -1 ? 0 : price1} />
-        <Input title="Max Price" percent={`+${currentPercentage == -1 ? "Infinity" : shownPercentage[1]}`} value={currentPercentage == -1 ? "Infinity" : price2} />
+        <Input title="Min Price" percent={`-${currentPercentage == -1 ? 0 : shownPercentage[0]}`} value={currentPercentage == -1 ? 0 : price1.toFixed(6).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')} />
+        <Input title="Max Price" percent={`+${currentPercentage == -1 ? "Infinity" : shownPercentage[1]}`} value={currentPercentage == -1 ? "Infinity" : price2.toFixed(6).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')} />
       </div>
     </div>
   )

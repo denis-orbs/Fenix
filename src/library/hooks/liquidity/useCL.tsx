@@ -92,7 +92,7 @@ export async function getTickToPrice(tick: any) {
 }
 
 export async function getPriceToTick(price: any) {
-
+    
     price = priceToSqrtPrice(parseInt((price * 1e18).toString()))
     /**
      * This hook is used to change price into tick on AlgebraPool 
@@ -122,7 +122,7 @@ export async function getPriceToTick(price: any) {
 }
 
 export async function getPriceAndTick(price: any) {
-
+    if(price == 0) return { price: 0, tick: 0} 
     price = priceToSqrtPrice(parseInt((price * 1e18).toString()))
     /**
      * This hook is used to change tick into price on AlgebraPool 
@@ -147,14 +147,72 @@ export async function getPriceAndTick(price: any) {
         }
     )
 
-    console.log(tick[0])
-    if(tick[0].status === 'failure') { console.log("fff"); return { price: 0, tick: 0} }
+    if(tick[0].status === 'failure') { console.log("Failed"); return { price: 0, tick: 0} }
     const result: [number, number] = tick[0].result as [number, number]
 
     return {
         price: sqrtPriceToPrice(result[1].toString()),
         tick: result[0]
     }
+}
+
+export async function getAmounts(cTick: any, hTick:any, lTick:any, amount0: any, amount1: any) {
+
+    const amounts = await multicall(
+        createConfig({
+            chains: [blastSepolia],
+            transports: {
+            [blastSepolia.id]: http()
+            },
+        }),
+        {
+            contracts: [
+                {
+                    abi: TICK_MATH_ABI,
+                    address: contractAddressList.tick_math as Address,
+                    functionName: 'getAmounts',
+                    args: [cTick, hTick, lTick, ethers.parseUnits(parseFloat(amount0).toFixed(10), 'ether'), ethers.parseUnits(parseFloat(amount1).toFixed(10), 'ether')],
+                },
+            ],
+        }
+    )
+
+    if(amounts[0].status === 'failure') { console.log("Failed"); return { amount0: amount0, amount1: amount1} }
+    const result: [number, number] = amounts[0].result as [number, number]
+
+    return {
+        amount0: result[0],
+        amount1: result[1]
+    }
+}
+
+export async function getRatio(cTick: any, hTick:any, lTick:any) {
+
+    const amounts = await multicall(
+        createConfig({
+            chains: [blastSepolia],
+            transports: {
+            [blastSepolia.id]: http()
+            },
+        }),
+        {
+            contracts: [
+                {
+                    abi: TICK_MATH_ABI,
+                    address: contractAddressList.tick_math as Address,
+                    functionName: 'getAmounts',
+                    args: [cTick, hTick, lTick, ethers.parseUnits(("1"), 'ether'), ethers.parseUnits("1", 'ether')],
+                },
+            ],
+        }
+    )
+
+    if(amounts[0].status === 'failure') { console.log("Failed"); return "1" }
+    const result: [number, number] = amounts[0].result as [number, number]
+    // console.log("6 dec", sqrtPriceToPrice("79228162514264337593543950336000000"))
+    // console.log("6 dec", sqrtPriceToPrice("1331612774277006712758282194"))
+    
+    return (Number(result[0])/Number(result[1])).toString()
 }
 
 function sqrtPriceToPrice(sqrtPrice: string) {
