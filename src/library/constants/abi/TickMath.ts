@@ -4,6 +4,50 @@ const TICK_MATH_ABI: Abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "int24",
+				"name": "tick",
+				"type": "int24"
+			},
+			{
+				"internalType": "int24",
+				"name": "higherTick",
+				"type": "int24"
+			},
+			{
+				"internalType": "int24",
+				"name": "lowerTick",
+				"type": "int24"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount0",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount1",
+				"type": "uint256"
+			}
+		],
+		"name": "getAmounts",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amount0",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount1",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint160",
 				"name": "_price",
 				"type": "uint160"
