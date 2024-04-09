@@ -7,6 +7,7 @@ import MobileRow from './MobileRow'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
 import { formatCurrency } from '@/src/library/utils/numbers'
+import { totalCampaigns } from '@/src/library/utils/campaigns'
 
 interface RowDataProps {
   row: PoolData
@@ -107,6 +108,7 @@ const RowData = ({
         )} */}
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
           <div className="flex items-center  ">
+            {/* {totalCampaigns.map((campaign) => { })} */}
             <Image
               src={`/static/images/tokens/blastgold.png`}
               alt="token"

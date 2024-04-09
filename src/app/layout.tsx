@@ -4,7 +4,6 @@ import '@/src/assets/styles/globals.css'
 import '@rainbow-me/rainbowkit/styles.css'
 import { Poppins } from 'next/font/google'
 import Head from 'next/head'
-import { http, type Chain } from 'viem'
 
 import Decorator from '@/src/components/Common/Layout/Background'
 import Footer from '@/src/components/Common/Layout/Footer'
@@ -18,35 +17,22 @@ import dynamic from 'next/dynamic'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { WagmiProvider } from 'wagmi'
-import { blast, blastSepolia, localhost, polygon } from 'wagmi/chains'
+import { blast, blastSepolia } from 'wagmi/chains'
 import store, { persistor } from '../state'
+import { usePathname } from 'next/navigation'
 
-console.log(typeof localhost)
-
-export const polygonFork = {
-  id: 31337,
-  name: 'Polygon Fork',
-  nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
-  rpcUrls: {
-    default: { http: ['https://rpc.blast.io'] },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-    },
-  },
-} as const satisfies Chain
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '900'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap',
 })
+
 const { wallets } = getDefaultWallets()
 export const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
-  chains: [polygonFork, blast, blastSepolia],
+  chains: [blast, blastSepolia],
   wallets: [
     ...wallets,
     {
@@ -60,15 +46,19 @@ export const config = getDefaultConfig({
 const queryClient = new QueryClient()
 
 const Updaters = dynamic(() => import('@/src/state/updater'), { ssr: false })
-
+// Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
   return (
     <html lang="en">
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <body suppressHydrationWarning={true} className={`${poppins.className} relative pt-[26px] pb-5`}>
+      <body
+        suppressHydrationWarning={true}
+        className={`${poppins.className} relative pt-[26px] mix-blend-lighten ${pathname === '/' ? 'bg-cover ' : ''}`}
+      >
         <ReduxProvider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <WagmiProvider config={config}>

@@ -9,8 +9,6 @@ import { ethers } from 'ethers'
 import { contractAddressList } from '../../constants/contactAddresses'
 import { injected } from 'wagmi/connectors'
 
-import { polygonFork } from '@/src/app/layout'
-
 export async function getTokenAllowance(token: Address, owner: Address, spender: Address) {
   if (!token || !owner || !spender) return '0'
   /**
@@ -19,9 +17,8 @@ export async function getTokenAllowance(token: Address, owner: Address, spender:
   console.log(token, owner, spender, 'here')
   const allowance = await multicall(
     createConfig({
-      chains: [blastSepolia, blast, polygonFork],
+      chains: [blastSepolia, blast],
       transports: {
-        [polygonFork.id]: http(),
         [blastSepolia.id]: http(),
         [blast.id]: http(),
       },

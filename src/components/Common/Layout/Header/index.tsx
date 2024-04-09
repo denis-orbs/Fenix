@@ -7,11 +7,14 @@ import Menu from './Menu'
 import AccountHandler from './AccountHandler'
 import WalletSelection from '@/src/components/Modals/WalletSelection'
 
+import { usePathname } from 'next/navigation'
 const Header = () => {
+  const pathname = usePathname()
+  // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   return (
-    <header className="hidden mx-auto xl:block container">
-      <div className="header-box flex justify-between gap-5 rounded-l">
-        <div className="flex items-center justify-between w-full relative z-10 h-[95px] px-4">
+    <header className="hidden mx-auto 2xl:block container">
+      <div className={`${pathname === '/' ? '' : 'header-box px-5'} flex justify-between gap-5 rounded-l`}>
+        <div className="flex items-center justify-between w-full relative z-10 h-[95px] ">
           <Link href="/">
             <Image
               src="/static/images/logo.svg"
@@ -24,8 +27,10 @@ const Header = () => {
           </Link>
           <Menu />
         </div>
-        <div className="flex relative z-10 items-center gap-3.5 justify-end px-5 h-[95px] 2xl:w-[60%]">
-          <AccountHandler />
+        <div
+          className={`flex relative z-10 items-center gap-3.5 justify-end px-5 h-[95px] ${pathname === '/' ? '2xl:w-1/2 ' : '2xl:w-3/5'}`}
+        >
+          <AccountHandler isMenuMobile={false} />
         </div>
       </div>
       <WalletSelection />

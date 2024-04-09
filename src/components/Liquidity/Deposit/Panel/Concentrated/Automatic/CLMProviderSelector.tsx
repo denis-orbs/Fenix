@@ -3,10 +3,11 @@
 /* eslint-disable react/no-multi-comp */
 import Image from 'next/image'
 import ComponentVisible from '@/src/library/hooks/useVisible'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/src/components/UI'
 import useIsMobile from '@/src/library/hooks/useIsMobile'
-
+import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import { useIchiVaultInfo } from '@/src/library/hooks/web3/useIchi'
 export type IOption = {
   label: string
   value: string
@@ -54,9 +55,12 @@ const ItemWrapper = ({
 }
 
 const Item = ({ option }: { option: IOption }) => {
-  const { label, icon, logo, apr } = option
+  const { label, icon, logo } = option
   const isMobile = useIsMobile()
+  const token0 = useToken0()
+  const token1 = useToken1()
 
+  const { apr } = useIchiVaultInfo(token0, token1)
   return (
     <div className="flex h-[30px] items-center min-w-0 text-ellipsis whitespace-nowrap flex-grow justify-between">
       {logo && (

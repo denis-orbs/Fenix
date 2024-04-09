@@ -1,40 +1,56 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-
 import { Button, Switch } from '@/src/components/UI'
 import Classic from '@/src/components/Liquidity/Deposit/Panel/Classic'
 import Automatic from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic'
 import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual'
-import { IToken, Address } from '@/src/library/types'
+import { IToken } from '@/src/library/types'
 import { useGammaCreatePosition } from '@/src/library/hooks/web3/useGamma'
 import { isAddress } from 'viem'
 import { fetchv2PairId } from '@/src/state/liquidity/reducer'
 import { useAppSelector } from '@/src/state'
 import { V2PairId } from '@/src/state/liquidity/types'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import { Address } from 'viem'
+
+const DepositTypeValues = {
+  VOLATILE: 'VOLATILE',
+  STABLE: 'STABLE',
+  CONCENTRATED_AUTOMATIC: 'CONCENTRATED_AUTOMATIC',
+  CONCENTRATED_MANUAL: 'CONCENTRATED_MANUAL',
+} as const
+
+type DepositType = (typeof DepositTypeValues)[keyof typeof DepositTypeValues]
 
 const Panel = () => {
-  const [depositType, setDepositType] = useState<
-    'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
-  >('CONCENTRATED_AUTOMATIC')
+  const [depositType, setDepositType] = useState<DepositType>('VOLATILE')
+  const searchParams = useSearchParams()
+  const setToken0 = useSetToken0()
+  const setToken1 = useSetToken1()
+  const token0 = useToken0()
+  const token1 = useToken1()
+  const router = useRouter()
+  const pathname = usePathname()
+  useEffect(() => {
+    const searchParamToken0 = searchParams.get('token0')
+    const searchParamToken1 = searchParams.get('token1')
+    const typeSearch = searchParams.get('type')
+    if (searchParamToken0 && isAddress(searchParamToken0)) setToken0(searchParamToken0 as Address)
+    if (searchParamToken1 && isAddress(searchParamToken1)) setToken1(searchParamToken1 as Address)
+    if (typeSearch && Object.values(DepositTypeValues).includes(typeSearch as DepositType)) {
+      setDepositType(typeSearch as DepositType)
+    }
+  }, [])
 
-  const [tokenSwap, setTokenSwap] = useState<IToken>({
-    name: 'Fenix',
-    symbol: 'FNX',
-    id: 0,
-    decimals: 18,
-    address: '0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9' as Address,
-    img: '/static/images/tokens/FNX.svg',
-  } as IToken)
-
-  const [tokenFor, setTokenFor] = useState<IToken>({
-    name: 'Ethereum',
-    symbol: 'ETH',
-    id: 1,
-    decimals: 18,
-    address: '0x4200000000000000000000000000000000000023' as Address,
-    img: '/static/images/tokens/WETH.svg',
-  } as IToken)
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('type', depositType)
+    params.set('token0', token0)
+    params.set('token1', token1)
+    router.push(pathname + '?' + params.toString())
+  }, [token0, token1, depositType])
 
   const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
   const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
@@ -156,16 +172,16 @@ const Panel = () => {
           </div>
 
           {(depositType === 'VOLATILE' || depositType === 'STABLE') && (
-            <Classic
-              depositType={depositType}
-              tokenSwap={tokenSwap}
-              tokenFor={tokenFor}
-              defaultPairs={defaultPairsTokens}
-            />
+            <Classic depositType={depositType} defaultPairs={defaultPairsTokens} />
           )}
 
           {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
           {depositType === 'CONCENTRATED_MANUAL' && <Manual defaultPairs={defaultPairsTokens} />}
+          {depositType === 'CONCENTRATED_MANUAL' && (
+            <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={createPosition}>
+              Create Position
+            </Button>
+          )}
 
           {/* <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={createPosition}>
             Create Position

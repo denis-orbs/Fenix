@@ -28,8 +28,6 @@ const Classic = ({
   defaultPairs,
 }: {
   depositType: 'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
-  tokenSwap: { name: string; symbol: string }
-  tokenFor: { name: string; symbol: string }
   defaultPairs: IToken[]
 }) => {
   const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934'
@@ -74,7 +72,7 @@ const Classic = ({
   }
 
   useEffect(() => {
-    if (defaultPairs.length == 2) {
+    if (defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
     }
@@ -207,6 +205,7 @@ const Classic = ({
           parseInt((+new Date() / 1000).toString()) + 60 * 60,
         ],
       },
+
       {
         onSuccess: async (x) => {
           console.log('success', x, +new Date())
@@ -243,6 +242,7 @@ const Classic = ({
           parseInt((+new Date() / 1000).toString()) + 60 * 60,
         ],
       },
+
       {
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
