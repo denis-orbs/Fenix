@@ -43,17 +43,18 @@ const config: Config = {
       },
       backgroundImage: {
         // Gradients
-        'button-primary': 'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%)',
+        'button-primary':
+          'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%)',
         'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%)',
         'error-404': 'url("/static/images/404/Background_1.svg")',
         'error-404-mobile': 'url("/static/images/404/backgroundMobile.svg")',
         'error-404-responsive': 'url("/static/images/404/backgroundResponsive.svg")',
 
         'fenix-slider': 'url("/static/images/vote/fenix-slider.svg")',
-        'overlay-fixed':'url("/static/images/vote/overlay-fixed.svg")',
-        'rectangle':'url("/static/images/landing/Rectangle.svg")',
-        'rectangle-big':'url("/static/images/landing/Rectangle-big.svg")',
-        'overlay-mobile':'url("/static/images/vote/overlay-mobile.svg")',
+        'overlay-fixed': 'url("/static/images/vote/overlay-fixed.svg")',
+        rectangle: 'url("/static/images/landing/Rectangle.svg")',
+        'rectangle-big': 'url("/static/images/landing/Rectangle-big.svg")',
+        'overlay-mobile': 'url("/static/images/vote/overlay-mobile.svg")',
         hours: 'url("/static/images/claim/bg-hours.svg")',
       },
       lineHeight: {
@@ -110,7 +111,7 @@ const config: Config = {
       screens: {
         xxxs: '256px',
         xxs: '384px',
-        xs: '512px'
+        xs: '512px',
       },
     },
     container: {
