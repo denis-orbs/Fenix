@@ -8,12 +8,10 @@ import Automatic from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Aut
 import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual'
 import { IToken, Address } from '@/src/library/types'
 import { useGammaCreatePosition } from '@/src/library/hooks/web3/useGamma'
-import { isAddress } from 'viem'
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { isAddress } from '@/src/library/utils/validate'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-import { Address } from 'viem'
 
 const DepositTypeValues = {
   VOLATILE: 'VOLATILE',
@@ -54,7 +52,6 @@ const Panel = () => {
     params.set('token1', token1)
     router.push(pathname + '?' + params.toString())
   }, [token0, token1, depositType])
-
 
   const handlerSwitch = () =>
     setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
@@ -187,7 +184,6 @@ const Panel = () => {
               Create Position
             </Button>
           )}
-
         </div>
       </div>
     </section>
@@ -195,7 +191,6 @@ const Panel = () => {
 }
 
 export default Panel
-
 
 /*
 const Panel = () => {
