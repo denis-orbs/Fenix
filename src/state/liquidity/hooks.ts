@@ -10,15 +10,15 @@ import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
 
 export function useV2PairsData() {
   const v2Pairs: {
-    state: ApiState
+    tablestate: ApiState
     tableData?: LiquidityTableElement[]
   } = useAppSelector((state) => state.liquidity.v2Pairs)
   const pairLoading: {
     state: ApiState
   } = useAppSelector((state) => state.liquidity.v2Pairs)
-
+  console.log(v2Pairs.tableData, 'v2Pairs.tableData')
   return {
-    loading: v2Pairs.state === ApiState.LOADING,
+    loading: v2Pairs.tablestate === ApiState.LOADING,
     data: v2Pairs.tableData,
   }
 }

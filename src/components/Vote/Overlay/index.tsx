@@ -1,3 +1,6 @@
+// eslint-disable-next-line
+//@ts-ignore
+//@ts-nocheck
 import { Button } from '@/src/components/UI'
 import { LockElement } from '@/src/library/structures/lock/LockElement'
 import { castVotes, resetVotes } from '@/src/library/web3/VoteManagementV3'
@@ -31,7 +34,7 @@ const Overlay = () => {
       // Filter poolAddresses based on undefinedIndices
       const filteredPoolAddresses = poolAddresses.filter((_, index) => !undefinedIndices.includes(index))
 
-      console.log(undefinedIndices, filteredPoolAddresses)
+      // console.log(undefinedIndices, filteredPoolAddresses)
 
       // Filter both arrays based on undefinedIndices
       const weights = voteValue.votes
@@ -41,8 +44,8 @@ const Overlay = () => {
       const addresses = poolAddresses.filter((_, index) => !undefinedIndices.includes(index))
 
       setloading(true)
-      console.log(Number(lock?.veNFTInfo.id!), weights, addresses, 'cast vote')
-      const hash = await castVotes(Number(lock?.veNFTInfo.id!), addresses, weights)
+      // console.log(Number(lock?.veNFTInfo.id), weights, addresses, 'cast vote')
+      const hash = await castVotes(Number(lock?.veNFTInfo.id), addresses, weights)
       const transactionReceipt = await waitForTransactionReceipt(config, { hash: hash, confirmations: 1 })
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))
@@ -64,7 +67,7 @@ const Overlay = () => {
       // Filter both arrays based on undefinedIndices
 
       setloading(true)
-      const hash = await resetVotes(Number(lock?.veNFTInfo.id!))
+      const hash = await resetVotes(Number(lock?.veNFTInfo.id))
       const transactionReceipt = await waitForTransactionReceipt(config, { hash: hash, confirmations: 1 })
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))

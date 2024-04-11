@@ -10,6 +10,15 @@ export interface IToken {
   img: string
   price: number
 }
+export interface ITokenMini {
+  id?: number
+  name: string
+  symbol: string
+  address: Address
+  decimals: number
+  img: string
+  price: number
+}
 export interface IOption {
   label: string
   value: string

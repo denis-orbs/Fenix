@@ -1,4 +1,6 @@
+//@ts-ignore
 //@ts-nocheck
+
 import { BACKEND_URL } from '../Constants'
 import { AvailableTokenData, TokenData } from '../structures/common/TokenData'
 import { BigDecimal } from '../web3/common/BigDecimal'
@@ -120,41 +122,41 @@ export function updateParsedTokenValue(
   }
 }
 
-export function eToNumber(num, decimals = true) {
-  const t = () => {
-    let sign = ''
-    ;(num += '').charAt(0) == '-' && ((num = num.substring(1)), (sign = '-'))
-    arr = num.split(/[e]/gi)
-    if (arr.length < 2) return sign + num
-    let dot = (0.1).toLocaleString().substr(1, 1),
-      n = arr[0],
-      exp = +arr[1],
-      w = (n = n.replace(/^0+/, '')).replace(dot, ''),
-      pos = n.split(dot)[1] ? n.indexOf(dot) + exp : w.length + exp,
-      L = pos - w.length,
-      s = '' + BigInt(parseInt(w))
-    w = exp >= 0 ? (L >= 0 ? s + '0'.repeat(L) : r()) : pos <= 0 ? '0' + dot + '0'.repeat(Math.abs(pos)) + s : r()
-    L = w.split(dot)
-    if ((L[0] == 0 && L[1] == 0) || (+w == 0 && +s == 0)) w = 0 //** added 9/10/2021
+// export function eToNumber(num, decimals = true) {
+//   const t = () => {
+//     let sign = ''
+//     ;(num += '').charAt(0) == '-' && ((num = num.substring(1)), (sign = '-'))
+//     arr = num.split(/[e]/gi)
+//     if (arr.length < 2) return sign + num
+//     const dot = (0.1).toLocaleString().substr(1, 1),
+//       n = arr[0],
+//       exp = +arr[1],
+//       w = (n = n.replace(/^0+/, '')).replace(dot, ''),
+//       pos = n.split(dot)[1] ? n.indexOf(dot) + exp : w.length + exp,
+//       L = pos - w.length,
+//       s = '' + BigInt(parseInt(w))
+//     w = exp >= 0 ? (L >= 0 ? s + '0'.repeat(L) : r()) : pos <= 0 ? '0' + dot + '0'.repeat(Math.abs(pos)) + s : r()
+//     L = w.split(dot)
+//     if ((L[0] == 0 && L[1] == 0) || (+w == 0 && +s == 0)) w = 0 //** added 9/10/2021
 
-    return sign + w
+//     return sign + w
 
-    function r() {
-      return w.replace(new RegExp(`^(.{${pos}})(.)`), `$1`)
-    }
-  }
+//     function r() {
+//       return w.replace(new RegExp(`^(.{${pos}})(.)`), `$1`)
+//     }
+//   }
 
-  // Delete everything after the .
-  const result = t()
-  if (!decimals) {
-    if (result.includes('.')) {
-      return parseInt(result.split('.')[0]).toString()
-    }
-  }
-  return result
-}
+//   // Delete everything after the .
+//   const result = t()
+//   if (!decimals) {
+//     if (result.includes('.')) {
+//       return parseInt(result.split('.')[0]).toString()
+//     }
+//   }
+//   return result
+// }
 
-const createKeccakHash = require('keccak')
+import createKeccakHash from 'keccak'
 
 export function toChecksumAddress(address) {
   address = address.toLowerCase().replace('0x', '')

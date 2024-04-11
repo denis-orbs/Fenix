@@ -55,7 +55,6 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
 
   const tokensprice = async () => {
     setTokens(await fetchTokens())
-    console.log('row.tickLower', row.tickUpper, row.tickLower)
   }
   useEffect(() => {
     tokensprice()

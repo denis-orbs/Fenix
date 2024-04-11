@@ -13,7 +13,9 @@ export interface LiquidityState {
   clmProvider: ClmProvider
   v2Pairs: {
     state: ApiState
+    tablestate: ApiState
     data: LiquidityV2PairDetails[]
+    tableData?: LiquidityTableElement[]
   }
   concentratedPools: { state: ApiState; data: any }
 }
@@ -117,6 +119,9 @@ export interface V2PairInfo {
   volumeToken1: string
   volumeUSD: string
 }
+export interface V2PairId {
+  id: string
+}
 export interface V3PairInfo {
   id: Address
   feesToken0: string
@@ -157,4 +162,15 @@ export interface V3PairInfo {
     name: string
     symbol: string
   }
+}
+
+export interface v3FactoryData {
+  totalFeesUSD: string
+  totalVolumeUSD: string
+  totalValueLockedUSD: string
+}
+
+export interface v2FactoryData {
+  totalLiquidityUSD: string
+  totalVolumeUSD: string
 }

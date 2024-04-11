@@ -15,15 +15,14 @@ interface ExchangeBoxProps {
   onOpenModal?: () => void
   variant?: 'primary' | 'secondary'
   onTokenValueChange?: (arg0: any, token: any) => void
-  value?: any 
+  value?: any
 }
 
 const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, value }: ExchangeBoxProps) => {
-
   const boxVariant = variant === 'secondary' ? 'exchange-box-x2' : 'exchange-box-x1'
   const availableAlign = title ? 'justify-between' : 'justify-end'
   const account = useAccount()
-  const [balance, setBalance] = useState("0")
+  const [balance, setBalance] = useState('0')
 
   useEffect(() => {
     const asyncFn = async () => {
@@ -35,17 +34,17 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
   }, [token, account.address])
 
   const handleOnChange = (e: any) => {
-    if(onTokenValueChange) onTokenValueChange(e.target.value.length > 0 ? e.target.value : 0, token)
+    if (onTokenValueChange) onTokenValueChange(e.target.value.length > 0 ? e.target.value : 0, token)
   }
 
   const handleHalf = () => {
-    if(onTokenValueChange) {
+    if (onTokenValueChange) {
       onTokenValueChange(ethers.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
     }
   }
 
   const handleMax = () => {
-    if(onTokenValueChange) {
+    if (onTokenValueChange) {
       onTokenValueChange(ethers.formatEther(balance.toString()), token)
     }
   }
@@ -56,7 +55,9 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
         {title && <p className="text-white font-medium">{title}</p>}
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
-          <span>Available: {`${(Number(balance)/1e18).toFixed(2)}`} {token.symbol}</span>
+          <span>
+            Available: {`${(Number(balance) / 1e18).toFixed(2)}`} {token.symbol}
+          </span>
         </p>
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3">
@@ -66,13 +67,7 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
             onClick={onOpenModal ? () => onOpenModal() : undefined}
           >
             <div className="flex items-center gap-2">
-              <Image
-                src={`${token.img}`}
-                alt="token"
-                className="w-6 h-6 rounded-full"
-                width={20}
-                height={20}
-              />
+              <Image src={`${token.img}`} alt="token" className="w-6 h-6 rounded-full" width={20} height={20} />
               <span className="text-base">{token.symbol}</span>
             </div>
             <span className="icon-chevron text-sm inline-block ml-2" />

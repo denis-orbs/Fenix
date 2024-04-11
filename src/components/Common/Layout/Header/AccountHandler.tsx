@@ -1,14 +1,24 @@
 /* eslint-disable max-len */
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import { Button } from '@/src/components/UI'
 import useStore from '@/src/state/zustand'
 import { usePathname } from 'next/navigation'
-import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { ConnectButton, useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import axios from 'axios'
+import { Address } from 'viem'
+import { useAccount, useSwitchChain } from 'wagmi'
+import { totalCampaigns } from '@/src/library/utils/campaigns'
+import { config, configwallets } from '@/src/app/layout'
+
+interface Points {
+  userLiqPoints: number[]
+  pendingSent: number[]
+}
 
 type AccountHandlerProps = {
   isMenuMobile?: boolean
@@ -27,58 +37,99 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const handlerConnectWallet = () => {
     openConnectModal && openConnectModal()
   }
-  // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
+
+  const [availablePoints, setAvailablePoints] = useState<Number>(0)
+  const [data, setData] = useState<Points>({} as Points)
+  const { address, chainId } = useAccount()
+  const { switchChainAsync } = useSwitchChain()
+
+  useEffect(() => {
+    const fetchData = async (campaignId: string, pairAddress: string, address: Address) => {
+      try {
+        const response = await axios.get(`https://blast-points-merkle.vercel.app/query/${campaignId}/${pairAddress}`)
+
+        // console.log(response.data)
+        const ob = response.data.data.find((element: any) => {
+          return element.recipient.toLowerCase() === address.toLowerCase()
+        })
+        return (ob.percentage / 100) * response.data.pointsandgold.LIQUIDITY.available
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        return 0 // Return a default value in case of error
+        // Handle errors as needed
+      }
+    }
+    if (address) {
+      // Create an array of Promises for fetching data
+      const promises = totalCampaigns.map((campaign) => fetchData(campaign.campaignId, campaign.pairAddress, address))
+
+      // Wait for all Promises to resolve
+      Promise.all(promises)
+        .then((results) => {
+          // console.log(results)
+          const sum = results.reduce((total, currentValue) => total + currentValue, 0)
+          // Set the setAvailablePoints state after all Promises have resolved
+          setAvailablePoints(sum)
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error)
+          // Handle errors if needed
+        })
+    }
+
+    // Cleanup function if needed
+    return () => {
+      // Cleanup code here
+    }
+  }, [address])
+
   return (
-    <div className="flex items-center w-auto gap-6 flex-row">
-      {isMoreOption && (
-        <>
-          {isConnected && (
-            <div className={` relative w-auto`}>
-              <div
-                onMouseEnter={() => setOpenPoints(true)}
-                onMouseLeave={() => setOpenPoints(false)}
-                className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden 2xl:flex"
-              >
-                <p className="text-xs text-white">
-                  0.0 <span className="hidden xl:inline">Points</span>
-                </p>
-                <Image src="/static/images/tokens/BLAST.svg" className="w-8 h-8" alt="logo" width={30} height={30} />
-              </div>
-              {openPoints && (
-                <div className="absolute bg-shark-400 rounded-lg border border-shark-300 w-full xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex flex-col justify-center items-center">
-                      <p className="text-shark-100 text-xs mb-2">PTC Received</p>
-                      <p className="text-white text-sm">0.0</p>
-                    </div>
-                    <div className="flex flex-col justify-center items-center">
-                      <p className="text-shark-100 text-xs mb-2">PTC Received</p>
-                      <p className="text-white text-sm">0.0</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center flex-col">
-                    <p className="text-xs text-shark-100 mb-2">Pending points will be sent in:</p>
-                    <span className="flex items-center gap-2">
-                      <i className="icon-time text-white text-sm"></i>
-                      <p className="text-white text-xs underline">30 Minutes</p>
-                    </span>
-                  </div>
+    <div className="flex items-center gap-2 xl:gap-3 w-full md:w-max-content xl:w-auto flex-row">
+      {isConnected && (
+        <div className="relative w-full">
+          <div
+            onMouseEnter={() => setOpenPoints(true)}
+            onMouseLeave={() => setOpenPoints(false)}
+            className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden xl:flex"
+          >
+            <p className="text-xs text-white">
+              {data.userLiqPoints} <span className="hidden xl:inline">Points</span>
+            </p>
+            <Image src="/static/images/tokens/BLAST.svg" className="w-8 h-8" alt="logo" width={30} height={30} />
+          </div>
+          {openPoints && (
+            <div className="absolute bg-shark-400 rounded-lg border border-shark-300 w-full xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex flex-col justify-center items-center">
+                  <p className="text-shark-100 text-xs mb-2">PTS Received</p>
+                  <p className="text-white text-sm">{availablePoints.toFixed(2).toString()}</p>
                 </div>
-              )}
+                <div className="flex flex-col justify-center items-center">
+                  <p className="text-shark-100 text-xs mb-2">PTS Pending</p>
+                  <p className="text-white text-sm">{0}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-center flex-col">
+                <p className="text-xs text-shark-100 mb-2">Pending points will be sent in:</p>
+                <span className="flex items-center gap-2">
+                  <i className="icon-time text-white text-sm"></i>
+                  <p className="text-white text-xs underline">8 Hour</p>
+                </span>
+              </div>
             </div>
           )}
-          {isConnected && (
+          {/* {isConnected && (
             <div className="items-center flex-shrink-0 hidden gap-2 2xl:flex">
               <Image src="/static/images/tokens/ETH-GRAY.svg" className="w-6 h-6 " alt="logo" width={24} height={24} />
               <p className="text-xs text-white">1.987 ETH</p>
             </div>
-          )}
-        </>
+          )} */}
+        </div>
       )}
 
       <div className="flex gap-2 items-center w-full 2xl:w-auto justify-end">
         <div className="flex w-full 2xl:w-auto">
-          {isConnected ? (
+          {isConnected && chainId?.toString() === process.env.NEXT_PUBLIC_CHAINID ? (
             <div
               onClick={() => {
                 openConnectModal && openConnectModal()
@@ -111,6 +162,10 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                 <span className="text-base md:text-xl icon-cog text-shark-100 group-hover:text-outrageous-orange-500"></span>
               </div>
             </div>
+          ) : isConnected && chainId?.toString() !== process.env.NEXT_PUBLIC_CHAINID ? (
+            <>
+              <ConnectButton label="Connect your Wallet" />
+            </>
           ) : (
             <Button
               onClick={handlerConnectWallet}

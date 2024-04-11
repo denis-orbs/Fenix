@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 export interface IInputRangeProps {
   min?: number;
@@ -21,10 +21,16 @@ const InputRange = ({
   onChange,
   disabled
 }: IInputRangeProps) => {
+  const [currentValue, setCurrentValue] = useState(value)
+
   const percent = useMemo(
-    () => ((value - min) / (max - min)) * 100,
-    [value, min, max]
+    () => ((currentValue - min) / (max - min)) * 100,
+    [currentValue, min, max]
   )
+
+  useEffect(() => {
+    setCurrentValue(value)
+  }, [value])
 
   const isDisabledClass = disabled
     ? '[&::-webkit-slider-thumb]:bg-[#333A43] [&::-webkit-slider-thumb]:pointer-events-none'
@@ -46,9 +52,10 @@ const InputRange = ({
       min={min}
       max={max}
       step={step}
-      value={value}
+      value={currentValue}
       onMouseDown={(e) => window.getSelection()?.removeAllRanges()}
-      onChange={(e) => onChange && onChange(Number(e.target.value))}
+      onChange={(e) => setCurrentValue(Number(e.target.value))}
+      onMouseUp={(e) => onChange && onChange(currentValue)}
       disabled={disabled}
     />
   )

@@ -1,13 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button } from '@/src/components/UI'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import StrategyButton, { StrategyType } from './StrategyButton'
 import Input from './Input'
 
-const SetRange = () => {
-  const [currentPercentage, setCurrentPercentage] = useState(5)
+const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, shownPercentage }: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage: any}) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
+
+  useEffect(() => {
+    if(currentStrategy == StrategyType.NARROW) setCurrentPercentage(2.5)
+    if(currentStrategy == StrategyType.BALANCED) setCurrentPercentage(6)
+    if(currentStrategy == StrategyType.WIDE) setCurrentPercentage(15)
+    if(currentStrategy == StrategyType.FULL_RANGE) setCurrentPercentage(-1) //inf
+  }, [currentStrategy])
+
+  const handlePercentageChange = (percent: any) => {
+    setCurrentPercentage(percent)
+    setCurrentStrategy(null)
+  }
 
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -17,35 +28,35 @@ const SetRange = () => {
         <Button
           variant={currentPercentage === 5 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => setCurrentPercentage(5)}
+          onClick={() => handlePercentageChange(5)}
         >
           5%
         </Button>
         <Button
           variant={currentPercentage === 10 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => setCurrentPercentage(10)}
+          onClick={() => handlePercentageChange(10)}
         >
           10%
         </Button>
         <Button
           variant={currentPercentage === 25 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => setCurrentPercentage(25)}
+          onClick={() => handlePercentageChange(25)}
         >
           25%
         </Button>
         <Button
           variant={currentPercentage === 50 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => setCurrentPercentage(50)}
+          onClick={() => handlePercentageChange(50)}
         >
           50%
         </Button>
         <Button
           variant={currentPercentage === 100 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => setCurrentPercentage(100)}
+          onClick={() => handlePercentageChange(100)}
         >
           100%
         </Button>
@@ -54,7 +65,7 @@ const SetRange = () => {
       <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
         <div className="flex items-center gap-2 text-white opacity-75">
           <span>±</span>
-          <span className="text-[30px] leading-normal font-light">{currentPercentage}%</span>
+          <span className="text-[30px] leading-normal font-light">{currentPercentage == -1 ? "Full Range" : currentPercentage}%</span>
         </div>
         <div className="max-w-[274px] flex-grow">
           <InputRange
@@ -64,7 +75,7 @@ const SetRange = () => {
             min={1}
             max={100}
             disabled={false}
-            onChange={(value) => setCurrentPercentage(value)}
+            onChange={(value) => handlePercentageChange(value)}
           />
         </div>
       </div>
@@ -93,8 +104,8 @@ const SetRange = () => {
       </div>
 
       <div className="flex gap-[21px]">
-        <Input title="Min Price" />
-        <Input title="Max Price" />
+        <Input title="Min Price" percent={`-${currentPercentage == -1 ? 0 : shownPercentage[0]}`} value={currentPercentage == -1 ? 0 : price1.toFixed(6).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')} />
+        <Input title="Max Price" percent={`+${currentPercentage == -1 ? "Infinity" : shownPercentage[1]}`} value={currentPercentage == -1 ? "Infinity" : price2.toFixed(6).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')} />
       </div>
     </div>
   )

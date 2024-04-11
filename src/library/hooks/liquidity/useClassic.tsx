@@ -9,8 +9,6 @@ import { ethers } from 'ethers'
 import { contractAddressList } from '../../constants/contactAddresses'
 import { injected } from 'wagmi/connectors'
 
-import { polygonFork } from '@/src/app/layout'
-
 export async function getTokenAllowance(token: Address, owner: Address, spender: Address) {
   if (!token || !owner || !spender) return '0'
   /**
@@ -19,9 +17,10 @@ export async function getTokenAllowance(token: Address, owner: Address, spender:
 
   const allowance = await multicall(
     createConfig({
-      chains: [polygonFork],
+      chains: [blastSepolia, blast],
       transports: {
-        [polygonFork.id]: http(),
+        [blastSepolia.id]: http(),
+        [blast.id]: http(),
       },
     }),
     {
@@ -88,7 +87,7 @@ export async function getLiquidityRemoveQuote(amount: Number, token1: Address, t
           abi: ROUTERV2_ABI,
           address: contractAddressList.v2router as Address,
           functionName: 'quoteRemoveLiquidity',
-          args: [token1, token2, stable, ethers.parseUnits(amount.toString(), 'ether')],
+          args: [token1, token2, stable, ethers.utils.parseUnits(amount.toString(), 'ether')],
         },
       ],
     }
