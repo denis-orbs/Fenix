@@ -5,7 +5,7 @@ import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import StrategyButton, { StrategyType } from './StrategyButton'
 import Input from './Input'
 
-const SetRange = ({setCurrentPercentage, currentPercentage, price1, price2, shownPercentage}: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage: any}) => {
+const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, shownPercentage }: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage: any}) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
 
   useEffect(() => {

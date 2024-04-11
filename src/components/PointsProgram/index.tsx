@@ -35,7 +35,7 @@ const PointsProgram = () => {
     // Wait for all Promises to resolve
     Promise.all(promises)
       .then((results) => {
-        let combinedArray: any = []
+        const combinedArray: any = []
         for (const result of results) {
           combinedArray.concat(result)
         }
