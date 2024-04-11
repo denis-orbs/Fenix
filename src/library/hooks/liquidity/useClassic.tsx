@@ -14,7 +14,7 @@ export async function getTokenAllowance(token: Address, owner: Address, spender:
   /**
    * This hook is used to get token aproved amount for spender
    */
-  console.log(token, owner, spender, 'here')
+
   const allowance = await multicall(
     createConfig({
       chains: [blastSepolia, blast],
@@ -34,7 +34,7 @@ export async function getTokenAllowance(token: Address, owner: Address, spender:
       ],
     }
   )
-  console.log(allowance, 'here')
+
   if (allowance[0].status === 'failure') return '0'
   const a: string = allowance[0].result as string
 
@@ -87,7 +87,7 @@ export async function getLiquidityRemoveQuote(amount: Number, token1: Address, t
           abi: ROUTERV2_ABI,
           address: contractAddressList.v2router as Address,
           functionName: 'quoteRemoveLiquidity',
-          args: [token1, token2, stable, ethers.parseUnits(amount.toString(), 'ether')],
+          args: [token1, token2, stable, ethers.utils.parseUnits(amount.toString(), 'ether')],
         },
       ],
     }

@@ -3,6 +3,7 @@ import { PoolData } from '@/src/state/liquidity/types'
 import { Fragment, useEffect, useState } from 'react'
 import Row from './Row'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useAccount, useChainId, useChains } from 'wagmi'
 
 interface HeaderRowProps {
   loading: boolean
@@ -32,7 +33,6 @@ const HeaderRow = ({
   const [paginationResult, setPaginationResult] = useState<PoolData[]>(poolsData)
   const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
-  // State for sort index
   const [sortIndex, setSortIndex] = useState<number>(0)
 
   const RANGE = activeRange
@@ -52,6 +52,10 @@ const HeaderRow = ({
 
     return paginatedItems
   }
+
+  const { chainId } = useAccount()
+  const activeChain = useChains()
+
   useEffect(() => {
     if (paginationStatus && paginationResult && paginationResult.length > 0) {
       if (sort === 'asc') {
@@ -71,7 +75,10 @@ const HeaderRow = ({
       setPaginationResult(poolsData)
       setPaginationStatus(true)
     }
-  }, [sort, poolsData])
+  }, [sort, poolsData, chainId])
+
+  console.log(chainId, activeChain, process.env.NEXT_PUBLIC_CHAINID)
+
   function compareBigDecimal(a: any, b: any) {
     return a - b
   }
@@ -113,7 +120,7 @@ const HeaderRow = ({
                 <TableSkeleton key={index} />
               ))}
             </>
-          ) : (
+          ) : chainId?.toString() === process.env.NEXT_PUBLIC_CHAINID ? (
             paginationResult.map((row, index) => (
               <Fragment key={index}>
                 <Row
@@ -127,6 +134,22 @@ const HeaderRow = ({
                 />
               </Fragment>
             ))
+          ) : (
+            <div>
+              <br></br>
+              <br></br>
+              <br></br>
+              <div className="flex flex-col items-center justify-center mb-4">
+                <h1 className="mb-2 text-xl font-bold text-center text-white">
+                  You are in the wrong network/ Wallet not connected
+                </h1>
+                <p className="text-sm text-shark-100 w-[261px] text-center">
+                  Please switch to Blast Network to use Fenix Protocol.
+                </p>
+              </div>
+              <br></br>
+              <br></br>
+            </div>
           )}
         </TableBody>
       </div>

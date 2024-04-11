@@ -90,7 +90,7 @@ const StrategyButton = ({
         )}
       </Button>
 
-      <div>102,6% APR</div>
+      {/* <div>102,6% APR</div> */}
     </div>
   )
 }

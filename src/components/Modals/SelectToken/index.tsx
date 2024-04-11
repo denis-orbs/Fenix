@@ -24,15 +24,18 @@ interface SelectTokenProps {
 }
 
 const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalances, tokenList }: SelectTokenProps) => {
-
   const [_tokenList, setTokenList] = useState<IToken[]>(tokenList ? tokenList : [])
   const [_commonList, setCommonList] = useState<IToken[]>(commonList ? commonList : [])
-  const [_tokenBalances, setTokenBalances] = useState<{ [key: `0x${string}`]: string }>(tokenBalances ? tokenBalances : {})
+  const [searchValue, setSearchValue] = useState<string>('')
+  const [_tokenBalances, setTokenBalances] = useState<{ [key: `0x${string}`]: string }>(
+    tokenBalances ? tokenBalances : {}
+  )
   const account = useAccount()
 
   const handlerClose = () => setOpenModal(false)
 
   const handlerSelectToken = (token: IToken) => {
+    console.log(token, 'inn')
     setToken(token)
     setOpenModal(false)
   }
@@ -53,22 +56,27 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
             decimals: 18,
             img: item.logourl,
             isCommon: item.common,
-            price: parseFloat(item.priceUSD)
+            price: parseFloat(item.priceUSD),
           }
         })
 
         const commonList = parsedData.filter((item: any) => item.isCommon)
 
-        const balances = await getTokensBalance(parsedData.map((item: any) => { return item.address as Address}), account.address as Address)
+        const balances = await getTokensBalance(
+          parsedData.map((item: any) => {
+            return item.address as Address
+          }),
+          account.address as Address
+        )
         setTokenBalances(balances)
 
         setCommonList(commonList)
+        parsedData.filter((token: any) => token?.symbol.toLowerCase().includes(searchValue.toLowerCase()))
         setTokenList(parsedData)
-      } catch (error) {
-      }
+      } catch (error) {}
     }
 
-    getList()  
+    getList()
   }, [account.address])
 
   return (
@@ -82,67 +90,70 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
           </p>
 
           <div className="mb-4">
-            <Search />
+            <Search setSearchValue={setSearchValue} searchValue={searchValue} />
           </div>
 
           <div className="mb-2 text-sm text-white">Common Tokens</div>
           <div className="flex flex-col items-center gap-1 mb-4 xl:flex-row">
-            {_commonList ? _commonList.map((token, index) => (
-              <div
-                key={index}
-                onClick={() => handlerSelectToken(token)}
-                className="flex items-center w-full gap-2 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-1 xl:w-auto"
-              >
-                <Image
-                  src={`${token.img}`}
-                  alt="token"
-                  width={30}
-                  height={30}
-                  className="w-5 h-5"
-                />
-                <p className="text-xs text-white">{token.symbol}</p>
-              </div>
-            )) : <></>}
+            {_commonList ? (
+              _commonList.map((token, index) => (
+                <div
+                  key={index}
+                  onClick={() => handlerSelectToken(token)}
+                  className="flex items-center w-full gap-2 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-1 xl:w-auto"
+                >
+                  <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-5 h-5" />
+                  <p className="text-xs text-white">{token.symbol}</p>
+                </div>
+              ))
+            ) : (
+              <></>
+            )}
           </div>
 
           <div className="flex flex-col gap-2 max-h-[130px] overflow-y-auto">
-            {_tokenList ? _tokenList.map((token, index) => (
-              <div
-                key={index}
-                onClick={() => handlerSelectToken(token)}
-                className="flex items-center justify-between p-3 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
-              >
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={`${token.img}`}
-                    alt="token"
-                    width={30}
-                    height={30}
-                    className="w-7 h-7"
-                  />
-                  <div className="relative">
-                    <p className="text-xs text-white">{token.symbol}</p>
-                    <p className="text-xs text-shark-100">{token.name}</p>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end justify-start">
+            {_tokenList ? (
+              _tokenList.map((token, index) => (
+                <div
+                  key={index}
+                  onClick={() => handlerSelectToken(token)}
+                  className="flex items-center justify-between p-3 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
+                >
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
-                    {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
-                    {/* todo fetch balance */}
-                    <p className="text-xs text-white">Balance: {_tokenBalances ? `${(parseInt(_tokenBalances[token.address as Address])/(10**token.decimals)).toFixed(2).replace('NaN', '0')}` : `0`}</p>
+                    <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-7 h-7" />
+                    <div className="relative">
+                      <p className="text-xs text-white">{token.symbol}</p>
+                      <p className="text-xs text-shark-100">{token.name}</p>
+                    </div>
                   </div>
-                  <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
-                    {_tokenBalances ? `$${(parseInt(_tokenBalances[token.address as Address])/(10**token.decimals)*token.price).toFixed(2).replace('NaN', '0')}` : `0`}
+                  <div className="flex flex-col items-end justify-start">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+                      {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
+                      {/* todo fetch balance */}
+                      <p className="text-xs text-white">
+                        Balance:{' '}
+                        {_tokenBalances
+                          ? `${(parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals).toFixed(2).replace('NaN', '0')}`
+                          : `0`}
+                      </p>
+                    </div>
+                    <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
+                      {_tokenBalances
+                        ? `$${((parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals) * token.price).toFixed(2).replace('NaN', '0')}`
+                        : `0`}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )) : <></>}
+              ))
+            ) : (
+              <></>
+            )}
           </div>
           <div className="flex justify-center">
-            <Button className="mt-2 mb-2 lg:w-full sm:w-full w-72" variant="tertiary">
+            {/* <Button className="mt-2 mb-2 lg:w-full sm:w-full w-72" variant="tertiary">
               Confirm SelectToken
-            </Button>
+            </Button> */}
           </div>
           <div className="flex items-center justify-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
             <span className="icon-discord"></span>

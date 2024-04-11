@@ -248,7 +248,7 @@ const RowData = ({
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'volatile' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'stable' : 'manual'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
+                href={`/liquidity/deposit?type=${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'VOLATILE' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'STABLE' : 'CONCENTRATED_MANUAL'}&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`}
               >
                 <span className="icon-circles"></span>
                 Deposit

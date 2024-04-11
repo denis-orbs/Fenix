@@ -7,12 +7,13 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import useStore from '@/src/state/zustand'
 import { usePathname } from 'next/navigation'
-import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { ConnectButton, useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import axios from 'axios'
 import { Address } from 'viem'
-import { useAccount } from 'wagmi'
+import { useAccount, useSwitchChain } from 'wagmi'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
+import { config, configwallets } from '@/src/app/layout'
 
 interface Points {
   userLiqPoints: number[]
@@ -39,7 +40,8 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
 
   const [availablePoints, setAvailablePoints] = useState<Number>(0)
   const [data, setData] = useState<Points>({} as Points)
-  const { address } = useAccount()
+  const { address, chainId } = useAccount()
+  const { switchChainAsync } = useSwitchChain()
 
   useEffect(() => {
     const fetchData = async (campaignId: string, pairAddress: string, address: Address) => {
@@ -127,7 +129,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
 
       <div className="flex gap-2 items-center w-full 2xl:w-auto justify-end">
         <div className="flex w-full 2xl:w-auto">
-          {isConnected ? (
+          {isConnected && chainId?.toString() === process.env.NEXT_PUBLIC_CHAINID ? (
             <div
               onClick={() => {
                 openConnectModal && openConnectModal()
@@ -160,6 +162,10 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                 <span className="text-base md:text-xl icon-cog text-shark-100 group-hover:text-outrageous-orange-500"></span>
               </div>
             </div>
+          ) : isConnected && chainId?.toString() !== process.env.NEXT_PUBLIC_CHAINID ? (
+            <>
+              <ConnectButton label="Connect your Wallet" />
+            </>
           ) : (
             <Button
               onClick={handlerConnectWallet}

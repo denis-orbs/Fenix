@@ -63,9 +63,9 @@ const Automatic = () => {
       {currentProvider === '1' && <DepositAmountsICHI token={token0Data} />}
       {currentProvider === '2' && <DepositAmountsGAMMA firstToken={firstToken} secondToken={secondToken} />}
 
-      <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
+      {/* <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
         Create Position
-      </Button>
+      </Button> */}
     </>
   )
 }

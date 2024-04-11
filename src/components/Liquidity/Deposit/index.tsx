@@ -27,13 +27,13 @@ const DepositLiquidity = () => {
       <div className="flex flex-col w-full">
         <div className="flex flex-wrap w-full gap-5 mb-10 xl:flex-nowrap">
           <Panel />
-          <iframe
+          {/* <iframe
             id="dextools-widget"
             title="DEXTools Trading Chart"
             width="10000"
             height="730"
             src={`https://www.dextools.io/widget-chart/en/blast/pe-light/0xf00da13d2960cf113edcef6e3f30d92e52906537?theme=dark&chartType=1&chartResolution=30&drawingToolbars=true`}
-          ></iframe>
+          ></iframe> */}
 
           {/* <Chart className="w-full xl:w-full" /> */}
         </div>

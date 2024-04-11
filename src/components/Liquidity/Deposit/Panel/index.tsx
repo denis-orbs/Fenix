@@ -67,18 +67,18 @@ const Panel = () => {
     }
   }
   useEffect(() => {
-    const hash = window.location.hash
-    const hashValue = hash.substring(1)
-    const pairString = hashValue.split('-')
-    if (pairString.length < 1) return
+    const searchParamToken0 = searchParams.get('token0')
+    const searchParamToken1 = searchParams.get('token1')
+    const typeSearch = searchParams.get('type')
+    console.log(searchParams, searchParamToken0, searchParamToken1, 'searchParams')
 
-    if (pairString[0] == 'auto') setDepositType('CONCENTRATED_AUTOMATIC')
-    if (pairString[0] == 'manual') setDepositType('CONCENTRATED_MANUAL')
-    if (pairString[0] == 'stable') setDepositType('STABLE')
-    if (pairString[0] == 'volatile') setDepositType('VOLATILE')
+    if (typeSearch == 'CONCENTRATED_AUTOMATIC') setDepositType('CONCENTRATED_AUTOMATIC')
+    if (typeSearch == 'CONCENTRATED_MANUAL') setDepositType('CONCENTRATED_MANUAL')
+    if (typeSearch == 'STABLE') setDepositType('STABLE')
+    if (typeSearch == 'VOLATILE') setDepositType('VOLATILE')
 
-    if (!isAddress(pairString[1]) || !isAddress(pairString[2])) return
-    setDefaultPairs([pairString[1], pairString[2]])
+    if (!isAddress(searchParamToken0!) || !isAddress(searchParamToken1!)) return
+    setDefaultPairs([searchParamToken0, searchParamToken1])
   }, [])
 
   useEffect(() => {
@@ -177,11 +177,11 @@ const Panel = () => {
 
           {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
           {depositType === 'CONCENTRATED_MANUAL' && <Manual defaultPairs={defaultPairsTokens} />}
-          {depositType === 'CONCENTRATED_MANUAL' && (
+          {/* {depositType === 'CONCENTRATED_MANUAL' && (
             <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={createPosition}>
               Create Position
             </Button>
-          )}
+          )} */}
 
           {/* <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={createPosition}>
             Create Position
