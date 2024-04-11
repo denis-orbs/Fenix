@@ -29,7 +29,6 @@ export const MENU_LINKS = [
   },
 ]
 
-
 export const SOCIAL_LINKS = [
   {
     title: 'Twitter',
@@ -50,6 +49,5 @@ export const SOCIAL_LINKS = [
     title: 'Git',
     href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
     iconName: 'git',
-  }
+  },
 ]
-
