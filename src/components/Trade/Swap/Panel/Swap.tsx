@@ -23,7 +23,7 @@ const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
-  const { account } = useActiveConnectionDetails()
+  const { account, isConnected } = useActiveConnectionDetails()
 
   const tokenData = useReadContract({
     address: token.address,
@@ -47,8 +47,16 @@ const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
         <p className="text-white text-sm">Swap</p>
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
-          <span>
-            Balance: {!tokenData.isLoading ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
+          <span
+            onClick={() => {
+              if (tokenBalance && isConnected) {
+                setValue(toBN(formatPrice(tokenBalance, 12)).toString())
+              } else {
+                setValue('')
+              }
+            }}
+          >
+            Balance: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
           </span>
         </p>
       </div>
@@ -85,7 +93,7 @@ const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                if (tokenBalance && account) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
+                if (tokenBalance && isConnected) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
                 else setValue('')
               }}
             >
@@ -95,7 +103,7 @@ const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                if (tokenBalance && account) {
+                if (tokenBalance && isConnected) {
                   setValue(toBN(formatPrice(tokenBalance, 12)).toString())
                 } else {
                   setValue('')

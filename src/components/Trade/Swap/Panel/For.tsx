@@ -17,11 +17,12 @@ interface ForProps {
   value: string
   setToken: (token: IToken) => void
   setValue: (value: string) => void
+  setInputForActive: (active: boolean) => void
 }
 
-const For = ({ token, setToken, setValue, value }: ForProps) => {
+const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
-  const { account } = useActiveConnectionDetails()
+  const { account, isConnected } = useActiveConnectionDetails()
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
 
@@ -46,10 +47,19 @@ const For = ({ token, setToken, setValue, value }: ForProps) => {
     <div className="exchange-box-x1">
       <div className="flex items-center justify-between mb-3">
         <p className="text-white text-sm">For</p>
+
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
-          <span>
-            Balance: {!tokenData.isLoading ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
+          <span
+            onClick={() => {
+              if (tokenBalance && isConnected) {
+                setValue(toBN(formatPrice(tokenBalance, 12)).toString())
+              } else {
+                setValue('')
+              }
+            }}
+          >
+            Balance: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
           </span>
         </p>
       </div>
@@ -73,42 +83,17 @@ const For = ({ token, setToken, setValue, value }: ForProps) => {
           </div>
         </div>
         <div className="relative w-full xl:w-4/6">
-          {/* <input
-            type="number"
-            placeholder="0"
-            onChange={onChangeInput}
-            value={value}
-            
-          /> */}
           <NumericalInput
             value={value.toString()}
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             placeholder="0.0"
-            onUserInput={(input) => setValue(input)}
+            onUserInput={(input) => {
+              setInputForActive(true)
+              setValue(input)
+            }}
             precision={token.decimals}
           />
-          <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            {/* <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              onClick={() => {
-                if (tokenBalance && account) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
-                else setValue('')
-              }}
-            >
-              Half
-            </Button>
-            <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              onClick={() => {
-                if (tokenBalance && account) setValue(toBN(formatPrice(tokenBalance, 12)).toString())
-                else setValue('')
-              }}
-            >
-              Max
-            </Button> */}
-          </div>
+          <div className="absolute right-2 top-[10px] flex items-center gap-1"></div>
         </div>
       </div>
       <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
