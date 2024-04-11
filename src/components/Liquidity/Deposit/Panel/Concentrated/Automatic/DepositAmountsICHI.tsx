@@ -121,7 +121,7 @@ const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string }
       }
       const isToken0Approved = await isDepositTokenApproved(
         account,
-        isReverted ? 0 : 1,
+        isReverted ? 1 : 0,
         ethers.utils.parseUnits(token0TypedValue || '0', token0Decimals).toString(),
         vaultAddress,
         web3Provider,
