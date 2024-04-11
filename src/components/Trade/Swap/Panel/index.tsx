@@ -37,7 +37,7 @@ const Panel = () => {
   const [tokenSell, setTokenSell] = useState<IToken>({
     name: 'USDT',
     symbol: 'USDT',
-    address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+    address: '0x4200000000000000000000000000000000000022',
     decimals: 6,
     img: 'usdt.png',
     price: 1,
@@ -45,7 +45,7 @@ const Panel = () => {
   const [tokenGet, setTokenGet] = useState<IToken>({
     name: 'WETH',
     symbol: 'WETH',
-    address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+    address: '0x4200000000000000000000000000000000000023',
     decimals: 18,
     img: 'WETH.png',
     price: 3000,
@@ -62,8 +62,8 @@ const Panel = () => {
   // si el user no ha puesto nada o ha puesto 0 que no le deje swappear
   const { openConnectModal } = useConnectModal()
   const { account, isConnected } = useActiveConnectionDetails()
-  const MATIC_QUOTER_ADDRESS = '0xa15F0D7377B2A0C0c10db057f641beD21028FC89'
-  const MATIC_SWAP_ADDRESS = '0xf5b509bB0909a69B1c207E495f687a596C168E12'
+  const MATIC_QUOTER_ADDRESS = '0x17E7C69DAB4BDB0C09E0AD50F5D485a5C6703DF3'
+  const MATIC_SWAP_ADDRESS = '0xD952ACb88D36029A388555c19AA7031182f98932'
   // function to make the swap
   const callAlgebraRouter = async () => {
     if (!isConnected) {
