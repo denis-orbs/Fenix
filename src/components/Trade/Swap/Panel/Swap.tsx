@@ -10,18 +10,19 @@ import { useBalance, useReadContract } from 'wagmi'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { ERC20_ABI } from '@/src/library/constants/abi'
 import { BN_TEN, formatPrice, toBN } from '@/src/library/utils/numbers'
+import { NumericalInput } from '@/src/components/UI/Input'
 
 interface SwapProps {
   token: IToken
-  value: number
+  value: string
   setToken: (token: IToken) => void
-  setValue: (value: number) => void
+  setValue: (value: string) => void
 }
 
 const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(parseFloat(e.target.value))
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
   const { account } = useActiveConnectionDetails()
 
   const tokenData = useReadContract({
@@ -30,15 +31,15 @@ const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
     args: [account],
     abi: ERC20_ABI,
   })
-  const [number, setNumber] = useState('-')
+  const [tokenBalance, setTokenBalance] = useState('-')
   useEffect(() => {
     if (tokenData.isSuccess) {
       const myNumber = tokenData.data as bigint
       const myBigNumber = toBN(myNumber.toString())
       const resultado = myBigNumber.div(BN_TEN.pow(token.decimals)).toString()
-      setNumber(formatPrice(resultado, 6))
+      setTokenBalance(resultado)
     }
-  }, [tokenData, token.decimals])
+  }, [tokenData, token.decimals, account])
   const handlerSelectToken = () => setOpenSelectToken(true)
   return (
     <div className="exchange-box-x1">
@@ -46,7 +47,9 @@ const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
         <p className="text-white text-sm">Swap</p>
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
-          <span>Available: {!tokenData.isLoading ? number : '-'}</span>
+          <span>
+            Balance: {!tokenData.isLoading ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
+          </span>
         </p>
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3">
@@ -69,23 +72,42 @@ const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
           </div>
         </div>
         <div className="relative w-full xl:w-4/6">
-          <input
-            type="number"
-            placeholder="0"
-            onChange={onChangeInput}
-            value={value}
+          <NumericalInput
+            value={value.toString()}
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+            placeholder="0.0"
+            onUserInput={(input) => setValue(input)}
+            precision={token.decimals}
           />
+
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button variant="tertiary" className="!py-1 !px-3" onClick={() => setValue(toBN(number).div(2).toNumber())}>
+            <Button
+              variant="tertiary"
+              className="!py-1 !px-3"
+              onClick={() => {
+                if (tokenBalance && account) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
+                else setValue('')
+              }}
+            >
               Half
             </Button>
-            <Button variant="tertiary" className="!py-1 !px-3" onClick={() => setValue(toBN(number).toNumber())}>
+            <Button
+              variant="tertiary"
+              className="!py-1 !px-3"
+              onClick={() => {
+                if (tokenBalance && account) {
+                  setValue(toBN(formatPrice(tokenBalance, 12)).toString())
+                } else {
+                  setValue('')
+                }
+              }}
+            >
               Max
             </Button>
           </div>
         </div>
       </div>
+
       <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
     </div>
   )
