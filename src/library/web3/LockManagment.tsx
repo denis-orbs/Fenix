@@ -1,11 +1,11 @@
 //@ts-nocheck
-import { VeNFTAPIV3Address, VotingEscrowAddress } from '../web3/ContractAddresses'
+import { VeNFTAPIV3Address, VotingEscrowAddress } from './ContractAddresses'
 import { getPublicClient, getWalletClient, readContract, writeContract } from '@wagmi/core'
 import { Address, Hash } from 'viem'
 
 import { LockElement } from '../structures/lock/LockElement'
-import veNFTAPIABIV3 from '../web3/abis/VeNFTAPIV3ABI'
-import votingEscrowABI from '../web3/abis/veFNX'
+import veNFTAPIABIV3 from './abis/VeNFTAPIV3ABI'
+import votingEscrowABI from './abis/veFNX'
 import { encodeFunctionData } from 'viem'
 import { config } from '@/src/app/layout'
 

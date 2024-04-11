@@ -1,9 +1,9 @@
 import { getPublicClient, readContract, getWalletClient, writeContract } from '@wagmi/core'
 import { Address, Hash } from 'viem'
 
-import VoterV3ABI from '../web3/abis/VoterV3ABI'
+import VoterV3ABI from './abis/VoterV3ABI'
 
-import { VoterV3Address } from '../web3/ContractAddresses'
+import { VoterV3Address } from './ContractAddresses'
 import { encodeFunctionData } from 'viem'
 import { config } from '@/src/app/layout'
 
