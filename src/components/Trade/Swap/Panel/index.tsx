@@ -20,7 +20,7 @@ import useStore from '@/src/state/zustand'
 import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import Slippage from '@/src/components/Modals/Slippage'
 import useDebounce from '@/src/library/hooks/useDebounce'
-import { LoaderIcon } from 'react-hot-toast'
+import toast, { LoaderIcon } from 'react-hot-toast'
 import Loader from '@/src/components/UI/Icons/Loader'
 import { ReloadIcon } from '@/src/components/UI/Icons/Reload'
 import SettingsIcon from '@/src/components/UI/Icons/Settings'
@@ -72,22 +72,29 @@ const Panel = () => {
     }
 
     try {
-      await writeContract({
-        address: MATIC_SWAP_ADDRESS,
-        abi: algebraSwapABI,
-        functionName: 'exactInputSingle',
-        args: [
-          {
-            tokenIn: tokenSell.address as `0x${string}`,
-            tokenOut: tokenGet.address as `0x${string}`,
-            recipient: account as `0x${string}`,
-            deadline: BigInt(Math.floor(Date.now() / 1000) + 60 * 20),
-            amountIn: parseUnits(swapValue, tokenSell.decimals),
-            amountOutMinimum: 0n,
-            limitSqrtPrice: 0n,
+      await writeContract(
+        {
+          address: MATIC_SWAP_ADDRESS,
+          abi: algebraSwapABI,
+          functionName: 'exactInputSingle',
+          args: [
+            {
+              tokenIn: tokenSell.address as `0x${string}`,
+              tokenOut: tokenGet.address as `0x${string}`,
+              recipient: account as `0x${string}`,
+              deadline: BigInt(Math.floor(Date.now() / 1000) + 60 * 20),
+              amountIn: parseUnits(swapValue, tokenSell.decimals),
+              amountOutMinimum: 0n,
+              limitSqrtPrice: 0n,
+            },
+          ],
+        },
+        {
+          onSuccess: () => {
+            toast.success('Swap successful')
           },
-        ],
-      })
+        }
+      )
     } catch (error) {
       console.log(error)
     }
