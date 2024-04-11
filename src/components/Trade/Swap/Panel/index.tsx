@@ -83,7 +83,7 @@ const Panel = () => {
             tokenOut: tokenGet.address as `0x${string}`,
             recipient: myAccount,
             deadline: BigInt(Math.floor(Date.now() / 1000) + 60 * 20),
-            amountIn: 10n,
+            amountIn: parseUnits(swapValue, tokenSell.decimals),
             amountOutMinimum: 0n,
             limitSqrtPrice: 0n,
           },
