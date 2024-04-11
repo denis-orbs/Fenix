@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Swap from '@/src/components/Trade/Swap/Panel/Swap'
 import For from '@/src/components/Trade/Swap/Panel/For'
 import Separator from '@/src/components/Trade/Common/Separator'
-import { erc20Abi, formatUnits, http, parseUnits } from 'viem'
+import { erc20Abi, formatUnits, http, parseUnits, zeroAddress } from 'viem'
 import { useSimulateContract } from 'wagmi'
 
 import { IToken } from '@/src/library/types'
@@ -24,7 +24,15 @@ import { LoaderIcon } from 'react-hot-toast'
 import Loader from '@/src/components/UI/Icons/Loader'
 import { ReloadIcon } from '@/src/components/UI/Icons/Reload'
 import SettingsIcon from '@/src/components/UI/Icons/Settings'
-
+enum ButtonState {
+  CONNECT_WALLET = 'Connect Wallet',
+  ENTER_AMOUNT = 'Enter Amount',
+  APPROVAL_REQUIRED = 'Approval Required',
+  WAITING_APPROVAL = 'Waiting Approval',
+  INSUFFICIENT_BALANCE = 'Insufficient Balance',
+  WAITING_CONFIRMATION = 'Waiting Confirmation',
+  SWAP = 'Swap',
+}
 const Panel = () => {
   const [tokenSell, setTokenSell] = useState<IToken>({
     name: 'USDT',
@@ -57,6 +65,7 @@ const Panel = () => {
   const { account, isConnected } = useActiveConnectionDetails()
   const MATIC_QUOTER_ADDRESS = '0xa15F0D7377B2A0C0c10db057f641beD21028FC89'
   const MATIC_SWAP_ADDRESS = '0xf5b509bB0909a69B1c207E495f687a596C168E12'
+  // function to make the swap
   const callAlgebraRouter = async () => {
     if (!isConnected) {
       openConnectModal && openConnectModal()
@@ -64,13 +73,6 @@ const Panel = () => {
     }
 
     try {
-      await writeContract({
-        abi: erc20Abi,
-        address: tokenSell.address as `0x${string}`,
-        functionName: 'approve',
-        args: [MATIC_SWAP_ADDRESS, BigInt(ethers.constants.MaxUint256.toString())],
-      })
-
       await writeContract({
         address: MATIC_SWAP_ADDRESS,
         abi: algebraSwapABI,
@@ -90,16 +92,32 @@ const Panel = () => {
     } catch (error) {
       console.log(error)
     }
-
-    // const quote = await quoterContract.callStatic.quoteExactInputSingle(token0, token1, 10, 0)
-
-    // console.log(swap)
   }
-  // approve, si no lo tengo
-  // comprobar que hay pool
-  // slippage (guardar en redux)
-  // qutiar el hover texto invisible
-  // más info de la tx (más adelante)
+
+  const approveToken = async () => {
+    if (!isConnected) {
+      openConnectModal && openConnectModal()
+      return
+    }
+    setCurrentButtonState(ButtonState.WAITING_APPROVAL)
+    try {
+      await writeContract(
+        {
+          abi: erc20Abi,
+          address: tokenSell.address as `0x${string}`,
+          functionName: 'approve',
+          args: [MATIC_SWAP_ADDRESS, BigInt(ethers.constants.MaxUint256.toString())],
+        },
+        {
+          onSuccess: () => setCurrentButtonState(ButtonState.SWAP),
+          onError: () => setCurrentButtonState(ButtonState.APPROVAL_REQUIRED),
+        }
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const swapTokens = () => {
     const temporalToken = tokenSell
     const temporalValue = swapValue
@@ -108,13 +126,15 @@ const Panel = () => {
     setSwapValue(forValue)
     setForValue(temporalValue)
   }
+  // reset values when account changes
   useEffect(() => {
     if (!account) {
       setSwapValue('')
       setForValue('')
     }
   }, [account])
-  // approve, get quote
+
+  // simulate swap
   const result = useSimulateContract({
     address: MATIC_QUOTER_ADDRESS,
     abi: algebraQuoterABI,
@@ -127,6 +147,7 @@ const Panel = () => {
       0n,
     ],
   })
+  // simulate swap
   const outputResult = useSimulateContract({
     address: MATIC_QUOTER_ADDRESS,
     abi: algebraQuoterABI,
@@ -139,27 +160,26 @@ const Panel = () => {
       0n,
     ],
   })
-  console.log(outputResult?.data)
+  // That state is used to know if the user is changing the output token, so we can update the input token value. This is used to avoid an infinite loop
+  const [inputForActive, setInputForActive] = useState<boolean>(false)
+
+  // When the user changes the input token, we update the output token value
   useEffect(() => {
     if (!inputForActive) return
     const outputSwapTokenValue = outputResult?.data?.result[0] || -1n
-    console.log(outputResult?.data?.result[0])
-    console.log(outputSwapTokenValue)
-    console.log(tokenGet.decimals)
-    console.log(formatUnits(outputSwapTokenValue, tokenSell.decimals))
     if (outputSwapTokenValue !== -1n) setSwapValue(formatUnits(outputSwapTokenValue, tokenSell.decimals))
   }, [outputResult?.data?.result])
 
-  console.log('outputResult', outputResult?.data?.result[0])
-  const [inputForActive, setInputForActive] = useState<boolean>(false)
-  console.log(inputForActive)
+  // When the user changes the output token manually, we update the input token value. When inputForActive is true, we don't update the output token value when the input token changes
   useEffect(() => {
     if (inputForActive) {
       const timer = setTimeout(() => setInputForActive(false), 500)
       return () => clearTimeout(timer)
     }
   }, [inputForActive])
+  // Swap fee for the transaction
   const [swapFee, setSwapFee] = useState<string>('')
+  // When the user changes the input token, we update the output token value
   useEffect(() => {
     if (inputForActive) return
     const outputTokenValue = result?.data?.result[0] || -1n
@@ -168,8 +188,45 @@ const Panel = () => {
     if (fees && fees == swapFee) return
     setSwapFee(fees || '')
   }, [result?.data?.result, tokenGet.decimals])
+
   const { setSlippageModal } = useStore()
 
+  // get current button state
+  const [currentButtonState, setCurrentButtonState] = useState(ButtonState.SWAP)
+  // check if the user has approved the token
+  const approvalData = useReadContract({
+    address: tokenSell.address as `0x${string}`,
+    functionName: 'allowance',
+    args: [account as `0x${string}`, MATIC_SWAP_ADDRESS],
+    abi: erc20Abi,
+  })
+  // this is the user balance of the token that the user wants to sell. We pass the setTokenSellUserBalance to the Swap component to update the balance when the user changes the token.
+  // We use this balance to check if the user has enough balance to swap
+  const [tokenSellUserBalance, setTokenSellUserBalance] = useState<string>('')
+
+  // manage button state
+  useEffect(() => {
+    if (!isConnected) {
+      setCurrentButtonState(ButtonState.CONNECT_WALLET)
+    } else if (!swapValue || !forValue) {
+      setCurrentButtonState(ButtonState.ENTER_AMOUNT)
+    } else if (Number(formatUnits(approvalData?.data || 0n, tokenSell.decimals)) < Number(swapValue)) {
+      setCurrentButtonState(ButtonState.APPROVAL_REQUIRED)
+    } else if (Number(swapValue) > Number(tokenSellUserBalance || 0)) {
+      setCurrentButtonState(ButtonState.INSUFFICIENT_BALANCE)
+    } else {
+      setCurrentButtonState(ButtonState.SWAP)
+    }
+  }, [isConnected, swapValue, forValue, approvalData?.data, tokenSell.decimals, tokenSellUserBalance])
+
+  // manage button click
+  const handleSwapClick = () => {
+    if (currentButtonState === ButtonState.SWAP) {
+      callAlgebraRouter()
+    } else if (currentButtonState === ButtonState.APPROVAL_REQUIRED) {
+      approveToken()
+    }
+  }
   return (
     <section className="box-panel-trade">
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
@@ -190,13 +247,16 @@ const Panel = () => {
               />
               <SettingsIcon onClick={() => setSlippageModal(true)} className="text-shark-100 " />
             </div>
-
-            {/* <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span> */}
           </div>
           <div className="flex flex-col gap-1 mb-5 relative">
             <div className="mb-3">
-              {/* {hash && <div>Transaction Hash: {hash}</div>} */}
-              <Swap token={tokenSell} setToken={setTokenSell} value={swapValue} setValue={setSwapValue} />
+              <Swap
+                token={tokenSell}
+                setToken={setTokenSell}
+                value={swapValue}
+                setValue={setSwapValue}
+                setTokenSellUserBalance={setTokenSellUserBalance}
+              />
               <Separator onClick={swapTokens} />
               <For
                 token={tokenGet}
@@ -206,8 +266,8 @@ const Panel = () => {
                 setInputForActive={setInputForActive}
               />
             </div>
-            <Button variant="primary" className="w-full" onClick={callAlgebraRouter}>
-              {!isConnected ? 'Connect Wallet' : 'Swap'}
+            <Button variant="primary" className="w-full " onClick={handleSwapClick}>
+              {currentButtonState}
             </Button>
           </div>
         </div>

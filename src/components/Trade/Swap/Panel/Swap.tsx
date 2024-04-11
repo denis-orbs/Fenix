@@ -17,9 +17,10 @@ interface SwapProps {
   value: string
   setToken: (token: IToken) => void
   setValue: (value: string) => void
+  setTokenSellUserBalance: (balance: string) => void
 }
 
-const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
+const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: SwapProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
@@ -38,8 +39,9 @@ const Swap = ({ token, setToken, setValue, value }: SwapProps) => {
       const myBigNumber = toBN(myNumber.toString())
       const resultado = myBigNumber.div(BN_TEN.pow(token.decimals)).toString()
       setTokenBalance(resultado)
+      setTokenSellUserBalance(resultado)
     }
-  }, [tokenData, token.decimals, account])
+  }, [tokenData, token.decimals, account, setTokenSellUserBalance])
   const handlerSelectToken = () => setOpenSelectToken(true)
   return (
     <div className="exchange-box-x1">
