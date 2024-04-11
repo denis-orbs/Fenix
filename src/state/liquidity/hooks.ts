@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from '..'
 import { useCallback } from 'react'
 import { updateToken0, updateToken0TypedValue, updateToken1, updateToken1TypedValue } from './actions'
 import { Address } from '@/src/library/types'
+import { tokenList } from '@/src/library/constants/tokenList'
+
 import { LiquidityTableElement, LiquidityV2PairDetails, V3PairInfo } from './types'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
 
@@ -36,6 +38,16 @@ export function useConcentratedPools() {
 export function useToken0() {
   const token0 = useAppSelector((state) => state.liquidity.token0)
   return token0
+}
+export function useToken0Data() {
+  const token0 = useToken0()
+  const token0Data = tokenList.find((token) => token.address === token0)
+  return token0Data || tokenList[0]
+}
+export function useToken1Data() {
+  const token1 = useToken1()
+  const token1Data = tokenList.find((token) => token.address === token1)
+  return token1Data || tokenList[0]
 }
 export function useToken0TypedValue() {
   const token0TypedValue = useAppSelector((state) => state.liquidity.token0TypedValue)
