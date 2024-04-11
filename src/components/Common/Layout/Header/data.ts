@@ -21,14 +21,13 @@ export const MENU_LINKS = [
   },
   {
     name: 'Migration',
-    href: '/migration',
+    href: 'https://claim.fenixfinance.io/claim',
   },
   {
     name: 'Bribes',
     href: '/bribes',
   },
 ]
-
 
 export const SOCIAL_LINKS = [
   {
@@ -50,6 +49,5 @@ export const SOCIAL_LINKS = [
     title: 'Git',
     href: 'https://docs.fenixfinance.io/fenix/welcome-to-fenix/our-mission',
     iconName: 'git',
-  }
+  },
 ]
-

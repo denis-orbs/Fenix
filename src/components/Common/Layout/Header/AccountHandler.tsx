@@ -34,7 +34,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
         <>
           {isConnected && (
             <div className={` relative w-auto`}>
-              <div
+              {/* <div
                 onMouseEnter={() => setOpenPoints(true)}
                 onMouseLeave={() => setOpenPoints(false)}
                 className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden 2xl:flex"
@@ -43,7 +43,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                   0.0 <span className="hidden xl:inline">Points</span>
                 </p>
                 <Image src="/static/images/tokens/BLAST.svg" className="w-8 h-8" alt="logo" width={30} height={30} />
-              </div>
+              </div> */}
               {openPoints && (
                 <div className="absolute bg-shark-400 rounded-lg border border-shark-300 w-full xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
                   <div className="flex items-center justify-between mb-3">
@@ -69,8 +69,8 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
           )}
           {isConnected && (
             <div className="items-center flex-shrink-0 hidden gap-2 2xl:flex">
-              <Image src="/static/images/tokens/ETH-GRAY.svg" className="w-6 h-6 " alt="logo" width={24} height={24} />
-              <p className="text-xs text-white">1.987 ETH</p>
+              {/* <Image src="/static/images/tokens/ETH-GRAY.svg" className="w-6 h-6 " alt="logo" width={24} height={24} />
+              <p className="text-xs text-white">1.987 ETH</p> */}
             </div>
           )}
         </>
