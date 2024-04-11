@@ -35,7 +35,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   const handlerClose = () => setOpenModal(false)
 
   const handlerSelectToken = (token: IToken) => {
-    console.log(token, 'inn')
+    //console.log(token, 'inn')
     setToken(token)
     setOpenModal(false)
   }

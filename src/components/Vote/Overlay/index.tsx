@@ -34,7 +34,7 @@ const Overlay = () => {
       // Filter poolAddresses based on undefinedIndices
       const filteredPoolAddresses = poolAddresses.filter((_, index) => !undefinedIndices.includes(index))
 
-      console.log(undefinedIndices, filteredPoolAddresses)
+      // console.log(undefinedIndices, filteredPoolAddresses)
 
       // Filter both arrays based on undefinedIndices
       const weights = voteValue.votes

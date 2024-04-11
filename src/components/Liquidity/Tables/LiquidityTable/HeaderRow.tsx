@@ -72,12 +72,14 @@ const HeaderRow = ({
         )
       }
     } else {
-      setPaginationResult(poolsData)
       setPaginationStatus(true)
     }
-  }, [sort, poolsData, chainId])
+  }, [sort, chainId])
 
-  console.log(chainId, activeChain, process.env.NEXT_PUBLIC_CHAINID)
+  useEffect(() => {
+    setPaginationResult(poolsData)
+  }, [poolsData])
+  console.log(poolsData, chainId, activeChain, 'process.env.NEXT_PUBLIC_CHAINID')
 
   function compareBigDecimal(a: any, b: any) {
     return a - b
@@ -121,7 +123,7 @@ const HeaderRow = ({
               ))}
             </>
           ) : chainId?.toString() === process.env.NEXT_PUBLIC_CHAINID ? (
-            paginationResult.map((row, index) => (
+            pagination.map((row, index) => (
               <Fragment key={index}>
                 <Row
                   row={row}

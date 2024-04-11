@@ -48,7 +48,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
       try {
         const response = await axios.get(`https://blast-points-merkle.vercel.app/query/${campaignId}/${pairAddress}`)
 
-        console.log(response.data)
+        // console.log(response.data)
         const ob = response.data.data.find((element: any) => {
           return element.recipient.toLowerCase() === address.toLowerCase()
         })
@@ -66,7 +66,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
       // Wait for all Promises to resolve
       Promise.all(promises)
         .then((results) => {
-          console.log(results)
+          // console.log(results)
           const sum = results.reduce((total, currentValue) => total + currentValue, 0)
           // Set the setAvailablePoints state after all Promises have resolved
           setAvailablePoints(sum)

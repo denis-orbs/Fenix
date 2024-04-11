@@ -62,7 +62,7 @@ const DepositAmountsGAMMA = ({
   //   tokenAddress: token0,
   //   spenderAddress: gammaProxySmartContract,
   // })
-  console.log(token1Range)
+  // console.log(token1Range)
   const { data: hash, sendTransaction } = useSendTransaction()
   const token0Allowance = useERC20Allowance(token0, userAddress, gammaHypervisorSmartContract)
   const token1Allowance = useERC20Allowance(token1, userAddress, gammaHypervisorSmartContract)

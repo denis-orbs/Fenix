@@ -104,9 +104,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   useEffect(() => {
     const asyncFn = async () => {
       const state = await getAlgebraPoolPrice(firstToken.address as Address, secondToken.address as Address)
-      console.log('state = ', state)
+      // console.log('state = ', state)
       setPoolState(state as StateType)
-      console.log('price = ', Number((state as StateType).price) / 1e18, 'tick =', (state as StateType).currentTick)
+      //   console.log('price = ', Number((state as StateType).price) / 1e18, 'tick =', (state as StateType).currentTick)
       if (currentPercentage == -1) {
         setRangePrice1(0)
         setRangePrice2(-1)

@@ -65,7 +65,7 @@ const PointsProgram = () => {
         setData(rankedData)
 
         if (address) {
-          console.log(rankedData)
+          //     console.log(rankedData)
           const a = rankedData.find(
             (element) => element.recipient.toLowerCase() === '0x9Dd013178C2BD6Bb4BF209F4b8239374c0E43415'.toLowerCase()
           )

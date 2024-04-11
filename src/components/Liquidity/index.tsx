@@ -53,16 +53,20 @@ const Liquidity = () => {
         const poolData = poolsData.filter(
           (row) => !row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
         )
+        console.log('inn1')
         setSearchResults(poolData)
       } else if (currentTab === 'STABLE') {
         const poolData = poolsData.filter(
           (row) => row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
         )
+        console.log('inn2')
         setSearchResults(poolData)
       } else if (currentTab === 'CONCENTRATED') {
         const poolData = poolsData.filter((row) => row.pairDetails.pairSymbol === 'Concentrated pool')
         setSearchResults(poolData)
+        console.log('inn3')
       } else {
+        console.log('inn4')
         setSearchResults(poolsData)
       }
     }
@@ -71,6 +75,7 @@ const Liquidity = () => {
   const filteredPoolsData = searchResults.filter((pool) =>
     pool?.pairDetails?.token0Symbol.toLowerCase().includes(searchValue.toLowerCase())
   )
+  console.log(searchResults, filteredPoolsData, 'searchResults')
 
   return (
     <section>

@@ -70,7 +70,7 @@ const Panel = () => {
     const searchParamToken0 = searchParams.get('token0')
     const searchParamToken1 = searchParams.get('token1')
     const typeSearch = searchParams.get('type')
-    console.log(searchParams, searchParamToken0, searchParamToken1, 'searchParams')
+    // console.log(searchParams, searchParamToken0, searchParamToken1, 'searchParams')
 
     if (typeSearch == 'CONCENTRATED_AUTOMATIC') setDepositType('CONCENTRATED_AUTOMATIC')
     if (typeSearch == 'CONCENTRATED_MANUAL') setDepositType('CONCENTRATED_MANUAL')

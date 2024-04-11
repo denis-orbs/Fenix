@@ -5,7 +5,7 @@ import { Button } from '@/src/components/UI'
 import { formatCurrency } from '@/src/library/utils/numbers'
 
 const PointSummary = ({ userData }: any) => {
-  console.log(userData, 'userData')
+  //  console.log(userData, 'userData')
   return (
     <section className="your-point-box">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center relative z-10">

@@ -130,7 +130,7 @@ const Classic = ({
               contractAddressList.v2router as Address
             )
           : {}
-      console.log(allowanceFirst, allowanceSecond, allowanceLp, 'allowance')
+      // console.log(allowanceFirst, allowanceSecond, allowanceLp, 'allowance')
       setShouldApproveFirst(allowanceFirst == '0')
       setShouldApproveSecond(allowanceSecond == '0')
       setShouldApprovePair(allowanceLp == '0')
