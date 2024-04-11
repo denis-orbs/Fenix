@@ -14,12 +14,14 @@ export const STEPS = [
   },
   {
     label: 'Commit USDC',
-    description: "Once the sale concludes, you'll be able to claim the tokens you purchased. Any unused USDC tokens will be automatically refunded to your wallet.",
+    description:
+      "Once the sale concludes, you'll be able to claim the tokens you purchased. Any unused USDC tokens will be automatically refunded to your wallet.",
     icon: 'icon-circles',
   },
   {
     label: 'Claim your tokens',
-    description: "After the sale finishes, you can start claiming tokens that you bought. Any unspent USDC tokens will be returned to your wallet.",
+    description:
+      'After the sale finishes, you can start claiming tokens that you bought. Any unspent USDC tokens will be returned to your wallet.',
     icon: 'icon-circles',
   },
 ]

@@ -11,7 +11,7 @@ import {
   useToken1,
   useToken1TypedValue,
 } from '@/src/state/liquidity/hooks'
-import { useToken0Balance, useToken1Balance } from '@/src/library/hooks/useTokenBalance'
+// import { useToken0Balance, useToken1Balance } from '@/src/library/hooks/useBalance'
 import { erc20Abi, parseEther } from 'viem'
 import { useAccount, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
 import { gammaUniProxyABI } from '@/src/library/constants/abi'
@@ -37,8 +37,10 @@ const DepositAmountsGAMMA = ({
   const token1TypedValue = useToken1TypedValue()
   const setToken0TypedValue = useSetToken0TypedValue()
   const setToken1TypedValue = useSetToken1TypedValue()
-  const { tokenBalance: token0Balance } = useToken0Balance()
-  const { tokenBalance: token1Balance } = useToken1Balance()
+  // const { tokenBalance: token0Balance } = useToken0Balance()
+  // const { tokenBalance: token1Balance } = useToken1Balance()
+  const token0Balance = 10
+  const token1Balance = 10
   const { gammaProxySmartContract, gammaHypervisorSmartContract } = useGammaSmartContracts(token0, token1)
   const token0Amount = useToken0TypedValue()
   const token1Range = useGammaToken1Range()
@@ -60,7 +62,7 @@ const DepositAmountsGAMMA = ({
   //   tokenAddress: token0,
   //   spenderAddress: gammaProxySmartContract,
   // })
-  console.log(token1Range)
+  // console.log(token1Range)
   const { data: hash, sendTransaction } = useSendTransaction()
   const token0Allowance = useERC20Allowance(token0, userAddress, gammaHypervisorSmartContract)
   const token1Allowance = useERC20Allowance(token1, userAddress, gammaHypervisorSmartContract)
@@ -95,7 +97,7 @@ const DepositAmountsGAMMA = ({
             <Button
               variant="tertiary"
               className="!py-1 !px-3"
-              onClick={() => setToken0TypedValue(token0Balance?.div(2).toFixed(INPUT_PRECISION).toString() || '0')}
+              // onClick={() => setToken0TypedValue(token0Balance?.div(2).toFixed(INPUT_PRECISION).toString() || '0')}
             >
               Half
             </Button>
@@ -141,7 +143,7 @@ const DepositAmountsGAMMA = ({
               className="!py-1 !px-3"
               onClick={() => {
                 setToken1TypedValue(
-                  toBN(ethers.formatUnits(token1Range[1], 18)).div(2).toFixed(INPUT_PRECISION).toString()
+                  toBN(ethers.utils.formatUnits(token1Range[1], 18)).div(2).toFixed(INPUT_PRECISION).toString()
                 )
               }}
             >
@@ -151,7 +153,9 @@ const DepositAmountsGAMMA = ({
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                setToken1TypedValue(toBN(ethers.formatUnits(token1Range[1], 18)).toFixed(INPUT_PRECISION).toString())
+                setToken1TypedValue(
+                  toBN(ethers.utils.formatUnits(token1Range[1], 18)).toFixed(INPUT_PRECISION).toString()
+                )
               }}
             >
               Max
@@ -163,7 +167,7 @@ const DepositAmountsGAMMA = ({
           <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
             <div className="flex items-center gap-2">
               <Image
-                src={`/static/images/tokens/${secondToken.symbol}.png`}
+                src={`/static/images/tokens/${secondToken.symbol}.svg`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}

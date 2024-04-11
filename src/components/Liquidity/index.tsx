@@ -11,13 +11,15 @@ import HeaderRow from './Tables/LiquidityTable/HeaderRow'
 import { DATA_ROW, OPTIONS_FILTER, STEPS } from './data'
 
 const Liquidity = () => {
-  const [currentTab, setCurrentTab] = useState<string>('STABLE')
+  const [currentTab, setCurrentTab] = useState<string>('ALL POOLS')
   const [searchResults, setSearchResults] = useState<PoolData[]>([])
   const [loading, setLoading] = useState(true)
+  const [searchValue, setSearchValue] = useState<string>('')
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
-    }, 8000)
+    }, 1000)
   }, [])
 
   const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
@@ -39,26 +41,41 @@ const Liquidity = () => {
 
       return pd
     })
-  }, [loading, v2PairsData])
+  }, [loading, loadingV2Pairs, v2PairsData])
 
   useEffect(() => {
     setSearchResults(poolsData)
   }, [poolsData])
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-
-    if (value.length === 0) {
-      setSearchResults(poolsData)
-      return
+  useEffect(() => {
+    if (poolsData && poolsData.length > 0) {
+      if (currentTab === 'VOLATILE') {
+        const poolData = poolsData.filter(
+          (row) => !row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
+        )
+        console.log('inn1')
+        setSearchResults(poolData)
+      } else if (currentTab === 'STABLE') {
+        const poolData = poolsData.filter(
+          (row) => row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
+        )
+        console.log('inn2')
+        setSearchResults(poolData)
+      } else if (currentTab === 'CONCENTRATED') {
+        const poolData = poolsData.filter((row) => row.pairDetails.pairSymbol === 'Concentrated pool')
+        setSearchResults(poolData)
+        console.log('inn3')
+      } else {
+        console.log('inn4')
+        setSearchResults(poolsData)
+      }
     }
+  }, [currentTab, poolsData])
 
-    const filteredPoolsData = poolsData.filter((pool) =>
-      pool?.pairDetails?.token0?.symbol.toLowerCase().includes(value.toLowerCase())
-    )
-
-    setSearchResults(filteredPoolsData)
-  }
+  const filteredPoolsData = searchResults.filter((pool) =>
+    pool?.pairDetails?.token0Symbol.toLowerCase().includes(searchValue.toLowerCase())
+  )
+  console.log(searchResults, filteredPoolsData, 'searchResults')
 
   return (
     <section>
@@ -68,14 +85,15 @@ const Liquidity = () => {
         </div>
         <Steps steps={STEPS} title="Start Now" />
       </div>
+
       <h5 className="mb-4 text-lg lg:text-2xl text-white">Liquidity Pools</h5>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
         <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         <div className="w-full xl:w-1/3">
-          <Search onChange={handleSearch} placeholder="Search by symbol" />
+          <Search setSearchValue={setSearchValue} searchValue={searchValue} placeholder="Search by symbol" />
         </div>
       </div>
-      <HeaderRow loading={loadingV2Pairs} poolsData={searchResults} />
+      <HeaderRow loading={loadingV2Pairs} poolsData={filteredPoolsData} />
     </section>
   )
 }

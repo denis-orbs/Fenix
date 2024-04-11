@@ -1,26 +1,26 @@
 const OPTIONS_STRATEGIES = [
   {
-    value: "duplicate",
+    value: 'duplicate',
     label: 'Duplicate Strategy',
   },
   {
-    value: "notifications",
+    value: 'notifications',
     label: 'Manage Notifications',
   },
   {
-    value: "deposit",
+    value: 'deposit',
     label: 'Deposit Funds',
   },
   {
-    value: "withdraw",
+    value: 'withdraw',
     label: 'Withdraw Funds',
   },
   {
-    value: "pause",
+    value: 'pause',
     label: 'Pause Strategy',
   },
   {
-    value: "delete",
+    value: 'delete',
     label: 'Delete Strategy',
   },
 ]

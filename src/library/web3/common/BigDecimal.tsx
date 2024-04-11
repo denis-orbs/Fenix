@@ -565,20 +565,20 @@ export class BigDecimal {
       const suffixes = ['', 'K', 'M', 'B', 'T']
 
       // Get the suffix index, if the mantissa is 2000, the suffix index is 1 (K), if the mantissa is 2000000, the suffix index is 2 (M)
-      let suffixIndex =
+      const suffixIndex =
         mantissaArray[0].length % 3 === 0 ? mantissaArray[0].length / 3 - 1 : Math.floor(mantissaArray[0].length / 3)
 
       // Get the suffix
-      let suffix = suffixes[suffixIndex] || ''
+      const suffix = suffixes[suffixIndex] || ''
 
       // Get the mantissa integer
-      let mantissaInteger = mantissaArray[0]
+      const mantissaInteger = mantissaArray[0]
 
       // if the suffix is not empty, return the mantissa with the suffix
       if (suffix !== '') {
         // if the suffix is not empty, return the mantissa with the suffix
         // before the decimal separator
-        let decLeft = mantissaInteger.slice(0, mantissaInteger.length - suffixIndex * 3)
+        const decLeft = mantissaInteger.slice(0, mantissaInteger.length - suffixIndex * 3)
         // after the decimal separator
         let decRight = mantissaArray[0].slice(
           mantissaInteger.length - suffixIndex * 3,
@@ -587,8 +587,8 @@ export class BigDecimal {
 
         // remove trailing zeros from the DECIMAL part of the mantissa
         if (decRight !== '') {
-          let decRightArray = decRight.split('')
-          let decRightArrayReversed = decRightArray.reverse()
+          const decRightArray = decRight.split('')
+          const decRightArrayReversed = decRightArray.reverse()
           let decRightArrayReversedTrimmed: string[] = []
           let decRightArrayReversedTrimmedLength = 0
           for (let i = 0; i < decRightArrayReversed.length; i++) {
@@ -602,7 +602,7 @@ export class BigDecimal {
             decRightArrayReversedTrimmedLength,
             decRightArrayReversed.length
           )
-          let decRightArrayTrimmed = decRightArrayReversedTrimmed.reverse()
+          const decRightArrayTrimmed = decRightArrayReversedTrimmed.reverse()
           decRight = decRightArrayTrimmed.join('')
         }
         mantissa = decLeft + (decRight !== '' ? decimalSeparator + decRight : '') + suffix
@@ -616,19 +616,19 @@ export class BigDecimal {
       mantissa.includes(decimalSeparator) &&
       mantissa.indexOf(decimalSeparator) > 3
     ) {
-      let mantissaArray = mantissa.split(decimalSeparator)
-      let mantissaInteger = mantissaArray[0]
-      let mantissaDecimal = mantissaArray[1]
-      let mantissaIntegerArray = mantissaInteger.split('')
-      let mantissaIntegerArrayReversed = mantissaIntegerArray.reverse()
-      let mantissaIntegerArrayReversedWithThousandsSeparator: string[] = []
+      const mantissaArray = mantissa.split(decimalSeparator)
+      const mantissaInteger = mantissaArray[0]
+      const mantissaDecimal = mantissaArray[1]
+      const mantissaIntegerArray = mantissaInteger.split('')
+      const mantissaIntegerArrayReversed = mantissaIntegerArray.reverse()
+      const mantissaIntegerArrayReversedWithThousandsSeparator: string[] = []
       for (let i = 0; i < mantissaIntegerArrayReversed.length; i++) {
         if (i % 3 === 0 && i !== 0) {
           mantissaIntegerArrayReversedWithThousandsSeparator.push(thousandsSeparator)
         }
         mantissaIntegerArrayReversedWithThousandsSeparator.push(mantissaIntegerArrayReversed[i])
       }
-      let mantissaIntegerArrayWithThousandsSeparator = mantissaIntegerArrayReversedWithThousandsSeparator.reverse()
+      const mantissaIntegerArrayWithThousandsSeparator = mantissaIntegerArrayReversedWithThousandsSeparator.reverse()
       mantissa = mantissaIntegerArrayWithThousandsSeparator.join('') + decimalSeparator + mantissaDecimal
     }
 
@@ -653,8 +653,8 @@ export class BigDecimal {
    */
   toRoundedFloat(): number {
     // check if its less than number.MAX_SAFE_INTEGER
-    let max = BigInt(Number.MAX_SAFE_INTEGER)
-    let min = BigInt(Number.MIN_SAFE_INTEGER)
+    const max = BigInt(Number.MAX_SAFE_INTEGER)
+    const min = BigInt(Number.MIN_SAFE_INTEGER)
     if (this.getIntegerPart() > max) return Number.MAX_SAFE_INTEGER
     if (this.getIntegerPart() < min) return Number.MIN_SAFE_INTEGER
 
@@ -662,10 +662,10 @@ export class BigDecimal {
     // ex: 1.123456789123456789 -> 1.1234567891234568
     // ex: 11.123456789123456789 -> 11.123456789123457
 
-    let fractionalPart = this.getFractionalPart()
-    let fractionalPartLength = fractionalPart.length
-    let fractionalPartLengthMax = 16
-    let fractionalPartLengthDiff = fractionalPartLengthMax - fractionalPartLength
+    const fractionalPart = this.getFractionalPart()
+    const fractionalPartLength = fractionalPart.length
+    const fractionalPartLengthMax = 16
+    const fractionalPartLengthDiff = fractionalPartLengthMax - fractionalPartLength
     let fractionalPartRounded = fractionalPart
     if (fractionalPartLengthDiff > 0) {
       fractionalPartRounded += '0'.repeat(fractionalPartLengthDiff)
@@ -673,11 +673,11 @@ export class BigDecimal {
     fractionalPartRounded = fractionalPartRounded.slice(0, fractionalPartLengthMax)
 
     // integer part (with the fractional part)
-    let integerPart = this.getIntegerPart()
-    let integerPartRounded = integerPart + fractionalPartRounded
+    const integerPart = this.getIntegerPart()
+    const integerPartRounded = integerPart + fractionalPartRounded
 
     // return the rounded float
-    let floatString =
+    const floatString =
       integerPartRounded.slice(0, -fractionalPartLengthMax) + '.' + integerPartRounded.slice(-fractionalPartLengthMax)
     return parseFloat(floatString)
   }

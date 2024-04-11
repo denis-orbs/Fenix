@@ -48,3 +48,7 @@ node_modules
 # solidity-coverage files
 /coverage
 /coverage.json
+
+# packages
+package-lock.json
+yarn.lock

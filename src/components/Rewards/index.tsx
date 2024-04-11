@@ -35,7 +35,7 @@ const Rewards = () => {
         </div>
       </div>
 
-      <HeaderRowReward activeVote={activeVote} filterData={[""]} loading={loading} />
+      {/* <HeaderRowReward activeVote={activeVote} filterData={[""]} loading={loading} /> */}
 
       <SelectVote
         activeVote={activeVote}

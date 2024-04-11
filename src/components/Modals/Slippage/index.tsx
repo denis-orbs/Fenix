@@ -1,20 +1,23 @@
 'use client'
 
 import { Button, Modal } from '@/src/components/UI'
+import useStore from '@/src/state/zustand'
 
 interface SlippageProps {
   openModal: boolean
   setOpenModal: (openModal: boolean) => void
 }
 
-const Slippage = ({ setOpenModal, openModal }: SlippageProps) => {
+const Slippage = () => {
+  // const handlerClose = () => setOpenModal(false)
+  const openModal = useStore((state) => state.slippageModal)
+  const { setSlippageModal } = useStore()
 
-  const handlerClose = () => setOpenModal(false)
-
+  const handleClose = () => setSlippageModal(false)
   return (
-    <Modal className="mx-auto" openModal={openModal} setOpenModal={setOpenModal}>
+    <Modal className="mx-auto" openModal={openModal} setOpenModal={setSlippageModal}>
       <div className="common-modal">
-        <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
+        <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handleClose} />
         <div className="relative w-full h-full">
           <h1 className="mt-5 text-xl font-bold text-center text-white sm:mt-10 lg:mt-10">Slippage Tolerance</h1>
           <p className="text-shark-100 text-base mt-3 text-center lg:mb-6 sm:mb-6 mb-2 max-w-[300px] mx-auto">

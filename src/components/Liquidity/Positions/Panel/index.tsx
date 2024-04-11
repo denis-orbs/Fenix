@@ -1,3 +1,4 @@
+//@ts-nocheck
 'use client'
 
 import { useState } from 'react'
@@ -16,7 +17,8 @@ const Panel = () => {
   const [tokenSwap, setTokenSwap] = useState<IToken>({ name: 'Fenix', symbol: 'FNX' })
   const [tokenFor, setTokenFor] = useState<IToken>({ name: 'ethereum', symbol: 'ETH' })
 
-  const handlerSwitch = () => setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
+  const handlerSwitch = () =>
+    setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
 
   const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
 
@@ -81,10 +83,6 @@ const Panel = () => {
 
           {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
           {depositType === 'CONCENTRATED_MANUAL' && <Manual />}
-
-          <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
-            Create Position
-          </Button>
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { CurrentEpochReward, RewardPairInfo, Rewards, ToClaim } from '../web3/apis/RewardAPIData'
-import RewardAPIABIV3 from '../web3/abis/RewardAPIABIV3'
-import { RewardAPIV3Address } from '../web3/ContractAddresses'
+import { CurrentEpochReward, RewardPairInfo, Rewards, ToClaim } from './apis/RewardAPIData'
+import RewardAPIABIV3 from './abis/RewardAPIABIV3'
+import { RewardAPIV3Address } from './ContractAddresses'
 import { Address } from 'viem'
 
 import { Token, TokenData } from '../structures/common/TokenData'
@@ -29,7 +29,7 @@ export async function getAllPairRewards(
   user: Address,
   availableTokensData: { [tokenAddr: string]: Token }
 ): Promise<RewardPairInfo[]> {
-  let l: RewardPairInfo[] = []
+  const l: RewardPairInfo[] = []
 
   const rewardPairs = (await readContract(config, {
     address: RewardAPIV3Address,
@@ -40,7 +40,7 @@ export async function getAllPairRewards(
 
   const subgraphTokenRewards = await getCurrentEpochRewardTokens(availableTokensData)
 
-  for (let r of rewardPairs) {
+  for (const r of rewardPairs) {
     const rc = {
       ...r,
     }
@@ -66,7 +66,7 @@ export async function getAllPairRewards(
 }
 
 export async function getAllClPairRewards(user: Address, availableTokensData: { [tokenAddr: string]: Token }) {
-  let l: RewardPairInfo[] = []
+  const l: RewardPairInfo[] = []
 
   const rewardPairs = (await readContract(config, {
     address: RewardAPIV3Address,
@@ -77,7 +77,7 @@ export async function getAllClPairRewards(user: Address, availableTokensData: { 
 
   const subgraphTokenRewards = await getCurrentEpochRewardTokens(availableTokensData)
 
-  for (let r of rewardPairs) {
+  for (const r of rewardPairs) {
     const rc = {
       ...r,
     }

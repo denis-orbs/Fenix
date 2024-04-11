@@ -1,7 +1,7 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
 import { getConcentratedPools, getLiquidityV2Pairs } from './thunks'
-import { LiquidityState } from './types'
+import { LiquidityState, V2PairId, v2FactoryData, v3FactoryData } from './types'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import {
   updateToken0,
@@ -11,26 +11,18 @@ import {
   updateClmProvider,
 } from './actions'
 import { getLiquidityTableElements } from './thunks'
-import { LiquidityTableElement, LiquidityV2PairDetails, V2PairInfo, V3PairInfo, v3PoolData } from './types'
-import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
+import { V2PairInfo, V3PairInfo } from './types'
 import { GET_POSITIONV3_USER, GET_V2_PAIRS, GET_V3_ALGEBRA_DATA } from '@/src/library/apollo/queries/LIQUIDITY'
-import client, { algebra_client } from '@/src/library/apollo/client'
+import { algebra_client } from '@/src/library/apollo/client'
 import { blastClient } from '@/src/library/apollo/client/protocolCoreClient'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
-
-export interface LiquidityState {
-  // Liquidity V2 Pairs
-  v2Pairs: {
-    state: ApiState
-    data: PairInfoV3[]
-    tableData?: LiquidityTableElement[]
-  }
-}
+import { GET_UNISWAP_FACTORY_DATA, GET_V2_PAIR_ID, GET_V3_FACTORY_DATA } from '@/src/library/apollo/queries/global'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
     state: ApiState.LOADING,
+    tablestate: ApiState.LOADING,
     data: [],
     tableData: [],
   },
@@ -84,15 +76,15 @@ export default createReducer(initialState, (builder) => {
       state.concentratedPools.state = ApiState.ERROR
     })
     .addCase(getLiquidityTableElements.pending, (state) => {
-      state.v2Pairs.state = ApiState.LOADING
+      state.v2Pairs.tablestate = ApiState.LOADING
     })
     .addCase(getLiquidityTableElements.fulfilled, (state, action) => {
-      state.v2Pairs.state = ApiState.LOADING
+      state.v2Pairs.tablestate = ApiState.LOADING
       state.v2Pairs.tableData = action.payload
-      state.v2Pairs.state = ApiState.SUCCESS
+      state.v2Pairs.tablestate = ApiState.SUCCESS
     })
     .addCase(getLiquidityTableElements.rejected, (state) => {
-      state.v2Pairs.state = ApiState.ERROR
+      state.v2Pairs.tablestate = ApiState.ERROR
     })
 })
 
@@ -103,7 +95,6 @@ export const fetchPoolData = async () => {
       query: GET_V3_ALGEBRA_DATA,
     })
     // Data is available in `data.pools`
-    console.log(data)
     return data.pools as V3PairInfo[]
   } catch (error) {
     console.error('Error fetching pool data:', error)
@@ -127,6 +118,34 @@ export const fetchV3Positions = async (user: Address) => {
 }
 
 // Function to fetch v2 algebra pool data
+export const fetchv2Factories = async () => {
+  try {
+    const { data } = await blastClient.query({
+      query: GET_UNISWAP_FACTORY_DATA,
+    })
+    // Data is available in `data.pools`
+    return data.uniswapFactories as v2FactoryData[]
+  } catch (error) {
+    console.error('Error fetching fetchv2Factories data:', error)
+    return []
+  }
+}
+
+// Function to fetch v2 algebra pool data
+export const fetchv3Factories = async () => {
+  try {
+    const { data } = await algebra_client.query({
+      query: GET_V3_FACTORY_DATA,
+    })
+    // Data is available in `data.pools`
+    return data.factories as v3FactoryData[]
+  } catch (error) {
+    console.error('Error fetching fetchv3Factories data:', error)
+    return []
+  }
+}
+
+// Function to fetch v2 algebra pool data
 export const fetchv2PoolData = async () => {
   try {
     const { data } = await blastClient.query({
@@ -140,4 +159,20 @@ export const fetchv2PoolData = async () => {
   }
 }
 
-GET_V2_PAIRS
+// Function to fetch v2 algebra pool data
+export const fetchv2PairId = async (token0Id: any, token1Id: any, isStable: Boolean) => {
+  try {
+    console.log(token0Id, token1Id, isStable)
+    const { data } = await blastClient.query({
+      query: GET_V2_PAIR_ID,
+      variables: { token0Id, token1Id, isStable }, // Pass the user variable as owner
+    })
+    // console.log(data)
+    // // Data is available in `data.pools`
+    console.log(data.pairs)
+    return data.pairs as V2PairId[]
+  } catch (error) {
+    console.error('Error fetching pool data:', error)
+    return []
+  }
+}

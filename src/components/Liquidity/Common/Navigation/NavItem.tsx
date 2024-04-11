@@ -41,9 +41,7 @@ const NavItem = ({ item }: NavItemProps) => {
     <div className={activeItem} onMouseEnter={onHoverEnter} onMouseLeave={onHoverLeave}>
       <Link href={`${item.path}`} className="flex items-center gap-2" onClick={handleRedirect}>
         <div className="flex items-center justify-center w-10 h-10 p-2 border rounded-lg bg-shark-400 bg-opacity-40 border-shark-400">
-          <span
-            className={`inline-block text-lg text-gradient ${item.icon}`}
-          ></span>
+          <span className={`inline-block text-lg text-gradient ${item.icon}`}></span>
         </div>
         <div>
           <h6 className={`text-sm group-hover:text-chilean-fire-600 ${activeName}`}>{item.name}</h6>

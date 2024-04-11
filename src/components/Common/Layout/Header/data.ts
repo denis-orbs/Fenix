@@ -11,22 +11,27 @@ export const MENU_LINKS = [
     name: 'Liquidity',
     href: '/liquidity',
   },
-  {
-    name: 'Vote',
-    href: '/vote',
-  },
-  {
-    name: 'Lock',
-    href: '/lock',
-  },
+
+  // {
+  //   name: 'Vote',
+  //   href: '/vote',
+  // },
+  // {
+  //   name: 'Lock',
+  //   href: '/lock',
+  // },
   {
     name: 'Migration',
     href: 'https://claim.fenixfinance.io/claim',
   },
   {
-    name: 'Bribes',
-    href: '/bribes',
+    name: 'Orbit Points',
+    href: '/points-program',
   },
+  // {
+  //   name: 'Bribes',
+  //   href: '/bribes',
+  // },
 ]
 
 export const SOCIAL_LINKS = [
