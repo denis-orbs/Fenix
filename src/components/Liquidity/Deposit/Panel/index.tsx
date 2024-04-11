@@ -13,7 +13,6 @@ import { useAppSelector } from '@/src/state'
 import { V2PairId } from '@/src/state/liquidity/types'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-import { Address } from 'viem'
 
 const DepositTypeValues = {
   VOLATILE: 'VOLATILE',

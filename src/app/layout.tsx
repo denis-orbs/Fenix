@@ -17,9 +17,10 @@ import dynamic from 'next/dynamic'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { createConfig, http, WagmiProvider } from 'wagmi'
-import { blast, blastSepolia } from 'wagmi/chains'
+import { blast, blastSepolia, holesky, polygon } from 'wagmi/chains'
 import store, { persistor } from '../state'
 import { usePathname } from 'next/navigation'
+import Slippage from '../components/Modals/Slippage'
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '900'],
@@ -41,7 +42,7 @@ export const configwallets = createConfig({
 export const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
-  chains: [blast, blastSepolia],
+  chains: [blast, blastSepolia, holesky, polygon],
   wallets: [
     ...wallets,
     {
@@ -83,6 +84,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 >
                   <Updaters />
                   <Header />
+                  <Slippage />
+
                   <MobileHeader />
                   {children}
                   <Footer />

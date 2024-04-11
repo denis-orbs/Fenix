@@ -1,5 +1,5 @@
-import ERC20ABI from '../../web3/abis/TokenERC20ABI'
-import ERC721ABI from '../../web3/abis/TokenERC721ABI'
+import ERC20ABI from '../abis/TokenERC20ABI'
+import ERC721ABI from '../abis/TokenERC721ABI'
 
 import { fetchBalance, readContract, writeContract } from '@wagmi/core'
 import { Address, Hash } from 'viem'
