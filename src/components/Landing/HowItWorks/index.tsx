@@ -110,7 +110,9 @@ const HowItWorks = () => {
         blob.animate(
           [
             {
-              transform: `translate(${ev.clientX - rec.left - rec.width / 2}px, ${ev.clientY - rec.top - rec.height / 2}px)`,
+              transform: `translate(${ev.clientX - rec.left - rec.width / 2}px, ${
+                ev.clientY - rec.top - rec.height / 2
+              }px)`,
             },
           ],
           {
@@ -143,6 +145,31 @@ const HowItWorks = () => {
       setIsAnimationPaused(true)
     }
   }
+  const elementRef = useRef(null)
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        } else {
+          setIsVisible(false)
+        }
+      })
+    })
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current)
+    }
+
+    // Cleanup function
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current)
+      }
+    }
+  }, [])
 
   return (
     <div className="relative">
@@ -271,9 +298,10 @@ const HowItWorks = () => {
           md:[&>div]:!h-[700px] md:[&>div]:!w-[700px] 
           
           "
+            ref={elementRef}
             onClick={handleAnimationClick}
           >
-            <Lottie options={defaultOptions} />
+            <Lottie options={defaultOptions} isPaused={!isVisible} />
           </div>
         </div>
       </div>

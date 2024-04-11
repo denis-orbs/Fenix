@@ -135,7 +135,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                 openConnectModal && openConnectModal()
                 openAccountModal && openAccountModal()
               }}
-              className="flex w-full xl:w-auto gap-2 md:gap-5 2xl:py-2 p-1 2xl:px-3.5 !pr-0 border rounded-[5px] 
+              className="flex w-full xl:w-auto gap-2 md:gap-5 2xl:py-2 p-1 2xl:px-3.5 !pr-0 border rounded-[5px]
             cursor-pointer bg-shark-900 border-shark-400 bg-opacity-40 hover:bg-opacity-10 group"
             >
               <div className="w-full flex items-center gap-2.5">

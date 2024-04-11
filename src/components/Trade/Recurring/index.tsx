@@ -9,9 +9,9 @@ const Recurring = () => {
   return (
     <div className="flex flex-col items-start gap-6 mb-4 xl:gap-10 xl:flex-row">
       <div className="flex flex-col w-full">
-        <div className="flex flex-wrap w-full gap-5 mb-10 xl:flex-nowrap">
+        <div className="flex flex-wrap w-full gap-5 mb-10 xl:flex-nowrap overflow-hidden">
           <Panel />
-          <Chart className="w-full xl:w-full" />
+          <Chart />
         </div>
         <div className="flex w-full">
           <TradeProcess title="Recurring Order" steps={RECURRING_PROCESS} />

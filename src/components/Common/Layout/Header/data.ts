@@ -22,7 +22,7 @@ export const MENU_LINKS = [
   // },
   {
     name: 'Migration',
-    href: '/migration',
+    href: 'https://claim.fenixfinance.io/claim',
   },
   {
     name: 'Orbit Points',

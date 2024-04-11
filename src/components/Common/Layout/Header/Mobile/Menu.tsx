@@ -30,8 +30,8 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
       </div>
       <h5 className="text-white text-sm font-normal mb-4">Main menu</h5>
       <div className={`items-center gap-2 mb-4 flex xl:hidden ${pathname === '/' ? 'hidden' : 'block'}`}>
-        <Image src="/static/images/tokens/ETH.svg" className="w-6 h-6" alt="token" width={43} height={26} />
-        <p className="text-white text-xs">1.987 ETH</p>
+        {/* <Image src="/static/images/tokens/ETH.svg" className="w-6 h-6" alt="token" width={43} height={26} />
+        <p className="text-white text-xs">1.987 ETH</p> */}
       </div>
 
       <div className="mb-4 w-full flex justify-start">
@@ -40,7 +40,7 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
 
       <div className="flex flex-col mb-4">
         {MENU_LINKS.map((link, index) => (
-          <Link href={link.href} key={index} className="text-white text-xs list-none py-4">
+          <Link href={link.href} key={index} className="text-white text-xs list-none py-4" target="_blank">
             <span>{link.name}</span>
           </Link>
         ))}
