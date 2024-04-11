@@ -61,7 +61,6 @@ const Panel = () => {
   // si cantidad mayor al balance
   // si el user no ha puesto nada o ha puesto 0 que no le deje swappear
   const { openConnectModal } = useConnectModal()
-  const myAccount = '0x7cc2E3Cce45bA98007D3884bB64917483Bd4A00C'
   const { account, isConnected } = useActiveConnectionDetails()
   const MATIC_QUOTER_ADDRESS = '0xa15F0D7377B2A0C0c10db057f641beD21028FC89'
   const MATIC_SWAP_ADDRESS = '0xf5b509bB0909a69B1c207E495f687a596C168E12'
@@ -81,7 +80,7 @@ const Panel = () => {
           {
             tokenIn: tokenSell.address as `0x${string}`,
             tokenOut: tokenGet.address as `0x${string}`,
-            recipient: myAccount,
+            recipient: account as `0x${string}`,
             deadline: BigInt(Math.floor(Date.now() / 1000) + 60 * 20),
             amountIn: parseUnits(swapValue, tokenSell.decimals),
             amountOutMinimum: 0n,
