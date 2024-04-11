@@ -31,8 +31,8 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
       setBalance(b)
     }
 
-    asyncFn();
-  }, [token, account.address]);
+    asyncFn()
+  }, [token, account.address])
 
   const handleOnChange = (e: any) => {
     if(onTokenValueChange) onTokenValueChange(e.target.value.length > 0 ? e.target.value : 0, token)

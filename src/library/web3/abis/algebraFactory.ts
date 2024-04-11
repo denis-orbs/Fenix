@@ -763,4 +763,4 @@ export const algebraFactoryABI = [
         stateMutability: 'nonpayable',
         type: 'function',
     },
-] as const;
+] as const

@@ -28,7 +28,7 @@ export async function getAverageVotignAPR(availableTokensDictionary: {
     bribeList.forEach((bribe) => {
       const token = availableTokensDictionary[bribe.tokenAddress.toLowerCase()]
       if (token) {
-        let bal = new BigDecimal(bribe.tokenAmount, token.decimals)
+        const bal = new BigDecimal(bribe.tokenAmount, token.decimals)
         totalUSDValue = totalUSDValue.add(bal.mulNumber(token.price_quote || 0))
       }
     })

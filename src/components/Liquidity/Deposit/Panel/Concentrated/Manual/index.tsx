@@ -42,7 +42,7 @@ const ConcentratedDepositLiquidityManual = ({
         setShouldApproveSecond(allowanceSecond == "0")
     }
 
-    asyncGetAllowance();
+    asyncGetAllowance()
   }, [firstToken, secondToken, account.address])
 
   const handleCLAdd = async () => {
@@ -65,17 +65,17 @@ const ConcentratedDepositLiquidityManual = ({
     },
     {
       onSuccess: async (x) => {
-        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
+        const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
         console.log(transaction)
         if(transaction.status == "success") {
-          toast(`Added LP successfully.`);
+          toast(`Added LP successfully.`)
         } else {
-          toast(`Added LP TX failed, hash: ${transaction.transactionHash}`);
+          toast(`Added LP TX failed, hash: ${transaction.transactionHash}`)
         }
       },
       onError: (e) => {
         console.log(e)
-        toast(`Added LP failed. ${e}`);
+        toast(`Added LP failed. ${e}`)
       },
     })
   }
@@ -92,11 +92,11 @@ const ConcentratedDepositLiquidityManual = ({
     },
     {
       onSuccess: async (x) => {
-        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
+        const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
         if(transaction.status == "success") {
-          toast(`Approved successfully`);
+          toast(`Approved successfully`)
         } else {
-          toast(`Approve TX failed, tx: ${transaction.transactionHash}`);
+          toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
         }
 
         const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.cl_manager as Address)
@@ -106,7 +106,7 @@ const ConcentratedDepositLiquidityManual = ({
         setShouldApproveSecond(allowanceSecond == "0")
       },
       onError: (e) => {
-        toast(`Approve failed. ${e}`);
+        toast(`Approve failed. ${e}`)
       },
     })
   }

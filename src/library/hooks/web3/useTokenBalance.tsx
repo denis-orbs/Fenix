@@ -32,10 +32,10 @@ export async function getTokenBalance(token1: Address, user: Address) {
         }
     )
 
-    if(balance[0].status === 'failure') return "0";
+    if(balance[0].status === 'failure') return "0"
 
-    const b: string = balance[0].result as string;
-    return b;
+    const b: string = balance[0].result as string
+    return b
 }
 
 export async function getTokensBalance(tokens: Address[], user: Address) {
@@ -71,6 +71,6 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
         balances[tokens[i]] = balance[i].result
     }
         
-    if(balance.length == 0 || balance[0].status === 'failure') return {};
-    return balances;
+    if(balance.length == 0 || balance[0].status === 'failure') return {}
+    return balances
   }

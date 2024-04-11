@@ -25,7 +25,7 @@ const Classic = ({
   tokenFor: { name: string; symbol: string }
   defaultPairs: IToken[]
 }) => {
-  const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934';
+  const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934'
 
   const [firstToken, setFirstToken] = useState({ name: 'Fenix', symbol: 'FNX', id: 0, decimals: 18, address: "0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9" as Address, img: "/static/images/tokens/FNX.svg" } as IToken)
   const [firstValue, setFirstValue] = useState("")
@@ -46,8 +46,8 @@ const Classic = ({
 
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
-    setFirstValue("");
-    setSecondValue("");
+    setFirstValue("")
+    setSecondValue("")
   }
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const Classic = ({
         setShouldApprovePair(allowanceLp == "0")
     }
 
-    asyncGetAllowance();
+    asyncGetAllowance()
   }, [firstToken, secondToken, account.address, pairAddress])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
@@ -122,7 +122,7 @@ const Classic = ({
         setSecondValue((Number(tokens[1])/1e18).toString())
       }
 
-      asyncGetWithdrawTokens();
+      asyncGetWithdrawTokens()
     }
   }
 
@@ -148,15 +148,15 @@ const Classic = ({
     {
       onSuccess: async (x) => {
         console.log("success", x, +new Date())
-        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
+        const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
         if(transaction.status == "success") {
-          toast(`Added successfully.`);
+          toast(`Added successfully.`)
         } else {
-          toast(`Add LP TX failed, hash: ${transaction.transactionHash}`);
+          toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
         }
       },
       onError: (e) => {
-        toast(`Add LP failed. ${e}`);
+        toast(`Add LP failed. ${e}`)
       },
     })
   }
@@ -181,15 +181,15 @@ const Classic = ({
     },
     {
       onSuccess: async (x) => {
-        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
+        const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
         if(transaction.status == "success") {
-          toast(`Removed successfully.`);
+          toast(`Removed successfully.`)
         } else {
-          toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`);
+          toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
         }
       },
       onError: (e) => {
-        toast(`Remove LP failed. ${e}`);
+        toast(`Remove LP failed. ${e}`)
       },
     })
   }
@@ -206,11 +206,11 @@ const Classic = ({
     },
     {
       onSuccess: async (x) => {
-        const transaction = await publicClient.waitForTransactionReceipt({hash: x});
+        const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
         if(transaction.status == "success") {
-          toast(`Approved successfully`);
+          toast(`Approved successfully`)
         } else {
-          toast(`Approve TX failed, tx: ${transaction.transactionHash}`);
+          toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
         }
 
         const allowanceFirst: any = await getTokenAllowance(firstToken.address as Address, account.address as Address, contractAddressList.v2router as Address)
@@ -222,7 +222,7 @@ const Classic = ({
         setShouldApprovePair(allowanceLp == "0")
       },
       onError: (e) => {
-        toast(`Approve failed. ${e}`);
+        toast(`Approve failed. ${e}`)
       },
     })
   }
