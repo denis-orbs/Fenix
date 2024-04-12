@@ -7,9 +7,11 @@ import INFO_API from '../data'
 import { useV2PairsData } from '@/src/state/liquidity/hooks'
 import { useEffect, useMemo, useState } from 'react'
 import { PoolData } from '@/src/state/liquidity/types'
+import { useAccount } from 'wagmi'
 
 const LiquidityPositions = () => {
   const [loading, setLoading] = useState(true)
+  const { address } = useAccount()
   const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
   useEffect(() => {
     setTimeout(() => {
@@ -20,7 +22,7 @@ const LiquidityPositions = () => {
   useEffect(() => {
     // console.log('Loading ', loading)
     // console.log('v2PairsData ', v2PairsData)
-  }, [v2PairsData, loading])
+  }, [v2PairsData, loading, address])
 
   const poolsData = useMemo<PoolData[]>(() => {
     if (loading || !v2PairsData) {
@@ -34,7 +36,7 @@ const LiquidityPositions = () => {
 
       return pd
     })
-  }, [loading, v2PairsData])
+  }, [loading, v2PairsData, address])
 
   const poolsDataClassic = poolsData.filter((pool) => pool.pairDetails.pairSymbol !== 'Concentrated pool')
 
