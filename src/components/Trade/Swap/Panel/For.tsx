@@ -34,7 +34,6 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
     args: [account],
     abi: ERC20_ABI,
   })
-  console.log(tokenBalance)
   useEffect(() => {
     if (tokenData.isSuccess) {
       const myNumber = tokenData.data as bigint
