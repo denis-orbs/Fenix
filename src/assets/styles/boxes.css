@@ -946,6 +946,8 @@
   after:bottom-0
   after:left-0
   after:hidden
+  after:pointer-events-none
+  after:z-[-1]
   after:2xl:block;
 }
 
