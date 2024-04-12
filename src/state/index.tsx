@@ -6,7 +6,7 @@ import createWebStorage from 'redux-persist/lib/storage/createWebStorage'
 import reducer from './reducer'
 import crossBrowserListener from '@/src/library/utils/redux/reduxPersistListener'
 
-const PERSISTED_KEYS: string[] = []
+const PERSISTED_KEYS: string[] = ['user']
 
 const createNoopStorage = () => {
   return {
