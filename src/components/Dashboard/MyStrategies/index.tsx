@@ -16,6 +16,8 @@ import { useAccount } from 'wagmi'
 import { fetchV3Positions } from '@/src/state/liquidity/reducer'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
+import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
+import { SupportedChainId, SupportedDex, getIchiVaultInfo } from '@ichidao/ichi-vaults-sdk'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
@@ -49,15 +51,25 @@ const MyStrategies = () => {
 
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
+    console.log(positions, 'amount')
     setposition(positions)
   }
 
   useEffect(() => {
     if (address) fetchpositions(address)
   }, [address])
+
+  const ichipositions = useIchiPositions()
+  console.log(ichipositions, 'positions')
+  useEffect(() => {
+    if (ichipositions.length > 0) {
+      setposition((prevPositions) => [...prevPositions, ...ichipositions])
+    }
+  }, [ichipositions])
+
   return (
     <>
-      {INFO_API.length !== 0 ? (
+      {position.length !== 0 ? (
         <div className="relative">
           <h4 className="text-lg text-white mb-4">My Positions</h4>
           <div className="dashboard-box mb-10 hidden xl:block">
@@ -113,10 +125,10 @@ const MyStrategies = () => {
       ) : (
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">My Strategies</p>
+            <p className="flex gap-3 text-lg ms-2">My Positions</p>
           </div>
           <div className="box-dashboard p-6 flex gap-8 items-center ">
-            <p className="text-white text-sm">You have not created strategies.</p>
+            <p className="text-white text-sm">You have not created Positions.</p>
           </div>
         </div>
       )}

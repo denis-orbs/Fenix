@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/src/components/UI'
 import useIsMobile from '@/src/library/hooks/useIsMobile'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-import { useIchiVaultInfo } from '@/src/library/hooks/web3/useIchi'
+import { IchiVault, useIchiVaultInfo } from '@/src/library/hooks/web3/useIchi'
 export type IOption = {
   label: string
   value: string
@@ -60,7 +60,7 @@ const Item = ({ option }: { option: IOption }) => {
   const token0 = useToken0()
   const token1 = useToken1()
 
-  const { apr } = useIchiVaultInfo(token0, token1)
+  //  const { apr } = useIchiVaultInfo(token0, token1)
   return (
     <div className="flex h-[30px] items-center min-w-0 text-ellipsis whitespace-nowrap flex-grow justify-between">
       {logo && (
@@ -76,16 +76,14 @@ const Item = ({ option }: { option: IOption }) => {
       )}
 
       <div className="flex items-center gap-[5px] md:gap-3 text-xs md:text-sm leading-none">
-        <Image
+        {/* <Image
           src="/static/images/brands/satin.png"
           alt="token"
           className="rounded-full max-md:w-[15px] max-md:h-[15px]"
           width={20}
           height={20}
-        />
-        <div>
-          {apr}%<span className="max-md:hidden"> APR</span>
-        </div>
+        /> */}
+        <div>{/* {'apr'}%<span className="max-md:hidden"> APR</span> */}</div>
       </div>
 
       <div className="max-md:hidden"></div>
@@ -168,6 +166,7 @@ const CLMProviderSelector = ({
   providers,
   setCurrentProvider,
 }: {
+  // vaultInfo: IchiVault[] | null | undefined
   currentProvider: string
   providers: IOption[]
   setCurrentProvider: (selected: string) => void

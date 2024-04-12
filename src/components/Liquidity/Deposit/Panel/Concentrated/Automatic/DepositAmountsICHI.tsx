@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { useReadContracts, useWriteContract } from 'wagmi'
 import { formatUnits, zeroAddress } from 'viem'
 
-import { approveDepositToken, deposit, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
+import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
 import { ethers } from 'ethers'
 import {
   useSetToken0TypedValue,
@@ -21,8 +21,9 @@ import { toBN } from '@/src/library/utils/numbers'
 import { erc20Abi } from 'viem'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
+import { IToken } from '@/src/library/types'
 
-const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string } }) => {
+const DepositAmountsICHI = ({ token, vaultInfo }: { token: IToken | undefined; vaultInfo: any }) => {
   const { account } = useActiveConnectionDetails()
 
   const slippage = 1
@@ -34,6 +35,8 @@ const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string }
 
   const token0 = useToken0()
   const token1 = useToken1()
+
+  console.log(token0, token1, 'tokens1')
   const token0InfoData = useToken0Data()
   const [isToken0ApprovalRequired, setIsToken0ApprovalRequired] = useState(false)
 
@@ -185,13 +188,13 @@ const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string }
             <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
               <div className="flex items-center gap-2">
                 <Image
-                  src={`/static/images/tokens/${token.symbol}.svg`}
+                  src={`/static/images/tokens/${token?.symbol}.svg`}
                   alt="token"
                   className="w-6 h-6 rounded-full"
                   width={20}
                   height={20}
                 />
-                <span className="text-base">{token.symbol}</span>
+                <span className="text-base">{token?.symbol}</span>
               </div>
             </div>
           </div>

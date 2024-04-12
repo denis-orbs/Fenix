@@ -863,10 +863,10 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-2.0.2.tgz"
   integrity sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==
 
-"@ichidao/ichi-vaults-sdk@^0.0.27":
-  version "0.0.27"
-  resolved "https://registry.npmjs.org/@ichidao/ichi-vaults-sdk/-/ichi-vaults-sdk-0.0.27.tgz"
-  integrity sha512-KsQCXQR4YuvK939MKUZQ7u1g3IeAQXzBQm7U+yWIfA5XibeChC+MUtGU+v24q1BE7hfxOkWf2T1MzRg7nrrhnA==
+"@ichidao/ichi-vaults-sdk@^0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@ichidao/ichi-vaults-sdk/-/ichi-vaults-sdk-0.0.29.tgz#2f444d65ccf297a9895b8b84352427eb99c7af62"
+  integrity sha512-VEd37UdFtWK2FTY6N5bZRMvlIAqi86QBmo95U6Iuf6uvrepgYLQrQmQqRAi4LpoYwZ+hj/NDc5CwY5Vap8wmSQ==
   dependencies:
     "@ethersproject/abstract-signer" "^5.6.2"
     "@ethersproject/address" "^5.6.0"

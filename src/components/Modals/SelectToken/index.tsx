@@ -13,6 +13,7 @@ import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import toast from 'react-hot-toast'
+import { formatCurrency } from '@/src/library/utils/numbers'
 
 interface SelectTokenProps {
   openModal: boolean
@@ -37,6 +38,8 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   const handlerSelectToken = (token: IToken) => {
     //console.log(token, 'inn')
     setToken(token)
+    // settoken0(token0Data?.address)
+    // settoken1(token1Data?.address)
     setOpenModal(false)
   }
 
@@ -53,7 +56,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
             name: item.basetoken.name,
             symbol: item.basetoken.symbol,
             address: item.basetoken.address,
-            decimals: item.basetoken.decimals,
+            decimals: item.decimals,
             img: item.logourl,
             isCommon: item.common,
             price: parseFloat(item.priceUSD),
@@ -134,13 +137,17 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                       <p className="text-xs text-white">
                         Balance:{' '}
                         {_tokenBalances
-                          ? `${(parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals).toFixed(2).replace('NaN', '0')}`
+                          ? `${(parseInt(_tokenBalances[token.address as Address]) / 10 ** Number(token.decimals)).toFixed(2).replace('NaN', '0')}`
                           : `0`}
                       </p>
                     </div>
                     <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
                       {_tokenBalances
-                        ? `$${((parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals) * token.price).toFixed(2).replace('NaN', '0')}`
+                        ? `$${formatCurrency(
+                            ((parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals) * token.price)
+                              .toFixed(2)
+                              .replace('NaN', '0')
+                          )}`
                         : `0`}
                     </div>
                   </div>

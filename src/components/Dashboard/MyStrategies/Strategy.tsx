@@ -6,6 +6,8 @@ import ComponentVisible from '@/src/library/hooks/useVisible'
 import { fromWei } from '@/src/library/utils/numbers'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
+import { useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
+import { IchiVault } from '@ichidao/ichi-vaults-sdk'
 
 type options = {
   value: string
@@ -34,6 +36,12 @@ export type positions = {
     symbol: string
     name: string
   }
+}
+export type ichipositions = {
+  userAmounts: string[]
+  vaultAddress: string
+  amount0: string
+  amount1: string
 }
 
 interface StrategyProps {
@@ -65,6 +73,10 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
   const handlerSwitch = () => {
     setshowtoken0(!showtoken0)
   }
+  let ichitokens: IchiVault
+  if (row.liquidity === 'ichi') {
+    ichitokens = useIchiVaultsData(row?.id)
+  }
 
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
@@ -74,14 +86,22 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
             <div className="flex gap-4 items-center">
               <div className="flex items-center">
                 <Image
-                  src={`/static/images/tokens/${row.token0.symbol}.svg`}
+                  src={
+                    row.liquidity === 'ichi'
+                      ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}.svg`
+                      : `/static/images/tokens/${row?.token0?.symbol}.svg`
+                  }
                   alt="token"
                   className="rounded-full "
                   width={47}
                   height={47}
                 />
                 <Image
-                  src={`/static/images/tokens/${row.token1.symbol}.svg`}
+                  src={
+                    row.liquidity === 'ichi'
+                      ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}.svg`
+                      : `/static/images/tokens/${row?.token1?.symbol}.svg`
+                  }
                   alt="token"
                   className="-ml-4 rounded-full"
                   width={47}
@@ -90,9 +110,12 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
               </div>
               <div className="flex flex-col">
                 <p>
-                  {row.token0.symbol} / {row.token1.symbol}
+                  {row.liquidity === 'ichi'
+                    ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
+                    : `${row?.token0?.symbol} / ${row?.token1?.symbol}`}
                 </p>
-                <p className="text-xs">ID: {row.id}</p>
+
+                <p className="text-xs">ID: {row.liquidity === 'ichi' ? 'Ichi Position' : row?.id}</p>
               </div>
             </div>
             {/* <div
@@ -132,7 +155,9 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
               <p className="text-white">
                 Liquidity <span className="icon-info text-xs"></span>
               </p>
-              <h1 className="text-white text-2xl">{Number(fromWei(row.liquidity)).toFixed(5)} LP</h1>
+              <h1 className="text-white text-2xl">
+                {row.liquidity === 'ichi' ? 'ICHI' : Number(fromWei(row?.liquidity)).toFixed(5)} LP
+              </h1>
             </div>
           </div>
         </div>
@@ -140,39 +165,66 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
         <div className="bg-shark-400 bg-opacity-40 rounded-lg">
           <div className="relative text-white flex items-center justify-center border-b border-shark-400">
             <div className="flex items-start flex-col p-4 w-1/2">
-              <h4 className="text-sm text-white-400">{row.token0.symbol}</h4>
+              <h4 className="text-sm text-white-400">
+                {row.liquidity === 'ichi'
+                  ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
+                  : `${row?.token0?.symbol}`}
+              </h4>
               <h4 className="text-sm text-white">
-                {Number(row.depositedToken0).toFixed(5)} ${row.token0.symbol}
+                {Number(row?.depositedToken0).toFixed(5)} ${' '}
+                {row.liquidity === 'ichi'
+                  ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
+                  : `${row?.token0?.symbol}`}
               </h4>
               <p className="text-xs text-white">
                 ${' '}
                 {(
-                  Number(row.depositedToken0) *
-                  Number(tokens.find((e) => e.tokenAddress.toLowerCase() === row.token0.id)?.priceUSD)
+                  Number(row?.depositedToken0) *
+                  Number(
+                    tokens.find(
+                      (e) =>
+                        e.tokenAddress.toLowerCase() ===
+                        (row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase())
+                    )?.priceUSD
+                  )
                 ).toFixed(2)}
               </p>
             </div>
             <div className="flex items-start flex-col p-4 w-1/2 border-l border-shark-400">
-              <h4 className="text-sm text-white-500">{row.token1.symbol}</h4>
+              <h4 className="text-sm text-white-500">
+                {row.liquidity === 'ichi'
+                  ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
+                  : `${row?.token1?.symbol}`}
+              </h4>
               <h4 className="text-sm text-white">
                 {' '}
-                {Number(row.depositedToken1).toFixed(5)} ${row.token1.symbol}
+                {Number(row?.depositedToken1).toFixed(5)} $
+                {row.liquidity === 'ichi'
+                  ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
+                  : `${row?.token1?.symbol}`}
               </h4>
               <p className="text-xs text-white">
                 ${' '}
                 {(
-                  Number(row.depositedToken1) *
-                  Number(tokens.find((e) => e.tokenAddress.toLowerCase() === row.token1.id)?.priceUSD)
+                  Number(row?.depositedToken1) *
+                  Number(
+                    tokens.find(
+                      (e) =>
+                        e.tokenAddress.toLowerCase() ===
+                        (row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase())
+                    )?.priceUSD
+                  )
                 ).toFixed(2)}
               </p>
             </div>
           </div>
 
           <Graph
-            tickLower={row.tickLower}
-            tickUpper={row.tickUpper}
-            token0Symbol={row.token0.symbol}
-            token1Symbol={row.token1.symbol}
+            row={row}
+            tickLower={row?.tickLower}
+            tickUpper={row?.tickUpper}
+            token0Symbol={row?.token0?.symbol}
+            token1Symbol={row?.token1?.symbol}
           />
         </div>
         <div className="items-center justify-center">
