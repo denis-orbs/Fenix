@@ -3,7 +3,7 @@ import Image from "next/image"
 const Community = () => {
   return (
     <div className="flex flex-col items-center justify-center py-48 relative">
-      <div className="absolute overflow-y-hidden h-[335px] -top-2 -z-10 bg-[#0A0A0A] opacity-90  mix-blend-color-dodge">
+      <div className="absolute overflow-y-hidden h-[382px] -top-2 -z-10 bg-[#0A0A0A] opacity-90  mix-blend-color-dodge">
         <Image
           className="opacity-20 bg-center mix-blend-color-dodge"
           src={'/static/images/landing/Community/fenixBird.svg'}

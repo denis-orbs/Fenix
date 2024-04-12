@@ -1,7 +1,7 @@
 import Image from 'next/image'
 const Supercharged = () => {
   return (
-    <div className="flex justify-center py-40 px-2 w-ful relative overflow-hidden">
+    <div className="flex justify-center pt-40 pb-20 px-2 w-ful relative overflow-hidden">
       <div className="relative">
         <div className="relative">
           <Image
