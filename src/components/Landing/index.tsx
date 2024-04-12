@@ -1,5 +1,6 @@
 'use client'
 
+import BuildInfo from './Build'
 import Community from './Community'
 import HowItWorks from './HowItWorks'
 import Insights from './Insights'
@@ -17,6 +18,7 @@ const Landing = () => {
       <Partners />
       <Insights/>
       <Community/>
+      <BuildInfo/>
       <Security />
     </main>
   )

@@ -38,6 +38,8 @@ const config: Config = {
       },
       animation: {
         'spin-slow': 'spin 25s linear infinite',
+        'spin-slow-reverse': 'spin 25s linear infinite reverse',
+
         'toast-in': 'toast-in 250ms linear',
         progress: 'progress 3s linear',
       },
