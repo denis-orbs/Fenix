@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Button } from "../../UI"
 import Image from "next/image"
 const Community = () => {
@@ -13,16 +14,22 @@ const Community = () => {
         />
       </div>
       <div className="bg-shark-600 rounded-full">
-        <Image src={'/static/images/landing/Community/fenixLogo.svg'} 
-        className="xl:h-[144px] xl:w-[144px] w-[92px] h-[92px] "
-        height={144} width={144} alt="fenix" />
+        <Image
+          src={'/static/images/landing/Community/fenixLogo.svg'}
+          className="xl:h-[144px] xl:w-[144px] w-[92px] h-[92px] "
+          height={144}
+          width={144}
+          alt="fenix"
+        />
       </div>
       <div className="text-gradient3 text-[40px] font-normal leading-relaxed max-lg:text-2xl text-center">
         Join the community
       </div>
-      <Button className="!max-w-[252px] !font-normal " variant="primary">
-        <span>Join Discord</span>
-      </Button>
+      <Link href={'https://discord.com/invite/fenixfi'} target="_blank">
+        <Button className="!max-w-[252px] !font-normal " variant="primary">
+          <span>Join Discord</span>
+        </Button>
+      </Link>
     </div>
   )
 }

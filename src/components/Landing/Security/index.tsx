@@ -96,8 +96,13 @@ const Security = () => {
         </div>
         <div className="w-[100%] flex items-center flex-col mx-auto justify-center">
           <div className="text-xl max-lg:text-lg text-shark-100 font-normal max-md:text-center">Assured by</div>
-          <Link href={} target='_blank'>
-            <div className="card2 w-[292px] !my-4 max-sm:!my-2  h-[93px] ">
+          <Link
+            href={
+              'https://app.hats.finance/audit-competitions/fenix-finance-0x83dbe5aa378f3ce160ed084daf85f621289fb92f/scope'
+            }
+            target="_blank"
+          >
+            <div className="card2 w-[292px] !my-4 max-sm:!my-2  h-[93px] z-50">
               <div className="inner2 py-5 px-10 max-sm:py-3 max-sm:px-5 flex items-center justify-between h-[100%]">
                 <Image
                   src={'/static/images/landing/security/HatsFinance.svg'}
