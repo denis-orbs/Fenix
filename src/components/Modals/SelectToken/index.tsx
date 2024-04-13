@@ -82,6 +82,10 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
     getList()
   }, [account.address])
 
+  useEffect(() => {
+    console.log('search', searchValue)
+  }, [searchValue])
+
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
       <div className="common-modal">
@@ -113,9 +117,9 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               <></>
             )}
           </div>
-
+          {console.log('token', _tokenList)}
           <div className="flex flex-col gap-2 max-h-[130px] overflow-y-auto">
-            {_tokenList ? (
+            {_tokenList && searchValue === '' ? (
               _tokenList.map((token, index) => (
                 <div
                   key={index}
@@ -153,6 +157,61 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                   </div>
                 </div>
               ))
+            ) : searchValue !== '' ? (
+              _tokenList.filter(
+                (token) =>
+                  token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
+                  token.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+              ).length > 0 ? (
+                _tokenList
+                  .filter(
+                    (token) =>
+                      token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
+                      token.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+                  )
+                  .map((token, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handlerSelectToken(token)}
+                      className="flex items-center justify-between p-3 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-7 h-7" />
+                        <div className="relative">
+                          <p className="text-xs text-white">{token.symbol}</p>
+                          <p className="text-xs text-shark-100">{token.name}</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-end justify-start">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+                          {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
+                          {/* todo fetch balance */}
+                          <p className="text-xs text-white">
+                            Balance:{' '}
+                            {_tokenBalances
+                              ? `${(parseInt(_tokenBalances[token.address as Address]) / 10 ** Number(token.decimals)).toFixed(2).replace('NaN', '0')}`
+                              : `0`}
+                          </p>
+                        </div>
+                        <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
+                          {_tokenBalances
+                            ? `$${formatCurrency(
+                                (
+                                  (parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals) *
+                                  token.price
+                                )
+                                  .toFixed(2)
+                                  .replace('NaN', '0')
+                              )}`
+                            : `0`}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+              ) : (
+                <div className="text-center text-shark-100 p-4">NO TOKEN FOUND</div>
+              )
             ) : (
               <></>
             )}

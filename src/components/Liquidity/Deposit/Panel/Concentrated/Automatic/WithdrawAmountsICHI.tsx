@@ -23,7 +23,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
 
-const DepositAmountsICHI = ({
+const WithdrawAmountsICHI = ({
   token,
   vaultInfo,
   tokenList,
@@ -144,13 +144,6 @@ const DepositAmountsICHI = ({
     }
     checkApproval()
   }, [token0TypedValue, token0, token0Decimals, dex, web3Provider, vaultAddress, account, isReverted])
-
-  // useEffect(() => {
-  //   if (selected === 'Choose one' && vaultInfo?.length > 0) {
-  //     setIsSelected(vaultInfo[0]?.allowTokenA ? vaultInfo[0]?.tokenA.toLowerCase() : vaultInfo[0]?.tokenB.toLowerCase())
-  //   }
-  // }, [vaultInfo, selected])
-
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
@@ -164,7 +157,7 @@ const DepositAmountsICHI = ({
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
-        <div className="text-xs leading-normal text-white mb-2">Deposit amounts</div>
+        <div className="text-xs leading-normal text-white mb-2">Withdraw amounts</div>
         <div className="flex items-center gap-3">
           <div className="relative w-full xl:w-3/5">
             <Toaster />
@@ -283,4 +276,4 @@ const DepositAmountsICHI = ({
   )
 }
 
-export default DepositAmountsICHI
+export default WithdrawAmountsICHI

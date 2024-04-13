@@ -38,7 +38,7 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
         token0,
         token1
       )
-      console.log(vaultData)
+      console.log('vaultdata', vaultData)
       if (!vaultData) {
         setVault(null)
         console.log("Couldn't find vaults with these parameters")

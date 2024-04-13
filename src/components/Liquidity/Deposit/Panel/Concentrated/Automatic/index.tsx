@@ -20,6 +20,8 @@ import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IToken } from '@/src/library/types'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { IchiVault } from '@ichidao/ichi-vaults-sdk'
+import WithdrawAmountsICHI from './WithdrawAmountsICHI'
+import WithdrawAmountsGAMMA from './WithdrawAmountsGAMMA'
 
 const providers = [
   {
@@ -36,6 +38,7 @@ const providers = [
 ]
 
 const Automatic = () => {
+  const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
   const [firstToken, setFirstToken] = useState<IToken>()
   const [secondToken, setSecondToken] = useState<IToken>()
   const [currentProvider, setCurrentProvider] = useState<string>('1')
@@ -84,6 +87,10 @@ const Automatic = () => {
     console.log(vaultInfo, 'parsed vault info')
   }
 
+  const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
+    setOptionActive(option)
+  }
+
   return (
     <>
       <PairSelector firstToken={token0} secondToken={token1} tokenList={tokenList} />
@@ -99,8 +106,36 @@ const Automatic = () => {
         <></>
       )}
 
-      {currentProvider === '1' && <DepositAmountsICHI vaultInfo={vaultInfo} token={token0} />}
-      {currentProvider === '2' && <DepositAmountsGAMMA firstToken={token0} secondToken={token1} />}
+      <div className="bg-shark-400 bg-opacity-40 p-[13px] md:py-[11px] md:px-[19px] flex gap-1.5 md:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5">
+        <Button
+          onClick={() => handlerOption('ADD')}
+          className="w-full h-[38px] mx-auto !text-xs"
+          variant={optionActive === 'ADD' ? 'primary' : 'secondary'}
+        >
+          Add
+        </Button>
+        <Button
+          onClick={() => handlerOption('WITHDRAW')}
+          className="w-full h-[38px] mx-auto !text-xs"
+          variant={optionActive === 'WITHDRAW' ? 'primary' : 'secondary'}
+        >
+          Withdraw
+        </Button>
+      </div>
+
+      {currentProvider === '1' && optionActive === 'ADD' && (
+        <DepositAmountsICHI vaultInfo={vaultInfo} token={token0} tokenList={tokenList} />
+      )}
+      {currentProvider === '1' && optionActive === 'WITHDRAW' && (
+        <WithdrawAmountsICHI vaultInfo={vaultInfo} token={token0} tokenList={tokenList} />
+      )}
+
+      {currentProvider === '2' && optionActive === 'ADD' && (
+        <DepositAmountsGAMMA firstToken={token0} secondToken={token1} tokenList={tokenList} />
+      )}
+      {currentProvider === '2' && optionActive === 'WITHDRAW' && (
+        <WithdrawAmountsGAMMA firstToken={token0} secondToken={token1} tokenList={tokenList} />
+      )}
 
       {/* <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
         Create Position
