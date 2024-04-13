@@ -51,6 +51,7 @@ const Footer = () => {
                         href={link.href}
                         key={index}
                         className={`text-xs sm:text-sm text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text transition-all text-${index % 3 === 0 && pathname === '/' ? 'left' : index % 3 === 1 && pathname === '/' ? 'center' : index % 3 === 2 && pathname === '/' ? 'right' : ''} xl:text-center`}
+                        target="_blank"
                       >
                         {link.title}
                       </Link>
