@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 const BuildInfo = () => {
   return (
-    <div className="relative flex items-center flex-col justify-center mb-[200px] w-full overflow-hidden">
+    <div className="relative flex items-center flex-col justify-center mb-[100px] xl:mb-[200px] w-full overflow-hidden">
       <div className="flex flex-col items-center justify-center mx-auto z-50 mb-10">
         <div className="text-shark-100 text-xl max-lg:text-lg font-normal text-center">Roadmap</div>
         <div className="text-gradient3 text-[40px] font-normal leading-relaxed max-lg:text-2xl text-center">

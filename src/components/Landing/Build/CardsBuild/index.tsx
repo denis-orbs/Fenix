@@ -11,7 +11,7 @@ interface CardsBuildProps {
 
 const CardsBuild = ({ title, info, checked, spinner }: CardsBuildProps) => {
   return (
-    <div className="card3   w-[388px] h-[405px] cursor-pointer">
+    <div className="card3  w-[302px] xl:w-[388px] h-[405px] cursor-pointer">
       <div className="inner3 p-5 w-[100%] h-[100%]">
         <h1 className="text-gradient3 text-2xl font-normal leading-relaxed  ">{title}</h1>
         <ul className="flex flex-col gap-3">

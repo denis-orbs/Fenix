@@ -96,15 +96,9 @@ const Security = () => {
         </div>
         <div className="w-[100%] flex items-center flex-col mx-auto justify-center">
           <div className="text-xl max-lg:text-lg text-shark-100 font-normal max-md:text-center">Assured by</div>
-          <Link
-            className="cursor-pointer"
-            href={
-              'https://app.hats.finance/audit-competitions/fenix-finance-0x83dbe5aa378f3ce160ed084daf85f621289fb92f/scope'
-            }
-            target="_blank"
-          >
-            <div className="card2 !my-4 max-sm:!my-2 w-[262px] max-lg:w-[40%] max-sm:w-[90%] max-md:w-[70%] h-[93px] ">
-              <div className="inner2 py-5 px-10 max-sm:py-3 max-sm:px-5 flex items-center justify-between w-[100%] h-[100%]">
+          <Link href={} target='_blank'>
+            <div className="card2 w-[292px] !my-4 max-sm:!my-2  h-[93px] ">
+              <div className="inner2 py-5 px-10 max-sm:py-3 max-sm:px-5 flex items-center justify-between h-[100%]">
                 <Image
                   src={'/static/images/landing/security/HatsFinance.svg'}
                   alt={'HatsFinance'}
@@ -120,17 +114,17 @@ const Security = () => {
           <div className="text-xl max-lg:text-lg text-shark-100 font-normal my-10 max-md:text-center">
             Code Validated by Industry Leaders
           </div>
-          <div className="flex gap-4 lg:flex-row  flex-col items-center justify-center lg:w-[70%] w-full">
+          <div className="flex gap-4 flex-wrap lg:flex-row flex-col items-center justify-center z-50 ">
             {brands.map((item, index) => (
-              <div key={index} className="card3  xl:w-[30%] w-[90%] h-[93px] cursor-pointer">
-                <Link href={item.link} target='_blank'>
-                  <div className="inner3 py-8 px-5 flex items-center justify-between w-[100%] h-[100%]">
+              <Link href={item.link} target="_blank" key={index}>
+                <div className="card3  h-[93px] cursor-pointer w-[292px] ">
+                  <div className="inner3 py-8 px-5 flex items-center justify-between  h-full">
                     <Image src={item.image} alt={item.title} width={200} height={50} className="mx-auto" />
                   </div>
                   <div className="blob3"></div>
                   <div className="fakeblob3"></div>
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

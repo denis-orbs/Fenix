@@ -1,7 +1,7 @@
 import Image from 'next/image'
 const Supercharged = () => {
   return (
-    <div className="flex justify-center pt-40 pb-20 px-2 w-ful relative overflow-hidden">
+    <div className="flex justify-center xl:pt-40 xl:pb-20 px-2 w-ful py-10 relative overflow-hidden">
       <div className="relative">
         <div className="relative">
           <Image
@@ -14,7 +14,7 @@ const Supercharged = () => {
         </div>
         <Image
           src={'/static/images/landing/blur.svg'}
-          className="h-[320px] w-[320px] sm:h-[520px] sm:w-[520px] absolute top-[70%] left-[50%] -translate-x-1/2 -translate-y-1/2 -z-20 "
+          className="h-[280px] w-[280px] sm:h-[520px] sm:w-[520px] absolute top-[70%] left-[50%] -translate-x-1/2 -translate-y-1/2 -z-20 "
           height={680}
           width={680}
           alt="supercharged"

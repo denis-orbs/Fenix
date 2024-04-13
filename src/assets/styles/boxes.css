@@ -322,7 +322,8 @@
   after:xl:block;
 }
 .header-box-landing {
-  @apply relative /* h-[60px] */ px-5 py-3
+  @apply 
+  relative 
   2xl:bg-[url("/static/images/header/header-landing2.svg")]
   bg-[url("/static/images/header/header-landing3.svg")]
   bg-no-repeat
@@ -330,32 +331,7 @@
   2xl:w-[620px]
   w-[620px]
   h-[72px]
-
-  /* before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/header/header-landing2.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:bg-cover
-  before:w-[50%]
-  before:top-0
-  before:left-0
-  before:hidden
-  before:xl:block
-
-  after:content-[""]
-  after:absolute
-  after:bg-[url("/static/images/header/header-landing2.svg")]
-  after:bg-no-repeat
-  after:bg-right
-  after:h-full
-  after:bg-cover
-  after:w-[50%]
-  after:top-0
-  after:right-0
-  after:hidden
-  after:xl:block */;
-  /* after:z-1; */
+  
 }
 
 /* .rectangulo {
