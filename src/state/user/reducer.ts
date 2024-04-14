@@ -4,7 +4,7 @@ import { resetUser, updateSlippageTolerance } from './actions'
 
 export const initialState: UserState = {
   userDarkMode: true,
-  slippageTolerance: 1,
+  slippageTolerance: 0.5,
 }
 
 export default createReducer(initialState, (builder) => {
