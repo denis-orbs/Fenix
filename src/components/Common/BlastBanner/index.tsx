@@ -25,7 +25,7 @@ const BlastBanner = () => {
             in crypto history
           </p>
         </div>
-        <Button variant="primary" className="relative z-10">
+        <Button variant="primary" className="relative z-10" href="/liquidity">
           <span>Deposit Now</span>
         </Button>
     </div>
