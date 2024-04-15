@@ -65,10 +65,10 @@ const Automatic = () => {
         }
       })
       setTokenList(parsedTokens)
-      let token0Data = parsedTokens.find(
+      const token0Data = parsedTokens.find(
         (token: any) => token.address.toLowerCase() === searchParamToken0?.toLowerCase()
       )
-      let token1Data = parsedTokens.find(
+      const token1Data = parsedTokens.find(
         (token: any) => token.address.toLowerCase() === searchParamToken1?.toLowerCase()
       )
       setFirstToken(token0Data) // set token0

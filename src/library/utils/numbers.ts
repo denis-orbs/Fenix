@@ -119,8 +119,8 @@ export function fromWei(amount: BigNumber.Value | null | undefined, decimals = 1
 
 export function formatNumber(n: number, dec: number = 18) {
   if (Number.isInteger(n)) {
-    return n.toString();
+    return n.toString()
   } else {
-    return n.toFixed(dec).replace(/(\.\d*?[1-9])0+$|\.$/, '$1');
+    return n.toFixed(dec).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')
   }
 }
