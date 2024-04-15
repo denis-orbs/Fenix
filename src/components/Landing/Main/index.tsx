@@ -93,7 +93,7 @@ const Main = () => {
               )}
             </div>
             <div className=" flex pt-10 flex-col gap-2 items-center md:hidden">
-              <p className="text-lg  animate-color-change ">Swipe</p>
+              <p className="text-xs  animate-color-change ">Swipe</p>
               <span className="icon-scroll text-white animate-color-change animate-bounce"></span>
             </div>
           </div>
