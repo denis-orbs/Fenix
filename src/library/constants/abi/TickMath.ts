@@ -49,6 +49,84 @@ const TICK_MATH_ABI: Abi = [
     inputs: [
       {
         internalType: 'uint160',
+        name: 'sqrtRatioX96',
+        type: 'uint160',
+      },
+      {
+        internalType: 'uint160',
+        name: 'sqrtRatioAX96',
+        type: 'uint160',
+      },
+      {
+        internalType: 'uint160',
+        name: 'sqrtRatioBX96',
+        type: 'uint160',
+      },
+      {
+        internalType: 'uint128',
+        name: 'liquidity',
+        type: 'uint128',
+      },
+    ],
+    name: 'getAmountsForLiquidity',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'amount0',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount1',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'pure',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'int24',
+        name: 'sqrtRatioX96',
+        type: 'int24',
+      },
+      {
+        internalType: 'int24',
+        name: 'sqrtRatioAX96',
+        type: 'int24',
+      },
+      {
+        internalType: 'int24',
+        name: 'sqrtRatioBX96',
+        type: 'int24',
+      },
+      {
+        internalType: 'uint128',
+        name: 'liquidity',
+        type: 'uint128',
+      },
+    ],
+    name: 'getAmountsForLiquidityTicks',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'amount0',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount1',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'pure',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint160',
         name: '_price',
         type: 'uint160',
       },

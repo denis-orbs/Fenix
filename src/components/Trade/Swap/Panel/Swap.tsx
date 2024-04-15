@@ -9,7 +9,7 @@ import { IToken } from '@/src/library/types'
 import { useBalance, useReadContract } from 'wagmi'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { ERC20_ABI } from '@/src/library/constants/abi'
-import { BN_TEN, formatPrice, toBN } from '@/src/library/utils/numbers'
+import { BN_TEN, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
 import { NumericalInput } from '@/src/components/UI/Input'
 
 interface SwapProps {
@@ -46,21 +46,28 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
   return (
     <div className="exchange-box-x1">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-white text-sm">Swap</p>
-        <p className="text-shark-100 flex gap-3 text-sm items-center">
-          <span className="icon-wallet text-xs"></span>
-          <span
-            onClick={() => {
-              if (tokenBalance && isConnected) {
-                setValue(toBN(formatPrice(tokenBalance, 12)).toString())
-              } else {
-                setValue('')
-              }
-            }}
-          >
-            Balance: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
-          </span>
-        </p>
+        <div className="xl:w-2/6">
+          <p className="text-white text-sm">Swap</p>
+        </div>
+        <div className="text-shark-100 text-sm flex xl:justify-between justify-end gap-6 xl:gap-0 xl:w-4/6 items-center">
+          <p className="text-shark-100 text-sm ml-2.5">
+            {value && formatDollarAmount(toBN(token.price).multipliedBy(value).toString())}
+          </p>
+          <div className="flex gap-1.5 items-center">
+            <span className="icon-wallet text-xs"></span>
+            <span
+              onClick={() => {
+                if (tokenBalance && isConnected) {
+                  setValue(toBN(formatPrice(tokenBalance, 12)).toString())
+                } else {
+                  setValue('')
+                }
+              }}
+            >
+              Balance: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
+            </span>
+          </div>
+        </div>
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3">
         <div className="relative w-full xl:w-2/6">

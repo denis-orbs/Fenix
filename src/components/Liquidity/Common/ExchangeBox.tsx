@@ -38,14 +38,14 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
   }
 
   const handleHalf = () => {
-    if (onTokenValueChange) {
-      onTokenValueChange(ethers.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
+    if (onTokenValueChange) {    
+      onTokenValueChange(ethers.utils.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
     }
   }
 
   const handleMax = () => {
     if (onTokenValueChange) {
-      onTokenValueChange(ethers.formatEther(balance.toString()), token)
+      onTokenValueChange(ethers.utils.formatEther(balance.toString()), token)
     }
   }
 
@@ -67,7 +67,7 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
             onClick={onOpenModal ? () => onOpenModal() : undefined}
           >
             <div className="flex items-center gap-2">
-              <Image src={`${token.img}`} alt="token" className="w-6 h-6 rounded-full" width={20} height={20} />
+              <Image src={`${token.img ? token.img : '/static/images/tokens/FNX.svg'}`} alt="token" className="w-6 h-6 rounded-full" width={20} height={20} />
               <span className="text-base">{token.symbol}</span>
             </div>
             <span className="icon-chevron text-sm inline-block ml-2" />

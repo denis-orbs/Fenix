@@ -83,7 +83,7 @@ const Panel = () => {
   useEffect(() => {
     const getList = async () => {
       try {
-        const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
           method: 'GET',
         })
         const responseData = await response.json()

@@ -19,8 +19,6 @@ export const LAUNCH = [
   'Notifications System',
 ]
 
-
-
 export const GROWTH = [
   'Fenix EON Perpetuals Launch',
   'Plugins/Hooks Developments',
