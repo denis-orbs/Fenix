@@ -18,7 +18,7 @@ const Menu = () => {
 
   return (
     <ul
-      className={`${pathname === '/' ? 'header-box-landing' : ''} flex item-center md:gap-2 2xl:gap-3 max-2xl:justify-center`}
+      className={`${pathname === '/' ? 'header-box-landing' : ''} flex item-center md:gap-2 2xl:gap-3 justify-center`}
     >
       {MENU_LINKS.map((link, index) => (
         <Link

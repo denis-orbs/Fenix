@@ -2,24 +2,29 @@
 'use client'
 import React, { useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Security = () => {
   const brands = [
     {
       title: 'Peckshield',
       image: '/static/images/landing/security/Peckshield.svg',
+      link: 'https://github.com/peckshield/publications/blob/master/audit_reports/PeckShield-Audit-Report-Thena-v1.0.pdf',
     },
     {
       title: 'ChainSecurity',
       image: '/static/images/landing/security/ChainSecurity.svg',
+      link: 'https://github.com/bancorprotocol/carbon-contracts/blob/dev/docs/audits/ChainSecurity_Carbon_Audit_Report.pdf',
     },
     {
       title: 'OpenZeppelin',
       image: '/static/images/landing/security/OpenZeppelin.svg',
+      link: 'https://blog.openzeppelin.com/retro-thena-audit',
     },
     {
       title: 'PaladinBlockchainSecurity',
       image: '/static/images/landing/security/PaladinBlockchainSecurity.svg',
+      link: 'https://github.com/cryptoalgebra/Algebra/tree/master/audits',
     },
   ]
   useEffect(() => {
@@ -91,31 +96,40 @@ const Security = () => {
         </div>
         <div className="w-[100%] flex items-center flex-col mx-auto justify-center">
           <div className="text-xl max-lg:text-lg text-shark-100 font-normal max-md:text-center">Assured by</div>
-          <div className="card2 !my-4 max-sm:!my-2 w-[262px] max-lg:w-[40%] max-sm:w-[90%] max-md:w-[70%] h-[93px] ">
-            <div className="inner2 py-5 px-10 max-sm:py-3 max-sm:px-5 flex items-center justify-between w-[100%] h-[100%]">
-              <Image
-                src={'/static/images/landing/security/HatsFinance.svg'}
-                alt={'HatsFinance'}
-                width={200}
-                height={50}
-                className="mx-auto"
-              />
+          <Link
+            href={
+              'https://app.hats.finance/audit-competitions/fenix-finance-0x83dbe5aa378f3ce160ed084daf85f621289fb92f/scope'
+            }
+            target="_blank"
+          >
+            <div className="card2 w-[292px] !my-4 max-sm:!my-2  h-[93px] z-50">
+              <div className="inner2 py-5 px-10 max-sm:py-3 max-sm:px-5 flex items-center justify-between h-[100%]">
+                <Image
+                  src={'/static/images/landing/security/HatsFinance.svg'}
+                  alt={'HatsFinance'}
+                  width={200}
+                  height={50}
+                  className="mx-auto"
+                />
+              </div>
+              <div className="blob2"></div>
+              <div className="fakeblob2"></div>
             </div>
-            <div className="blob2"></div>
-            <div className="fakeblob2"></div>
-          </div>
+          </Link>
           <div className="text-xl max-lg:text-lg text-shark-100 font-normal my-10 max-md:text-center">
             Code Validated by Industry Leaders
           </div>
-          <div className="flex gap-4 lg:flex-row  flex-col items-center justify-center lg:w-[70%] w-full">
+          <div className="flex gap-4 flex-wrap lg:flex-row flex-col items-center justify-center z-50 ">
             {brands.map((item, index) => (
-              <div key={index} className="card3  xl:w-[30%] w-[90%] h-[93px]">
-                <div className="inner3 py-8 px-5 flex items-center justify-between w-[100%] h-[100%]">
-                  <Image src={item.image} alt={item.title} width={200} height={50} className="mx-auto" />
+              <Link href={item.link} target="_blank" key={index}>
+                <div className="card3  h-[93px] cursor-pointer w-[292px] ">
+                  <div className="inner3 py-8 px-5 flex items-center justify-between  h-full">
+                    <Image src={item.image} alt={item.title} width={200} height={50} className="mx-auto" />
+                  </div>
+                  <div className="blob3"></div>
+                  <div className="fakeblob3"></div>
                 </div>
-                <div className="blob3"></div>
-                <div className="fakeblob3"></div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

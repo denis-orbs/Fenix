@@ -174,7 +174,7 @@ const HowItWorks = () => {
   return (
     <div className="relative">
       <div className="absolute -z-10  h-[1800px] top-[-20rem] left-0 right-0 overflow-hidden">
-        <div className="min-w-full min-h-full mx-auto relative">
+        {/* <div className="min-w-full min-h-full mx-auto relative">
           <Image
             src="/static/images/landing/howitworks/orange-ellipse.svg"
             width={900}
@@ -217,7 +217,7 @@ const HowItWorks = () => {
             className="absolute top-[1000px] left-0 z-10 sm:hidden"
             alt="start"
           />
-        </div>
+        </div> */}
       </div>
       <div className="container 2xl:mt-[200px] max-2xl:mt-[400px] max-xl:mt-[500px] mx-auto w-[100%]">
         <div className="text-shark-100 text-xl md:text-lg md:mb-2 text-center font-normal">How it Works</div>
