@@ -25,7 +25,13 @@ const Overview = () => {
             src="/static/images/landing/overview/Sun2.svg"
             width={500}
             height={500}
-            className="absolute top-0 transform left-1/2 -translate-x-1/2 min-w-[150vw] z-10 object-center object-cover"
+            className="absolute top-0 
+            transform left-1/2 
+            -translate-x-1/2 
+            min-w-[150vw] 
+            z-10 
+            
+            object-center object-cover"
             alt="Sun"
           />
         </div>

@@ -173,7 +173,7 @@ const HowItWorks = () => {
 
   return (
     <div className="relative xl:pt-32">
-      <div className="absolute -z-10  h-[1800px] top-[-20rem] left-0 right-0 overflow-hidden">
+      <div className="absolute -z-10  h-[1800px] left-0 right-0 overflow-hidden">
         <div className="min-w-full min-h-full mx-auto relative">
           <Image
             src="/static/images/landing/howitworks/orange-ellipse.svg"
@@ -224,7 +224,7 @@ const HowItWorks = () => {
         <div className="text-gradient3 text-[40px] max-md:text-2xl font-normal leading-relaxed text-center">
           Fenix Finance
         </div>
-        <div className="w-[100%] flex items-center flex-col xl:flex-row  justify-center">
+        <div className="w-[100%] flex items-center flex-col xl:flex-row  justify-center ">
           <div className="w-full xl:w-1/2 flex items-center flex-col justify-center text-white  my-3">
             {articles.map((item, index) => (
               <div key={index} className="card !my-2 w-full sm:w-[70%] xl:max-w-[613px] group">
@@ -289,8 +289,16 @@ const HowItWorks = () => {
             ))}
           </div>
           <div
-            className="relative -top-16  xl:-left-10 overflow-hidden 2xl:[&>div]:!h-[640px] 2xl:[&>div]:!w-[640px] xl:h-[550px]
-            xl:[&>div]:!h-[620px] xl:[&>div]:!w-[620px] [&>div]:!h-[450px] [&>div]:!w-[450px] flex justify-center max-w-[100vw]
+            className="relative xl:-top-16 
+            
+            xl:-left-10 overflow-hidden 
+            2xl:[&>div]:!h-[640px] 
+            2xl:[&>div]:!w-[640px] xl:h-[550px]
+            xl:[&>div]:!h-[620px] 
+            xl:[&>div]:!w-[620px] 
+            sm:[&>div]:!h-[450px] 
+            sm:[&>div]:!w-[450px] 
+            flex justify-center max-w-[100vw]
             object-cover [&>div]:flex-shrink-0 md:[&>div]:!h-[700px] md:[&>div]:!w-[700px]"
             ref={elementRef}
             onClick={handleAnimationClick}>

@@ -99,26 +99,26 @@ const Main = () => {
           </div>
         </div>
       </div>
-      <div className="relative 2xl:bottom-[-18rem] max-2xl:bottom-[-35rem]  w-[100%]">
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[70%] max-sm:w-[100%]">
-          <div
-            className={`grid 2xl:grid-cols-4 max-2xl:grid-cols-2 max-md:grid-cols-1
+        <div className="relative 2xl:bottom-[-18rem] max-2xl:bottom-[-35rem]  w-[100%]">
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[70%] max-sm:w-[100%]">
+            <div
+              className={`grid 2xl:grid-cols-4 max-2xl:grid-cols-2 max-md:grid-cols-1
              justify-center items-center px-5 mx-auto ${isTablet ? 'info-box' : 'mobile-info-box'}`}
-          >
-            <Box text="Total Value Locked" />
-            <Box text="Annualized Volume" />
-            <Box text="Annualized Fees" />
-            <Box text="Active Users" />
+            >
+              <Box text="Total Value Locked" />
+              <Box text="Annualized Volume" />
+              <Box text="Annualized Fees" />
+              <Box text="Active Users" />
+            </div>
+            <Image
+              src="/static/images/landing/main/planet.svg"
+              width={50}
+              height={50}
+              className="absolute bottom-[-5%] left-0 z-10 "
+              alt="planet"
+            />
           </div>
-          <Image
-            src="/static/images/landing/main/planet.svg"
-            width={50}
-            height={50}
-            className="absolute bottom-[-5%] left-0 z-10 "
-            alt="planet"
-          />
         </div>
-      </div>
     </div>
   )
 }
