@@ -5,20 +5,22 @@ import { useState } from 'react'
 import SelectToken from '@/src/components/Modals/SelectToken'
 
 import { IToken } from '@/src/library/types'
-import { useSetToken0, useSetToken1 } from '@/src/state/liquidity/hooks'
+import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 
 interface PairSelectorProps {
-  firstToken: IToken
-  setFirstToken: (token: IToken) => void
-  secondToken: IToken
-  setSecondToken: (token: IToken) => void
+  firstToken: string
+  secondToken: string
+  tokenList: IToken[]
 }
 
-const PairSelector = ({ firstToken, setFirstToken, secondToken, setSecondToken }: PairSelectorProps) => {
+const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps) => {
   const [openSelectFirstToken, setOpenSelectFirstToken] = useState<boolean>(false)
   const [openSelectSecondToken, setOpenSelectSecondToken] = useState<boolean>(false)
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
+  const token0 = useToken0()
+  const token1 = useToken1()
+
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[15px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="mb-2 text-xs leading-normal text-white">Select a Pair</div>
@@ -30,13 +32,15 @@ const PairSelector = ({ firstToken, setFirstToken, secondToken, setSecondToken }
         >
           <div className="flex items-center gap-2.5 md:gap-2">
             <Image
-              src={`/static/images/tokens/${firstToken.symbol}.png`}
+              src={`/static/images/tokens/${tokenList.find((t) => t?.address?.toLowerCase() === firstToken.toLowerCase())?.symbol}.svg`}
               alt="token"
               className="w-5 h-5 rounded-full md:w-6 md:h-6"
               width={24}
               height={24}
             />
-            <span className="text-xs md:text-base">{firstToken.symbol}</span>
+            <span className="text-xs md:text-base">
+              {tokenList.find((t) => t?.address?.toLowerCase() === firstToken.toLowerCase())?.symbol}
+            </span>
           </div>
           <span className="inline-block ml-2 text-xs icon-chevron md:text-sm" />
         </div>
@@ -45,9 +49,9 @@ const PairSelector = ({ firstToken, setFirstToken, secondToken, setSecondToken }
             type="button"
             className="flex items-center justify-center"
             onClick={() => {
-              const temp = firstToken
-              setToken0(secondToken.address)
-              setToken1(firstToken.address)
+              // const temp = firstToken
+              // setToken0(secondToken.address)
+              // setToken1(firstToken.address)
               // setFirstToken(secondToken)
               // setSecondToken(temp)
             }}
@@ -61,23 +65,29 @@ const PairSelector = ({ firstToken, setFirstToken, secondToken, setSecondToken }
         >
           <div className="flex items-center gap-2.5 md:gap-2">
             <Image
-              src={`/static/images/tokens/${secondToken.symbol}.png`}
+              src={`/static/images/tokens/${tokenList.find((t) => t?.address?.toLowerCase() === secondToken.toLowerCase())?.symbol}.svg`}
               alt="token"
               className="w-5 h-5 rounded-full md:w-6 md:h-6"
               width={24}
               height={24}
             />
-            <span className="text-xs md:text-base">{secondToken.symbol}</span>
+            <span className="text-xs md:text-base">
+              {tokenList.find((t) => t?.address?.toLowerCase() === secondToken.toLowerCase())?.symbol}
+            </span>
           </div>
           <span className="inline-block ml-2 text-xs icon-chevron md:text-sm" />
         </div>
       </div>
 
-      <SelectToken openModal={openSelectFirstToken} setOpenModal={setOpenSelectFirstToken} setToken={setFirstToken} />
+      <SelectToken
+        openModal={openSelectFirstToken}
+        setOpenModal={setOpenSelectFirstToken}
+        setToken={(token) => setToken0(token.address)}
+      />
       <SelectToken
         openModal={openSelectSecondToken}
         setOpenModal={setOpenSelectSecondToken}
-        setToken={setSecondToken}
+        setToken={(token) => setToken1(token.address)}
       />
     </div>
   )

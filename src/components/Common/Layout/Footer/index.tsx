@@ -13,19 +13,21 @@ const Footer = () => {
   return (
     <footer className="relative mx-auto mt-24 flex flex-col gap-3">
       <div className="container relative ">
-        <div className="absolute overflow-hidden 2xl:-left-[340px] -left-[158px]  h-[600px] right-0 bottom-0 ">
-          <Image
-            src="/static/images/footer/fenix-galaxy.svg"
-            width={800}
-            height={800}
-            className={`${pathname === '/' ? '' : 'hidden'}
+        {pathname === '/' && (
+          <div className="absolute overflow-hidden 2xl:-left-[340px] -left-[158px]  h-[600px] right-0 bottom-0 ">
+            <Image
+              src="/static/images/footer/fenix-galaxy.svg"
+              width={800}
+              height={800}
+              className={`${pathname === '/' ? '' : 'hidden'}
             absolute 2xl:left-0 object-cover h-[480px] w-[400px] 2xl:h-[800px] 2xl:w-[800px]
             2xl:-bottom-[340px] -bottom-52
             `}
-            // className={`absolute sm:bottom-[-270px] max-sm:bottom-[-220px] sm:left-[-270px] max-sm:left-[-220px] z-10 object-center object-cover min-w-[500px]`}
-            alt="fenix-galaxy"
-          />
-        </div>
+              // className={`absolute sm:bottom-[-270px] max-sm:bottom-[-220px] sm:left-[-270px] max-sm:left-[-220px] z-10 object-center object-cover min-w-[500px]`}
+              alt="fenix-galaxy"
+            />
+          </div>
+        )}
         <div className={`${pathname === '/' ? 'pl-16 max-lg:!pl-0 max-lg:!pr-0 xl:ms-10' : 'footer-box'} `}>
           <div
             className={`relative flex items-end px-4 ${pathname === '/' ? 'pt-8 pb-6 md:pt-16 md:pb-6 max-md:!px-0' : 'py-8 md:py-16'}`}
@@ -51,6 +53,7 @@ const Footer = () => {
                         href={link.href}
                         key={index}
                         className={`text-xs sm:text-sm text-white hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text transition-all text-${index % 3 === 0 && pathname === '/' ? 'left' : index % 3 === 1 && pathname === '/' ? 'center' : index % 3 === 2 && pathname === '/' ? 'right' : ''} xl:text-center`}
+                        target="_blank"
                       >
                         {link.title}
                       </Link>

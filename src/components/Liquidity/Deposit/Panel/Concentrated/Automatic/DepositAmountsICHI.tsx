@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { useReadContracts, useWriteContract } from 'wagmi'
 import { formatUnits, zeroAddress } from 'viem'
 
-import { approveDepositToken, deposit, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
+import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
 import { ethers } from 'ethers'
 import {
   useSetToken0TypedValue,
@@ -21,8 +21,19 @@ import { toBN } from '@/src/library/utils/numbers'
 import { erc20Abi } from 'viem'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
+import { IToken } from '@/src/library/types'
 
-const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string } }) => {
+const DepositAmountsICHI = ({
+  token,
+  vaultInfo,
+  tokenList,
+}: {
+  token: IToken | undefined
+  vaultInfo: IchiVault[]
+  tokenList: IToken
+}) => {
+  const [isActive, setIsActive] = useState<Boolean>(false)
+  const [selected, setIsSelected] = useState<String>('Choose one')
   const { account } = useActiveConnectionDetails()
 
   const slippage = 1
@@ -34,6 +45,8 @@ const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string }
 
   const token0 = useToken0()
   const token1 = useToken1()
+
+  console.log(token0, token1, 'tokens1')
   const token0InfoData = useToken0Data()
   const [isToken0ApprovalRequired, setIsToken0ApprovalRequired] = useState(false)
 
@@ -131,6 +144,13 @@ const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string }
     }
     checkApproval()
   }, [token0TypedValue, token0, token0Decimals, dex, web3Provider, vaultAddress, account, isReverted])
+
+  // useEffect(() => {
+  //   if (selected === 'Choose one' && vaultInfo?.length > 0) {
+  //     setIsSelected(vaultInfo[0]?.allowTokenA ? vaultInfo[0]?.tokenA.toLowerCase() : vaultInfo[0]?.tokenB.toLowerCase())
+  //   }
+  // }, [vaultInfo, selected])
+
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
@@ -183,16 +203,74 @@ const DepositAmountsICHI = ({ token }: { token: { name: string; symbol: string }
 
           <div className="relative xl:w-2/5 flex-shrink-0">
             <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
-              <div className="flex items-center gap-2">
-                <Image
-                  src={`/static/images/tokens/${token.symbol}.svg`}
-                  alt="token"
-                  className="w-6 h-6 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                <span className="text-base">{token.symbol}</span>
-              </div>
+              {vaultInfo && (
+                <>
+                  <div
+                    className="w-full flex justify-between items-center gap-2"
+                    onClick={() => setIsActive(!isActive)}
+                  >
+                    <div className="flex justify-center items-center gap-3">
+                      {selected !== 'Choose one' ? (
+                        <>
+                          <Image
+                            src={`/static/images/tokens/${tokenList.find((t) => t?.address?.toLowerCase() === selected)?.symbol}.svg`}
+                            alt="token"
+                            className="w-6 h-6 rounded-full"
+                            width={20}
+                            height={20}
+                          />
+                          <span className="text-base">
+                            {tokenList.find((t) => t?.address?.toLowerCase() === selected)?.symbol}
+                          </span>
+                        </>
+                      ) : (
+                        selected
+                      )}
+                    </div>
+                    <span
+                      className={`inline-block ml-2 text-xs icon-chevron md:text-sm ${isActive ? 'rotate-180' : ''}`}
+                    />
+                  </div>
+                  <div
+                    className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
+                    ${isActive ? 'visible bg-shark-300 !bg-opacity-40 border-shark-200' : 'hidden'}`}
+                  >
+                    {vaultInfo.map((vault) => (
+                      <div
+                        className="flex justify-center items-center gap-3 cursor-pointer"
+                        key={vault.id}
+                        onClick={() => {
+                          setIsActive(!isActive)
+                          setIsSelected(
+                            vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
+                          )
+                        }}
+                      >
+                        <Image
+                          // src={`/static/images/tokens/${token?.symbol}.svg`}
+                          src={`/static/images/tokens/${tokenList.find((t) => t?.address?.toLowerCase() === (vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()))?.symbol}.svg`}
+                          alt="token"
+                          className="w-6 h-6 rounded-full"
+                          width={20}
+                          height={20}
+                        />
+                        <span className="text-base">
+                          {
+                            tokenList.find(
+                              (t) =>
+                                t?.address?.toLowerCase() ===
+                                (vault.allowTokenA
+                                  ? vault.tokenA.toLocaleLowerCase()
+                                  : vault.tokenB.toLocaleLowerCase())
+                            )?.symbol
+                          }
+                        </span>
+                        {/* <span className="text-base">{token?.symbol}</span> */}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

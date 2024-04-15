@@ -66,7 +66,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     }
 
     asyncFn()
-  }, [rangePrice1, rangePrice2, poolState, isInverse])
+  }, [lowerTick, higherTick, poolState, isInverse])
 
   useEffect(() => {
     setSecondValue((Number(firstValue) * ratio).toFixed(10).replace(/(\.\d*?[1-9])0+$|\.$/, '$1'))

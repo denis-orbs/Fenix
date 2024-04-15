@@ -48,27 +48,29 @@ export default function MobileRow({
             />
           </div>
           <div className="flex flex-col">
-            <h5 className="text-sm font-semibold leading-normal mb-1.5">
-              {row.pairDetails.token0Symbol} / {row.pairDetails.token1Symbol}
-            </h5>
-            <div className="flex items-center gap-2">
-              {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
-                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
-                  Volatile Pool
-                </span>
-              )}
-              {row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
-                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
-                  Stable Pool
-                </span>
-              )}
-              {row.pairDetails.pairSymbol === 'Concentrated pool' && (
-                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-green-400 border-green-400 ">
-                  Concentrated Pool
-                </span>
-              )}
+            <div>
+              <h5 className="text-sm font-semibold leading-normal mb-1.5">
+                {row.pairDetails.token0Symbol} / {row.pairDetails.token1Symbol}
+              </h5>
+              <div className="flex items-center gap-2">
+                {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
+                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
+                    Volatile Pool
+                  </span>
+                )}
+                {row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
+                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
+                    Stable Pool
+                  </span>
+                )}
+                {row.pairDetails.pairSymbol === 'Concentrated pool' && (
+                  // <span className="text-white py-1 px-3 text-xs rounded-lg border bg-green-400 border-green-400 ">
+                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-gradient-to-r from-outrageous-orange-500 to-festival-500">
+                    Concentrated Pool
+                  </span>
+                )}
 
-              {/* 'CONCENTRATED' === row.type && (
+                {/* 'CONCENTRATED' === row.type && (
                 <span
                   className="py-1 px-2  text-xs rounded-lg 
                 bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
@@ -77,20 +79,38 @@ export default function MobileRow({
                 </span>
               ) */}
 
-              <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                {row.pairDetails.fee} %
-              </span>
-              <Button
-                variant="tertiary"
-                className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
-              >
-                <span className="icon-info"></span>
-              </Button>
+                <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                  {row.pairDetails.fee} %
+                </span>
+                <Button
+                  variant="tertiary"
+                  className="!py-1 !text-xs border !border-shark-400 !rounded-[10px] !bg-shark-400 !bg-opacity-40 !h-[30px] !px-[7px]"
+                >
+                  <span className="icon-info"></span>
+                </Button>
+              </div>
             </div>
           </div>
-          <button type="button" className="ml-auto" onClick={() => setIsOpen(!isOpen)}>
-            <span className={`icon-chevron text-xs leading-[0] block ${isOpen ? 'rotate-180' : ''}`}></span>
-          </button>
+          <div className="flex gap-2 ml-auto">
+            {titleButton2 === '' ? (
+              <Button
+                variant="tertiary"
+                className="flex items-center gap-2 w-full"
+                href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable ? 'volatile' : 'stable'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
+              >
+                <span className="icon-circles"></span>
+                Deposit
+              </Button>
+            ) : (
+              <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity/deposit">
+                <span className="icon-logout"></span>
+                Manage
+              </Button>
+            )}
+            <button type="button" onClick={() => setIsOpen(!isOpen)}>
+              <span className={`icon-chevron text-xs leading-[0] block ${isOpen ? 'rotate-180' : ''}`}></span>
+            </button>
+          </div>
         </div>
 
         {isOpen && (
@@ -264,7 +284,7 @@ export default function MobileRow({
                 </Button>
               )} */}
 
-              {titleButton2 === '' ? (
+              {/* {titleButton2 === '' ? (
                 <Button
                   variant="tertiary"
                   className="flex items-center gap-2 w-full"
@@ -278,7 +298,7 @@ export default function MobileRow({
                   <span className="icon-logout"></span>
                   Manage
                 </Button>
-              )}
+              )} */}
             </div>
           </>
         )}

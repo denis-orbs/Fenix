@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-
+import Link from 'next/link'
 import AccountHandler from '../AccountHandler'
 import Toggle from './Toggle'
 import WalletSelection from '@/src/components/Modals/WalletSelection'
@@ -16,12 +16,21 @@ const MobileHeader = () => {
   const handleShowMenu = () => setShowMenu(!showMenu)
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   return (
-    <div className="block 2xl:hidden px-5">
+    <div className="block md:hidden px-5">
       <header
         className={`${pathname === '/' ? '' : 'header-mobile-box'} flex justify-between gap-5 p-0 mx-auto relative z-50`}
       >
         <div className="flex items-center justify-between w-full relative z-10 h-[87px] p-4 gap-3">
-          <Image src="/static/images/isotipe.svg" className="w-[45px] h-7" alt="logo" width={43} height={26} priority />
+          <Link href="/">
+            <Image
+              src="/static/images/isotipe.svg"
+              className="w-[45px] h-7"
+              alt="logo"
+              width={43}
+              height={26}
+              priority
+            />
+          </Link>
           <div className="flex items-center gap-2">
             <AccountHandler isMenuMobile={false} />
             <Toggle onClick={handleShowMenu} />

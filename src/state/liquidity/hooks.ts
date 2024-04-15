@@ -16,7 +16,7 @@ export function useV2PairsData() {
   const pairLoading: {
     state: ApiState
   } = useAppSelector((state) => state.liquidity.v2Pairs)
-  console.log(v2Pairs.tableData, 'v2Pairs.tableData')
+  //console.log(v2Pairs.tableData, 'v2Pairs.tableData')
   return {
     loading: v2Pairs.tablestate === ApiState.LOADING,
     data: v2Pairs.tableData,

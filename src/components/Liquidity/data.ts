@@ -85,13 +85,13 @@ export const NAV_LIST = [
     path: '/liquidity',
     active: true,
   },
-  {
-    name: 'Deposit',
-    description: 'Set Your Price or Your Range',
-    icon: 'icon-sand-clock',
-    path: 'deposit',
-    active: true,
-  },
+  // {
+  //   name: 'Deposit',
+  //   description: 'Set Your Price or Your Range',
+  //   icon: 'icon-sand-clock',
+  //   path: '/liquidity',
+  //   active: true,
+  // },
   {
     name: 'My Positions',
     description: 'Set and Forget',
