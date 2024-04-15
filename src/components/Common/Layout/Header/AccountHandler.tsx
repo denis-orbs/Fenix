@@ -90,10 +90,10 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
           <div
             onMouseEnter={() => setOpenPoints(true)}
             onMouseLeave={() => setOpenPoints(false)}
-            className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden xl:flex"
+            className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden lg:flex"
           >
             <p className="text-xs text-white">
-              {data.userLiqPoints} <span className="hidden xl:inline">Points</span>
+              {data.userLiqPoints} <span className="hidden lg:inline">Points</span>
             </p>
             <Image src="/static/images/tokens/BLAST.svg" className="w-8 h-8" alt="logo" width={30} height={30} />
           </div>

@@ -8,8 +8,10 @@ import { useV2PairsData } from '@/src/state/liquidity/hooks'
 import { useEffect, useMemo, useState } from 'react'
 import { PoolData } from '@/src/state/liquidity/types'
 import { useAccount } from 'wagmi'
+import { useRouter } from 'next/navigation'
 
 const LiquidityPositions = () => {
+  const router = useRouter()
   const [loading, setLoading] = useState(true)
   const { address } = useAccount()
   const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
@@ -46,11 +48,16 @@ const LiquidityPositions = () => {
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">Liquidity Positions</h1>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm">
+            <Button
+              variant="tertiary"
+              className="!py-3 xl:me-5 !text-xs !lg:text-sm"
+              onClick={() => router.push('/liquidity')}
+            >
               <span className="icon-logout"></span>New deposit
             </Button>
           </div>
-          <div className="dashboard-box">
+          {/* <div className="dashboard-box"> */}
+          <div className={`${poolsDataClassic.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
             <div className="  rounded-lg z-10">
               <h1 className="text-white p-3">Classic liquidity</h1>
               {loading ? (
@@ -62,12 +69,12 @@ const LiquidityPositions = () => {
               ) : (
                 <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassic} />
               )}
-              <div className="mt-2">
+              {/* <div className="mt-2">
                 <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
                   Review more
                   <span className="icon-link"></span>
                 </Button>
-              </div>
+              </div> */}
             </div>
 
             {/* <div className="rounded-lg z-10">

@@ -80,10 +80,12 @@ const Liquidity = () => {
   return (
     <section>
       <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
-        <div className="w-full 2xl:w-3/4">
+        <div className="w-full 2xl:w-2/3">
           <Deposit />
         </div>
-        <Steps steps={STEPS} title="Start Now" />
+        <div className="w-full 2xl:w-1/3 self-auto">
+          <Steps steps={STEPS} title="Start Now" />
+        </div>
       </div>
 
       <h5 className="mb-4 text-lg lg:text-2xl text-white">Liquidity Pools</h5>

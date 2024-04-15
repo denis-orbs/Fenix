@@ -306,7 +306,8 @@
   before:top-0
   before:left-0
   before:hidden
-  before:xl:block
+  /* before:xl:block */
+  before:lg:block
 
   after:content-[""]
   after:absolute
@@ -319,7 +320,8 @@
   after:top-0
   after:right-0
   after:hidden
-  after:xl:block;
+  /* after:xl:block; */
+  after:lg:block;
 }
 .header-box-landing {
   @apply relative /* h-[60px] */ px-5 py-3
@@ -630,7 +632,7 @@
   rounded-2xl
   2xl:max-w-[615px]
   flex-shrink-0
-  2xl:w-[615px]
+  /* 2xl:w-[615px] */
   bg-shark-400
   bg-opacity-40
   2xl:bg-transparent
