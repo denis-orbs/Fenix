@@ -1,12 +1,12 @@
 import Image from 'next/image'
 const Supercharged = () => {
   return (
-    <div className="flex justify-center xl:pt-40 xl:pb-20 px-2 w-ful py-10 relative overflow-hidden">
+    <div className="flex justify-center xl:pt-20 xl:pb-10 px-2 w-ful  relative overflow-hidden">
       <div className="relative">
         <div className="relative">
           <Image
             src={'/static/images/landing/superCharged/FenixOrbits.svg'}
-            className="z-[100]"
+            className="z-[100] h-[250px] sm:h-[610px] w-[800px]"
             height={610}
             width={1017}
             alt="supercharged"

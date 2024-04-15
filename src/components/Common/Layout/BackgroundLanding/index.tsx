@@ -8,23 +8,23 @@ const Background = () => {
           src="/static/images/landing/main/ellipse1.svg"
           width={500}
           height={500}
-          className="absolute transform top-[370px] left-1/2 -translate-x-1/2 z-10 object-center object-cover min-w-[500px]"
+          className="absolute transform top-[270px] left-1/2 -translate-x-1/2 z-10 object-center object-cover min-w-[500px]"
           alt="ellipse"
         />
         <Image
           src="/static/images/landing/main/ellipse2.svg"
           width={800}
           height={800}
-          className="absolute transform top-[225px] left-1/2 -translate-x-1/2 z-10 object-center object-cover min-w-[800px]"
+          className="absolute transform top-[170px] left-1/2 -translate-x-1/2 z-10 object-center object-cover min-w-[800px]"
           alt="ellipse"
         />
-        <Image
+        {/* <Image
           src="/static/images/landing/main/ellipse2.svg"
           width={1200}
           height={1200}
           className="absolute transform top-[30px] left-1/2 -translate-x-1/2 z-10 object-center object-cover max-md:hidden min-w-[1200px]"
           alt="ellipse"
-        />
+        /> */}
         <Image
           src="/static/images/landing/main/start.svg"
           width={200}

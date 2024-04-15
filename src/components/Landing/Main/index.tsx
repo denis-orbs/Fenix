@@ -58,7 +58,7 @@ const Main = () => {
   const handlerConnectWallet = () => setWalletSelectionModal(true)
 
   return (
-    <div className="h-[700px] xl:h-[900px] flex flex-col items-center justify-center">
+    <div className="h-[700px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">
       <Decorator />
       <div className="relative overflow-hidden">
         <div className="container relative">
@@ -72,7 +72,7 @@ const Main = () => {
                 className="mx-auto mb-3"
               />
               <div className="text-base md:text-xl text-shark-100 leading-normal mb-2">Welcome to Fenix Finance</div>
-              <div className={`text-white  md:text-[40px] leading-[139%] mb-[21px] w-full  ${michroma.className}`}>
+              <div className={`text-white  md:text-[32px] leading-[139%] mb-[21px] w-full  ${michroma.className}`}>
                 THE UNIFIED TRADING AND <span className="text-gradient2">LIQUIDITY MARKETPLACE </span>
                 <span className="flex items-center justify-center xl:items-center gap-3">
                   FOR
@@ -99,7 +99,7 @@ const Main = () => {
           </div>
         </div>
       </div>
-      <div className="relative 2xl:bottom-[-25rem] max-2xl:bottom-[-35rem]  w-[100%]">
+      <div className="relative 2xl:bottom-[-18rem] max-2xl:bottom-[-35rem]  w-[100%]">
         <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[70%] max-sm:w-[100%]">
           <div
             className={`grid 2xl:grid-cols-4 max-2xl:grid-cols-2 max-md:grid-cols-1

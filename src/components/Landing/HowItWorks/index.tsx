@@ -172,9 +172,9 @@ const HowItWorks = () => {
   }, [])
 
   return (
-    <div className="relative">
+    <div className="relative xl:pt-32">
       <div className="absolute -z-10  h-[1800px] top-[-20rem] left-0 right-0 overflow-hidden">
-        {/* <div className="min-w-full min-h-full mx-auto relative">
+        <div className="min-w-full min-h-full mx-auto relative">
           <Image
             src="/static/images/landing/howitworks/orange-ellipse.svg"
             width={900}
@@ -217,26 +217,26 @@ const HowItWorks = () => {
             className="absolute top-[1000px] left-0 z-10 sm:hidden"
             alt="start"
           />
-        </div> */}
+        </div>
       </div>
       <div className="container 2xl:mt-[200px] max-2xl:mt-[400px] max-xl:mt-[500px] mx-auto w-[100%]">
         <div className="text-shark-100 text-xl md:text-lg md:mb-2 text-center font-normal">How it Works</div>
         <div className="text-gradient3 text-[40px] max-md:text-2xl font-normal leading-relaxed text-center">
           Fenix Finance
         </div>
-        <div className="w-[100%] flex items-center flex-col xl:flex-row mx-auto justify-around">
-          <div className="w-full xl:w-1/2 flex items-center flex-col justify-center text-white gap-0 my-3">
+        <div className="w-[100%] flex items-center flex-col xl:flex-row  justify-center">
+          <div className="w-full xl:w-1/2 flex items-center flex-col justify-center text-white  my-3">
             {articles.map((item, index) => (
-              <div key={index} className="card !my-4 max-sm:!my-2 w-[80%] max-md:w-[100%] group">
+              <div key={index} className="card !my-2 w-full sm:w-[70%] xl:max-w-[613px] group">
                 <div
-                  className="relative inner h-36 md:h-40 py-5 px-10 max-sm:py-3 max-sm:px-5
+                  className="relative inner h-36 md:h-28 py-5 px-10 max-sm:py-3 max-sm:px-5
                  flex items-center justify-between w-[100%]"
                 >
                   <div className="flex flex-col w-[80%] max-sm:w-[70%]">
                     <div className="text-gradient4 text-xl max-md:text-lg font-normal leading-relaxed">
                       {item.title}
                     </div>
-                    <div className="text-white opacity-70 text-sm max-md:text-xs font-normal max-sm:w-[100%] w-[90%]">
+                    <div className="text-white opacity-70 text-xs max-md:text-xs font-normal max-sm:w-[100%] w-[90%]">
                       {item.text}
                     </div>
                   </div>
@@ -248,7 +248,7 @@ const HowItWorks = () => {
                       height={item.title !== 'Trader' ? 90 : 90}
                       className="relative inset-0 z-50 group-hover:opacity-0 
                       ms-5 md:ms-0
-                      transition-opacity ease-[ease-in-out] h-[80px] w-[80px] md:h-[130px] md:w-[130px]"
+                      transition-opacity ease-[ease-in-out] h-[80px] w-[80px] md:w-[130px]"
                     />
                     <Image
                       src={item.imageHover}
@@ -257,7 +257,7 @@ const HowItWorks = () => {
                       height={item.title !== 'Trader' ? 90 : 90}
                       className={`absolute inset-0 z-50 group-hover:opacity-100 opacity-0 
                       ms-5 md:ms-0
-                      transition-opacity ease-[ease-in-out] h-[80px] w-[80px] md:h-[130px] md:w-[130px]`}
+                      transition-opacity ease-[ease-in-out] h-[80px] w-[80px]  md:w-[130px]`}
                     />
                   </div>
                   <div className="absolute h-[100%] w-[100%] top-0 left-0 right-0 bottom-0 overflow-hidden">
@@ -289,10 +289,8 @@ const HowItWorks = () => {
             ))}
           </div>
           <div
-            className=" overflow-hidden 
-          xl:[&>div]:!h-[800px] xl:[&>div]:!w-[800px]
-          [&>div]:!h-[450px] [&>div]:!w-[450px]
-          flex justify-center max-w-[100vw]
+            className="relative -top-16  xl:-left-10 overflow-hidden 2xl:[&>div]:!h-[640px] 2xl:[&>div]:!w-[640px] xl:h-[550px]
+            xl:[&>div]:!h-[620px] xl:[&>div]:!w-[620px] [&>div]:!h-[450px] [&>div]:!w-[450px] flex justify-center max-w-[100vw]
           object-cover
           [&>div]:flex-shrink-0
           md:[&>div]:!h-[700px] md:[&>div]:!w-[700px] 

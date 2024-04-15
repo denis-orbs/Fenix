@@ -70,7 +70,7 @@ const Diagram = () => {
         <Lottie options={defaultOptions}  />
       </div> */}
       <div className='flex items-center justify-center'>
-        <div className="relative w-screen max-w-[1588px] overflow-hidden mx-auto flex items-center justify-center max-md:min-w-[800px]">
+        <div className="relative w-screen max-w-[1200px] overflow-hidden mx-auto flex items-center justify-center max-md:min-w-[800px]">
           <Image src={p2} alt="p2" width={1588} height={1588} className=' w-full h-full'/>
           <Image src={bg} alt="bg" width={1588} height={1588} className=' w-full h-full absolute animate-spin-slow max-md:w-[800px]'/>
           <Image src={p1} alt="p1" width={1588} height={1588} className=' w-full h-full absolute animate-spin-slow-reverse max-md:w-[800px]'/>
