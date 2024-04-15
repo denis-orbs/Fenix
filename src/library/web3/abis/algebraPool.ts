@@ -1,6 +1,11 @@
 export const algebraPoolABI = [
   {
     inputs: [],
+    name: 'AddressZero',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'alreadyInitialized',
     type: 'error',
   },
@@ -48,7 +53,7 @@ export const algebraPoolABI = [
     inputs: [
       {
         internalType: 'bytes4',
-        name: 'selector',
+        name: 'expectedSelector',
         type: 'bytes4',
       },
     ],
@@ -98,11 +103,6 @@ export const algebraPoolABI = [
   {
     inputs: [],
     name: 'notInitialized',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'onlyFarming',
     type: 'error',
   },
   {
@@ -262,6 +262,19 @@ export const algebraPoolABI = [
       },
     ],
     name: 'CommunityFee',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'newCommunityVault',
+        type: 'address',
+      },
+    ],
+    name: 'CommunityVault',
     type: 'event',
   },
   {
@@ -519,6 +532,35 @@ export const algebraPoolABI = [
     inputs: [
       {
         internalType: 'address',
+        name: 'erc20Rebasing_',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'recipient_',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount_',
+        type: 'uint256',
+      },
+    ],
+    name: 'claim',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
         name: 'recipient',
         type: 'address',
       },
@@ -583,6 +625,30 @@ export const algebraPoolABI = [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'erc20Rebasing_',
+        type: 'address',
+      },
+      {
+        internalType: 'enum YieldMode',
+        name: 'mode_',
+        type: 'uint8',
+      },
+    ],
+    name: 'configure',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -691,7 +757,7 @@ export const algebraPoolABI = [
       },
       {
         internalType: 'uint16',
-        name: 'fee',
+        name: 'lastFee',
         type: 'uint16',
       },
       {
@@ -728,6 +794,19 @@ export const algebraPoolABI = [
   },
   {
     inputs: [],
+    name: 'isUnlocked',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: 'unlocked',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'liquidity',
     outputs: [
       {
@@ -749,7 +828,7 @@ export const algebraPoolABI = [
         type: 'uint128',
       },
     ],
-    stateMutability: 'pure',
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -885,6 +964,49 @@ export const algebraPoolABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'safelyGetStateOfAMM',
+    outputs: [
+      {
+        internalType: 'uint160',
+        name: 'sqrtPrice',
+        type: 'uint160',
+      },
+      {
+        internalType: 'int24',
+        name: 'tick',
+        type: 'int24',
+      },
+      {
+        internalType: 'uint16',
+        name: 'lastFee',
+        type: 'uint16',
+      },
+      {
+        internalType: 'uint8',
+        name: 'pluginConfig',
+        type: 'uint8',
+      },
+      {
+        internalType: 'uint128',
+        name: 'activeLiquidity',
+        type: 'uint128',
+      },
+      {
+        internalType: 'int24',
+        name: 'nextTick',
+        type: 'int24',
+      },
+      {
+        internalType: 'int24',
+        name: 'previousTick',
+        type: 'int24',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'uint16',
@@ -893,6 +1015,19 @@ export const algebraPoolABI = [
       },
     ],
     name: 'setCommunityFee',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'newCommunityVault',
+        type: 'address',
+      },
+    ],
+    name: 'setCommunityVault',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -1064,6 +1199,38 @@ export const algebraPoolABI = [
       },
     ],
     name: 'tickTable',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'tickTreeRoot',
+    outputs: [
+      {
+        internalType: 'uint32',
+        name: '',
+        type: 'uint32',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'int16',
+        name: '',
+        type: 'int16',
+      },
+    ],
+    name: 'tickTreeSecondLayer',
     outputs: [
       {
         internalType: 'uint256',

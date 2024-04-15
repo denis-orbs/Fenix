@@ -13,6 +13,7 @@ const Footer = () => {
   return (
     <footer className="relative mx-auto mt-24 flex flex-col gap-3">
       <div className="container relative ">
+<<<<<<< HEAD
         {pathname === '/' && (
           <div className="absolute overflow-hidden 2xl:-left-[340px] -left-[158px]  h-[600px] right-0 bottom-0 ">
             <Image
@@ -20,6 +21,14 @@ const Footer = () => {
               width={800}
               height={800}
               className={`${pathname === '/' ? '' : 'hidden'}
+=======
+        <div className="absolute overflow-hidden z-[-1] 2xl:-left-[340px] -left-[158px]  h-[600px] right-0 bottom-0 ">
+          <Image
+            src="/static/images/footer/fenix-galaxy.svg"
+            width={800}
+            height={800}
+            className={`${pathname === '/' ? '' : 'hidden'}
+>>>>>>> 447b93f888731bb876d95c05714c325bf7d7b6b3
             absolute 2xl:left-0 object-cover h-[480px] w-[400px] 2xl:h-[800px] 2xl:w-[800px]
             2xl:-bottom-[340px] -bottom-52
             `}

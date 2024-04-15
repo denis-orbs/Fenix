@@ -4,6 +4,7 @@ import { Button } from '@/src/components/UI'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import StrategyButton, { StrategyType } from './StrategyButton'
 import Input from './Input'
+import { formatNumber } from '@/src/library/utils/numbers'
 
 const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, shownPercentage }: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage: any}) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
@@ -104,8 +105,8 @@ const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, sho
       </div>
 
       <div className="flex gap-[21px]">
-        <Input title="Min Price" percent={`-${currentPercentage == -1 ? 0 : shownPercentage[0]}`} value={currentPercentage == -1 ? 0 : price1.toFixed(6).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')} />
-        <Input title="Max Price" percent={`+${currentPercentage == -1 ? "Infinity" : shownPercentage[1]}`} value={currentPercentage == -1 ? "Infinity" : price2.toFixed(6).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')} />
+        <Input title="Min Price" percent={`-${currentPercentage == -1 ? 0 : shownPercentage[0]}`} value={currentPercentage == -1 ? "0" : formatNumber(price1 < price2 ? price1 : price2, 6) as string} />
+        <Input title="Max Price" percent={`+${currentPercentage == -1 ? "Infinity" : shownPercentage[1]}`} value={currentPercentage == -1 ? "Infinity" : formatNumber(price1 > price2 ? price1 : price2, 6) as string} />
       </div>
     </div>
   )

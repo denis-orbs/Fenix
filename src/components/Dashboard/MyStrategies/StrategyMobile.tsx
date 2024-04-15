@@ -1,10 +1,13 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import ComponentVisible from '@/src/library/hooks/useVisible'
 import Graph from './Graph'
 import { positions } from './Strategy'
+import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
+import { fromWei } from '@/src/library/utils/numbers'
 
 type options = {
   value: string
@@ -20,6 +23,18 @@ interface StrategyMobileProps {
 
 const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [tokens, setTokens] = useState<Token[]>([])
+
+  const tokensprice = async () => {
+    setTokens(await fetchTokens())
+  }
+  useEffect(() => {
+    tokensprice()
+  }, [])
+  let ichitokens: IchiVault
+  if (row.liquidity === 'ichi') {
+    ichitokens = useIchiVaultsData(row?.id)
+  }
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const handlerOpenModal = (option: string) => {
     setOpenModal(true)
@@ -36,14 +51,22 @@ const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: Strate
             <div className="flex gap-4 items-center">
               <div className="flex items-center">
                 <Image
-                  src="/static/images/tokens/FNX.svg"
+                  src={
+                    row.liquidity === 'ichi'
+                      ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}.svg`
+                      : `/static/images/tokens/${row?.token0?.symbol}.svg`
+                  }
                   alt="token"
                   className="rounded-full "
                   width={32}
                   height={32}
                 />
                 <Image
-                  src="/static/images/tokens/ETH.svg"
+                  src={
+                    row.liquidity === 'ichi'
+                      ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}.svg`
+                      : `/static/images/tokens/${row?.token1?.symbol}.svg`
+                  }
                   alt="token"
                   className="-ml-4 rounded-full"
                   width={32}
@@ -51,19 +74,22 @@ const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: Strate
                 />
               </div>
               <div className="flex flex-col">
-                <p>USDC / FNX</p>
-                <p className="text-xs">
-                  ID: {row?.id} - <span className="text-green-400">ACTIVE</span>
+                <p>
+                  {' '}
+                  {row.liquidity === 'ichi'
+                    ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
+                    : `${row?.token0?.symbol} / ${row?.token1?.symbol}`}
                 </p>
+                <p className="text-xs">ID: {row.liquidity === 'ichi' ? 'Ichi Position' : row?.id}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div
+              {/* <div
                 ref={ref}
                 className="flex items-center z-20 justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
                 onClick={() => setIsVisible(!isVisible)}
-              >
-                <span className="text-lg icon-cog text-white "></span>
+              > */}
+              {/* <span className="text-lg icon-cog text-white "></span>
                 {isVisible && (
                   <div
                     className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px]  bg-shark-400 absolute top-14  left--1 translate-x-1"
@@ -83,7 +109,7 @@ const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: Strate
                     })}
                   </div>
                 )}
-              </div>
+              </div> */}
               <span
                 onClick={handlerOpen}
                 className={`icon-chevron cursor-pointer ${isOpen && 'rotate-180 transition-all'}`}
@@ -97,31 +123,81 @@ const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: Strate
             <div className="flex gap-2 my-2">
               <div className="flex flex-col gap-2 w-1/2 items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
                 <p className="text-white text-xs lg:text-sm">
-                  ROI <span className="icon-info"></span>
+                  APR <span className="icon-info"></span>
                 </p>
                 <h1 className="text-green-400 text-2xl">0.00%</h1>
               </div>
               <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
                 <p className="text-white text-xs lg:text-sm">
-                  TOTAL BUDGET <span className="icon-info"></span>
+                  Liquidity <span className="icon-info"></span>
                 </p>
-                <h1 className="text-white text-2xl">$501.10</h1>
+                <h1 className="text-white text-2xl">
+                  {row.liquidity === 'ichi' ? 'ICHI' : Number(fromWei(row?.liquidity)).toFixed(5)} LP
+                </h1>
               </div>
             </div>
             <div className="bg-shark-400 bg-opacity-40 rounded-lg">
               <div className="relative text-white flex items-center justify-center border-b border-shark-400">
                 <div className="flex items-start flex-col p-4 w-1/2">
-                  <h4 className="text-sm text-green-400">Buy ETH</h4>
-                  <h4 className="text-sm text-white">500.00 USDC</h4>
-                  <p className="text-xs text-white">$501.10</p>
+                  <h4 className="text-sm text-white-400">
+                    {row.liquidity === 'ichi'
+                      ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
+                      : `${row?.token0?.symbol}`}
+                  </h4>
+                  <h4 className="text-sm text-white">
+                    {Number(row?.depositedToken0).toFixed(5)} ${' '}
+                    {row.liquidity === 'ichi'
+                      ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
+                      : `${row?.token0?.symbol}`}
+                  </h4>
+                  <p className="text-xs text-white">
+                    {Number(row?.depositedToken0).toFixed(5)} $ ${' '}
+                    {(
+                      Number(row?.depositedToken0) *
+                      Number(
+                        tokens.find(
+                          (e) =>
+                            e.tokenAddress.toLowerCase() ===
+                            (row.liquidity === 'ichi'
+                              ? ichitokens?.tokenA.toLowerCase()
+                              : row?.token0?.id.toLowerCase())
+                        )?.priceUSD
+                      )
+                    ).toFixed(2)}
+                  </p>
                 </div>
                 <div className="flex items-start flex-col p-4 w-1/2 border-l border-shark-400">
-                  <h4 className="text-sm text-red-500">Buy ETH</h4>
-                  <h4 className="text-sm text-white">0.00 USDC</h4>
-                  <p className="text-xs text-white">$0.00</p>
+                  <h4 className="text-sm text-white-500">
+                    {row.liquidity === 'ichi'
+                      ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
+                      : `${row?.token1?.symbol}`}
+                  </h4>
+                  <h4 className="text-sm text-white">
+                    {' '}
+                    {Number(row?.depositedToken1).toFixed(5)} $
+                    {row.liquidity === 'ichi'
+                      ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
+                      : `${row?.token1?.symbol}`}
+                  </h4>
+                  <p className="text-xs text-white">
+                    ${' '}
+                    {(
+                      Number(row?.depositedToken1) *
+                      Number(
+                        tokens.find(
+                          (e) =>
+                            e.tokenAddress.toLowerCase() ===
+                            (row.liquidity === 'ichi'
+                              ? ichitokens?.tokenB.toLowerCase()
+                              : row?.token1?.id.toLowerCase())
+                        )?.priceUSD
+                      )
+                    ).toFixed(2)}
+                  </p>
                 </div>
               </div>
               <Graph
+                row={row}
                 tickLower={row.tickLower}
                 tickUpper={row.tickUpper}
                 token0Symbol={row.token0.symbol}

@@ -445,6 +445,7 @@
   before:top-0
   before:left-0
   before:hidden
+  before:z-[-1]
   before:xl:block
 
   after:content-[""]
@@ -458,6 +459,7 @@
   after:bottom-0
   after:left-0
   after:hidden
+  after:z-[-1]
   after:xl:block;
 }
 
