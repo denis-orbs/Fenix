@@ -29,7 +29,7 @@ const CardInsights = ({ post }: CardInsightsProps) => {
       <div className="flex flex-col gap-5 items-center w-full  z-50 ">
         <Image
           src={'/static/images/landing/postFake.svg'}
-          className="h-[150px] w-[266px] sm:h-[212px] sm:w-[378px]"
+          className="h-[150px] w-[266px] sm:h-[180px] sm:w-[400px]"
           alt=""
           height={212}
           width={378}
