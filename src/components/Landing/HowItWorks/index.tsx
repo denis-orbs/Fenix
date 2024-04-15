@@ -291,14 +291,9 @@ const HowItWorks = () => {
           <div
             className="relative -top-16  xl:-left-10 overflow-hidden 2xl:[&>div]:!h-[640px] 2xl:[&>div]:!w-[640px] xl:h-[550px]
             xl:[&>div]:!h-[620px] xl:[&>div]:!w-[620px] [&>div]:!h-[450px] [&>div]:!w-[450px] flex justify-center max-w-[100vw]
-          object-cover
-          [&>div]:flex-shrink-0
-          md:[&>div]:!h-[700px] md:[&>div]:!w-[700px] 
-          
-          "
+            object-cover [&>div]:flex-shrink-0 md:[&>div]:!h-[700px] md:[&>div]:!w-[700px]"
             ref={elementRef}
-            onClick={handleAnimationClick}
-          >
+            onClick={handleAnimationClick}>
             <Lottie options={defaultOptions} isPaused={!isVisible} />
           </div>
         </div>

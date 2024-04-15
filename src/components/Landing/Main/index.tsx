@@ -58,7 +58,7 @@ const Main = () => {
   const handlerConnectWallet = () => setWalletSelectionModal(true)
 
   return (
-    <div className="h-[700px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">
+    <div className="h-[500px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">
       <Decorator />
       <div className="relative overflow-hidden">
         <div className="container relative">
@@ -92,7 +92,7 @@ const Main = () => {
                 </Button>
               )}
             </div>
-            <div className="pt-32 flex  flex-col gap-2 items-center md:hidden">
+            <div className=" flex pt-10 flex-col gap-2 items-center md:hidden">
               <p className="text-lg  animate-color-change ">Swipe</p>
               <span className="icon-scroll text-white animate-color-change animate-bounce"></span>
             </div>

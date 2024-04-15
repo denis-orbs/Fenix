@@ -20,7 +20,7 @@ const CardsBuild = ({ title, info, checked, spinner }: CardsBuildProps) => {
               <li className="text-white flex gap-2 justify-between items-center" key={index}>
                 <div className="flex gap-2 items-center ">
                   <Image src={'/static/images/landing/Build/polygon.svg'} height={6} width={6} alt="polygon" />
-                  <span className="text-sm opacity-70">{data}</span>
+                  <span className="text-xs xl:text-sm opacity-70">{data}</span>
                 </div>
                 {data !== 'Token Generation Event' && checked && (
                   <Image src={'/static/images/landing/Build/check.svg'} height={24} width={24} alt="polygon" />
