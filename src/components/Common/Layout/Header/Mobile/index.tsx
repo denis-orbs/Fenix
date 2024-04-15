@@ -16,7 +16,7 @@ const MobileHeader = () => {
   const handleShowMenu = () => setShowMenu(!showMenu)
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   return (
-    <div className="block lg:hidden px-5">
+    <div className="block md:hidden px-5">
       <header
         className={`${pathname === '/' ? '' : 'header-mobile-box'} flex justify-between gap-5 p-0 mx-auto relative z-50`}
       >

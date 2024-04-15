@@ -90,7 +90,8 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
           <div
             onMouseEnter={() => setOpenPoints(true)}
             onMouseLeave={() => setOpenPoints(false)}
-            className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden lg:flex"
+            // className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden lg:flex"
+            className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 flex"
           >
             <p className="text-xs text-white">
               {data.userLiqPoints} <span className="hidden lg:inline">Points</span>
@@ -98,7 +99,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
             <Image src="/static/images/tokens/BLAST.svg" className="w-8 h-8" alt="logo" width={30} height={30} />
           </div>
           {openPoints && (
-            <div className="absolute bg-shark-400 rounded-lg border border-shark-300 w-full xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
+            <div className="absolute bg-shark-400 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex flex-col justify-center items-center">
                   <p className="text-shark-100 text-xs mb-2">PTS Received</p>
@@ -154,7 +155,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                   <p className="hidden text-xs font-medium 2xl:block text-shark-100">Welcome</p>
                   <p className="flex items-center text-xs text-white">
                     <span className="block w-2 h-2 mr-1.5 bg-green-400 rounded-full"></span>
-                    <span className="truncate max-w-[70px] 2xl:max-w-[150px]">{account?.slice(0, 10)}...</span>
+                    <span className="truncate max-w-[70px] 2xl:max-w-[150px]">{account?.slice(0, 4)}...</span>
                   </p>
                 </div>
               </div>
