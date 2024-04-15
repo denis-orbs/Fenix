@@ -15,7 +15,7 @@ function useERC20Allowance(tokenAddress: Address, ownerAddress: Address, spender
     args: [ownerAddress as `0x${string}`, spenderAddress as `0x${string}`],
   })
 
-  const allowance = data ? parseFloat(ethers.formatEther(data)) : 0
+  const allowance = data ? parseFloat(ethers.utils.formatEther(data)) : 0
 
   return { allowance, isError, isLoading, refreshAllowance }
 }

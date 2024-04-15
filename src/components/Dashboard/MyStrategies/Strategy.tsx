@@ -8,6 +8,7 @@ import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
 import { useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { IchiVault } from '@ichidao/ichi-vaults-sdk'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 type options = {
   value: string
@@ -54,6 +55,8 @@ interface StrategyProps {
 const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProps) => {
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
 
+  const router = useRouter()
+  
   const handlerOpenModal = (option: string) => {
     setOpenModal(true)
     setModalSelected(option)
@@ -228,7 +231,7 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
           />
         </div>
         <div className="items-center justify-center">
-          <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+          <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center" onClick={() => {if(row.liquidity !== 'ichi') { router.push(`/liquidity/manage?id=${row?.id}`); router.refresh()}}}>
             <span className="text-l">Manage</span>
           </Button>
         </div>
