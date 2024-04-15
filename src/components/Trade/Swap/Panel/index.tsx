@@ -47,15 +47,30 @@ const Panel = () => {
     address: '0x4200000000000000000000000000000000000023',
     decimals: 18,
     img: 'usd4t.png',
-    price: 3000,
+    price: 0,
   })
+  // Workaround to get the prices for the default tokens
+  useEffect(() => {
+    fetch(process.env.NEXT_PUBLIC_API_URL + '/token-prices')
+      .then((res) => res.json())
+      .then((data) => {
+        const foundSellToken = data.find((token: any) => {
+          return token.basetoken.symbol === 'WETH'
+        })
+        if (foundSellToken) setTokenSell((prev) => ({ ...prev, price: foundSellToken.priceUSD }))
+        const foundGetToken = data.find((token: any) => {
+          return token.basetoken.symbol === 'FNX'
+        })
+        if (foundGetToken) setTokenGet((prev) => ({ ...prev, price: foundGetToken.priceUSD }))
+      })
+  }, [])
   const [tokenGet, setTokenGet] = useState<IToken>({
     name: 'Fenix',
     symbol: 'FNX',
     address: '0xa12e4649fdddefd0fb390e4d4fb34ffbd2834fa6',
     decimals: 18,
     img: 'WE4TH.png',
-    price: 2.65,
+    price: 0,
   })
   const [swapValue, setSwapValue] = useState<string>('')
   const [forValue, setForValue] = useState<string>('')
@@ -253,11 +268,7 @@ const Panel = () => {
     currentSqrtPriceX96 && sqrtPriceX96After
       ? sqrtPriceDifference.div(currentSqrtPriceX96BN).multipliedBy(100).abs().multipliedBy(-1)
       : '0'
-  console.log(loadingStateOfAMM)
-  console.log(approvalData.isLoading)
-  console.log(forValue && outputResult.isLoading)
-  console.log(swapValue && quoteExactInputSingleCall.isLoading)
-  console.log(loadingCurrentPool)
+
   // manage button state
   useEffect(() => {
     if (!isConnected) {
