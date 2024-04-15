@@ -7,7 +7,7 @@ import Automatic from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Aut
 import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual'
 import { IToken } from '@/src/library/types'
 import { useGammaCreatePosition } from '@/src/library/hooks/web3/useGamma'
-import { isAddress } from 'viem'
+import { Address, isAddress } from 'viem'
 import { fetchv2PairId } from '@/src/state/liquidity/reducer'
 import { useAppSelector } from '@/src/state'
 import { V2PairId } from '@/src/state/liquidity/types'
