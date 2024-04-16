@@ -92,7 +92,6 @@ const Automatic = () => {
   //   console.log(vaultInfo, 'parsed vault info')
   // }
   const vaultInfo = useIchiVault(token0 as string, token1 as string)
-  console.log(vaultInfo)
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
   }
