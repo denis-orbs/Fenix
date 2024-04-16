@@ -45,7 +45,6 @@ const NavItem = ({ item }: NavItemProps) => {
         </div>
         <div className="">
           <p className={`text-sm group-hover:text-chilean-fire-600 ${activeName}`}>{item.name}</p>
-          <p className="hidden md:block text-xs text-shark-100 line-clamp-1">{item.description}</p>
         </div>
       </Link>
       {hasHover && !item.active && (
