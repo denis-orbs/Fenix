@@ -3,9 +3,86 @@
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import { formatCurrency } from '@/src/library/utils/numbers'
+import Countdown from 'react-countdown'
+import { useEffect, useState } from 'react'
+import { log } from 'console'
 
 const PointSummary = ({ userData }: any) => {
   //  console.log(userData, 'userData')
+  let [time, setTime] = useState('')
+  let count = 0
+
+  function getCurrentEightHourTimestampArray() {
+    const targetDate = new Date('2024-12-31T00:00:00Z')
+    const currentDate = new Date()
+
+    const timeDifference = targetDate.getTime() - currentDate.getTime()
+    const remainingHours = Math.ceil(timeDifference / (8 * 60 * 60 * 1000))
+
+    const eightHourTimestamps = []
+
+    for (let i = 0; i <= remainingHours; i++) {
+      const timestamp = targetDate.getTime() - i * 8 * 60 * 60 * 1000
+      eightHourTimestamps.push(timestamp)
+    }
+
+    return eightHourTimestamps.reverse() // Reverse the array to have timestamps in ascending order
+  }
+
+  // Example usage
+  const timestampsArray = getCurrentEightHourTimestampArray()
+  // console.log(timestampsArray.map((timestamp) => new Date(timestamp).toUTCString()))
+
+  const timeSet = () => {
+    if (time === '' && count === 0 && timestampsArray.length > 0) {
+      setTime(timestampsArray[0])
+      count++
+    } else {
+      setTime(timestampsArray[count])
+      count++
+    }
+  }
+
+  useEffect(() => timeSet(), [])
+
+  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      // return <span>You are good to go!</span>
+      timeSet()
+    } else {
+      // Render a countdown
+      return (
+        <>
+          <div className="flex items-center justify-between px-4">
+            {/* <div className="flex flex-col">
+              <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
+                {hours}
+              </span>
+              <span className="text-shark-100 text-xs text-center">Hours</span>
+            </div> */}
+            <div className="flex flex-col">
+              <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
+                {hours}
+              </span>
+              <span className="text-shark-100 text-xs text-center">Hours</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
+                {minutes}
+              </span>
+              <span className="text-shark-100 text-xs text-center">Minutes</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg">{seconds}</span>
+              <span className="text-shark-100 text-xs text-center">Seconds</span>
+            </div>
+          </div>
+        </>
+      )
+    }
+  }
+
   return (
     <section className="your-point-box">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center relative z-10">
@@ -54,30 +131,33 @@ const PointSummary = ({ userData }: any) => {
           <p className="text-xs mb-2 text-white w-full">Next Points Drop</p>
           <p className="text-xs mb-2 text-green-400 w-full">14 Feb, 2PM UTC</p>
           <div className="w-full">
-            <div className="flex items-center justify-between px-4">
+            <Countdown key={time} date={time} daysInHours={true} autoStart={true} renderer={renderer} />
+            {/* <div className="flex items-center justify-between px-4">
               <div className="flex flex-col">
                 <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                  12
+                  {remainingTime?.days}
                 </span>
-                <span className="text-shark-100 text-xs text-center">Day</span>
+                <span className="text-shark-100 text-xs text-center">Days</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                  02
+                  {countdown.hours}
                 </span>
-                <span className="text-shark-100 text-xs text-center">Month</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                  2024
-                </span>
-                <span className="text-shark-100 text-xs text-center">Year</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg">21:00</span>
                 <span className="text-shark-100 text-xs text-center">Hours</span>
               </div>
-            </div>
+              <div className="flex flex-col">
+                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
+                  {countdown.minutes}
+                </span>
+                <span className="text-shark-100 text-xs text-center">Minutes</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg">
+                  {countdown.seconds}
+                </span>
+                <span className="text-shark-100 text-xs text-center">Seconds</span>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>

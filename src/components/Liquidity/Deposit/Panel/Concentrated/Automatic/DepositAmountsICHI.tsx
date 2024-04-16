@@ -29,8 +29,8 @@ const DepositAmountsICHI = ({
   tokenList,
 }: {
   token: IToken | undefined
-  vaultInfo: IchiVault[]
-  tokenList: IToken
+  vaultInfo: IchiVault[] | undefined | null
+  tokenList: IToken[]
 }) => {
   const [isActive, setIsActive] = useState<Boolean>(false)
   const [selected, setIsSelected] = useState<String>('Choose one')
@@ -213,14 +213,14 @@ const DepositAmountsICHI = ({
                       {selected !== 'Choose one' ? (
                         <>
                           <Image
-                            src={`/static/images/tokens/${tokenList.find((t) => t?.address?.toLowerCase() === selected)?.symbol}.svg`}
+                            src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === selected)?.symbol}.svg`}
                             alt="token"
                             className="w-6 h-6 rounded-full"
                             width={20}
                             height={20}
                           />
                           <span className="text-base">
-                            {tokenList.find((t) => t?.address?.toLowerCase() === selected)?.symbol}
+                            {tokenList?.find((t) => t?.address?.toLowerCase() === selected)?.symbol}
                           </span>
                         </>
                       ) : (
@@ -248,7 +248,7 @@ const DepositAmountsICHI = ({
                       >
                         <Image
                           // src={`/static/images/tokens/${token?.symbol}.svg`}
-                          src={`/static/images/tokens/${tokenList.find((t) => t?.address?.toLowerCase() === (vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()))?.symbol}.svg`}
+                          src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === (vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()))?.symbol}.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
                           width={20}
@@ -256,7 +256,7 @@ const DepositAmountsICHI = ({
                         />
                         <span className="text-base">
                           {
-                            tokenList.find(
+                            tokenList?.find(
                               (t) =>
                                 t?.address?.toLowerCase() ===
                                 (vault.allowTokenA

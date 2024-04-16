@@ -61,7 +61,6 @@ export const useIchiVaultInfo = (token0: string, token1: string) => {
     allowTokenB: false,
     isReverted: false,
   })
-  console.log(token0, token1, 'tokens')
   useEffect(() => {
     const tokenALower = token0.toLowerCase()
     const tokenBLower = token1.toLowerCase()

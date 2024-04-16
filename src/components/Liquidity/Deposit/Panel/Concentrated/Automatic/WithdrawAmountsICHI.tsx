@@ -29,15 +29,14 @@ const WithdrawAmountsICHI = ({
   tokenList,
 }: {
   token: IToken | undefined
-  vaultInfo: IchiVault[]
-  tokenList: IToken
+  vaultInfo: IchiVault[] | undefined | null
+  tokenList: IToken[]
 }) => {
   const [isActive, setIsActive] = useState<Boolean>(false)
   const [selected, setIsSelected] = useState<String>('Choose one')
   const { account } = useActiveConnectionDetails()
-
+  console.log(tokenList)
   const slippage = 1
-  getWeb3Provider()
   // CHANGE
 
   const web3Provider = getWeb3Provider()
@@ -206,7 +205,7 @@ const WithdrawAmountsICHI = ({
                       {selected !== 'Choose one' ? (
                         <>
                           <Image
-                            src={`/static/images/tokens/${tokenList.find((t) => t?.address?.toLowerCase() === selected)?.symbol}.svg`}
+                            src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === selected)?.symbol}.svg`}
                             alt="token"
                             className="w-6 h-6 rounded-full"
                             width={20}
@@ -241,7 +240,7 @@ const WithdrawAmountsICHI = ({
                       >
                         <Image
                           // src={`/static/images/tokens/${token?.symbol}.svg`}
-                          src={`/static/images/tokens/${tokenList.find((t) => t?.address?.toLowerCase() === (vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()))?.symbol}.svg`}
+                          src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === (vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()))?.symbol}.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
                           width={20}

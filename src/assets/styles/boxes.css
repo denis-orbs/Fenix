@@ -330,8 +330,8 @@
   bg-[url("/static/images/header/header-landing3.svg")]
   bg-no-repeat
   bg-cover
-  w-[520px]
-  /* w-[670px] */
+  /* w-[520px] */
+  w-[670px]
   h-[72px]
   
 }

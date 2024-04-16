@@ -1,8 +1,19 @@
 "use client"
 
+import React, { useEffect, useState } from 'react'
 import CardInsights from "./cardInsights"
 import Image from "next/image"
 const Insights = () => {
+  const [posts, setPosts] = useState([])
+  const url = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fmedium.com%2Ffeed%2F%40Fenix_Finance'
+
+  useEffect(() => {
+    fetch(url)
+    .then(response => response.json())
+    .then(data => setPosts(data.items))
+    .catch(error => console.error('Error:', error))
+  }, [])
+
   return (
     <div className="relative flex items-center flex-col justify-center mb-[50px] ">
       <div className="flex flex-col items-center justify-center mx-auto z-50 mb-10">
@@ -23,9 +34,9 @@ const Insights = () => {
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-10">
-        <CardInsights />
-        <CardInsights />
-        <CardInsights />
+        {posts.slice(0, 3).map((post, index) => (
+          <CardInsights key={index} post={post} />
+        ))}
       </div>
     </div>
   )
