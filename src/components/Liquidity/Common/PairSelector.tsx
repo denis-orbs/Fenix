@@ -6,6 +6,7 @@ import SelectToken from '@/src/components/Modals/SelectToken'
 
 import { IToken } from '@/src/library/types'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import { Address } from 'viem'
 
 interface PairSelectorProps {
   firstToken: string
@@ -49,11 +50,9 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
             type="button"
             className="flex items-center justify-center"
             onClick={() => {
-              // const temp = firstToken
-              // setToken0(secondToken.address)
-              // setToken1(firstToken.address)
-              // setFirstToken(secondToken)
-              // setSecondToken(temp)
+              const temp = firstToken
+              setToken0(secondToken as Address)
+              setToken1(temp as Address)
             }}
           >
             <span className="text-2xl text-transparent icon-swap bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
