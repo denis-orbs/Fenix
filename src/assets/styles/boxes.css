@@ -326,12 +326,12 @@
 .header-box-landing {
   @apply 
   relative 
-  2xl:bg-[url("/static/images/header/header-landing2.svg")]
+  /* 2xl:bg-[url("/static/images/header/header-landing2.svg")] */
   bg-[url("/static/images/header/header-landing3.svg")]
   bg-no-repeat
   bg-cover
-  2xl:w-[620px]
-  w-[620px]
+  w-[520px]
+  /* w-[670px] */
   h-[72px]
   
 }

@@ -37,16 +37,16 @@ const BuildInfo = () => {
         <div
           className="hidden absolute max-w-[1600px] w-full h-[10px] 
           2xl:flex justify-center after:content-[''] 
-          after:w-[10%] after:bg-opacity-5  
+          after:w-[10%] after:bg-opacity-10
           before:bg-shark-400
           before:rounded-full
           after:rounded-full
           before:w-[10%]
-          before:opacity-5
+          before:opacity-10
         after:bg-shark-400  
           rounded-full top-20 z-10"
         >
-          <div className="bg-shark-400 bg-opacity-20 rounded-full max-w-[1500px] items-center flex justify-center w-full h-[10px] -z-10"></div>
+          <div className="bg-shark-400 bg-opacity-40 rounded-full max-w-[1500px] items-center flex justify-center w-full h-[10px] -z-10"></div>
           <div className="bg-chilean-fire-600 left-[calc(49%)] -top-1 w-[18px] h-[18px] rounded-full absolute"></div>
           <div className="bg-chilean-fire-600 left-[calc(78%)] -top-1 w-[18px] h-[18px] rounded-full absolute"></div>
           <div className="bg-chilean-fire-600 left-[calc(20%)] -top-1 w-[18px] h-[18px] rounded-full absolute"></div>

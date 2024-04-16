@@ -8,6 +8,7 @@ import Link from 'next/link'
 const Menu = () => {
   const pathname = usePathname()
   const isActive = (path: string) => path === pathname
+  
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   const activeButtonClass = 'button-primary'
   const activeButtonTextClass = 'text-white'
@@ -24,7 +25,9 @@ const Menu = () => {
         <Link
           href={link.href}
           key={index}
-          className={`${isActive(link.href) ? activeButtonClass : inactiveButtonClass} rounded-[10px] py-2.5 2xl:px-3 flex items-center justify-center gap-2.5 text-white text-xs leading-normal group transition-all`}
+          className={`${isActive(link.href) ? activeButtonClass : inactiveButtonClass} 
+          rounded-[10px] py-2.5 2xl:px-3 flex items-center justify-center 
+          gap-2.5 text-white text-xs leading-normal group transition-all`}
         >
           <span className={`${isActive(link.href) ? activeButtonTextClass : inactiveButtonTextClass}`}>
             {link.name}
