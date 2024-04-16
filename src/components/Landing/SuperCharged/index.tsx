@@ -1,4 +1,5 @@
 import Image from 'next/image'
+
 const Supercharged = () => {
   return (
     <div className="flex justify-center xl:pt-20 xl:pb-10 px-2 w-full h-full  relative overflow-hidden">

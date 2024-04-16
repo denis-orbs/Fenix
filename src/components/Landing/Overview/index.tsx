@@ -2,6 +2,7 @@
 // import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
+import { ScrollParallax } from 'react-just-parallax'
 
 const Overview = () => {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -38,41 +39,43 @@ const Overview = () => {
       </div>
       <div className="absolute -z-10  h-[1100px] top-[-20rem] left-0 right-0 overflow-hidden">
         <div className="min-w-full min-h-full mx-auto relative">
-          <Image
+          {/* <Image
             src="/static/images/landing/main/start.svg"
             width={200}
             height={200}
             className="absolute top-[250px] right-[5rem] z-10 max-lg:hidden"
             alt="start"
-          />
-          <Image
-            src="/static/images/landing/main/planet.svg"
-            width={60}
-            height={60}
-            className="absolute top-[300px] right-[20rem] z-10 max-lg:hidden"
-            alt="planet"
-          />
-          <Image
-            src="/static/images/landing/main/planet.svg"
-            width={60}
-            height={60}
-            className="absolute top-[300px] left-[20rem] z-10 max-lg:hidden"
-            alt="planet"
-          />
-          <Image
-            src="/static/images/landing/main/planet.svg"
-            width={60}
-            height={60}
-            className="absolute top-[300px] right-[100px] z-10 lg:hidden"
-            alt="planet"
-          />
-          <Image
-            src="/static/images/landing/main/planet.svg"
-            width={60}
-            height={60}
-            className="absolute top-[300px] left-[100px] z-10 lg:hidden"
-            alt="planet"
-          />
+          /> */}
+          <ScrollParallax isAbsolutelyPositioned>
+            <Image
+              src="/static/images/landing/main/planet.svg"
+              width={60}
+              height={60}
+              className="absolute top-[300px] right-[20rem] z-10 max-lg:hidden"
+              alt="planet"
+            />
+            <Image
+              src="/static/images/landing/main/planet.svg"
+              width={60}
+              height={60}
+              className="absolute top-[300px] left-[20rem] z-10 max-lg:hidden"
+              alt="planet"
+            />
+            <Image
+              src="/static/images/landing/main/planet.svg"
+              width={60}
+              height={60}
+              className="absolute top-[300px] right-[100px] z-10 lg:hidden"
+              alt="planet"
+            />
+            <Image
+              src="/static/images/landing/main/planet.svg"
+              width={60}
+              height={60}
+              className="absolute top-[300px] left-[100px] z-10 lg:hidden"
+              alt="planet"
+            />
+          </ScrollParallax>
           <Image
             src="/static/images/landing/main/start.svg"
             width={80}
@@ -88,9 +91,7 @@ const Overview = () => {
           Fenix will RISE
         </div>
       </div>
-      <div
-        className="relative mx-auto mt-10 flex justify-center  z-50 w-[80%] sm:w-[70%]  xl:w-[60%]  video-landing p-4 max-lg:p-2 rounded-3xl border backdrop-blur-[74px] border-[#262C33] max-w-[1870px] cursor-pointer "
-      >
+      <div className="relative mx-auto mt-10 flex justify-center  z-50 w-[80%] sm:w-[70%]  xl:w-[60%]  video-landing p-4 max-lg:p-2 rounded-3xl border backdrop-blur-[74px] border-[#262C33] max-w-[1870px] cursor-pointer ">
         <video ref={videoRef} className="w-[100%] rounded-3xl" onClick={handlePlayPause}>
           <source src="/static/videos/landing-teaser.mp4" type="video/mp4"></source>
         </video>

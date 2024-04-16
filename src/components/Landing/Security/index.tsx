@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ScrollParallax } from 'react-just-parallax'
 
 const Security = () => {
   const brands = [
@@ -137,34 +138,29 @@ const Security = () => {
       <div className="relative">
         <div className="absolute -z-10  h-[1000px] top-[-50rem] left-0 right-0 overflow-hidden">
           <div className="min-w-full min-h-full mx-auto relative">
-            <Image
-              src="/static/images/landing/main/start.svg"
-              width={170}
-              height={170}
-              className="absolute top-[250px] right-[35rem] z-10 max-lg:hidden"
-              alt="start"
-            />
-            <Image
-              src="/static/images/landing/main/planet.svg"
-              width={60}
-              height={60}
-              className="absolute top-[350px] left-[35rem] z-10 max-lg:hidden"
-              alt="planet"
-            />
-            <Image
-              src="/static/images/landing/main/planet.svg"
-              width={60}
-              height={60}
-              className="absolute top-[800px] right-[200px] z-10 lg:hidden"
-              alt="planet"
-            />
-            <Image
-              src="/static/images/landing/main/planet.svg"
-              width={60}
-              height={60}
-              className="absolute top-[100px] left-0 z-10 lg:hidden"
-              alt="planet"
-            />
+            <ScrollParallax isAbsolutelyPositioned>
+              <Image
+                src="/static/images/landing/main/planet.svg"
+                width={60}
+                height={60}
+                className="absolute top-[350px] left-[35rem] z-10 max-lg:hidden"
+                alt="planet"
+              />
+              <Image
+                src="/static/images/landing/main/planet.svg"
+                width={60}
+                height={60}
+                className="absolute top-[800px] right-[200px] z-10 lg:hidden"
+                alt="planet"
+              />
+              <Image
+                src="/static/images/landing/main/planet.svg"
+                width={60}
+                height={60}
+                className="absolute top-[100px] left-0 z-10 lg:hidden"
+                alt="planet"
+              />
+            </ScrollParallax>
           </div>
         </div>
       </div>
