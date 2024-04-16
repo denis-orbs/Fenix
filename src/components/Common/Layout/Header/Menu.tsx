@@ -18,16 +18,13 @@ const Menu = () => {
     'group-hover:text-transparent group-hover:bg-gradient-to-r from-outrageous-orange-500 to-festival-500 group-hover:bg-clip-text'
 
   return (
-    <ul
-      className={`${pathname === '/' ? 'header-box-landing' : ''} flex item-center md:gap-2 2xl:gap-3 justify-center`}
-    >
+    <ul className={`${pathname === '/' ? 'header-box-landing' : ''} flex item-center gap-6 2xl:gap-2 justify-center`}>
       {MENU_LINKS.map((link, index) => (
         <Link
           href={link.href}
           key={index}
           className={`${isActive(link.href) ? activeButtonClass : inactiveButtonClass} 
-          rounded-[10px] py-2.5 2xl:px-3 flex items-center justify-center 
-          gap-2.5 text-white text-xs leading-normal group transition-all`}
+          rounded-[8px] py-2.5 px-3 flex items-center justify-center min-w-[80px] gap-2.5 text-white text-xs leading-normal group transition-all`}
         >
           <span className={`${isActive(link.href) ? activeButtonTextClass : inactiveButtonTextClass}`}>
             {link.name}

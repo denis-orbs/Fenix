@@ -15,8 +15,8 @@ const Header = () => {
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   return (
     <header className="hidden mx-auto xl:block container">
-      <div className={`${pathname === '/' ? '' : 'header-box px-5'} flex justify-between items-center gap-5 rounded-l`}>
-        <div className="flex items-center justify-between  relative z-10 h-[95px] w-1/3 ">
+      <div className={`${pathname === '/' ? '' : 'header-box px-5 pb-3'} flex justify-between items-center gap-5 rounded-l`}>
+        <div className="flex items-center justify-between  relative z-10 h-[95px] 2xl:w-1/3 ">
           <Link href="/">
             {width < 940 ? (
               <Image
@@ -39,7 +39,7 @@ const Header = () => {
             )}
           </Link>
         </div>
-        <div className='w-1/3 relative z-10'>
+        <div className={`${pathname === '/' ? 'w-1/3' : 'w-full'} relative z-10`}>
           <Menu />
         </div>
         <div
