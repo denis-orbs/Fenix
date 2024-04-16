@@ -48,7 +48,11 @@ const Automatic = () => {
   const searchParams = useSearchParams()
   const searchParamToken0 = searchParams.get('token0')
   const searchParamToken1 = searchParams.get('token1')
+  // const token0Data = useToken0Data()
+  // console.log(token0Data)
+  const token1Data = useToken1Data()
   // Defaults tokens
+
   useEffect(() => {
     const getData = async () => {
       const tokens = await fetchTokens()
@@ -73,20 +77,22 @@ const Automatic = () => {
       )
       setFirstToken(token0Data) // set token0
       setSecondToken(token1Data) // set token1
+      console.log(token0Data?.address.toLowerCase())
       setToken0(token0Data?.address.toLowerCase())
       setToken1(token1Data?.address.toLowerCase())
     }
     getData()
   }, [])
-  let vaultInfo: any
+
   const token0 = useToken0()
   const token1 = useToken1()
 
-  if (token0 && token1) {
-    vaultInfo = useIchiVault(token0 as string, token1 as string)
-    console.log(vaultInfo, 'parsed vault info')
-  }
-
+  // if (token0 && token1) {
+  //   // vaultInfo = useIchiVault(token0 as string, token1 as string)
+  //   console.log(vaultInfo, 'parsed vault info')
+  // }
+  const vaultInfo = useIchiVault(token0 as string, token1 as string)
+  console.log(vaultInfo)
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
   }
@@ -130,12 +136,12 @@ const Automatic = () => {
         <WithdrawAmountsICHI vaultInfo={vaultInfo} token={token0} tokenList={tokenList} />
       )}
 
-      {currentProvider === '2' && optionActive === 'ADD' && (
+      {/* {currentProvider === '2' && optionActive === 'ADD' && (
         <DepositAmountsGAMMA firstToken={token0} secondToken={token1} tokenList={tokenList} />
       )}
       {currentProvider === '2' && optionActive === 'WITHDRAW' && (
         <WithdrawAmountsGAMMA firstToken={token0} secondToken={token1} tokenList={tokenList} />
-      )}
+      )} */}
 
       {/* <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
         Create Position
