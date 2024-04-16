@@ -28,6 +28,7 @@ import { toBN } from '@/src/library/utils/numbers'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
+import cn from '@/src/library/utils/cn'
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
   POOL_NOT_AVAILABLE = 'Pool Not Available',
@@ -320,6 +321,7 @@ const Panel = () => {
     }, 15000)
     return () => clearInterval(interval)
   }, [swapValue, forValue, currentPool, account, approvalData, quoteExactInputSingleCall, outputResult, stateOfAMM])
+  const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
   return (
     <section className="box-panel-trade">
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
@@ -365,14 +367,20 @@ const Panel = () => {
           </div>
         </div>
       </div>
-      <p className="text-white bg-shark-400 flex justify-between bg-opacity-40 w-full rounded-md px-8 py-1.5 text-sm cursor-pointer ">
+      <p
+        className="text-white bg-shark-400 flex justify-between bg-opacity-40 w-full rounded-md px-8 py-1.5 text-sm cursor-pointer "
+        onClick={() => {
+          setExpandTxDetails(!expandTxDetails)
+        }}
+      >
         Tx details:
-        <span className="icon-chevron text-sm inline-block" />
+        <span className={cn('icon-chevron text-sm inline-block', expandTxDetails ? '' : 'rotate-180')} />
       </p>
 
       <div
+        hidden={!expandTxDetails}
         className="bg-shark-400 bg-opacity-40 w-full mt-1 px-8 py-2 space-y-1 text-white text-sm
-        [&>p]:justify-between [&>p]:flex rounded-md
+        [&>p]:justify-between [&>p]:flex rounded-md select-none transition-all duration-300 ease-in-out
       "
       >
         <p className="">
