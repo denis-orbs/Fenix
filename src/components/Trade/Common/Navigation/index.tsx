@@ -5,8 +5,8 @@ import { NAV_LIST } from '../../data'
 
 const Navigation = () => {
   return (
-    <div className="flex mb-4 w-full flex-col xl:flex-row items-start xl:items-center bg-shark-400 bg-opacity-40 rounded-lg px-5 py-4 justify-between">
-      <div className="grid xl:grid-cols-6 grid-cols-2 gap-5 xl:gap-4 items-start xl:items-center flex-row flex-wrap w-full mb-4 xl:mb-0">
+    <div className="box-navigation-trade">
+      <div className="relative z-10 grid xl:grid-cols-6 grid-cols-2 gap-5 xl:gap-4 items-start xl:items-center flex-row flex-wrap w-full xl:w-[70%] mb-4 xl:mb-0">
         {NAV_LIST.map((item, index) => (
           <NavItem key={index} item={item} />
         ))}

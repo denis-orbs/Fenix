@@ -324,8 +324,8 @@
   after:md:block;
 }
 .header-box-landing {
-  @apply 
-  relative 
+  @apply
+  relative
   /* 2xl:bg-[url("/static/images/header/header-landing2.svg")] */
   bg-[url("/static/images/header/header-landing3.svg")]
   bg-no-repeat
@@ -333,7 +333,7 @@
   /* w-[520px] */
   w-[670px]
   h-[72px]
-  
+
 }
 
 /* .rectangulo {
@@ -434,6 +434,54 @@
   after:w-full
   after:bottom-0
   after:left-0
+  after:hidden
+  after:z-[-1]
+  after:xl:block;
+}
+
+.box-navigation-trade {
+  @apply
+  relative
+  flex
+  mb-4
+  w-full
+  flex-col
+  xl:flex-row
+  items-start
+  xl:items-center
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  rounded-lg
+  px-5
+  pt-6
+  pb-4
+  justify-between
+  -mt-[30px]
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/trade/trade-navigation.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-[50%]
+  before:top-0
+  before:left-0
+  before:hidden
+  before:z-[-1]
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/trade/trade-navigation.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:h-full
+  after:bg-cover
+  after:w-[50%]
+  after:bottom-0
+  after:right-0
   after:hidden
   after:z-[-1]
   after:xl:block;
