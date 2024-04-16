@@ -195,7 +195,7 @@ const WithdrawAmountsICHI = ({
 
           <div className="relative xl:w-2/5 flex-shrink-0">
             <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
-              {vaultInfo && (
+              {vaultInfo && vaultInfo.length !== 0 ? (
                 <>
                   <div
                     className="w-full flex justify-between items-center gap-2"
@@ -262,6 +262,8 @@ const WithdrawAmountsICHI = ({
                     ))}
                   </div>
                 </>
+              ) : (
+                <div className="text-sm text-shark-100">No vaults available</div>
               )}
             </div>
           </div>
