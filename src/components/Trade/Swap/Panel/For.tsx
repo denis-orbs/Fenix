@@ -43,7 +43,7 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
     }
   }, [tokenData, token.decimals, account])
   return (
-    <div className="exchange-box-x1">
+    <div className="exchange-box-x2">
       <div className="flex items-center justify-between mb-3">
         <div className="xl:w-2/6">
           <p className="text-white text-sm">For</p>
