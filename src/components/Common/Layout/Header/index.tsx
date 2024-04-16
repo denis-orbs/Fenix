@@ -39,11 +39,11 @@ const Header = () => {
             )}
           </Link>
         </div>
-        <div className='w-1/3'>
+        <div className='w-1/3 relative z-10'>
           <Menu />
         </div>
         <div
-          className={`flex relative z-10 items-center gap-3.5 justify-end px-5 h-[95px] 
+          className={`flex relative z-10 items-center gap-3.5 justify-end px-5 h-[95px]
           ${pathname === '/' ? '2xl:w-1/3 ' : '2xl:w-3/5'}`}
         >
           <AccountHandler isMenuMobile={false} />
