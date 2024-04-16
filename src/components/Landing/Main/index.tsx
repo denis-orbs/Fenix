@@ -60,13 +60,12 @@ const Main = () => {
   return (
     <div className="h-[500px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">
       <Decorator />
-      <div className="shooting-stars-header"></div>
-      <div className="shooting-stars-header2"></div>
-      <div className="shooting-stars-header3 xl:bottom-[6650px]"></div>
-      <div className="shooting-stars-top"></div>
-      <div className="shooting-stars-bottom"></div>
-      <div className="shooting-stars-footer"></div>
-
+      <div className="shooting-stars bottom-[6000px]"></div>
+      <div className="shooting-stars bottom-[5200px]"></div>
+      <div className="shooting-stars xl:bottom-[6650px]"></div>
+      <div className="shooting-stars bottom-[2500px]"></div>
+      <div className="shooting-stars bottom-[1100px]"></div>
+      <div className="shooting-stars bottom-[20px]"></div>
       <div className="relative overflow-hidden">
         <div className="container relative">
           <div className="flex flex-col ">
