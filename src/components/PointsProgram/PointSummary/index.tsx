@@ -3,9 +3,56 @@
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import { formatCurrency } from '@/src/library/utils/numbers'
+import Countdown from 'react-countdown'
+import { useEffect, useState } from 'react'
+import { log } from 'console'
 
 const PointSummary = ({ userData }: any) => {
   //  console.log(userData, 'userData')
+  let [time, setTime] = useState(Date.now() + 8 * 60 * 60 * 1000)
+
+  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      // return <span>You are good to go!</span>
+      setTime(Date.now() + 8 * 60 * 60 * 1000)
+    } else {
+      // Render a countdown
+      return (
+        <>
+          <div className="flex items-center justify-between px-4">
+            <div className="flex flex-col">
+              <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
+                {hours}
+              </span>
+              <span className="text-shark-100 text-xs text-center">Hours</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
+                {hours}
+              </span>
+              <span className="text-shark-100 text-xs text-center">Hours</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
+                {minutes}
+              </span>
+              <span className="text-shark-100 text-xs text-center">Minutes</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg">{seconds}</span>
+              <span className="text-shark-100 text-xs text-center">Seconds</span>
+            </div>
+          </div>
+        </>
+      )
+    }
+  }
+
+  useEffect(() => {
+    console.log('new timer')
+  }, [time])
+
   return (
     <section className="your-point-box">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center relative z-10">
@@ -54,30 +101,8 @@ const PointSummary = ({ userData }: any) => {
           <p className="text-xs mb-2 text-white w-full">Next Points Drop</p>
           <p className="text-xs mb-2 text-green-400 w-full">14 Feb, 2PM UTC</p>
           <div className="w-full">
-            <div className="flex items-center justify-between px-4">
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                  12
-                </span>
-                <span className="text-shark-100 text-xs text-center">Day</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                  02
-                </span>
-                <span className="text-shark-100 text-xs text-center">Month</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                  2024
-                </span>
-                <span className="text-shark-100 text-xs text-center">Year</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg">21:00</span>
-                <span className="text-shark-100 text-xs text-center">Hours</span>
-              </div>
-            </div>
+            {/* <Countdown date={Date.now() + 8 * 60 * 60 * 1000} daysInHours={true} autoStart={true} renderer={renderer} /> */}
+            <Countdown key={time} date={time} daysInHours={true} autoStart={true} renderer={renderer} />
           </div>
         </div>
       </div>
