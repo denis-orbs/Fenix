@@ -19,7 +19,7 @@ const BlastBanner = () => {
           <p className="text-white text-xs">Deposit liquidty to earn your share of</p>
           <h4 className="text-gradient text-2xl">Blast Gold, Blast Points and Fenix Orbits</h4>
           <p className="text-white text-xs">Earn your share in
-            <span className="bg-outrageous-orange-400 px-2 mx-2">
+            <span className="bg-festival-400 px-2 mx-2">
               ONE OF THE BIGGEST AIRDROPS
             </span>
             in crypto history
