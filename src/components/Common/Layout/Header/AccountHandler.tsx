@@ -114,7 +114,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                 <p className="text-xs text-shark-100 mb-2">Pending points will be sent in:</p>
                 <span className="flex items-center gap-2">
                   <i className="icon-time text-white text-sm"></i>
-                  <p className="text-white text-xs underline">8 Hour</p>
+                  <p className="text-white text-xs underline">8 Hours</p>
                 </span>
               </div>
             </div>
