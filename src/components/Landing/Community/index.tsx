@@ -4,9 +4,9 @@ import Image from "next/image"
 const Community = () => {
   return (
     <div className="flex flex-col gap-2 items-center justify-center xl:py-48 py-28 relative">
-      <div className="absolute overflow-y-hidden h-[382px]  md:-top-5 xl:-top-10  -z-10 bg-[#0A0A0A] opacity-90  mix-blend-color-dodge">
+      <div className="absolute overflow-y-hidden h-[382px]  md:-top-5 xl:-top-10  -z-10 bg-[#0A0A0A] opacity-70  mix-blend-color-dodge">
         <Image
-          className="opacity-20 bg-center mix-blend-color-dodge"
+          className="opacity-70 bg-center mix-blend-color-dodge"
           src={'/static/images/landing/Community/fenixBird.svg'}
           height={382}
           width={1731}

@@ -22,13 +22,16 @@ import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
 import { useEffect, useState } from 'react'
 import { NumericalInput } from '@/src/components/UI/Input'
 import { INPUT_PRECISION } from '@/src/library/constants/misc'
+import { IToken } from '@/src/library/types'
 
 const DepositAmountsGAMMA = ({
   firstToken,
   secondToken,
+  tokenList,
 }: {
   firstToken: { name: string; symbol: string }
   secondToken: { name: string; symbol: string }
+  tokenList: IToken[]
 }) => {
   const { account: userAddress } = useActiveConnectionDetails() as { account: `0x${string}` }
   const token0 = useToken0()

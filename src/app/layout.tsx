@@ -68,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <body
         suppressHydrationWarning={true}
-        className={`${poppins.className} md:px-7 relative pt-[26px] mix-blend-lighten ${pathname === '/' ? 'bg-cover ' : ''}`}
+        className={`${poppins.className}  relative pt-[26px]  mix-blend-lighten ${pathname === '/' ? 'bg-cover ' : ''}`}
       >
         <ReduxProvider store={store}>
           <PersistGate loading={null} persistor={persistor}>
