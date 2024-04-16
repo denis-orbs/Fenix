@@ -22,6 +22,7 @@ import { Toaster, toast } from 'react-hot-toast'
 import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { LiquidityTableElement } from '@/src/state/liquidity/types'
 import { useAppSelector } from '@/src/state'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const Classic = ({
   depositType,
@@ -49,6 +50,18 @@ const Classic = ({
     address: '0x4200000000000000000000000000000000000023' as Address,
     img: '/static/images/tokens/WETH.svg',
   } as IToken)
+
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('token0', firstToken.address as string)
+    params.set('token1', secondToken.address as string)
+    router.push(pathname + '?' + params.toString(), { scroll: false })
+  }, [firstToken.address, secondToken.address])
+
   const [secondValue, setSecondValue] = useState('')
   const [firstReserve, setFirstReserve] = useState(0)
   const [secondReserve, setSecondReserve] = useState(0)

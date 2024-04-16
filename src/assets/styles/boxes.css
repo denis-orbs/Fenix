@@ -324,7 +324,8 @@
   after:md:block;
 }
 .header-box-landing {
-  @apply relative /* h-[60px] */ px-5 py-3
+  @apply 
+  relative 
   2xl:bg-[url("/static/images/header/header-landing2.svg")]
   bg-[url("/static/images/header/header-landing3.svg")]
   bg-no-repeat
@@ -332,32 +333,7 @@
   2xl:w-[620px]
   w-[620px]
   h-[72px]
-
-  /* before:content-[""]
-  before:absolute
-  before:bg-[url("/static/images/header/header-landing2.svg")]
-  before:bg-no-repeat
-  before:h-full
-  before:bg-cover
-  before:w-[50%]
-  before:top-0
-  before:left-0
-  before:hidden
-  before:xl:block
-
-  after:content-[""]
-  after:absolute
-  after:bg-[url("/static/images/header/header-landing2.svg")]
-  after:bg-no-repeat
-  after:bg-right
-  after:h-full
-  after:bg-cover
-  after:w-[50%]
-  after:top-0
-  after:right-0
-  after:hidden
-  after:xl:block */;
-  /* after:z-1; */
+  
 }
 
 /* .rectangulo {
@@ -954,6 +930,92 @@
   after:z-[-1]
   after:2xl:block;
 }
+
+
+.common-landing{
+@apply relative
+  flex
+  flex-col
+  items-center
+  justify-center
+  w-[318px]
+  h-[302px]
+  rounded-2xl
+  sm:w-[380px]
+  sm:min-h-[350px]
+  flex-shrink-0
+  py-5
+  2xl:py-8
+  px-5
+  2xl:px-8
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/landing/backCardLanding.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:2xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/landing/backCardLanding.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:2xl:block;
+
+}
+
+
+
+.common-landing-hover{
+@apply relative
+  flex
+  flex-col
+  items-center
+  justify-center
+  w-[318px]
+  h-[302px]
+  rounded-2xl
+  sm:w-[380px]
+  sm:min-h-[350px]
+  flex-shrink-0
+  py-5
+  2xl:py-8
+  px-5
+  2xl:px-8
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/landing/backCardLandingHover.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:2xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/landing/backCardLandingHover.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:2xl:block;
+
+}
+
 
 .box-dashboard {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3

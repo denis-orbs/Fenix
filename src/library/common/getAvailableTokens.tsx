@@ -16,7 +16,7 @@ export interface Token {
 
 export const fetchTokens = async (): Promise<Token[]> => {
   try {
-    const response = await axios.get<Token[]>('https://fenix-api-testnet.vercel.app/token-prices')
+    const response = await axios.get<Token[]>(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`)
     return response.data
   } catch (error) {
     console.error('Error fetching token prices:', error)

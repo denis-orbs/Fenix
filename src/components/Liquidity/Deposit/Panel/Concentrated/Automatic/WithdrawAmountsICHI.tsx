@@ -30,14 +30,13 @@ const WithdrawAmountsICHI = ({
 }: {
   token: IToken | undefined
   vaultInfo: IchiVault[]
-  tokenList: IToken
+  tokenList: IToken[]
 }) => {
   const [isActive, setIsActive] = useState<Boolean>(false)
   const [selected, setIsSelected] = useState<String>('Choose one')
   const { account } = useActiveConnectionDetails()
-
+  console.log(tokenList)
   const slippage = 1
-  getWeb3Provider()
   // CHANGE
 
   const web3Provider = getWeb3Provider()

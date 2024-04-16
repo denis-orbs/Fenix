@@ -28,6 +28,7 @@ import { toBN } from '@/src/library/utils/numbers'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
+import cn from '@/src/library/utils/cn'
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
   POOL_NOT_AVAILABLE = 'Pool Not Available',
@@ -47,15 +48,30 @@ const Panel = () => {
     address: '0x4200000000000000000000000000000000000023',
     decimals: 18,
     img: 'usd4t.png',
-    price: 3000,
+    price: 0,
   })
+  // Workaround to get the prices for the default tokens
+  useEffect(() => {
+    fetch(process.env.NEXT_PUBLIC_API_URL + '/token-prices')
+      .then((res) => res.json())
+      .then((data) => {
+        const foundSellToken = data.find((token: any) => {
+          return token.basetoken.symbol === 'WETH'
+        })
+        if (foundSellToken) setTokenSell((prev) => ({ ...prev, price: foundSellToken.priceUSD }))
+        const foundGetToken = data.find((token: any) => {
+          return token.basetoken.symbol === 'FNX'
+        })
+        if (foundGetToken) setTokenGet((prev) => ({ ...prev, price: foundGetToken.priceUSD }))
+      })
+  }, [])
   const [tokenGet, setTokenGet] = useState<IToken>({
     name: 'Fenix',
     symbol: 'FNX',
     address: '0xa12e4649fdddefd0fb390e4d4fb34ffbd2834fa6',
     decimals: 18,
     img: 'WE4TH.png',
-    price: 2.65,
+    price: 0,
   })
   const [swapValue, setSwapValue] = useState<string>('')
   const [forValue, setForValue] = useState<string>('')
@@ -253,11 +269,7 @@ const Panel = () => {
     currentSqrtPriceX96 && sqrtPriceX96After
       ? sqrtPriceDifference.div(currentSqrtPriceX96BN).multipliedBy(100).abs().multipliedBy(-1)
       : '0'
-  console.log(loadingStateOfAMM)
-  console.log(approvalData.isLoading)
-  console.log(forValue && outputResult.isLoading)
-  console.log(swapValue && quoteExactInputSingleCall.isLoading)
-  console.log(loadingCurrentPool)
+
   // manage button state
   useEffect(() => {
     if (!isConnected) {
@@ -309,6 +321,7 @@ const Panel = () => {
     }, 15000)
     return () => clearInterval(interval)
   }, [swapValue, forValue, currentPool, account, approvalData, quoteExactInputSingleCall, outputResult, stateOfAMM])
+  const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
   return (
     <section className="box-panel-trade">
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
@@ -354,14 +367,20 @@ const Panel = () => {
           </div>
         </div>
       </div>
-      <p className="text-white bg-shark-400 flex justify-between bg-opacity-40 w-full rounded-md px-8 py-1.5 text-sm cursor-pointer ">
+      <p
+        className="text-white bg-shark-400 flex justify-between bg-opacity-40 w-full rounded-md px-8 py-1.5 text-sm cursor-pointer "
+        onClick={() => {
+          setExpandTxDetails(!expandTxDetails)
+        }}
+      >
         Tx details:
-        <span className="icon-chevron text-sm inline-block" />
+        <span className={cn('icon-chevron text-sm inline-block', expandTxDetails ? '' : 'rotate-180')} />
       </p>
 
       <div
+        hidden={!expandTxDetails}
         className="bg-shark-400 bg-opacity-40 w-full mt-1 px-8 py-2 space-y-1 text-white text-sm
-        [&>p]:justify-between [&>p]:flex rounded-md
+        [&>p]:justify-between [&>p]:flex rounded-md select-none transition-all duration-300 ease-in-out
       "
       >
         <p className="">

@@ -42,7 +42,6 @@ const Panel = () => {
   const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
   const [pair, setPair] = useState<V2PairId>()
 
- 
   useEffect(() => {
     const searchParamToken0 = searchParams.get('token0')
     const searchParamToken1 = searchParams.get('token1')
@@ -60,7 +59,7 @@ const Panel = () => {
   useEffect(() => {
     const getList = async () => {
       try {
-        const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
           method: 'GET',
         })
         const responseData = await response.json()
@@ -99,9 +98,7 @@ const Panel = () => {
           <div className="flex items-center justify-between mb-[25px] font-semibold">
             <h4 className="text-lg md:text-xl text-white font-medium">Manage Position</h4>
             <div className="flex items-center gap-[13px]">
-              <div className="flex items-center gap-[9px] h-10">
-                
-              </div>
+              <div className="flex items-center gap-[9px] h-10"></div>
               <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
                 <span className="icon-cog text-white"></span>
               </div>

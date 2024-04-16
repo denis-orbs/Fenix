@@ -8,23 +8,37 @@ const Background = () => {
           src="/static/images/landing/main/ellipse1.svg"
           width={500}
           height={500}
-          className="absolute transform top-[370px] left-1/2 -translate-x-1/2 z-10 object-center object-cover min-w-[500px]"
+          className="absolute transform 
+          top-[200px]
+          sm:top-[270px] 
+          left-1/2 
+          -translate-x-1/2 z-10 object-center object-cover
+          h-[320px]
+          w-[320px]
+          sm:min-w-[500px]"
           alt="ellipse"
         />
         <Image
           src="/static/images/landing/main/ellipse2.svg"
           width={800}
           height={800}
-          className="absolute transform top-[225px] left-1/2 -translate-x-1/2 z-10 object-center object-cover min-w-[800px]"
+          className="absolute transform 
+          top-[150px]
+          sm:top-[170px] 
+          left-1/2 -translate-x-1/2 
+          z-10 object-center object-cover 
+          h-[420px]
+          w-[420px]
+          sm:min-w-[800px]"
           alt="ellipse"
         />
-        <Image
+        {/* <Image
           src="/static/images/landing/main/ellipse2.svg"
           width={1200}
           height={1200}
           className="absolute transform top-[30px] left-1/2 -translate-x-1/2 z-10 object-center object-cover max-md:hidden min-w-[1200px]"
           alt="ellipse"
-        />
+        /> */}
         <Image
           src="/static/images/landing/main/start.svg"
           width={200}
@@ -78,21 +92,21 @@ const Background = () => {
           src="/static/images/landing/main/orange-ellipse.svg"
           width={800}
           height={800}
-          className="absolute top-[15rem] left-0 z-10 max-lg:hidden"
+          className="absolute top-[15rem] left-0 z-10 xl:h-[800px] xl:w-[800px] h-[250px] w-[250px] max-lg:hidden"
           alt="orange-ellipse"
         />
         <Image
           src="/static/images/landing/main/orange-ellipse2.svg"
           width={1200}
           height={1200}
-          className="absolute top-0 right-[10rem] z-10 max-lg:hidden"
+          className="absolute top-0 right-[10rem] z-10 xl:h-[800px] xl:w-[800px] h-[250px] w-[250px] max-lg:hidden"
           alt="orange-ellipse"
         />
         <Image
           src="/static/images/landing/main/orange-ellipse3.svg"
           width={1200}
           height={1200}
-          className="absolute bottom-[-18rem] right-0 z-10 lg:hidden"
+          className="absolute bottom-[-18rem] right-0 z-10 xl:h-[800px] xl:w-[800px] h-[250px] w-[250px] lg:hidden"
           alt="orange-ellipse"
         />
       </div>

@@ -46,7 +46,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   useEffect(() => {
     const getList = async () => {
       try {
-        const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
           method: 'GET',
         })
         const responseData = await response.json()
@@ -117,7 +117,6 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               <></>
             )}
           </div>
-          {console.log('token', _tokenList)}
           <div className="flex flex-col gap-2 max-h-[130px] overflow-y-auto">
             {_tokenList && searchValue === '' ? (
               _tokenList.map((token, index) => (

@@ -32,9 +32,9 @@ interface PositionData {
   token0: Address
   token1: Address
   liquidity: number
-  amount0: number,
-  amount1: number,
-  ratio: number,
+  amount0: number
+  amount1: number
+  ratio: number
   pool: Address
 }
 
@@ -93,13 +93,13 @@ const Manage = ({}: {}) => {
       account.address as Address,
       contractAddressList.cl_manager as Address
     )
-    
+
     setShouldApproveFirst(allowanceFirst == '0')
     setShouldApproveSecond(allowanceSecond == '0')
   }
   const getList = async (token0: Address, token1: Address) => {
     try {
-      const response = await fetch('https://fenix-api-testnet.vercel.app/token-prices', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
         method: 'GET',
       })
       const responseData = await response.json()
@@ -129,13 +129,13 @@ const Manage = ({}: {}) => {
     asyncGetAllowance(data.token0, data.token1)
     getList(data.token0, data.token1)
     setLpValue(Number(BigInt(data.liquidity) / BigInt(2)))
-    console.log("LP Value", Number(BigInt(data.liquidity) / BigInt(2)))
+    console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
   }
 
   useEffect(() => {
     const positionId = searchParams.get('id')
-    if(!positionId) {
-      router.push("/liquidity/deposit")
+    if (!positionId) {
+      router.push('/liquidity/deposit')
     } else {
       updatePositionData(positionId)
     }
@@ -146,32 +146,51 @@ const Manage = ({}: {}) => {
   }, [firstToken, secondToken, account.address])
 
   useEffect(() => {
-    if(!positionData) return
-    if(optionActive != "WITHDRAW") return
+    if (!positionData) return
+    if (optionActive != 'WITHDRAW') return
 
-    setLpValue(positionData.liquidity == 0 ? 0 : Number(BigInt(positionData.liquidity) * BigInt(10**10) / BigInt((100*(10**10)/withdrawPercent).toFixed(0))))
-    setFirstValue(formatNumber(positionData.amount0 == 0 ? 0 : Number(BigInt(positionData.amount0) * BigInt(10**10) / BigInt((100*(10**10)/withdrawPercent).toFixed(0)))/(10**firstToken.decimals)))
-    setSecondValue(formatNumber(positionData.amount1 == 0 ? 0 : Number(BigInt(positionData.amount1) * BigInt(10**10) / BigInt((100*(10**10)/withdrawPercent).toFixed(0)))/(10**secondToken.decimals)))
-
+    setLpValue(
+      positionData.liquidity == 0
+        ? 0
+        : Number(
+            (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
+              BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
+          )
+    )
+    setFirstValue(
+      formatNumber(
+        positionData.amount0 == 0
+          ? 0
+          : Number(
+              (BigInt(positionData.amount0) * BigInt(10 ** 10)) /
+                BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
+            ) /
+              10 ** firstToken.decimals
+      )
+    )
+    setSecondValue(
+      formatNumber(
+        positionData.amount1 == 0
+          ? 0
+          : Number(
+              (BigInt(positionData.amount1) * BigInt(10 ** 10)) /
+                BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
+            ) /
+              10 ** secondToken.decimals
+      )
+    )
   }, [withdrawPercent, positionData, optionActive])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
     if (optionActive == 'ADD') {
       if (firstToken.address === token.address) {
-        if (parseFloat(input) != 0)
-          setSecondValue(
-            formatNumber(
-              (parseFloat(input) * Number(positionData?.ratio))
-            )
-          )
+        if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(positionData?.ratio)))
         if (parseFloat(input) == 0) setSecondValue('')
         setFirstValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
       } else {
         if (parseFloat(input) != 0)
           setFirstValue(
-            formatNumber(
-              (parseFloat(input) / (Number(positionData?.ratio) == 0 ? 1 : Number(positionData?.ratio)))
-            )
+            formatNumber(parseFloat(input) / (Number(positionData?.ratio) == 0 ? 1 : Number(positionData?.ratio)))
           )
         if (parseFloat(input) == 0) setFirstValue('')
         setSecondValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
@@ -180,25 +199,27 @@ const Manage = ({}: {}) => {
   }
 
   const handleIncreaseLiquidity = async () => {
-    if(!positionData) return
+    if (!positionData) return
 
     const multi = [
       encodeFunctionData({
         abi: CL_MANAGER_ABI,
         functionName: 'increaseLiquidity',
-        args: [[
-          positionData.id,
-          ethers.utils.parseUnits(firstValue, 'ether'),
-          ethers.utils.parseUnits(secondValue, 'ether'),
-          ethers.utils.parseUnits(formatNumber(Number(firstValue)*0.99), 'ether'),
-          ethers.utils.parseUnits(formatNumber(Number(secondValue)*0.99), 'ether'),
-          11114224550,
-        ]]
+        args: [
+          [
+            positionData.id,
+            ethers.utils.parseUnits(firstValue, 'ether'),
+            ethers.utils.parseUnits(secondValue, 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(firstValue) * 0.99), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(secondValue) * 0.99), 'ether'),
+            11114224550,
+          ],
+        ],
       }),
       encodeFunctionData({
         abi: CL_MANAGER_ABI,
-        functionName: 'refundNativeToken'
-      })
+        functionName: 'refundNativeToken',
+      }),
     ]
 
     await writeContractAsync(
@@ -228,48 +249,52 @@ const Manage = ({}: {}) => {
   }
 
   const handleDecreaseLiquidity = async () => {
-    if(!positionData) return
+    if (!positionData) return
 
     const multi = [
       encodeFunctionData({
         abi: CL_MANAGER_ABI,
         functionName: 'decreaseLiquidity',
-        args: [[
-          positionData.id,
-          lpValue,
-          ethers.utils.parseUnits(formatNumber(Number(firstValue)*0.99), 'ether'),
-          ethers.utils.parseUnits(formatNumber(Number(secondValue)*0.99), 'ether'),
-          11114224550,
-        ]]
+        args: [
+          [
+            positionData.id,
+            lpValue,
+            ethers.utils.parseUnits(formatNumber(Number(firstValue) * 0.99), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(secondValue) * 0.99), 'ether'),
+            11114224550,
+          ],
+        ],
       }),
       encodeFunctionData({
         abi: CL_MANAGER_ABI,
         functionName: 'collect',
-        args: [[
-          positionData.id,
-          "0x0000000000000000000000000000000000000000",
-          ethers.utils.parseUnits(formatNumber(Number(firstValue)*2), 'ether'),
-          ethers.utils.parseUnits(formatNumber(Number(secondValue)*2), 'ether')
-        ]]
+        args: [
+          [
+            positionData.id,
+            '0x0000000000000000000000000000000000000000',
+            ethers.utils.parseUnits(formatNumber(Number(firstValue) * 2), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(secondValue) * 2), 'ether'),
+          ],
+        ],
       }),
       encodeFunctionData({
         abi: CL_MANAGER_ABI,
         functionName: 'sweepToken',
         args: [
           firstToken.address,
-          ethers.utils.parseUnits(formatNumber(Number(firstValue)*0.99), 'ether'),
-          account.address
-        ]
+          ethers.utils.parseUnits(formatNumber(Number(firstValue) * 0.99), 'ether'),
+          account.address,
+        ],
       }),
       encodeFunctionData({
         abi: CL_MANAGER_ABI,
         functionName: 'sweepToken',
         args: [
           secondToken.address,
-          ethers.utils.parseUnits(formatNumber(Number(secondValue)*0.99), 'ether'),
-          account.address
-        ]
-      })
+          ethers.utils.parseUnits(formatNumber(Number(secondValue) * 0.99), 'ether'),
+          account.address,
+        ],
+      }),
     ]
 
     writeContractAsync(
@@ -359,11 +384,11 @@ const Manage = ({}: {}) => {
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{(Number(positionData?.amount0) / (10**firstToken.decimals)).toFixed(2)}</span>
+                <span>{(Number(positionData?.amount0) / 10 ** firstToken.decimals).toFixed(2)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{(Number(positionData?.amount1) / (10**secondToken.decimals)).toFixed(2)}</span>
+                <span>{(Number(positionData?.amount1) / 10 ** secondToken.decimals).toFixed(2)}</span>
               </p>
             </div>
           </div>
@@ -404,21 +429,23 @@ const Manage = ({}: {}) => {
         {optionActive === 'WITHDRAW' && (
           <>
             <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
-            <div className="flex items-center gap-2 text-white opacity-75">
-              <span className="text-[30px] leading-normal font-light">{withdrawPercent}%</span>
+              <div className="flex items-center gap-2 text-white opacity-75">
+                <span className="text-[30px] leading-normal font-light">{withdrawPercent}%</span>
+              </div>
+              <div className="max-w-[274px] flex-grow">
+                <InputRange
+                  height={8.412}
+                  thumbSize={14.421}
+                  value={withdrawPercent}
+                  min={1}
+                  max={100}
+                  disabled={false}
+                  onChange={(value) => {
+                    setWithdrawPercent(value)
+                  }}
+                />
+              </div>
             </div>
-            <div className="max-w-[274px] flex-grow">
-              <InputRange
-                height={8.412}
-                thumbSize={14.421}
-                value={withdrawPercent}
-                min={1}
-                max={100}
-                disabled={false}
-                onChange={(value) => {setWithdrawPercent(value)}}
-              />
-            </div>
-          </div>
             <Separator single />
           </>
         )}
@@ -454,7 +481,7 @@ const Manage = ({}: {}) => {
             : shouldApproveSecond
               ? `Approve ${secondToken.symbol}`
               : `Add Liquidity`
-            : `Remove Liquidity`}
+          : `Remove Liquidity`}
       </Button>
     </>
   )

@@ -172,7 +172,7 @@ const HeaderRow = ({
             >
               {isOpenItemsPerPage && (
                 <div
-                  className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute right-55px bottom-0 translate-x-1"
+                  className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute right-55px bottom-0 -translate-y-16"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Button onClick={() => setItemPerPage(5)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
