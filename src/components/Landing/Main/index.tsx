@@ -60,6 +60,13 @@ const Main = () => {
   return (
     <div className="h-[500px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">
       <Decorator />
+      <div className="shooting-stars-header"></div>
+      <div className="shooting-stars-header2"></div>
+      <div className="shooting-stars-header3 xl:bottom-[6650px]"></div>
+      <div className="shooting-stars-top"></div>
+      <div className="shooting-stars-bottom"></div>
+      <div className="shooting-stars-footer"></div>
+
       <div className="relative overflow-hidden">
         <div className="container relative">
           <div className="flex flex-col ">
@@ -99,26 +106,19 @@ const Main = () => {
           </div>
         </div>
       </div>
-        <div className="relative 2xl:bottom-[-18rem] max-2xl:bottom-[-35rem]  w-[100%]">
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[70%] max-sm:w-[100%]">
-            <div
-              className={`grid 2xl:grid-cols-4 max-2xl:grid-cols-2 max-md:grid-cols-1
+      <div className="relative 2xl:bottom-[-18rem] max-2xl:bottom-[-35rem]  w-[100%]">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[70%] max-sm:w-[100%]">
+          <div
+            className={`grid 2xl:grid-cols-4 max-2xl:grid-cols-2 max-md:grid-cols-1
              justify-center items-center px-5 mx-auto ${isTablet ? 'info-box' : 'mobile-info-box'}`}
-            >
-              <Box text="Total Value Locked" />
-              <Box text="Annualized Volume" />
-              <Box text="Annualized Fees" />
-              <Box text="Active Users" />
-            </div>
-            <Image
-              src="/static/images/landing/main/planet.svg"
-              width={50}
-              height={50}
-              className="absolute bottom-[-5%] left-0 z-10 "
-              alt="planet"
-            />
+          >
+            <Box text="Total Value Locked" />
+            <Box text="Annualized Volume" />
+            <Box text="Annualized Fees" />
+            <Box text="Active Users" />
           </div>
         </div>
+      </div>
     </div>
   )
 }

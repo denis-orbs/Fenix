@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import Lottie from 'react-lottie'
 import Animation from '@/src/lottie/TriangleLanding.json'
+import { ScrollParallax } from 'react-just-parallax'
 
 const HowItWorks = () => {
   const articles = [
@@ -179,37 +180,26 @@ const HowItWorks = () => {
             src="/static/images/landing/howitworks/orange-ellipse.svg"
             width={900}
             height={900}
-            className="absolute top-[-20rem] right-0 z-10 max-lg:hidden"
+            className="absolute h-[650px] w-[650px]  right-0 z-10 max-lg:hidden"
             alt="orange-ellipse"
           />
-          <Image
-            src="/static/images/landing/main/start.svg"
-            width={200}
-            height={200}
-            className="absolute top-[450px] right-[10rem] z-10 max-xl:hidden"
-            alt="start"
-          />
-          <Image
-            src="/static/images/landing/main/start.svg"
-            width={200}
-            height={200}
-            className="absolute top-[950px] left-[10rem] z-10 max-xl:hidden"
-            alt="start"
-          />
-          <Image
-            src="/static/images/landing/main/planet.svg"
-            width={60}
-            height={60}
-            className="absolute top-[300px] right-[25rem] z-10 max-lg:hidden"
-            alt="planet"
-          />
-          <Image
-            src="/static/images/landing/main/planet.svg"
-            width={50}
-            height={50}
-            className="absolute top-[1000px] right-[50px] z-10 sm:hidden"
-            alt="planet"
-          />
+          <ScrollParallax isAbsolutelyPositioned>
+            <Image
+              src="/static/images/landing/main/planet.svg"
+              width={60}
+              height={60}
+              className="absolute top-[300px] right-[25rem] z-10 max-lg:hidden"
+              alt="planet"
+            />
+            <Image
+              src="/static/images/landing/main/planet.svg"
+              width={50}
+              height={50}
+              className="absolute top-[1000px] right-[50px] z-10 sm:hidden"
+              alt="planet"
+            />
+          </ScrollParallax>
+
           <Image
             src="/static/images/landing/main/start.svg"
             width={80}
@@ -301,7 +291,8 @@ const HowItWorks = () => {
             flex justify-center max-w-[100vw]
             object-cover [&>div]:flex-shrink-0 md:[&>div]:!h-[700px] md:[&>div]:!w-[700px]"
             ref={elementRef}
-            onClick={handleAnimationClick}>
+            onClick={handleAnimationClick}
+          >
             <Lottie options={defaultOptions} isPaused={!isVisible} />
           </div>
         </div>

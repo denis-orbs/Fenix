@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { ScrollParallax } from 'react-just-parallax'
 
 const Background = () => {
   return (
@@ -32,62 +33,38 @@ const Background = () => {
           sm:min-w-[800px]"
           alt="ellipse"
         />
-        {/* <Image
-          src="/static/images/landing/main/ellipse2.svg"
-          width={1200}
-          height={1200}
-          className="absolute transform top-[30px] left-1/2 -translate-x-1/2 z-10 object-center object-cover max-md:hidden min-w-[1200px]"
-          alt="ellipse"
-        /> */}
-        <Image
-          src="/static/images/landing/main/start.svg"
-          width={200}
-          height={200}
-          className="absolute top-[750px] left-0 z-10 rotate-[180deg] max-lg:hidden"
-          alt="start"
-        />
-        <Image
-          src="/static/images/landing/main/start.svg"
-          width={200}
-          height={200}
-          className="absolute top-[500px] right-0 z-10 max-lg:hidden"
-          alt="start"
-        />
-        <Image
-          src="/static/images/landing/main/start.svg"
-          width={100}
-          height={100}
-          className="absolute top-[100px] left-5 z-10"
-          alt="start"
-        />
-        <Image
-          src="/static/images/landing/main/planet.svg"
-          width={80}
-          height={80}
-          className="absolute top-[300px] max-lg:top-[200px] right-16 z-10"
-          alt="planet"
-        />
-        <Image
-          src="/static/images/landing/main/planet.svg"
-          width={80}
-          height={80}
-          className="absolute top-[57rem] left-[33rem] z-10 max-lg:hidden"
-          alt="planet"
-        />
-        <Image
-          src="/static/images/landing/main/planet.svg"
-          width={50}
-          height={50}
-          className="absolute top-[15rem] left-[15rem] z-10 max-lg:hidden"
-          alt="planet"
-        />
-        <Image
-          src="/static/images/landing/main/planet.svg"
-          width={30}
-          height={30}
-          className="absolute top-[55rem] right-[35rem] z-10 max-lg:hidden"
-          alt="planet"
-        />
+
+      
+        <ScrollParallax isAbsolutelyPositioned>
+          <Image
+            src="/static/images/landing/main/planet.svg"
+            width={80}
+            height={80}
+            className="absolute top-[300px] max-lg:top-[200px] right-16 z-10 planet"
+            alt="planet"
+          />
+          <Image
+            src="/static/images/landing/main/planet.svg"
+            width={80}
+            height={80}
+            className="absolute top-[57rem] left-[33rem] z-10 max-lg:hidden planet"
+            alt="planet"
+          />
+          <Image
+            src="/static/images/landing/main/planet.svg"
+            width={50}
+            height={50}
+            className="absolute top-[15rem] left-[15rem] z-10 max-lg:hidden planet"
+            alt="planet"
+          />
+          <Image
+            src="/static/images/landing/main/planet.svg"
+            width={30}
+            height={30}
+            className="absolute top-[55rem] right-[35rem] z-10 max-lg:hidden planet"
+            alt="planet"
+          />
+        </ScrollParallax>
         <Image
           src="/static/images/landing/main/orange-ellipse.svg"
           width={800}
