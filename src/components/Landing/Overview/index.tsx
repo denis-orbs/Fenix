@@ -25,7 +25,13 @@ const Overview = () => {
             src="/static/images/landing/overview/Sun2.svg"
             width={500}
             height={500}
-            className="absolute top-0 transform left-1/2 -translate-x-1/2 min-w-[150vw] z-10 object-center object-cover"
+            className="absolute top-0 
+            transform left-1/2 
+            -translate-x-1/2 
+            min-w-[150vw] 
+            z-10 
+            
+            object-center object-cover"
             alt="Sun"
           />
         </div>
@@ -83,8 +89,7 @@ const Overview = () => {
         </div>
       </div>
       <div
-        className="relative mx-auto mt-10 flex justify-center  z-50 w-[80%] max-lg:w-[95%] video-landing p-4
-       max-lg:p-2 rounded-3xl border backdrop-blur-[74px] border-[#262C33] max-w-[1870px] cursor-pointer "
+        className="relative mx-auto mt-10 flex justify-center  z-50 w-[80%] sm:w-[70%]  xl:w-[60%]  video-landing p-4 max-lg:p-2 rounded-3xl border backdrop-blur-[74px] border-[#262C33] max-w-[1870px] cursor-pointer "
       >
         <video ref={videoRef} className="w-[100%] rounded-3xl" onClick={handlePlayPause}>
           <source src="/static/videos/landing-teaser.mp4" type="video/mp4"></source>

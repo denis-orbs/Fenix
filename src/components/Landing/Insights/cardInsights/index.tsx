@@ -19,13 +19,13 @@ const CardInsights = () => {
       <div className="flex flex-col gap-5 items-center w-full  z-50 ">
         <Image
           src={'/static/images/landing/postFake.svg'}
-          className="h-[150px] w-[266px] sm:h-[212px] sm:w-[378px]"
+          className="h-[150px] w-[266px] sm:h-[180px] sm:w-[400px]"
           alt=""
           height={212}
           width={378}
         />
         <div className="w-full sm:w-[70%] flex flex-col gap-2 justify-center items-center">
-          <h1 className="font-medium text-white sm:text-lg text-xs text-center">
+          <h1 className="font-medium text-white sm:text-sm text-xs text-center">
             Fenix: The Economic Growth Engine For Blast
           </h1>
           <p className="text-white text-xs font-normal">Feb 16, 2024</p>
