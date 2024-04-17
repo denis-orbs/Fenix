@@ -35,15 +35,15 @@ const BuildInfo = () => {
           <CardsBuild title="Growth" info={GROWTH} checked={false} spinner={false} />
         </div>
         <div
-          className="hidden absolute max-w-[1600px] w-full h-[10px] 
-          2xl:flex justify-center after:content-[''] 
+          className="hidden absolute max-w-[1600px] w-full h-[10px]
+          2xl:flex justify-center after:content-['']
           after:w-[10%] after:bg-opacity-10
           before:bg-shark-400
           before:rounded-full
           after:rounded-full
           before:w-[10%]
           before:opacity-10
-        after:bg-shark-400  
+        after:bg-shark-400
           rounded-full top-20 z-10"
         >
           <div className="bg-shark-400 bg-opacity-40 rounded-full max-w-[1500px] items-center flex justify-center w-full h-[10px] -z-10"></div>
@@ -53,23 +53,9 @@ const BuildInfo = () => {
         </div>
       </div>
 
-      {/* <Image
-        className="absolute right-0 mix-blend-soft-light -top-44  -z-10"
-        src={'/static/images/landing/superCharged/meteor.svg'}
-        height={550}
-        width={745}
-        alt="meteor"
-      /> */}
       <Image
         src={'/static/images/landing/superCharged/decorator.svg'}
         className="absolute -left-80 -z-50"
-        height={550}
-        width={745}
-        alt="meteor"
-      />
-      <Image
-        src={'/static/images/landing/build/decoratorright.svg'}
-        className="absolute -right-72 -z-50"
         height={550}
         width={745}
         alt="meteor"
