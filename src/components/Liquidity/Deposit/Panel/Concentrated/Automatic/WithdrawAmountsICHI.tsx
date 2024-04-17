@@ -44,7 +44,7 @@ const WithdrawAmountsICHI = ({
   const [token0ITokenData, setToken0ITokenData] = useState<IToken | undefined>(undefined)
 
   useEffect(() => {
-    setToken0ITokenData(tokenList.find((t) => t.address.toLowerCase() === token0?.toLowerCase()))
+    setToken0ITokenData(tokenList.find((t) => t?.address?.toLowerCase() === token0?.toLowerCase()))
   }, [token0, tokenList])
 
   const { id: vaultAddress, isReverted } = useIchiVaultInfo(token0, token1)

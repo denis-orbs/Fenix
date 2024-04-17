@@ -41,7 +41,7 @@ const DepositAmountsICHI = ({
   const token1 = useToken1()
   const [token0ITokenData, setToken0ITokenData] = useState<IToken | undefined>(undefined)
   useEffect(() => {
-    setToken0ITokenData(tokenList.find((t) => t.address.toLowerCase() === token0?.toLowerCase()))
+    setToken0ITokenData(tokenList.find((t) => t?.address?.toLowerCase() === token0?.toLowerCase()))
   }, [token0, tokenList])
 
   console.log(token0ITokenData, 'token0ITokenData')
