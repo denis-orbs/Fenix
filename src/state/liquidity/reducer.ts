@@ -30,9 +30,9 @@ export const initialState: LiquidityState = {
     state: ApiState.LOADING,
     data: [],
   },
-  token0: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', // WETH
+  token0: process.env.NEXT_PUBLIC_DEFAULT_TOKEN_0_ADDRESS as Address,
   token0TypedValue: '',
-  token1: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', // WMATIC
+  token1: process.env.NEXT_PUBLIC_DEFAULT_TOKEN_1_ADDRESS as Address,
   token1TypedValue: '',
   clmProvider: ClmProvider.ICHI,
 }

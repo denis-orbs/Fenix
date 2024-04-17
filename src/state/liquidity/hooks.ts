@@ -37,7 +37,7 @@ export function useConcentratedPools() {
 
 export function useToken0() {
   const token0 = useAppSelector((state) => state.liquidity.token0)
-  return token0
+  return token0 || process.env.NEXT_PUBLIC_DEFAULT_TOKEN_0_ADDRESS
 }
 export function useToken0Data() {
   const token0 = useToken0()
@@ -56,7 +56,7 @@ export function useToken0TypedValue() {
 
 export function useToken1() {
   const token1 = useAppSelector((state) => state.liquidity.token1)
-  return token1
+  return token1 || process.env.NEXT_PUBLIC_DEFAULT_TOKEN_1_ADDRESS
 }
 export function useToken1TypedValue() {
   const token1TypedValue = useAppSelector((state) => state.liquidity.token1TypedValue)

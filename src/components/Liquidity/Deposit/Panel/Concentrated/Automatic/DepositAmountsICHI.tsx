@@ -17,7 +17,7 @@ import {
   useToken1,
 } from '@/src/state/liquidity/hooks'
 import { useIchiVault, useIchiVaultInfo } from '@/src/library/hooks/web3/useIchi'
-import { toBN } from '@/src/library/utils/numbers'
+import { formatCurrency, toBN } from '@/src/library/utils/numbers'
 import { erc20Abi } from 'viem'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
@@ -76,7 +76,7 @@ const DepositAmountsICHI = ({
   })
   const token0Balance = token0Data?.[0]
   const token0Decimals = token0Data?.[1] || 18
-
+  console.log(token0InfoData)
   const createPosition = async () => {
     if (!account) {
       toast.error('Please connect your wallet')
@@ -164,7 +164,15 @@ const DepositAmountsICHI = ({
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
-        <div className="text-xs leading-normal text-white mb-2">Deposit amounts</div>
+        <div className="flex w-full xl:w-3/5 justify-between mb-2">
+          <div className="text-xs leading-normal text-white ">Deposit amounts</div>
+
+          <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+            <span className="icon-wallet text-xs"></span>
+            Balance: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
+            {token0InfoData?.symbol}
+          </span>
+        </div>
         <div className="flex items-center gap-3">
           <div className="relative w-full xl:w-3/5">
             <Toaster />
@@ -203,7 +211,7 @@ const DepositAmountsICHI = ({
 
           <div className="relative xl:w-2/5 flex-shrink-0">
             <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
-              {vaultInfo && (
+              {vaultInfo && vaultInfo.length !== 0 ? (
                 <>
                   <div
                     className="w-full flex justify-between items-center gap-2"
@@ -270,6 +278,8 @@ const DepositAmountsICHI = ({
                     ))}
                   </div>
                 </>
+              ) : (
+                <div className="text-sm text-shark-100">No vaults available</div>
               )}
             </div>
           </div>
