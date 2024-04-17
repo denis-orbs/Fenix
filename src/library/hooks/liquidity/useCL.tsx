@@ -12,7 +12,7 @@ import {
   ROUTERV2_ABI,
   TICK_MATH_ABI,
 } from '../../constants/abi'
-import { blast, blastSepolia } from 'viem/chains'
+import { blast } from 'viem/chains'
 import { ethers } from 'ethers' 
 import { contractAddressList } from '../../constants/contactAddresses'
 import { injected } from 'wagmi/connectors'
@@ -24,9 +24,9 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
 
     const pool = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -43,9 +43,9 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
 
     const state = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -83,9 +83,9 @@ export async function getTickToPrice(tick: any) {
 
     const price = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -112,9 +112,9 @@ export async function getPriceToTick(price: any) {
 
     const tick = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -142,9 +142,9 @@ export async function getPriceAndTick(price: any) {
 
     const tick = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -174,9 +174,9 @@ export async function getPriceAndTick(price: any) {
 export async function getAmounts(cTick: any, hTick: any, lTick: any, amount0: any, amount1: any) {
     const amounts = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -213,9 +213,9 @@ export async function getRatio(cTick: any, hTick: any, lTick: any) {
     if(cTick == 0 && hTick == 0) return "1"
     const amounts = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -242,9 +242,9 @@ export async function getRatio(cTick: any, hTick: any, lTick: any) {
 export async function getPositionData(id: any) {
     const positions = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -268,9 +268,9 @@ export async function getPositionData(id: any) {
 
     const pool = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -287,9 +287,9 @@ export async function getPositionData(id: any) {
 
     const state = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -309,9 +309,9 @@ export async function getPositionData(id: any) {
 
     const amounts = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
