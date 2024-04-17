@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '..'
 import { useCallback } from 'react'
 import { updateToken0, updateToken0TypedValue, updateToken1, updateToken1TypedValue } from './actions'
 import { Address } from '@/src/library/types'
-import { tokenList } from '@/src/library/constants/tokenList'
 
 import { LiquidityTableElement, LiquidityV2PairDetails, V3PairInfo } from './types'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
