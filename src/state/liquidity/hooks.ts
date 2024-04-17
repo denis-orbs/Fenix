@@ -39,16 +39,7 @@ export function useToken0() {
   const token0 = useAppSelector((state) => state.liquidity.token0)
   return token0 || process.env.NEXT_PUBLIC_DEFAULT_TOKEN_0_ADDRESS
 }
-export function useToken0Data() {
-  const token0 = useToken0()
-  const token0Data = tokenList.find((token) => token.address === token0)
-  return token0Data || tokenList[0]
-}
-export function useToken1Data() {
-  const token1 = useToken1()
-  const token1Data = tokenList.find((token) => token.address === token1)
-  return token1Data || tokenList[0]
-}
+
 export function useToken0TypedValue() {
   const token0TypedValue = useAppSelector((state) => state.liquidity.token0TypedValue)
   return token0TypedValue

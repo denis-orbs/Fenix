@@ -9,13 +9,7 @@ import { formatUnits, zeroAddress } from 'viem'
 
 import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
 import { ethers } from 'ethers'
-import {
-  useSetToken0TypedValue,
-  useToken0,
-  useToken0Data,
-  useToken0TypedValue,
-  useToken1,
-} from '@/src/state/liquidity/hooks'
+import { useSetToken0TypedValue, useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
 import { useIchiVault, useIchiVaultInfo } from '@/src/library/hooks/web3/useIchi'
 import { toBN } from '@/src/library/utils/numbers'
 import { erc20Abi } from 'viem'
@@ -45,9 +39,13 @@ const WithdrawAmountsICHI = ({
   const token0 = useToken0()
   const token1 = useToken1()
 
-  console.log(token0, token1, 'tokens1')
-  const token0InfoData = useToken0Data()
   const [isToken0ApprovalRequired, setIsToken0ApprovalRequired] = useState(false)
+
+  const [token0ITokenData, setToken0ITokenData] = useState<IToken | undefined>(undefined)
+
+  useEffect(() => {
+    setToken0ITokenData(tokenList.find((t) => t.address.toLowerCase() === token0?.toLowerCase()))
+  }, [token0, tokenList])
 
   const { id: vaultAddress, isReverted } = useIchiVaultInfo(token0, token1)
   const token0TypedValue = useToken0TypedValue()
@@ -146,7 +144,7 @@ const WithdrawAmountsICHI = ({
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
-    if (isToken0ApprovalRequired) return `Approve ${token0InfoData?.symbol}`
+    if (isToken0ApprovalRequired) return `Approve ${token0ITokenData?.symbol}`
     if (!token0TypedValue) return 'Enter an amount'
     const typedValueBN = toBN(token0TypedValue)
     const balanceBN = toBN(formatUnits(token0Balance || 0n, token0Decimals))
