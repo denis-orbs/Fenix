@@ -5,8 +5,9 @@ import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import StrategyButton, { StrategyType } from './StrategyButton'
 import Input from './Input'
 import { formatNumber } from '@/src/library/utils/numbers'
+import { IToken } from '@/src/library/types'
 
-const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, shownPercentage }: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage: any}) => {
+const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, shownPercentage, token1, token2, multiplier }: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage: any, token1?: IToken, token2?: IToken, multiplier?: any}) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
 
   useEffect(() => {
@@ -105,8 +106,8 @@ const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, sho
       </div>
 
       <div className="flex gap-[21px]">
-        <Input title="Min Price" percent={`-${currentPercentage == -1 ? 0 : shownPercentage[0]}`} value={currentPercentage == -1 ? "0" : formatNumber(price1 < price2 ? price1 : price2, 6) as string} />
-        <Input title="Max Price" percent={`+${currentPercentage == -1 ? "Infinity" : shownPercentage[1]}`} value={currentPercentage == -1 ? "Infinity" : formatNumber(price1 > price2 ? price1 : price2, 6) as string} />
+        <Input title={`Min Price`} percent={`-${currentPercentage == -1 ? 0 : shownPercentage[0]}`} value={currentPercentage == -1 ? "0" : formatNumber((price1 < price2 ? price1 : price2) * multiplier, 6) as string} />
+        <Input title={`Max Price`} percent={`+${currentPercentage == -1 ? "Infinity" : shownPercentage[1]}`} value={currentPercentage == -1 ? "Infinity" : formatNumber((price1 > price2 ? price1 : price2) * multiplier, 6) as string} />
       </div>
     </div>
   )

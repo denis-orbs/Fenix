@@ -105,7 +105,7 @@ export async function getTickToPrice(tick: any) {
 }
 
 export async function getPriceToTick(price: any) {
-    price = priceToSqrtPrice(Number(BigInt(price * 1e18)))
+    price = priceToSqrtPrice(Number(BigInt(parseInt((price * 1e18).toString()))))
     /**
      * This hook is used to change price into tick on AlgebraPool 
      */
@@ -135,7 +135,7 @@ export async function getPriceToTick(price: any) {
 
 export async function getPriceAndTick(price: any) {
     if (price == 0 || isNaN(price)) return { price: 0, tick: 0 } 
-    price = priceToSqrtPrice(Number(BigInt(price * 1e18)))
+    price = priceToSqrtPrice(Number(BigInt(parseInt((price * 1e18).toString()))))
     /**
      * This hook is used to get info from AlgebraPool 
      */

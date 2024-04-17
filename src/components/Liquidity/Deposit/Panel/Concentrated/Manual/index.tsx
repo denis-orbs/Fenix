@@ -12,6 +12,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
 import { getAlgebraPoolPrice, getAmounts, getPriceAndTick, getRatio } from '@/src/library/hooks/liquidity/useCL'
 import { ethers } from 'ethers'
+import { formatNumber } from '@/src/library/utils/numbers'
 
 interface StateType {
   price: number
@@ -54,8 +55,28 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     parseInt(firstToken.address as string) > parseInt(secondToken.address as string)
   )
 
+  const [multiplier, setMuliplier] = useState(1)
+
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
+
+  useEffect(() => {
+    if(!firstToken || !secondToken) return
+
+    if(!isInverse) {
+      if(firstToken.decimals > secondToken.decimals) {
+        setMuliplier(1/(10**(firstToken.decimals-secondToken.decimals)))
+      } else if (firstToken.decimals < secondToken.decimals) {
+        setMuliplier((10**(secondToken.decimals-firstToken.decimals)))
+      }
+    } else {
+      if(secondToken.decimals > firstToken.decimals) {
+        setMuliplier(1/(10**(secondToken.decimals-firstToken.decimals)))
+      } else if (secondToken.decimals < firstToken.decimals) {
+        setMuliplier((10**(firstToken.decimals-secondToken.decimals)))
+      }
+    }
+  }, [firstToken, secondToken])
 
   useEffect(() => {
     if (poolState.price == 0) return
@@ -69,7 +90,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }, [lowerTick, higherTick, poolState, isInverse])
 
   useEffect(() => {
-    setSecondValue((Number(firstValue) * ratio).toFixed(10).replace(/(\.\d*?[1-9])0+$|\.$/, '$1'))
+    setSecondValue((Number(firstValue) * ratio / multiplier).toFixed(10).replace(/(\.\d*?[1-9])0+$|\.$/, '$1'))
   }, [ratio])
 
   useEffect(() => {
@@ -234,27 +255,13 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const handleOnTokenValueChange = async (input: any, token: IToken) => {
     // TODO: handle if pair is not created
     if (firstToken.address === token.address) {
-      setFirstValue(
-        parseFloat(input) != 0
-          ? (Number(input) % 1 === 0 ? input : parseFloat(input).toFixed(10)).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')
-          : input
-      )
-      setSecondValue(
-        parseFloat((input * ratio).toString())
-          .toFixed(10)
-          .replace(/(\.\d*?[1-9])0+$|\.$/, '$1')
-      )
+      if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(ratio) / multiplier))
+      if (parseFloat(input) == 0) setSecondValue('')
+      setFirstValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
     } else {
-      setSecondValue(
-        parseFloat(input) != 0
-          ? (Number(input) % 1 === 0 ? input : parseFloat(input).toFixed(10)).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')
-          : input
-      )
-      setFirstValue(
-        parseFloat((input / ratio).toString())
-          .toFixed(10)
-          .replace(/(\.\d*?[1-9])0+$|\.$/, '$1')
-      )
+      if (parseFloat(input) != 0) setFirstValue(formatNumber(parseFloat(input) / (Number(ratio) == 0 ? 1 : Number(ratio)) * multiplier))
+      if (parseFloat(input) == 0) setFirstValue('')
+      setSecondValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
     }
   }
 
@@ -269,6 +276,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setCurrentPercentage={setCurrentPercentage}
         price1={isInverse ? rangePrice1 : 1 / rangePrice1}
         price2={isInverse ? rangePrice2 : 1 / rangePrice2}
+        token1={isInverse ? secondToken : firstToken}
+        token2={isInverse ? firstToken : secondToken}
+        multiplier={multiplier}
       />
       <TokensSelector
         firstToken={firstToken}
