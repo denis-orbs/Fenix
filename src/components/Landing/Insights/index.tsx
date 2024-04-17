@@ -3,15 +3,17 @@
 import React, { useEffect, useState } from 'react'
 import CardInsights from "./cardInsights"
 import Image from "next/image"
+
 const Insights = () => {
   const [posts, setPosts] = useState([])
-  const url = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fmedium.com%2Ffeed%2F%40Fenix_Finance'
 
   useEffect(() => {
-    fetch(url)
+    fetch('/api')
     .then(response => response.json())
-    .then(data => setPosts(data.items))
-    .catch(error => console.error('Error:', error))
+    .then(data => {
+      setPosts(data.data)
+    })
+    .catch(error => console.error('Error publication:', error))
   }, [])
 
   return (
@@ -34,7 +36,7 @@ const Insights = () => {
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-10">
-        {posts.slice(0, 3).map((post, index) => (
+        {posts?.slice(0, 3).map((post, index) => (
           <CardInsights key={index} post={post} />
         ))}
       </div>

@@ -1,11 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
 import Image from 'next/image'
-import moment from 'moment'
+// import moment from 'moment'
 
 interface IPost {
-  title: string
-  pubDate: string
+  name: string
+  imageUrl: string
 }
 
 interface CardInsightsProps {
@@ -28,7 +28,7 @@ const CardInsights = ({ post }: CardInsightsProps) => {
     >
       <div className="flex flex-col gap-5 items-center w-full  z-50 ">
         <Image
-          src={'/static/images/landing/postFake.svg'}
+          src={post.imageUrl}
           className="h-[150px] w-[266px] sm:h-[180px] sm:w-[400px]"
           alt=""
           height={212}
@@ -36,9 +36,9 @@ const CardInsights = ({ post }: CardInsightsProps) => {
         />
         <div className="w-full sm:w-[70%] flex flex-col gap-2 justify-center items-center">
           <h1 className="font-medium text-white sm:text-lg text-xs text-center line-clamp-2">
-            {post.title}
+            {post.name}
           </h1>
-          <p className="text-white text-xs font-normal">{moment(post.pubDate).format('MMM Do YY')}</p>
+          {/* <p className="text-white text-xs font-normal">{moment(post.pubDate).format('MMM Do YY')}</p> */}
         </div>
       </div>
     </div>

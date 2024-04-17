@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['fenix-api-testnet.vercel.app'],
+    domains: ['fenix-api-testnet.vercel.app', 'fenix-api-testnet.vercel.app', 'cdn-images-1.medium.com'],
   },
   reactStrictMode: true,
   i18n: {
@@ -14,9 +14,6 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
-  },
-  images: {
-    domains: ['fenix-api-testnet.vercel.app'],
   },
   // TODO: REMOVE
   typescript: {
