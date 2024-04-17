@@ -6,19 +6,12 @@ import Image from "next/image"
 
 const Insights = () => {
   const [posts, setPosts] = useState([])
-  const url = 'https://api.medium.com/v1/users/18aa89c59c85aa5c279fd7222e4313ec2543fc7551b9301c18454dce3080ea279/publications'
-  const token = '298ead3a697d6288201e91e783026528cc494686d182bf295b4867e59e7dde73f'
 
   useEffect(() => {
-    fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+    fetch('/api')
     .then(response => response.json())
     .then(data => {
-      console.log('posts', data)
-      setPosts(data.items)
+      setPosts(data.data)
     })
     .catch(error => console.error('Error publication:', error))
   }, [])
@@ -43,7 +36,7 @@ const Insights = () => {
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-10">
-        {posts.slice(0, 3).map((post, index) => (
+        {posts?.slice(0, 3).map((post, index) => (
           <CardInsights key={index} post={post} />
         ))}
       </div>
