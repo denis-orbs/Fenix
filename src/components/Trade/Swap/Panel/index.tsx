@@ -29,6 +29,7 @@ import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
 import cn from '@/src/library/utils/cn'
+
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
   POOL_NOT_AVAILABLE = 'Pool Not Available',
@@ -322,6 +323,7 @@ const Panel = () => {
     return () => clearInterval(interval)
   }, [swapValue, forValue, currentPool, account, approvalData, quoteExactInputSingleCall, outputResult, stateOfAMM])
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
+
   return (
     <section className="box-panel-trade">
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
@@ -396,7 +398,9 @@ const Panel = () => {
         <p className="">
           Minimum Amount Recieved
           <span className="text-shark-100">
-            {formatUnits(BigInt(Number(amountOutMinimum.toString().split('.')[0])), tokenGet.decimals).toString()}{' '}
+            {amountOutMinimum
+              ? formatUnits(BigInt(Number(amountOutMinimum.toString().split('.')[0])), tokenGet.decimals).toString()
+              : '-'}{' '}
             {tokenGet.symbol}
           </span>
         </p>
