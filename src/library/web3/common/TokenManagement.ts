@@ -7,6 +7,7 @@ import { NULL_ADDRESS } from '../../Constants'
 import { gql } from '@apollo/client'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { config } from '@/src/app/layout'
+import { ProtocolSubgraph } from '../ContractAddresses'
 
 const GET_AVAILABLE_TOKENS = gql`
   query {
@@ -23,7 +24,7 @@ export async function getAvailableTokens(): Promise<{
   tokens: { id: string; symbol: string; name: string; decimals: string }[]
 }> {
   const client = new ApolloClient({
-    uri: 'https://api.studio.thegraph.com/query/67572/fenix-protocol-subgraph/version/latest',
+    uri: ProtocolSubgraph,
     cache: new InMemoryCache(),
   })
 
