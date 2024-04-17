@@ -82,10 +82,6 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
     getList()
   }, [account.address])
 
-  useEffect(() => {
-    console.log('search', searchValue)
-  }, [searchValue])
-
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
       <div className="common-modal">
