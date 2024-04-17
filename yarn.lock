@@ -5426,6 +5426,13 @@ framer-motion@^10.16.9:
   optionalDependencies:
     "@emotion/is-prop-valid" "^0.8.2"
 
+framesync@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/framesync/-/framesync-6.1.0.tgz#b22cf9afba52a9a895668b09e033b6a61e901c41"
+  integrity sha512-aBX+hdWAvwiJYeQlFLY2533VxeL6OEu71CAgV4GGKksrj6+dE6i7K86WSSiRBEARCoJn5bFqffhg4l07eA27tg==
+  dependencies:
+    tslib "^2.3.1"
+
 fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.npmjs.org/fresh/-/fresh-0.5.2.tgz"
@@ -6920,7 +6927,7 @@ lodash.camelcase@^4.3.0:
   resolved "https://registry.npmjs.org/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz"
   integrity sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==
 
-lodash.debounce@^4.0.8:
+lodash.debounce@4.0.8, lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz"
   integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
@@ -8207,6 +8214,11 @@ preact@^10.16.0:
   resolved "https://registry.npmjs.org/preact/-/preact-10.20.1.tgz"
   integrity sha512-JIFjgFg9B2qnOoGiYMVBtrcFxHqn+dNXbq76bVmcaHYJFYR4lW67AOcXgAYQQTDYXDOg/kTZrKPNCdRgJ2UJmw==
 
+prefix@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/prefix/-/prefix-1.0.0.tgz#f12bcaea03e580be7929fb365c301184558a0356"
+  integrity sha512-KtGt8TV4nQkYgO6wJ5phkBGAECZW5cs5vQhqnz1LlxGGd8y4LwpW3Bq5pofULjdiMXACDCxisDUhwtFXb7vHfQ==
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
@@ -8438,6 +8450,15 @@ react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-just-parallax@^3.1.16:
+  version "3.1.16"
+  resolved "https://registry.yarnpkg.com/react-just-parallax/-/react-just-parallax-3.1.16.tgz#442b150cd52023aaca45edf76c28d9530eb46dd3"
+  integrity sha512-rbk49D/WEe/s9WPvtyO1+SUCyQ5SOvWXeg2udvVtE4cRgVAokzaS/iEdC7tz91lRSsqsSmjQj89Iwm+DtecrIQ==
+  dependencies:
+    framesync "6.1.0"
+    lodash.debounce "4.0.8"
+    prefix "1.0.0"
 
 react-lottie@^1.2.4:
   version "1.2.4"
