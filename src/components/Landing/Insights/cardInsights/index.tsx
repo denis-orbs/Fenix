@@ -1,11 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 // import moment from 'moment'
 
 interface IPost {
   name: string
   imageUrl: string
+  url: string
 }
 
 interface CardInsightsProps {
@@ -21,7 +23,7 @@ const CardInsights = ({ post }: CardInsightsProps) => {
   const handleDisableddHover = () => setIsHover(false)
 
   return (
-    <div
+    <Link href={post.url}
       className={`${isHover ? 'common-landing-hover' : 'common-landing '} cursor-pointer `}
       onMouseOver={handleEnabledHover}
       onMouseOut={handleDisableddHover}
@@ -41,7 +43,7 @@ const CardInsights = ({ post }: CardInsightsProps) => {
           {/* <p className="text-white text-xs font-normal">{moment(post.pubDate).format('MMM Do YY')}</p> */}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
