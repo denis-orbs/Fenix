@@ -4,19 +4,17 @@ import { INPUT_PRECISION } from '@/src/library/constants/misc'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { useReadContracts, useWriteContract } from 'wagmi'
+import { useReadContracts } from 'wagmi'
 import { formatUnits, zeroAddress } from 'viem'
 
 import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
-import { ethers } from 'ethers'
 import { useSetToken0TypedValue, useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
-import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { formatCurrency, toBN } from '@/src/library/utils/numbers'
 import { erc20Abi } from 'viem'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
-import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 const DepositAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
