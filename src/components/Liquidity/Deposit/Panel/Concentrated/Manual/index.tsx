@@ -30,7 +30,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   } as IToken)
   const [firstValue, setFirstValue] = useState('')
   const [secondToken, setSecondToken] = useState({
-    name: 'Ethereum',
+    name: 'Wrapped Ether',
     symbol: 'ETH',
     id: 1,
     decimals: 18,
@@ -61,19 +61,19 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const { writeContractAsync } = useWriteContract()
 
   useEffect(() => {
-    if(!firstToken || !secondToken) return
+    if (!firstToken || !secondToken) return
 
-    if(!isInverse) {
-      if(firstToken.decimals > secondToken.decimals) {
-        setMuliplier(1/(10**(firstToken.decimals-secondToken.decimals)))
+    if (!isInverse) {
+      if (firstToken.decimals > secondToken.decimals) {
+        setMuliplier(1 / 10 ** (firstToken.decimals - secondToken.decimals))
       } else if (firstToken.decimals < secondToken.decimals) {
-        setMuliplier((10**(secondToken.decimals-firstToken.decimals)))
+        setMuliplier(10 ** (secondToken.decimals - firstToken.decimals))
       }
     } else {
-      if(secondToken.decimals > firstToken.decimals) {
-        setMuliplier(1/(10**(secondToken.decimals-firstToken.decimals)))
+      if (secondToken.decimals > firstToken.decimals) {
+        setMuliplier(1 / 10 ** (secondToken.decimals - firstToken.decimals))
       } else if (secondToken.decimals < firstToken.decimals) {
-        setMuliplier((10**(firstToken.decimals-secondToken.decimals)))
+        setMuliplier(10 ** (firstToken.decimals - secondToken.decimals))
       }
     }
   }, [firstToken, secondToken])
@@ -90,7 +90,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }, [lowerTick, higherTick, poolState, isInverse])
 
   useEffect(() => {
-    setSecondValue((Number(firstValue) * ratio / multiplier).toFixed(10).replace(/(\.\d*?[1-9])0+$|\.$/, '$1'))
+    setSecondValue(((Number(firstValue) * ratio) / multiplier).toFixed(10).replace(/(\.\d*?[1-9])0+$|\.$/, '$1'))
   }, [ratio])
 
   useEffect(() => {
@@ -255,11 +255,12 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const handleOnTokenValueChange = async (input: any, token: IToken) => {
     // TODO: handle if pair is not created
     if (firstToken.address === token.address) {
-      if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(ratio) / multiplier))
+      if (parseFloat(input) != 0) setSecondValue(formatNumber((parseFloat(input) * Number(ratio)) / multiplier))
       if (parseFloat(input) == 0) setSecondValue('')
       setFirstValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
     } else {
-      if (parseFloat(input) != 0) setFirstValue(formatNumber(parseFloat(input) / (Number(ratio) == 0 ? 1 : Number(ratio)) * multiplier))
+      if (parseFloat(input) != 0)
+        setFirstValue(formatNumber((parseFloat(input) / (Number(ratio) == 0 ? 1 : Number(ratio))) * multiplier))
       if (parseFloat(input) == 0) setFirstValue('')
       setSecondValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
     }
