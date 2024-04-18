@@ -3,25 +3,14 @@ import { useEffect, useState } from 'react'
 import PairSelector from '@/src/components/Liquidity/Common/PairSelector'
 import CLMProviderSelector from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/CLMProviderSelector'
 import DepositAmountsICHI from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsICHI'
-import DepositAmountsGAMMA from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsGAMMA'
-import {
-  useSetToken0,
-  useSetToken1,
-  useToken0,
-  useToken0Data,
-  useToken1,
-  useToken1Data,
-} from '@/src/state/liquidity/hooks'
-import { tokenList } from '@/src/library/constants/tokenList'
+import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 
 import { Button } from '@/src/components/UI'
 import { useSearchParams } from 'next/navigation'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IToken } from '@/src/library/types'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
-import { IchiVault } from '@ichidao/ichi-vaults-sdk'
 import WithdrawAmountsICHI from './WithdrawAmountsICHI'
-import WithdrawAmountsGAMMA from './WithdrawAmountsGAMMA'
 
 const providers = [
   {
@@ -48,10 +37,6 @@ const Automatic = () => {
   const searchParams = useSearchParams()
   const searchParamToken0 = searchParams.get('token0')
   const searchParamToken1 = searchParams.get('token1')
-  // const token0Data = useToken0Data()
-  // console.log(token0Data)
-  const token1Data = useToken1Data()
-  // Defaults tokens
 
   useEffect(() => {
     const getData = async () => {

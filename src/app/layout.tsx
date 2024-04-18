@@ -43,7 +43,7 @@ export const configwallets = createConfig({
 export const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
-  chains: [blast, blastSepolia, holesky, polygon],
+  chains: [blast, ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [blastSepolia] : [])],
   wallets: [
     ...wallets,
     {

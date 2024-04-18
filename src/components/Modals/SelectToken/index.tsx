@@ -1,18 +1,14 @@
 'use client'
-
-import { Button, Modal } from '@/src/components/UI'
+import { Modal } from '@/src/components/UI'
 import Search from '@/src/components/Common/Search'
 import Image from 'next/image'
 
 import { IToken } from '@/src/library/types'
 
-import { COMMON_TOKENS_LIST } from './data'
-import { tokenList } from '@/src/library/constants/tokenList'
 import { useEffect, useState } from 'react'
 import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
-import toast from 'react-hot-toast'
 import { formatCurrency } from '@/src/library/utils/numbers'
 
 interface SelectTokenProps {
@@ -81,10 +77,6 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
 
     getList()
   }, [account.address])
-
-  useEffect(() => {
-    console.log('search', searchValue)
-  }, [searchValue])
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>

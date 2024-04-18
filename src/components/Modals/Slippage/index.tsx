@@ -17,7 +17,7 @@ interface SlippageProps {
   openModal: boolean
   setOpenModal: (openModal: boolean) => void
 }
-const slippageSchema = z.union([z.number().min(0).max(100), z.literal('auto')])
+const slippageSchema = z.union([z.number().min(0).max(50), z.literal('auto')])
 const Slippage = () => {
   // const handlerClose = () => setOpenModal(false)
   const openModal = useStore((state) => state.slippageModal)
@@ -36,7 +36,10 @@ const Slippage = () => {
   // when input changes, validate schema
   useEffect(() => {
     try {
-      slippageSchema.parse(slippageInput)
+      console.log(slippageInput)
+      const parsedInput = slippageInput === 'auto' ? 'auto' : parseFloat(slippageInput)
+      console.log(parsedInput)
+      slippageSchema.parse(parsedInput)
       setInvalidInput(false)
     } catch (error) {
       setInvalidInput(true)

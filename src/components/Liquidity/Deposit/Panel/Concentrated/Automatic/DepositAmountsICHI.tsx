@@ -9,13 +9,7 @@ import { formatUnits, zeroAddress } from 'viem'
 
 import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
 import { ethers } from 'ethers'
-import {
-  useSetToken0TypedValue,
-  useToken0,
-  useToken0Data,
-  useToken0TypedValue,
-  useToken1,
-} from '@/src/state/liquidity/hooks'
+import { useSetToken0TypedValue, useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
 import { useIchiVault, useIchiVaultInfo } from '@/src/library/hooks/web3/useIchi'
 import { formatCurrency, toBN } from '@/src/library/utils/numbers'
 import { erc20Abi } from 'viem'
@@ -45,9 +39,13 @@ const DepositAmountsICHI = ({
 
   const token0 = useToken0()
   const token1 = useToken1()
+  const [token0ITokenData, setToken0ITokenData] = useState<IToken | undefined>(undefined)
+  useEffect(() => {
+    setToken0ITokenData(tokenList.find((t) => t?.address?.toLowerCase() === token0?.toLowerCase()))
+  }, [token0, tokenList])
 
-  console.log(token0, token1, 'tokens1')
-  const token0InfoData = useToken0Data()
+  console.log(token0ITokenData, 'token0ITokenData')
+  console.log(tokenList)
   const [isToken0ApprovalRequired, setIsToken0ApprovalRequired] = useState(false)
 
   const { id: vaultAddress, isReverted } = useIchiVaultInfo(token0, token1)
@@ -76,7 +74,6 @@ const DepositAmountsICHI = ({
   })
   const token0Balance = token0Data?.[0]
   const token0Decimals = token0Data?.[1] || 18
-  console.log(token0InfoData)
   const createPosition = async () => {
     if (!account) {
       toast.error('Please connect your wallet')
@@ -154,7 +151,7 @@ const DepositAmountsICHI = ({
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
-    if (isToken0ApprovalRequired) return `Approve ${token0InfoData?.symbol}`
+    if (isToken0ApprovalRequired) return `Approve ${token0ITokenData?.symbol}`
     if (!token0TypedValue) return 'Enter an amount'
     const typedValueBN = toBN(token0TypedValue)
     const balanceBN = toBN(formatUnits(token0Balance || 0n, token0Decimals))
@@ -170,7 +167,7 @@ const DepositAmountsICHI = ({
           <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
             <span className="icon-wallet text-xs"></span>
             Balance: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
-            {token0InfoData?.symbol}
+            {token0ITokenData?.symbol}
           </span>
         </div>
         <div className="flex items-center gap-3">

@@ -32,12 +32,7 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
   // TODO: Make this static?
   useEffect(() => {
     const fetchVault = async () => {
-      const vaultData = await getVaultsByTokens(
-        SupportedChainId.blast_sepolia_testnet,
-        SupportedDex.Fenix,
-        token0,
-        token1
-      )
+      const vaultData = await getVaultsByTokens(SupportedChainId.blast, SupportedDex.Fenix, token0, token1)
       console.log('vaultdata', vaultData)
       if (!vaultData) {
         setVault(null)
