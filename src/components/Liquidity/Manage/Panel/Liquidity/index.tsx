@@ -26,6 +26,7 @@ import { getPositionData } from '@/src/library/hooks/liquidity/useCL'
 import { useRouter, useSearchParams } from 'next/navigation'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import { formatNumber } from '@/src/library/utils/numbers'
+import Loader from '@/src/components/UI/Icons/Loader'
 
 interface PositionData {
   id: number
@@ -71,6 +72,7 @@ const Manage = ({}: {}) => {
   const [withdrawPercent, setWithdrawPercent] = useState(50)
 
   const [positionData, setPositionData] = useState<PositionData>()
+  const [isLoading, setIsLoading] = useState(true)
 
   const account = useAccount()
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
@@ -120,6 +122,7 @@ const Manage = ({}: {}) => {
         if (item.address.toLowerCase() == token0.toLowerCase()) setFirstToken(item)
         if (item.address.toLowerCase() == token1.toLowerCase()) setSecondToken(item)
       })
+      setIsLoading(false)
     } catch (error) {}
   }
   const updatePositionData = async (positionId: any) => {
@@ -200,6 +203,7 @@ const Manage = ({}: {}) => {
 
   const handleIncreaseLiquidity = async () => {
     if (!positionData) return
+    setIsLoading(true)
 
     const multi = [
       encodeFunctionData({
@@ -243,6 +247,7 @@ const Manage = ({}: {}) => {
         },
         onError: (e) => {
           toast(`Add LP failed. ${e}`)
+          setIsLoading(false)
         },
       }
     )
@@ -250,6 +255,7 @@ const Manage = ({}: {}) => {
 
   const handleDecreaseLiquidity = async () => {
     if (!positionData) return
+    setIsLoading(true)
 
     const multi = [
       encodeFunctionData({
@@ -318,12 +324,15 @@ const Manage = ({}: {}) => {
         },
         onError: (e) => {
           toast(`Remove LP failed. ${e}`)
+          setIsLoading(false)
         },
       }
     )
   }
 
   const handleApprove = async (token: Address) => {
+    setIsLoading(true)
+
     writeContractAsync(
       {
         abi: ERC20_ABI,
@@ -341,9 +350,11 @@ const Manage = ({}: {}) => {
           }
 
           asyncGetAllowance(firstToken.address as Address, secondToken.address as Address)
+          setIsLoading(false)
         },
         onError: (e) => {
           toast(`Approve failed. ${e}`)
+          setIsLoading(false)
         },
       }
     )
@@ -475,7 +486,10 @@ const Manage = ({}: {}) => {
             : handleDecreaseLiquidity()
         }}
       >
-        {optionActive == 'ADD'
+        {
+        isLoading ? 
+          <Loader color="white" size={20} /> 
+        : optionActive == 'ADD'
           ? shouldApproveFirst
             ? `Approve ${firstToken.symbol}`
             : shouldApproveSecond

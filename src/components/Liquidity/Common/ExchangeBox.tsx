@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { getTokenBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { ethers } from 'ethers'
+import { formatNumber } from '@/src/library/utils/numbers'
 
 interface ExchangeBoxProps {
   title?: string
@@ -56,7 +57,7 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
           <span>
-            Available: {`${(Number(balance) / 1e18).toFixed(2)}`} {token.symbol}
+            Available: {`${formatNumber(Number(balance) / (10**token.decimals), 8)}`} {token.symbol}
           </span>
         </p>
       </div>

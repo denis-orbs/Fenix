@@ -13,6 +13,7 @@ import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
 import { getAlgebraPoolPrice, getAmounts, getPriceAndTick, getRatio } from '@/src/library/hooks/liquidity/useCL'
 import { ethers } from 'ethers'
 import { formatNumber } from '@/src/library/utils/numbers'
+import Loader from '@/src/components/UI/Icons/Loader'
 
 interface StateType {
   price: number
@@ -56,6 +57,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   )
 
   const [multiplier, setMuliplier] = useState(1)
+
+  const [isLoading, setIsLoading] = useState(true)
 
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
@@ -116,6 +119,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     if (defaultPairs.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
+      setIsLoading(false)
+    } else {
+      setIsLoading(false)
     }
   }, [defaultPairs])
 
@@ -199,6 +205,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }, [currentPercentage, poolState])
 
   const handleCLAdd = async () => {
+    setIsLoading(true)
+
     const _firstToken = isInverse ? secondToken : firstToken
     const _secondToken = isInverse ? firstToken : secondToken
     const _firstValue = isInverse ? secondValue : firstValue
@@ -245,16 +253,20 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           } else {
             toast(`Added LP TX failed, hash: ${transaction.transactionHash}`)
           }
+          setIsLoading(false)
         },
         onError: (e) => {
           console.log(e)
           toast(`Added LP failed. `)
+          setIsLoading(false)
         },
       }
     )
   }
 
   const handleApprove = async (token: Address) => {
+    setIsLoading(true)
+
     writeContractAsync(
       {
         abi: ERC20_ABI,
@@ -284,9 +296,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
           setShouldApproveFirst(allowanceFirst == '0')
           setShouldApproveSecond(allowanceSecond == '0')
+          setIsLoading(false)
         },
         onError: (e) => {
           toast(`Approve failed.`)
+          setIsLoading(false)
         },
       }
     )
@@ -342,7 +356,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
               : handleCLAdd()
         }}
       >
-        {shouldApproveFirst
+        {isLoading ? 
+          <Loader color="white" size={20} /> 
+        : shouldApproveFirst
           ? `Approve ${firstToken.symbol}`
           : shouldApproveSecond
             ? `Approve ${secondToken.symbol}`

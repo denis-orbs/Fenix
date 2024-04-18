@@ -342,7 +342,7 @@ export async function getPositionData(id: any) {
         liquidity: info[6],
         amount0: _amounts[0],
         amount1: _amounts[1],
-        ratio: _amounts[0] == 0 ? 0 : _amounts[1]/_amounts[0],
+        ratio: _amounts[0] == 0 ? 0 : parseInt(_amounts[1].toString())/parseInt(_amounts[0].toString()),
         pool: pool[0].result as Address
     }
 }
