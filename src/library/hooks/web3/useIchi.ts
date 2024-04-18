@@ -13,6 +13,7 @@ import { getWeb3Provider } from '../../utils/web3'
 import { useAccount } from 'wagmi'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
+import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
 
 export interface IchiVault {
   id: string
@@ -27,68 +28,58 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
   const defaultToken1 = useToken1()
   const token0 = providedToken0 ?? defaultToken0
   const token1 = providedToken1 ?? defaultToken1
+  const sortedTokensArray = [token0, token1].sort()
+
+  const tokenA = sortedTokensArray[0].toLowerCase()
+  const tokenB = sortedTokensArray[1].toLowerCase()
 
   const [vault, setVault] = useState<IchiVault[] | null>()
-  // TODO: Make this static?
   useEffect(() => {
-    const fetchVault = async () => {
-      const vaultData = await getVaultsByTokens(
-        SupportedChainId.blast_sepolia_testnet,
-        SupportedDex.Fenix,
-        token0,
-        token1
-      )
-      console.log('vaultdata', vaultData)
-      if (!vaultData) {
-        setVault(null)
-        console.log("Couldn't find vaults with these parameters")
-      } else {
-        setVault(vaultData)
-      }
-    }
-
-    fetchVault()
-  }, [token0, token1])
+    const tokenVaults = ichiVaults.filter((vault) => {
+      return vault.tokenA === tokenA && vault.tokenB === tokenB
+    })
+    setVault(tokenVaults)
+  }, [token0, token1, tokenA, tokenB])
 
   return vault
 }
+// FIXME
+// export const useIchiVaultInfo = (token0: string, token1: string) => {
+//   const [vaultInfo, setVaultInfo] = useState({
+//     apr: 0,
+//     id: '',
+//     allowTokenA: false,
+//     allowTokenB: false,
+//     isReverted: false,
+//   })
+//   useEffect(() => {
+//     const tokenALower = token0.toLowerCase()
+//     const tokenBLower = token1.toLowerCase()
+//     const isReverted = tokenALower > tokenBLower
+//     const [tokenA, tokenB] = isReverted ? [tokenBLower, tokenALower] : [tokenALower, tokenBLower]
 
-export const useIchiVaultInfo = (token0: string, token1: string) => {
-  const [vaultInfo, setVaultInfo] = useState({
-    apr: 0,
-    id: '',
-    allowTokenA: false,
-    allowTokenB: false,
-    isReverted: false,
-  })
-  useEffect(() => {
-    const tokenALower = token0.toLowerCase()
-    const tokenBLower = token1.toLowerCase()
-    const isReverted = tokenALower > tokenBLower
-    const [tokenA, tokenB] = isReverted ? [tokenBLower, tokenALower] : [tokenALower, tokenBLower]
+//     const vaultFound = ichiVaultsData.find((vault) => {
+//       const vaultTokenA = vault.tokenA.toLowerCase()
+//       const vaultTokenB = vault.tokenB.toLowerCase()
+//       const condition = vaultTokenA === tokenA && vaultTokenB === tokenB
+//       return condition && ((isReverted && vault.allowTokenB) || (!isReverted && vault.allowTokenA))
+//     })
 
-    const vaultFound = ichiVaultsData.find((vault) => {
-      const vaultTokenA = vault.tokenA.toLowerCase()
-      const vaultTokenB = vault.tokenB.toLowerCase()
-      const condition = vaultTokenA === tokenA && vaultTokenB === tokenB
-      return condition && ((isReverted && vault.allowTokenB) || (!isReverted && vault.allowTokenA))
-    })
+//     if (vaultFound) {
+//       setVaultInfo({
+//         apr: vaultFound.apr,
+//         id: vaultFound.id,
+//         allowTokenA: vaultFound.allowTokenA,
+//         allowTokenB: vaultFound.allowTokenB,
+//         isReverted: isReverted,
+//       })
+//     } else {
+//       setVaultInfo((prevState) => ({ apr: 0, isReverted: isReverted, id: '', allowTokenA: false, allowTokenB: false }))
+//     }
+//   }, [token0, token1])
 
-    if (vaultFound) {
-      setVaultInfo({
-        apr: vaultFound.apr,
-        id: vaultFound.id,
-        allowTokenA: vaultFound.allowTokenA,
-        allowTokenB: vaultFound.allowTokenB,
-        isReverted: isReverted,
-      })
-    } else {
-      setVaultInfo((prevState) => ({ apr: 0, isReverted: isReverted, id: '', allowTokenA: false, allowTokenB: false }))
-    }
-  }, [token0, token1])
-
-  return vaultInfo
-}
+//   return vaultInfo
+// }
 
 export const useIchiPositions = () => {
   const web3Provider = getWeb3Provider()
@@ -143,7 +134,7 @@ export const useIchiPositions = () => {
 
 export const useIchiVaultsData = (vaultAddress: string) => {
   const dex = SupportedDex.Fenix
-  const chain = SupportedChainId.blast_sepolia_testnet
+  const chain = SupportedChainId.blast
   const [vaultData, setvaultData] = useState<IchiVault>({
     id: '',
     tokenA: '',
