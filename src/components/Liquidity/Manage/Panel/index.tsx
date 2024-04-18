@@ -69,7 +69,7 @@ const Panel = () => {
             name: item.basetoken.name,
             symbol: item.basetoken.symbol,
             address: item.basetoken.address,
-            decimals: 18,
+            decimals: item.decimals,
             img: item.logourl,
             isCommon: item.common,
             price: parseFloat(item.priceUSD),
