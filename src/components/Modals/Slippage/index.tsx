@@ -24,13 +24,13 @@ const Slippage = () => {
   const { setSlippageModal } = useStore()
   const setSlippage = useSetSlippageToleranceCallback()
   const slippage = useSlippageTolerance()
-  const [slippageInput, setSlippageInput] = useState<any>(slippage.toString())
+  const [slippageInput, setSlippageInput] = useState<any>(slippage?.toString())
   const [invalidInput, setInvalidInput] = useState<boolean>(false)
   const handleClose = () => setSlippageModal(false)
 
   // when slippage for redux changes, update the input in the ui
   useEffect(() => {
-    setSlippageInput(slippage.toString())
+    setSlippageInput(slippage?.toString())
   }, [slippage])
 
   // when input changes, validate schema
