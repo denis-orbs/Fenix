@@ -89,7 +89,6 @@ const Panel = () => {
   const amountOutMinimum = toBN(Number(parseUnits(forValue, tokenSell.decimals)))
     .multipliedBy(slippageValue)
     .dividedBy(100)
-  // console.log(BigInt(Number(amountOutMinimum.toString().split('.')[0])))
   const callAlgebraRouter = async () => {
     if (!isConnected) {
       openConnectModal && openConnectModal()
@@ -163,8 +162,7 @@ const Panel = () => {
     setForValue(temporalValue)
   }
   // reset values when account changes
-  console.log(tokenSell.address)
-  console.log(tokenGet.address)
+
   useEffect(() => {
     if (!account) {
       setSwapValue('')
@@ -172,7 +170,6 @@ const Panel = () => {
     }
   }, [account])
   // simulate swap
-  console.log(parseUnits(swapValue, tokenSell.decimals))
   const quoteExactInputSingleCall = useSimulateContract({
     address: contractAddressList.cl_quoterV2 as `0x${string}`,
     abi: algebraQuoterV2ABI,
@@ -186,9 +183,7 @@ const Panel = () => {
       },
     ],
   })
-  console.log(quoteExactInputSingleCall?.isError)
-  console.log(quoteExactInputSingleCall?.error)
-  console.log(quoteExactInputSingleCall)
+
   const sqrtPriceX96After = quoteExactInputSingleCall?.data?.result[2] || 0n
   // simulate swap
   const outputResult = useSimulateContract({
