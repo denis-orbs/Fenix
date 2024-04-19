@@ -15,6 +15,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    domains: ['fenix-dex-api.vercel.app', 'fenix-api-testnet.vercel.app'],
+  },
   // TODO: REMOVE
   typescript: {
     ignoreBuildErrors: true,
