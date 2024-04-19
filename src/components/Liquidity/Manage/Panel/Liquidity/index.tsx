@@ -73,6 +73,7 @@ const Manage = ({}: {}) => {
 
   const [positionData, setPositionData] = useState<PositionData>()
   const [isLoading, setIsLoading] = useState(true)
+  const [slippage, setSlippage] = useState(0.05) //1%
 
   const account = useAccount()
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
@@ -214,8 +215,8 @@ const Manage = ({}: {}) => {
             positionData.id,
             ethers.utils.parseUnits(firstValue, 'ether'),
             ethers.utils.parseUnits(secondValue, 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(firstValue) * 0.99), 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(secondValue) * 0.99), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
             11114224550,
           ],
         ],
@@ -265,8 +266,8 @@ const Manage = ({}: {}) => {
           [
             positionData.id,
             lpValue,
-            ethers.utils.parseUnits(formatNumber(Number(firstValue) * 0.99), 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(secondValue) * 0.99), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
             11114224550,
           ],
         ],
@@ -288,7 +289,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           firstToken.address,
-          ethers.utils.parseUnits(formatNumber(Number(firstValue) * 0.99), 'ether'),
+          ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
           account.address,
         ],
       }),
@@ -297,7 +298,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           secondToken.address,
-          ethers.utils.parseUnits(formatNumber(Number(secondValue) * 0.99), 'ether'),
+          ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
           account.address,
         ],
       }),
