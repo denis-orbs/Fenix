@@ -4,7 +4,7 @@ import { Address, http } from 'viem'
 import { multicall, writeContract } from '@wagmi/core'
 import { createConfig, useAccount, useChainId, useContractWrite, useWriteContract } from 'wagmi'
 import { ERC20_ABI, FACTORY_ABI, ROUTERV2_ABI } from '../../constants/abi'
-import { blast, blastSepolia } from 'viem/chains'
+import { blast } from 'viem/chains'
 import { ethers } from 'ethers'
 import { contractAddressList } from '../../constants/contactAddresses'
 import { injected } from 'wagmi/connectors'
@@ -17,9 +17,9 @@ export async function getTokenAllowance(token: Address, owner: Address, spender:
 
   const allowance = await multicall(
     createConfig({
-      chains: [blastSepolia, blast],
+      chains: [blast],
       transports: {
-        [blastSepolia.id]: http(),
+        //[blast.id]: http(),
         [blast.id]: http(),
       },
     }),
@@ -48,9 +48,9 @@ export async function getTokenReserve(token1: Address, token2: Address, stable: 
 
   const reserves = await multicall(
     createConfig({
-      chains: [blastSepolia],
+      chains: [blast],
       transports: {
-        [blastSepolia.id]: http(),
+        [blast.id]: http(),
       },
     }),
     {
@@ -76,9 +76,9 @@ export async function getLiquidityRemoveQuote(amount: Number, token1: Address, t
 
   const lpTokens = await multicall(
     createConfig({
-      chains: [blastSepolia],
+      chains: [blast],
       transports: {
-        [blastSepolia.id]: http(),
+        [blast.id]: http(),
       },
     }),
     {
@@ -105,9 +105,9 @@ export async function getPair(token1: Address, token2: Address, stable: boolean)
 
   const pairAddress = await multicall(
     createConfig({
-      chains: [blastSepolia],
+      chains: [blast],
       transports: {
-        [blastSepolia.id]: http(),
+        [blast.id]: http(),
       },
     }),
     {

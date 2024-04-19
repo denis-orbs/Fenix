@@ -4,7 +4,7 @@ import { Address, http } from 'viem'
 import { multicall } from '@wagmi/core'
 import { createConfig } from 'wagmi'
 import { ERC20_ABI } from '../../constants/abi'
-import { blastSepolia } from 'viem/chains'
+import { blast } from 'viem/chains'
 import { ethers } from 'ethers'
 
 export async function getTokenBalance(token1: Address, user: Address) {
@@ -15,9 +15,9 @@ export async function getTokenBalance(token1: Address, user: Address) {
 
   const balance = await multicall(
     createConfig({
-      chains: [blastSepolia],
+      chains: [blast],
       transports: {
-        [blastSepolia.id]: http(),
+        [blast.id]: http(),
       },
     }),
     {
@@ -56,9 +56,9 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
 
   const balance = await multicall(
     createConfig({
-      chains: [blastSepolia],
+      chains: [blast],
       transports: {
-        [blastSepolia.id]: http(),
+        [blast.id]: http(),
       },
     }),
     {

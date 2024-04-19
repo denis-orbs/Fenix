@@ -96,12 +96,12 @@ export interface LiquidityTableElement {
   volumeToken0: string
   volumeToken1: string
   maxAPR?: number
-  tvl: BigDecimal
+  tvl: string
   fee: string
   token0Symbol: string
   token1Symbol: string
   unmigrated: boolean
-  totalPoolAmountValue: BigDecimal
+  totalPoolAmountValue: string
   myPoolAmountValue: BigDecimal
   myStackedAmountValueV3: BigDecimal
   myStackedAmountValueV2: BigDecimal

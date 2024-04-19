@@ -44,7 +44,7 @@ const LiquidityPositions = () => {
 
   return (
     <>
-      {INFO_API.length !== 0 ? (
+      {poolsDataClassic.length !== 0 ? (
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">Liquidity Positions</h1>
@@ -76,17 +76,6 @@ const LiquidityPositions = () => {
                 </Button>
               </div> */}
             </div>
-
-            {/* <div className="rounded-lg z-10">
-              <h1 className="text-white p-3">Concentrated Liquidity</h1>
-              <HeaderRow {...PROPS_CONCENTRATED_LIQUIDITY} poolData={poolsDataConcentrated} />
-              <div className="mt-2">
-                <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
-                  Review more
-                  <span className="icon-link"></span>
-                </Button>
-              </div>
-            </div> */}
           </div>
         </div>
       ) : (

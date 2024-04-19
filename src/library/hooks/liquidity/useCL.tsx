@@ -12,7 +12,7 @@ import {
   ROUTERV2_ABI,
   TICK_MATH_ABI,
 } from '../../constants/abi'
-import { blast, blastSepolia } from 'viem/chains'
+import { blast } from 'viem/chains'
 import { ethers } from 'ethers' 
 import { contractAddressList } from '../../constants/contactAddresses'
 import { injected } from 'wagmi/connectors'
@@ -24,9 +24,9 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
 
     const pool = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -43,9 +43,9 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
 
     const state = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -60,7 +60,13 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
         }
     )
 
-    if (state[0].status === 'failure') return [0, 0, 0, 0, 0, false]
+    if (state[0].status === 'failure') {
+        console.log("log", "useCL state failed", token1, token2, pool[0])
+        return {
+            price: 0,
+            currentTick: 0,
+        }
+    }
     const result: [number, number, number, number, number, boolean] = state[0].result as [
     number,
     number,
@@ -70,10 +76,11 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
     boolean,
   ]
 
+    console.log("state", sqrtPriceToPrice(result[0].toString()), result[0], result[1], pool[0].result)
     return {
         price: sqrtPriceToPrice(result[0].toString()),
         currentTick: result[1],
-  }
+    }
 }
 
 export async function getTickToPrice(tick: any) {
@@ -83,9 +90,9 @@ export async function getTickToPrice(tick: any) {
 
     const price = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -105,16 +112,16 @@ export async function getTickToPrice(tick: any) {
 }
 
 export async function getPriceToTick(price: any) {
-    price = priceToSqrtPrice(Number(BigInt(price * 1e18)))
+    price = priceToSqrtPrice(Number(BigInt(parseInt((price * 1e18).toString()))))
     /**
      * This hook is used to change price into tick on AlgebraPool 
      */
 
     const tick = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -135,16 +142,16 @@ export async function getPriceToTick(price: any) {
 
 export async function getPriceAndTick(price: any) {
     if (price == 0 || isNaN(price)) return { price: 0, tick: 0 } 
-    price = priceToSqrtPrice(Number(BigInt(price * 1e18)))
+    price = priceToSqrtPrice(price > 1 ? BigInt(price*1e18) : parseInt((price*1e18).toString()))
     /**
      * This hook is used to get info from AlgebraPool 
      */
 
     const tick = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -174,9 +181,9 @@ export async function getPriceAndTick(price: any) {
 export async function getAmounts(cTick: any, hTick: any, lTick: any, amount0: any, amount1: any) {
     const amounts = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -213,9 +220,9 @@ export async function getRatio(cTick: any, hTick: any, lTick: any) {
     if(cTick == 0 && hTick == 0) return "1"
     const amounts = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -231,20 +238,20 @@ export async function getRatio(cTick: any, hTick: any, lTick: any) {
     )
 
     if (amounts[0].status === 'failure') {
-    console.log('Failed')
-    return '1'
-  }
+        console.log('Failed')
+        return '1'
+    }
     const result: [number, number] = amounts[0].result as [number, number]
-    
+    if(Number(result[1]) == 0) return '1'
     return (Number(result[0]) / Number(result[1])).toString()
 }
 
 export async function getPositionData(id: any) {
     const positions = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -268,9 +275,9 @@ export async function getPositionData(id: any) {
 
     const pool = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -287,9 +294,9 @@ export async function getPositionData(id: any) {
 
     const state = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -309,9 +316,9 @@ export async function getPositionData(id: any) {
 
     const amounts = await multicall(
         createConfig({
-            chains: [blastSepolia],
+            chains: [blast],
             transports: {
-            [blastSepolia.id]: http(),
+            [blast.id]: http(),
             },
         }),
         {
@@ -335,7 +342,7 @@ export async function getPositionData(id: any) {
         liquidity: info[6],
         amount0: _amounts[0],
         amount1: _amounts[1],
-        ratio: _amounts[0] == 0 ? 0 : _amounts[1]/_amounts[0],
+        ratio: _amounts[0] == 0 ? 0 : parseInt(_amounts[1].toString())/parseInt(_amounts[0].toString()),
         pool: pool[0].result as Address
     }
 }
@@ -348,7 +355,7 @@ function sqrtPriceToPrice(sqrtPrice: string) {
     return priceNumber
 }
 
-function priceToSqrtPrice(priceNumber: number): string {
+function priceToSqrtPrice(priceNumber: any): string {
     if (priceNumber == 0) return '0'
     const priceBigInt: bigint = BigInt(priceNumber) << BigInt(2 * 96)
     const sqrted = sqrtBigInt(priceBigInt / BigInt(1e18))

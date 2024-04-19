@@ -43,12 +43,13 @@ enum ButtonState {
   LOADING = 'Loading...',
 }
 const Panel = () => {
+  // FIXME
   const [tokenSell, setTokenSell] = useState<IToken>({
-    name: 'WETH',
-    symbol: 'WETH',
-    address: '0x4200000000000000000000000000000000000023',
+    name: 'USDB',
+    symbol: 'USDB',
+    address: '0x4300000000000000000000000000000000000003',
     decimals: 18,
-    img: 'usd4t.png',
+    img: 'USDB.png',
     price: 0,
   })
   // Workaround to get the prices for the default tokens
@@ -57,21 +58,22 @@ const Panel = () => {
       .then((res) => res.json())
       .then((data) => {
         const foundSellToken = data.find((token: any) => {
-          return token.basetoken.symbol === 'WETH'
+          return token.basetoken.symbol === 'USDB'
         })
         if (foundSellToken) setTokenSell((prev) => ({ ...prev, price: foundSellToken.priceUSD }))
         const foundGetToken = data.find((token: any) => {
-          return token.basetoken.symbol === 'FNX'
+          return token.basetoken.symbol === 'WETH'
         })
         if (foundGetToken) setTokenGet((prev) => ({ ...prev, price: foundGetToken.priceUSD }))
       })
   }, [])
+  // FIXME
   const [tokenGet, setTokenGet] = useState<IToken>({
-    name: 'Fenix',
-    symbol: 'FNX',
-    address: '0xa12e4649fdddefd0fb390e4d4fb34ffbd2834fa6',
+    name: 'Wrapped Ether',
+    symbol: 'WETH',
+    address: '0x4300000000000000000000000000000000000004',
     decimals: 18,
-    img: 'WE4TH.png',
+    img: 'WETH.png',
     price: 0,
   })
   const [swapValue, setSwapValue] = useState<string>('')
@@ -84,10 +86,10 @@ const Panel = () => {
   const { account, isConnected } = useActiveConnectionDetails()
 
   // function to make the swap
-  const amountOutMinimum = toBN(parseUnits(forValue, tokenSell.decimals).toString())
-    .multipliedBy(100 - (slippage == 'auto' ? 0.5 : slippage))
+  const slippageValue = slippage == 'auto' || !slippage ? 100 - 0.5 : 100 - slippage
+  const amountOutMinimum = toBN(Number(parseUnits(forValue, tokenSell.decimals)))
+    .multipliedBy(slippageValue)
     .dividedBy(100)
-
   const callAlgebraRouter = async () => {
     if (!isConnected) {
       openConnectModal && openConnectModal()
@@ -95,7 +97,7 @@ const Panel = () => {
     }
 
     try {
-      await writeContract(
+      writeContract(
         {
           address: contractAddressList.cl_swap as `0x${string}`,
           abi: algebraSwapABI,
@@ -161,19 +163,18 @@ const Panel = () => {
     setForValue(temporalValue)
   }
   // reset values when account changes
+
   useEffect(() => {
     if (!account) {
       setSwapValue('')
       setForValue('')
     }
   }, [account])
-
   // simulate swap
   const quoteExactInputSingleCall = useSimulateContract({
     address: contractAddressList.cl_quoterV2 as `0x${string}`,
     abi: algebraQuoterV2ABI,
     functionName: 'quoteExactInputSingle',
-    chainId: blastSepolia.id,
     args: [
       {
         tokenIn: tokenSell.address as `0x${string}`,
@@ -183,13 +184,13 @@ const Panel = () => {
       },
     ],
   })
+
   const sqrtPriceX96After = quoteExactInputSingleCall?.data?.result[2] || 0n
   // simulate swap
   const outputResult = useSimulateContract({
     address: contractAddressList.cl_quoterV2 as `0x${string}`,
     abi: algebraQuoterV2ABI,
     functionName: 'quoteExactOutputSingle',
-    chainId: blastSepolia.id,
     args: [
       {
         tokenIn: tokenSell.address as `0x${string}`,
@@ -312,7 +313,6 @@ const Panel = () => {
     quoteExactInputSingleCall.isLoading,
     loadingCurrentPool,
   ])
-  console.log('aa')
   useEffect(() => {
     const interval = setInterval(() => {
       approvalData.refetch()

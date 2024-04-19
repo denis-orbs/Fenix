@@ -50,7 +50,7 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
         </div>
         <div className="text-shark-100 text-sm flex xl:justify-between justify-end gap-6 xl:gap-0 xl:w-4/6 items-center">
           <p className="text-shark-100 text-sm ml-2.5">
-            {value && formatDollarAmount(toBN(token.price).multipliedBy(value).toString())}
+            {value && value != '0' && formatDollarAmount(toBN(token.price).multipliedBy(value).toString())}
           </p>
           <div className="flex gap-1.5 items-center">
             <span className="icon-wallet text-xs"></span>

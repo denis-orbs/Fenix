@@ -9,11 +9,13 @@ import MyStrategies from '@/src/components/Dashboard/MyStrategies'
 const Dashboard = () => {
   return (
     <div className="py-5">
-      <LiquidityPositions />
       {/* <MyLocks />
       <MyNest />
       <VotingRewards /> */}
       <MyStrategies />
+      <br></br>
+      <br></br>
+      <LiquidityPositions />
       {/* <StrategiesDCA /> */}
     </div>
   )

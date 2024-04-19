@@ -1,6 +1,7 @@
 export const algebraSwapABI = [
   {
     inputs: [
+      { internalType: 'address', name: '_blastGovernor', type: 'address' },
       { internalType: 'address', name: '_factory', type: 'address' },
       { internalType: 'address', name: '_WNativeToken', type: 'address' },
       { internalType: 'address', name: '_poolDeployer', type: 'address' },
@@ -8,6 +9,7 @@ export const algebraSwapABI = [
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
+  { inputs: [], name: 'AddressZero', type: 'error' },
   {
     inputs: [],
     name: 'WNativeToken',
@@ -87,7 +89,7 @@ export const algebraSwapABI = [
     ],
     name: 'exactInputSingleSupportingFeeOnTransferTokens',
     outputs: [{ internalType: 'uint256', name: 'amountOut', type: 'uint256' }],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -116,7 +118,6 @@ export const algebraSwapABI = [
         components: [
           { internalType: 'address', name: 'tokenIn', type: 'address' },
           { internalType: 'address', name: 'tokenOut', type: 'address' },
-          { internalType: 'uint24', name: 'fee', type: 'uint24' },
           { internalType: 'address', name: 'recipient', type: 'address' },
           { internalType: 'uint256', name: 'deadline', type: 'uint256' },
           { internalType: 'uint256', name: 'amountOut', type: 'uint256' },
