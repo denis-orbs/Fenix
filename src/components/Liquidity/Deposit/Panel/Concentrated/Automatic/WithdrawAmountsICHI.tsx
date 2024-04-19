@@ -5,25 +5,13 @@ import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnec
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import {
-  approveDepositToken,
-  deposit,
-  getUserBalance,
-  IchiVault,
-  isDepositTokenApproved,
-  SupportedDex,
-  withdraw,
-} from '@ichidao/ichi-vaults-sdk'
-import { useSetToken0TypedValue, useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
-import { useIchiVaultInfo } from '@/src/library/hooks/web3/useIchi'
+import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
+import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
-import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
-import { useReadContracts } from 'wagmi'
-import { erc20Abi, zeroAddress } from 'viem'
-import { ethers } from 'ethers'
+const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 const WithdrawAmountsICHI = ({
   token,
@@ -42,110 +30,22 @@ const WithdrawAmountsICHI = ({
   const dex = SupportedDex.Fenix
 
   const token0 = useToken0()
-  const token1 = useToken1()
+  const [vaultToken, setVaultToken] = useState(token0)
 
+  const token1 = useToken1()
+  const vaultAddress =
+    allIchiVaultsByTokenPair?.find((vault) => {
+      if (vault.tokenA.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenA) {
+        return true
+      }
+      if (vault.tokenB.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenB) {
+        return true
+      }
+      return false
+    }) || null
   const [totalUserShares, setTotalUserShares] = useState<string>('0')
   const [amoutToWithdraw, setAmountToWithdraw] = useState<string>('')
 
-  const { id: vaultAddress, isReverted } = useIchiVaultInfo(token0, token1)
-  const token0TypedValue = useToken0TypedValue()
-  const setToken0TypedValue = useSetToken0TypedValue()
-
-  useEffect(() => {
-    setToken0TypedValue('')
-  }, [token0, setToken0TypedValue])
-
-  const { data: token0Data } = useReadContracts({
-    allowFailure: false,
-    contracts: [
-      {
-        address: token0,
-        abi: erc20Abi,
-        functionName: 'balanceOf',
-        args: [account || zeroAddress],
-      },
-      {
-        address: token0,
-        abi: erc20Abi,
-        functionName: 'decimals',
-      },
-    ],
-  })
-  const token0Balance = token0Data?.[0]
-  const token0Decimals = token0Data?.[1] || 18
-  const { openConnectModal } = useConnectModal()
-  const { openAccountModal } = useAccountModal()
-
-  const handlerConnectWallet = () => {
-    openConnectModal && openConnectModal()
-  }
-  const createPosition = async () => {
-    if (!account) {
-      handlerConnectWallet()
-      return
-    }
-    if (!vaultAddress) {
-      toast.error('Vault not available')
-      return
-    }
-    if (!token0TypedValue) {
-      toast.error('Please enter a valid amount')
-      return
-    }
-    if (isToken0ApprovalRequired) {
-      try {
-        const txApproveDepositDetails = await approveDepositToken(account, 0, vaultAddress, web3Provider, dex)
-        await txApproveDepositDetails.wait()
-        setIsToken0ApprovalRequired(false)
-      } catch (error) {
-        return
-      }
-    }
-
-    const depositToken0 = token0 >= token1 ? '0' : ethers.utils.parseUnits(token0TypedValue, token0Decimals)
-    const depositToken1 = token0 < token1 ? '0' : ethers.utils.parseUnits(token0TypedValue, token0Decimals)
-
-    try {
-      const txDepositDetails = await deposit(
-        account,
-        depositToken0,
-        depositToken1,
-        vaultAddress,
-        web3Provider,
-        dex,
-        slippage
-      )
-      await txDepositDetails.wait()
-      toast.success('Deposited successfully')
-    } catch (error) {
-      if (error instanceof Error && 'code' in error) {
-        if (error.code !== 'ACTION_REJECTED') {
-        }
-      } else {
-        toast.error('An unknown error occurred')
-      }
-    }
-  }
-  useEffect(() => {
-    const checkApproval = async () => {
-      if (!account) {
-        return
-      }
-      if (!vaultAddress) {
-        return
-      }
-      const isToken0Approved = await isDepositTokenApproved(
-        account,
-        isReverted ? 1 : 0,
-        ethers.utils.parseUnits(token0TypedValue || '0', token0Decimals).toString(),
-        vaultAddress,
-        web3Provider,
-        dex
-      )
-      setIsToken0ApprovalRequired(!isToken0Approved)
-    }
-    checkApproval()
-  }, [token0TypedValue, token0, token0Decimals, dex, web3Provider, vaultAddress, account, isReverted])
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
@@ -163,18 +63,22 @@ const WithdrawAmountsICHI = ({
       return
     }
     const getTotalUserShares = async () => {
-      const data = await getUserBalance(account, vaultAddress, web3Provider, dex)
+      const data = await getUserBalance(account, vaultAddress.id, web3Provider, dex)
       setTotalUserShares(data)
     }
     getTotalUserShares()
+
+    setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
   }, [account, vaultAddress, web3Provider])
 
   // withdraw function
+  // FIXME: poner toast??
   const withdrawFromVault = async () => {
     if (getButtonText() !== BUTTON_TEXT_WITHDRAW) return
     if (!account) return
+    if (!vaultAddress) return
     try {
-      const txnDetails = await withdraw(account, amoutToWithdraw, vaultAddress, web3Provider, dex)
+      const txnDetails = await withdraw(account, amoutToWithdraw, vaultAddress.id, web3Provider, dex)
       toast.success('Withdrawal Transaction Sent')
       txnDetails.wait()
       toast.success('Withdrawal Successful')
@@ -190,7 +94,7 @@ const WithdrawAmountsICHI = ({
           <div className=" text-white">Withdraw amounts</div>
           <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
             <span className="icon-wallet text-xs"></span>
-            Withdrawable: {totalUserShares}
+            Withdrawable: {Number(totalUserShares).toFixed(5)}
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -272,10 +176,10 @@ const WithdrawAmountsICHI = ({
                           setIsSelected(
                             vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
                           )
+                          setVaultToken(vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
                         }}
                       >
                         <Image
-                          // src={`/static/images/tokens/${token?.symbol}.svg`}
                           src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === (vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()))?.symbol}.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"

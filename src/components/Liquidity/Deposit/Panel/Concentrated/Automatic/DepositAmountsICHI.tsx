@@ -294,10 +294,13 @@ const DepositAmountsICHI = ({
                       ) : (
                         selected
                       )}
+                      {/* <span
+                        className={`inline-block ml-2 text-xs icon-chevron md:text-sm ${isActive ? 'rotate-180' : ''}`}
+                      /> */}
                     </div>
-                    {/* <span
+                    <span
                       className={`inline-block ml-2 text-xs icon-chevron md:text-sm ${isActive ? 'rotate-180' : ''}`}
-                    /> */}
+                    />
                   </div>
                   <div
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3 

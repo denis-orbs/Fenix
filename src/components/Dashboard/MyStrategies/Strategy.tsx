@@ -19,6 +19,8 @@ export type positions = {
   liquidity: string
   depositedToken0: string
   depositedToken1: string
+  withdrawnToken0: string
+  withdrawnToken1: string
   tickLower: {
     price0: string
     price1: string
@@ -56,7 +58,7 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
 
   const router = useRouter()
-  
+
   const handlerOpenModal = (option: string) => {
     setOpenModal(true)
     setModalSelected(option)
@@ -231,7 +233,16 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
           />
         </div>
         <div className="items-center justify-center">
-          <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center" onClick={() => {if(row.liquidity !== 'ichi') { router.push(`/liquidity/manage?id=${row?.id}`); router.refresh()}}}>
+          <Button
+            variant="tertiary"
+            className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+            onClick={() => {
+              if (row.liquidity !== 'ichi') {
+                router.push(`/liquidity/manage?id=${row?.id}`)
+                router.refresh()
+              }
+            }}
+          >
             <span className="text-l">Manage</span>
           </Button>
         </div>
