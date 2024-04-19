@@ -16,7 +16,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['fenix-dex-api.vercel.app', 'fenix-api-testnet.vercel.app'],
+    domains: ['fenix-dex-api.vercel.app', 'fenix-api-testnet.vercel.app', 'cdn-images-1.medium.com'],
   },
   // TODO: REMOVE
   typescript: {
