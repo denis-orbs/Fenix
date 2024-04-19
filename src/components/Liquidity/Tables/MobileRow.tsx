@@ -19,7 +19,6 @@ interface RowDataProps {
 
 const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, activeRange }: RowDataProps) => {
   const [isOpen, setIsOpen] = useState(false)
-
   return (
     <>
       <div
@@ -45,7 +44,9 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
             />
           </div>
           <div className="flex flex-col">
-            <h5 className="text-sm font-semibold leading-normal mb-1.5">{row.pairDetails.pairInformationV2?.token0_symbol} / {row.pairDetails.pairInformationV2?.token1_symbol}</h5>
+            <h5 className="text-sm font-semibold leading-normal mb-1.5">
+              {row.pairDetails.pairInformationV2?.token0_symbol} / {row.pairDetails.pairInformationV2?.token1_symbol}
+            </h5>
             <div className="flex items-center gap-2">
               {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
                 <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
@@ -67,7 +68,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
               )}
 
               <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.fee} %
+                {row.pairDetails.fee} %
               </span>
               <Button
                 variant="tertiary"
@@ -163,25 +164,27 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <div className="ml-auto text-xs leading-normal">${' '}
-              {formatCurrency(
-                (
-                  Number(
-                    fromWei(
-                      row.pairDetails.pairInformationV2?.account_token0_balance.toString(),
-                      row.pairDetails.pairInformationV2?.token0_decimals
-                    )
-                  ) *
-                    row.pairDetails.priceA +
-                  Number(
-                    fromWei(
-                      row.pairDetails.pairInformationV2?.account_token1_balance.toString(),
-                      row.pairDetails.pairInformationV2?.token1_decimals
-                    )
-                  ) *
-                    row.pairDetails.priceB
-                ).toFixed(2)
-              )}</div>
+                  <div className="ml-auto text-xs leading-normal">
+                    ${' '}
+                    {formatCurrency(
+                      (
+                        Number(
+                          fromWei(
+                            row.pairDetails.pairInformationV2?.account_token0_balance.toString(),
+                            row.pairDetails.pairInformationV2?.token0_decimals
+                          )
+                        ) *
+                          row.pairDetails.priceA +
+                        Number(
+                          fromWei(
+                            row.pairDetails.pairInformationV2?.account_token1_balance.toString(),
+                            row.pairDetails.pairInformationV2?.token1_decimals
+                          )
+                        ) *
+                          row.pairDetails.priceB
+                      ).toFixed(2)
+                    )}
+                  </div>
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
                       <Image
@@ -191,27 +194,33 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                         width={10}
                         height={10}
                       />
-                      <span className="text-xs leading-normal"> {Number(
-                  fromWei(
-                    row.pairDetails.pairInformationV2?.account_token0_balance.toString(),
-                    row.pairDetails.pairInformationV2?.token0_decimals
-                  )
-                ).toFixed(2)}</span>
+                      <span className="text-xs leading-normal">
+                        {' '}
+                        {Number(
+                          fromWei(
+                            row.pairDetails.pairInformationV2?.account_token0_balance.toString(),
+                            row.pairDetails.pairInformationV2?.token0_decimals
+                          )
+                        ).toFixed(2)}
+                      </span>
                     </div>
                     <div className="flex items-center gap-[5px]">
                       <Image
-                       src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                        src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
                         height={10}
                       />
-                      <span className="text-xs leading-normal"> {Number(
-                  fromWei(
-                    row.pairDetails.pairInformationV2?.account_token1_balance.toString(),
-                    row.pairDetails.pairInformationV2?.token1_decimals
-                  )
-                ).toFixed(2)}</span>
+                      <span className="text-xs leading-normal">
+                        {' '}
+                        {Number(
+                          fromWei(
+                            row.pairDetails.pairInformationV2?.account_token1_balance.toString(),
+                            row.pairDetails.pairInformationV2?.token1_decimals
+                          )
+                        ).toFixed(2)}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -224,7 +233,10 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <div className="ml-auto text-xs leading-normal"> $ {Number(row.pairDetails.myPoolAmountValue.toString()).toFixed(2)}</div>
+                  <div className="ml-auto text-xs leading-normal">
+                    {' '}
+                    $ {Number(row.pairDetails.myPoolAmountValue.toString()).toFixed(2)}
+                  </div>
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
                       {/* <Image
@@ -234,7 +246,13 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                         width={10}
                         height={10}
                       /> */}
-                      <span className="text-xs leading-normal"> {Number(fromWei(row.pairDetails.pairInformationV2?.account_lp_balance.toString(), 18)).toFixed(5)} LP</span>
+                      <span className="text-xs leading-normal">
+                        {' '}
+                        {Number(fromWei(row.pairDetails.pairInformationV2?.account_lp_balance.toString(), 18)).toFixed(
+                          5
+                        )}{' '}
+                        LP
+                      </span>
                     </div>
                     <div className="flex items-center gap-[5px]">
                       {/* <Image
@@ -269,7 +287,10 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                   Deposit
                 </Button>
               ) : (
-                <Button variant="tertiary" className="flex items-center gap-2 w-full" href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'volatile' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'stable' : 'manual'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
+                <Button
+                  variant="tertiary"
+                  className="flex items-center gap-2 w-full"
+                  href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'volatile' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'stable' : 'manual'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
                 >
                   <span className="icon-logout"></span>
                   Manage

@@ -139,7 +139,7 @@ const RowData = ({
               height={20}
             />
             <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.apr} %{' '}
+              {row.pairDetails.apr.toFixed(2)} %{' '}
             </p>
           </div>
         </TableCell>
