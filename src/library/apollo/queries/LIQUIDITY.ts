@@ -84,6 +84,8 @@ export const GET_POSITIONV3_USER = gql`
       owner
       depositedToken0
       depositedToken1
+      withdrawnToken0
+      withdrawnToken1
       tickLower {
         price0
         price1
