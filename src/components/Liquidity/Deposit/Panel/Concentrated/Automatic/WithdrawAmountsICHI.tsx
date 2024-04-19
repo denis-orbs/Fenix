@@ -5,22 +5,33 @@ import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnec
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
-import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import {
+  approveDepositToken,
+  deposit,
+  getUserBalance,
+  IchiVault,
+  isDepositTokenApproved,
+  SupportedDex,
+  withdraw,
+} from '@ichidao/ichi-vaults-sdk'
+import { useSetToken0TypedValue, useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
 import { useIchiVaultInfo } from '@/src/library/hooks/web3/useIchi'
 import { toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
-const BUTTON_TEXT_WITHDRAW = 'Withdraw'
+import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { useReadContracts } from 'wagmi'
+import { erc20Abi, zeroAddress } from 'viem'
+import { ethers } from 'ethers'
 
 const WithdrawAmountsICHI = ({
   token,
-  vaultInfo,
+  allIchiVaultsByTokenPair,
   tokenList,
 }: {
   token: IToken | undefined
-  vaultInfo: IchiVault[] | undefined | null
+  allIchiVaultsByTokenPair: IchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
   const [isActive, setIsActive] = useState<Boolean>(false)
@@ -32,11 +43,109 @@ const WithdrawAmountsICHI = ({
 
   const token0 = useToken0()
   const token1 = useToken1()
-  const { id: vaultAddress } = useIchiVaultInfo(token0, token1)
 
   const [totalUserShares, setTotalUserShares] = useState<string>('0')
   const [amoutToWithdraw, setAmountToWithdraw] = useState<string>('')
 
+  const { id: vaultAddress, isReverted } = useIchiVaultInfo(token0, token1)
+  const token0TypedValue = useToken0TypedValue()
+  const setToken0TypedValue = useSetToken0TypedValue()
+
+  useEffect(() => {
+    setToken0TypedValue('')
+  }, [token0, setToken0TypedValue])
+
+  const { data: token0Data } = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: token0,
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        args: [account || zeroAddress],
+      },
+      {
+        address: token0,
+        abi: erc20Abi,
+        functionName: 'decimals',
+      },
+    ],
+  })
+  const token0Balance = token0Data?.[0]
+  const token0Decimals = token0Data?.[1] || 18
+  const { openConnectModal } = useConnectModal()
+  const { openAccountModal } = useAccountModal()
+
+  const handlerConnectWallet = () => {
+    openConnectModal && openConnectModal()
+  }
+  const createPosition = async () => {
+    if (!account) {
+      handlerConnectWallet()
+      return
+    }
+    if (!vaultAddress) {
+      toast.error('Vault not available')
+      return
+    }
+    if (!token0TypedValue) {
+      toast.error('Please enter a valid amount')
+      return
+    }
+    if (isToken0ApprovalRequired) {
+      try {
+        const txApproveDepositDetails = await approveDepositToken(account, 0, vaultAddress, web3Provider, dex)
+        await txApproveDepositDetails.wait()
+        setIsToken0ApprovalRequired(false)
+      } catch (error) {
+        return
+      }
+    }
+
+    const depositToken0 = token0 >= token1 ? '0' : ethers.utils.parseUnits(token0TypedValue, token0Decimals)
+    const depositToken1 = token0 < token1 ? '0' : ethers.utils.parseUnits(token0TypedValue, token0Decimals)
+
+    try {
+      const txDepositDetails = await deposit(
+        account,
+        depositToken0,
+        depositToken1,
+        vaultAddress,
+        web3Provider,
+        dex,
+        slippage
+      )
+      await txDepositDetails.wait()
+      toast.success('Deposited successfully')
+    } catch (error) {
+      if (error instanceof Error && 'code' in error) {
+        if (error.code !== 'ACTION_REJECTED') {
+        }
+      } else {
+        toast.error('An unknown error occurred')
+      }
+    }
+  }
+  useEffect(() => {
+    const checkApproval = async () => {
+      if (!account) {
+        return
+      }
+      if (!vaultAddress) {
+        return
+      }
+      const isToken0Approved = await isDepositTokenApproved(
+        account,
+        isReverted ? 1 : 0,
+        ethers.utils.parseUnits(token0TypedValue || '0', token0Decimals).toString(),
+        vaultAddress,
+        web3Provider,
+        dex
+      )
+      setIsToken0ApprovalRequired(!isToken0Approved)
+    }
+    checkApproval()
+  }, [token0TypedValue, token0, token0Decimals, dex, web3Provider, vaultAddress, account, isReverted])
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
@@ -122,7 +231,7 @@ const WithdrawAmountsICHI = ({
 
           <div className="relative xl:w-2/5 flex-shrink-0">
             <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
-              {vaultInfo && vaultInfo.length !== 0 ? (
+              {allIchiVaultsByTokenPair && allIchiVaultsByTokenPair.length !== 0 ? (
                 <>
                   <div
                     className="w-full flex justify-between items-center gap-2"
@@ -154,7 +263,7 @@ const WithdrawAmountsICHI = ({
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
                     ${isActive ? 'visible bg-shark-300 !bg-opacity-40 border-shark-200' : 'hidden'}`}
                   >
-                    {vaultInfo.map((vault) => (
+                    {allIchiVaultsByTokenPair.map((vault) => (
                       <div
                         className="flex justify-center items-center gap-3 cursor-pointer"
                         key={vault.id}
