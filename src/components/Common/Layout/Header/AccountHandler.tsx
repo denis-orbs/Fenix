@@ -85,7 +85,8 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
 
   return (
     <div className="flex items-center gap-2 xl:gap-3 w-full md:w-max-content xl:w-auto flex-row">
-      {isConnected && (
+      {/* isConnected has been changed to false since we have not launch yet */}
+      {false && (
         <div className="relative w-full">
           <div
             onMouseEnter={() => setOpenPoints(true)}
