@@ -18,7 +18,7 @@ import { Button } from '@/src/components/UI'
 import { useSearchParams } from 'next/navigation'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IToken } from '@/src/library/types'
-import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
+import { useIchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { IchiVault } from '@ichidao/ichi-vaults-sdk'
 import WithdrawAmountsICHI from './WithdrawAmountsICHI'
 import WithdrawAmountsGAMMA from './WithdrawAmountsGAMMA'
@@ -39,8 +39,24 @@ const providers = [
 
 const Automatic = () => {
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
-  const [firstToken, setFirstToken] = useState<IToken>()
-  const [secondToken, setSecondToken] = useState<IToken>()
+  const [firstToken, setFirstToken] = useState<IToken>({
+    name: 'Fenix',
+    symbol: 'FNX',
+    id: 0,
+    decimals: 18,
+    address: '0xa12e4649fdddefd0fb390e4d4fb34ffbd2834fa6',
+    img: '/static/images/tokens/FNX.svg',
+    price: 0,
+  })
+  const [secondToken, setSecondToken] = useState<IToken>({
+    name: 'Wrapped Ether',
+    symbol: 'ETH',
+    id: 1,
+    decimals: 18,
+    address: '0x4200000000000000000000000000000000000023',
+    price: 0,
+    img: '/static/images/tokens/WETH.svg',
+  } as IToken)
   const [currentProvider, setCurrentProvider] = useState<string>('1')
   const [tokenList, setTokenList] = useState<IToken[]>([])
   const setToken0 = useSetToken0()
@@ -48,11 +64,7 @@ const Automatic = () => {
   const searchParams = useSearchParams()
   const searchParamToken0 = searchParams.get('token0')
   const searchParamToken1 = searchParams.get('token1')
-  // const token0Data = useToken0Data()
-  // console.log(token0Data)
-  const token1Data = useToken1Data()
-  // Defaults tokens
-
+  // FIXME: PILLA EL PRECIO
   useEffect(() => {
     const getData = async () => {
       const tokens = await fetchTokens()
@@ -75,31 +87,34 @@ const Automatic = () => {
       const token1Data = parsedTokens.find(
         (token: any) => token.address.toLowerCase() === searchParamToken1?.toLowerCase()
       )
-      setFirstToken(token0Data) // set token0
-      setSecondToken(token1Data) // set token1
-      console.log(token0Data?.address.toLowerCase())
-      setToken0(token0Data?.address.toLowerCase())
-      setToken1(token1Data?.address.toLowerCase())
+      if (token0.toLowerCase() !== firstToken?.address?.toLowerCase()) {
+        setToken0(token0Data?.address.toLowerCase())
+        setFirstToken(token0Data)
+      }
+
+      if (token1.toLowerCase() !== secondToken?.address?.toLowerCase()) {
+        setToken1(token1Data?.address.toLowerCase())
+        setSecondToken(token1Data)
+      }
+      // set token1
+      // setToken0(firstToken?.address.toLowerCase())
+      // setToken1(secondToken?.address.toLowerCase())
     }
     getData()
   }, [])
-
   const token0 = useToken0()
   const token1 = useToken1()
 
-  // if (token0 && token1) {
-  //   // vaultInfo = useIchiVault(token0 as string, token1 as string)
-  //   console.log(vaultInfo, 'parsed vault info')
-  // }
-  const vaultInfo = useIchiVault(token0 as string, token1 as string)
+  const allIchiVaultsByTokenPair = useIchiVault(token0, token1)
+  console.log('heyy', allIchiVaultsByTokenPair)
+
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
   }
-
   return (
     <>
       <PairSelector firstToken={token0} secondToken={token1} tokenList={tokenList} />
-      {vaultInfo && vaultInfo.length ? (
+      {allIchiVaultsByTokenPair && allIchiVaultsByTokenPair.length ? (
         <>
           <CLMProviderSelector
             providers={providers}
@@ -129,10 +144,10 @@ const Automatic = () => {
       </div>
 
       {currentProvider === '1' && optionActive === 'ADD' && (
-        <DepositAmountsICHI vaultInfo={vaultInfo} token={token0} tokenList={tokenList} />
+        <DepositAmountsICHI allIchiVaultsByTokenPair={allIchiVaultsByTokenPair} token={token0} tokenList={tokenList} />
       )}
       {currentProvider === '1' && optionActive === 'WITHDRAW' && (
-        <WithdrawAmountsICHI vaultInfo={vaultInfo} token={token0} tokenList={tokenList} />
+        <WithdrawAmountsICHI allIchiVaultsByTokenPair={allIchiVaultsByTokenPair} token={token0} tokenList={tokenList} />
       )}
 
       {/* {currentProvider === '2' && optionActive === 'ADD' && (

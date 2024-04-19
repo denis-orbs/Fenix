@@ -22,14 +22,15 @@ import { erc20Abi } from 'viem'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
+import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
 
 const WithdrawAmountsICHI = ({
   token,
-  vaultInfo,
+  allIchiVaultsByTokenPair,
   tokenList,
 }: {
   token: IToken | undefined
-  vaultInfo: IchiVault[] | undefined | null
+  allIchiVaultsByTokenPair: IchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
   const [isActive, setIsActive] = useState<Boolean>(false)
@@ -75,10 +76,15 @@ const WithdrawAmountsICHI = ({
   })
   const token0Balance = token0Data?.[0]
   const token0Decimals = token0Data?.[1] || 18
+  const { openConnectModal } = useConnectModal()
+  const { openAccountModal } = useAccountModal()
 
+  const handlerConnectWallet = () => {
+    openConnectModal && openConnectModal()
+  }
   const createPosition = async () => {
     if (!account) {
-      toast.error('Please connect your wallet')
+      handlerConnectWallet()
       return
     }
     if (!vaultAddress) {
@@ -195,7 +201,7 @@ const WithdrawAmountsICHI = ({
 
           <div className="relative xl:w-2/5 flex-shrink-0">
             <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
-              {vaultInfo && vaultInfo.length !== 0 ? (
+              {allIchiVaultsByTokenPair && allIchiVaultsByTokenPair.length !== 0 ? (
                 <>
                   <div
                     className="w-full flex justify-between items-center gap-2"
@@ -227,7 +233,7 @@ const WithdrawAmountsICHI = ({
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
                     ${isActive ? 'visible bg-shark-300 !bg-opacity-40 border-shark-200' : 'hidden'}`}
                   >
-                    {vaultInfo.map((vault) => (
+                    {allIchiVaultsByTokenPair.map((vault) => (
                       <div
                         className="flex justify-center items-center gap-3 cursor-pointer"
                         key={vault.id}
