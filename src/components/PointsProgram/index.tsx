@@ -85,17 +85,10 @@ const PointsProgram = () => {
     <section className="relative max-w-7xl mx-auto">
       <div className="py-10">
         <div className="flex items-center justify-center flex-col mb-8">
-          <Image
-            src="/static/images/orbit.png"
-            className="w-[80px] mb-2"
-            alt="logo"
-            width={43}
-            height={26}
-            priority
-          />
           <h5 className="text-white text-2xl mb-3 font-medium">Fenix Orbits</h5>
           <p className="text-white text-sm text-center">
-            Fenix Orbits are designed to quantify and recognise users for their contributions to the growth of the ecosystem.
+            Fenix Orbits are designed to quantify and recognise users for their contributions to the growth of the
+            ecosystem.
           </p>
         </div>
         <HowToEarn />
