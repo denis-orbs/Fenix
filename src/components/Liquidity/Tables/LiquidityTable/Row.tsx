@@ -8,6 +8,7 @@ import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
+import { useWindowSize } from 'usehooks-ts'
 
 interface RowDataProps {
   row: PoolData
@@ -33,10 +34,13 @@ const RowData = ({
     setTokens(data)
   })
 
+  const { width } = useWindowSize()
   return (
     <>
-      <TableRow className="hidden 2xl:flex">
-        <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[30%]'}`}>
+      <TableRow className="hidden lg:flex">
+        <TableCell
+          className={`${activeRange ? 'w-[20%]' : width >= 1300 ? 'w-[30%]' : width < 1300 || width >= 1280 ? 'w-[27%]' : 'w-[25%]'}`}
+        >
           <div className="flex items-center gap-2">
             <div className="flex items-center">
               <Image
