@@ -91,7 +91,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
             onMouseEnter={() => setOpenPoints(true)}
             onMouseLeave={() => setOpenPoints(false)}
             // className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 hidden lg:flex"
-            className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 flex"
+            className="px-2 xl:px-5 py-1 rounded-lg items-center gap-2 transition hover:bg-shark-400 border border-transparent hover:border-shark-200 flex justify-center"
           >
             <p className="text-xs text-white">
               {data.userLiqPoints} <span className="hidden lg:inline">Points</span>
