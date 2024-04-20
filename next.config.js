@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    domains: ['fenix-api-testnet.vercel.app', 'fenix-api-testnet.vercel.app', 'cdn-images-1.medium.com'],
-  },
   reactStrictMode: true,
   i18n: {
     locales: ['en-US', 'zh-CN'],
@@ -16,7 +13,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['fenix-dex-api.vercel.app', 'fenix-api-testnet.vercel.app', 'cdn-images-1.medium.com'],
+    domains: ['fenix-dex-api.vercel.app', 'fenix-api-testnet.vercel.app', 'cdn-images-1.medium.com', 'miro.medium.com'],
   },
   // TODO: REMOVE
   typescript: {

@@ -3,18 +3,19 @@
 import React, { useEffect, useState } from 'react'
 import CardInsights from "./cardInsights"
 import Image from "next/image"
+import  { posts } from "./data"
 
 const Insights = () => {
-  const [posts, setPosts] = useState([])
+  // const [posts, setPosts] = useState([])
 
-  useEffect(() => {
-    fetch('/api')
-    .then(response => response.json())
-    .then(data => {
-      setPosts(data.data)
-    })
-    .catch(error => console.error('Error publication:', error))
-  }, [])
+  // useEffect(() => {
+  //   fetch('/api')
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     setPosts(data.data)
+  //   })
+  //   .catch(error => console.error('Error publication:', error))
+  // }, [])
 
   return (
     <div className="relative flex items-center flex-col justify-center mb-[50px] ">

@@ -23,7 +23,7 @@ const CardInsights = ({ post }: CardInsightsProps) => {
   const handleDisableddHover = () => setIsHover(false)
 
   return (
-    <Link href={post.url}
+    <Link href={post.url} target="_blank"
       className={`${isHover ? 'common-landing-hover' : 'common-landing '} cursor-pointer `}
       onMouseOver={handleEnabledHover}
       onMouseOut={handleDisableddHover}
