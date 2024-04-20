@@ -44,7 +44,7 @@ const NavItem = ({ item }: NavItemProps) => {
           <span className={`inline-block text-lg text-gradient ${item.icon}`}></span>
         </div>
         <div className="">
-          <p className={`text-sm group-hover:text-chilean-fire-600 ${activeName}`}>{item.name}</p>
+          <p className={`text-xs group-hover:text-chilean-fire-600 ${activeName}`}>{item.name}</p>
         </div>
       </Link>
       {hasHover && !item.active && (
