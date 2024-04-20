@@ -324,15 +324,13 @@
   after:md:block;
 }
 .header-box-landing {
-  @apply
-  relative
+  @apply relative
   /* 2xl:bg-[url("/static/images/header/header-landing2.svg")] */
   bg-[url("/static/images/header/header-landing3.svg")]
   bg-no-repeat
   bg-cover
   w-[540px]
-  h-[72px]
-
+  h-[72px];
 }
 
 /* .rectangulo {
@@ -439,8 +437,7 @@
 }
 
 .box-navigation-trade {
-  @apply
-  relative
+  @apply relative
   flex
   mb-4
   w-full
@@ -660,8 +657,8 @@
   /* 2xl:w-[615px] */
   bg-shark-400
   bg-opacity-40
-  2xl:bg-transparent
-  2xl:bg-opacity-100
+  lg:bg-transparent
+  lg:bg-opacity-100
   py-8
   2xl:py-12
   px-8
@@ -676,7 +673,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:2xl:block
+  before:lg:block
 
   after:content-[""]
   after:absolute
@@ -689,7 +686,7 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:2xl:block;
+  after:lg:block;
 }
 
 /* Background for main box */
@@ -701,8 +698,8 @@
   flex-shrink-0
   bg-shark-400
   bg-opacity-40
-  2xl:bg-transparent
-  2xl:bg-opacity-100
+  lg:bg-transparent
+  lg:bg-opacity-100
   py-8
   2xl:py-12
   px-8
@@ -718,7 +715,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:2xl:block
+  before:lg:block
 
   after:content-[""]
   after:absolute
@@ -731,7 +728,7 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:2xl:block;
+  after:lg:block;
 }
 
 /* Background for veFNXIDO boxes */
@@ -978,9 +975,8 @@
   after:2xl:block;
 }
 
-
-.common-landing{
-@apply relative
+.common-landing {
+  @apply relative
   flex
   flex-col
   items-center
@@ -1017,13 +1013,10 @@
   after:bottom-0
   after:left-0
   after:2xl:block;
-
 }
 
-
-
-.common-landing-hover{
-@apply relative
+.common-landing-hover {
+  @apply relative
   flex
   flex-col
   items-center
@@ -1060,9 +1053,7 @@
   after:bottom-0
   after:left-0
   after:2xl:block;
-
 }
-
 
 .box-dashboard {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3

@@ -42,9 +42,9 @@ const LiquidityPools = () => {
     <MainBox>
       <div
         className="flex flex-col items-center justify-between
-       w-full xl:flex-row relative z-10 xl:min-h-[350px]"
+       w-full lg:flex-row relative z-10 lg:min-h-[350px]"
       >
-        <div className="w-full xl:w-1/2">
+        <div className="w-full lg:w-1/2">
           <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
           <p className="mb-4 text-sm text-shark-100">
             Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and Stake liquidity to earn FNX.
@@ -62,13 +62,13 @@ const LiquidityPools = () => {
             There are currently {tokens.toString()} tokens listed.
           </p>
         </div>
-        <div className="relative flex flex-col w-full xl:w-[40%]">
+        <div className="relative flex flex-col w-full lg:w-[40%]">
           {EXCHANGE_LIST.map((exchange, index) => (
             <InfoBox key={index} data={exchange} hasTooltip={false} />
           ))}
         </div>
       </div>
-      <div className="hidden xl:block text-shark-100 rounded-2xl xl:rounded-none relative z-10">
+      <div className="hidden lg:block text-shark-100 rounded-2xl lg:rounded-none relative z-10">
         <Link
           target="_blank"
           href="https://discord.com/invite/fenixfi"
