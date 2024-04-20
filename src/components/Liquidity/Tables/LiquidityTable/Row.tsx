@@ -116,34 +116,37 @@ const RowData = ({
           </TableCell>
         )} */}
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
-          <div className="flex items-center relative gap-3 ">
+          <div className="flex items-center gap-3 ">
             {/* {totalCampaigns.map((campaign) => { })} */}
-            <span ref={hoverRef} className={`${isHover ? 'absolute -left-[7rem] top-0' : ''} flex flex-row`}>
+            <span
+              ref={hoverRef}
+              className="flex flex-row transition-transform transform hover:scale-110 hover:-translate-x-4"
+            >
               <Image
                 src={`/static/images/tokens/blastgold.png`}
                 alt="token"
-                className={`${!isHover ? '-ml-4' : ''} rounded-full w-7 h-7`}
+                className={`${!isHover ? '-ml-4' : 'transition-all duration-300 hover:mr-1 hover:origin-left hover:delay-200'} rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
                 src={`/static/images/tokens/blastpoints.png`}
                 alt="token"
-                className={`${!isHover ? '-ml-4' : ''} rounded-full w-7 h-7`}
+                className={`${!isHover ? '-ml-4' : 'transition-all duration-300 hover:mr-1 hover:origin-left hover:delay-200'} rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
                 src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
                 alt="token"
-                className={`${!isHover ? '-ml-4' : ''} rounded-full w-7 h-7`}
+                className={`${!isHover ? '-ml-4' : 'transition-all duration-300 hover:mr-1 hover:origin-left hover:delay-200'} rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
                 src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
                 alt="token"
-                className={`${!isHover ? '-ml-4' : ''} rounded-full w-7 h-7`}
+                className={`${!isHover ? '-ml-4' : 'transition-all duration-300 hover:mr-1 hover:origin-left hover:delay-200'} rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />

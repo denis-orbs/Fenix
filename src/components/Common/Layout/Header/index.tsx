@@ -18,7 +18,7 @@ const Header = () => {
       <div
         className={`${pathname === '/' ? '' : 'header-box px-5 pb-3'} flex justify-between items-center ${width < 860 ? 'gap-1' : 'gap-5'} rounded-l`}
       >
-        <div className="flex items-center justify-between min-w-[50px] w-full z-10 h-[95px] 2xl:w-1/3 ">
+        <div className="flex items-center justify-between min-w-[50px] w-auto z-10 h-[95px] 2xl:w-1/3 ">
           <Link href="/">
             {width < 940 ? (
               <Image
@@ -41,7 +41,7 @@ const Header = () => {
             )}
           </Link>
         </div>
-        <div className={`${pathname === '/' ? 'w-1/3' : 'w-full'} relative z-10`}>
+        <div className={`${pathname === '/' ? 'w-2/4' : 'w-full'} relative z-10`}>
           <Menu />
         </div>
         <div
