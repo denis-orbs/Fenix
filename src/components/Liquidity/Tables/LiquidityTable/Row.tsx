@@ -5,10 +5,10 @@ import { PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRow'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
-import { useWindowSize } from 'usehooks-ts'
+import { useWindowSize, useHover } from 'usehooks-ts'
 
 interface RowDataProps {
   row: PoolData
@@ -35,6 +35,10 @@ const RowData = ({
   })
 
   const { width } = useWindowSize()
+
+  const hoverRef = useRef(null)
+  const isHover = useHover(hoverRef)
+
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -112,36 +116,38 @@ const RowData = ({
           </TableCell>
         )} */}
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
-          <div className="flex items-center  ">
+          <div className="flex items-center relative gap-3 ">
             {/* {totalCampaigns.map((campaign) => { })} */}
-            <Image
-              src={`/static/images/tokens/blastgold.png`}
-              alt="token"
-              className="-ml-4 rounded-full w-7 h-7"
-              width={20}
-              height={20}
-            />
-            <Image
-              src={`/static/images/tokens/blastpoints.png`}
-              alt="token"
-              className="-ml-4 rounded-full w-7 h-7"
-              width={20}
-              height={20}
-            />
-            <Image
-              src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
-              alt="token"
-              className="-ml-4 rounded-full w-7 h-7"
-              width={20}
-              height={20}
-            />
-            <Image
-              src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
-              alt="token"
-              className="-ml-4 rounded-full w-7 h-7"
-              width={20}
-              height={20}
-            />
+            <span ref={hoverRef} className={`${isHover ? 'absolute -left-[7rem] top-0' : ''} flex flex-row`}>
+              <Image
+                src={`/static/images/tokens/blastgold.png`}
+                alt="token"
+                className={`${!isHover ? '-ml-4' : ''} rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+              <Image
+                src={`/static/images/tokens/blastpoints.png`}
+                alt="token"
+                className={`${!isHover ? '-ml-4' : ''} rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+              <Image
+                src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+                alt="token"
+                className={`${!isHover ? '-ml-4' : ''} rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+              <Image
+                src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                alt="token"
+                className={`${!isHover ? '-ml-4' : ''} rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+            </span>
             <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {row.pairDetails.apr.toFixed(2)} %{' '}
             </p>
