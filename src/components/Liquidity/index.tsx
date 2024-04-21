@@ -75,7 +75,6 @@ const Liquidity = () => {
   const filteredPoolsData = searchResults.filter((pool) =>
     pool?.pairDetails?.token0Symbol.toLowerCase().includes(searchValue.toLowerCase())
   )
-  console.log(searchResults, filteredPoolsData, 'searchResults')
 
   return (
     <section>

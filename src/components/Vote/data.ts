@@ -6,13 +6,12 @@ export const STEPS = [
   },
   {
     label: 'Deposit your Liquidity',
-    amount: 'The deeper the liquidity (TVL), the lower the slippage a pool will offer.',
+    amount: 'The deeper the liquidity, the lower the slippage a pool will offer.',
     icon: 'icon-lock-up',
   },
   {
     label: 'Receive Benefits',
-    amount:
-      'LPs get FNX emissions, while veFNX lockers get the pool trading fees as an incentive to vote on the most productive pools.',
+    amount: 'Earn trading fees, Blast Points, Blast Gold and the Fenix Airdrop',
     icon: 'icon-rocket',
   },
 ]

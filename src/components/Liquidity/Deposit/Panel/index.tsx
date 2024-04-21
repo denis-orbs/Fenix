@@ -56,7 +56,7 @@ const Panel = () => {
   const [pair, setPair] = useState<V2PairId>()
 
   const handlerSwitch = () =>
-    setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
+    setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'CONCENTRATED_AUTOMATIC' : 'CONCENTRATED_MANUAL')
 
   const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
   const { createPosition: createGammaPosition } = useGammaCreatePosition()
