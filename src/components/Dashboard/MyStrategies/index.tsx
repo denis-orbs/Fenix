@@ -18,7 +18,7 @@ import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
 import { SupportedChainId, SupportedDex, getIchiVaultInfo } from '@ichidao/ichi-vaults-sdk'
-import { getPositionData } from '@/src/library/hooks/liquidity/useCL'
+import { getPositionData, getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
@@ -53,10 +53,9 @@ const MyStrategies = () => {
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
     console.log(positions, 'amount')
-    // const positionDataArray = await positions.map((position) => getPositionData(position.id))
+    const positionsPoolAddresses = await positions.map((position: any) => {return {id: position.pool.id, liq: position.liquidity, lower: position.tickLower.tickIdx, higher: position.tickUpper.tickIdx}})
+    console.log("multicall amounts", await getPositionDataByPoolAddresses(positionsPoolAddresses))
 
-    // positionDataArray now contains data for all positions
-    // console.log(positionDataArray, 'amount2')
     setposition(positions)
   }
 

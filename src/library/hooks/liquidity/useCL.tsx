@@ -347,6 +347,51 @@ export async function getPositionData(id: any) {
     }
 }
 
+export async function getPositionDataByPoolAddresses(addresses: any) {
+    
+    const result = await multicall(createConfig({
+        chains: [blast],
+        transports: {
+            [blast.id]: http(),
+        },
+    }), {
+        contracts: addresses.map((address: any) => {
+            return {
+                address: address.id,
+                abi: ALGEBRA_ABI,
+                functionName: 'globalState',
+            }
+        }),
+    })
+
+    let callsArray = [];
+    for(let i=0; i < result.length; i++) {
+        if(!result[i]) continue;
+        const stateResult: [number, number, number, number, number, boolean] = result[i].result as [number, number, number, number, number, boolean]
+
+        callsArray.push({
+            abi: TICK_MATH_ABI,
+            address: contractAddressList.tick_math as Address,
+            functionName: 'getAmountsForLiquidityTicks',
+            args: [stateResult[1], addresses[i].lower, addresses[i].higher, addresses[i].liq],
+        })
+    }
+
+    const amounts = await multicall(createConfig({
+        chains: [blast],
+        transports: {
+            [blast.id]: http(),
+        },
+    }), {
+        contracts: callsArray,
+    })
+
+    return amounts.map((amount) => {
+        const _amounts: [number, number] = amount.result as [number, number]
+        return _amounts
+    })
+}
+
 function sqrtPriceToPrice(sqrtPrice: string) {
     const priceQ64_96 = BigInt(sqrtPrice) * BigInt(sqrtPrice) * BigInt(1e18)
     const price = priceQ64_96 >> BigInt(2 * 96)
