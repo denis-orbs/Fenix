@@ -92,27 +92,9 @@ const RowData = ({
             </div>
           </div>
         </TableCell>
-        {/* {activeRange && (
-          <TableCell className={`w-[12%] flex items-center justify-center`}>
-            <div className="flex gap-2 items-center">
-              <span className="bg-green-600 w-4 h-4 rounded-full border-4 border-black"></span>
-              <div className="text-xs flex flex-col">
-                <p className="text-shark-100 text-center">Min Price</p>
-                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  $0.00
-                </span>
-              </div>
-              <div className="text-xs flex flex-col">
-                <p className="text-shark-100 text-center">Max Price</p>
-                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  $0.00
-                </span>
-              </div>
-            </div>
-          </TableCell>
-        )} */}
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
-          <div className="flex items-center  ">
+
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center gap-x-2 items-center`}>
+          <div className="flex items-center">
             {/* {totalCampaigns.map((campaign) => { })} */}
             <Image
               src={`/static/images/tokens/blastgold.png`}
@@ -142,10 +124,10 @@ const RowData = ({
               width={20}
               height={20}
             />
-            <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.apr.toFixed(2)} %{' '}
-            </p>
           </div>
+          <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+            {row.pairDetails.apr.toFixed(2)} %{' '}
+          </p>
         </TableCell>
 
         <TableCell className="w-[15%]">
