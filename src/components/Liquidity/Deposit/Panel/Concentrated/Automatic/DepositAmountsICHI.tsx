@@ -15,6 +15,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 const DepositAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
@@ -24,8 +25,8 @@ const DepositAmountsICHI = ({
   allIchiVaultsByTokenPair: IchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
-  const [isActive, setIsActive] = useState<Boolean>(false)
-  const [selected, setIsSelected] = useState<String>('Choose one')
+  const [isActive, setIsActive] = useState<boolean>(false)
+  const [selected, setIsSelected] = useState<string>('Choose one')
 
   const { account } = useActiveConnectionDetails()
 
@@ -199,8 +200,9 @@ const DepositAmountsICHI = ({
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
     if (waitingApproval) return 'Waiting for approval'
-    if (isToken0ApprovalRequired) return `Approve`
     if (!token0TypedValue) return 'Enter an amount'
+    if (isToken0ApprovalRequired) return `Approve ${tokenAddressToSymbol[token0]}`
+
     const typedValueBN = toBN(token0TypedValue)
     const balanceBN = toBN(formatUnits(token0Balance || 0n, token0Decimals))
     if (typedValueBN > balanceBN) return 'Insufficient balance'
@@ -230,7 +232,7 @@ const DepositAmountsICHI = ({
 
           <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
             <span className="icon-wallet text-xs"></span>
-            Balance: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
+            Availabe: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
             {tokenList?.find((t) => t?.address?.toLowerCase() === vaultToken.toLowerCase())?.symbol}
           </span>
         </div>
@@ -278,22 +280,17 @@ const DepositAmountsICHI = ({
                     onClick={() => setIsActive(!isActive)}
                   >
                     <div className="flex justify-center items-center gap-3">
-                      {selected !== 'Choose one' ? (
-                        <>
-                          <Image
-                            src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === selected)?.symbol}.svg`}
-                            alt="token"
-                            className="w-6 h-6 rounded-full"
-                            width={20}
-                            height={20}
-                          />
-                          <span className="text-base">
-                            {tokenList?.find((t) => t?.address?.toLowerCase() === selected)?.symbol}
-                          </span>
-                        </>
-                      ) : (
-                        selected
-                      )}
+                      <>
+                        <Image
+                          src={`/static/images/tokens/${tokenAddressToSymbol[selected]}.svg`}
+                          alt="token"
+                          className="w-6 h-6 rounded-full"
+                          width={20}
+                          height={20}
+                        />
+                        <span className="text-base">{tokenAddressToSymbol[selected]}</span>
+                      </>
+
                       {/* <span
                         className={`inline-block ml-2 text-xs icon-chevron md:text-sm ${isActive ? 'rotate-180' : ''}`}
                       /> */}
@@ -320,7 +317,7 @@ const DepositAmountsICHI = ({
                       >
                         <Image
                           // src={`/static/images/tokens/${token?.symbol}.svg`}
-                          src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === (vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()))?.symbol}.svg`}
+                          src={`/static/images/tokens/${tokenAddressToSymbol[vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()]}.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
                           width={20}
@@ -328,13 +325,9 @@ const DepositAmountsICHI = ({
                         />
                         <span className="text-base">
                           {
-                            tokenList?.find(
-                              (t) =>
-                                t?.address?.toLowerCase() ===
-                                (vault.allowTokenA
-                                  ? vault.tokenA.toLocaleLowerCase()
-                                  : vault.tokenB.toLocaleLowerCase())
-                            )?.symbol
+                            tokenAddressToSymbol[
+                              vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
+                            ]
                           }
                         </span>
                       </div>
