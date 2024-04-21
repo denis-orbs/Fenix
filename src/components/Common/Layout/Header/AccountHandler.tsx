@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import useStore from '@/src/state/zustand'
 import { usePathname } from 'next/navigation'
-import { ConnectButton, useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { ConnectButton, useAccountModal, useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import axios from 'axios'
 import { Address } from 'viem'
@@ -33,6 +33,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const pathname = usePathname()
   const { openConnectModal } = useConnectModal()
   const { openAccountModal } = useAccountModal()
+  const { openChainModal } = useChainModal()
 
   const handlerConnectWallet = () => {
     openConnectModal && openConnectModal()
@@ -179,7 +180,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
         </div>
         {isConnected && (
           <div className="p-2 cursor-pointer hidden 2xl:flex">
-            <span className="text-[26px] transition-all icon-logout text-shark-100 hover:text-outrageous-orange-400"></span>
+            {/* <span className="text-[26px] transition-all icon-logout text-shark-100 hover:text-outrageous-orange-400"></span> */}
           </div>
         )}
       </div>
