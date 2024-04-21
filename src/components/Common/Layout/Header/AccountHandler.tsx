@@ -14,6 +14,7 @@ import { Address } from 'viem'
 import { useAccount, useSwitchChain } from 'wagmi'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { config, configwallets } from '@/src/app/layout'
+import cn from '@/src/library/utils/cn'
 
 interface Points {
   userLiqPoints: number[]
@@ -43,7 +44,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const [data, setData] = useState<Points>({} as Points)
   const { address, chainId } = useAccount()
   const { switchChainAsync } = useSwitchChain()
-
+  const wrongChain = chainId?.toString() !== process.env.NEXT_PUBLIC_CHAINID
   useEffect(() => {
     const fetchData = async (campaignId: string, pairAddress: string, address: Address) => {
       try {
@@ -86,7 +87,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
 
   return (
     <div className="flex items-center gap-2 xl:gap-3 w-full md:w-max-content xl:w-auto flex-row">
-      {isConnected && (
+      {isConnected && !wrongChain && (
         <div className="relative w-full">
           <div
             onMouseEnter={() => setOpenPoints(true)}
@@ -131,32 +132,51 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
 
       <div className="flex gap-2 items-center w-full 2xl:w-auto justify-end">
         <div className="flex w-full 2xl:w-auto">
-          {isConnected && chainId?.toString() === process.env.NEXT_PUBLIC_CHAINID ? (
+          {isConnected ? (
             <div
               onClick={() => {
-                openConnectModal && openConnectModal()
-                openAccountModal && openAccountModal()
+                if (wrongChain) {
+                  openChainModal && openChainModal()
+                } else {
+                  openConnectModal && openConnectModal()
+                  openAccountModal && openAccountModal()
+                }
               }}
               className="flex w-full xl:w-auto gap-2 md:gap-5 2xl:py-2 p-1 2xl:px-3.5 !pr-0 border rounded-[5px]
             cursor-pointer bg-shark-900 border-shark-400 bg-opacity-40 hover:bg-opacity-10 group"
             >
               <div className="w-full flex items-center gap-2.5">
                 <div className="relative flex items-center  justify-center w-8 2xl:w-12 h-8 2xl:h-12 rounded-[10px] bg-shark-400 bg-opacity-40">
-                  <span className="text-[12px] 2xl:text-lg icon-wallet text-outrageous-orange-500"></span>
-
-                  <Image
-                    src="/static/images/wallets/metamask.png"
-                    className="absolute bottom-0 right-0 w-3 h-3 2xl:w-6 2xl:h-6"
-                    alt="logo"
-                    width={24}
-                    height={24}
-                  />
+                  {wrongChain ? (
+                    <Image
+                      src="/static/images/icons/warning.png"
+                      className="bottom-0 right-0 w-6 h-6 2xl:w-8 2xl:h-8"
+                      alt="logo"
+                      width={32}
+                      height={32}
+                    />
+                  ) : (
+                    <>
+                      <span className="text-[12px] 2xl:text-lg icon-wallet text-outrageous-orange-500"></span>
+                      <Image
+                        src="/static/images/wallets/metamask.png"
+                        className="absolute bottom-0 right-0 w-3 h-3 2xl:w-6 2xl:h-6"
+                        alt="logo"
+                        width={24}
+                        height={24}
+                      />
+                    </>
+                  )}
                 </div>
                 <div className="">
-                  <p className="hidden text-xs font-medium 2xl:block text-shark-100">Welcome</p>
+                  <p className="hidden text-xs font-medium 2xl:block text-shark-100">
+                    {wrongChain ? 'Wrong Chain' : 'Welcome'}
+                  </p>
                   <p className="flex items-center text-xs text-white">
-                    <span className="block w-2 h-2 mr-1.5 bg-green-400 rounded-full"></span>
-                    <span className="truncate max-w-[70px] 2xl:max-w-[150px]">{account?.slice(0, 4)}...</span>
+                    <span
+                      className={cn('block w-2 h-2 mr-1.5 rounded-full', wrongChain ? 'bg-red-400' : 'bg-green-400')}
+                    ></span>
+                    <span className="truncate max-w-[70px] 2xl:max-w-[150px]">{account?.slice(0, 6)}...</span>
                   </p>
                 </div>
               </div>
@@ -164,10 +184,6 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                 <span className="text-base md:text-xl icon-cog text-shark-100 group-hover:text-outrageous-orange-500"></span>
               </div>
             </div>
-          ) : isConnected && chainId?.toString() !== process.env.NEXT_PUBLIC_CHAINID ? (
-            <>
-              <ConnectButton label="Connect your Wallet" />
-            </>
           ) : (
             <Button
               onClick={handlerConnectWallet}
