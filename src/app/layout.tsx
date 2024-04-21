@@ -33,10 +33,9 @@ const poppins = Poppins({
 const { wallets } = getDefaultWallets()
 
 export const configwallets = createConfig({
-  chains: [blast, blastSepolia],
+  chains: [blast],
   transports: {
     [blast.id]: http(),
-    [blastSepolia.id]: http(),
   },
 })
 
