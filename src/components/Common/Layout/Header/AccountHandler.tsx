@@ -15,6 +15,7 @@ import { useAccount, useSwitchChain } from 'wagmi'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { config, configwallets } from '@/src/app/layout'
 import cn from '@/src/library/utils/cn'
+import { blast } from 'viem/chains'
 
 interface Points {
   userLiqPoints: number[]
@@ -39,6 +40,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const handlerConnectWallet = () => {
     openConnectModal && openConnectModal()
   }
+  const { chains, switchChain } = useSwitchChain()
 
   const [availablePoints, setAvailablePoints] = useState<Number>(0)
   const [data, setData] = useState<Points>({} as Points)
@@ -136,7 +138,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
             <div
               onClick={() => {
                 if (wrongChain) {
-                  openChainModal && openChainModal()
+                  switchChain({ chainId: Number(process.env.NEXT_PUBLIC_CHAINID) || blast.id })
                 } else {
                   openConnectModal && openConnectModal()
                   openAccountModal && openAccountModal()
