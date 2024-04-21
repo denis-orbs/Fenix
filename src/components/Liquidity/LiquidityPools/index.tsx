@@ -9,8 +9,7 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
 import { fetchv2Factories, fetchv3Factories } from '@/src/state/liquidity/reducer'
 import { v2FactoryData, v3FactoryData } from '@/src/state/liquidity/types'
-// const [v2data, setV2Data] = useState<v2FactoryData[]>([])
-// const [v3data, setV3Data] = useState<v3FactoryData[]>([])
+import { useAppSelector } from '@/src/state'
 
 const fetchData = async () => {
   const v2data = await fetchv2Factories()
@@ -29,15 +28,27 @@ const fetchData = async () => {
 
 const LiquidityPools = () => {
   const [tokens, setTokens] = useState<Number>(0)
+  const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
+  console.log(liquidityTable, 'liquidityTable')
+  EXCHANGE_LIST[0].description =
+    '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(2)
+  EXCHANGE_LIST[1].description =
+    '$ ' +
+    liquidityTable
+      .reduce((total: any, pair: any) => total + Number(pair.volumeUSD) * (Number(pair.fee) / 100), 0)
+      .toFixed(2)
+  EXCHANGE_LIST[2].description =
+    '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(2)
 
-  const tokensData = async () => {
+  const tokensData = async (liquidityTable: any) => {
     setTokens((await fetchTokens()).length)
   }
 
   useEffect(() => {
-    tokensData()
-    fetchData()
+    tokensData(liquidityTable)
+    // fetchData()
   }, [])
+
   return (
     <MainBox>
       <div
@@ -47,10 +58,10 @@ const LiquidityPools = () => {
         <div className="w-full lg:w-1/2">
           <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
           <p className="mb-4 text-sm text-shark-100">
-            Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and Stake liquidity to earn FNX.
+            Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and stake liquidity to earn rewards.
           </p>
           <div className="flex flex-col gap-2 mb-8 md:flex-row">
-            <Button href="liquidity/deposit">
+            <Button href="liquidity/deposit?type=CONCENTRATED_MANUAL&token0=0x4300000000000000000000000000000000000003&token1=0x4300000000000000000000000000000000000004">
               <div className="flex gap-2">
                 <span className="icon-send"></span>
                 Create Position

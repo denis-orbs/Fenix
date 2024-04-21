@@ -6,13 +6,12 @@ export const STEPS = [
   },
   {
     label: 'Deposit your Liquidity',
-    description: 'The deeper the liquidity (TVL), the lower the slippage a pool will offer.',
+    description: 'The deeper the liquidity, the lower the slippage a pool will offer.',
     icon: 'icon-lock-up',
   },
   {
     label: 'Receive Benefits',
-    description:
-      'LPs get FNX emissions, while veFNX lockers get the pool trading fees as an incentive to vote on the most productive pools.',
+    description: 'Earn trading fees, Blast Points, Blast Gold and the Fenix Airdrop',
     icon: 'icon-rocket',
   },
 ]
@@ -80,7 +79,7 @@ export const OPTIONS_FILTER = ['All Pools', 'Stable', 'Volatile', 'Concentrated'
 export const NAV_LIST = [
   {
     name: 'Liquidity',
-    description: 'The Best Price',
+    description: 'Deposit or Withdraw',
     icon: 'icon-swap',
     path: '/liquidity',
     active: true,
@@ -94,7 +93,7 @@ export const NAV_LIST = [
   // },
   {
     name: 'My Positions',
-    description: 'Set and Forget',
+    description: "Check your position's",
     icon: 'icon-auto-graph',
     path: '/dashboard',
     active: true,
