@@ -364,9 +364,9 @@ export async function getPositionDataByPoolAddresses(addresses: any) {
         }),
     })
 
-    let callsArray = [];
+    const callsArray = []
     for(let i=0; i < result.length; i++) {
-        if(!result[i]) continue;
+        if(!result[i]) continue
         const stateResult: [number, number, number, number, number, boolean] = result[i].result as [number, number, number, number, number, boolean]
 
         callsArray.push({

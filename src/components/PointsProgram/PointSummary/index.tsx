@@ -9,7 +9,7 @@ import { log } from 'console'
 
 const PointSummary = ({ userData }: any) => {
   //  console.log(userData, 'userData')
-  let [time, setTime] = useState('')
+  const [time, setTime] = useState('')
   let count = 0
 
   function getCurrentEightHourTimestampArray() {

@@ -53,7 +53,7 @@ const MyStrategies = () => {
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
     console.log(positions, 'amount')
-    const positionsPoolAddresses = await positions.map((position: any) => {return {id: position.pool.id, liq: position.liquidity, lower: position.tickLower.tickIdx, higher: position.tickUpper.tickIdx}})
+    const positionsPoolAddresses = await positions.map((position: any) => {return { id: position.pool.id, liq: position.liquidity, lower: position.tickLower.tickIdx, higher: position.tickUpper.tickIdx }})
     console.log("multicall amounts", await getPositionDataByPoolAddresses(positionsPoolAddresses))
 
     setposition(positions)
