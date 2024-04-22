@@ -160,7 +160,9 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
           Number(pair.totalValueLockedToken1) * tokenBprice
         ).toFixed(2)
 
-        apr = (Number(pair.feesUSD) / Number(tvl) === 0 ? 1 : Number(tvl)) * 100
+        let volumeUSD = Number(pair.volumeToken0) * tokenAprice + Number(pair.volumeToken1) * tokenBprice
+
+        apr = ((Number(volumeUSD) * (Number(pair.fee) / 1000000)) / Number(tvl)) * 100
         maxAPR = apr * 2
 
         // if (BLACKLISTED.includes(tokenA.symbol) || BLACKLISTED.includes(tokenB.symbol)) {
