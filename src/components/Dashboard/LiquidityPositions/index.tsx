@@ -88,7 +88,7 @@ const LiquidityPositions = () => {
               To receive emissions{' '}
               <Link href={'/liquidity'} className="text-green-400 underline">
                 deposit and stake
-              </Link>
+              </Link>{' '}
               your liquidity first.
             </p>
           </div>
