@@ -50,7 +50,7 @@ const WithdrawAmountsICHI = ({
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
-    if (!amoutToWithdraw || 0 > parseFloat(amoutToWithdraw)) return 'Enter an amount'
+    if (!amoutToWithdraw || amoutToWithdraw == '0') return 'Enter an amount'
     if (amoutToWithdraw > totalUserShares) return 'Insufficient balance'
     return BUTTON_TEXT_WITHDRAW
   }
@@ -115,7 +115,7 @@ const WithdrawAmountsICHI = ({
                 variant="tertiary"
                 className="!py-1 !px-3"
                 onClick={() => {
-                  if (!totalUserShares) return
+                  if (!totalUserShares || totalUserShares == '') return
                   setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
                 }}
               >
@@ -125,7 +125,7 @@ const WithdrawAmountsICHI = ({
                 variant="tertiary"
                 className="!py-1 !px-3"
                 onClick={() => {
-                  if (!totalUserShares) return
+                  if (!totalUserShares || totalUserShares == '') return
                   setAmountToWithdraw(toBN(totalUserShares).toString())
                 }}
               >
