@@ -43,6 +43,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const { chains, switchChain } = useSwitchChain()
 
   const [availablePoints, setAvailablePoints] = useState<Number>(0)
+  const [distributed, setDistributed] = useState<Number>(0)
   const [data, setData] = useState<Points>({} as Points)
   const { address, chainId } = useAccount()
   const { switchChainAsync } = useSwitchChain()
@@ -52,11 +53,28 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
       try {
         const response = await axios.get(`https://blast-points-merkle.vercel.app/query/${campaignId}/${pairAddress}`)
 
-        // console.log(response.data)
-        const ob = response.data.data.find((element: any) => {
+        const ob = response.data.data.filter((element: any) => {
           return element.recipient.toLowerCase() === address.toLowerCase()
         })
-        return (ob.percentage / 100) * response.data.pointsandgold.LIQUIDITY.available
+        let totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
+
+        return (totalPercentage / 100) * response.data.pointsandgold.LIQUIDITY.available
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        return 0 // Return a default value in case of error
+        // Handle errors as needed
+      }
+    }
+    const fetchDistributed = async (pairAddress: string, address: Address) => {
+      try {
+        const response = await axios.get(`https://blast-points-merkle.vercel.app/query/dist/distributed/${pairAddress}`)
+
+        const ob = response.data.data.filter((element: any) => {
+          return element.recipient.toLowerCase() === address.toLowerCase()
+        })
+        let totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
+
+        return (totalPercentage / 100) * response.data.pointsandgold.LIQUIDITY.available
       } catch (error) {
         console.error('Error fetching data:', error)
         return 0 // Return a default value in case of error
@@ -66,14 +84,28 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
     if (address) {
       // Create an array of Promises for fetching data
       const promises = totalCampaigns.map((campaign) => fetchData(campaign.campaignId, campaign.pairAddress, address))
+      const promisesDistributed = totalCampaigns.map((campaign) => fetchDistributed(campaign.pairAddress, address))
 
       // Wait for all Promises to resolve
       Promise.all(promises)
         .then((results) => {
-          // console.log(results)
+          console.log(results)
           const sum = results.reduce((total, currentValue) => total + currentValue, 0)
           // Set the setAvailablePoints state after all Promises have resolved
           setAvailablePoints(sum)
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error)
+          // Handle errors if needed
+        })
+
+      Promise.all(promisesDistributed)
+        .then((results) => {
+          console.log(results)
+          const sum = results.reduce((total, currentValue) => total + currentValue, 0)
+          // Set the setDistributed state after all Promises have resolved
+
+          setDistributed(sum)
         })
         .catch((error) => {
           console.error('Error fetching data:', error)
@@ -111,7 +143,9 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                 </div>
                 <div className="flex flex-col justify-center items-center">
                   <p className="text-shark-100 text-xs mb-2">PTS Pending</p>
-                  <p className="text-white text-sm">{0}</p>
+                  <p className="text-white text-sm">
+                    {(Number(availablePoints) - Number(distributed)).toFixed(2).toString()}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center justify-center flex-col">

@@ -19,24 +19,34 @@ import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
 import { SupportedChainId, SupportedDex, getIchiVaultInfo } from '@ichidao/ichi-vaults-sdk'
 import { getPositionData, getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
+import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
   const [position, setposition] = useState<positions[]>([])
-  type ModalList = {
-    [key: string]: JSX.Element
-  }
+  const [positionAmounts, setpositionAmounts] = useState<any>([])
+  const [tokens, setTokens] = useState<Token[]>([])
 
-  const MODAL_LIST: ModalList = {
-    notifications: <ManageNotifications openModal={openModal} setOpenModal={setOpenModal} />,
-    withdraw: <WithdrawFunds openModal={openModal} setOpenModal={setOpenModal} />,
-    duplicate: <DuplicateStrategy openModal={openModal} setOpenModal={setOpenModal} />,
-    deposit: <DeleteStrategy openModal={openModal} setOpenModal={setOpenModal} />,
-    pause: <PauseStrategy openModal={openModal} setOpenModal={setOpenModal} />,
-    delete: <DeleteStrategy openModal={openModal} setOpenModal={setOpenModal} />,
+  const tokensprice = async () => {
+    setTokens(await fetchTokens())
   }
+  useEffect(() => {
+    tokensprice()
+  }, [])
+  // type ModalList = {
+  //   [key: string]: JSX.Element
+  // }
+
+  // const MODAL_LIST: ModalList = {
+  //   notifications: <ManageNotifications openModal={openModal} setOpenModal={setOpenModal} />,
+  //   withdraw: <WithdrawFunds openModal={openModal} setOpenModal={setOpenModal} />,
+  //   duplicate: <DuplicateStrategy openModal={openModal} setOpenModal={setOpenModal} />,
+  //   deposit: <DeleteStrategy openModal={openModal} setOpenModal={setOpenModal} />,
+  //   pause: <PauseStrategy openModal={openModal} setOpenModal={setOpenModal} />,
+  //   delete: <DeleteStrategy openModal={openModal} setOpenModal={setOpenModal} />,
+  // }
 
   const slideToLeft = () => {
     if (swiperRef.current) {
@@ -53,10 +63,27 @@ const MyStrategies = () => {
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
     console.log(positions, 'amount')
-    const positionsPoolAddresses = await positions.map((position: any) => {return { id: position.pool.id, liq: position.liquidity, lower: position.tickLower.tickIdx, higher: position.tickUpper.tickIdx }})
-    console.log("multicall amounts", await getPositionDataByPoolAddresses(positionsPoolAddresses))
+    const positionsPoolAddresses = await positions.map((position: any) => {
+      return {
+        id: position.pool.id,
+        liq: position.liquidity,
+        lower: position.tickLower.tickIdx,
+        higher: position.tickUpper.tickIdx,
+      }
+    })
+    const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
 
-    setposition(positions)
+    const final = positions.map((position: positions, index: number) => {
+      console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
+      return {
+        ...position,
+        depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
+        depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
+      }
+    })
+    console.log('multicall amounts', positions, amounts, final)
+    setposition(final)
+    setpositionAmounts(amounts)
   }
 
   useEffect(() => {
@@ -89,6 +116,7 @@ const MyStrategies = () => {
                     <SwiperSlide key={index}>
                       <Strategy
                         row={position[index]}
+                        tokens={tokens}
                         options={OPTIONS_STRATEGIES}
                         setModalSelected={setModalSelected}
                         setOpenModal={setOpenModal}
@@ -114,6 +142,7 @@ const MyStrategies = () => {
                     <SwiperSlide key={index}>
                       <StrategyMobile
                         row={position[index]}
+                        tokens={tokens}
                         options={OPTIONS_STRATEGIES}
                         setOpenModal={setOpenModal}
                         setModalSelected={setModalSelected}
@@ -124,7 +153,7 @@ const MyStrategies = () => {
               })}
             </div>
           </div>
-          {MODAL_LIST[modalSelected]}
+          {/* {MODAL_LIST[modalSelected]} */}
         </div>
       ) : (
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
