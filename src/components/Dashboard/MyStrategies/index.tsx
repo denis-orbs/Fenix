@@ -161,7 +161,7 @@ const MyStrategies = () => {
             <p className="flex gap-3 text-lg ms-2">My Positions</p>
           </div>
           <div className="box-dashboard p-6 flex gap-8 items-center ">
-            <p className="text-white text-sm">You have not created Positions.</p>
+            <p className="text-white text-sm">You have no positions.</p>
           </div>
         </div>
       )}
