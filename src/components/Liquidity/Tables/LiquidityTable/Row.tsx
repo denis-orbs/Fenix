@@ -115,6 +115,7 @@ const RowData = ({
             </div>
           </TableCell>
         )} */}
+
         <TableCell
           className={`${activeRange ? 'w-[8%]' : width <= 1250 ? 'w-[15%]' : 'w-[10%]'} flex justify-center items-center`}
         >
