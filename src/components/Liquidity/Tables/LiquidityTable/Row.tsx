@@ -115,7 +115,9 @@ const RowData = ({
             </div>
           </TableCell>
         )} */}
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
+        <TableCell
+          className={`${activeRange ? 'w-[8%]' : width <= 1250 ? 'w-[15%]' : 'w-[10%]'} flex justify-center items-center`}
+        >
           <div className="flex items-center gap-3 ">
             {/* {totalCampaigns.map((campaign) => { })} */}
             <span
@@ -162,7 +164,7 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="w-[15%]">
+        <TableCell className={`${width <= 1250 ? 'w-[10%]' : 'w-[15%]'}`}>
           <div className="flex flex-col items-end justify-end w-full px-3">
             <p className="mb-1 text-xs text-white">$ {formatCurrency(Number(row.pairDetails.tvl))}</p>
             <div className="flex items-center gap-4">
