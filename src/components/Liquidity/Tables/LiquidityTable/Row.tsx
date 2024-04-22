@@ -5,10 +5,10 @@ import { PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRow'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
-import { useWindowSize } from 'usehooks-ts'
+import { useWindowSize, useHover } from 'usehooks-ts'
 
 interface RowDataProps {
   row: PoolData
@@ -35,6 +35,10 @@ const RowData = ({
   })
 
   const { width } = useWindowSize()
+
+  const hoverRef = useRef(null)
+  const isHover = useHover(hoverRef)
+
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -92,45 +96,79 @@ const RowData = ({
             </div>
           </div>
         </TableCell>
+        {/* {activeRange && (
+          <TableCell className={`w-[12%] flex items-center justify-center`}>
+            <div className="flex gap-2 items-center">
+              <span className="bg-green-600 w-4 h-4 rounded-full border-4 border-black"></span>
+              <div className="text-xs flex flex-col">
+                <p className="text-shark-100 text-center">Min Price</p>
+                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                  $0.00
+                </span>
+              </div>
+              <div className="text-xs flex flex-col">
+                <p className="text-shark-100 text-center">Max Price</p>
+                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                  $0.00
+                </span>
+              </div>
+            </div>
+          </TableCell>
+        )} */}
 
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center gap-x-2 items-center`}>
-          <div className="flex items-center">
+        <TableCell
+          className={`${activeRange ? 'w-[8%]' : width <= 1250 ? 'w-[15%]' : 'w-[10%]'} flex justify-center items-center`}
+        >
+          <div className="flex items-center gap-3 ">
             {/* {totalCampaigns.map((campaign) => { })} */}
-            <Image
-              src={`/static/images/tokens/blastgold.png`}
-              alt="token"
-              className="-ml-4 rounded-full w-7 h-7"
-              width={20}
-              height={20}
-            />
-            <Image
-              src={`/static/images/tokens/blastpoints.png`}
-              alt="token"
-              className="-ml-4 rounded-full w-7 h-7"
-              width={20}
-              height={20}
-            />
-            <Image
-              src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
-              alt="token"
-              className="-ml-4 rounded-full w-7 h-7"
-              width={20}
-              height={20}
-            />
-            <Image
-              src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
-              alt="token"
-              className="-ml-4 rounded-full w-7 h-7"
-              width={20}
-              height={20}
-            />
+            <span
+              ref={hoverRef}
+              className="flex flex-row hover:flex-row-reverse transition-transform transform hover:scale-110"
+              // className="flex flex-row hover:flex-row-reverse transition-transform transform hover:scale-110 hover:-translate-x-4"
+            >
+              <Image
+                src={`/static/images/tokens/blastgold.png`}
+                alt="token"
+                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
+                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+              <Image
+                src={`/static/images/tokens/blastpoints.png`}
+                alt="token"
+                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
+                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+              <Image
+                src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+                alt="token"
+                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
+                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+              <Image
+                src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                alt="token"
+                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
+                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+            </span>
+            <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              {row.pairDetails.apr.toFixed(0)} %{' '}
+            </p>
           </div>
-          <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+          {/* <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
             {row.pairDetails.apr.toFixed(0)} %{' '}
-          </p>
+          </p> */}
         </TableCell>
 
-        <TableCell className="w-[15%]">
+        <TableCell className={`${width <= 1250 ? 'w-[10%]' : 'w-[15%]'}`}>
           <div className="flex flex-col items-end justify-end w-full px-3">
             <p className="mb-1 text-xs text-white">$ {formatCurrency(Number(row.pairDetails.tvl))}</p>
             <div className="flex items-center gap-4">

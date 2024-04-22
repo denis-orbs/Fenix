@@ -89,7 +89,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
       // Wait for all Promises to resolve
       Promise.all(promises)
         .then((results) => {
-          console.log(results)
+          //  console.log(results)
           const sum = results.reduce((total, currentValue) => total + currentValue, 0)
           // Set the setAvailablePoints state after all Promises have resolved
           setAvailablePoints(sum)
@@ -101,7 +101,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
 
       Promise.all(promisesDistributed)
         .then((results) => {
-          console.log(results)
+          //   console.log(results)
           const sum = results.reduce((total, currentValue) => total + currentValue, 0)
           // Set the setDistributed state after all Promises have resolved
 
