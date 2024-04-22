@@ -17,8 +17,8 @@ type options = {
 export type positions = {
   id: string
   liquidity: string
-  depositedToken0: string
-  depositedToken1: string
+  depositedToken0: Number
+  depositedToken1: Number
   withdrawnToken0: string
   withdrawnToken1: string
   tickLower: {
@@ -30,14 +30,14 @@ export type positions = {
     price1: string
   }
   token0: {
-    name: string
+    decimals: string
     id: string
     symbol: string
   }
   token1: {
     id: string
     symbol: string
-    name: string
+    decimals: string
   }
 }
 export type ichipositions = {
@@ -49,12 +49,13 @@ export type ichipositions = {
 
 interface StrategyProps {
   row: positions
+  tokens: Token[]
   options: options[]
   setModalSelected: (modal: string) => void
   setOpenModal: (modal: boolean) => void
 }
 
-const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProps) => {
+const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyProps) => {
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
 
   const router = useRouter()
@@ -63,15 +64,6 @@ const Strategy = ({ row, options, setModalSelected, setOpenModal }: StrategyProp
     setOpenModal(true)
     setModalSelected(option)
   }
-
-  const [tokens, setTokens] = useState<Token[]>([])
-
-  const tokensprice = async () => {
-    setTokens(await fetchTokens())
-  }
-  useEffect(() => {
-    tokensprice()
-  }, [])
 
   const [showtoken0, setshowtoken0] = useState(true)
 
