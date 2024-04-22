@@ -33,17 +33,22 @@ const poppins = Poppins({
 const { wallets } = getDefaultWallets()
 
 export const configwallets = createConfig({
-  chains: [blast, blastSepolia],
+  chains: [blast],
   transports: {
     [blast.id]: http(),
-    [blastSepolia.id]: http(),
   },
 })
 
 export const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
-  chains: [blast, ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [blastSepolia] : [])],
+  chains: [
+    {
+      ...blast,
+      iconUrl: '/static/chains/blast.png',
+    },
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [blastSepolia] : []),
+  ],
   wallets: [
     ...wallets,
     {
@@ -51,7 +56,7 @@ export const config = getDefaultConfig({
       wallets: [argentWallet, trustWallet, ledgerWallet],
     },
   ],
-  ssr: true, // If your dApp uses server side rendering (SSR)
+  ssr: true,
 })
 
 const queryClient = new QueryClient()

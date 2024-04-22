@@ -16,21 +16,15 @@ type options = {
 
 interface StrategyMobileProps {
   row: positions
+  tokens: Token[]
   options: options[]
   setModalSelected: (modal: string) => void
   setOpenModal: (modal: boolean) => void
 }
 
-const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
+const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [tokens, setTokens] = useState<Token[]>([])
 
-  const tokensprice = async () => {
-    setTokens(await fetchTokens())
-  }
-  useEffect(() => {
-    tokensprice()
-  }, [])
   let ichitokens: IchiVault
   if (row.liquidity === 'ichi') {
     ichitokens = useIchiVaultsData(row?.id)

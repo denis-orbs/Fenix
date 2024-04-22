@@ -93,7 +93,10 @@ const Main = () => {
               </div>
 
               {!isConnected && (
-                <Button className="w-[112px] h-[44px] md:w-[322px] md:h-[41px] !text-sm !py-2.5 !px-0 mx-auto">
+                <Button
+                  className="w-[112px] h-[44px] md:w-[322px] md:h-[41px] !text-sm !py-2.5 !px-0 mx-auto"
+                  href="/trade/swap"
+                >
                   <span>Launch App</span>
                 </Button>
               )}

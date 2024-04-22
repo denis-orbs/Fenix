@@ -163,6 +163,9 @@ const RowData = ({
               {row.pairDetails.apr.toFixed(2)} %{' '}
             </p>
           </div>
+          <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+            {row.pairDetails.apr.toFixed(0)} %{' '}
+          </p>
         </TableCell>
 
         <TableCell className={`${width <= 1250 ? 'w-[10%]' : 'w-[15%]'}`}>

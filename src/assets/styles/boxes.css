@@ -294,8 +294,7 @@
 
 /* Background for header */
 .header-box {
-  @apply relative h-[110px] w-full
-
+  @apply relative h-[112px] w-full
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/header/header.svg")]

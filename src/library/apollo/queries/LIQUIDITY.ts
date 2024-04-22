@@ -86,13 +86,18 @@ export const GET_POSITIONV3_USER = gql`
       depositedToken1
       withdrawnToken0
       withdrawnToken1
+      pool {
+        id
+      }
       tickLower {
         price0
         price1
+        tickIdx
       }
       tickUpper {
         price0
         price1
+        tickIdx
       }
       token0 {
         symbol

@@ -80,7 +80,6 @@ const HeaderRow = ({
   useEffect(() => {
     setPaginationResult(poolsData)
   }, [poolsData])
-  console.log(poolsData, chainId, activeChain, 'process.env.NEXT_PUBLIC_CHAINID')
 
   function compareBigDecimal(a: any, b: any) {
     return a - b

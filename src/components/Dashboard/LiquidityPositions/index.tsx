@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { PoolData } from '@/src/state/liquidity/types'
 import { useAccount } from 'wagmi'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const LiquidityPositions = () => {
   const router = useRouter()
@@ -48,11 +49,7 @@ const LiquidityPositions = () => {
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">Liquidity Positions</h1>
-            <Button
-              variant="tertiary"
-              className="!py-3 xl:me-5 !text-xs !lg:text-sm"
-              onClick={() => router.push('/liquidity')}
-            >
+            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
               <span className="icon-logout"></span>New deposit
             </Button>
           </div>
@@ -82,15 +79,17 @@ const LiquidityPositions = () => {
         <div className="flex flex-col gap-3 w-full lg:w-4/5 mx-auto">
           <div className="text-white flex justify-between items-center flex-wrap">
             <p className="flex gap-3 text-lg ms-2">Liquidity Positions</p>
-            <Button variant="tertiary" className="flex gap-2  !py-2">
-              {' '}
+            <Button variant="tertiary" className="flex gap-2  !py-2" href="/liquidity">
               <span className="icon-logout "></span>New Deposit
             </Button>
           </div>
           <div className="box-dashboard p-6">
             <p className="text-white text-sm">
-              To receive emissions <span className="text-green-400 underline">deposit and stake</span> your liquidity
-              first.
+              To receive emissions{' '}
+              <Link href={'/liquidity'} className="text-green-400 underline">
+                deposit and stake
+              </Link>{' '}
+              your liquidity first.
             </p>
           </div>
         </div>
