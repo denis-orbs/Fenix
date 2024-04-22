@@ -54,7 +54,6 @@ const Automatic = () => {
   const searchParams = useSearchParams()
   const searchParamToken0 = searchParams.get('token0')
   const searchParamToken1 = searchParams.get('token1')
-  // FIXME: PILLA EL PRECIO
   useEffect(() => {
     const getData = async () => {
       const tokens = await fetchTokens()
@@ -96,11 +95,11 @@ const Automatic = () => {
   const token1 = useToken1()
 
   const allIchiVaultsByTokenPair = useIchiVault(token0, token1)
-  console.log('heyy', allIchiVaultsByTokenPair)
 
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
   }
+
   return (
     <>
       <PairSelector firstToken={token0} secondToken={token1} tokenList={tokenList} />
