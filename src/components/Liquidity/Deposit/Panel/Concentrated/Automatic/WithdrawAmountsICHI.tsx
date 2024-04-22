@@ -165,11 +165,11 @@ const WithdrawAmountsICHI = ({
                   </div>
                   <div
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
-                    ${isActive ? 'visible bg-shark-300 !bg-opacity-40 border-shark-200' : 'hidden'}`}
+                    ${isActive ? 'visible bg-shark-500 !bg-opacity-80 border-shark-200' : 'hidden'}`}
                   >
                     {allIchiVaultsByTokenPair.map((vault) => (
                       <div
-                        className="flex justify-center items-center gap-3 cursor-pointer"
+                        className="flex justify-center items-center gap-3 cursor-pointer m-3 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}
                         onClick={() => {
                           setIsActive(!isActive)
