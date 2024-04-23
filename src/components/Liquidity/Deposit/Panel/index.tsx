@@ -55,8 +55,13 @@ const Panel = () => {
   const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
   const [pair, setPair] = useState<V2PairId>()
 
-  const handlerSwitch = () =>
-    setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'CONCENTRATED_AUTOMATIC' : 'CONCENTRATED_MANUAL')
+  const handlerSwitch = (active:boolean) => {
+    if (!active) {
+      setDepositType('VOLATILE')  
+    } else {
+      setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'CONCENTRATED_AUTOMATIC' : 'CONCENTRATED_MANUAL')
+    }
+  }
 
   const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
   const { createPosition: createGammaPosition } = useGammaCreatePosition()
