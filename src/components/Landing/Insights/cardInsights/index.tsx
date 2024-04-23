@@ -40,7 +40,7 @@ const CardInsights = ({ post }: CardInsightsProps) => {
         />
         <div className="w-full sm:w-[70%] flex flex-col gap-2 justify-center items-center">
           <h3 className="font-medium text-white sm:text-lg text-xs text-center line-clamp-2">
-            {post.title}
+            {post.title.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/'/g, "'").replace(/"/g, '"')}
           </h3>
           <p className="text-white text-xs font-normal">{moment(post.pubDate).format('MMM Do YY')}</p>
         </div>
