@@ -91,11 +91,12 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
         <div className="relative w-full xl:w-4/6">
           <NumericalInput
             value={value.toString()}
-            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm cursor-not-allowed"
             placeholder="0.0"
+            disabled
             onUserInput={(input) => {
-              setInputForActive(true)
-              setValue(input)
+              // setInputForActive(true)
+              // setValue(input)
             }}
             precision={token.decimals}
           />
