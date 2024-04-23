@@ -305,7 +305,7 @@ const DepositAmountsICHI = ({
                   >
                     {allIchiVaultsByTokenPair.map((vault) => (
                       <div
-                        className="flex justify-start items-center gap-3 cursor-pointer m-3 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
+                        className="flex justify-start items-center gap-3 cursor-pointer m-1 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}
                         onClick={() => {
                           setIsActive(false)
