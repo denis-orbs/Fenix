@@ -93,7 +93,6 @@ const DepositAmountsICHI = ({
       toast.error('Vault not available')
       return
     }
-    console.log('vault', vaultAddress)
     if (isToken0ApprovalRequired) {
       setWaitingApproval(true)
       try {
@@ -128,7 +127,6 @@ const DepositAmountsICHI = ({
     const depositToken1 = vaultAddress.allowTokenB && !vaultAddress.allowTokenA ? token0TypedValue : 0
 
     try {
-      console.log('vault', account, depositToken0, depositToken1, vaultAddress.id, web3Provider, dex, 1)
       const txDepositDetails = await deposit(
         account,
         depositToken0,
@@ -138,13 +136,14 @@ const DepositAmountsICHI = ({
         dex,
         1
       )
-      console.log(txDepositDetails)
       await txDepositDetails.wait()
       toast.success('Deposited successfully')
     } catch (error) {
       console.log(error)
       if (error instanceof Error && 'code' in error) {
         if (error.code !== 'ACTION_REJECTED') {
+          console.log(error)
+          toast.error('Action rejected')
         }
       } else {
         console.log(error)
@@ -229,7 +228,6 @@ const DepositAmountsICHI = ({
       console.log(error)
     }
   }
-
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -311,7 +309,7 @@ const DepositAmountsICHI = ({
                   >
                     {allIchiVaultsByTokenPair.map((vault) => (
                       <div
-                        className="flex justify-start items-center gap-3 cursor-pointer m-3 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
+                        className="flex justify-start items-center gap-3 cursor-pointer m-1 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}
                         onClick={() => {
                           setIsActive(false)
