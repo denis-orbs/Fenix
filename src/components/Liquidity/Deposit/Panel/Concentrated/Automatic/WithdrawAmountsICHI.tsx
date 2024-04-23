@@ -98,7 +98,9 @@ const WithdrawAmountsICHI = ({
           <div className=" text-white">Withdraw amounts</div>
           <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
             <span className="icon-wallet text-xs"></span>
-            Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'}
+            {/* Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'} */}
+            Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'}{' '}
+            {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -188,14 +190,24 @@ const WithdrawAmountsICHI = ({
                           width={20}
                           height={20}
                         />
-                        <span className="text-base">
-                          {
-                            tokenAddressToSymbol[
-                              vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
-                            ]
-                          }
-                        </span>
-
+                        <div className="flex flex-col">
+                          <span className="text-base">
+                            {
+                              tokenAddressToSymbol[
+                                vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
+                              ]
+                            }
+                          </span>
+                          {vault?.apr && (
+                            <span className="text-sm">
+                              APR :{' '}
+                              {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
+                                ? '0'
+                                : vault?.apr[0]?.apr?.toFixed(0)}
+                              %
+                            </span>
+                          )}
+                        </div>
                         {/* <span className="text-base">{token?.symbol}</span> */}
                       </div>
                     ))}
