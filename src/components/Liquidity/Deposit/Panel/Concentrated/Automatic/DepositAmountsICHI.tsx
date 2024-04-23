@@ -146,7 +146,7 @@ const DepositAmountsICHI = ({
       if (error instanceof Error && 'code' in error) {
         if (error.code !== 'ACTION_REJECTED') {
           console.log(error)
-          toast.error('Error: ', error?.reason)
+          toast.error('Action rejected')
         }
       } else {
         console.log(error)
