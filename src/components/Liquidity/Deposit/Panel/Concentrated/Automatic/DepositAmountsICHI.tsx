@@ -196,6 +196,15 @@ const DepositAmountsICHI = ({
     )
   }, [vaultAddress])
 
+  useEffect(() => {
+    if (allIchiVaultsByTokenPair && allIchiVaultsByTokenPair?.length > 0) {
+      const firstToken = allIchiVaultsByTokenPair[0]
+      setIsSelected(
+        firstToken.allowTokenA ? firstToken.tokenA.toLocaleLowerCase() : firstToken.tokenB.toLocaleLowerCase()
+      )
+    }
+  }, [allIchiVaultsByTokenPair])
+
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
@@ -323,13 +332,25 @@ const DepositAmountsICHI = ({
                           width={20}
                           height={20}
                         />
-                        <span className="text-base">
-                          {
-                            tokenAddressToSymbol[
-                              vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
-                            ]
-                          }
-                        </span>
+                        {console.log('vv', vault)}
+                        <div className="flex flex-col">
+                          <span className="text-base">
+                            {
+                              tokenAddressToSymbol[
+                                vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
+                              ]
+                            }
+                          </span>
+                          {vault?.apr && (
+                            <span className="text-sm">
+                              APR :{' '}
+                              {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
+                                ? '0'
+                                : vault?.apr[0]?.apr?.toFixed(0)}
+                              %
+                            </span>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
