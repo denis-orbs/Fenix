@@ -3,18 +3,31 @@
 import React, { useEffect, useState } from 'react'
 import CardInsights from './cardInsights'
 import Image from 'next/image'
-import { posts } from './data'
+import { extractImageUrls } from '@/src/utils/extractImageUrls'
+
+interface IPost {
+  title: string
+  thumbnail: string
+  link: string
+  pubDate: string
+  description: string
+}
 
 const Insights = () => {
-  // const [posts, setPosts] = useState([])
-  // useEffect(() => {
-  //   fetch('/api')
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     setPosts(data.data)
-  //   })
-  //   .catch(error => console.error('Error publication:', error))
-  // }, [])
+  const [posts, setPosts] = useState<IPost[]>([])
+  useEffect(() => {
+    fetch('/api')
+    .then(response => response.json())
+    .then(data => {
+      const updatedPosts = data.items.map((post: IPost) => {
+        const imageUrls = extractImageUrls(post.description)
+        return { ...post, thumbnail: imageUrls[0] }
+      })
+      setPosts(updatedPosts)
+    })
+    .catch(error => console.error('Error publication:', error))
+  }, [])
+
 
   return (
     <div className="relative flex items-center flex-col justify-center mb-[50px] ">
