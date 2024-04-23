@@ -30,16 +30,12 @@ const WithdrawAmountsICHI = ({
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
 
-  const token0 = useToken0()
-  const [vaultToken, setVaultToken] = useState(token0)
-
-  const token1 = useToken1()
   const vaultAddress =
     allIchiVaultsByTokenPair?.find((vault) => {
-      if (vault.tokenA.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenA) {
+      if (vault.tokenA.toLowerCase() === selected.toLowerCase() && vault.allowTokenA) {
         return true
       }
-      if (vault.tokenB.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenB) {
+      if (vault.tokenB.toLowerCase() === selected.toLowerCase() && vault.allowTokenB) {
         return true
       }
       return false
@@ -63,15 +59,22 @@ const WithdrawAmountsICHI = ({
       setTotalUserShares('0')
       return
     }
+
+    setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
     const getTotalUserShares = async () => {
       const data = await getUserBalance(account, vaultAddress.id, web3Provider, dex)
       setTotalUserShares(data)
     }
     getTotalUserShares()
-
-    setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
   }, [account, vaultAddress, web3Provider])
-
+  useEffect(() => {
+    if (allIchiVaultsByTokenPair && allIchiVaultsByTokenPair?.length > 0) {
+      const firstToken = allIchiVaultsByTokenPair[0]
+      setIsSelected(
+        firstToken.allowTokenA ? firstToken.tokenA.toLocaleLowerCase() : firstToken.tokenB.toLocaleLowerCase()
+      )
+    }
+  }, [allIchiVaultsByTokenPair])
   // withdraw function
   // FIXME: poner toast??
   const withdrawFromVault = async () => {
@@ -172,7 +175,6 @@ const WithdrawAmountsICHI = ({
                           setIsSelected(
                             vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
                           )
-                          setVaultToken(vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
                         }}
                       >
                         <Image
@@ -193,6 +195,7 @@ const WithdrawAmountsICHI = ({
                             ]
                           }
                         </span>
+
                         {/* <span className="text-base">{token?.symbol}</span> */}
                       </div>
                     ))}

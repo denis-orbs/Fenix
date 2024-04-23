@@ -39,23 +39,20 @@ const DepositAmountsICHI = ({
   }
 
   const token0 = useToken0()
-  const [vaultToken, setVaultToken] = useState(token0)
 
-  // console.log('heyyy', token0)
   const token1 = useToken1()
-  const [token0InfoData, setToken0InfoData] = useState<IToken | null>(null)
+
   useEffect(() => {
-    tokenList &&
-      setToken0InfoData(tokenList.find((t) => t?.address?.toLowerCase() === vaultToken.toLowerCase()) || null)
+    tokenList
   }, [token0, tokenList])
   const [isToken0ApprovalRequired, setIsToken0ApprovalRequired] = useState(false)
 
   const vaultAddress =
     allIchiVaultsByTokenPair?.find((vault) => {
-      if (vault.tokenA.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenA) {
+      if (vault.tokenA.toLowerCase() === selected.toLowerCase() && vault.allowTokenA) {
         return true
       }
-      if (vault.tokenB.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenB) {
+      if (vault.tokenB.toLowerCase() === selected.toLowerCase() && vault.allowTokenB) {
         return true
       }
       return false
@@ -72,13 +69,13 @@ const DepositAmountsICHI = ({
     allowFailure: false,
     contracts: [
       {
-        address: vaultToken,
+        address: selected,
         abi: erc20Abi,
         functionName: 'balanceOf',
         args: [account || zeroAddress],
       },
       {
-        address: vaultToken,
+        address: selected,
         abi: erc20Abi,
         functionName: 'decimals',
       },
@@ -103,7 +100,7 @@ const DepositAmountsICHI = ({
         // console.log('vault', vaultAddress)
         const txApproveDepositDetails = await approveDepositToken(
           account,
-          vaultAddress.tokenA.toLowerCase() === vaultToken.toLowerCase() && vaultAddress.allowTokenA ? 0 : 1,
+          vaultAddress.tokenA.toLowerCase() === selected.toLowerCase() && vaultAddress.allowTokenA ? 0 : 1,
           vaultAddress.id,
           web3Provider,
           dex
@@ -167,7 +164,7 @@ const DepositAmountsICHI = ({
       const isToken0Approved = await isDepositTokenApproved(
         account,
         // check if deposit token is tokenA or tokenB
-        vaultAddress.tokenA.toLowerCase() === token0.toLowerCase() && vaultAddress.allowTokenA ? 0 : 1,
+        vaultAddress.tokenA.toLowerCase() === selected.toLowerCase() && vaultAddress.allowTokenA ? 0 : 1,
         token0TypedValue || '0',
         vaultAddress.id,
         web3Provider,
@@ -179,7 +176,7 @@ const DepositAmountsICHI = ({
     checkApproval()
   }, [
     token0TypedValue,
-    token0,
+    selected,
     token0Decimals,
     dex,
     waitingApproval,
@@ -210,7 +207,7 @@ const DepositAmountsICHI = ({
     if (!vaultAddress) return 'Vault not available'
     if (waitingApproval) return 'Waiting for approval'
     if (!token0TypedValue) return 'Enter an amount'
-    if (isToken0ApprovalRequired) return `Approve ${tokenAddressToSymbol[token0]}`
+    if (isToken0ApprovalRequired) return `Approve ${tokenAddressToSymbol[selected]}`
 
     const typedValueBN = toBN(token0TypedValue)
     const balanceBN = toBN(formatUnits(token0Balance || 0n, token0Decimals))
@@ -241,8 +238,8 @@ const DepositAmountsICHI = ({
 
           <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
             <span className="icon-wallet text-xs"></span>
-            Availabe: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
-            {tokenList?.find((t) => t?.address?.toLowerCase() === vaultToken.toLowerCase())?.symbol}
+            Available: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
+            {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -321,7 +318,6 @@ const DepositAmountsICHI = ({
                           setIsSelected(
                             vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
                           )
-                          setVaultToken(vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
                         }}
                       >
                         <Image
