@@ -32,10 +32,10 @@ const Insights = () => {
   return (
     <div className="relative flex items-center flex-col justify-center mb-[50px] ">
       <div className="flex flex-col items-center justify-center mx-auto z-50 mb-10">
-        <div className="text-shark-100 text-xl max-lg:text-lg font-normal text-center">Updates</div>
-        <div className="text-gradient3 text-[40px] font-normal leading-relaxed max-lg:text-2xl text-center">
+        <h1 className="text-shark-100 text-xl max-lg:text-lg font-normal text-center">Updates</h1>
+        <h2 className="text-gradient3 text-[40px] font-normal leading-relaxed max-lg:text-2xl text-center">
           Insights from FENIX
-        </div>
+        </h2>
       </div>
       <div className="absolute -z-10 h-[1000px] top-[-200px] max-xl:top-[-100px] max-sm:top-0 left-0 right-0 ">
         <div className="w-full h-full relative overflow-hidden">
@@ -49,7 +49,7 @@ const Insights = () => {
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-10">
-        {posts?.slice(0, 3).map((post, index) => <CardInsights key={index} post={post} />)}
+        {posts?.slice(3, 6).map((post, index) => <CardInsights key={index} post={post} />)}
       </div>
     </div>
   )

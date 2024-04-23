@@ -39,9 +39,9 @@ const CardInsights = ({ post }: CardInsightsProps) => {
           width={378}
         />
         <div className="w-full sm:w-[70%] flex flex-col gap-2 justify-center items-center">
-          <h1 className="font-medium text-white sm:text-lg text-xs text-center line-clamp-2">
+          <h3 className="font-medium text-white sm:text-lg text-xs text-center line-clamp-2">
             {post.title}
-          </h1>
+          </h3>
           <p className="text-white text-xs font-normal">{moment(post.pubDate).format('MMM Do YY')}</p>
         </div>
       </div>
