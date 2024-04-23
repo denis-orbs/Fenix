@@ -434,6 +434,47 @@
   after:z-[-1]
   after:xl:block;
 }
+/* .box-panel-trade-chart {
+  @apply relative
+  w-full
+  flex-shrink-0
+  xl:rounded-2xl
+  rounded-t-2xl
+  xl:w-[667px]
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  py-12
+  px-8
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/trade/trade-panel.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:z-[-1]
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/trade/trade-panel.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:z-[-1]
+  after:xl:block;
+} */
 
 .box-navigation-trade {
   @apply relative

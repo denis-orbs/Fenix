@@ -13,6 +13,7 @@ import { useAppSelector } from '@/src/state'
 import { V2PairId } from '@/src/state/liquidity/types'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import { useShowChart } from "@/src/state/swap-chart/hooks"
 
 const DepositTypeValues = {
   VOLATILE: 'VOLATILE',
@@ -24,6 +25,7 @@ const DepositTypeValues = {
 type DepositType = (typeof DepositTypeValues)[keyof typeof DepositTypeValues]
 
 const Panel = () => {
+  const showChart = useShowChart()
   const [depositType, setDepositType] = useState<DepositType>('VOLATILE')
   const searchParams = useSearchParams()
   const setToken0 = useSetToken0()
@@ -116,7 +118,7 @@ const Panel = () => {
   }, [defaultPairs])
 
   return (
-    <section className="box-panel-trade">
+    <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none': ''}`}>
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-[25px] font-semibold">

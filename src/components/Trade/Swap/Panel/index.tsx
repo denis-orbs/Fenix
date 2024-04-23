@@ -29,6 +29,7 @@ import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
 import cn from '@/src/library/utils/cn'
+import { useShowChart } from "@/src/state/swap-chart/hooks"
 
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
@@ -43,6 +44,7 @@ enum ButtonState {
   LOADING = 'Loading...',
 }
 const Panel = () => {
+  const showChart = useShowChart()
   // FIXME
   const [tokenSell, setTokenSell] = useState<IToken>({
     name: 'USDB',
@@ -325,7 +327,7 @@ const Panel = () => {
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
 
   return (
-    <section className="box-panel-trade">
+    <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none': ''}`}>
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-5">
