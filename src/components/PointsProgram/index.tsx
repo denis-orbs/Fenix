@@ -87,10 +87,10 @@ const PointsProgram = () => {
         <div className="flex items-center justify-center flex-col mb-8">
           <Image
             src="/static/images/orbit.png"
-            className="w-[80px] mb-2"
+            className="mb-2"
             alt="logo"
-            width={43}
-            height={26}
+            width={52}
+            height={52}
             priority
           />
           <h5 className="text-white text-2xl mb-3 font-medium">Fenix Orbits</h5>
