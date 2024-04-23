@@ -14,6 +14,7 @@ import { getAlgebraPoolPrice, getAmounts, getPriceAndTick, getRatio } from '@/sr
 import { ethers } from 'ethers'
 import { formatNumber } from '@/src/library/utils/numbers'
 import Loader from '@/src/components/UI/Icons/Loader'
+import ApproveButtons from '@/src/components/Liquidity/Common/ApproveButtons'
 
 interface StateType {
   price: number
@@ -354,27 +355,16 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setSecondValue={(value) => setSecondValue(value)}
         onTokenValueChange={handleOnTokenValueChange}
       />
-      <Button
-        className="w-full mx-auto !text-xs !h-[49px]"
-        variant="tertiary"
-        onClick={() => {
-          shouldApproveFirst
-            ? handleApprove(firstToken.address as Address)
-            : shouldApproveSecond
-              ? handleApprove(secondToken.address as Address)
-              : handleCLAdd()
-        }}
-      >
-        {isLoading ? (
-          <Loader color="white" size={20} />
-        ) : shouldApproveFirst ? (
-          `Approve ${firstToken.symbol}`
-        ) : shouldApproveSecond ? (
-          `Approve ${secondToken.symbol}`
-        ) : (
-          `Create Position`
-        )}
-      </Button>
+      <ApproveButtons 
+        shouldApproveFirst={shouldApproveFirst} 
+        shouldApproveSecond={shouldApproveSecond} 
+        token0={firstToken} 
+        token1={secondToken} 
+        handleApprove={handleApprove} 
+        mainFn={handleCLAdd} 
+        mainText={'Create Position'} 
+        isLoading={isLoading}      
+      />
     </>
   )
 }
