@@ -232,7 +232,7 @@ const DepositAmountsICHI = ({
 
           <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
             <span className="icon-wallet text-xs"></span>
-            Availabe: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
+            Available: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
             {tokenList?.find((t) => t?.address?.toLowerCase() === vaultToken.toLowerCase())?.symbol}
           </span>
         </div>
