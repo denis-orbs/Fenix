@@ -106,10 +106,10 @@ const Main = () => {
           </div>
         </div>
       </div>
-      <div className="relative 2xl:bottom-[-18rem] max-2xl:bottom-[-35rem]  w-[100%]">
+      <div className="relative xl:bottom-[-18rem] max-xl:bottom-[-35rem]  w-[100%]">
         <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[70%] max-sm:w-[100%]">
           <div
-            className={`grid 2xl:grid-cols-4 max-2xl:grid-cols-2 max-md:grid-cols-1
+            className={`grid xl:grid-cols-4 max-xl:grid-cols-2 max-md:grid-cols-1
              justify-center items-center px-5 mx-auto ${isTablet ? 'info-box' : 'mobile-info-box'}`}
           >
             <Box text="Total Value Locked" />

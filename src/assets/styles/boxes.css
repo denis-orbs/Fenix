@@ -1287,12 +1287,12 @@ opacity-70
 }
 .info-box {
   @apply relative px-5 py-3
-  2xl:bg-[url("/static/images/landing/main/info-box.svg")]
+  xl:bg-[url("/static/images/landing/main/info-box.svg")]
   bg-[url("/static/images/landing/main/info-box.svg")]
-  max-2xl:bg-[url("/static/images/landing/main/tablet-info-box.svg")]
+  max-xl:bg-[url("/static/images/landing/main/tablet-info-box.svg")]
   bg-no-repeat
   bg-cover
-  2xl:w-[1135px]
+  xl:w-[1135px]
   2xl:h-[133px]
   max-2xl:w-[532px]
   max-2xl:h-[420px];
