@@ -332,7 +332,6 @@ const DepositAmountsICHI = ({
                           width={20}
                           height={20}
                         />
-                        {console.log('vv', vault)}
                         <div className="flex flex-col">
                           <span className="text-base">
                             {
