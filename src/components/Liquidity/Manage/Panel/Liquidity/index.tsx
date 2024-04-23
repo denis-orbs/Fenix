@@ -455,6 +455,9 @@ const Manage = ({}: {}) => {
                   onChange={(value) => {
                     setWithdrawPercent(value)
                   }}
+                  onChangeShown={(value) => {
+                    setWithdrawPercent(value)
+                  }}
                 />
               </div>
             </div>
