@@ -13,9 +13,9 @@ const BlastBanner = () => {
 
   return (
     <div className="blast-banner overflow-hidden">
-      <Image src={'/static/images/blast-point-banner/fenix-orbit.svg'} alt='fenix orbit' className='w-[68px] h-[68px] absolute top-0 xl:left-[600px] left-auto max-xl:right-[520px] z-[5]' width={10} height={10}/>
-      <Image src={'/static/images/blast-point-banner/coins-line.svg'} alt='fenix orbit' className='w-[270px] h-[99px] absolute top-0 xxl:left-[850px] left-auto max-xxl:right-[280px] z-[5]' width={10} height={10}/>
-      <Image src={'/static/images/blast-point-banner/lingots.svg'} alt='fenix orbit' className='w-[156px] h-[120px] absolute top-0 right-[180px]  z-[5]' width={10} height={10}/>
+      <Image src={'/static/images/blast-point-banner/fenix-orbit.svg'} alt='fenix orbit' className='max-lg:hidden w-[68px] h-[68px] absolute top-0 xl:left-[600px] left-auto max-xl:right-[520px] z-[5]' width={10} height={10}/>
+      <Image src={'/static/images/blast-point-banner/coins-line.svg'} alt='fenix orbit' className='max-lg:hidden w-[270px] h-[99px] absolute top-0 xxl:left-[850px] left-auto max-xxl:right-[280px] z-[5]' width={10} height={10}/>
+      <Image src={'/static/images/blast-point-banner/lingots.svg'} alt='fenix orbit' className='max-lg:hidden w-[156px] h-[120px] absolute top-0 right-[180px]  z-[5]' width={10} height={10}/>
       <div className="text-white absolute text-sm right-3 top-2 z-20 cursor-pointer" onClick={handlerClose}>
         <span className="icon-x"></span>
       </div>
