@@ -41,7 +41,7 @@ const DepositLiquidity = () => {
       <div className="flex flex-col w-full h-[100%]">
         <div className="flex flex-wrap justify-center w-full h-[100%] xl:gap-5 mb-10 xl:flex-nowrap">
           <Panel />
-          { showChart && <Chart token0={token0} token1={token1} heightDesktop="800px"/> }
+          { showChart && <Chart token0={token0} token1={token1}/> }
         </div>
       </div>
     </div>

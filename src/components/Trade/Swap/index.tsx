@@ -14,7 +14,7 @@ const Swap = () => {
       <div className="flex flex-col w-full">
         <div className="flex flex-wrap w-full xl:gap-5 mb-10 xl:flex-nowrap justify-center mt-10">
           <Panel />
-          {showChart && <Chart token0='' token1='' heightDesktop='525px'/>}
+          {showChart && <Chart token0='' token1='' />}
         </div>
       </div>
     </div>

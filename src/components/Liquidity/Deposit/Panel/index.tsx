@@ -132,7 +132,7 @@ const Panel = () => {
               <div className="flex items-center gap-3">
                 <Switch active={showChart} setActive={handleSwitch} />
                 <div className="text-xs text-shark-100 font-normal whitespace-nowrap">
-                  {showChart ? 'Hide' : 'Show'} Chart
+                  Chart
                 </div>
               </div>
               {/* <div className="flex items-center gap-[9px] h-10">
