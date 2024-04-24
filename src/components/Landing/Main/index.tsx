@@ -8,6 +8,8 @@ import Decorator from '@/src/components/Common/Layout/BackgroundLanding'
 import useStore from '@/src/state/zustand'
 import Blast from '@/src/components/UI/Icons/Blast'
 import { useState, useEffect } from 'react'
+import { useAppSelector } from '@/src/state'
+
 const michroma = Michroma({
   weight: ['400'],
   style: ['normal'],
@@ -35,11 +37,11 @@ function useMediaQuery(query: any) {
 
   return matches
 }
-const Box = ({ text }: { text: string }) => {
+const Box = ({ text, value }: { text: string; value: string }) => {
   return (
     <div className="flex w-[100%] flex-col items-center justify-center mt-[120px]">
       <div className="text-gradient2 text-lg max-sm:text-base leading-normal tracking-[4.86px] font-semibold mb-[5px] mt-[-120px]">
-        COMING SOON
+        {value}
       </div>
       <div className="text-base font-light text-shark-100 max-sm:text-sm">{text}</div>
     </div>
@@ -56,6 +58,40 @@ const Main = () => {
   const handleIsHoverInactive = () => setIsHover(false)
 
   const handlerConnectWallet = () => setWalletSelectionModal(true)
+
+  const EXCHANGE_LIST = [
+    {
+      label: 'Total Value Locked',
+      description: '$ 0.00',
+      icon: 'icon-lock',
+    },
+    {
+      label: 'Fees',
+      description: '$ 0.00',
+      icon: 'icon-pig',
+    },
+    {
+      label: 'Volume',
+      description: '$ 0.00',
+      icon: 'icon-coins',
+    },
+  ]
+
+  const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
+  console.log(liquidityTable, 'liquidityTable')
+  EXCHANGE_LIST[0].description =
+    '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(2)
+  EXCHANGE_LIST[1].description =
+    '$ ' +
+    liquidityTable
+      .reduce((total: any, pair: any) => total + Number(pair.volumeUSD) * (Number(pair.fee) / 100), 0)
+      .toFixed(2)
+  EXCHANGE_LIST[2].description =
+    '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(2)
+
+  console.log('tvl', EXCHANGE_LIST[0].description)
+  console.log('fee', EXCHANGE_LIST[1].description)
+  console.log('volume', EXCHANGE_LIST[2].description)
 
   return (
     <div className="h-[500px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">
@@ -114,10 +150,10 @@ const Main = () => {
             className={`grid 2xl:grid-cols-4 max-2xl:grid-cols-2 max-md:grid-cols-1
              justify-center items-center px-5 mx-auto ${isTablet ? 'info-box' : 'mobile-info-box'}`}
           >
-            <Box text="Total Value Locked" />
-            <Box text="Annualized Volume" />
-            <Box text="Annualized Fees" />
-            <Box text="Active Users" />
+            <Box text="Total Value Locked" value={EXCHANGE_LIST[0].description} />
+            <Box text="Annualized Volume" value={EXCHANGE_LIST[2].description} />
+            <Box text="Annualized Fees" value={EXCHANGE_LIST[1].description} />
+            <Box text="Active Users" value="COMING SOON" />
           </div>
         </div>
       </div>
