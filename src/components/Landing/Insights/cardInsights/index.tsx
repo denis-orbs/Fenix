@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import moment from 'moment'
+import he from 'he'
 
 interface IPost {
   title: string
@@ -40,7 +41,7 @@ const CardInsights = ({ post }: CardInsightsProps) => {
         />
         <div className="w-full sm:w-[70%] flex flex-col gap-2 justify-center items-center">
           <h3 className="font-medium text-white sm:text-lg text-xs text-center line-clamp-2">
-            {post.title.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/'/g, "'").replace(/"/g, '"')}
+            {he.decode(post.title)}
           </h3>
           <p className="text-white text-xs font-normal">{moment(post.pubDate).format('MMM Do YY')}</p>
         </div>
