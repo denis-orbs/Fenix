@@ -1,21 +1,18 @@
 'use client'
-import { Switch } from '@/src/components/UI'
-import { useSetChart, useShowChart } from "@/src/state/swap-chart/hooks"
+import { useShowChart } from "@/src/state/user/hooks"
 import Panel from '@/src/components/Liquidity/Deposit/Panel'
 import Chart from '@/src/components/Liquidity/Deposit/Chart'
 import { getPair } from '@/src/library/hooks/liquidity/useClassic'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
+import { useSearchParams } from "next/navigation"
 
 const DepositLiquidity = () => {
+  const searchParams = useSearchParams()
   const showChart = useShowChart()
-  const setChart = useSetChart()
-  const [isChartVisible, setIsChartVisible] = useState(showChart)
-  const handleSwitch = () => {
-    setChart(!isChartVisible)
-    setIsChartVisible(prevState => !prevState)
-  }
   const [pairAddress, setPairAddress] = useState<Address>('0x')
+  const [token0, setToken0] = useState(searchParams.get('token0'))
+  const [token1, setToken1] = useState(searchParams.get('token1'))
 
   useEffect(() => {
     const asyncGetPair = async () => {
@@ -32,16 +29,19 @@ const DepositLiquidity = () => {
     asyncGetPair()
   }, [])
 
+  useEffect(() => {
+    setToken0(searchParams.get('token0'))
+    setToken1(searchParams.get('token1'))
+    console.log('token1 :>> ', token1)
+  }, [searchParams])
+
+
   return (
     <div className="flex flex-col items-start gap-6 mb-4 xl:gap-10 xl:flex-row">
       <div className="flex flex-col w-full h-[100%]">
         <div className="flex flex-wrap justify-center w-full h-[100%] xl:gap-5 mb-10 xl:flex-nowrap">
           <Panel />
-          { showChart && <Chart /> }
-          <div className={`flex items-center gap-3 w-[100%] justify-center py-4 xl:hidden ${showChart ? 'max-xl:bg-shark-400 max-xl:bg-opacity-40 max-xl:rounded-b-2xl' : ''}`}>
-            <Switch active={showChart} setActive={handleSwitch} />
-            <div className='text-xs text-shark-100 font-normal whitespace-nowrap'>{showChart ? 'Hide' : 'Show'} Trading View</div>
-          </div>
+          { showChart && <Chart token0={token0} token1={token1} heightDesktop="800px"/> }
         </div>
       </div>
     </div>

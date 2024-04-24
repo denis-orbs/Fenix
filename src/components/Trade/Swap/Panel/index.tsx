@@ -13,7 +13,7 @@ import { useReadContract, useWriteContract } from 'wagmi'
 import { blastSepolia } from 'viem/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { algebraQuoterV2ABI } from '@/src/library/web3/abis'
-import { Button } from '@/src/components/UI'
+import { Button, Switch } from '@/src/components/UI'
 import { ethers } from 'ethers'
 import { algebraSwapABI } from '@/src/library/web3/abis/algebraSwap'
 import useStore from '@/src/state/zustand'
@@ -29,7 +29,7 @@ import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
 import cn from '@/src/library/utils/cn'
-import { useShowChart } from "@/src/state/swap-chart/hooks"
+import { useSetChart, useShowChart } from "@/src/state/user/hooks"
 
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
@@ -45,6 +45,12 @@ enum ButtonState {
 }
 const Panel = () => {
   const showChart = useShowChart()
+  const setChart = useSetChart()
+  const [isChartVisible, setIsChartVisible] = useState(showChart)
+  const handleSwitch = () => {
+    setChart(!isChartVisible)
+    setIsChartVisible(prevState => !prevState)
+  }
   // FIXME
   const [tokenSell, setTokenSell] = useState<IToken>({
     name: 'USDB',
@@ -336,6 +342,12 @@ const Panel = () => {
             </div>
 
             <div className="flex gap-x-3 items-center">
+              <div className="flex items-center gap-3">
+                <Switch active={showChart} setActive={handleSwitch} />
+                <div className="text-xs text-shark-100 font-normal whitespace-nowrap">
+                  {showChart ? 'Hide' : 'Show'} Chart
+                </div>
+              </div>
               <span className="text-shark-100 text-sm">{swapFee && `${formatUnits(BigInt(swapFee), 4)}% fee`}</span>
               <ReloadIcon
                 className="text-shark-100 !cursor-pointer"
