@@ -24,6 +24,7 @@ const BlastBanner = () => {
         <h4 className="text-gradient text-sm xs:text-base md:text-lg xl:text-2xl">
           Blast Gold, Blast Points and Fenix Orbits
         </h4>
+        <div className='text-white text-xs'>Earn your share in <span className='font-bold text-transparent airdrop-gradient rounded-[100px] py-1 px-2 [&::selection]:bg-transparent'>ONE OF THE BIGGEST AIRDROPS</span> in crypto history</div>
       </div>
       <Button variant="primary" className="relative z-10" href="/liquidity">
         <span>Deposit Now</span>
