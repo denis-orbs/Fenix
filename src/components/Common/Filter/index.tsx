@@ -32,7 +32,7 @@ const Filter = ({ options, currentTab, setCurrentTab }: FilterProps) => {
                   : `${isMobile ? 'tertiary' : 'default'}`
               }
               className="h-[40px] md:h-auto w-full md:w-auto
-              !text-xs !lg:text-xl
+              !text-sm !lg:text-xl
               "
             >
               {option}
