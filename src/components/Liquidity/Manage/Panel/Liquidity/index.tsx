@@ -476,13 +476,13 @@ const Manage = ({}: {}) => {
       </div>
 
       <ApproveButtons 
-        shouldApproveFirst={shouldApproveFirst} 
-        shouldApproveSecond={shouldApproveSecond} 
+        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : shouldApproveFirst} 
+        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : shouldApproveSecond} 
         token0={firstToken} 
         token1={secondToken} 
         handleApprove={handleApprove} 
-        mainFn={handleIncreaseLiquidity} 
-        mainText={'Add Liquidity'} 
+        mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity} 
+        mainText={optionActive === 'WITHDRAW' ? 'Withdraw Liquidity' : 'Add Liquidity'} 
         isLoading={isLoading}
       />
     </>
