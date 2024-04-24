@@ -29,6 +29,7 @@ import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
 import cn from '@/src/library/utils/cn'
+import { useAlgebraMultiRouting } from './useAlgebraMultiRouting'
 
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
@@ -256,6 +257,7 @@ const Panel = () => {
     tokenGet.address as `0x${string}`,
     tokenSell.address as `0x${string}`
   )
+  console.log(tokenGet.address)
 
   const {
     data: stateOfAMM,
@@ -323,6 +325,8 @@ const Panel = () => {
     return () => clearInterval(interval)
   }, [swapValue, forValue, currentPool, account, approvalData, quoteExactInputSingleCall, outputResult, stateOfAMM])
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
+
+  const multiRouting = useAlgebraMultiRouting()
 
   return (
     <section className="box-panel-trade">
