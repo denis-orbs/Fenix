@@ -1293,9 +1293,10 @@ opacity-70
   bg-no-repeat
   bg-cover
   xl:w-[1135px]
-  2xl:h-[133px]
-  max-2xl:w-[532px]
-  max-2xl:h-[420px];
+  xl:h-[133px]
+  max-xl:w-[532px]
+  max-xl:h-[420px]
+  mx-auto;
 }
 
 .mobile-info-box {
