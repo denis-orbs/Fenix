@@ -7,6 +7,8 @@ import {
   getAllUserAmounts,
   getIchiVaultInfo,
   getVaultsByTokens,
+  getLpApr,
+  VaultApr,
 } from '@ichidao/ichi-vaults-sdk'
 import ichiVaultsData from './ichiVaultsData.json'
 import { getWeb3Provider } from '../../utils/web3'
@@ -21,6 +23,7 @@ export interface IchiVault {
   tokenB: string
   allowTokenA: boolean
   allowTokenB: boolean
+  apr: VaultApr
 }
 
 export const useIchiVault = (providedToken0?: string, providedToken1?: string) => {
@@ -34,10 +37,34 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
   const tokenB = sortedTokensArray[1].toLowerCase()
 
   const [vault, setVault] = useState<IchiVault[] | null>()
+
+  const getLp = async (vadd: string) => {
+    const web3Provider = getWeb3Provider()
+    const dex = SupportedDex.Fenix
+    const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
+    return averageDtr
+  }
+
   useEffect(() => {
     const tokenVaults = ichiVaults.filter((vault) => {
       return vault.tokenA === tokenA && vault.tokenB === tokenB
     })
+
+    tokenVaults.forEach(async (v) => {
+      const kapr = await getLp(v.id)
+      v.apr = kapr
+      // console.log(v)
+      return v
+    })
+
+    // const tokenVaultsWithApr = tokenVaults.map(async (token) => {
+    //   const apr = await getLp(token.id)
+    //   console.log('apr', apr)
+    //   token.apr = apr
+    //   return token
+    // })
+    // console.log('mod', tokenVaultsWithApr)
+
     setVault(tokenVaults)
   }, [token0, token1, tokenA, tokenB])
 

@@ -63,7 +63,7 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
                 }
               }}
             >
-              Balance: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
+              Available: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
             </span>
           </div>
         </div>
