@@ -86,7 +86,7 @@ const PointsProgram = () => {
       <div className="py-10">
         <div className="flex items-center justify-center flex-col mb-8">
           <Image
-            src="/static/images/orbit.png"
+            src="/static/images/orbit.svg"
             className="mb-2"
             alt="logo"
             width={52}
