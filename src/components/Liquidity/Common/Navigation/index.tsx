@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+// import Link from 'next/link'
 import NavItem from './NavItem'
 import { NAV_LIST } from "../../data"
 
@@ -15,10 +15,10 @@ const Navigation = () => {
           />
         ))}
       </div>
-      <Link target="_blank" href="https://discord.com/invite/fenixfi" className="min-w-[150px] flex items-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500 justify-center">
+      {/* <Link target="_blank" href="https://discord.com/invite/fenixfi" className="min-w-[150px] flex items-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500 justify-center">
         <span className="icon-discord"></span>
         <p className="text-sm">Need help?</p>
-      </Link>
+      </Link> */}
     </div>
   )
 }
