@@ -9,6 +9,7 @@ import { IToken } from '@/src/library/types'
 
 const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, shownPercentage, token1, token2, multiplier }: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage: any, token1?: IToken, token2?: IToken, multiplier?: any}) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
+  const [currentPercentageShown, setCurrentPercentShown] = useState(5)
 
   useEffect(() => {
     if(currentStrategy == StrategyType.NARROW) setCurrentPercentage(2.5)
@@ -67,7 +68,7 @@ const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, sho
       <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
         <div className="flex items-center gap-2 text-white opacity-75">
           <span>±</span>
-          <span className="text-[30px] leading-normal font-light">{currentPercentage == -1 ? "Full Range" : currentPercentage}%</span>
+          <span className="text-[30px] leading-normal font-light">{currentPercentageShown == -1 ? "Full Range" : currentPercentageShown}%</span>
         </div>
         <div className="max-w-[274px] flex-grow">
           <InputRange
@@ -78,6 +79,7 @@ const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, sho
             max={100}
             disabled={false}
             onChange={(value) => handlePercentageChange(value)}
+            onChangeShown={(value) => setCurrentPercentShown(value)}
           />
         </div>
       </div>

@@ -266,8 +266,8 @@ const Manage = ({}: {}) => {
           [
             positionData.id,
             lpValue,
-            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
+            Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
+            Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
             11114224550,
           ],
         ],
@@ -289,7 +289,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           firstToken.address,
-          ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
+          Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
           account.address,
         ],
       }),
@@ -298,7 +298,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           secondToken.address,
-          ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
+          Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
           account.address,
         ],
       }),
@@ -453,6 +453,9 @@ const Manage = ({}: {}) => {
                   max={100}
                   disabled={false}
                   onChange={(value) => {
+                    setWithdrawPercent(value)
+                  }}
+                  onChangeShown={(value) => {
                     setWithdrawPercent(value)
                   }}
                 />
