@@ -61,13 +61,13 @@ const Main = () => {
 
   const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
   console.log(liquidityTable, 'liquidityTable')
-  const tvl = '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(2)
+  const tvl = '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(0)
   const fee =
     '$ ' +
     liquidityTable
       .reduce((total: any, pair: any) => total + Number(pair.volumeUSD) * (Number(pair.fee) / 100), 0)
-      .toFixed(2)
-  const volume = '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(2)
+      .toFixed(0)
+  const volume = '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(0)
 
   return (
     <div className="h-[500px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">
