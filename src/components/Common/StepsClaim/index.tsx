@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { StepBox } from '@/src/components/UI'
+import StepBox from '@/src/components/Common/Boxes/StepBox'
 import ReadMoreModal from '@/src/components/Modals/Liquidity/ReadMore'
 import useStore from '@/src/state/zustand'
 
@@ -22,7 +22,7 @@ const StepsClaim = ({ steps }: StepsProps) => {
 
   return (
     <StepBox>
-      <div className="flex flex-col justify-center w-full bg-shark-400 bg-opacity-40 px-10">
+      <div className="flex flex-col justify-center w-full px-6 relative z-50">
         <h4 className="w-full mb-3 text-sm text-white">Start now</h4>
         <div className="relative flex flex-col w-auto">
           {steps.map((step, index) => (
