@@ -14,6 +14,7 @@ import { getAlgebraPoolPrice, getAmounts, getPriceAndTick, getRatio } from '@/sr
 import { ethers } from 'ethers'
 import { formatNumber } from '@/src/library/utils/numbers'
 import Loader from '@/src/components/UI/Icons/Loader'
+import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
 
 interface StateType {
   price: number
@@ -21,7 +22,6 @@ interface StateType {
 }
 
 const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IToken[] }) => {
-  const NATIVE_ETH_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   const [firstToken, setFirstToken] = useState({
     name: 'Fenix',
     symbol: 'FNX',
@@ -174,11 +174,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     const _firstValue = isInverse ? secondValue : firstValue
     const _secondValue = isInverse ? firstValue : secondValue
 
-    const _ethValue = _firstToken.address == NATIVE_ETH_ADDRESS ? BigInt(Math.floor(Number(formatNumber(Number(_firstValue))) * (1e18))) 
-                      : _secondToken.address == NATIVE_ETH_ADDRESS ? BigInt(Math.floor(Number(formatNumber(Number(_secondValue))) * (1e18))) 
+    const _ethValue = _firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? BigInt(Math.floor(Number(formatNumber(Number(_firstValue))) * (1e18))) 
+                      : _secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? BigInt(Math.floor(Number(formatNumber(Number(_secondValue))) * (1e18))) 
                       : BigInt(0)
-    _firstToken.address = _firstToken.address == NATIVE_ETH_ADDRESS ? "0x4300000000000000000000000000000000000004" : _firstToken.address
-    _secondToken.address = _secondToken.address == NATIVE_ETH_ADDRESS ? "0x4300000000000000000000000000000000000004" : _secondToken.address
+    _firstToken.address = _firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : _firstToken.address
+    _secondToken.address = _secondToken.address?.toLocaleLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : _secondToken.address
 
     writeContractAsync(
       {
