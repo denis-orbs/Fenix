@@ -72,23 +72,12 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     }
 
     const asyncFn = async () => {
-      console.log('current tick', poolState.currentTick)
       const realRatio: number = parseFloat(await getRatio(poolState.currentTick, higherTick, lowerTick))
-      console.log(
-        'log',
-        'get ratio',
-        realRatio,
-        isInverse ? parseFloat(realRatio.toString()) : 1 / parseFloat(realRatio.toString())
-      )
-
-      console.log('real ratio', realRatio)
       const decimalDifference = 10 ** Math.abs(firstToken.decimals - secondToken.decimals)
       const decimalMultiplier = firstToken.decimals > secondToken.decimals ? decimalDifference : 1/decimalDifference
 
       setDecMultiplier(decimalMultiplier)
       setRatio(isInverse ? parseFloat(realRatio.toString()) / decimalMultiplier : 1 / parseFloat(realRatio.toString()) / decimalMultiplier)
-      
-      console.log('tx', firstToken, secondToken)
     }
 
     asyncFn()
@@ -96,14 +85,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   useEffect(() => {
     setSecondValue((formatNumber(Number(firstValue) * ratio)))
-    // console.log('log', 'set second token after ratio')
   }, [ratio])
 
-  useEffect(() => {
-    // console.log('Do', firstToken.address, secondToken.address, ratio, isInverse, multiplier)
-  }, [firstToken.address, secondToken.address, ratio, isInverse])
-
-  useEffect(() => {})
   useEffect(() => {
     if (defaultPairs.length == 2) {
       setFirstToken(defaultPairs[0])
@@ -116,16 +99,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   useEffect(() => {
     setIsInverse(BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
-    console.log('log', 'set inverse', BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
-
-    console.log(
-      'isInverse',
-      firstToken.address as string,
-      secondToken.address as string,
-      BigInt(firstToken.address as string),
-      BigInt(secondToken.address as string),
-      BigInt(firstToken.address as string) > BigInt(secondToken.address as string)
-    )
 
     const asyncGetAllowance = async () => {
       const allowanceFirst: any = await getTokenAllowance(
@@ -149,12 +122,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   useEffect(() => {
     const asyncFn = async () => {
       const state = await getAlgebraPoolPrice(firstToken.address as Address, secondToken.address as Address)
-      console.log(state, 'price')
-      console.log('tx', 'state = ', state)
       setPoolState(state as StateType)
-      console.log('log', 'edit state', firstToken.address, secondToken.address, state)
 
-      //   console.log('price = ', Number((state as StateType).price) / 1e18, 'tick =', (state as StateType).currentTick)
       if (currentPercentage == -1) {
         setRangePrice1(0)
         setRangePrice2(-1)
@@ -191,8 +160,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           ((1 - priceAndTick1.price / poolState.price) * 100).toFixed(1),
           ((priceAndTick2.price / poolState.price - 1) * 100).toFixed(1),
         ])
-
-        console.log('log', 'price and tick', poolState.price)
       }
     }
 
@@ -206,19 +173,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     const _secondToken = isInverse ? firstToken : secondToken
     const _firstValue = isInverse ? secondValue : firstValue
     const _secondValue = isInverse ? firstValue : secondValue
-    
-    console.log('tx', [
-      _firstToken.address as Address,
-      _secondToken.address as Address,
-      lowerTick,
-      higherTick,
-      ethers.utils.parseUnits(_firstValue.toString(), 'ether'),
-      ethers.utils.parseUnits(_secondValue.toString(), 'ether'),
-      0,
-      0,
-      account.address as Address,
-      parseInt((+new Date() / 1000).toString()) + 60 * 60,
-    ])
 
     const _ethValue = _firstToken.address == NATIVE_ETH_ADDRESS ? BigInt(Math.floor(Number(formatNumber(Number(_firstValue))) * (1e18))) 
                       : _secondToken.address == NATIVE_ETH_ADDRESS ? BigInt(Math.floor(Number(formatNumber(Number(_secondValue))) * (1e18))) 
