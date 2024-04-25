@@ -78,7 +78,7 @@ const Main = () => {
   ]
 
   const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
-  console.log(liquidityTable, 'liquidityTable')
+  // console.log(liquidityTable, 'liquidityTable')
   EXCHANGE_LIST[0].description =
     '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(2)
   EXCHANGE_LIST[1].description =
@@ -89,9 +89,9 @@ const Main = () => {
   EXCHANGE_LIST[2].description =
     '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(2)
 
-  console.log('tvl', EXCHANGE_LIST[0].description)
-  console.log('fee', EXCHANGE_LIST[1].description)
-  console.log('volume', EXCHANGE_LIST[2].description)
+  // console.log('tvl', EXCHANGE_LIST[0].description)
+  // console.log('fee', EXCHANGE_LIST[1].description)
+  // console.log('volume', EXCHANGE_LIST[2].description)
 
   return (
     <div className="h-[500px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">

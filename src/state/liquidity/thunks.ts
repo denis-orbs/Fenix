@@ -230,6 +230,6 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
 
     return liqElements
   } catch (e) {
-    console.log(e, 'error')
+    // console.log(e, 'error')
   }
 })

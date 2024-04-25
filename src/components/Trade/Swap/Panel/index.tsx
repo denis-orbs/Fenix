@@ -126,7 +126,7 @@ const Panel = () => {
         }
       )
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -150,7 +150,7 @@ const Panel = () => {
         }
       )
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 

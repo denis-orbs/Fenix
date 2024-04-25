@@ -89,19 +89,19 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     if (poolState.price == 0) return
 
     const asyncFn = async () => {
-      console.log('current tick', poolState.currentTick)
+      // console.log('current tick', poolState.currentTick)
       const realRatio: number = parseFloat(await getRatio(poolState.currentTick, higherTick, lowerTick))
-      console.log(
-        'log',
-        'get ratio',
-        realRatio,
-        isInverse ? parseFloat(realRatio.toString()) : 1 / parseFloat(realRatio.toString())
-      )
+      // console.log(
+      //   'log',
+      //   'get ratio',
+      //   realRatio,
+      //   isInverse ? parseFloat(realRatio.toString()) : 1 / parseFloat(realRatio.toString())
+      // )
 
-      console.log('real ratio', realRatio)
+      // console.log('real ratio', realRatio)
       setRatio(isInverse ? parseFloat(realRatio.toString()) : 1 / parseFloat(realRatio.toString()))
 
-      console.log('tx', multiplier, firstToken, secondToken)
+      // console.log('tx', multiplier, firstToken, secondToken)
     }
 
     asyncFn()
@@ -129,16 +129,16 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   useEffect(() => {
     setIsInverse(BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
-    console.log('log', 'set inverse', BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
+    // console.log('log', 'set inverse', BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
 
-    console.log(
-      'isInverse',
-      firstToken.address as string,
-      secondToken.address as string,
-      BigInt(firstToken.address as string),
-      BigInt(secondToken.address as string),
-      BigInt(firstToken.address as string) > BigInt(secondToken.address as string)
-    )
+    // console.log(
+    //   'isInverse',
+    //   firstToken.address as string,
+    //   secondToken.address as string,
+    //   BigInt(firstToken.address as string),
+    //   BigInt(secondToken.address as string),
+    //   BigInt(firstToken.address as string) > BigInt(secondToken.address as string)
+    // )
 
     const asyncGetAllowance = async () => {
       const allowanceFirst: any = await getTokenAllowance(
@@ -162,10 +162,10 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   useEffect(() => {
     const asyncFn = async () => {
       const state = await getAlgebraPoolPrice(firstToken.address as Address, secondToken.address as Address)
-      console.log(state, 'price')
-      console.log('tx', 'state = ', state)
-      setPoolState(state as StateType)
-      console.log('log', 'edit state', firstToken.address, secondToken.address, state)
+      // console.log(state, 'price')
+      // console.log('tx', 'state = ', state)
+      // setPoolState(state as StateType)
+      // console.log('log', 'edit state', firstToken.address, secondToken.address, state)
 
       //   console.log('price = ', Number((state as StateType).price) / 1e18, 'tick =', (state as StateType).currentTick)
       if (currentPercentage == -1) {
@@ -205,7 +205,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           ((priceAndTick2.price / poolState.price - 1) * 100).toFixed(1),
         ])
 
-        console.log('log', 'price and tick', poolState.price)
+        // console.log('log', 'price and tick', poolState.price)
       }
     }
 
@@ -220,18 +220,18 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     const _firstValue = isInverse ? secondValue : firstValue
     const _secondValue = isInverse ? firstValue : secondValue
 
-    console.log('tx', [
-      _firstToken.address as Address,
-      _secondToken.address as Address,
-      lowerTick,
-      higherTick,
-      ethers.utils.parseUnits(_firstValue.toString(), 'ether'),
-      ethers.utils.parseUnits(_secondValue.toString(), 'ether'),
-      0,
-      0,
-      account.address as Address,
-      parseInt((+new Date() / 1000).toString()) + 60 * 60,
-    ])
+    // console.log('tx', [
+    //   _firstToken.address as Address,
+    //   _secondToken.address as Address,
+    //   lowerTick,
+    //   higherTick,
+    //   ethers.utils.parseUnits(_firstValue.toString(), 'ether'),
+    //   ethers.utils.parseUnits(_secondValue.toString(), 'ether'),
+    //   0,
+    //   0,
+    //   account.address as Address,
+    //   parseInt((+new Date() / 1000).toString()) + 60 * 60,
+    // ])
 
     writeContractAsync(
       {
@@ -264,7 +264,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           setIsLoading(false)
         },
         onError: (e) => {
-          console.log(e)
+          // console.log(e)
           toast(`Added LP failed. `)
           setIsLoading(false)
         },

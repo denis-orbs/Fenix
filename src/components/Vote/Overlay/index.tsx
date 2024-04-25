@@ -57,7 +57,7 @@ const Overlay = () => {
       }
     } catch (err: any) {
       setloading(false)
-      console.log(err)
+      // console.log(err)
       toast('Transaction failed ❌')
     }
   }
@@ -79,7 +79,7 @@ const Overlay = () => {
       }
     } catch (err: any) {
       setloading(false)
-      console.log(err)
+      // console.log(err)
       toast('Transaction failed ❌')
     }
   }

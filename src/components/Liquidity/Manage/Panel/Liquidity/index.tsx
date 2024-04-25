@@ -133,7 +133,7 @@ const Manage = ({}: {}) => {
     asyncGetAllowance(data.token0, data.token1)
     getList(data.token0, data.token1)
     setLpValue(Number(BigInt(data.liquidity) / BigInt(2)))
-    console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
+    // console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
   }
 
   useEffect(() => {
@@ -215,8 +215,8 @@ const Manage = ({}: {}) => {
             positionData.id,
             ethers.utils.parseUnits(firstValue, 'ether'),
             ethers.utils.parseUnits(secondValue, 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1 - slippage)), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1 - slippage)), 'ether'),
             11114224550,
           ],
         ],
@@ -237,7 +237,7 @@ const Manage = ({}: {}) => {
 
       {
         onSuccess: async (x) => {
-          console.log('success', x, +new Date())
+          // console.log('success', x, +new Date())
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
             toast(`Added successfully.`)
@@ -266,8 +266,8 @@ const Manage = ({}: {}) => {
           [
             positionData.id,
             lpValue,
-            Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
-            Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
+            Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
+            Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
             11114224550,
           ],
         ],
@@ -289,7 +289,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           firstToken.address,
-          Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
+          Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
           account.address,
         ],
       }),
@@ -298,7 +298,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           secondToken.address,
-          Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
+          Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
           account.address,
         ],
       }),
@@ -490,16 +490,19 @@ const Manage = ({}: {}) => {
             : handleDecreaseLiquidity()
         }}
       >
-        {
-        isLoading ? 
-          <Loader color="white" size={20} /> 
-        : optionActive == 'ADD'
-          ? shouldApproveFirst
-            ? `Approve ${firstToken.symbol}`
-            : shouldApproveSecond
-              ? `Approve ${secondToken.symbol}`
-              : `Add Liquidity`
-          : `Remove Liquidity`}
+        {isLoading ? (
+          <Loader color="white" size={20} />
+        ) : optionActive == 'ADD' ? (
+          shouldApproveFirst ? (
+            `Approve ${firstToken.symbol}`
+          ) : shouldApproveSecond ? (
+            `Approve ${secondToken.symbol}`
+          ) : (
+            `Add Liquidity`
+          )
+        ) : (
+          `Remove Liquidity`
+        )}
       </Button>
     </>
   )
