@@ -8,6 +8,7 @@ import { erc20Abi, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useSimulateContract } from 'wagmi'
 import { type WriteContractErrorType } from '@wagmi/core'
 import Chart from '@/src/components/Liquidity/Deposit/Chart'
+import { useShowChart } from '@/src/state/user/hooks'
 
 import { IToken } from '@/src/library/types'
 import { useReadContract, useWriteContract } from 'wagmi'
@@ -80,6 +81,7 @@ const Panel = () => {
     const foundToken = data.find((token) => token.basetoken.symbol === symbol)
     return foundToken ? foundToken.priceUSD : null
   }, [])
+  const showChart = useShowChart()
 
   // To have a 0s load, use static default tokens and fetch the prices as soon as the component mounts
   // Ideally, we should do this on a loader in redux and share the data across the app
@@ -447,6 +449,12 @@ const Panel = () => {
     setMultiHopPriceImpact(swapValuePrice.div(forValuePrice).times(101).times(1.001).toString())
   }, [swapValue, forValue, tokenSell.price, tokenGet.price])
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
+  useEffect(() => {
+    setForValue('')
+  }, [tokenGet])
+  useEffect(() => {
+    if (swapValue == '') setForValue('')
+  }, [swapValue])
   return (
     <>
       <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
