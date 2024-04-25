@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link'
 import React, { useEffect } from 'react'
 
 interface NotificationProps {
@@ -7,6 +8,7 @@ interface NotificationProps {
   txHash?: number
   timestamp?: number
   message?: string
+  time?: number
 }
 
 type StatusInfo = {
@@ -16,11 +18,11 @@ type StatusInfo = {
   color: string
 }
 
-const Notification = ({ show = true, status }: NotificationProps) => {
+const Notification = ({ show = true, status, timestamp, txHash , time = 3000 }: NotificationProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      document.querySelector('.notification')?.classList.add('visible')
-    }, 3000)
+      document.querySelector('.notification')?.classList.add('hidden')
+    }, time)
     return () => clearTimeout(timer)
   }, [])
 
@@ -66,15 +68,18 @@ const Notification = ({ show = true, status }: NotificationProps) => {
             <div className="flex items-center justify-center w-10 h-10 p-2 rounded-lg bg-shark-400 bg-opacity-40">
               <span className={`inline-block text-xl ${STATUS[status].icon} `} />
             </div>
-            <p className="text-white text-xs max-w-[150px]">{STATUS[status].text}</p>
+            <p className="text-white text-xs max-w-[150px]">{STATUS[status].text} </p>
           </div>
           <div className="flex items-center gap-3">
             <p className={`inline-block text-xs ${STATUS[status].color}`}>
               <span className="mr-2 icon-link"></span>
-              View In Explorer
+              <Link href={`https://blastscan.io/tx/${txHash}`} target="_blank">
+                View In Explorer
+              </Link>
             </p>
             <p className="inline-block text-xs text-shark-100">
-              <span className="mr-2 icon-clock"></span>5 seconds ago...
+              <span className="mr-2 icon-clock"></span>
+              {timestamp} seconds ago...
             </p>
           </div>
         </div>
