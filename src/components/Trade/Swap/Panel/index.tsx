@@ -258,6 +258,8 @@ const Panel = () => {
       parseUnits(swapValue, tokenSell.decimals),
     ],
   })
+  console.log(quoteExactInputCall?.data?.result)
+  // TODO: VER SI SE USA ESTO?
   const sqrtPriceX96After = swapAvailable
     ? singleSwapAvailable
       ? quoteExactInputSingleCall?.data?.result[2] || 0n
@@ -422,11 +424,10 @@ const Panel = () => {
   useEffect(() => {
     const swapValuePrice = toBN(tokenSell.price).multipliedBy(swapValue)
     const forValuePrice = toBN(tokenGet.price).multipliedBy(forValue)
-    console.log(forValuePrice.div(swapValuePrice).times(100).toString())
-    console.log(swapValuePrice.div(forValuePrice).times(100).toString())
-    console.log(swapValuePrice.toString())
-    console.log(forValuePrice.toString())
-    setMultiHopPriceImpact(swapValuePrice.div(forValuePrice).times(100).toString())
+    const diff = swapValuePrice.minus(forValuePrice)
+    console.log(forValue)
+    console.log(tokenGet.price)
+    setMultiHopPriceImpact(diff.div(swapValuePrice).times(100).abs().multipliedBy(-1).toString())
   }, [swapValue, forValue, tokenSell.price, tokenGet.price])
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
   useEffect(() => {
