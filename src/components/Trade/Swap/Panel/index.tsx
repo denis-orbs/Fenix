@@ -13,7 +13,7 @@ import { useReadContract, useWriteContract } from 'wagmi'
 import { blastSepolia } from 'viem/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { algebraQuoterV2ABI } from '@/src/library/web3/abis'
-import { Button } from '@/src/components/UI'
+import { Button, Switch } from '@/src/components/UI'
 import { ethers } from 'ethers'
 import { algebraSwapABI } from '@/src/library/web3/abis/algebraSwap'
 import useStore from '@/src/state/zustand'
@@ -29,6 +29,7 @@ import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
 import cn from '@/src/library/utils/cn'
+import { useSetChart, useShowChart } from "@/src/state/user/hooks"
 
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
@@ -43,6 +44,13 @@ enum ButtonState {
   LOADING = 'Loading...',
 }
 const Panel = () => {
+  const showChart = useShowChart()
+  const setChart = useSetChart()
+  const [isChartVisible, setIsChartVisible] = useState(showChart)
+  const handleSwitch = () => {
+    setChart(!isChartVisible)
+    setIsChartVisible(prevState => !prevState)
+  }
   // FIXME
   const [tokenSell, setTokenSell] = useState<IToken>({
     name: 'USDB',
@@ -126,7 +134,7 @@ const Panel = () => {
         }
       )
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -150,7 +158,7 @@ const Panel = () => {
         }
       )
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -325,7 +333,7 @@ const Panel = () => {
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
 
   return (
-    <section className="box-panel-trade">
+    <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none': ''}`}>
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-5">
@@ -334,6 +342,12 @@ const Panel = () => {
             </div>
 
             <div className="flex gap-x-3 items-center">
+              <div className="flex items-center gap-3">
+                <Switch active={showChart} setActive={handleSwitch} />
+                <div className="text-xs text-shark-100 font-normal whitespace-nowrap">
+                 Chart
+                </div>
+              </div>
               <span className="text-shark-100 text-sm">{swapFee && `${formatUnits(BigInt(swapFee), 4)}% fee`}</span>
               <ReloadIcon
                 className="text-shark-100 !cursor-pointer"

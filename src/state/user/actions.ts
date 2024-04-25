@@ -4,3 +4,4 @@ export const resetUser = createAction('user/resetUser')
 export const updateSlippageTolerance = createAction<{ slippageTolerance: number | 'auto' }>(
   'user/updateSlippageTolerance'
 )
+export const setChart = createAction<boolean>('user/setChart')

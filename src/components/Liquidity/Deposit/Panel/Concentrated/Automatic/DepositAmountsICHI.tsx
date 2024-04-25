@@ -113,7 +113,7 @@ const DepositAmountsICHI = ({
 
         return
       } catch (error) {
-        console.log(error)
+        // console.log(error)
         setWaitingApproval(false)
 
         return
@@ -144,16 +144,23 @@ const DepositAmountsICHI = ({
       toast.success('Deposited successfully')
       setLoading(false)
     } catch (error) {
-      console.log(error)
+      // console.log('gg', error.reason)
+      // console.log('gg', error)
       if (error instanceof Error && 'code' in error) {
         if (error.code == 'ACTION_REJECTED') {
           console.log(error)
-          toast.error('Action rejected')
+          // toast.error('Action rejected')
+          toast.error(error.message.split('(')[0].trim().toUpperCase())
+          setLoading(false)
+        } else if (error.reason == 'IV.deposit: deposits too large') {
+          console.log('hit')
+          toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
           setLoading(false)
         }
       } else {
-        console.log(error)
-        toast.error('Transaction failed')
+        // console.log(error.reason)
+        // toast.error('Transaction failed')
+        toast.error(error.message.split('(')[0].trim().toUpperCase())
         setLoading(false)
       }
     }
@@ -231,9 +238,9 @@ const DepositAmountsICHI = ({
         web3Provider,
         dex // fenix dex
       )
-      console.log(a)
+      // console.log(a)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
   return (
@@ -342,7 +349,7 @@ const DepositAmountsICHI = ({
                               ]
                             }
                           </span>
-                          {vault?.apr && (
+                          {vault?.apr ? (
                             <span className="text-sm">
                               APR :{' '}
                               {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
@@ -350,6 +357,8 @@ const DepositAmountsICHI = ({
                                 : vault?.apr[0]?.apr?.toFixed(0)}
                               %
                             </span>
+                          ) : (
+                            <span className="text-sm">APR : 0%</span>
                           )}
                         </div>
                       </div>

@@ -62,7 +62,7 @@ const MyStrategies = () => {
 
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
-    console.log(positions, 'amount')
+    // console.log(positions, 'amount')
     const positionsPoolAddresses = await positions.map((position: any) => {
       return {
         id: position.pool.id,
@@ -74,14 +74,14 @@ const MyStrategies = () => {
     const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
 
     const final = positions.map((position: positions, index: number) => {
-      console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
+      // console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
       return {
         ...position,
         depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
         depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
       }
     })
-    console.log('multicall amounts', positions, amounts, final)
+    // console.log('multicall amounts', positions, amounts, final)
     setposition(final)
     setpositionAmounts(amounts)
   }
