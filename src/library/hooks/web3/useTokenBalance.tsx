@@ -6,6 +6,7 @@ import { createConfig } from 'wagmi'
 import { ERC20_ABI } from '../../constants/abi'
 import { blast } from 'viem/chains'
 import { ethers } from 'ethers'
+import { publicClient } from '../../constants/viemClient'
 
 export async function getTokenBalance(token1: Address, user: Address) {
   if (!token1 || !user) return '0'
@@ -46,6 +47,8 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
    */
 
   const contractsList = tokens.map((item) => {
+    if(item.toLowerCase() == "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") item = "0x4300000000000000000000000000000000000004"
+
     return {
       abi: ERC20_ABI,
       address: item,
@@ -67,6 +70,8 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
   )
 
   const balances: any = {}
+  balances["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"] = await publicClient.getBalance({address: user})
+
   for (let i = 0; i < balance.length; i++) {
     balances[tokens[i]] = balance[i].result
   }

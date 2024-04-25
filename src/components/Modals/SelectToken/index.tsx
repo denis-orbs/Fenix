@@ -139,7 +139,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                     <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
                       {_tokenBalances
                         ? `$${formatCurrency(
-                            ((parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals) * token.price)
+                            ((parseInt(_tokenBalances[(token.address as Address).toLowerCase() as `0x${string}`]) / 10 ** token.decimals) * token.price)
                               .toFixed(2)
                               .replace('NaN', '0')
                           )}`
