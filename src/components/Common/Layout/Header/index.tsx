@@ -41,7 +41,7 @@ const Header = () => {
             )}
           </Link>
         </div>
-        <div className={`${pathname === '/' ? 'w-2/4' : 'w-full'} relative z-10`}>
+        <div className={`${pathname === '/' ? '' : 'w-full'} relative z-10`}>
           <Menu />
         </div>
         <div

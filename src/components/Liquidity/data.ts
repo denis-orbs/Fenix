@@ -93,7 +93,7 @@ export const NAV_LIST = [
   // },
   {
     name: 'My Positions',
-    description: "Check your position's",
+    description: "Check your position",
     icon: 'icon-auto-graph',
     path: '/dashboard',
     active: true,

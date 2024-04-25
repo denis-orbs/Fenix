@@ -17,10 +17,9 @@ interface ForProps {
   value: string
   setToken: (token: IToken) => void
   setValue: (value: string) => void
-  setInputForActive: (active: boolean) => void
 }
 
-const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) => {
+const For = ({ token, setToken, setValue, value }: ForProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
   const { account, isConnected } = useActiveConnectionDetails()
 
@@ -63,7 +62,7 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
                 }
               }}
             >
-              Balance: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
+              Available: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
             </span>
           </div>
         </div>
@@ -91,11 +90,11 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
         <div className="relative w-full xl:w-4/6">
           <NumericalInput
             value={value.toString()}
-            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm cursor-not-allowed"
             placeholder="0.0"
+            disabled
             onUserInput={(input) => {
-              setInputForActive(true)
-              setValue(input)
+              // setValue(input)
             }}
             precision={token.decimals}
           />

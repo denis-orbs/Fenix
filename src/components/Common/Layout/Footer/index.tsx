@@ -37,7 +37,7 @@ const Footer = () => {
                 className={`flex gap-2 flex-col mb-5 xl:mb-0 ${pathname === '/' ? 'xl:items-center xl:flex-row max-md:w-[100%] w-[70%]' : 'md:items-center md:flex-row sm:w-[70%]'}`}
               >
                 <div className="flex items-center gap-4">
-                  {/* <FenixIcon className="text-4xl" /> */}
+                  {pathname !== '/' && <FenixIcon className="text-4xl" />}
                   {/* <p className="text-shark-100 text-sm leading-normal font-medium md:mb-0 block xl:hidden">Navigation</p> */}
                 </div>
                 <div className="flex  items-center relative">

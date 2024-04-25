@@ -30,16 +30,12 @@ const WithdrawAmountsICHI = ({
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
 
-  const token0 = useToken0()
-  const [vaultToken, setVaultToken] = useState(token0)
-
-  const token1 = useToken1()
   const vaultAddress =
     allIchiVaultsByTokenPair?.find((vault) => {
-      if (vault.tokenA.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenA) {
+      if (vault.tokenA.toLowerCase() === selected.toLowerCase() && vault.allowTokenA) {
         return true
       }
-      if (vault.tokenB.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenB) {
+      if (vault.tokenB.toLowerCase() === selected.toLowerCase() && vault.allowTokenB) {
         return true
       }
       return false
@@ -63,15 +59,22 @@ const WithdrawAmountsICHI = ({
       setTotalUserShares('0')
       return
     }
+
+    setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
     const getTotalUserShares = async () => {
       const data = await getUserBalance(account, vaultAddress.id, web3Provider, dex)
       setTotalUserShares(data)
     }
     getTotalUserShares()
-
-    setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
   }, [account, vaultAddress, web3Provider])
-
+  useEffect(() => {
+    if (allIchiVaultsByTokenPair && allIchiVaultsByTokenPair?.length > 0) {
+      const firstToken = allIchiVaultsByTokenPair[0]
+      setIsSelected(
+        firstToken.allowTokenA ? firstToken.tokenA.toLocaleLowerCase() : firstToken.tokenB.toLocaleLowerCase()
+      )
+    }
+  }, [allIchiVaultsByTokenPair])
   // withdraw function
   // FIXME: poner toast??
   const withdrawFromVault = async () => {
@@ -95,7 +98,9 @@ const WithdrawAmountsICHI = ({
           <div className=" text-white">Withdraw amounts</div>
           <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
             <span className="icon-wallet text-xs"></span>
-            Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'}
+            {/* Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'} */}
+            Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'}{' '}
+            {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -165,14 +170,13 @@ const WithdrawAmountsICHI = ({
                   >
                     {allIchiVaultsByTokenPair.map((vault) => (
                       <div
-                        className="flex justify-start items-center gap-3 cursor-pointer m-3 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
+                        className="flex justify-start items-center gap-3 cursor-pointer m-1 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}
                         onClick={() => {
                           setIsActive(!isActive)
                           setIsSelected(
                             vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
                           )
-                          setVaultToken(vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
                         }}
                       >
                         <Image
@@ -186,13 +190,24 @@ const WithdrawAmountsICHI = ({
                           width={20}
                           height={20}
                         />
-                        <span className="text-base">
-                          {
-                            tokenAddressToSymbol[
-                              vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
-                            ]
-                          }
-                        </span>
+                        <div className="flex flex-col">
+                          <span className="text-base">
+                            {
+                              tokenAddressToSymbol[
+                                vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
+                              ]
+                            }
+                          </span>
+                          {vault?.apr && (
+                            <span className="text-sm">
+                              APR :{' '}
+                              {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
+                                ? '0'
+                                : vault?.apr[0]?.apr?.toFixed(0)}
+                              %
+                            </span>
+                          )}
+                        </div>
                         {/* <span className="text-base">{token?.symbol}</span> */}
                       </div>
                     ))}

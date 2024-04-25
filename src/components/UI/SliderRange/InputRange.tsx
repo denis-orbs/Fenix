@@ -9,6 +9,7 @@ export interface IInputRangeProps {
   thumbSize?: number;
   onChange?: (value: number) => void;
   disabled: boolean
+  onChangeShown?: (value: number) => void
 }
 
 const InputRange = ({
@@ -19,7 +20,8 @@ const InputRange = ({
   height = 5,
   thumbSize = 11,
   onChange,
-  disabled
+  disabled,
+  onChangeShown
 }: IInputRangeProps) => {
   const [currentValue, setCurrentValue] = useState(value)
 
@@ -31,6 +33,14 @@ const InputRange = ({
   useEffect(() => {
     setCurrentValue(value)
   }, [value])
+
+  useEffect(() => {
+    if(onChangeShown) {
+      onChangeShown(currentValue)
+      console.log(currentValue)
+    }
+    console.log("ddd", currentValue)
+  }, [currentValue])
 
   const isDisabledClass = disabled
     ? '[&::-webkit-slider-thumb]:bg-[#333A43] [&::-webkit-slider-thumb]:pointer-events-none'
@@ -54,7 +64,7 @@ const InputRange = ({
       step={step}
       value={currentValue}
       onMouseDown={(e) => window.getSelection()?.removeAllRanges()}
-      onChange={(e) => setCurrentValue(Number(e.target.value))}
+      onChange={(e) => {setCurrentValue(Number(e.target.value)); onChangeShown && onChangeShown(Number(e.target.value))}}
       onMouseUp={(e) => onChange && onChange(currentValue)}
       onTouchEnd={(e) => onChange && onChange(currentValue)}
       disabled={disabled}

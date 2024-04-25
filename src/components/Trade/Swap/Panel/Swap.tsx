@@ -64,7 +64,7 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
                 }
               }}
             >
-              Balance: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
+              Available: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
             </span>
           </div>
         </div>

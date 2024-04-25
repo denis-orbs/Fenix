@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 'use client'
 
 import { Button, TableCell, TableRow } from '@/src/components/UI'
@@ -41,9 +42,9 @@ const RowData = ({
 
   return (
     <>
-      <TableRow className="hidden lg:flex">
+      <TableRow className="hidden 2xl:flex">
         <TableCell
-          className={`${activeRange ? 'w-[20%]' : width >= 1300 ? 'w-[30%]' : width < 1300 || width >= 1280 ? 'w-[27%]' : 'w-[25%]'}`}
+          className={`${activeRange ? 'w-[20%]' : width >= 1300 ? 'w-[20%]' : width < 1300 || width >= 1280 ? 'w-[27%]' : 'w-[25%]'}`}
         >
           <div className="flex items-center gap-2">
             <div className="flex items-center">
@@ -87,7 +88,7 @@ const RowData = ({
                   </span>
                 )}
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  {row.pairDetails.fee} %
+                  {row.pairDetails.fee}%
                 </span>
                 {/* <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
@@ -117,9 +118,9 @@ const RowData = ({
         )} */}
 
         <TableCell
-          className={`${activeRange ? 'w-[8%]' : width <= 1250 ? 'w-[15%]' : 'w-[10%]'} flex justify-center items-center`}
+          className={`${activeRange ? 'w-[8%]' : width <= 1250 ? 'w-[10%]' : 'w-[15%]'} flex justify-center items-center`}
         >
-          <div className="flex items-center gap-3 ">
+          <div className="flex  justify-center items-center gap-2 ">
             {/* {totalCampaigns.map((campaign) => { })} */}
             <span
               ref={hoverRef}
@@ -159,8 +160,8 @@ const RowData = ({
                 height={20}
               />
             </span>
-            <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.apr.toFixed(0)} %{' '}
+            <p className="px-1 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              {row.pairDetails.apr.toFixed(0)}%
             </p>
           </div>
           {/* <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
@@ -168,9 +169,9 @@ const RowData = ({
           </p> */}
         </TableCell>
 
-        <TableCell className={`${width <= 1250 ? 'w-[10%]' : 'w-[15%]'}`}>
+        <TableCell className={`${width <= 1250 ? 'w-[10%]' : 'w-[10%]'}`}>
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$ {formatCurrency(Number(row.pairDetails.tvl))}</p>
+            <p className="mb-1 text-xs text-white">${formatCurrency(Number(row.pairDetails.tvl))}</p>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 {/* <Image
@@ -195,11 +196,11 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="w-[15%]">
+        <TableCell className="w-[20%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$ {formatCurrency(Number(row.pairDetails.volumeUSD))}</p>
+            <p className="mb-1 text-xs text-white">${formatCurrency(Number(row.pairDetails.volumeUSD))}</p>
             <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 text-xs text-shark-100">
+              <p className="flex items-center gap-2 font-normal text-xs text-shark-100 ">
                 <Image
                   src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
                   alt="token"
@@ -209,7 +210,7 @@ const RowData = ({
                 />
                 {formatCurrency(Number(row.pairDetails.volumeToken0))} {row.pairDetails.token0Symbol}
               </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
+              <p className="flex items-center gap-2 text-xs text-shark-100 font-normal ">
                 <Image
                   src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
                   alt="token"
@@ -223,10 +224,10 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="w-[15%]">
+        <TableCell className="w-[20%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
             <p className="mb-1 text-xs text-white">
-              $ {formatCurrency(Number(row.pairDetails.volumeUSD) * (Number(row.pairDetails.fee) / 100))}{' '}
+              ${formatCurrency(Number(row.pairDetails.volumeUSD) * (Number(row.pairDetails.fee) / 100))}{' '}
             </p>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 text-xs text-shark-100">
@@ -255,8 +256,8 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="flex justify-end items-center w-[15%]">
-          <div className="flex gap-2 w-full">
+        <TableCell className="flex  items-center w-[15%]">
+          <div className="flex gap-2 w-full justify-center">
             {titleButton === '' ? (
               <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs ">
                 <span className="icon-info"></span>
