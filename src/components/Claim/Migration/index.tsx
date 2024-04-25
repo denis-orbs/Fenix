@@ -2,9 +2,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { MainBox } from '@/components/UI'
+import { MainBox } from '@/src/components/UI'
 import { EXCHANGE_LIST } from '../data'
-import InfoBox from '@/components/Common/InfoBox'
+import InfoBox from '@/src/components/Common/InfoBoxClaim'
 import Countdown from 'react-countdown'
 import { useAccount } from 'wagmi'
 import chrmigrateabi from '../../../abi/chrmigrate.json'
@@ -72,7 +72,7 @@ const Migration = () => {
     }).then((data) => {
       setfinalDate(parseInt(new BigNumber(data[0]?.result + data[1]?.result)))
     })
-  }, [])
+  }, [account?.address])
 
   return (
     <div className="flex flex-col justify-between w-full md:gap-10 md:flex-row md:items-center">

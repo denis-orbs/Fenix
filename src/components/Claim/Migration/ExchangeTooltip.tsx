@@ -1,6 +1,6 @@
 'use client'
 
-import { Tooltip } from '@/components/UI'
+import { Tooltip } from '@/src/components/UI'
 
 export interface Info {
   unlocked: number

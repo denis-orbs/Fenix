@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { StepBox } from '@/src/components/UI'
 import ReadMoreModal from '@/src/components/Modals/Liquidity/ReadMore'
-import useStore from '@/store'
+import useStore from '@/src/state/zustand'
 
 interface Step {
   title: string
