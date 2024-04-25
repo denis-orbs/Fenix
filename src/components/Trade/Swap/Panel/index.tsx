@@ -449,6 +449,12 @@ const Panel = () => {
     setMultiHopPriceImpact(swapValuePrice.div(forValuePrice).times(101).times(1.001).toString())
   }, [swapValue, forValue, tokenSell.price, tokenGet.price])
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
+  useEffect(() => {
+    setForValue('')
+  }, [tokenGet])
+  useEffect(() => {
+    if (swapValue == '') setForValue('')
+  }, [swapValue])
   return (
     <>
       <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
