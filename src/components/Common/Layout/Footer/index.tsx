@@ -15,7 +15,7 @@ const Footer = () => {
     const fetchCommitHash = async () => {
       try {
         const hash = await getCommitHash()
-        const shortenedHash = hash.substring(hash.length - 12)
+        const shortenedHash = hash.substring(hash.length - 7)
         setCommitHash(shortenedHash)
       } catch (error) {
         console.error('Error al obtener el hash del commit:', error)
@@ -98,20 +98,15 @@ const Footer = () => {
           </div>
         </div>
         <div
-          className={`flex flex-col gap-4 text-shark-100 text-xs ${pathname === '/' ? 'pl-28 pr-10 max-md:gap-20 max-md:mt-[-16px] lg:flex-row max-md:!pl-4 max-md:!pr-4' : 'md:flex-row'}`}
+          className={`flex flex-col gap-4 text-shark-100 text-xs mt-1 ${pathname === '/' ? 'pl-28 pr-10 max-md:gap-20 max-md:mt-[-16px] lg:flex-row max-md:!pl-4 max-md:!pr-4' : 'md:flex-row'}`}
         >
           <div className={`flex justify-between ${pathname === '/' ? 'lg:w-1/2' : 'md:w-1/2'}`}>
             <div className={`flex items-center gap-5 ${pathname === '/' && 'xl:ms-10'}`}>
               <div>{currentYear} © Fenix Finance</div>
             </div>
-            <a
-              href="#"
-              className="flex items-center gap-[5px] hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
-            >
-              {/* <i className="leading-none icon-document"></i> */}
-              {/* <span className=" leading-normal">Legal Disclaimer</span> */}
-            </a>
+            <div className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl bg-shark-950 bg-opacity-30 md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}>version: {commitHash}</div>
           </div>
+          <div className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl bg-shark-950 bg-opacity-30 max-md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}>version: {commitHash}</div>
           <div
             className={`flex items-end flex-col gap-2 ${pathname === '/' ? 'justify-end lg:w-1/2 text-right' : 'justify-center md:justify-end md:w-1/2'}`}
           >
@@ -119,7 +114,6 @@ const Footer = () => {
               <span className="text-[9px] xl:text-xs">The Unified Trading and Liquidity Marketplace for </span>
               <Image src="/static/images/footer/blast.svg" alt="pancake" width={24} height={24} className="w-6 h-6" />
             </div>
-            <div className={`text-xs text-shark-100 px-3 py-1 rounded-xl bg-shark-950 bg-opacity-30 ${pathname === '/' ? 'hidden' : 'block'}`}>version: {commitHash}</div>
           </div>
         </div>
       </div>
