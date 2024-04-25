@@ -1,11 +1,10 @@
-import { isAddress } from '@/src/library/utils/validate'
 import { algebraPoolABI } from '@/src/library/web3/abis/algebraPool'
 import { useReadContract } from 'wagmi'
 
-export default function useAlgebraSafelyStateOfAMM(pool: `0x${string}`) {
+export default function useAlgebraPoolToken0(pool: `0x${string}`) {
   const data = useReadContract({
     address: pool,
-    functionName: 'safelyGetStateOfAMM',
+    functionName: 'token0',
     abi: algebraPoolABI,
   })
   return {
