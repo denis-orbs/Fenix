@@ -323,31 +323,6 @@ const Panel = () => {
     refetch: refetchStateOfAMM,
   } = useAlgebraSafelyStateOfAMM(currentPool)
 
-  // swapAvailable
-  //   ? singleSwapAvailable
-  //     ? quoteExactInputSingleCall?.data?.result[0] || -1n
-  //     : quoteExactInputCall?.data?.result[0] || -1n
-  //   : -1n
-  // const priceImpact =
-  //   currentSqrtPriceX96 && sqrtPriceX96After
-  //     ? sqrtPriceDifference.div(currentSqrtPriceX96BN).multipliedBy(100).abs().multipliedBy(-1)
-  //     : '0'
-  // if (swapAvailable) {
-  //   if (singleSwapAvailable) {
-  //     if (currentSqrtPriceX96 && sqrtPriceX96After) {
-  //       priceImpact = sqrtPriceDifference.div(currentSqrtPriceX96BN).multipliedBy(100).abs().multipliedBy(-1)
-  //     } else {
-  //       priceImpact = '0'
-  //     }
-  //   } else if (multiHopAvailable) {
-  //     priceImpact = '1'
-  //   } else {
-  //     priceImpact = '0'
-  //   }
-  // } else {
-  //   priceImpact = '0'
-  // }
-  // const [priceImpact, setPriceImpact] = useState<string>('0')
   const currentSqrtPriceX96 = stateOfAMM?.[0] || 1n
   const sqrtPriceX96AfterBN = toBN(sqrtPriceX96After.toString())
   const currentSqrtPriceX96BN = toBN(currentSqrtPriceX96.toString())
@@ -447,7 +422,11 @@ const Panel = () => {
   useEffect(() => {
     const swapValuePrice = toBN(tokenSell.price).multipliedBy(swapValue)
     const forValuePrice = toBN(tokenGet.price).multipliedBy(forValue)
-    setMultiHopPriceImpact(swapValuePrice.div(forValuePrice).times(101).times(1.001).toString())
+    console.log(forValuePrice.div(swapValuePrice).times(100).toString())
+    console.log(swapValuePrice.div(forValuePrice).times(100).toString())
+    console.log(swapValuePrice.toString())
+    console.log(forValuePrice.toString())
+    setMultiHopPriceImpact(swapValuePrice.div(forValuePrice).times(100).toString())
   }, [swapValue, forValue, tokenSell.price, tokenGet.price])
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
   useEffect(() => {
