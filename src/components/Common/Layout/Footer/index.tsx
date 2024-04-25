@@ -5,8 +5,26 @@ import Link from 'next/link'
 import { FenixIcon } from '@/src/components/UI/Icons'
 import { NAV_LINKS, SOCIAL_LINKS } from './data'
 import { usePathname } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { getCommitHash } from './getComitHash'
 
 const Footer = () => {
+  const [commitHash, setCommitHash] = useState('')
+
+  useEffect(() => {
+    const fetchCommitHash = async () => {
+      try {
+        const hash = await getCommitHash()
+        const shortenedHash = hash.substring(hash.length - 12)
+        setCommitHash(shortenedHash)
+      } catch (error) {
+        console.error('Error al obtener el hash del commit:', error)
+      }
+    }
+
+    fetchCommitHash()
+  }, [])
+
   const pathname = usePathname()
   const currentYear = new Date().getFullYear()
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
@@ -95,10 +113,13 @@ const Footer = () => {
             </a>
           </div>
           <div
-            className={`flex items-center gap-2 ${pathname === '/' ? 'justify-end lg:w-1/2 text-right' : 'justify-center md:justify-end md:w-1/2'}`}
+            className={`flex items-end flex-col gap-2 ${pathname === '/' ? 'justify-end lg:w-1/2 text-right' : 'justify-center md:justify-end md:w-1/2'}`}
           >
-            <span className="text-[9px] xl:text-xs">The Unified Trading and Liquidity Marketplace for </span>
-            <Image src="/static/images/footer/blast.svg" alt="pancake" width={24} height={24} className="w-6 h-6" />
+            <div className={`flex items-center gap-2`}>
+              <span className="text-[9px] xl:text-xs">The Unified Trading and Liquidity Marketplace for </span>
+              <Image src="/static/images/footer/blast.svg" alt="pancake" width={24} height={24} className="w-6 h-6" />
+            </div>
+            <div className={`text-xs text-shark-100 px-3 py-1 rounded-xl bg-shark-950 bg-opacity-30 ${pathname === '/' ? 'hidden' : 'block'}`}>version: {commitHash}</div>
           </div>
         </div>
       </div>
