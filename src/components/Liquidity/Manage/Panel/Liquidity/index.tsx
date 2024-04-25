@@ -217,7 +217,7 @@ const Manage = ({}: {}) => {
             ethers.utils.parseUnits(secondValue, 'ether'),
             ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
             ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
-            11114224550,
+            parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
       }),
@@ -268,7 +268,7 @@ const Manage = ({}: {}) => {
             lpValue,
             Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
             Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
-            11114224550,
+            parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
       }),
@@ -396,11 +396,11 @@ const Manage = ({}: {}) => {
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{(Number(positionData?.amount0) / 10 ** firstToken.decimals).toFixed(2)}</span>
+                <span>{formatNumber((Number(positionData?.amount0) / 10 ** firstToken.decimals), 8)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{(Number(positionData?.amount1) / 10 ** secondToken.decimals).toFixed(2)}</span>
+                <span>{formatNumber((Number(positionData?.amount1) / 10 ** secondToken.decimals), 8)}</span>
               </p>
             </div>
           </div>

@@ -7,6 +7,7 @@ import Separator from '@/src/components/Trade/Common/Separator'
 import { erc20Abi, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useSimulateContract } from 'wagmi'
 import { type WriteContractErrorType } from '@wagmi/core'
+import Chart from '@/src/components/Liquidity/Deposit/Chart'
 
 import { IToken } from '@/src/library/types'
 import { useReadContract, useWriteContract } from 'wagmi'
@@ -447,108 +448,111 @@ const Panel = () => {
   }, [swapValue, forValue, tokenSell.price, tokenGet.price])
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
   return (
-    <section className="box-panel-trade">
-      <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
-        <div className="w-full relative">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-x-4 ">
-              <h4 className="text-lg text-white font-medium">Swap</h4>
-            </div>
+    <>
+      <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
+        <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
+          <div className="w-full relative">
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-x-4 ">
+                <h4 className="text-lg text-white font-medium">Swap</h4>
+              </div>
 
-            <div className="flex gap-x-3 items-center">
-              <span className="text-shark-100 text-sm">{swapFee && `${formatUnits(BigInt(swapFee), 4)}% fee`}</span>
-              <ReloadIcon
-                className="text-shark-100 !cursor-pointer"
-                onClick={() => {
-                  setSwapValue('')
-                  setForValue('')
-                }}
-              />
-              <SettingsIcon onClick={() => setSlippageModal(true)} className="text-shark-100 !cursor-pointer " />
+              <div className="flex gap-x-3 items-center">
+                <span className="text-shark-100 text-sm">{swapFee && `${formatUnits(BigInt(swapFee), 4)}% fee`}</span>
+                <ReloadIcon
+                  className="text-shark-100 !cursor-pointer"
+                  onClick={() => {
+                    setSwapValue('')
+                    setForValue('')
+                  }}
+                />
+                <SettingsIcon onClick={() => setSlippageModal(true)} className="text-shark-100 !cursor-pointer " />
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-1 mb-5 relative">
-            <div className="mb-3">
-              <Swap
-                token={tokenSell}
-                setToken={setTokenSell}
-                value={swapValue}
-                setValue={setSwapValue}
-                setTokenSellUserBalance={setTokenSellUserBalance}
-              />
-              <Separator
-                onClick={() => {
-                  switchTokensValues(tokenGet, tokenSell, setTokenGet, setTokenSell)
-                }}
-              />
-              <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
+            <div className="flex flex-col gap-1 mb-5 relative">
+              <div className="mb-3">
+                <Swap
+                  token={tokenSell}
+                  setToken={setTokenSell}
+                  value={swapValue}
+                  setValue={setSwapValue}
+                  setTokenSellUserBalance={setTokenSellUserBalance}
+                />
+                <Separator
+                  onClick={() => {
+                    switchTokensValues(tokenGet, tokenSell, setTokenGet, setTokenSell)
+                  }}
+                />
+                <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
+              </div>
+              <Button
+                variant="primary"
+                className="w-full flex items-center justify-center gap-x-2"
+                onClick={handleSwapClick}
+                disabled={
+                  currentButtonState === ButtonState.LOADING ||
+                  currentButtonState === ButtonState.APPROVING ||
+                  currentButtonState === ButtonState.WAITING_APPROVAL
+                }
+              >
+                {currentButtonState === ButtonState.LOADING ? (
+                  <Loader color="white" size={20} />
+                ) : currentButtonState === ButtonState.APPROVING ? (
+                  <>
+                    <Loader color="white" size={20} /> {currentButtonState}
+                  </>
+                ) : (
+                  <>{currentButtonState}</>
+                )}
+              </Button>
             </div>
-            <Button
-              variant="primary"
-              className="w-full flex items-center justify-center gap-x-2"
-              onClick={handleSwapClick}
-              disabled={
-                currentButtonState === ButtonState.LOADING ||
-                currentButtonState === ButtonState.APPROVING ||
-                currentButtonState === ButtonState.WAITING_APPROVAL
-              }
-            >
-              {currentButtonState === ButtonState.LOADING ? (
-                <Loader color="white" size={20} />
-              ) : currentButtonState === ButtonState.APPROVING ? (
-                <>
-                  <Loader color="white" size={20} /> {currentButtonState}
-                </>
-              ) : (
-                <>{currentButtonState}</>
-              )}
-            </Button>
           </div>
         </div>
-      </div>
-      <p
-        className="text-white bg-shark-400 flex justify-between bg-opacity-40 w-full rounded-md px-8 py-1.5 text-sm cursor-pointer "
-        onClick={() => {
-          setExpandTxDetails(!expandTxDetails)
-        }}
-      >
-        Tx details:
-        <span className={cn('icon-chevron text-sm inline-block', expandTxDetails ? '' : 'rotate-180')} />
-      </p>
+        <p
+          className="text-white bg-shark-400 flex justify-between bg-opacity-40 w-full rounded-md px-8 py-1.5 text-sm cursor-pointer "
+          onClick={() => {
+            setExpandTxDetails(!expandTxDetails)
+          }}
+        >
+          Tx details:
+          <span className={cn('icon-chevron text-sm inline-block', expandTxDetails ? '' : 'rotate-180')} />
+        </p>
 
-      <div
-        hidden={!expandTxDetails}
-        className="bg-shark-400 bg-opacity-40 w-full mt-1 px-8 py-2 space-y-1 text-white text-sm
+        <div
+          hidden={!expandTxDetails}
+          className="bg-shark-400 bg-opacity-40 w-full mt-1 px-8 py-2 space-y-1 text-white text-sm
         [&>p]:justify-between [&>p]:flex rounded-md select-none transition-all duration-300 ease-in-out
       "
-      >
-        <p className="">
-          Route:
-          <span className="text-shark-100">
-            {multiHopAvailable &&
-              currentPool == zeroAddress &&
-              route?.swapRoute?.tokenPath.map((token) => token.symbol).join(' > ')}
-            {currentPool !== zeroAddress && `${tokenSell.symbol} > ${tokenGet.symbol}`}
-          </span>
-        </p>
-        <p className="">
-          Slippage <span className="text-shark-100">{slippage}</span>
-        </p>
+        >
+          <p className="">
+            Route:
+            <span className="text-shark-100">
+              {multiHopAvailable &&
+                currentPool == zeroAddress &&
+                route?.swapRoute?.tokenPath.map((token) => token.symbol).join(' > ')}
+              {currentPool !== zeroAddress && `${tokenSell.symbol} > ${tokenGet.symbol}`}
+            </span>
+          </p>
+          <p className="">
+            Slippage <span className="text-shark-100">{slippage}</span>
+          </p>
 
-        <p className="">
-          Minimum Amount Recieved
-          <span className="text-shark-100">
-            {amountOutMinimum
-              ? formatUnits(BigInt(Number(amountOutMinimum.toString().split('.')[0])), tokenGet.decimals).toString()
-              : '-'}{' '}
-            {tokenGet.symbol}
-          </span>
-        </p>
-        <p className="">
-          Price Impact <span className="text-shark-100">{parseFloat(priceImpact.toString()).toFixed(2)}%</span>
-        </p>
-      </div>
-    </section>
+          <p className="">
+            Minimum Amount Recieved
+            <span className="text-shark-100">
+              {amountOutMinimum
+                ? formatUnits(BigInt(Number(amountOutMinimum.toString().split('.')[0])), tokenGet.decimals).toString()
+                : '-'}{' '}
+              {tokenGet.symbol}
+            </span>
+          </p>
+          <p className="">
+            Price Impact <span className="text-shark-100">{parseFloat(priceImpact.toString()).toFixed(2)}%</span>
+          </p>
+        </div>
+      </section>
+      {showChart && <Chart token0={tokenGet?.address} token1={tokenSell?.address} />}
+    </>
   )
 }
 

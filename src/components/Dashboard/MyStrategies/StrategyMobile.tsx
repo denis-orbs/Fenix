@@ -8,6 +8,7 @@ import { positions } from './Strategy'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { fromWei } from '@/src/library/utils/numbers'
+import { useRouter } from 'next/navigation'
 
 type options = {
   value: string
@@ -23,6 +24,7 @@ interface StrategyMobileProps {
 }
 
 const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
 
   let ichitokens: IchiVault
@@ -197,6 +199,32 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                 token0Symbol={row.token0.symbol}
                 token1Symbol={row.token1.symbol}
               />
+              <div className="flex flex-row gap-5 items-center justify-center p-3">
+                <Button
+                  variant="tertiary"
+                  className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+                  onClick={() => {
+                    if (row.liquidity !== 'ichi') {
+                      router.push(`/liquidity/manage?id=${row?.id}`)
+                      router.refresh()
+                    }
+                  }}
+                >
+                  <span className="text-l">Manage</span>
+                </Button>
+                <Button
+                  variant="tertiary"
+                  className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+                  onClick={() => {
+                    // if (row.liquidity !== 'ichi') {
+                    //   router.push(`/liquidity/claim`)
+                    //   router.refresh()
+                    // }
+                  }}
+                >
+                  <span className="text-l">Claim</span>
+                </Button>
+              </div>
             </div>
           </div>
         )}

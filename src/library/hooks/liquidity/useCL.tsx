@@ -16,8 +16,12 @@ import { blast } from 'viem/chains'
 import { ethers } from 'ethers' 
 import { contractAddressList } from '../../constants/contactAddresses'
 import { injected } from 'wagmi/connectors'
+import { NATIVE_ETH_LOWERCASE } from '../../Constants'
 
 export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
+    if(token1.toLowerCase() == NATIVE_ETH_LOWERCASE) token1 = "0x4300000000000000000000000000000000000004" as Address
+    if(token2.toLowerCase() == NATIVE_ETH_LOWERCASE) token2 = "0x4300000000000000000000000000000000000004" as Address
+
     /**
      * This hook is used to get token current price on an AlgebraPool 
      */

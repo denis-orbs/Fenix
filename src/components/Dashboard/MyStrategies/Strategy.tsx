@@ -224,7 +224,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
             token1Symbol={row?.token1?.symbol}
           />
         </div>
-        <div className="items-center justify-center">
+        <div className="flex flex-row gap-5 items-center justify-center p-3">
           <Button
             variant="tertiary"
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
@@ -236,6 +236,18 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
             }}
           >
             <span className="text-l">Manage</span>
+          </Button>
+          <Button
+            variant="tertiary"
+            className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+            onClick={() => {
+              // if (row.liquidity !== 'ichi') {
+              //   router.push(`/liquidity/claim`)
+              //   router.refresh()
+              // }
+            }}
+          >
+            <span className="text-l">Claim</span>
           </Button>
         </div>
       </div>
