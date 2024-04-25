@@ -13,7 +13,7 @@ type StatusInfo = {
   class: string
   text: string
   icon: string
-  viewColor: string
+  color: string
 }
 
 const Notification = ({ show = true, status }: NotificationProps) => {
@@ -25,29 +25,29 @@ const Notification = ({ show = true, status }: NotificationProps) => {
   }, [])
 
   const STATUS: { [key: string]: StatusInfo } = {
-    connected: {
+    default: {
       class: ' bg-gradient-to-r from-outrageous-orange-500 to-chilean-fire-500 ',
       text: 'Wallet (0x98b...6de3c) Connected Successfully',
       icon: 'icon-wallet text-gradient',
-      viewColor: 'text-gradient',
+      color: 'text-gradient',
     },
     warning: {
       class: ' bg-gradient-to-r from-festival-100 to-festival-200 ',
       text: 'Something is wrong! Invalid Decimal Value',
       icon: 'icon-warning text-festival-200',
-      viewColor: 'text-festival-200',
+      color: 'text-festival-200',
     },
     error: {
       class: ' bg-gradient-to-r from-alizarin-crimson-600 to-alizarin-crimson-700 ',
       text: 'User Rejected Request!',
       icon: 'icon-info text-alizarin-crimson-600',
-      viewColor: 'text-alizarin-crimson-600',
+      color: 'text-alizarin-crimson-600',
     },
     success: {
       class: ' bg-gradient-to-r from-green-200 to-green-300 ',
       text: 'FNX swapped for ETH',
       icon: 'icon-party text-green-300',
-      viewColor: 'text-green-300',
+      color: 'text-green-300',
     },
   }
   if (!show) return null
@@ -69,7 +69,7 @@ const Notification = ({ show = true, status }: NotificationProps) => {
             <p className="text-white text-xs max-w-[150px]">{STATUS[status].text}</p>
           </div>
           <div className="flex items-center gap-3">
-            <p className={`inline-block text-xs ${STATUS[status].viewColor}`}>
+            <p className={`inline-block text-xs ${STATUS[status].color}`}>
               <span className="mr-2 icon-link"></span>
               View In Explorer
             </p>
