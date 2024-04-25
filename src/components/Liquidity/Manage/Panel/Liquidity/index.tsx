@@ -27,6 +27,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import { formatNumber } from '@/src/library/utils/numbers'
 import Loader from '@/src/components/UI/Icons/Loader'
+import ApproveButtons from '../../../Common/ApproveButtons'
 
 interface PositionData {
   id: number
@@ -477,30 +478,16 @@ const Manage = ({}: {}) => {
         />
       </div>
 
-      <Button
-        className="w-full mx-auto !text-xs !h-[49px]"
-        variant="tertiary"
-        onClick={() => {
-          optionActive == 'ADD'
-            ? shouldApproveFirst
-              ? handleApprove(firstToken.address as Address)
-              : shouldApproveSecond
-                ? handleApprove(secondToken.address as Address)
-                : handleIncreaseLiquidity()
-            : handleDecreaseLiquidity()
-        }}
-      >
-        {
-        isLoading ? 
-          <Loader color="white" size={20} /> 
-        : optionActive == 'ADD'
-          ? shouldApproveFirst
-            ? `Approve ${firstToken.symbol}`
-            : shouldApproveSecond
-              ? `Approve ${secondToken.symbol}`
-              : `Add Liquidity`
-          : `Remove Liquidity`}
-      </Button>
+      <ApproveButtons 
+        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : shouldApproveFirst} 
+        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : shouldApproveSecond} 
+        token0={firstToken} 
+        token1={secondToken} 
+        handleApprove={handleApprove} 
+        mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity} 
+        mainText={optionActive === 'WITHDRAW' ? 'Withdraw Liquidity' : 'Add Liquidity'} 
+        isLoading={isLoading}
+      />
     </>
   )
 }
