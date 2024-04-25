@@ -7,6 +7,7 @@ import SelectToken from '@/src/components/Modals/SelectToken'
 import { IToken } from '@/src/library/types'
 import ExchangeBox from '@/src/components/Liquidity/Common/ExchangeBox'
 import Separator from '@/src/components/Trade/Common/Separator'
+import { switchTokensValues } from '../../Trade/Swap/Panel/utilsChange'
 
 interface TokenSelectorProps {
   token: IToken
@@ -66,7 +67,12 @@ const TokensSelector = ({
         variant="primary"
         onTokenValueChange={onTokenValueChange}
       />
-      <Separator single />
+      <Separator 
+      onClick={()=>{
+        switchTokensValues(firstToken, secondToken, setFirstToken, setSecondToken)
+      }}
+      
+      />
       <TokenSelector
         token={secondToken}
         value={secondValue}
