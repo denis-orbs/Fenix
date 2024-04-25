@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import AddressCheck from './AddressCheck'
 import TotalMigrated from './TotalMigrated'
-import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/src/components/UI'
+import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/components/UI'
 import { TOKENS_LIST } from './data'
 import { NONSNAPSHOT_TOKENS_LIST } from './data'
 import { useAccount, useChainId } from 'wagmi'
 import {} from '@wagmi/core'
-import useStore from '@/src/state/zustand'
+import useStore from '@/store'
 import BigNumber from 'bignumber.js'
 import toast, { Toaster } from 'react-hot-toast'
 import DepositModal from './DepositModal'
@@ -58,7 +58,8 @@ const Overview = () => {
   const [ChrNftIds, setChrNftIds] = useState<BigInt>(BigInt(0))
   const [veChrIds, setveChrIds] = useState<BigInt>(BigInt(0))
   const [ChrNftDeposited, setChrNftDeposited] = useState<BigInt>(BigInt(0))
-  const [veChrNftDeposited, setveChrNftDeposited] = useState<BigInt>(BigInt(0))
+  const [veChrNftAmount, setveChrNftAmount] = useState<BigInt>(BigInt(0))
+  const [veChrNftMigrated, setveChrNftMigrated] = useState<BigInt>(BigInt(0))
   const [chramountDeposited, setchramountDeposited] = useState<BigInt>(BigInt(0))
   const [elChramountDeposited, setelChramountDeposited] = useState<BigInt>(BigInt(0))
   const [spChramountDeposited, setspChramountDeposited] = useState<BigInt>(BigInt(0))
@@ -104,13 +105,14 @@ const Overview = () => {
         <TotalMigrated
           migrateStatus={migrateStatus}
           acc={acc}
-          setveChrNftDeposited={setveChrNftDeposited}
+          setveChrNftAmount={setveChrNftAmount}
           setChrNftDeposited={setChrNftDeposited}
           setchramountDeposited={setchramountDeposited}
           setelChramountDeposited={setelChramountDeposited}
           setspChramountDeposited={setspChramountDeposited}
           setChrNftsTotal={setChrNftsTotal}
           setveChrNftsTotal={setveChrNftsTotal}
+          setveChrNftMigrated={setveChrNftMigrated}
         />
       </div>
       {
@@ -169,8 +171,8 @@ const Overview = () => {
                                       .toFixed(2)
                                       .toString()
                                   : item.token === 'veCHR'
-                                    ? parseInt(veChrNftDeposited.toString())
-                                      ? parseInt(veChrNftDeposited.toString())
+                                    ? parseInt(veChrNftAmount.toString())
+                                      ? parseInt(veChrNftAmount.toString())
                                       : 0
                                     : item.token === 'chrNFT'
                                       ? parseInt(chrNftBalanceOf.toString())
@@ -212,12 +214,8 @@ const Overview = () => {
                                       .toFixed(2)
                                       .toString()
                                   : item.token === 'veCHR'
-                                    ? parseInt(veChrNftDeposited.toString())
-                                      ? (
-                                          (parseInt(veChrNftsTotal?.toString()) -
-                                            parseInt(veChrNftDeposited?.toString())) /
-                                          166
-                                        ).toFixed(4)
+                                    ? parseInt(veChrNftMigrated.toString())
+                                      ? (parseInt(veChrNftMigrated?.toString()) / 166).toFixed(2)
                                       : 0
                                     : item.token === 'chrNFT'
                                       ? parseInt(ChrNftDeposited.toString())
@@ -238,7 +236,7 @@ const Overview = () => {
                             setItem(item)
                           }}
                         >
-                          Deposit
+                          Migrate
                         </Button>
                         <Toaster />
                       </div>
@@ -346,7 +344,7 @@ const Overview = () => {
                             setItem(item)
                           }}
                         >
-                          Deposit
+                          Migrate
                         </Button>
                         <Toaster />
                       </div>

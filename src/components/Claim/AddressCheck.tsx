@@ -2,8 +2,8 @@
 // @typescript-eslint/no-explicit-any
 'use client'
 
-import { Button } from '@/src/components/UI'
-import useStore from '@/src/state/zustand'
+import { Button } from '@/components/UI'
+import useStore from '@/store'
 import { useAccount } from 'wagmi'
 import { multicall } from '@wagmi/core'
 import { useEffect, useState } from 'react'
@@ -16,6 +16,7 @@ import spchrabi from '../../abi/spchr.json'
 import chrabi from '../../abi/chr.json'
 import vechrNftabi from '../../abi/vechr.json'
 import chrNftabi from '../../abi/chrnft.json'
+import nonsnapvechrdata from './nonsnapveChrData.json'
 
 interface AddressCheckProps {
   migrateStatus: string | undefined
@@ -62,29 +63,29 @@ const AddressCheck = ({
       contracts: [
         {
           abi: chrmigrateabi,
-          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
+          address: '0xc8D8F5937Ed9dbB39505Ea4179a96b90C5f3A149',
           functionName: 'depositDuration',
         },
         {
           abi: chrmigrateabi,
-          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
+          address: '0xc8D8F5937Ed9dbB39505Ea4179a96b90C5f3A149',
           functionName: 'deploymentTimestamp',
         },
         {
           abi: chrmigrateabi,
-          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
+          address: '0xc8D8F5937Ed9dbB39505Ea4179a96b90C5f3A149',
           functionName: 'userBalances',
           args: [account],
         },
         {
           abi: chrnftmigrateabi,
-          address: '0x0372Fd0930f0956766bC61933ceD9daC9Fe6b8b8',
+          address: '0x6EE844BcbE6dE50867577fcFc77773BFC4645635',
           functionName: 'totalids',
           args: [account],
         },
         {
           abi: vechrmigrateabi,
-          address: '0x1bFd1e832Be53D423d1F5b8f91C37FBB492af322',
+          address: '0x6FFB77205a54eFa12dfc5EcaA3070913F75A74f9',
           functionName: 'totalids',
           args: [account],
         },
@@ -102,7 +103,7 @@ const AddressCheck = ({
         },
         {
           abi: chrmigrateabi,
-          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
+          address: '0xc8D8F5937Ed9dbB39505Ea4179a96b90C5f3A149',
           functionName: 'isWithinDepositPeriod',
         },
         {
@@ -133,7 +134,31 @@ const AddressCheck = ({
         setspChramount(data[6]?.result ?? BigInt(0))
         setchrBalanceOf(data[8]?.result ?? BigInt(0))
         setchrNftBalanceOf(data[9]?.result ?? BigInt(0))
-        setvechrNftBalanceOf(data[10]?.result ?? BigInt(0))
+
+        const nftcontractsArray = []
+        const nftids = []
+        for (let i = 0; i < data[10]?.result ?? 0; i++) {
+          nftcontractsArray.push({
+            abi: vechrNftabi,
+            address: '0x9A01857f33aa382b1d5bb96C3180347862432B0d',
+            functionName: 'tokenOfOwnerByIndex',
+            args: [account, i],
+          })
+        }
+        multicall({
+          contracts: [...nftcontractsArray],
+        }).then((ids) => {
+          for (let i = 0; i < ids.length; i++) {
+            nftids.push(Number(ids[i]?.result).toString())
+          }
+          // Filter objectsArray to only include objects with tokenids present in tokenIdsArray
+          const filteredObjects = nonsnapvechrdata.filter((obj) => nftids.includes(obj.tokenId.toString()))
+
+          // Calculate the sum of lockedchr values from filteredObjects
+          const totalLockedChr = filteredObjects.reduce((acc, obj) => acc + Number(obj.lockedChr / 10 ** 18), 0)
+
+          setvechrNftBalanceOf(BigInt(Math.round(totalLockedChr)) ?? BigInt(0))
+        })
       }
     })
   }

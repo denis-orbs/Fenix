@@ -1,9 +1,9 @@
 'use client'
 
 import Migration from '@/src/components/Claim/Migration'
-import Steps from '@/src/components/Common/Steps'
-import Overview from '@/src/components/Claim/Overview'
-import { STEPS } from './data'
+import Steps from '@/src/components/Common/StepsClaim'
+/* import Overview from '@/src/components/Claim/Overview'
+import { STEPS } from './data' */
 
 const Claim = () => {
   return (
