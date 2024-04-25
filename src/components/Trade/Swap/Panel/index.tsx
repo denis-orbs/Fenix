@@ -8,14 +8,14 @@ import { erc20Abi, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useSimulateContract } from 'wagmi'
 import { type WriteContractErrorType } from '@wagmi/core'
 import Chart from '@/src/components/Liquidity/Deposit/Chart'
-import { useShowChart } from '@/src/state/user/hooks'
+import { useShowChart, useSetChart } from '@/src/state/user/hooks'
 
 import { IToken } from '@/src/library/types'
 import { useReadContract, useWriteContract } from 'wagmi'
 import { blastSepolia } from 'viem/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { algebraQuoterV2ABI } from '@/src/library/web3/abis'
-import { Button } from '@/src/components/UI'
+import { Button, Switch } from '@/src/components/UI'
 import { BigNumber, ethers } from 'ethers'
 import { algebraSwapABI } from '@/src/library/web3/abis/algebraSwap'
 import useStore from '@/src/state/zustand'
@@ -82,6 +82,7 @@ const Panel = () => {
     return foundToken ? foundToken.priceUSD : null
   }, [])
   const showChart = useShowChart()
+  const setChart = useSetChart()
 
   // To have a 0s load, use static default tokens and fetch the prices as soon as the component mounts
   // Ideally, we should do this on a loader in redux and share the data across the app
@@ -455,6 +456,12 @@ const Panel = () => {
   useEffect(() => {
     if (swapValue == '') setForValue('')
   }, [swapValue])
+  const [isChartVisible, setIsChartVisible] = useState(showChart)
+
+  const handleSwitch = () => {
+    setChart(!isChartVisible)
+    setIsChartVisible((prevState) => !prevState)
+  }
   return (
     <>
       <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
@@ -467,6 +474,10 @@ const Panel = () => {
 
               <div className="flex gap-x-3 items-center">
                 <span className="text-shark-100 text-sm">{swapFee && `${formatUnits(BigInt(swapFee), 4)}% fee`}</span>
+                <div className="flex items-center gap-3">
+                  <Switch active={showChart} setActive={handleSwitch} />
+                  <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
+                </div>
                 <ReloadIcon
                   className="text-shark-100 !cursor-pointer"
                   onClick={() => {
