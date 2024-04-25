@@ -23,6 +23,7 @@ import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { LiquidityTableElement } from '@/src/state/liquidity/types'
 import { useAppSelector } from '@/src/state'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { formatNumber } from '@/src/library/utils/numbers'
 
 const Classic = ({
   depositType,
@@ -390,11 +391,11 @@ const Classic = ({
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{(Number(firstReserve) / 1e18).toFixed(2)}</span>
+                <span>{formatNumber((Number(firstReserve) / 1e18), 8)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{(Number(secondReserve) / 1e18).toFixed(2)}</span>
+                <span>{formatNumber((Number(secondReserve) / 1e18), 8)}</span>
               </p>
             </div>
           </div>
