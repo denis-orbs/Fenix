@@ -16,7 +16,7 @@ export async function getTokenBalance(token1: Address, user: Address) {
    */
 
   if(token1.toLowerCase() == NATIVE_ETH_LOWERCASE) {
-    return await publicClient.getBalance({address: user})
+    return await publicClient.getBalance({ address: user })
   }
 
   const balance = await multicall(
@@ -75,7 +75,7 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
   )
 
   const balances: any = {}
-  balances["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"] = await publicClient.getBalance({address: user})
+  balances["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"] = await publicClient.getBalance({ address: user })
 
   for (let i = 0; i < balance.length; i++) {
     balances[tokens[i]] = balance[i].result

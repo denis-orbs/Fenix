@@ -13,7 +13,6 @@ export const WETH_ADDRESS = '0xf73306A78d66fE18C7a8F5df13aD3f3aA65dE31c'
 export const NATIVE_ETH_LOWERCASE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 export const NATIVE_ETH = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
-
 export const ETH_TOKEN: TokenData = {
   name: 'ETH',
   symbol: 'ETH',

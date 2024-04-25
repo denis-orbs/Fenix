@@ -18,17 +18,17 @@ interface ApproveButtonsProps {
 const ApproveButtons = ({ token0, token1, shouldApproveFirst, shouldApproveSecond, handleApprove, mainFn, mainText, isLoading }: ApproveButtonsProps) => {
   return (
     shouldApproveFirst && shouldApproveSecond ? (
-      <div style={{display: 'flex'}} >
-        <button onClick={() => {handleApprove(token0.address as Address)}} className="button button-tertiary w-1/2 !text-xs !h-[49px]" style={{marginRight: '10px'}}>Approve {token0.symbol}</button>
+      <div style={{ display: 'flex' }} >
+        <button onClick={() => {handleApprove(token0.address as Address)}} className="button button-tertiary w-1/2 !text-xs !h-[49px]" style={{ marginRight: '10px' }}>Approve {token0.symbol}</button>
         <button onClick={() => {handleApprove(token1.address as Address)}} className="button button-tertiary w-1/2 !text-xs !h-[49px]">Approve {token1.symbol}</button>
       </div>
     ) : shouldApproveFirst ?  (
-      <div style={{display: 'flex'}} >
-        <button onClick={() => {handleApprove(token0.address as Address)}} className="button button-tertiary !text-xs !h-[49px]" style={{marginRight: '10px'}}>Approve {token0.symbol}</button>
+      <div style={{ display: 'flex' }} >
+        <button onClick={() => {handleApprove(token0.address as Address)}} className="button button-tertiary !text-xs !h-[49px]" style={{ marginRight: '10px' }}>Approve {token0.symbol}</button>
       </div>
     ) : shouldApproveSecond ? (
-      <div style={{display: 'flex'}} >
-        <button onClick={() => {handleApprove(token1.address as Address)}} className="button button-tertiary !text-xs !h-[49px]" style={{marginRight: '10px'}}>Approve {token1.symbol}</button>
+      <div style={{ display: 'flex' }} >
+        <button onClick={() => {handleApprove(token1.address as Address)}} className="button button-tertiary !text-xs !h-[49px]" style={{ marginRight: '10px' }}>Approve {token1.symbol}</button>
       </div>
     ) : (
       <Button
