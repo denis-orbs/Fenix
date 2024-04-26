@@ -55,8 +55,8 @@ export interface positions {
   id: string
   liquidity: string
   owner: string
-  depositedToken0: string
-  depositedToken1: string
+  depositedToken0: Number
+  depositedToken1: Number
   withdrawnToken0: string
   withdrawnToken1: string
   pool: Pool
@@ -64,7 +64,7 @@ export interface positions {
   tickUpper: Tick
   token0: Tokenp
   token1: Tokenp
-  apr: number
+  apr: any
 }
 
 export type ichipositions = {
@@ -173,7 +173,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
               <p className="text-white">
                 APR <span className="icon-info text-xs"></span>
               </p>
-              <h1 className="text-green-400 text-2xl">0.00%</h1>
+              <h1 className="text-green-400 text-2xl">{row?.apr}</h1>
             </div>
             <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
               <p className="text-white">

@@ -19,7 +19,7 @@ const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
-  const [position, setposition] = useState<any[]>([])
+  const [position, setposition] = useState<positions[]>([])
   const [positionAmounts, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
 
@@ -46,7 +46,7 @@ const MyStrategies = () => {
     const positions = await fetchV3Positions(address)
     const nativePrice = await fetchNativePrice()
     console.log(positions, 'amount')
-    const positionsPoolAddresses = await positions.map((position: any) => {
+    const positionsPoolAddresses = await positions.map((position: positions) => {
       return {
         id: position.pool.id,
         liq: position.liquidity,
@@ -57,21 +57,22 @@ const MyStrategies = () => {
     const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
 
     // TODO: Fetch APR for each position
-    // const aprs = await Promise.all(
-    //   positions.map((position: positions, index: number) => {
-    //     return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
-    //   })
-    // )
+    const aprs = await Promise.all(
+      positions.map((position: positions, index: number) => {
+        return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
+      })
+    )
     const final = positions.map((position: positions, index: number) => {
       console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
       return {
         ...position,
         depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
         depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
+        apr: isNaN(aprs[index]) ? '0.00 %' : aprs[index].toFixed(2) + ' %',
       }
     })
     console.log('multicall amounts', positions, amounts, final)
-    setposition(final)
+    setposition((prevPositions) => [...prevPositions, ...final])
     setpositionAmounts(amounts)
   }
 
