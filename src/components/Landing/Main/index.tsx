@@ -40,7 +40,7 @@ function useMediaQuery(query: any) {
 const Box = ({ text, value }: { text: string; value: string }) => {
   return (
     <div className="flex w-[100%] flex-col items-center justify-center mt-[120px]">
-      <div className="text-gradient2 text-lg max-sm:text-base leading-normal tracking-[4.86px] font-semibold mb-[5px] mt-[-120px]">
+      <div className="text-gradient2 text-lg max-sm:text-base leading-normal tracking-[2px] font-semibold mb-[5px] mt-[-120px]">
         {value}
       </div>
       <div className="text-base font-light text-shark-100 max-sm:text-sm">{text}</div>
@@ -61,13 +61,13 @@ const Main = () => {
 
   const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
   console.log(liquidityTable, 'liquidityTable')
-  const tvl = '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(0)
+  const tvl = '$' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(0)
   const fee =
-    '$ ' +
+    '$' +
     liquidityTable
       .reduce((total: any, pair: any) => total + Number(pair.volumeUSD) * (Number(pair.fee) / 100), 0)
       .toFixed(0)
-  const volume = '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(0)
+  const volume = '$' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(0)
 
   return (
     <div className="h-[500px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">

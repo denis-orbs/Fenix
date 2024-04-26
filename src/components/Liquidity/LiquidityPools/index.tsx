@@ -31,14 +31,14 @@ const LiquidityPools = () => {
   const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
   console.log(liquidityTable, 'liquidityTable')
   EXCHANGE_LIST[0].description =
-    '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(2)
+    '$' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(2)
   EXCHANGE_LIST[1].description =
-    '$ ' +
+    '$' +
     liquidityTable
       .reduce((total: any, pair: any) => total + Number(pair.volumeUSD) * (Number(pair.fee) / 100), 0)
       .toFixed(2)
   EXCHANGE_LIST[2].description =
-    '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(2)
+    '$' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(2)
 
   const tokensData = async (liquidityTable: any) => {
     setTokens((await fetchTokens()).length)
