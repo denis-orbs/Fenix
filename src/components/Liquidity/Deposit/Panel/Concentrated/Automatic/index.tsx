@@ -45,7 +45,7 @@ const Automatic = () => {
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023',
     price: 0,
-    img: '/static/images/tokens/WETH.svg',
+    img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [currentProvider, setCurrentProvider] = useState<string>('1')
   const [tokenList, setTokenList] = useState<IToken[]>([])
