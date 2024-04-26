@@ -6,14 +6,6 @@ export const BUNDLE_FRAGMENT = gql`
     maticPriceUSD
   }
 `
-
-export const NATIVE_PRICE = gql`
-  query NativePrice {
-    bundles {
-      ...BundleFields
-    }
-  }
-`
 export const GET_V3_FACTORY_DATA = gql`
   {
     factories {
@@ -36,6 +28,14 @@ export const GET_V2_PAIR_ID = gql`
   query GetPairs($token0Id: String!, $token1Id: String!, $isStable: Boolean!) {
     pairs(where: { isStable: $isStable, token0_: { id: $token0Id }, token1_: { id: $token1Id } }) {
       id
+    }
+  }
+`
+
+export const NATIVE_PRICE = gql`
+  {
+    bundles {
+      maticPriceUSD
     }
   }
 `
