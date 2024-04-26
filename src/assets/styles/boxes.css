@@ -556,6 +556,38 @@
   after:border-[transparent_transparent_#1a1d21];
 }
 
+
+.box-invert {
+ @apply relative
+  
+  w-full
+  flex-shrink-0
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/notifications/notification.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:z-40
+  before:top-0
+  before:left-0
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/notifications/notification.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:z-40
+  after:bottom-0
+  after:left-0
+}
+
+
+
 .mini-box-vote {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
 
