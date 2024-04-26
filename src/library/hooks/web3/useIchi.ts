@@ -122,7 +122,7 @@ export const useIchiPositions = () => {
           let tokenA
           let tokenB
           //const vaultInfo = useIchiVaultsData(item.vaultAddress)
-          console.log(tokenA)
+          // console.log(tokenA)
 
           return {
             id: item.vaultAddress,
@@ -149,7 +149,7 @@ export const useIchiPositions = () => {
             },
           }
         })
-        console.log(pos, 'pos')
+        // console.log(pos, 'pos')
         setpositions(pos)
       }
     }

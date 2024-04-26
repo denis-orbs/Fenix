@@ -16,6 +16,7 @@ import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
+import Spinner from '@/src/components/Common/Spinner'
 const DepositAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
@@ -84,7 +85,9 @@ const DepositAmountsICHI = ({
   const token0Balance = token0Data?.[0]
   const token0Decimals = token0Data?.[1] || 18
   const [waitingApproval, setWaitingApproval] = useState(false)
+  const [loading, setLoading] = useState(false)
   const createPosition = async () => {
+    setLoading(true)
     if (!account) {
       handlerConnectWallet()
       return
@@ -110,7 +113,7 @@ const DepositAmountsICHI = ({
 
         return
       } catch (error) {
-        console.log(error)
+        // console.log(error)
         setWaitingApproval(false)
 
         return
@@ -118,6 +121,7 @@ const DepositAmountsICHI = ({
     }
     if (!token0TypedValue) {
       toast.error('Please enter a valid amount')
+      setLoading(false)
       return
     }
 
@@ -138,16 +142,25 @@ const DepositAmountsICHI = ({
       )
       await txDepositDetails.wait()
       toast.success('Deposited successfully')
+      setLoading(false)
     } catch (error) {
-      console.log(error)
+      // console.log('gg', error.reason)
+      // console.log('gg', error)
       if (error instanceof Error && 'code' in error) {
-        if (error.code !== 'ACTION_REJECTED') {
+        if (error.code == 'ACTION_REJECTED') {
           console.log(error)
-          toast.error('Action rejected')
+          // toast.error('Action rejected')
+          toast.error(error.message.split('(')[0].trim().toUpperCase())
+          setLoading(false)
+        } else if (error.reason == 'IV.deposit: deposits too large') {
+          toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
+          setLoading(false)
         }
       } else {
-        console.log(error)
-        toast.error('Transaction failed')
+        // console.log(error.reason)
+        // toast.error('Transaction failed')
+        toast.error(error.message.split('(')[0].trim().toUpperCase())
+        setLoading(false)
       }
     }
   }
@@ -211,6 +224,7 @@ const DepositAmountsICHI = ({
     const typedValueBN = toBN(token0TypedValue)
     const balanceBN = toBN(formatUnits(token0Balance || 0n, token0Decimals))
     if (typedValueBN > balanceBN) return 'Insufficient balance'
+    if (loading) return 'Depositing'
     return 'Deposit'
   }
   const testinPosition = async () => {
@@ -223,9 +237,9 @@ const DepositAmountsICHI = ({
         web3Provider,
         dex // fenix dex
       )
-      console.log(a)
+      // console.log(a)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
   return (
@@ -334,7 +348,7 @@ const DepositAmountsICHI = ({
                               ]
                             }
                           </span>
-                          {vault?.apr && (
+                          {vault?.apr ? (
                             <span className="text-sm">
                               APR :{' '}
                               {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
@@ -342,6 +356,8 @@ const DepositAmountsICHI = ({
                                 : vault?.apr[0]?.apr?.toFixed(0)}
                               %
                             </span>
+                          ) : (
+                            <span className="text-sm">APR : 0%</span>
                           )}
                         </div>
                       </div>
@@ -357,6 +373,11 @@ const DepositAmountsICHI = ({
       </div>
       {/* <Button onClick={testinPosition}>Deposit testing</Button> */}
       <Button onClick={createPosition} variant="tertiary" className="w-full mx-auto !text-xs !h-[49px]">
+        {loading && (
+          <span className="m-2 text-sm">
+            <Spinner />
+          </span>
+        )}{' '}
         {getButtonText()}
       </Button>
     </>
