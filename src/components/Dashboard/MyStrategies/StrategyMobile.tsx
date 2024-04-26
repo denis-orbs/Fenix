@@ -9,6 +9,13 @@ import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { fromWei } from '@/src/library/utils/numbers'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { publicClient } from '@/src/library/constants/viemClient'
+import { CL_MANAGER_ABI } from '@/src/library/constants/abi'
+import { contractAddressList } from '@/src/library/constants/contactAddresses'
+import { Address, encodeFunctionData } from 'viem'
+import { useAccount, useWriteContract } from 'wagmi'
+import { MAX_INT } from '@/src/library/constants/misc'
 
 type options = {
   value: string
@@ -26,6 +33,8 @@ interface StrategyMobileProps {
 const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
+  const { writeContractAsync } = useWriteContract()
+  const { address } = useAccount()
 
   let ichitokens: IchiVault
   if (row.liquidity === 'ichi') {
@@ -38,6 +47,39 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
   }
 
   const handlerOpen = () => (isOpen ? setIsOpen(false) : setIsOpen(true))
+
+  const handleClaim = (id: string) => {
+    const multi = [
+      encodeFunctionData({
+        abi: CL_MANAGER_ABI,
+        functionName: 'collect',
+        args: [[id, address, MAX_INT, MAX_INT]],
+      }),
+    ]
+
+    writeContractAsync(
+      {
+        abi: CL_MANAGER_ABI,
+        address: contractAddressList.cl_manager as Address,
+        functionName: 'multicall',
+        args: [multi],
+      },
+
+      {
+        onSuccess: async (x) => {
+          const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
+          if (transaction.status == 'success') {
+            toast(`✅ Fees Claimed successfully.`)
+          } else {
+            toast(`❌ Fees Claimed Tx failed`)
+          }
+        },
+        onError: (e) => {
+          toast(`❌ Fees Claimed Tx failed.`)
+        },
+      }
+    )
+  }
 
   return (
     <div className="w-full bg-shark-400 bg-opacity-40 p-4">
@@ -212,18 +254,23 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                 >
                   <span className="text-l">Manage</span>
                 </Button>
-                <Button
-                  variant="tertiary"
-                  className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
-                  onClick={() => {
-                    // if (row.liquidity !== 'ichi') {
-                    //   router.push(`/liquidity/claim`)
-                    //   router.refresh()
-                    // }
-                  }}
-                >
-                  <span className="text-l">Claim</span>
-                </Button>
+                {row.liquidity !== 'ichi' ? (
+                  <>
+                    <Button
+                      variant="tertiary"
+                      className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+                      onClick={() => {
+                        if (row.liquidity !== 'ichi') {
+                          handleClaim(row?.id)
+                        }
+                      }}
+                    >
+                      <span className="text-l">Claim</span>
+                    </Button>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>
