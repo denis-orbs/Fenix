@@ -76,6 +76,7 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
           </>
         )} */}
         <div className="absolute bottom-0 left-[40%] w-[20%] h-1/2 bg-gradient-to-b from-shark-400 to-green-500 border-x-2 border-green-500 opacity-30"></div>
+        <div className="absolute bottom-0 left-[50%] w-[1px] h-1/2 bg-white"></div>
       </div>
       <div className="flex items-center w-full justify-between px-10 py-3 border-t-2 border-shark-400">
         {/* <p className="text-white text-xs">0.00</p>
