@@ -98,7 +98,7 @@ const MyStrategies = () => {
   return (
     <>
       {console.log('finalp', position)}
-      {position.length !== 0 && loading === false ? (
+      {position.length !== 0 && loading === false && address ? (
         <div className="relative">
           <h4 className="text-lg text-white mb-4">My Positions</h4>
           <div className="dashboard-box mb-10 hidden xl:block">
@@ -153,7 +153,7 @@ const MyStrategies = () => {
           </div>
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
-      ) : position.length === 0 && loading === false ? (
+      ) : (position.length === 0 && loading === false) || address === undefined ? (
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
             <p className="flex gap-3 text-lg ms-2">My Positions</p>
