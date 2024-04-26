@@ -32,9 +32,10 @@ import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
 import cn from '@/src/library/utils/cn'
 import { useAlgebraMultiRouting } from './useAlgebraMultiRouting'
-import { approveToken, switchTokensValues } from './utilsChange'
+import { approveToken, isNativeToken, switchTokensValues } from './utilsChange'
 import { WNATIVE } from '@cryptoalgebra/integral-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
+import { NATIVE_ETH_LOWERCASE, WETH_ADDRESS } from '@/src/library/Constants'
 
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
@@ -93,10 +94,10 @@ const Panel = () => {
         const data = await response.json()
         // USDB Because it's the default token sell
         const sellPrice = updateTokenPrice(data, 'USDB')
-        if (sellPrice !== null) setTokenSell((prev) => ({ ...prev, price: sellPrice }))
+        if (sellPrice !== null && tokenSell?.symbol === 'USDB') setTokenSell((prev) => ({ ...prev, price: sellPrice }))
         // WETH Because it's the default token get
         const getPrice = updateTokenPrice(data, 'WETH')
-        if (getPrice !== null) setTokenGet((prev) => ({ ...prev, price: getPrice }))
+        if (getPrice !== null && tokenGet?.symbol === 'WETH') setTokenGet((prev) => ({ ...prev, price: getPrice }))
       } catch (error) {
         console.error('Failed to fetch token prices:', error)
       }
@@ -124,9 +125,12 @@ const Panel = () => {
             address: contractAddressList.cl_swap as `0x${string}`,
             abi: algebraSwapABI,
             functionName: 'exactInputSingle',
+            value: isNativeToken(tokenSell?.address?.toString()) ? parseUnits(swapValue, tokenSell.decimals) : 0n,
             args: [
               {
-                tokenIn: tokenSell.address as `0x${string}`,
+                tokenIn: isNativeToken(tokenSell?.address?.toString())
+                  ? WETH_ADDRESS
+                  : (tokenSell.address as `0x${string}`),
                 tokenOut: tokenGet.address as `0x${string}`,
                 recipient: account as `0x${string}`,
                 deadline: BigInt(Math.floor(Date.now() / 1000) + 60 * 20),
@@ -145,6 +149,7 @@ const Panel = () => {
               // HAGO UN WAIT Y REFRESCO COMPONENTES
             },
             onError: (e: WriteContractErrorType) => {
+              console.log(e)
               toast.error(e.message.split('\n')[0])
             },
           }
@@ -196,7 +201,6 @@ const Panel = () => {
       return
     }
     setCurrentButtonState(ButtonState.WAITING_APPROVAL)
-    console.log('aaa')
     const provider = getWeb3Provider()
     const txApproveHash = await approveToken({
       tokenAddress: tokenSell.address as `0x${string}`,
@@ -213,9 +217,11 @@ const Panel = () => {
     }
     setCurrentButtonState(ButtonState.SWAP)
   }
+  const tokenSellIsNative = isNativeToken(tokenSell?.address)
+  const tokenGetIsNative = isNativeToken(tokenGet?.address)
   const { data: currentPool, loading: loadingCurrentPool } = useAlgebraPoolByPair(
-    tokenGet.address as `0x${string}`,
-    tokenSell.address as `0x${string}`
+    tokenSellIsNative ? WETH_ADDRESS : (tokenGet.address as `0x${string}`),
+    tokenGetIsNative ? WETH_ADDRESS : (tokenSell.address as `0x${string}`)
   )
 
   // when user changes the account, we reset the swap and for values
@@ -233,7 +239,7 @@ const Panel = () => {
     functionName: 'quoteExactInputSingle',
     args: [
       {
-        tokenIn: tokenSell.address as `0x${string}`,
+        tokenIn: tokenSellIsNative ? WETH_ADDRESS : (tokenSell.address as `0x${string}`),
         tokenOut: tokenGet.address as `0x${string}`,
         amountIn: parseUnits(swapValue, tokenSell.decimals),
         limitSqrtPrice: 0n,
@@ -241,11 +247,12 @@ const Panel = () => {
     ],
   })
   // tengo que refrescar la ruta, ver que me respeta el orden de la ruta
+
   const route = useAlgebraMultiRouting(tokenGet, tokenSell)
   const multiHopAvailable = route !== null
   const singleSwapAvailable = currentPool != zeroAddress
   const swapAvailable = singleSwapAvailable || multiHopAvailable
-  console.log(tokenGet, tokenSell)
+
   const quoteExactInputCall = useSimulateContract({
     address: contractAddressList.cl_quoterV2 as `0x${string}`,
     abi: algebraQuoterV2ABI,
@@ -308,9 +315,7 @@ const Panel = () => {
   // manage button click
   const handleSwapClick = () => {
     if (currentButtonState === ButtonState.SWAP || currentButtonState === ButtonState.PRICE_IMPACT_ALERT) {
-      // if is single trade
       callAlgebraRouter()
-      // else callback multi
     } else if (currentButtonState === ButtonState.APPROVAL_REQUIRED) {
       setCurrentButtonState(ButtonState.WAITING_APPROVAL)
       handleApproveToken()
@@ -323,31 +328,6 @@ const Panel = () => {
     refetch: refetchStateOfAMM,
   } = useAlgebraSafelyStateOfAMM(currentPool)
 
-  // swapAvailable
-  //   ? singleSwapAvailable
-  //     ? quoteExactInputSingleCall?.data?.result[0] || -1n
-  //     : quoteExactInputCall?.data?.result[0] || -1n
-  //   : -1n
-  // const priceImpact =
-  //   currentSqrtPriceX96 && sqrtPriceX96After
-  //     ? sqrtPriceDifference.div(currentSqrtPriceX96BN).multipliedBy(100).abs().multipliedBy(-1)
-  //     : '0'
-  // if (swapAvailable) {
-  //   if (singleSwapAvailable) {
-  //     if (currentSqrtPriceX96 && sqrtPriceX96After) {
-  //       priceImpact = sqrtPriceDifference.div(currentSqrtPriceX96BN).multipliedBy(100).abs().multipliedBy(-1)
-  //     } else {
-  //       priceImpact = '0'
-  //     }
-  //   } else if (multiHopAvailable) {
-  //     priceImpact = '1'
-  //   } else {
-  //     priceImpact = '0'
-  //   }
-  // } else {
-  //   priceImpact = '0'
-  // }
-  // const [priceImpact, setPriceImpact] = useState<string>('0')
   const currentSqrtPriceX96 = stateOfAMM?.[0] || 1n
   const sqrtPriceX96AfterBN = toBN(sqrtPriceX96After.toString())
   const currentSqrtPriceX96BN = toBN(currentSqrtPriceX96.toString())
@@ -447,7 +427,10 @@ const Panel = () => {
   useEffect(() => {
     const swapValuePrice = toBN(tokenSell.price).multipliedBy(swapValue)
     const forValuePrice = toBN(tokenGet.price).multipliedBy(forValue)
-    setMultiHopPriceImpact(swapValuePrice.div(forValuePrice).times(101).times(1.001).toString())
+    const diff = swapValuePrice.minus(forValuePrice)
+    console.log(forValue)
+    console.log(tokenGet.price)
+    setMultiHopPriceImpact(diff.div(swapValuePrice).times(100).abs().multipliedBy(-1).toString())
   }, [swapValue, forValue, tokenSell.price, tokenGet.price])
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
   useEffect(() => {
@@ -473,7 +456,9 @@ const Panel = () => {
               </div>
 
               <div className="flex gap-x-3 items-center">
-                <span className="text-shark-100 text-sm">{swapFee && `${formatUnits(BigInt(swapFee), 4)}% fee`}</span>
+                <span className="text-shark-100 text-sm">
+                  {swapFee && swapFee != '0' && `${formatUnits(BigInt(swapFee), 4)}% fee`}
+                </span>
                 <div className="flex items-center gap-3">
                   <Switch active={showChart} setActive={handleSwitch} />
                   <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
@@ -499,7 +484,9 @@ const Panel = () => {
                 />
                 <Separator
                   onClick={() => {
+                    const prevForValue = forValue
                     switchTokensValues(tokenGet, tokenSell, setTokenGet, setTokenSell)
+                    setSwapValue(prevForValue)
                   }}
                 />
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
