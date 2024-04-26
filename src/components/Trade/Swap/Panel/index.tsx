@@ -187,7 +187,7 @@ const Panel = () => {
         toast.error('No swap available')
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
