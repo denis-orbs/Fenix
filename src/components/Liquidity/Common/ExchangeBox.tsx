@@ -24,6 +24,11 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
   const availableAlign = title ? 'justify-between' : 'justify-end'
   const account = useAccount()
   const [balance, setBalance] = useState('0')
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+
+  useEffect(() => {
+    Number(value) < 1 ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [value])
 
   useEffect(() => {
     const asyncFn = async () => {
@@ -39,14 +44,18 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
   }
 
   const handleHalf = () => {
-    if (onTokenValueChange) {    
-      onTokenValueChange(ethers.utils.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
+    if (Number(value) > 0 ) {
+      if (onTokenValueChange) {
+        onTokenValueChange(ethers.utils.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
+      }
     }
   }
 
   const handleMax = () => {
-    if (onTokenValueChange) {
-      onTokenValueChange(ethers.utils.formatEther(balance.toString()), token)
+    if (Number(value) > 0 ) {
+      if (onTokenValueChange) {
+        onTokenValueChange(ethers.utils.formatEther(balance.toString()), token)
+      }
     }
   }
 
@@ -57,7 +66,7 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
           <span>
-            Available: {`${formatNumber(Number(balance) / (10**token.decimals), 8)}`} {token.symbol}
+            Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol}
           </span>
         </p>
       </div>
@@ -68,7 +77,13 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
             onClick={onOpenModal ? () => onOpenModal() : undefined}
           >
             <div className="flex items-center gap-2">
-              <Image src={`${token.img ? token.img : '/static/images/tokens/FNX.svg'}`} alt="token" className="w-6 h-6 rounded-full" width={20} height={20} />
+              <Image
+                src={`${token.img ? token.img : '/static/images/tokens/FNX.svg'}`}
+                alt="token"
+                className="w-6 h-6 rounded-full"
+                width={20}
+                height={20}
+              />
               <span className="text-base">{token.symbol}</span>
             </div>
             <span className="icon-chevron text-sm inline-block ml-2" />
@@ -83,10 +98,10 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
             value={value}
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
+            <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleHalf}>
               Half
             </Button>
-            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
+            <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleMax}>
               Max
             </Button>
           </div>

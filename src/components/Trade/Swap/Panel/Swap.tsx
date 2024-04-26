@@ -1,10 +1,8 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import SelectToken from '@/src/components/Modals/SelectToken'
-
 import { IToken } from '@/src/library/types'
 import { useBalance, useReadContract } from 'wagmi'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
@@ -21,8 +19,8 @@ interface SwapProps {
 }
 
 const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: SwapProps) => {
-  const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
-
+  const [openSelectToken, setOpenSelectToken] = useState<boolean>(true)
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
   const { account, isConnected } = useActiveConnectionDetails()
 
@@ -33,6 +31,27 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
     abi: ERC20_ABI,
   })
   const [tokenBalance, setTokenBalance] = useState('-')
+  useEffect(() => {
+    Number(value) < 1 ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [value])
+
+  const handleHalf = () => {
+    if (Number(value) > 0) {
+      if (tokenBalance && isConnected) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
+      else setValue('')
+    }
+  }
+
+  const handleMax = () => {
+    if (Number(value) > 0) {
+      if (tokenBalance && isConnected) {
+        setValue(toBN(formatPrice(tokenBalance, 12)).toString())
+      } else {
+        setValue('')
+      }
+    }
+  }
+
   useEffect(() => {
     if (tokenData.isSuccess) {
       const myNumber = tokenData.data as bigint
@@ -98,27 +117,10 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
           />
 
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              onClick={() => {
-                if (tokenBalance && isConnected) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
-                else setValue('')
-              }}
-            >
+            <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleHalf}>
               Half
             </Button>
-            <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              onClick={() => {
-                if (tokenBalance && isConnected) {
-                  setValue(toBN(formatPrice(tokenBalance, 12)).toString())
-                } else {
-                  setValue('')
-                }
-              }}
-            >
+            <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleMax}>
               Max
             </Button>
           </div>
