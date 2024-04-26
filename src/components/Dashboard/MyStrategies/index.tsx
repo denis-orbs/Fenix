@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { Button } from '@/src/components/UI'
 import Strategy from '@/src/components/Dashboard/MyStrategies/Strategy'
 import StrategyMobile from './StrategyMobile'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -98,7 +99,12 @@ const MyStrategies = () => {
       {console.log('finalp', position)}
       {position.length !== 0 && loading === false && address ? (
         <div className="relative">
-          <h4 className="text-lg text-white mb-4">My Positions</h4>
+          <div className='flex items-center w-[100%] mb-4 justify-between'>
+            <h4 className="text-lg text-white">My Positions</h4>
+            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
+              <span className="icon-logout"></span>New deposit
+            </Button>
+          </div>
           <div className="dashboard-box mb-10 hidden xl:block">
             <Swiper
               spaceBetween={50}
