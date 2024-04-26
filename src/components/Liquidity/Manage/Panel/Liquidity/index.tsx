@@ -134,7 +134,7 @@ const Manage = ({}: {}) => {
     asyncGetAllowance(data.token0, data.token1)
     getList(data.token0, data.token1)
     setLpValue(Number(BigInt(data.liquidity) / BigInt(2)))
-    console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
+    // console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
   }
 
   useEffect(() => {
@@ -216,8 +216,8 @@ const Manage = ({}: {}) => {
             positionData.id,
             ethers.utils.parseUnits(firstValue, 'ether'),
             ethers.utils.parseUnits(secondValue, 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1 - slippage)), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1 - slippage)), 'ether'),
             parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
@@ -238,7 +238,7 @@ const Manage = ({}: {}) => {
 
       {
         onSuccess: async (x) => {
-          console.log('success', x, +new Date())
+          // console.log('success', x, +new Date())
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
             toast(`Added successfully.`)
@@ -267,8 +267,8 @@ const Manage = ({}: {}) => {
           [
             positionData.id,
             lpValue,
-            Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
-            Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
+            Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
+            Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
             parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
@@ -290,7 +290,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           firstToken.address,
-          Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
+          Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
           account.address,
         ],
       }),
@@ -299,7 +299,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           secondToken.address,
-          Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
+          Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
           account.address,
         ],
       }),
@@ -397,11 +397,11 @@ const Manage = ({}: {}) => {
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{formatNumber((Number(positionData?.amount0) / 10 ** firstToken.decimals), 8)}</span>
+                <span>{formatNumber(Number(positionData?.amount0) / 10 ** firstToken.decimals, 8)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{formatNumber((Number(positionData?.amount1) / 10 ** secondToken.decimals), 8)}</span>
+                <span>{formatNumber(Number(positionData?.amount1) / 10 ** secondToken.decimals, 8)}</span>
               </p>
             </div>
           </div>
@@ -478,14 +478,14 @@ const Manage = ({}: {}) => {
         />
       </div>
 
-      <ApproveButtons 
-        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : shouldApproveFirst} 
-        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : shouldApproveSecond} 
-        token0={firstToken} 
-        token1={secondToken} 
-        handleApprove={handleApprove} 
-        mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity} 
-        mainText={optionActive === 'WITHDRAW' ? 'Withdraw Liquidity' : 'Add Liquidity'} 
+      <ApproveButtons
+        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : shouldApproveFirst}
+        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : shouldApproveSecond}
+        token0={firstToken}
+        token1={secondToken}
+        handleApprove={handleApprove}
+        mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity}
+        mainText={optionActive === 'WITHDRAW' ? 'Withdraw Liquidity' : 'Add Liquidity'}
         isLoading={isLoading}
       />
     </>

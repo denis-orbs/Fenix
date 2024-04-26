@@ -222,7 +222,7 @@ const Classic = ({
 
       {
         onSuccess: async (x) => {
-          console.log('success', x, +new Date())
+          // console.log('success', x, +new Date())
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
             toast(`Added successfully.`)

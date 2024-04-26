@@ -174,7 +174,7 @@ export const fetchv2PairId = async (token0Id: any, token1Id: any, isStable: Bool
     })
     // console.log(data)
     // // Data is available in `data.pools`
-    console.log(data.pairs)
+    // console.log(data.pairs)
     return data.pairs as V2PairId[]
   } catch (error) {
     console.error('Error fetching pool data:', error)

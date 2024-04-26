@@ -118,6 +118,7 @@ export const useIchiPositions = () => {
     const fetchpositions = async () => {
       if (address) {
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
+<<<<<<< HEAD
         const pos = await Promise.all(
           amounts?.map(async (item) => {
             let tokenA
@@ -203,6 +204,40 @@ export const useIchiPositions = () => {
           })
         )
         console.log(pos, 'pos')
+=======
+        const pos = amounts?.map((item) => {
+          let tokenA
+          let tokenB
+          //const vaultInfo = useIchiVaultsData(item.vaultAddress)
+          // console.log(tokenA)
+
+          return {
+            id: item.vaultAddress,
+            liquidity: 'ichi',
+            depositedToken0: item.userAmounts[0],
+            depositedToken1: item.userAmounts[1],
+            tickLower: {
+              price0: '0',
+              price1: '0',
+            },
+            tickUpper: {
+              price0: '0',
+              price1: '0',
+            },
+            token0: {
+              name: 'token0',
+              id: 'vaultInfo?.tokenA!',
+              symbol: 'token0',
+            },
+            token1: {
+              id: 'vaultInfo?.tokenB!',
+              symbol: 'token1',
+              name: 'token1',
+            },
+          }
+        })
+        // console.log(pos, 'pos')
+>>>>>>> feature/clmmessage
         setpositions(pos)
       }
     }
