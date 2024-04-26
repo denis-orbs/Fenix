@@ -14,6 +14,8 @@ import { getAlgebraPoolPrice, getAmounts, getPriceAndTick, getRatio } from '@/sr
 import { ethers } from 'ethers'
 import { formatNumber } from '@/src/library/utils/numbers'
 import Loader from '@/src/components/UI/Icons/Loader'
+import ApproveButtons from '@/src/components/Liquidity/Common/ApproveButtons'
+import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
 
 interface StateType {
   price: number
@@ -56,67 +58,36 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     parseInt(firstToken.address as string) > parseInt(secondToken.address as string)
   )
 
-  const [multiplier, setMuliplier] = useState(1)
+  const [decMultiplier, setDecMultiplier] = useState(1) 
 
   const [isLoading, setIsLoading] = useState(true)
+  const [slippage, setSlippage] = useState(0.05) 
 
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
 
   useEffect(() => {
-    if (!firstToken || !secondToken) return
-
-    if (isInverse) {
-      if (firstToken.decimals > secondToken.decimals) {
-        setMuliplier(1 / 10 ** (firstToken.decimals - secondToken.decimals))
-      } else if (firstToken.decimals < secondToken.decimals) {
-        setMuliplier(10 ** (secondToken.decimals - firstToken.decimals))
-      } else {
-        setMuliplier(1)
-      }
-    } else {
-      if (secondToken.decimals > firstToken.decimals) {
-        setMuliplier(1 / 10 ** (secondToken.decimals - firstToken.decimals))
-      } else if (secondToken.decimals < firstToken.decimals) {
-        setMuliplier(10 ** (firstToken.decimals - secondToken.decimals))
-      } else {
-        setMuliplier(1)
-      }
+    if (poolState.price == 0) { 
+      setRatio(1)
+      return 
     }
-  }, [firstToken, secondToken])
-
-  useEffect(() => {
-    if (poolState.price == 0) return
 
     const asyncFn = async () => {
-      console.log('current tick', poolState.currentTick)
       const realRatio: number = parseFloat(await getRatio(poolState.currentTick, higherTick, lowerTick))
-      console.log(
-        'log',
-        'get ratio',
-        realRatio,
-        isInverse ? parseFloat(realRatio.toString()) : 1 / parseFloat(realRatio.toString())
-      )
+      const decimalDifference = 10 ** Math.abs(firstToken.decimals - secondToken.decimals)
+      const decimalMultiplier = firstToken.decimals > secondToken.decimals ? decimalDifference : 1/decimalDifference
 
-      console.log('real ratio', realRatio)
-      setRatio(isInverse ? parseFloat(realRatio.toString()) : 1 / parseFloat(realRatio.toString()))
-
-      console.log('tx', multiplier, firstToken, secondToken)
+      setDecMultiplier(decimalMultiplier)
+      setRatio(isInverse ? parseFloat(realRatio.toString()) / decimalMultiplier : 1 / parseFloat(realRatio.toString()) / decimalMultiplier)
     }
 
     asyncFn()
   }, [lowerTick, higherTick, poolState, isInverse])
 
   useEffect(() => {
-    setSecondValue(((Number(firstValue) * ratio) / multiplier).toFixed(10).replace(/(\.\d*?[1-9])0+$|\.$/, '$1'))
-    // console.log('log', 'set second token after ratio')
+    setSecondValue((formatNumber(Number(firstValue) * ratio)))
   }, [ratio])
 
-  useEffect(() => {
-    // console.log('Do', firstToken.address, secondToken.address, ratio, isInverse, multiplier)
-  }, [firstToken.address, secondToken.address, ratio, isInverse, multiplier])
-
-  useEffect(() => {})
   useEffect(() => {
     if (defaultPairs.length == 2) {
       setFirstToken(defaultPairs[0])
@@ -129,16 +100,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   useEffect(() => {
     setIsInverse(BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
-    console.log('log', 'set inverse', BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
-
-    console.log(
-      'isInverse',
-      firstToken.address as string,
-      secondToken.address as string,
-      BigInt(firstToken.address as string),
-      BigInt(secondToken.address as string),
-      BigInt(firstToken.address as string) > BigInt(secondToken.address as string)
-    )
 
     const asyncGetAllowance = async () => {
       const allowanceFirst: any = await getTokenAllowance(
@@ -162,18 +123,14 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   useEffect(() => {
     const asyncFn = async () => {
       const state = await getAlgebraPoolPrice(firstToken.address as Address, secondToken.address as Address)
-      console.log(state, 'price')
-      console.log('tx', 'state = ', state)
       setPoolState(state as StateType)
-      console.log('log', 'edit state', firstToken.address, secondToken.address, state)
 
-      //   console.log('price = ', Number((state as StateType).price) / 1e18, 'tick =', (state as StateType).currentTick)
       if (currentPercentage == -1) {
         setRangePrice1(0)
         setRangePrice2(-1)
       } else {
-        setRangePrice1((Number(poolState.price) / 1e18) * (1 - currentPercentage / 100))
-        setRangePrice2((Number(poolState.price) / 1e18) * (1 + currentPercentage / 100))
+        setRangePrice1((Number(state.price) / 1e18) * (1 - currentPercentage / 100))
+        setRangePrice2((Number(state.price) / 1e18) * (1 + currentPercentage / 100))
       }
     }
 
@@ -204,8 +161,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           ((1 - priceAndTick1.price / poolState.price) * 100).toFixed(1),
           ((priceAndTick2.price / poolState.price - 1) * 100).toFixed(1),
         ])
-
-        console.log('log', 'price and tick', poolState.price)
       }
     }
 
@@ -220,18 +175,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     const _firstValue = isInverse ? secondValue : firstValue
     const _secondValue = isInverse ? firstValue : secondValue
 
-    console.log('tx', [
-      _firstToken.address as Address,
-      _secondToken.address as Address,
-      lowerTick,
-      higherTick,
-      ethers.utils.parseUnits(_firstValue.toString(), 'ether'),
-      ethers.utils.parseUnits(_secondValue.toString(), 'ether'),
-      0,
-      0,
-      account.address as Address,
-      parseInt((+new Date() / 1000).toString()) + 60 * 60,
-    ])
+    const _ethValue = _firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? BigInt(Math.floor(Number(formatNumber(Number(_firstValue))) * (1e18))) 
+                      : _secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? BigInt(Math.floor(Number(formatNumber(Number(_secondValue))) * (1e18))) 
+                      : BigInt(0)
+    _firstToken.address = _firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : _firstToken.address
+    _secondToken.address = _secondToken.address?.toLocaleLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : _secondToken.address
 
     writeContractAsync(
       {
@@ -244,14 +192,15 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
             _secondToken.address as Address,
             lowerTick,
             higherTick,
-            ethers.utils.parseUnits(_firstValue.toString(), 'ether'),
-            ethers.utils.parseUnits(_secondValue.toString(), 'ether'),
-            0,
-            0,
+            Math.floor(Number(formatNumber(Number(_firstValue))) * (10**_firstToken.decimals)),
+            Math.floor(Number(formatNumber(Number(_secondValue))) * (10**_secondToken.decimals)),
+            Math.floor(Number(formatNumber(Number(_firstValue) * (1-slippage))) * (10**_firstToken.decimals)),
+            Math.floor(Number(formatNumber(Number(_secondValue) * (1-slippage))) * (10**_secondToken.decimals)),
             account.address as Address,
             parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
+        value: _ethValue
       },
       {
         onSuccess: async (x) => {
@@ -317,14 +266,14 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const handleOnTokenValueChange = async (input: any, token: IToken) => {
     // TODO: handle if pair is not created
     if (firstToken.address === token.address) {
-      if (parseFloat(input) != 0) setSecondValue(formatNumber((parseFloat(input) * Number(ratio)) / multiplier))
+      if (parseFloat(input) != 0) setSecondValue(formatNumber((parseFloat(input) * Number(ratio)), secondToken.decimals))
       if (parseFloat(input) == 0) setSecondValue('')
-      setFirstValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
+      setFirstValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input), firstToken.decimals) : input)
     } else {
       if (parseFloat(input) != 0)
-        setFirstValue(formatNumber((parseFloat(input) / (Number(ratio) == 0 ? 1 : Number(ratio))) * multiplier))
+        setFirstValue(formatNumber((parseFloat(input) / (Number(ratio) == 0 ? 1 : Number(ratio))), firstToken.decimals))
       if (parseFloat(input) == 0) setFirstValue('')
-      setSecondValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
+      setSecondValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input), secondToken.decimals) : input)
     }
   }
 
@@ -341,7 +290,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         price2={isInverse ? rangePrice2 : 1 / rangePrice2}
         token1={isInverse ? secondToken : firstToken}
         token2={isInverse ? firstToken : secondToken}
-        multiplier={multiplier}
+        multiplier={decMultiplier}
       />
       <TokensSelector
         firstToken={firstToken}
@@ -354,27 +303,16 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setSecondValue={(value) => setSecondValue(value)}
         onTokenValueChange={handleOnTokenValueChange}
       />
-      <Button
-        className="w-full mx-auto !text-xs !h-[49px]"
-        variant="tertiary"
-        onClick={() => {
-          shouldApproveFirst
-            ? handleApprove(firstToken.address as Address)
-            : shouldApproveSecond
-              ? handleApprove(secondToken.address as Address)
-              : handleCLAdd()
-        }}
-      >
-        {isLoading ? (
-          <Loader color="white" size={20} />
-        ) : shouldApproveFirst ? (
-          `Approve ${firstToken.symbol}`
-        ) : shouldApproveSecond ? (
-          `Approve ${secondToken.symbol}`
-        ) : (
-          `Create Position`
-        )}
-      </Button>
+      <ApproveButtons 
+        shouldApproveFirst={shouldApproveFirst} 
+        shouldApproveSecond={shouldApproveSecond} 
+        token0={firstToken} 
+        token1={secondToken} 
+        handleApprove={handleApprove} 
+        mainFn={handleCLAdd} 
+        mainText={'Create Position'} 
+        isLoading={isLoading}      
+      />
     </>
   )
 }

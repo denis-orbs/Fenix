@@ -27,6 +27,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import { formatNumber } from '@/src/library/utils/numbers'
 import Loader from '@/src/components/UI/Icons/Loader'
+import ApproveButtons from '../../../Common/ApproveButtons'
 
 interface PositionData {
   id: number
@@ -217,7 +218,7 @@ const Manage = ({}: {}) => {
             ethers.utils.parseUnits(secondValue, 'ether'),
             ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
             ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
-            11114224550,
+            parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
       }),
@@ -268,7 +269,7 @@ const Manage = ({}: {}) => {
             lpValue,
             Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
             Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
-            11114224550,
+            parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
       }),
@@ -477,30 +478,16 @@ const Manage = ({}: {}) => {
         />
       </div>
 
-      <Button
-        className="w-full mx-auto !text-xs !h-[49px]"
-        variant="tertiary"
-        onClick={() => {
-          optionActive == 'ADD'
-            ? shouldApproveFirst
-              ? handleApprove(firstToken.address as Address)
-              : shouldApproveSecond
-                ? handleApprove(secondToken.address as Address)
-                : handleIncreaseLiquidity()
-            : handleDecreaseLiquidity()
-        }}
-      >
-        {
-        isLoading ? 
-          <Loader color="white" size={20} /> 
-        : optionActive == 'ADD'
-          ? shouldApproveFirst
-            ? `Approve ${firstToken.symbol}`
-            : shouldApproveSecond
-              ? `Approve ${secondToken.symbol}`
-              : `Add Liquidity`
-          : `Remove Liquidity`}
-      </Button>
+      <ApproveButtons 
+        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : shouldApproveFirst} 
+        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : shouldApproveSecond} 
+        token0={firstToken} 
+        token1={secondToken} 
+        handleApprove={handleApprove} 
+        mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity} 
+        mainText={optionActive === 'WITHDRAW' ? 'Withdraw Liquidity' : 'Add Liquidity'} 
+        isLoading={isLoading}
+      />
     </>
   )
 }

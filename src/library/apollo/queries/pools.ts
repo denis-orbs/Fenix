@@ -52,6 +52,13 @@ export const POOLS_LIST = gql`
     }
   }
 `
+export const POOLS_ID_LIST = gql`
+  query PoolsList {
+    pools {
+      id
+    }
+  }
+`
 
 export const ALL_TICKS = gql`
   query allTicks($poolAddress: String!, $skip: Int!) {

@@ -17,10 +17,9 @@ interface ForProps {
   value: string
   setToken: (token: IToken) => void
   setValue: (value: string) => void
-  setInputForActive: (active: boolean) => void
 }
 
-const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) => {
+const For = ({ token, setToken, setValue, value }: ForProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
   const { account, isConnected } = useActiveConnectionDetails()
 
@@ -95,7 +94,6 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
             placeholder="0.0"
             disabled
             onUserInput={(input) => {
-              // setInputForActive(true)
               // setValue(input)
             }}
             precision={token.decimals}

@@ -26,7 +26,7 @@ const Menu = () => {
           href={link.href}
           key={index}
           className={`${isActive(link.href) ? activeButtonClass : inactiveButtonClass} 
-          rounded-[8px] py-2.5 px-3 md:px-1 flex items-center justify-center min-w-[80px] gap-2.5 text-white text-xs leading-normal group transition-all`}
+          rounded-[8px] py-2.5 px-3 md:px-1 flex items-center justify-center min-w-[80px] gap-2.5 text-white text-sm leading-normal group transition-all`}
         >
           <span className={`${isActive(link.href) ? activeButtonTextClass : inactiveButtonTextClass}`}>
             {link.name}

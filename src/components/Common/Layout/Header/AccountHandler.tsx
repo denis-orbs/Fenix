@@ -56,7 +56,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
         const ob = response.data.data.filter((element: any) => {
           return element.recipient.toLowerCase() === address.toLowerCase()
         })
-        let totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
+        const totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
 
         return (totalPercentage / 100) * response.data.pointsandgold.LIQUIDITY.available
       } catch (error) {
@@ -72,7 +72,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
         const ob = response.data.data.filter((element: any) => {
           return element.recipient.toLowerCase() === address.toLowerCase()
         })
-        let totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
+        const totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
 
         return (totalPercentage / 100) * response.data.pointsandgold.LIQUIDITY.available
       } catch (error) {
