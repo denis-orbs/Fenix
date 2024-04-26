@@ -78,11 +78,11 @@ const Liquidity = () => {
 
   return (
     <section>
-      <div className="flex flex-col items-center gap-5 py-5 lg:flex-row">
-        <div className="w-full lg:w-2/3">
+      <div className="flex flex-col items-center gap-5 py-5 xl:flex-row">
+        <div className="w-full xl:w-2/3">
           <Deposit />
         </div>
-        <div className="w-full lg:w-1/3 self-auto">
+        <div className="w-full xl:w-1/3 self-auto">
           <Steps steps={STEPS} title="Start Now" />
         </div>
       </div>

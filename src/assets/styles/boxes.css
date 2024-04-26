@@ -697,8 +697,8 @@
   /* 2xl:w-[615px] */
   bg-shark-400
   bg-opacity-40
-  lg:bg-transparent
-  lg:bg-opacity-100
+  xl:bg-transparent
+  xl:bg-opacity-100
   py-8
   2xl:py-12
   px-8
@@ -713,7 +713,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:lg:block
+  before:xl:block
 
   after:content-[""]
   after:absolute
@@ -726,7 +726,7 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:lg:block;
+  after:xl:block;
 }
 
 /* Background for main box */
@@ -738,8 +738,8 @@
   flex-shrink-0
   bg-shark-400
   bg-opacity-40
-  lg:bg-transparent
-  lg:bg-opacity-100
+  xl:bg-transparent
+  xl:bg-opacity-100
   py-8
   2xl:py-12
   px-8
@@ -755,7 +755,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:lg:block
+  before:xl:block
 
   after:content-[""]
   after:absolute
@@ -768,7 +768,7 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:lg:block;
+  after:xl:block;
 }
 
 /* Background for veFNXIDO boxes */
