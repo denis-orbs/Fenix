@@ -9,6 +9,13 @@ import { useEffect, useState } from 'react'
 import { useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { IchiVault } from '@ichidao/ichi-vaults-sdk'
 import { useRouter, useSearchParams } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { publicClient } from '@/src/library/constants/viemClient'
+import { CL_MANAGER_ABI } from '@/src/library/constants/abi'
+import { contractAddressList } from '@/src/library/constants/contactAddresses'
+import { Address, encodeFunctionData } from 'viem'
+import { useAccount, useWriteContract } from 'wagmi'
+import { MAX_INT } from '@/src/library/constants/misc'
 
 type options = {
   value: string
@@ -84,7 +91,8 @@ interface StrategyProps {
 
 const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyProps) => {
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
-
+  const { writeContractAsync } = useWriteContract()
+  const { address } = useAccount()
   const router = useRouter()
 
   const handlerOpenModal = (option: string) => {
@@ -100,6 +108,39 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
   let ichitokens: IchiVault
   if (row.liquidity === 'ichi') {
     ichitokens = useIchiVaultsData(row?.id)
+  }
+
+  const handleClaim = (id: string) => {
+    const multi = [
+      encodeFunctionData({
+        abi: CL_MANAGER_ABI,
+        functionName: 'collect',
+        args: [[id, address, MAX_INT, MAX_INT]],
+      }),
+    ]
+
+    writeContractAsync(
+      {
+        abi: CL_MANAGER_ABI,
+        address: contractAddressList.cl_manager as Address,
+        functionName: 'multicall',
+        args: [multi],
+      },
+
+      {
+        onSuccess: async (x) => {
+          const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
+          if (transaction.status == 'success') {
+            toast(`✅ Fees Claimed successfully.`)
+          } else {
+            toast(`❌ Fees Claimed Tx failed`)
+          }
+        },
+        onError: (e) => {
+          toast(`❌ Fees Claimed Tx failed.`)
+        },
+      }
+    )
   }
 
   return (
@@ -264,18 +305,23 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           >
             <span className="text-l">Manage</span>
           </Button>
-          <Button
-            variant="tertiary"
-            className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
-            onClick={() => {
-              // if (row.liquidity !== 'ichi') {
-              //   router.push(`/liquidity/claim`)
-              //   router.refresh()
-              // }
-            }}
-          >
-            <span className="text-l">Claim</span>
-          </Button>
+          {row.liquidity !== 'ichi' ? (
+            <>
+              <Button
+                variant="tertiary"
+                className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+                onClick={() => {
+                  if (row.liquidity !== 'ichi') {
+                    handleClaim(row?.id)
+                  }
+                }}
+              >
+                <span className="text-l">Claim</span>
+              </Button>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
