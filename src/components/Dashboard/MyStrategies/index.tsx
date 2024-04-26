@@ -5,27 +5,21 @@ import StrategyMobile from './StrategyMobile'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperCore } from 'swiper'
 import 'swiper/css'
-import WithdrawFunds from '@/src/components/Modals/WithdrawFunds'
-import DuplicateStrategy from '@/src/components/Modals/DuplicateStrategy'
-import PauseStrategy from '@/src/components/Modals/PauseStrategy'
-import ManageNotifications from '@/src/components/Modals/ManageNotifications'
-import DeleteStrategy from '@/src/components/Modals/DeleteStrategy'
 import OPTIONS_STRATEGIES from './data'
-import INFO_API from '../data'
 import { useAccount } from 'wagmi'
-import { fetchV3Positions } from '@/src/state/liquidity/reducer'
+import { fetchNativePrice, fetchV3Positions } from '@/src/state/liquidity/reducer'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
-import { SupportedChainId, SupportedDex, getIchiVaultInfo } from '@ichidao/ichi-vaults-sdk'
-import { getPositionData, getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
+import { getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionsApr'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
-  const [position, setposition] = useState<positions[]>([])
+  const [position, setposition] = useState<any[]>([])
   const [positionAmounts, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
 
@@ -35,18 +29,6 @@ const MyStrategies = () => {
   useEffect(() => {
     tokensprice()
   }, [])
-  // type ModalList = {
-  //   [key: string]: JSX.Element
-  // }
-
-  // const MODAL_LIST: ModalList = {
-  //   notifications: <ManageNotifications openModal={openModal} setOpenModal={setOpenModal} />,
-  //   withdraw: <WithdrawFunds openModal={openModal} setOpenModal={setOpenModal} />,
-  //   duplicate: <DuplicateStrategy openModal={openModal} setOpenModal={setOpenModal} />,
-  //   deposit: <DeleteStrategy openModal={openModal} setOpenModal={setOpenModal} />,
-  //   pause: <PauseStrategy openModal={openModal} setOpenModal={setOpenModal} />,
-  //   delete: <DeleteStrategy openModal={openModal} setOpenModal={setOpenModal} />,
-  // }
 
   const slideToLeft = () => {
     if (swiperRef.current) {
@@ -62,6 +44,7 @@ const MyStrategies = () => {
 
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
+    const nativePrice = await fetchNativePrice()
     console.log(positions, 'amount')
     const positionsPoolAddresses = await positions.map((position: any) => {
       return {
@@ -73,6 +56,12 @@ const MyStrategies = () => {
     })
     const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
 
+    // TODO: Fetch APR for each position
+    // const aprs = await Promise.all(
+    //   positions.map((position: positions, index: number) => {
+    //     return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
+    //   })
+    // )
     const final = positions.map((position: positions, index: number) => {
       console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
       return {

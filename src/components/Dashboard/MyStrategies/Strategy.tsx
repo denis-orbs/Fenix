@@ -14,32 +14,59 @@ type options = {
   value: string
   label: string
 }
-export type positions = {
+export interface Pool {
+  id: string
+  fee: string
+  sqrtPrice: string
+  liquidity: string
+  tick: string
+  tickSpacing: string
+  totalValueLockedUSD: string
+  volumeUSD: string
+  feesUSD: string
+  untrackedFeesUSD: string
+  token0Price: string
+  token1Price: string
+  token0: Tokenp
+  token1: Tokenp
+  poolDayData: PoolDayData
+}
+
+export interface Tokenp {
+  id: string
+  symbol: string
+  name: string
+  decimals: string
+  derivedMatic: string
+}
+
+export interface PoolDayData {
+  __typename?: 'PoolDayData'
+  feesUSD: any
+}
+
+export interface Tick {
+  price0: string
+  price1: string
+  tickIdx: string
+}
+
+export interface positions {
   id: string
   liquidity: string
-  depositedToken0: Number
-  depositedToken1: Number
+  owner: string
+  depositedToken0: string
+  depositedToken1: string
   withdrawnToken0: string
   withdrawnToken1: string
-  tickLower: {
-    price0: string
-    price1: string
-  }
-  tickUpper: {
-    price0: string
-    price1: string
-  }
-  token0: {
-    decimals: string
-    id: string
-    symbol: string
-  }
-  token1: {
-    id: string
-    symbol: string
-    decimals: string
-  }
+  pool: Pool
+  tickLower: Tick
+  tickUpper: Tick
+  token0: Tokenp
+  token1: Tokenp
+  apr: number
 }
+
 export type ichipositions = {
   userAmounts: string[]
   vaultAddress: string
