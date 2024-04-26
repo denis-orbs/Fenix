@@ -93,10 +93,10 @@ const Panel = () => {
         const data = await response.json()
         // USDB Because it's the default token sell
         const sellPrice = updateTokenPrice(data, 'USDB')
-        if (sellPrice !== null) setTokenSell((prev) => ({ ...prev, price: sellPrice }))
+        if (sellPrice !== null && tokenSell?.symbol === 'USDB') setTokenSell((prev) => ({ ...prev, price: sellPrice }))
         // WETH Because it's the default token get
         const getPrice = updateTokenPrice(data, 'WETH')
-        if (getPrice !== null) setTokenGet((prev) => ({ ...prev, price: getPrice }))
+        if (getPrice !== null && tokenGet?.symbol === 'WETH') setTokenGet((prev) => ({ ...prev, price: getPrice }))
       } catch (error) {
         console.error('Failed to fetch token prices:', error)
       }
@@ -145,6 +145,7 @@ const Panel = () => {
               // HAGO UN WAIT Y REFRESCO COMPONENTES
             },
             onError: (e: WriteContractErrorType) => {
+              console.log(e)
               toast.error(e.message.split('\n')[0])
             },
           }
@@ -481,7 +482,9 @@ const Panel = () => {
                 />
                 <Separator
                   onClick={() => {
+                    const prevForValue = forValue
                     switchTokensValues(tokenGet, tokenSell, setTokenGet, setTokenSell)
+                    setSwapValue(prevForValue)
                   }}
                 />
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
