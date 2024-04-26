@@ -27,6 +27,7 @@ const DepositAmountsICHI = ({
 }) => {
   const [isActive, setIsActive] = useState<boolean>(false)
   const [selected, setIsSelected] = useState<string>('Choose one')
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
 
   const { account } = useActiveConnectionDetails()
 
@@ -228,6 +229,26 @@ const DepositAmountsICHI = ({
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    // console.log(token0TypedValue)
+    Number(token0TypedValue) < 1 ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [token0TypedValue])
+
+  const handleHalf = () => {
+    if (Number(token0TypedValue) < 1) {
+      if (!token0Balance) return
+      setToken0TypedValue(toBN(formatUnits(token0Balance, token0Decimals)).div(2).toString())
+    }
+  }
+
+  const handleMax = () => {
+    if (Number(token0TypedValue) < 1) {
+      if (!token0Balance) return
+      setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
+    }
+  }
+
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -253,24 +274,10 @@ const DepositAmountsICHI = ({
               className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             />
             <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!token0Balance) return
-                  setToken0TypedValue(toBN(formatUnits(token0Balance, token0Decimals)).div(2).toString())
-                }}
-              >
+              <Button disabled={btnDisabled} variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
                 Half
               </Button>
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!token0Balance) return
-                  setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
-                }}
-              >
+              <Button disabled={btnDisabled} variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
                 Max
               </Button>
             </div>

@@ -1,5 +1,4 @@
 'use client'
-
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import { useAccount, useBalance } from 'wagmi'
@@ -9,6 +8,7 @@ import { getTokenBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { ethers } from 'ethers'
 import { formatNumber } from '@/src/library/utils/numbers'
+import { NumericalInput } from '../../UI/Input'
 
 interface ExchangeBoxProps {
   title?: string
@@ -40,11 +40,11 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
   }, [token, account.address])
 
   const handleOnChange = (e: any) => {
-    if (onTokenValueChange) onTokenValueChange(e.target.value.length > 0 ? e.target.value : 0, token)
+    if (onTokenValueChange) onTokenValueChange(e > 0 ? e : 0, token)
   }
 
   const handleHalf = () => {
-    if (Number(value) > 0 ) {
+    if (Number(value) > 0) {
       if (onTokenValueChange) {
         onTokenValueChange(ethers.utils.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
       }
@@ -52,7 +52,7 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
   }
 
   const handleMax = () => {
-    if (Number(value) > 0 ) {
+    if (Number(value) > 0) {
       if (onTokenValueChange) {
         onTokenValueChange(ethers.utils.formatEther(balance.toString()), token)
       }
@@ -90,12 +90,19 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
           </div>
         </div>
         <div className="relative w-full xl:w-3/5">
-          <input
+          {/* <input
             type="number"
             placeholder="0"
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             onChange={handleOnChange}
             value={value}
+          /> */}
+          <NumericalInput
+            value={value}
+            className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+            placeholder="0.0"
+            onUserInput={(input) => handleOnChange(input)}
+            precision={token.decimals}
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
             <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleHalf}>
