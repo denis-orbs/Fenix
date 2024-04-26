@@ -118,57 +118,38 @@ export const useIchiPositions = () => {
     const fetchpositions = async () => {
       if (address) {
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
-        const pos = amounts?.map((item) => {
-          let tokenA
-          let tokenB
-          //const vaultInfo = useIchiVaultsData(item.vaultAddress)
-          console.log(tokenA)
+        const pos = await Promise.all(
+          amounts?.map(async (item) => {
+            let tokenA
+            let tokenB
+            //const vaultInfo = useIchiVaultsData(item.vaultAddress)
+            console.log(tokenA)
 
-          return {
-            id: item.vaultAddress,
-            liquidity: 'ichi',
-            depositedToken0: Number(item.userAmounts[0]),
-            depositedToken1: Number(item.userAmounts[1]),
-            tickLower: {
-              price0: '0',
-              price1: '0',
-              tickIdx: '',
-            },
-            tickUpper: {
-              price0: '0',
-              price1: '0',
-              tickIdx: '',
-            },
-            token0: {
-              id: 'string',
-              symbol: 'string',
-              name: 'string',
-              decimals: 'string',
-              derivedMatic: 'string',
-            },
-            token1: {
-              id: 'string',
-              symbol: 'string',
-              name: 'string',
-              decimals: 'string',
-              derivedMatic: 'string',
-            },
-            owner: address,
-            withdrawnToken0: '',
-            withdrawnToken1: '',
-            pool: {
-              id: 'string',
-              fee: 'string',
-              sqrtPrice: 'string',
-              liquidity: 'string',
-              tick: 'string',
-              tickSpacing: 'string',
-              totalValueLockedUSD: 'string',
-              volumeUSD: 'string',
-              feesUSD: 'string',
-              untrackedFeesUSD: 'string',
-              token0Price: 'string',
-              token1Price: 'string',
+            const getLp = async (vadd: string) => {
+              const web3Provider = getWeb3Provider()
+              const dex = SupportedDex.Fenix
+              const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
+              return averageDtr
+            }
+
+            const app = await getLp(item.vaultAddress)
+            console.log('app', app)
+
+            return {
+              id: item.vaultAddress,
+              liquidity: 'ichi',
+              depositedToken0: Number(item.userAmounts[0]),
+              depositedToken1: Number(item.userAmounts[1]),
+              tickLower: {
+                price0: '0',
+                price1: '0',
+                tickIdx: '',
+              },
+              tickUpper: {
+                price0: '0',
+                price1: '0',
+                tickIdx: '',
+              },
               token0: {
                 id: 'string',
                 symbol: 'string',
@@ -183,13 +164,44 @@ export const useIchiPositions = () => {
                 decimals: 'string',
                 derivedMatic: 'string',
               },
-              poolDayData: {
+              owner: address,
+              withdrawnToken0: '',
+              withdrawnToken1: '',
+              pool: {
+                id: 'string',
+                fee: 'string',
+                sqrtPrice: 'string',
+                liquidity: 'string',
+                tick: 'string',
+                tickSpacing: 'string',
+                totalValueLockedUSD: 'string',
+                volumeUSD: 'string',
                 feesUSD: 'string',
+                untrackedFeesUSD: 'string',
+                token0Price: 'string',
+                token1Price: 'string',
+                token0: {
+                  id: 'string',
+                  symbol: 'string',
+                  name: 'string',
+                  decimals: 'string',
+                  derivedMatic: 'string',
+                },
+                token1: {
+                  id: 'string',
+                  symbol: 'string',
+                  name: 'string',
+                  decimals: 'string',
+                  derivedMatic: 'string',
+                },
+                poolDayData: {
+                  feesUSD: 'string',
+                },
               },
-            },
-            apr: 0,
-          }
-        })
+              apr: app[0]?.apr <= 0 ? '0.00%' : app[0]?.apr.toFixed(0) + '%',
+            }
+          })
+        )
         console.log(pos, 'pos')
         setpositions(pos)
       }

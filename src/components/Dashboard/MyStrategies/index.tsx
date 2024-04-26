@@ -14,6 +14,7 @@ import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
 import { getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionsApr'
+import Spinner from '../../Common/Spinner'
 
 const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
@@ -22,6 +23,7 @@ const MyStrategies = () => {
   const [position, setposition] = useState<positions[]>([])
   const [positionAmounts, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
+  const [loading, setLoading] = useState(false)
 
   const tokensprice = async () => {
     setTokens(await fetchTokens())
@@ -74,23 +76,29 @@ const MyStrategies = () => {
     console.log('multicall amounts', positions, amounts, final)
     setposition((prevPositions) => [...prevPositions, ...final])
     setpositionAmounts(amounts)
+    setLoading(false)
   }
 
   useEffect(() => {
     if (address) fetchpositions(address)
+    setLoading(true)
   }, [address])
 
   const ichipositions = useIchiPositions()
 
   useEffect(() => {
+    setLoading(true)
     if (ichipositions.length > 0) {
+      console.log('ichipos', ichipositions)
       setposition((prevPositions) => [...prevPositions, ...ichipositions])
+      setLoading(false)
     }
   }, [ichipositions])
 
   return (
     <>
-      {position.length !== 0 ? (
+      {console.log('finalp', position)}
+      {position.length !== 0 && loading === false ? (
         <div className="relative">
           <h4 className="text-lg text-white mb-4">My Positions</h4>
           <div className="dashboard-box mb-10 hidden xl:block">
@@ -145,13 +153,24 @@ const MyStrategies = () => {
           </div>
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
-      ) : (
+      ) : position.length === 0 && loading === false ? (
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
             <p className="flex gap-3 text-lg ms-2">My Positions</p>
           </div>
           <div className="box-dashboard p-6 flex gap-8 items-center ">
             <p className="text-white text-sm">You have no positions.</p>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
+          <div className="text-white flex justify-between items-center">
+            <p className="flex gap-3 text-lg ms-2">My Positions</p>
+          </div>
+          <div className="box-dashboard p-6 flex gap-8 justify-center items-center ">
+            <p className="text-white text-sm flex items-center gap-3">
+              <Spinner /> Loading
+            </p>
           </div>
         </div>
       )}
