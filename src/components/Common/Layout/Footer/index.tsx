@@ -104,9 +104,9 @@ const Footer = () => {
             <div className={`flex items-center gap-5 ${pathname === '/' && 'xl:ms-10'}`}>
               <div>{currentYear} © Fenix Finance</div>
             </div>
-            <div className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl bg-shark-950 bg-opacity-30 md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}>version: {commitHash}</div>
+            <div className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}>version: {commitHash}</div>
           </div>
-          <div className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl bg-shark-950 bg-opacity-30 max-md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}>version: {commitHash}</div>
+          <div className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl max-md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}>version: {commitHash}</div>
           <div
             className={`flex items-end flex-col gap-2 ${pathname === '/' ? 'justify-end lg:w-1/2 text-right' : 'justify-center md:justify-end md:w-1/2'}`}
           >
