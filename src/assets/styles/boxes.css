@@ -556,9 +556,8 @@
   after:border-[transparent_transparent_#1a1d21];
 }
 
-
 .box-invert {
- @apply relative
+  @apply relative
   
   w-full
   flex-shrink-0
@@ -583,10 +582,8 @@
   after:w-full
   after:z-40
   after:bottom-0
-  after:left-0
+  after:left-0;
 }
-
-
 
 .mini-box-vote {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3

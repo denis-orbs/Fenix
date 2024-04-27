@@ -1,6 +1,7 @@
 'use client'
+
 import { useReadNotificationCallback } from '@/src/state/notifications/hooks'
-import { NotificationDetails, NotificationType } from '@/src/state/notifications/types'
+import { NotificationDetails, NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -17,7 +18,14 @@ function secondsAgo(createTime: string) {
   return Math.floor(differenceInMilliseconds / 1000)
 }
 
-const Notification = ({ id, createTime, message, notificationType, txHash }: NotificationDetails) => {
+const Notification = ({
+  id,
+  createTime,
+  message,
+  notificationType,
+  txHash,
+  notificationDuration = NotificationDuration.DURATION_4000,
+}: NotificationDetails) => {
   const readNotification = useReadNotificationCallback()
   const savedCallback = useRef(readNotification)
   const [seconds, setSeconds] = useState(() => secondsAgo(createTime || new Date().toISOString()))
@@ -35,14 +43,14 @@ const Notification = ({ id, createTime, message, notificationType, txHash }: Not
   useEffect(() => {
     const timer = setTimeout(() => {
       savedCallback.current(id)
-    }, 4500)
+    }, notificationDuration)
     return () => clearTimeout(timer)
-  }, [readNotification, id])
+  }, [readNotification, id, notificationDuration])
 
   const STATUS: { [key in NotificationType]: StatusInfo } = {
     [NotificationType.DEFAULT]: {
       class: ' bg-gradient-to-r from-outrageous-orange-500 to-chilean-fire-500 ',
-      icon: 'icon-wallet text-gradient',
+      icon: 'icon-info text-gradient',
       color: 'text-gradient',
     },
     [NotificationType.WARNING]: {
@@ -61,13 +69,23 @@ const Notification = ({ id, createTime, message, notificationType, txHash }: Not
       color: 'text-green-300',
     },
   }
+  const animationDuration = {
+    [NotificationDuration.DURATION_3000]: 'animate-progress-toast-3000',
+    [NotificationDuration.DURATION_4000]: 'animate-progress-toast-4000',
+    [NotificationDuration.DURATION_5000]: 'animate-progress-toast-5000',
+    [NotificationDuration.DURATION_10000]: 'animate-progress-toast-10000',
+    [NotificationDuration.DURATION_15000]: 'animate-progress-toast-15000',
+  }
+  console.log(notificationDuration)
   return (
     <>
       <div className="notification  box-invert animate-toast-in  w-[326px]  px-4 pt-1 pb-3">
         <div className="relative z-50">
           <div className="flex items-center justify-end w-full  gap-3">
             <div className="h-[5px] w-10 bg-shark-400 flex rounded-lg overflow-hidden">
-              <div className={`h-full ${STATUS[notificationType].class} animate-progress-toast`}></div>
+              <div
+                className={`h-full ${STATUS[notificationType].class} ${animationDuration[notificationDuration]}`}
+              ></div>
             </div>
             <span
               onClick={() => {

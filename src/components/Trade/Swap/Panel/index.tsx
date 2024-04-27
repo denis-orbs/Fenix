@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import Swap from '@/src/components/Trade/Swap/Panel/Swap'
 import For from '@/src/components/Trade/Swap/Panel/For'
 import Separator from '@/src/components/Trade/Common/Separator'
-import { erc20Abi, formatUnits, parseUnits, zeroAddress } from 'viem'
+import { TransactionExecutionError, erc20Abi, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useSimulateContract } from 'wagmi'
 import { type WriteContractErrorType } from '@wagmi/core'
 import Chart from '@/src/components/Liquidity/Deposit/Chart'
@@ -34,6 +34,8 @@ import { approveToken, isNativeToken, switchTokensValues } from './utilsChange'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { NATIVE_ETH, NATIVE_ETH_LOWERCASE, WETH_ADDRESS } from '@/src/library/Constants'
 import { wethAbi } from '@/src/library/web3/abis/wethAbi'
+import { useNotificationAdderCallback, useReadNotificationCallback } from '@/src/state/notifications/hooks'
+import { NotificationDetails, NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
@@ -54,11 +56,66 @@ const Panel = () => {
   const { setSlippageModal } = useStore()
   const [currentButtonState, setCurrentButtonState] = useState(ButtonState.SWAP)
   const [tokenSellUserBalance, setTokenSellUserBalance] = useState<string>('')
-  const { writeContract, failureReason, data: hash } = useWriteContract()
+  const { writeContract, failureReason, data: hash, status } = useWriteContract()
   const slippage = useSlippageTolerance()
   const { openConnectModal } = useConnectModal()
   const { account, isConnected } = useActiveConnectionDetails()
+  const addNotification = useNotificationAdderCallback()
+  const readNotification = useReadNotificationCallback()
+  const handleTransactionSuccess = (hash: `0x${string}` | undefined, tokenSell: IToken, tokenGet: IToken) => {
+    const id = crypto.randomUUID()
+    const provider = getWeb3Provider()
+    const notificationMessage = `${tokenSell?.symbol} for ${tokenGet?.symbol}`
 
+    console.log(notificationMessage)
+
+    addNotification({
+      id: id,
+      createTime: new Date().toISOString(),
+      message: `Proccessing ${notificationMessage} swap...`,
+      notificationType: NotificationType.DEFAULT,
+      txHash: hash,
+      notificationDuration: NotificationDuration.DURATION_15000,
+    })
+
+    if (!hash) return
+    provider
+      .waitForTransaction(hash)
+      .then((transactionReceipt) => {
+        setTimeout(() => {
+          readNotification(id)
+        }, 1000)
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `Swap ${notificationMessage} completed successfully`,
+          notificationType: NotificationType.SUCCESS,
+          txHash: hash,
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
+      })
+      .catch((error) => {
+        console.error('Error, there was an error', error)
+      })
+  }
+
+  const handleTransactionError = (e: any) => {
+    if (e instanceof TransactionExecutionError) {
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: e.shortMessage,
+        notificationType: NotificationType.ERROR,
+      })
+    } else {
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Unknown error`,
+        notificationType: NotificationType.ERROR,
+      })
+    }
+  }
   const [tokenSell, setTokenSell] = useState<IToken>({
     name: 'USDB',
     symbol: 'USDB',
@@ -127,18 +184,15 @@ const Panel = () => {
             value: parseUnits(swapValue, tokenSell.decimals),
           },
           {
-            onSuccess: async (data) => {
-              // txHash SEND
-              toast.success('Transaction sent successfully!')
+            onSuccess: async (txHash) => {
               setForValue('')
               setSwapValue('')
-              console.log(txHash)
-              console.log(hash)
-              // HAGO UN WAIT Y REFRESCO COMPONENTES
+              setTimeout(() => {
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
             },
             onError: (e) => {
-              console.log(e)
-              toast.error(failureReason ? failureReason.message : 'There was an error')
+              handleTransactionError(e)
             },
           }
         )
@@ -152,25 +206,20 @@ const Panel = () => {
             args: [parseUnits(swapValue, tokenSell.decimals)],
           },
           {
-            onSuccess: async (data) => {
-              // txHash SEND
-              toast.success('Transaction sent successfully!')
+            onSuccess: async (txHash) => {
               setForValue('')
               setSwapValue('')
-              console.log(hash)
-              // HAGO UN WAIT Y REFRESCO COMPONENTES
+              setTimeout(() => {
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
             },
             onError: (e) => {
-              console.log(e)
-              toast.error(failureReason ? failureReason.message : 'There was an error')
+              handleTransactionError(e)
             },
           }
         )
         return
-      }
-
-      // OJO VER LOS FUCKIGNS RETUSN
-      else if (singleSwapAvailable) {
+      } else if (singleSwapAvailable) {
         const txHash = writeContract(
           {
             address: contractAddressList.cl_swap as `0x${string}`,
@@ -192,16 +241,15 @@ const Panel = () => {
             ],
           },
           {
-            onSuccess: async (data) => {
-              // txHash SEND
-              toast.success('Transaction sent successfully!')
+            onSuccess: async (txHash) => {
               setForValue('')
               setSwapValue('')
-              // HAGO UN WAIT Y REFRESCO COMPONENTES
+              setTimeout(() => {
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
             },
-            onError: (e: WriteContractErrorType) => {
-              console.log(e)
-              toast.error(failureReason ? failureReason.message : 'There was an error')
+            onError: (e) => {
+              handleTransactionError(e)
             },
           }
         )
@@ -225,14 +273,15 @@ const Panel = () => {
             ],
           },
           {
-            onSuccess: async (data) => {
-              toast.success('Transaction sent successfully!')
+            onSuccess: async (txHash) => {
               setForValue('')
               setSwapValue('')
+              setTimeout(() => {
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
             },
             onError: (e: WriteContractErrorType) => {
-              console.log(e)
-              toast.error(failureReason ? failureReason.message : 'There was an error')
+              handleTransactionError(e)
             },
           }
         )
@@ -258,6 +307,8 @@ const Panel = () => {
       abi: erc20Abi,
       onSuccess: () => setCurrentButtonState(ButtonState.APPROVING),
       onError: () => setCurrentButtonState(ButtonState.APPROVAL_REQUIRED),
+      onTransactionSuccess: handleTransactionSuccess,
+      onTransactionError: handleTransactionError,
     })
     if (txApproveHash) {
       await provider.waitForTransaction(txApproveHash)
@@ -283,9 +334,6 @@ const Panel = () => {
   }, [account])
 
   // simulate swap
-  console.log(tokenSellIsNative ? WETH_ADDRESS : (tokenSell.address as `0x${string}`))
-  console.log(WETH_ADDRESS)
-  console.log(tokenSell)
   const quoteExactInputSingleCall = useSimulateContract({
     address: contractAddressList.cl_quoterV2 as `0x${string}`,
     abi: algebraQuoterV2ABI,
@@ -302,8 +350,7 @@ const Panel = () => {
   const route = useAlgebraMultiRouting(tokenGet, tokenSell)
   const multiHopAvailable = route !== null
   const singleSwapAvailable = currentPool != zeroAddress
-  console.log(currentPool)
-  console.log(singleSwapAvailable)
+
   const swapAvailable = singleSwapAvailable || multiHopAvailable
 
   const quoteExactInputCall = useSimulateContract({
@@ -319,26 +366,16 @@ const Panel = () => {
     ],
   })
   console.log(quoteExactInputCall?.data?.result)
-  // TODO: VER SI SE USA ESTO?
   const sqrtPriceX96After = swapAvailable
     ? singleSwapAvailable
       ? quoteExactInputSingleCall?.data?.result[2] || 0n
       : quoteExactInputCall?.data?.result[2] || 0n
     : 0n
 
-  // const sqrtPriceX96After2 = swapAvailable
-  //   ? singleSwapAvailable
-  //     ? quoteExactInputSingleCall?.data?.result[2] || 0n
-  //     : quoteExactInputCall?.data?.result[2] || 0n
-  //   : 0n
-
-  // simulate swap
-
   // Swap fee for the transaction
   const [swapFee, setSwapFee] = useState<string>('')
   // When the user changes the input token, we update the output token value
 
-  // que las fees me vengan de otro lado, directamente, qué es esto?
   useEffect(() => {
     // const outputTokenValue = quoteExactInputSingleCall?.data?.result[0] || -1n
     const outputTokenValue = swapAvailable
@@ -369,7 +406,7 @@ const Panel = () => {
 
   // manage button click
   const handleSwapClick = () => {
-    if (!account) {
+    if (!account || !isConnected) {
       openConnectModal && openConnectModal()
       return
     }
@@ -540,7 +577,7 @@ const Panel = () => {
       })
     }
   }, [tokenSell?.address, tokenGet?.address])
-
+  console.log(hash, status)
   return (
     <>
       <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
