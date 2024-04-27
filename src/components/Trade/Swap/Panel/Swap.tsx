@@ -38,18 +38,22 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
   const nativeToken = isNativeToken(token?.address)
   const [tokenBalance, setTokenBalance] = useState('-')
   useEffect(() => {
-    Number(value) < 1 ? setBtnDisabled(true) : setBtnDisabled(false)
-  }, [value])
+    toBN(tokenBalance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [tokenBalance])
 
   const handleHalf = () => {
-    if (Number(value) > 0) {
+    if (btnDisabled) {
+      setValue('')
+    } else {
       if (tokenBalance && isConnected) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
       else setValue('')
     }
   }
 
   const handleMax = () => {
-    if (Number(value) > 0) {
+    if (btnDisabled) {
+      setValue('')
+    } else {
       if (tokenBalance && isConnected) {
         setValue(toBN(formatPrice(tokenBalance, 12)).toString())
       } else {
@@ -59,7 +63,6 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
   }
 
   useEffect(() => {
-
     if (nativeToken) {
       setTokenBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
       setTokenSellUserBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
@@ -136,10 +139,10 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
           />
 
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleHalf}>
+            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
               Half
             </Button>
-            <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleMax}>
+            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
               Max
             </Button>
           </div>
