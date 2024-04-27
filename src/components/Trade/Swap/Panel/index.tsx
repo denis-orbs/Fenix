@@ -307,6 +307,8 @@ const Panel = () => {
       abi: erc20Abi,
       onSuccess: () => setCurrentButtonState(ButtonState.APPROVING),
       onError: () => setCurrentButtonState(ButtonState.APPROVAL_REQUIRED),
+      onTransactionSuccess: handleTransactionSuccess,
+      onTransactionError: handleTransactionError,
     })
     if (txApproveHash) {
       await provider.waitForTransaction(txApproveHash)

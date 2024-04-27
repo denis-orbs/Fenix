@@ -14,6 +14,8 @@ interface ApproveTokenParams {
   amount?: BigNumber
   onSuccess: () => void
   onError: () => void
+  onTransactionSuccess: (hash: `0x${string}` | undefined, tokenSell: IToken, tokenGet: IToken) => void
+  onTransactionError: (e: any) => void
 }
 
 export const approveToken = async ({
@@ -23,6 +25,8 @@ export const approveToken = async ({
   amount,
   onSuccess,
   onError,
+  onTransactionSuccess,
+  onTransactionError,
 }: ApproveTokenParams) => {
   try {
     const approvalAmount = amount || ethers.constants.MaxUint256
@@ -32,12 +36,14 @@ export const approveToken = async ({
       functionName: 'approve',
       args: [contractAddress, approvalAmount],
     })
-    console.log(hash)
+
     onSuccess()
+    onTransactionSuccess(hash, { address: tokenAddress } as IToken, { address: contractAddress } as IToken)
+
     return hash
   } catch (error) {
-    console.error(error)
     onError()
+    onTransactionError(error)
   }
 }
 export const switchTokensValues = (
