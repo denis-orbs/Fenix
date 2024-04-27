@@ -21,10 +21,10 @@ export const MENU_LINKS = [
   //   name: 'Lock',
   //   href: '/lock',
   // },
-  {
-    name: 'Migration',
-    href: '/claim',
-  },
+  // {
+  //   name: 'Migration',
+  //   href: '/migration',
+  // },
   {
     name: 'Orbit Points',
     href: '/points-program',
