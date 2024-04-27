@@ -21,8 +21,7 @@ body {
   }
 }
 
-
- .shooting-stars {
+.shooting-stars {
   z-index: 10;
   width: 5px;
   height: 85px;
@@ -34,9 +33,7 @@ body {
   animation: animShootingStar 10s linear infinite;
 }
 
-
 @keyframes animShootingStar {
-  
   from {
     transform: translateY(-2000px) translateX(-4000px) rotate(125deg);
     opacity: 1;
@@ -47,10 +44,7 @@ body {
     opacity: 1;
     height: 5px;
   }
-  
-} 
-
-
+}
 
 @keyframes changeColor {
   from {
@@ -438,4 +432,16 @@ body {
 
 .video-landing {
   background: linear-gradient(101deg, rgba(41, 45, 50, 0.4) 33.56%, rgba(123, 138, 152, 0.4) 158.95%);
+}
+
+@keyframes progress-toast {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+.animate-progress-toast {
+  animation: progress 4.5s linear;
 }
