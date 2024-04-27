@@ -22,6 +22,7 @@ import store, { persistor } from '../state'
 import { usePathname } from 'next/navigation'
 import Slippage from '../components/Modals/Slippage'
 import { Toaster } from 'react-hot-toast'
+import { NotificationProvider } from '../library/context/NotificationProvider'
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '900'],
@@ -88,15 +89,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     overlayBlur: 'small',
                   })}
                 >
-                  <Updaters />
-                  <Header />
-                  <Slippage />
-                  <Toaster />
+                  <NotificationProvider>
+                    <Updaters />
+                    <Header />
+                    <Slippage />
+                    <Toaster />
 
-                  <MobileHeader />
-                  {children}
-                  <Footer />
-                  <Decorator />
+                    <MobileHeader />
+                    {children}
+                    <Footer />
+                    <Decorator />
+                  </NotificationProvider>
                 </RainbowKitProvider>
               </QueryClientProvider>
             </WagmiProvider>
