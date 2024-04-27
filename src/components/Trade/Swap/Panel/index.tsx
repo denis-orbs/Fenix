@@ -25,16 +25,19 @@ import Loader from '@/src/components/UI/Icons/Loader'
 import { ReloadIcon } from '@/src/components/UI/Icons/Reload'
 import SettingsIcon from '@/src/components/UI/Icons/Settings'
 import { useSlippageTolerance } from '@/src/state/user/hooks'
-import { toBN } from '@/src/library/utils/numbers'
+import { formatNumber, toBN } from '@/src/library/utils/numbers'
 
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
 import cn from '@/src/library/utils/cn'
 import { useAlgebraMultiRouting } from './useAlgebraMultiRouting'
-import { approveToken, switchTokensValues } from './utilsChange'
+import { approveToken, isNativeToken, switchTokensValues } from './utilsChange'
 import { WNATIVE } from '@cryptoalgebra/integral-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
+import { ETH_TOKEN, NATIVE_ETH, NATIVE_ETH_LOWERCASE, WETH_ADDRESS } from '@/src/library/Constants'
+import { wethAbi } from '@/src/library/web3/abis/WETHABI'
+import { usePool } from './usePool'
 
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
@@ -55,10 +58,11 @@ const Panel = () => {
   const { setSlippageModal } = useStore()
   const [currentButtonState, setCurrentButtonState] = useState(ButtonState.SWAP)
   const [tokenSellUserBalance, setTokenSellUserBalance] = useState<string>('')
-  const { writeContract } = useWriteContract()
+  const { writeContract, failureReason, data: hash } = useWriteContract()
   const slippage = useSlippageTolerance()
   const { openConnectModal } = useConnectModal()
   const { account, isConnected } = useActiveConnectionDetails()
+
   const [tokenSell, setTokenSell] = useState<IToken>({
     name: 'USDB',
     symbol: 'USDB',
@@ -108,7 +112,7 @@ const Panel = () => {
   // function to make the swap
   const slippageValue = slippage == 'auto' || !slippage ? 100 - 0.5 : 100 - slippage
 
-  const amountOutMinimum = toBN(Number(parseUnits(forValue, tokenSell.decimals)))
+  const amountOutMinimum = toBN(Number(parseUnits(forValue, tokenGet.decimals)))
     .multipliedBy(slippageValue)
     .dividedBy(100)
   const callAlgebraRouter = async () => {
@@ -118,15 +122,70 @@ const Panel = () => {
     }
 
     try {
-      if (singleSwapAvailable) {
+      if (nativeETH_WETH) {
+        const txHash = writeContract(
+          {
+            address: WETH_ADDRESS,
+            abi: wethAbi,
+            functionName: 'deposit',
+            value: parseUnits(swapValue, tokenSell.decimals),
+          },
+          {
+            onSuccess: async (data) => {
+              // txHash SEND
+              toast.success('Transaction sent successfully!')
+              setForValue('')
+              setSwapValue('')
+              console.log(txHash)
+              console.log(hash)
+              // HAGO UN WAIT Y REFRESCO COMPONENTES
+            },
+            onError: (e) => {
+              console.log(e)
+              toast.error(failureReason ? failureReason.message : 'There was an error')
+            },
+          }
+        )
+        return
+      } else if (nativeWETH_ETH) {
+        writeContract(
+          {
+            address: WETH_ADDRESS,
+            abi: wethAbi,
+            functionName: 'withdraw',
+            args: [parseUnits(swapValue, tokenSell.decimals)],
+          },
+          {
+            onSuccess: async (data) => {
+              // txHash SEND
+              toast.success('Transaction sent successfully!')
+              setForValue('')
+              setSwapValue('')
+              console.log(hash)
+              // HAGO UN WAIT Y REFRESCO COMPONENTES
+            },
+            onError: (e) => {
+              console.log(e)
+              toast.error(failureReason ? failureReason.message : 'There was an error')
+            },
+          }
+        )
+        return
+      }
+
+      // OJO VER LOS FUCKIGNS RETUSN
+      else if (singleSwapAvailable) {
         const txHash = writeContract(
           {
             address: contractAddressList.cl_swap as `0x${string}`,
             abi: algebraSwapABI,
             functionName: 'exactInputSingle',
+            value: isNativeToken(tokenSell?.address?.toString()) ? parseUnits(swapValue, tokenSell.decimals) : 0n,
             args: [
               {
-                tokenIn: tokenSell.address as `0x${string}`,
+                tokenIn: isNativeToken(tokenSell?.address?.toString())
+                  ? WETH_ADDRESS
+                  : (tokenSell.address as `0x${string}`),
                 tokenOut: tokenGet.address as `0x${string}`,
                 recipient: account as `0x${string}`,
                 deadline: BigInt(Math.floor(Date.now() / 1000) + 60 * 20),
@@ -146,7 +205,7 @@ const Panel = () => {
             },
             onError: (e: WriteContractErrorType) => {
               console.log(e)
-              toast.error(e.message.split('\n')[0])
+              toast.error(failureReason ? failureReason.message : 'There was an error')
             },
           }
         )
@@ -164,9 +223,7 @@ const Panel = () => {
                     .join('')) as `0x${string}`,
                 recipient: account as `0x${string}`,
                 amountIn: parseUnits(swapValue, tokenSell.decimals),
-                // amountOutMinimum: BigInt(Number(amountOutMinimum.toString().split('.')[0])),
-                amountOutMinimum: 100n,
-
+                amountOutMinimum: BigInt(Number(amountOutMinimum.toString().split('.')[0])),
                 deadline: BigInt(Math.floor(Date.now() / 1000) + 60 * 20),
               },
             ],
@@ -178,7 +235,8 @@ const Panel = () => {
               setSwapValue('')
             },
             onError: (e: WriteContractErrorType) => {
-              toast.error(e.message.split('\n')[0])
+              console.log(e)
+              toast.error(failureReason ? failureReason.message : 'There was an error')
             },
           }
         )
@@ -197,7 +255,6 @@ const Panel = () => {
       return
     }
     setCurrentButtonState(ButtonState.WAITING_APPROVAL)
-    console.log('aaa')
     const provider = getWeb3Provider()
     const txApproveHash = await approveToken({
       tokenAddress: tokenSell.address as `0x${string}`,
@@ -214,9 +271,11 @@ const Panel = () => {
     }
     setCurrentButtonState(ButtonState.SWAP)
   }
+  const tokenSellIsNative = isNativeToken(tokenSell?.address)
+  const tokenGetIsNative = isNativeToken(tokenGet?.address)
   const { data: currentPool, loading: loadingCurrentPool } = useAlgebraPoolByPair(
     tokenGet.address as `0x${string}`,
-    tokenSell.address as `0x${string}`
+    tokenSellIsNative ? WETH_ADDRESS : (tokenSell.address as `0x${string}`)
   )
 
   // when user changes the account, we reset the swap and for values
@@ -228,25 +287,29 @@ const Panel = () => {
   }, [account])
 
   // simulate swap
+  console.log(tokenSellIsNative ? WETH_ADDRESS : (tokenSell.address as `0x${string}`))
+  console.log(WETH_ADDRESS)
+  console.log(tokenSell)
   const quoteExactInputSingleCall = useSimulateContract({
     address: contractAddressList.cl_quoterV2 as `0x${string}`,
     abi: algebraQuoterV2ABI,
     functionName: 'quoteExactInputSingle',
     args: [
       {
-        tokenIn: tokenSell.address as `0x${string}`,
+        tokenIn: tokenSellIsNative ? WETH_ADDRESS : (tokenSell.address as `0x${string}`),
         tokenOut: tokenGet.address as `0x${string}`,
         amountIn: parseUnits(swapValue, tokenSell.decimals),
         limitSqrtPrice: 0n,
       },
     ],
   })
-  // tengo que refrescar la ruta, ver que me respeta el orden de la ruta
   const route = useAlgebraMultiRouting(tokenGet, tokenSell)
   const multiHopAvailable = route !== null
   const singleSwapAvailable = currentPool != zeroAddress
+  console.log(currentPool)
+  console.log(singleSwapAvailable)
   const swapAvailable = singleSwapAvailable || multiHopAvailable
-  console.log(tokenGet, tokenSell)
+
   const quoteExactInputCall = useSimulateContract({
     address: contractAddressList.cl_quoterV2 as `0x${string}`,
     abi: algebraQuoterV2ABI,
@@ -311,9 +374,7 @@ const Panel = () => {
   // manage button click
   const handleSwapClick = () => {
     if (currentButtonState === ButtonState.SWAP || currentButtonState === ButtonState.PRICE_IMPACT_ALERT) {
-      // if is single trade
       callAlgebraRouter()
-      // else callback multi
     } else if (currentButtonState === ButtonState.APPROVAL_REQUIRED) {
       setCurrentButtonState(ButtonState.WAITING_APPROVAL)
       handleApproveToken()
@@ -368,7 +429,7 @@ const Panel = () => {
     } else if (
       !(!loadingCurrentPool && currentPool === zeroAddress) &&
       (loadingStateOfAMM ||
-        approvalData.isLoading ||
+        (approvalData.isLoading && !tokenSellIsNative) ||
         (swapValue && (singleSwapAvailable ? quoteExactInputSingleCall.isLoading : quoteExactInputCall.isLoading)) ||
         (loadingCurrentPool && currentPool))
     ) {
@@ -377,7 +438,10 @@ const Panel = () => {
       setCurrentButtonState(ButtonState.POOL_NOT_AVAILABLE)
     } else if (currentButtonState == ButtonState.WAITING_APPROVAL || currentButtonState == ButtonState.APPROVING) {
       return
-    } else if (Number(formatUnits(approvalData?.data || 0n, tokenSell.decimals)) < Number(swapValue)) {
+    } else if (
+      !tokenSellIsNative &&
+      Number(formatUnits(approvalData?.data || 0n, tokenSell.decimals)) < Number(swapValue)
+    ) {
       setCurrentButtonState(ButtonState.APPROVAL_REQUIRED)
     } else if (!swapValue || !forValue) {
       setCurrentButtonState(ButtonState.ENTER_AMOUNT)
@@ -406,6 +470,7 @@ const Panel = () => {
   ])
   useEffect(() => {
     const interval = setInterval(() => {
+      if (nativeETH_WETH || nativeWETH_ETH) return
       approvalData.refetch()
       quoteExactInputSingleCall.refetch()
       quoteExactInputCall.refetch()
@@ -443,6 +508,39 @@ const Panel = () => {
     setChart(!isChartVisible)
     setIsChartVisible((prevState) => !prevState)
   }
+  const nativeWETH_ETH =
+    tokenGet?.address?.toLowerCase() === NATIVE_ETH.toLowerCase() &&
+    tokenSell?.address?.toLowerCase() == WETH_ADDRESS.toLowerCase()
+  const nativeETH_WETH =
+    tokenSell?.address?.toLowerCase() === NATIVE_ETH.toLowerCase() &&
+    tokenGet?.address?.toLowerCase() == WETH_ADDRESS.toLowerCase()
+
+  useEffect(() => {
+    if (nativeETH_WETH) {
+      setForValue(swapValue)
+    }
+  }, [swapValue, nativeETH_WETH])
+  useEffect(() => {
+    if (nativeWETH_ETH) {
+      setForValue(swapValue)
+    }
+  }, [swapValue, nativeWETH_ETH])
+
+  useEffect(() => {
+    console.log(tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE)
+    if (tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE && !(nativeETH_WETH || nativeWETH_ETH)) {
+      const price = tokenGet?.price
+      setTokenGet({
+        name: 'Wrapped Ether',
+        symbol: 'WETH',
+        address: '0x4300000000000000000000000000000000000004',
+        decimals: 18,
+        img: 'WETH.png',
+        price: price,
+      })
+    }
+  }, [tokenSell?.address, tokenGet?.address])
+
   return (
     <>
       <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
@@ -531,6 +629,9 @@ const Panel = () => {
           <p className="">
             Route:
             <span className="text-shark-100">
+              {nativeWETH_ETH && 'WETH > ETH'}
+
+              {nativeETH_WETH && 'ETH > WETH'}
               {multiHopAvailable &&
                 currentPool == zeroAddress &&
                 route?.swapRoute?.tokenPath.map((token) => token.symbol).join(' > ')}
@@ -538,20 +639,24 @@ const Panel = () => {
             </span>
           </p>
           <p className="">
-            Slippage <span className="text-shark-100">{slippage}</span>
+            Slippage <span className="text-shark-100">{nativeETH_WETH || nativeWETH_ETH ? '0' : slippage}</span>
           </p>
 
           <p className="">
             Minimum Amount Recieved
             <span className="text-shark-100">
-              {amountOutMinimum
-                ? formatUnits(BigInt(Number(amountOutMinimum.toString().split('.')[0])), tokenGet.decimals).toString()
-                : '-'}{' '}
-              {tokenGet.symbol}
+              {(nativeETH_WETH || nativeWETH_ETH) && formatNumber(Number(forValue || 0), 6).toString()}
+              {amountOutMinimum &&
+                !(nativeETH_WETH || nativeWETH_ETH) &&
+                formatUnits(BigInt(Number(amountOutMinimum.toString().split('.')[0])), tokenGet.decimals).toString()}
+              {!amountOutMinimum && !(nativeETH_WETH || nativeWETH_ETH) && '-'} {tokenGet.symbol}
             </span>
           </p>
           <p className="">
-            Price Impact <span className="text-shark-100">{parseFloat(priceImpact.toString()).toFixed(2)}%</span>
+            Price Impact{' '}
+            <span className="text-shark-100">
+              {nativeETH_WETH || nativeWETH_ETH ? '0' : parseFloat(priceImpact.toString()).toFixed(2)}%
+            </span>
           </p>
         </div>
       </section>
