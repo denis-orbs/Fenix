@@ -80,9 +80,7 @@ const Notification = ({ id, createTime, message, notificationType, txHash }: Not
             <div className="flex items-center justify-center w-10 h-10 p-2 rounded-lg bg-shark-400 bg-opacity-40">
               <span className={`inline-block text-xl ${STATUS[notificationType].icon} `} />
             </div>
-            <p className="text-white text-sm max-w-[150px] flex-1">
-              {message} sdfsdfsdsfsdsdsdsdfsd sadfklsdkljf slkjdflkjsdfjklkjl
-            </p>
+            <p className="text-white text-sm max-w-[150px] flex-1">{message}</p>
           </div>
           <div className="flex items-center gap-3">
             <p className={`inline-block  text-xs group ${STATUS[notificationType].color}`}>
