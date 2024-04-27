@@ -6,7 +6,7 @@ const NotificationFeed = () => {
   const notifications = useUnreadNotifications()
   const visibleNotifications = notifications.slice(-7).reverse()
   return (
-    <div className="fixed top-[150px] right-5 flex flex-col space-y-2">
+    <div className="fixed top-[150px] right-5 flex flex-col space-y-2 z-50">
       {visibleNotifications.map((notification) => (
         <Notification
           key={notification.id}
