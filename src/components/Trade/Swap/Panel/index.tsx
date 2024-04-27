@@ -12,11 +12,9 @@ import { useShowChart, useSetChart } from '@/src/state/user/hooks'
 
 import { IToken } from '@/src/library/types'
 import { useReadContract, useWriteContract } from 'wagmi'
-import { blastSepolia } from 'viem/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { algebraQuoterV2ABI } from '@/src/library/web3/abis'
 import { Button, Switch } from '@/src/components/UI'
-import { BigNumber, ethers } from 'ethers'
 import { algebraSwapABI } from '@/src/library/web3/abis/algebraSwap'
 import useStore from '@/src/state/zustand'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
@@ -33,11 +31,9 @@ import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafel
 import cn from '@/src/library/utils/cn'
 import { useAlgebraMultiRouting } from './useAlgebraMultiRouting'
 import { approveToken, isNativeToken, switchTokensValues } from './utilsChange'
-import { WNATIVE } from '@cryptoalgebra/integral-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
-import { ETH_TOKEN, NATIVE_ETH, NATIVE_ETH_LOWERCASE, WETH_ADDRESS } from '@/src/library/Constants'
-import { wethAbi } from '@/src/library/web3/abis/WETHABI'
-import { usePool } from './usePool'
+import { NATIVE_ETH, NATIVE_ETH_LOWERCASE, WETH_ADDRESS } from '@/src/library/Constants'
+import { wethAbi } from '@/src/library/web3/abis/wethAbi'
 
 enum ButtonState {
   CONNECT_WALLET = 'Connect Wallet',
