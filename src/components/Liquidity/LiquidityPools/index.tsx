@@ -10,35 +10,13 @@ import { useEffect, useState } from 'react'
 import { fetchv2Factories, fetchv3Factories } from '@/src/state/liquidity/reducer'
 import { v2FactoryData, v3FactoryData } from '@/src/state/liquidity/types'
 import { useAppSelector } from '@/src/state'
-
-const fetchData = async () => {
-  const v2data = await fetchv2Factories()
-  const v3data = await fetchv3Factories()
-
-  if (v2data && v3data) {
-    EXCHANGE_LIST[0].description =
-      '$ ' + (Number(v2data[0].totalLiquidityUSD) + Number(v3data[0].totalValueLockedUSD)).toFixed(2).toString()
-    EXCHANGE_LIST[1].description = '$ ' + Number(v3data[0].totalFeesUSD).toFixed(2).toString()
-    EXCHANGE_LIST[2].description =
-      '$ ' + (Number(v2data[0].totalVolumeUSD) + Number(v3data[0].totalVolumeUSD)).toFixed(2).toString()
-    // setV2Data(v2data)
-    // setV3Data(v3data)
-  }
-}
+import { fetchGlobalStatistics } from '@/src/state/liquidity/thunks'
+import { formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 
 const LiquidityPools = () => {
   const [tokens, setTokens] = useState<Number>(0)
   const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
   // console.log(liquidityTable, 'liquidityTable')
-  EXCHANGE_LIST[0].description =
-    '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(2)
-  EXCHANGE_LIST[1].description =
-    '$ ' +
-    liquidityTable
-      .reduce((total: any, pair: any) => total + Number(pair.volumeUSD) * (Number(pair.fee) / 100), 0)
-      .toFixed(2)
-  EXCHANGE_LIST[2].description =
-    '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(2)
 
   const tokensData = async (liquidityTable: any) => {
     setTokens((await fetchTokens()).length)
@@ -48,6 +26,24 @@ const LiquidityPools = () => {
     tokensData(liquidityTable)
     // fetchData()
   }, [])
+  const [globalStatistics, setGlobalStatistics] = useState<Awaited<ReturnType<typeof fetchGlobalStatistics>>>()
+  useEffect(() => {
+    fetchGlobalStatistics().then((data) => {
+      setGlobalStatistics(data)
+      console.log(data)
+      EXCHANGE_LIST[0].description = '$ ' + data.totalTVL.toFixed(2).toString()
+      EXCHANGE_LIST[1].description = '$ ' + data.totalFees.toFixed(2).toString()
+      EXCHANGE_LIST[2].description = '$ ' + data.totalVolume.toFixed(2).toString()
+    })
+  }, [])
+
+  EXCHANGE_LIST[0].description = globalStatistics?.totalTVL ? formatDollarAmount(toBN(globalStatistics?.totalTVL)) : '-'
+  EXCHANGE_LIST[1].description = globalStatistics?.totalFees
+    ? formatDollarAmount(toBN(globalStatistics?.totalFees))
+    : '-'
+  EXCHANGE_LIST[2].description = globalStatistics?.totalVolume
+    ? formatDollarAmount(toBN(globalStatistics?.totalVolume))
+    : '-'
 
   return (
     <MainBox>
@@ -77,6 +73,14 @@ const LiquidityPools = () => {
           {EXCHANGE_LIST.map((exchange, index) => (
             <InfoBox key={index} data={exchange} hasTooltip={false} />
           ))}
+          {/* <InfoBox
+            data={{
+              label: 'Total Value Locked',
+              description: globalStatistics?.totalTVL.toFixed(2).toString(),
+              icon: 'icon-lock',
+            }}
+            hasTooltip={false}
+          /> */}
         </div>
       </div>
       <div className="hidden lg:block text-shark-100 rounded-2xl lg:rounded-none relative z-10">
