@@ -1,5 +1,4 @@
 'use client'
-
 import { useReadNotificationCallback } from '@/src/state/notifications/hooks'
 import { NotificationDetails, NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import Link from 'next/link'
@@ -59,7 +58,7 @@ const Notification = ({
       color: 'text-festival-200',
     },
     [NotificationType.ERROR]: {
-      class: ' bg-gradient-to-r from-alizarin-crimson-600 to-alizarin-crimson-700 ',
+      class: ' bg-gradient-to-r from-alizarin-crimson-600 to-alizarin-crimson-700  ',
       icon: 'icon-info text-alizarin-crimson-600',
       color: 'text-alizarin-crimson-600',
     },
@@ -76,17 +75,15 @@ const Notification = ({
     [NotificationDuration.DURATION_10000]: 'animate-progress-toast-10000',
     [NotificationDuration.DURATION_15000]: 'animate-progress-toast-15000',
   }
-  console.log(notificationDuration)
+  // console.log(notificationDuration)
   return (
     <>
-      <div className="notification  box-invert animate-toast-in w-[326px] z-50 px-4 pt-1 pb-3">
+      <div className="notification box-invert animate-toast-in h-[80px] xl:h-[112px]  xl:w-[326px] z-50 px-4 xl:pt-1 xl:pb-3 ">
         <div className="relative z-50">
-          <div className="flex items-center justify-end w-full  gap-3">
-            <div className="h-[5px] w-10 bg-shark-400 flex rounded-lg overflow-hidden">
-              <div
-                className={`h-full ${STATUS[notificationType].class} ${animationDuration[notificationDuration]}`}
-              ></div>
-            </div>
+          <div className="flex items-center justify-end w-20 right-0  gap-3 absolute">
+            <div
+              className={`h-[5px] w-20  flex rounded-lg overflow-hidden ${STATUS[notificationType].class} ${animationDuration[notificationDuration]}`}
+            ></div>
             <span
               onClick={() => {
                 savedCallback.current(id)
@@ -94,28 +91,32 @@ const Notification = ({
               className="text-base cursor-pointer icon-x text-shark-100"
             ></span>
           </div>
-          <div className="flex items-center w-full gap-2 mb-3">
-            <div className="flex items-center justify-center w-10 h-10 p-2 rounded-lg bg-shark-400 bg-opacity-40">
-              <span className={`inline-block text-xl ${STATUS[notificationType].icon} `} />
+          <div className="flex items-center w-full gap-2 mb-2 mt-3 xl:mt-5">
+            <div className="flex items-center justify-center xl:w-10 xl:h-10 w-8 h-8 xl:p-2 rounded-lg bg-shark-300 bg-opacity-40">
+              <span className={` text-sm xl:text-lg ${STATUS[notificationType].icon} `} />
             </div>
-            <p className="text-white text-sm max-w-[150px] flex-1">{message}</p>
+            <p className="text-white text-xs max-w-[150px] flex-1">{message}</p>
           </div>
           <div className="flex items-center gap-3">
-            <p className={`inline-block  text-xs group ${STATUS[notificationType].color}`}>
+            <p className={`flex  text-xs group ${STATUS[notificationType].color}`}>
               {txHash && (
                 <>
-                  <span className="mr-2 icon-link group-hover:underline"></span>
-                  <Link className="group-hover:underline" href={`https://blastscan.io/tx/${txHash}`} target="_blank">
+                  <span className="mr-2 icon-link group-hover:underline "></span>
+                  <Link
+                    className="group-hover:underline  whitespace-nowrap"
+                    href={`https://blastscan.io/tx/${txHash}`}
+                    target="_blank"
+                  >
                     View In Explorer
                   </Link>
                 </>
               )}
             </p>
             {createTime && (
-              <p className="inline-block text-xs  text-shark-100">
-                <span className="mr-2 icon-clock"></span>
-                {seconds} seconds ago...
-              </p>
+              <div className="text-xs  text-shark-100 flex line-clamp-1">
+                <span className="mr-2 icon-clock" />
+                <p className="">{seconds} seconds ago</p>
+              </div>
             )}
           </div>
         </div>
