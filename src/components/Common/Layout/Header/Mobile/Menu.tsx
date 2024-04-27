@@ -13,6 +13,7 @@ interface MenuProps {
   setShowMenu: (showMenu: boolean) => void
 }
 
+
 const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
   const pathname = usePathname()
   const className = cn(
