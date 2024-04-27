@@ -63,7 +63,7 @@ const Notification = ({ id, createTime, message, notificationType, txHash }: Not
   }
   return (
     <>
-      <div className="notification  box-invert animate-toast-in  w-[326px]  px-4 pt-1 pb-3">
+      <div className="notification  box-invert animate-toast-in fixed top-32 right-6 xl:right-9 2xl:right-14 w-[326px] z-50 px-4 pt-1 pb-3">
         <div className="relative z-50">
           <div className="flex items-center justify-end w-full  gap-3">
             <div className="h-[5px] w-10 bg-shark-400 flex rounded-lg overflow-hidden">
