@@ -38,7 +38,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     id: 1,
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023' as Address,
-    img: '/static/images/tokens/WETH.svg',
+    img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
