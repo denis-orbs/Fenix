@@ -29,7 +29,7 @@ const fetchData = async () => {
 const LiquidityPools = () => {
   const [tokens, setTokens] = useState<Number>(0)
   const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
-  console.log(liquidityTable, 'liquidityTable')
+  // console.log(liquidityTable, 'liquidityTable')
   EXCHANGE_LIST[0].description =
     '$' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(2)
   EXCHANGE_LIST[1].description =

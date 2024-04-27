@@ -22,7 +22,7 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
   const setToken1 = useSetToken1()
   const token0 = useToken0()
   const token1 = useToken1()
-  console.log(firstToken)
+  // console.log(firstToken)
 
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[15px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">

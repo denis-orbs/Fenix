@@ -3,6 +3,7 @@ import { BigNumber, ethers } from 'ethers'
 import { writeContract } from '@wagmi/core'
 import { Abi } from 'viem'
 import { config } from '@/src/app/layout'
+import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
 
 interface ApproveTokenParams {
   tokenAddress: `0x${string}`
@@ -44,4 +45,10 @@ export const switchTokensValues = (
 ) => {
   setToken0(token1)
   setToken1(token0)
+}
+
+export const isNativeToken = (token: string | undefined) => {
+  if (!token) return false
+  if (token?.toLowerCase() === NATIVE_ETH_LOWERCASE) return true
+  return false
 }

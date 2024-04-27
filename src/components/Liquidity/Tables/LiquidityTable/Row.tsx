@@ -118,44 +118,40 @@ const RowData = ({
         )} */}
 
         <TableCell
-          className={`${activeRange ? 'w-[8%]' : width <= 1250 ? 'w-[10%]' : 'w-[15%]'} flex justify-center items-center`}
+          className={`${activeRange ? 'w-[8%]' : width <= 1250 ? 'w-[10%]' : 'w-[15%]'} flex justify-end items-center`}
         >
           <div className="flex  justify-center items-center gap-2 ">
             {/* {totalCampaigns.map((campaign) => { })} */}
             <span
               ref={hoverRef}
-              className="flex flex-row hover:flex-row-reverse transition-transform transform hover:scale-110"
+              className="flex flex-row transition-transform transform group"
               // className="flex flex-row hover:flex-row-reverse transition-transform transform hover:scale-110 hover:-translate-x-4"
             >
               <Image
                 src={`/static/images/tokens/blastgold.png`}
                 alt="token"
-                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
-                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
                 src={`/static/images/tokens/blastpoints.png`}
                 alt="token"
-                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
-                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
                 src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
                 alt="token"
-                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
-                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
                 src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
                 alt="token"
-                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
-                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />

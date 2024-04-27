@@ -9,37 +9,71 @@ import { useEffect, useState } from 'react'
 import { useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { IchiVault } from '@ichidao/ichi-vaults-sdk'
 import { useRouter, useSearchParams } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { publicClient } from '@/src/library/constants/viemClient'
+import { CL_MANAGER_ABI } from '@/src/library/constants/abi'
+import { contractAddressList } from '@/src/library/constants/contactAddresses'
+import { Address, encodeFunctionData } from 'viem'
+import { useAccount, useWriteContract } from 'wagmi'
+import { MAX_INT } from '@/src/library/constants/misc'
 
 type options = {
   value: string
   label: string
 }
-export type positions = {
+export interface Pool {
+  id: string
+  fee: string
+  sqrtPrice: string
+  liquidity: string
+  tick: string
+  tickSpacing: string
+  totalValueLockedUSD: string
+  volumeUSD: string
+  feesUSD: string
+  untrackedFeesUSD: string
+  token0Price: string
+  token1Price: string
+  token0: Tokenp
+  token1: Tokenp
+  poolDayData: PoolDayData
+}
+
+export interface Tokenp {
+  id: string
+  symbol: string
+  name: string
+  decimals: string
+  derivedMatic: string
+}
+
+export interface PoolDayData {
+  __typename?: 'PoolDayData'
+  feesUSD: any
+}
+
+export interface Tick {
+  price0: string
+  price1: string
+  tickIdx: string
+}
+
+export interface positions {
   id: string
   liquidity: string
+  owner: string
   depositedToken0: Number
   depositedToken1: Number
   withdrawnToken0: string
   withdrawnToken1: string
-  tickLower: {
-    price0: string
-    price1: string
-  }
-  tickUpper: {
-    price0: string
-    price1: string
-  }
-  token0: {
-    decimals: string
-    id: string
-    symbol: string
-  }
-  token1: {
-    id: string
-    symbol: string
-    decimals: string
-  }
+  pool: Pool
+  tickLower: Tick
+  tickUpper: Tick
+  token0: Tokenp
+  token1: Tokenp
+  apr: any
 }
+
 export type ichipositions = {
   userAmounts: string[]
   vaultAddress: string
@@ -57,7 +91,8 @@ interface StrategyProps {
 
 const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyProps) => {
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
-
+  const { writeContractAsync } = useWriteContract()
+  const { address } = useAccount()
   const router = useRouter()
 
   const handlerOpenModal = (option: string) => {
@@ -73,6 +108,39 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
   let ichitokens: IchiVault
   if (row.liquidity === 'ichi') {
     ichitokens = useIchiVaultsData(row?.id)
+  }
+
+  const handleClaim = (id: string) => {
+    const multi = [
+      encodeFunctionData({
+        abi: CL_MANAGER_ABI,
+        functionName: 'collect',
+        args: [[id, address, MAX_INT, MAX_INT]],
+      }),
+    ]
+
+    writeContractAsync(
+      {
+        abi: CL_MANAGER_ABI,
+        address: contractAddressList.cl_manager as Address,
+        functionName: 'multicall',
+        args: [multi],
+      },
+
+      {
+        onSuccess: async (x) => {
+          const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
+          if (transaction.status == 'success') {
+            toast(`✅ Fees Claimed successfully.`)
+          } else {
+            toast(`❌ Fees Claimed Tx failed`)
+          }
+        },
+        onError: (e) => {
+          toast(`❌ Fees Claimed Tx failed.`)
+        },
+      }
+    )
   }
 
   return (
@@ -146,7 +214,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
               <p className="text-white">
                 APR <span className="icon-info text-xs"></span>
               </p>
-              <h1 className="text-green-400 text-2xl">0.00%</h1>
+              <h1 className="text-green-400 text-2xl">{row?.apr}</h1>
             </div>
             <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
               <p className="text-white">
@@ -237,18 +305,23 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           >
             <span className="text-l">Manage</span>
           </Button>
-          <Button
-            variant="tertiary"
-            className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
-            onClick={() => {
-              // if (row.liquidity !== 'ichi') {
-              //   router.push(`/liquidity/claim`)
-              //   router.refresh()
-              // }
-            }}
-          >
-            <span className="text-l">Claim</span>
-          </Button>
+          {row.liquidity !== 'ichi' ? (
+            <>
+              <Button
+                variant="tertiary"
+                className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+                onClick={() => {
+                  if (row.liquidity !== 'ichi') {
+                    handleClaim(row?.id)
+                  }
+                }}
+              >
+                <span className="text-l">Claim</span>
+              </Button>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>

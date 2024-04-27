@@ -214,3 +214,7 @@
 .icon-time:before {
   content: '\e889';
 } /* '' */
+
+.icon-warning:before {
+  content: '\e88f';
+} /* '' */
