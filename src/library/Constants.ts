@@ -9,7 +9,9 @@ export const MAINNET_CHAIN_ID = 81457
 export const IMG_SIZE = 0.7
 export const NULL_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const FNX_ADDRESS = '0xCE286b104F86733B24c02a5CDA9483176BcE02d6'
-export const WETH_ADDRESS = '0xf73306A78d66fE18C7a8F5df13aD3f3aA65dE31c'
+export const WETH_ADDRESS = '0x4300000000000000000000000000000000000004'
+export const NATIVE_ETH_LOWERCASE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+export const NATIVE_ETH = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
 
 export const ETH_TOKEN: TokenData = {
   name: 'ETH',

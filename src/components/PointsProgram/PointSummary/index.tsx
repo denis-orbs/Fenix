@@ -4,12 +4,12 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import Countdown from 'react-countdown'
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { log } from 'console'
 
 const PointSummary = ({ userData }: any) => {
   //  console.log(userData, 'userData')
-  let [time, setTime] = useState('')
+  const [time, setTime] = useState('')
   let count = 0
 
   function getCurrentEightHourTimestampArray() {
@@ -93,7 +93,7 @@ const PointSummary = ({ userData }: any) => {
       </div>
       <div className="flex flex-col xl:flex-row items-center justify-between gap-5 xl:gap-20 relative z-20">
         <div className="point-summary-box">
-          <p className="text-xs mb-2 text-white w-full text-left">Orbits</p>
+          <p className="text-base mb-2 text-white w-full text-left">Orbits</p>
           <div className="flex items-center gap-4 w-full">
             <Image src="/static/images/tokens/FNX.svg" alt="token" width={20} height={20} className="w-8 h-8" />
             <div className="">
@@ -105,7 +105,7 @@ const PointSummary = ({ userData }: any) => {
           </div>
         </div>
         <div className="point-summary-box relative">
-          <p className="text-xs mb-2 text-white w-full">Leaderboard Position</p>
+          <p className="text-base mb-2 text-white w-full">Leaderboard Position</p>
           <div className="flex items-center gap-3 w-full">
             <div className="flex items-center justify-center w-12 h-12 border border-solid rounded-lg bg-shark-400 border-shark-400">
               <span className="text-lg text-transparent icon-circles bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text"></span>
@@ -128,37 +128,14 @@ const PointSummary = ({ userData }: any) => {
           </span>
         </div>
         <div className="point-summary-box">
-          <p className="text-xs mb-2 text-white w-full">Next Points Drop</p>
-          <p className="text-xs mb-2 text-green-400 w-full">14 Feb, 2PM UTC</p>
+          <p className="text-base text-white w-full mb-4">
+            Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span>
+          </p>
           <div className="w-full">
             <Countdown key={time} date={time} daysInHours={true} autoStart={true} renderer={renderer} />
-            {/* <div className="flex items-center justify-between px-4">
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                  {remainingTime?.days}
-                </span>
-                <span className="text-shark-100 text-xs text-center">Days</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                  {countdown.hours}
-                </span>
-                <span className="text-shark-100 text-xs text-center">Hours</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                  {countdown.minutes}
-                </span>
-                <span className="text-shark-100 text-xs text-center">Minutes</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg">
-                  {countdown.seconds}
-                </span>
-                <span className="text-shark-100 text-xs text-center">Seconds</span>
-              </div>
-            </div> */}
           </div>
+
+          {/* --- */}
         </div>
       </div>
     </section>

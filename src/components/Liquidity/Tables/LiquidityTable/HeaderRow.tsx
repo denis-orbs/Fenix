@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from 'react'
 import Row from './Row'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useAccount, useChainId, useChains } from 'wagmi'
+import { useWindowSize } from 'usehooks-ts'
 
 interface HeaderRowProps {
   loading: boolean
@@ -79,34 +80,38 @@ const HeaderRow = ({
   useEffect(() => {
     setPaginationResult(poolsData)
   }, [poolsData])
-  console.log(poolsData, chainId, activeChain, 'process.env.NEXT_PUBLIC_CHAINID')
 
   function compareBigDecimal(a: any, b: any) {
     return a - b
   }
   const pagination = paginate(paginationResult, activePage, itemsPerPage)
+  const { width } = useWindowSize()
   return (
     <div className="relative">
       <div className="w-full mb-2.5 xl:mb-5">
         <div className="hidden 2xl:block">
           <TableHead
             items={[
-              { text: 'Pair', className: `${activeRange ? 'w-[20%]' : 'w-[30%]'}`, sortable: true },
+              {
+                text: 'Pair',
+                className: `${activeRange ? 'w-[20%]' : width >= 1300 ? 'w-[20%]' : 'w-[27%]'}`,
+                sortable: true,
+              },
               RANGE,
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-center`, sortable: true },
-              { text: 'TVL', className: 'w-[15%] text-right', sortable: true },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right`, sortable: true },
+              { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
-                className: 'w-[15%] text-right',
+                className: 'w-[20%] text-right',
                 sortable: true,
               },
               // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
-                className: 'w-[15%] text-right',
+                className: 'w-[20%] text-right',
                 sortable: true,
               },
-              { text: 'Action', className: 'w-[15%] text-right', sortable: false },
+              { text: 'Action', className: 'w-[15%] flex justify-center', sortable: false },
             ]}
             setSort={setSort}
             sort={sort}

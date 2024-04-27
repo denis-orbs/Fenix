@@ -41,14 +41,12 @@ export const getConcentratedPools = createAsyncThunk('liquidity/getConcentratedP
 export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo', async (address: Address) => {
   try {
     const client = getProtocolCoreClient()
-    //  console.log('liqElement11', 'liqElements')
     if (!client) return []
     const pairsV2 = await getAllPairsForUser(address)
     const availablePairsV2 = pairsV2.filter((pair) => pair.pair_address.toLowerCase() != AddressZero)
     const availableTokenData = await fetchTokens()
     const availablePairsV3 = await fetchPoolData()
     const availablePairsV2Subgraph = await fetchv2PoolData()
-    console.log(availablePairsV3, 'liqElements')
     if (!availablePairsV2 && !availableTokenData) return []
 
     const pairs: { [pair: Address]: LiquidityTableElement } = {}
@@ -89,7 +87,6 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
           maxAPR = apr * 2
         }
 
-        // console.log(apr, pair, 'liqElements')
         const totalPoolAmountValue = new BigDecimal(pair.reserve0, pair.token0_decimals)
           .mulNumber(tokenAprice || 0)
           .add(new BigDecimal(pair.reserve1, pair.token1_decimals).mulNumber(tokenBprice || 0))
@@ -163,7 +160,9 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
           Number(pair.totalValueLockedToken1) * tokenBprice
         ).toFixed(2)
 
-        apr = (Number(pair.feesUSD) / Number(tvl) === 0 ? 1 : Number(tvl)) * 100
+        const volumeUSD = Number(pair.volumeToken0) * tokenAprice + Number(pair.volumeToken1) * tokenBprice
+
+        apr = ((Number(volumeUSD) * (Number(pair.fee) / 1000000)) / Number(tvl)) * 100
         maxAPR = apr * 2
 
         // if (BLACKLISTED.includes(tokenA.symbol) || BLACKLISTED.includes(tokenB.symbol)) {
@@ -231,6 +230,6 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
 
     return liqElements
   } catch (e) {
-    console.log(e, 'error')
+    // console.log(e, 'error')
   }
 })

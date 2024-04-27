@@ -13,6 +13,7 @@ import { useAppSelector } from '@/src/state'
 import { V2PairId } from '@/src/state/liquidity/types'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import { useSetChart, useShowChart } from "@/src/state/user/hooks"
 
 const DepositTypeValues = {
   VOLATILE: 'VOLATILE',
@@ -55,8 +56,13 @@ const Panel = () => {
   const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
   const [pair, setPair] = useState<V2PairId>()
 
-  const handlerSwitch = () =>
-    setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'VOLATILE' : 'CONCENTRATED_AUTOMATIC')
+  const handlerSwitch = (active:boolean) => {
+    if (!active) {
+      setDepositType('VOLATILE')  
+    } else {
+      setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'CONCENTRATED_AUTOMATIC' : 'CONCENTRATED_MANUAL')
+    }
+  }
 
   const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
   const { createPosition: createGammaPosition } = useGammaCreatePosition()
@@ -79,7 +85,13 @@ const Panel = () => {
     if (!isAddress(searchParamToken0!) || !isAddress(searchParamToken1!)) return
     setDefaultPairs([searchParamToken0, searchParamToken1])
   }, [])
-
+  const showChart = useShowChart()
+  const setChart = useSetChart()
+  const [isChartVisible, setIsChartVisible] = useState(showChart)
+  const handleSwitch = () => {
+    setChart(!isChartVisible)
+    setIsChartVisible(prevState => !prevState)
+  }
   useEffect(() => {
     const getList = async () => {
       try {
@@ -116,16 +128,22 @@ const Panel = () => {
   }, [defaultPairs])
 
   return (
-    <section className="box-panel-trade">
+    <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-[25px] font-semibold">
             <h4 className="text-lg md:text-xl text-white font-medium">New Position</h4>
             <div className="flex items-center gap-[13px]">
-              <div className="flex items-center gap-[9px] h-10">
+              <div className="flex items-center gap-3">
+                <Switch active={showChart} setActive={handleSwitch} />
+                <div className="text-xs text-shark-100 font-normal whitespace-nowrap">
+                  Chart
+                </div>
+              </div>
+              {/* <div className="flex items-center gap-[9px] h-10">
                 <Switch active={activeSwitch} setActive={handlerSwitch} />
                 <span className="text-shark-100 text-xs leading-normal">Concentrated</span>
-              </div>
+              </div> */}
               {/* <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
                 <span className="icon-cog text-white"></span>
               </div> */}

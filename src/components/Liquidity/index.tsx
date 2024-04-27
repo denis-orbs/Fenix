@@ -53,20 +53,20 @@ const Liquidity = () => {
         const poolData = poolsData.filter(
           (row) => !row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
         )
-        console.log('inn1')
+        // console.log('inn1')
         setSearchResults(poolData)
       } else if (currentTab === 'STABLE') {
         const poolData = poolsData.filter(
           (row) => row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
         )
-        console.log('inn2')
+        // console.log('inn2')
         setSearchResults(poolData)
       } else if (currentTab === 'CONCENTRATED') {
         const poolData = poolsData.filter((row) => row.pairDetails.pairSymbol === 'Concentrated pool')
         setSearchResults(poolData)
-        console.log('inn3')
+        // console.log('inn3')
       } else {
-        console.log('inn4')
+        // console.log('inn4')
         setSearchResults(poolsData)
       }
     }
@@ -75,15 +75,14 @@ const Liquidity = () => {
   const filteredPoolsData = searchResults.filter((pool) =>
     pool?.pairDetails?.token0Symbol.toLowerCase().includes(searchValue.toLowerCase())
   )
-  console.log(searchResults, filteredPoolsData, 'searchResults')
 
   return (
     <section>
-      <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
-        <div className="w-full 2xl:w-2/3">
+      <div className="flex flex-col items-center gap-5 py-5 lg:flex-row">
+        <div className="w-full lg:w-2/3">
           <Deposit />
         </div>
-        <div className="w-full 2xl:w-1/3 self-auto">
+        <div className="w-full lg:w-1/3 self-auto">
           <Steps steps={STEPS} title="Start Now" />
         </div>
       </div>

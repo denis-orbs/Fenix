@@ -7,6 +7,8 @@ import {
   getAllUserAmounts,
   getIchiVaultInfo,
   getVaultsByTokens,
+  getLpApr,
+  VaultApr,
 } from '@ichidao/ichi-vaults-sdk'
 import ichiVaultsData from './ichiVaultsData.json'
 import { getWeb3Provider } from '../../utils/web3'
@@ -21,6 +23,7 @@ export interface IchiVault {
   tokenB: string
   allowTokenA: boolean
   allowTokenB: boolean
+  apr: VaultApr
 }
 
 export const useIchiVault = (providedToken0?: string, providedToken1?: string) => {
@@ -34,10 +37,34 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
   const tokenB = sortedTokensArray[1].toLowerCase()
 
   const [vault, setVault] = useState<IchiVault[] | null>()
+
+  const getLp = async (vadd: string) => {
+    const web3Provider = getWeb3Provider()
+    const dex = SupportedDex.Fenix
+    const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
+    return averageDtr
+  }
+
   useEffect(() => {
     const tokenVaults = ichiVaults.filter((vault) => {
       return vault.tokenA === tokenA && vault.tokenB === tokenB
     })
+
+    tokenVaults.forEach(async (v) => {
+      const kapr = await getLp(v.id)
+      v.apr = kapr
+      // console.log(v)
+      return v
+    })
+
+    // const tokenVaultsWithApr = tokenVaults.map(async (token) => {
+    //   const apr = await getLp(token.id)
+    //   console.log('apr', apr)
+    //   token.apr = apr
+    //   return token
+    // })
+    // console.log('mod', tokenVaultsWithApr)
+
     setVault(tokenVaults)
   }, [token0, token1, tokenA, tokenB])
 
@@ -91,37 +118,90 @@ export const useIchiPositions = () => {
     const fetchpositions = async () => {
       if (address) {
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
-        const pos = amounts?.map((item) => {
-          let tokenA
-          let tokenB
-          //const vaultInfo = useIchiVaultsData(item.vaultAddress)
-          console.log(tokenA)
+        const pos = await Promise.all(
+          amounts?.map(async (item) => {
+            let tokenA
+            let tokenB
+            //const vaultInfo = useIchiVaultsData(item.vaultAddress)
+            console.log(tokenA)
 
-          return {
-            id: item.vaultAddress,
-            liquidity: 'ichi',
-            depositedToken0: item.userAmounts[0],
-            depositedToken1: item.userAmounts[1],
-            tickLower: {
-              price0: '0',
-              price1: '0',
-            },
-            tickUpper: {
-              price0: '0',
-              price1: '0',
-            },
-            token0: {
-              name: 'token0',
-              id: 'vaultInfo?.tokenA!',
-              symbol: 'token0',
-            },
-            token1: {
-              id: 'vaultInfo?.tokenB!',
-              symbol: 'token1',
-              name: 'token1',
-            },
-          }
-        })
+            const getLp = async (vadd: string) => {
+              const web3Provider = getWeb3Provider()
+              const dex = SupportedDex.Fenix
+              const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
+              return averageDtr
+            }
+
+            const app = await getLp(item.vaultAddress)
+            console.log('app', app)
+
+            return {
+              id: item.vaultAddress,
+              liquidity: 'ichi',
+              depositedToken0: Number(item.userAmounts[0]),
+              depositedToken1: Number(item.userAmounts[1]),
+              tickLower: {
+                price0: '0',
+                price1: '0',
+                tickIdx: '',
+              },
+              tickUpper: {
+                price0: '0',
+                price1: '0',
+                tickIdx: '',
+              },
+              token0: {
+                id: 'string',
+                symbol: 'string',
+                name: 'string',
+                decimals: 'string',
+                derivedMatic: 'string',
+              },
+              token1: {
+                id: 'string',
+                symbol: 'string',
+                name: 'string',
+                decimals: 'string',
+                derivedMatic: 'string',
+              },
+              owner: address,
+              withdrawnToken0: '',
+              withdrawnToken1: '',
+              pool: {
+                id: 'string',
+                fee: 'string',
+                sqrtPrice: 'string',
+                liquidity: 'string',
+                tick: 'string',
+                tickSpacing: 'string',
+                totalValueLockedUSD: 'string',
+                volumeUSD: 'string',
+                feesUSD: 'string',
+                untrackedFeesUSD: 'string',
+                token0Price: 'string',
+                token1Price: 'string',
+                token0: {
+                  id: 'string',
+                  symbol: 'string',
+                  name: 'string',
+                  decimals: 'string',
+                  derivedMatic: 'string',
+                },
+                token1: {
+                  id: 'string',
+                  symbol: 'string',
+                  name: 'string',
+                  decimals: 'string',
+                  derivedMatic: 'string',
+                },
+                poolDayData: {
+                  feesUSD: 'string',
+                },
+              },
+              apr: app[0]?.apr <= 0 ? '0.00%' : app[0]?.apr.toFixed(0) + '%',
+            }
+          })
+        )
         console.log(pos, 'pos')
         setpositions(pos)
       }

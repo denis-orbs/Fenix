@@ -86,13 +86,47 @@ export const GET_POSITIONV3_USER = gql`
       depositedToken1
       withdrawnToken0
       withdrawnToken1
+      pool {
+        id
+        fee
+        sqrtPrice
+        liquidity
+        tick
+        tickSpacing
+        totalValueLockedUSD
+        volumeUSD
+        feesUSD
+        untrackedFeesUSD
+        token0Price
+        token1Price
+        token0 {
+          id
+          symbol
+          name
+          decimals
+          derivedMatic
+        }
+        token1 {
+          id
+          symbol
+          name
+          decimals
+          derivedMatic
+        }
+        poolDayData {
+          feesUSD
+        }
+      }
+
       tickLower {
         price0
         price1
+        tickIdx
       }
       tickUpper {
         price0
         price1
+        tickIdx
       }
       token0 {
         symbol

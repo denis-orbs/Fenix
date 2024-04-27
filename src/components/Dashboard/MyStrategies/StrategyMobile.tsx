@@ -8,6 +8,14 @@ import { positions } from './Strategy'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { fromWei } from '@/src/library/utils/numbers'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { publicClient } from '@/src/library/constants/viemClient'
+import { CL_MANAGER_ABI } from '@/src/library/constants/abi'
+import { contractAddressList } from '@/src/library/constants/contactAddresses'
+import { Address, encodeFunctionData } from 'viem'
+import { useAccount, useWriteContract } from 'wagmi'
+import { MAX_INT } from '@/src/library/constants/misc'
 
 type options = {
   value: string
@@ -16,21 +24,18 @@ type options = {
 
 interface StrategyMobileProps {
   row: positions
+  tokens: Token[]
   options: options[]
   setModalSelected: (modal: string) => void
   setOpenModal: (modal: boolean) => void
 }
 
-const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
+const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
-  const [tokens, setTokens] = useState<Token[]>([])
+  const { writeContractAsync } = useWriteContract()
+  const { address } = useAccount()
 
-  const tokensprice = async () => {
-    setTokens(await fetchTokens())
-  }
-  useEffect(() => {
-    tokensprice()
-  }, [])
   let ichitokens: IchiVault
   if (row.liquidity === 'ichi') {
     ichitokens = useIchiVaultsData(row?.id)
@@ -42,6 +47,39 @@ const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: Strate
   }
 
   const handlerOpen = () => (isOpen ? setIsOpen(false) : setIsOpen(true))
+
+  const handleClaim = (id: string) => {
+    const multi = [
+      encodeFunctionData({
+        abi: CL_MANAGER_ABI,
+        functionName: 'collect',
+        args: [[id, address, MAX_INT, MAX_INT]],
+      }),
+    ]
+
+    writeContractAsync(
+      {
+        abi: CL_MANAGER_ABI,
+        address: contractAddressList.cl_manager as Address,
+        functionName: 'multicall',
+        args: [multi],
+      },
+
+      {
+        onSuccess: async (x) => {
+          const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
+          if (transaction.status == 'success') {
+            toast(`✅ Fees Claimed successfully.`)
+          } else {
+            toast(`❌ Fees Claimed Tx failed`)
+          }
+        },
+        onError: (e) => {
+          toast(`❌ Fees Claimed Tx failed.`)
+        },
+      }
+    )
+  }
 
   return (
     <div className="w-full bg-shark-400 bg-opacity-40 p-4">
@@ -125,7 +163,7 @@ const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: Strate
                 <p className="text-white text-xs lg:text-sm">
                   APR <span className="icon-info"></span>
                 </p>
-                <h1 className="text-green-400 text-2xl">0.00%</h1>
+                <h1 className="text-green-400 text-2xl">{row?.apr}</h1>
               </div>
               <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
                 <p className="text-white text-xs lg:text-sm">
@@ -203,6 +241,43 @@ const StrategyMobile = ({ row, options, setModalSelected, setOpenModal }: Strate
                 token0Symbol={row.token0.symbol}
                 token1Symbol={row.token1.symbol}
               />
+              <div className="flex flex-row gap-5 items-center justify-center p-3">
+                <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+                  <span className="text-l">Deposits</span>
+                </Button>
+                <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+                  <span className="text-l">Stake</span>
+                </Button>
+                <Button
+                  variant="tertiary"
+                  className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+                  onClick={() => {
+                    if (row.liquidity !== 'ichi') {
+                      router.push(`/liquidity/manage?id=${row?.id}`)
+                      router.refresh()
+                    }
+                  }}
+                >
+                  <span className="text-l">Manage</span>
+                </Button>
+                {row.liquidity !== 'ichi' ? (
+                  <>
+                    <Button
+                      variant="tertiary"
+                      className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+                      onClick={() => {
+                        if (row.liquidity !== 'ichi') {
+                          handleClaim(row?.id)
+                        }
+                      }}
+                    >
+                      <span className="text-l">Claim</span>
+                    </Button>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
           </div>
         )}

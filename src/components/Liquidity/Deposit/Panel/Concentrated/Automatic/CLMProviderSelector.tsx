@@ -59,7 +59,7 @@ const Item = ({ option }: { option: IOption }) => {
   const isMobile = useIsMobile()
   const token0 = useToken0()
   const token1 = useToken1()
-
+  // console.log(logo)
   //  const { apr } = useIchiVaultInfo(token0, token1)
   return (
     <div className="flex h-[30px] items-center min-w-0 text-ellipsis whitespace-nowrap flex-grow justify-between">
@@ -68,9 +68,9 @@ const Item = ({ option }: { option: IOption }) => {
           <Image
             src={logo.src}
             alt="token"
-            className="rounded-full"
-            width={logo.width * (isMobile ? 0.667 : 1)}
-            height={logo.height * (isMobile ? 0.667 : 1)}
+            className="rounded-full px-2"
+            width={logo.width * (isMobile ? 0.667 : 1.2)}
+            height={logo.height * (isMobile ? 0.667 : 1.2)}
           />
         </div>
       )}

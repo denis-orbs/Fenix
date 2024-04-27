@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from 'react'
 
 export interface IInputRangeProps {
-  min?: number;
-  max?: number;
-  value: number;
-  step?: number;
-  height?: number;
-  thumbSize?: number;
-  onChange?: (value: number) => void;
+  min?: number
+  max?: number
+  value: number
+  step?: number
+  height?: number
+  thumbSize?: number
+  onChange?: (value: number) => void
   disabled: boolean
+  onChangeShown?: (value: number) => void
 }
 
 const InputRange = ({
@@ -19,18 +20,24 @@ const InputRange = ({
   height = 5,
   thumbSize = 11,
   onChange,
-  disabled
+  disabled,
+  onChangeShown,
 }: IInputRangeProps) => {
   const [currentValue, setCurrentValue] = useState(value)
 
-  const percent = useMemo(
-    () => ((currentValue - min) / (max - min)) * 100,
-    [currentValue, min, max]
-  )
+  const percent = useMemo(() => ((currentValue - min) / (max - min)) * 100, [currentValue, min, max])
 
   useEffect(() => {
     setCurrentValue(value)
   }, [value])
+
+  useEffect(() => {
+    if (onChangeShown) {
+      onChangeShown(currentValue)
+      // console.log(currentValue)
+    }
+    // console.log("ddd", currentValue)
+  }, [currentValue])
 
   const isDisabledClass = disabled
     ? '[&::-webkit-slider-thumb]:bg-[#333A43] [&::-webkit-slider-thumb]:pointer-events-none'
@@ -54,7 +61,10 @@ const InputRange = ({
       step={step}
       value={currentValue}
       onMouseDown={(e) => window.getSelection()?.removeAllRanges()}
-      onChange={(e) => setCurrentValue(Number(e.target.value))}
+      onChange={(e) => {
+        setCurrentValue(Number(e.target.value))
+        onChangeShown && onChangeShown(Number(e.target.value))
+      }}
       onMouseUp={(e) => onChange && onChange(currentValue)}
       onTouchEnd={(e) => onChange && onChange(currentValue)}
       disabled={disabled}

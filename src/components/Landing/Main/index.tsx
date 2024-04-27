@@ -8,6 +8,8 @@ import Decorator from '@/src/components/Common/Layout/BackgroundLanding'
 import useStore from '@/src/state/zustand'
 import Blast from '@/src/components/UI/Icons/Blast'
 import { useState, useEffect } from 'react'
+import { useAppSelector } from '@/src/state'
+
 const michroma = Michroma({
   weight: ['400'],
   style: ['normal'],
@@ -35,11 +37,11 @@ function useMediaQuery(query: any) {
 
   return matches
 }
-const Box = ({ text }: { text: string }) => {
+const Box = ({ text, value }: { text: string; value: string }) => {
   return (
     <div className="flex w-[100%] flex-col items-center justify-center mt-[120px]">
       <div className="text-gradient2 text-lg max-sm:text-base leading-normal tracking-[4.86px] font-semibold mb-[5px] mt-[-120px]">
-        COMING SOON
+        {value}
       </div>
       <div className="text-base font-light text-shark-100 max-sm:text-sm">{text}</div>
     </div>
@@ -56,6 +58,16 @@ const Main = () => {
   const handleIsHoverInactive = () => setIsHover(false)
 
   const handlerConnectWallet = () => setWalletSelectionModal(true)
+
+  const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
+  console.log(liquidityTable, 'liquidityTable')
+  const tvl = '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(0)
+  const fee =
+    '$ ' +
+    liquidityTable
+      .reduce((total: any, pair: any) => total + Number(pair.volumeUSD) * (Number(pair.fee) / 100), 0)
+      .toFixed(0)
+  const volume = '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.volumeUSD), 0).toFixed(0)
 
   return (
     <div className="h-[500px] xl:h-[600px] xl:pb-20 2xl:pb-0 flex flex-col items-center justify-center">
@@ -93,9 +105,11 @@ const Main = () => {
               </div>
 
               {!isConnected && (
-                <Button className="w-[112px] h-[44px] md:w-[322px] md:h-[41px] !text-sm !py-2.5 !px-0 mx-auto">
-                  {/* <span>Launch App</span> */}
-                  <span>Coming Soon</span>
+                <Button
+                  className="w-[112px] h-[44px] md:w-[322px] md:h-[41px] !text-sm !py-2.5 !px-0 mx-auto"
+                  href="/trade/swap"
+                >
+                  <span>Launch App</span>
                 </Button>
               )}
             </div>
@@ -112,10 +126,10 @@ const Main = () => {
             className={`grid 2xl:grid-cols-4 max-2xl:grid-cols-2 max-md:grid-cols-1
              justify-center items-center px-5 mx-auto ${isTablet ? 'info-box' : 'mobile-info-box'}`}
           >
-            <Box text="Total Value Locked" />
-            <Box text="Annualized Volume" />
-            <Box text="Annualized Fees" />
-            <Box text="Active Users" />
+            <Box text="Total Value Locked" value={tvl} />
+            <Box text="Annualized Volume" value={volume} />
+            <Box text="Annualized Fees" value={fee} />
+            <Box text="Active Users" value="COMING SOON" />
           </div>
         </div>
       </div>

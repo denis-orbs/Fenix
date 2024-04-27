@@ -12,7 +12,7 @@ const MyLocks = () => {
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">Locks</h1>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm">
+            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
               <span className="icon-logout "></span>New deposit
             </Button>
           </div>
@@ -32,9 +32,7 @@ const MyLocks = () => {
       ) : (
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">
-              Locks 
-            </p>
+            <p className="flex gap-3 text-lg ms-2">Locks</p>
           </div>
           <div className="box-dashboard p-6">
             <p className="text-white text-sm">To receive incentives and fees create a lock and vote with it.</p>

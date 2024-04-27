@@ -1,28 +1,108 @@
 export const FOUNDATION = [
-  'Open Beta',
-  'Blast Points Incentives',
-  'FNX AIRDROP for early LPs',
-  'Pre-Mining Campaign',
-  'Trading & Liquidity Enabled',
-  'Majority of Integrations',
-  'Technical Documentation',
-  'Marketing Campaigns',
+  {
+    label: 'Open Beta',
+    checked: true,
+    loading: false,
+  },
+  {
+    label: 'Blast Points Incentives',
+    checked: true,
+    loading: false,
+  },
+  {
+    label: 'FNX AIRDROP for early LPs',
+    checked: true,
+    loading: false,
+  },
+  {
+    label: 'Pre-Mining Campaign',
+    checked: true,
+    loading: false,
+  },
+  {
+    label: 'Trading & Liquidity Enabled',
+    checked: true,
+    loading: false,
+  },
+  {
+    label: 'Majority of Integrations',
+    checked: true,
+    loading: false,
+  },
+  {
+    label: 'Technical Documentation',
+    checked: true,
+    loading: false,
+  },
+  {
+    label: 'Marketing Campaigns',
+    checked: true,
+    loading: false,
+  },
 ]
 
 export const LAUNCH = [
-  'V1.0 Blast Mainnet Launch',
-  'Public LBP',
-  'Token Generation Event',
-  'Emissions Start',
-  'Partner Protocol Integrations',
-  'Detailed Analytics',
-  'Notifications System',
+  {
+    label: 'V1.0 Blast Mainnet Launch',
+    checked: true,
+    loading: false,
+  },
+  {
+    label: 'Public LBP',
+    checked: true,
+    loading: false,
+  },
+  {
+    label: 'Token Generation Event',
+    checked: false,
+    loading: true,
+  },
+  {
+    label: 'Emissions Start',
+    checked: false,
+    loading: false,
+  },
+  {
+    label: 'Partner Protocol Integrations',
+    checked: false,
+    loading: false,
+  },
+  {
+    label: 'Detailed Analytics',
+    checked: false,
+    loading: false,
+  },
+  {
+    label: 'Notifications System',
+    checked: false,
+    loading: false,
+  },
 ]
 
 export const GROWTH = [
-  'Fenix EON Perpetuals Launch',
-  'Plugins/Hooks Developments',
-  'Delta Neutral Strategies',
-  'On/Off Ramp',
-  'Account Abstraction',
+  {
+    label: 'Fenix EON Perpetuals Launch',
+    checked: false,
+    loading: false,
+  },
+  {
+    label: 'Plugins/Hooks Developments',
+    checked: false,
+    loading: false,
+  },
+  {
+    label: 'Delta Neutral Strategies',
+    checked: false,
+    loading: false,
+  },
+  {
+    label: 'On/Off Ramp',
+    checked: false,
+    loading: false,
+  },
+  {
+    label: 'Account Abstraction',
+    checked: false,
+    loading: false,
+  },
 ]

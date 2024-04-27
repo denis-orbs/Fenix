@@ -7,10 +7,11 @@ import { useEffect, useState } from 'react'
 
 import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-import { toBN } from '@/src/library/utils/numbers'
+import { formatAmount, toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
+import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 const WithdrawAmountsICHI = ({
@@ -22,23 +23,19 @@ const WithdrawAmountsICHI = ({
   allIchiVaultsByTokenPair: IchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
-  const [isActive, setIsActive] = useState<Boolean>(false)
-  const [selected, setIsSelected] = useState<String>('Choose one')
+  const [isActive, setIsActive] = useState<boolean>(false)
+  const [selected, setIsSelected] = useState<string>('Choose one')
   const { account } = useActiveConnectionDetails()
 
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
 
-  const token0 = useToken0()
-  const [vaultToken, setVaultToken] = useState(token0)
-
-  const token1 = useToken1()
   const vaultAddress =
     allIchiVaultsByTokenPair?.find((vault) => {
-      if (vault.tokenA.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenA) {
+      if (vault.tokenA.toLowerCase() === selected.toLowerCase() && vault.allowTokenA) {
         return true
       }
-      if (vault.tokenB.toLowerCase() === vaultToken.toLowerCase() && vault.allowTokenB) {
+      if (vault.tokenB.toLowerCase() === selected.toLowerCase() && vault.allowTokenB) {
         return true
       }
       return false
@@ -49,7 +46,7 @@ const WithdrawAmountsICHI = ({
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
-    if (!amoutToWithdraw || 0 > parseFloat(amoutToWithdraw)) return 'Enter amount'
+    if (!amoutToWithdraw || amoutToWithdraw == '0') return 'Enter an amount'
     if (amoutToWithdraw > totalUserShares) return 'Insufficient balance'
     return BUTTON_TEXT_WITHDRAW
   }
@@ -62,15 +59,22 @@ const WithdrawAmountsICHI = ({
       setTotalUserShares('0')
       return
     }
+
+    setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
     const getTotalUserShares = async () => {
       const data = await getUserBalance(account, vaultAddress.id, web3Provider, dex)
       setTotalUserShares(data)
     }
     getTotalUserShares()
-
-    setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
   }, [account, vaultAddress, web3Provider])
-
+  useEffect(() => {
+    if (allIchiVaultsByTokenPair && allIchiVaultsByTokenPair?.length > 0) {
+      const firstToken = allIchiVaultsByTokenPair[0]
+      setIsSelected(
+        firstToken.allowTokenA ? firstToken.tokenA.toLocaleLowerCase() : firstToken.tokenB.toLocaleLowerCase()
+      )
+    }
+  }, [allIchiVaultsByTokenPair])
   // withdraw function
   // FIXME: poner toast??
   const withdrawFromVault = async () => {
@@ -94,7 +98,9 @@ const WithdrawAmountsICHI = ({
           <div className=" text-white">Withdraw amounts</div>
           <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
             <span className="icon-wallet text-xs"></span>
-            Withdrawable: {Number(totalUserShares).toFixed(5)}
+            {/* Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'} */}
+            Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'}{' '}
+            {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -114,7 +120,7 @@ const WithdrawAmountsICHI = ({
                 variant="tertiary"
                 className="!py-1 !px-3"
                 onClick={() => {
-                  if (!totalUserShares) return
+                  if (!totalUserShares || totalUserShares == '') return
                   setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
                 }}
               >
@@ -124,7 +130,7 @@ const WithdrawAmountsICHI = ({
                 variant="tertiary"
                 className="!py-1 !px-3"
                 onClick={() => {
-                  if (!totalUserShares) return
+                  if (!totalUserShares || totalUserShares == '') return
                   setAmountToWithdraw(toBN(totalUserShares).toString())
                 }}
               >
@@ -142,22 +148,17 @@ const WithdrawAmountsICHI = ({
                     onClick={() => setIsActive(!isActive)}
                   >
                     <div className="flex justify-center items-center gap-3">
-                      {selected !== 'Choose one' ? (
-                        <>
-                          <Image
-                            src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === selected)?.symbol}.svg`}
-                            alt="token"
-                            className="w-6 h-6 rounded-full"
-                            width={20}
-                            height={20}
-                          />
-                          <span className="text-base">
-                            {tokenList.find((t) => t?.address?.toLowerCase() === selected)?.symbol}
-                          </span>
-                        </>
-                      ) : (
-                        selected
-                      )}
+                      {/* {selected !== 'Choose one' ? ( */}
+                      <>
+                        <Image
+                          src={`/static/images/tokens/${tokenAddressToSymbol[selected]}.svg`}
+                          alt="token"
+                          className="w-6 h-6 rounded-full"
+                          width={20}
+                          height={20}
+                        />
+                        <span className="text-base">{tokenAddressToSymbol[selected]}</span>
+                      </>
                     </div>
                     <span
                       className={`inline-block ml-2 text-xs icon-chevron md:text-sm ${isActive ? 'rotate-180' : ''}`}
@@ -165,38 +166,48 @@ const WithdrawAmountsICHI = ({
                   </div>
                   <div
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
-                    ${isActive ? 'visible bg-shark-300 !bg-opacity-40 border-shark-200' : 'hidden'}`}
+                    ${isActive ? 'visible bg-shark-500 !bg-opacity-80 border-shark-200' : 'hidden'}`}
                   >
                     {allIchiVaultsByTokenPair.map((vault) => (
                       <div
-                        className="flex justify-center items-center gap-3 cursor-pointer"
+                        className="flex justify-start items-center gap-3 cursor-pointer m-1 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}
                         onClick={() => {
                           setIsActive(!isActive)
                           setIsSelected(
                             vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
                           )
-                          setVaultToken(vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
                         }}
                       >
                         <Image
-                          src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === (vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()))?.symbol}.svg`}
+                          src={`/static/images/tokens/${
+                            tokenAddressToSymbol[
+                              vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase()
+                            ]
+                          }.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
                           width={20}
                           height={20}
                         />
-                        <span className="text-base">
-                          {
-                            tokenList.find(
-                              (t) =>
-                                t?.address?.toLowerCase() ===
-                                (vault.allowTokenA
-                                  ? vault.tokenA.toLocaleLowerCase()
-                                  : vault.tokenB.toLocaleLowerCase())
-                            )?.symbol
-                          }
-                        </span>
+                        <div className="flex flex-col">
+                          <span className="text-base">
+                            {
+                              tokenAddressToSymbol[
+                                vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
+                              ]
+                            }
+                          </span>
+                          {vault?.apr && (
+                            <span className="text-sm">
+                              APR :{' '}
+                              {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
+                                ? '0'
+                                : vault?.apr[0]?.apr?.toFixed(0)}
+                              %
+                            </span>
+                          )}
+                        </div>
                         {/* <span className="text-base">{token?.symbol}</span> */}
                       </div>
                     ))}

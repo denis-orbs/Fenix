@@ -7,6 +7,7 @@ import SelectToken from '@/src/components/Modals/SelectToken'
 import { IToken } from '@/src/library/types'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { Address } from 'viem'
+import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 
 interface PairSelectorProps {
   firstToken: string
@@ -21,6 +22,7 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
   const setToken1 = useSetToken1()
   const token0 = useToken0()
   const token1 = useToken1()
+  // console.log(firstToken)
 
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[15px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -33,15 +35,13 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
         >
           <div className="flex items-center gap-2.5 md:gap-2">
             <Image
-              src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === firstToken.toLowerCase())?.symbol}.svg`}
+              src={`/static/images/tokens/${tokenAddressToSymbol[firstToken.toLowerCase()]}.svg`}
               alt="token"
               className="w-5 h-5 rounded-full md:w-6 md:h-6"
               width={24}
               height={24}
             />
-            <span className="text-xs md:text-base">
-              {tokenList.find((t) => t?.address?.toLowerCase() === firstToken.toLowerCase())?.symbol}
-            </span>
+            <span className="text-xs md:text-base">{tokenAddressToSymbol[firstToken.toLowerCase()]}</span>
           </div>
           <span className="inline-block ml-2 text-xs icon-chevron md:text-sm" />
         </div>
@@ -64,15 +64,13 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
         >
           <div className="flex items-center gap-2.5 md:gap-2">
             <Image
-              src={`/static/images/tokens/${tokenList?.find((t) => t?.address?.toLowerCase() === secondToken.toLowerCase())?.symbol}.svg`}
+              src={`/static/images/tokens/${tokenAddressToSymbol[secondToken.toLowerCase()]}.svg`}
               alt="token"
               className="w-5 h-5 rounded-full md:w-6 md:h-6"
               width={24}
               height={24}
             />
-            <span className="text-xs md:text-base">
-              {tokenList.find((t) => t?.address?.toLowerCase() === secondToken.toLowerCase())?.symbol}
-            </span>
+            <span className="text-xs md:text-base">{tokenAddressToSymbol[secondToken.toLowerCase()]}</span>
           </div>
           <span className="inline-block ml-2 text-xs icon-chevron md:text-sm" />
         </div>
