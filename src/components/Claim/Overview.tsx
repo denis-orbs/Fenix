@@ -58,7 +58,8 @@ const Overview = () => {
   const [ChrNftIds, setChrNftIds] = useState<BigInt>(BigInt(0))
   const [veChrIds, setveChrIds] = useState<BigInt>(BigInt(0))
   const [ChrNftDeposited, setChrNftDeposited] = useState<BigInt>(BigInt(0))
-  const [veChrNftDeposited, setveChrNftDeposited] = useState<BigInt>(BigInt(0))
+  const [veChrNftAmount, setveChrNftAmount] = useState<BigInt>(BigInt(0))
+  const [veChrNftMigrated, setveChrNftMigrated] = useState<BigInt>(BigInt(0))
   const [chramountDeposited, setchramountDeposited] = useState<BigInt>(BigInt(0))
   const [elChramountDeposited, setelChramountDeposited] = useState<BigInt>(BigInt(0))
   const [spChramountDeposited, setspChramountDeposited] = useState<BigInt>(BigInt(0))
@@ -104,13 +105,14 @@ const Overview = () => {
         <TotalMigrated
           migrateStatus={migrateStatus}
           acc={acc}
-          setveChrNftDeposited={setveChrNftDeposited}
+          setveChrNftAmount={setveChrNftAmount}
           setChrNftDeposited={setChrNftDeposited}
           setchramountDeposited={setchramountDeposited}
           setelChramountDeposited={setelChramountDeposited}
           setspChramountDeposited={setspChramountDeposited}
           setChrNftsTotal={setChrNftsTotal}
           setveChrNftsTotal={setveChrNftsTotal}
+          setveChrNftMigrated={setveChrNftMigrated}
         />
       </div>
       {
@@ -169,8 +171,8 @@ const Overview = () => {
                                       .toFixed(2)
                                       .toString()
                                   : item.token === 'veCHR'
-                                    ? parseInt(veChrNftDeposited.toString())
-                                      ? parseInt(veChrNftDeposited.toString())
+                                    ? parseInt(veChrNftAmount.toString())
+                                      ? parseInt(veChrNftAmount.toString())
                                       : 0
                                     : item.token === 'chrNFT'
                                       ? parseInt(chrNftBalanceOf.toString())
@@ -212,12 +214,8 @@ const Overview = () => {
                                       .toFixed(2)
                                       .toString()
                                   : item.token === 'veCHR'
-                                    ? parseInt(veChrNftDeposited.toString())
-                                      ? (
-                                          (parseInt(veChrNftsTotal?.toString()) -
-                                            parseInt(veChrNftDeposited?.toString())) /
-                                          166
-                                        ).toFixed(4)
+                                    ? parseInt(veChrNftMigrated.toString())
+                                      ? (parseInt(veChrNftMigrated?.toString()) / 166).toFixed(2)
                                       : 0
                                     : item.token === 'chrNFT'
                                       ? parseInt(ChrNftDeposited.toString())
@@ -238,7 +236,7 @@ const Overview = () => {
                             setItem(item)
                           }}
                         >
-                          Deposit
+                          Migrate
                         </Button>
                         <Toaster />
                       </div>
@@ -346,7 +344,7 @@ const Overview = () => {
                             setItem(item)
                           }}
                         >
-                          Deposit
+                          Migrate
                         </Button>
                         <Toaster />
                       </div>
