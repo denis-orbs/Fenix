@@ -3,7 +3,7 @@ import TradeLayout from '@/src/components/Trade/Common/Layout'
 export default function Page() {
   const config = {
     companyName: 'Fenix',
-    integratorId: 'fenix-swap-integration',
+    integratorId: 'fenix-97a5564c-a67a-4d0b-8d66-678e8b96d89b',
     slippage: 1.5,
     collectFees: {
       integratorAddress: '0xAC12571907b0aEE0eFd2BC13505B88284d5854db',
