@@ -296,6 +296,18 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           <Button
             variant="tertiary"
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+          >
+            <span className="text-l">Deposits</span>
+          </Button>
+          <Button
+            variant="tertiary"
+            className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
+          >
+            <span className="text-l">Stake</span>
+          </Button>
+          <Button
+            variant="tertiary"
+            className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
             onClick={() => {
               if (row.liquidity !== 'ichi') {
                 router.push(`/liquidity/manage?id=${row?.id}`)

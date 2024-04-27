@@ -242,6 +242,12 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                 token1Symbol={row.token1.symbol}
               />
               <div className="flex flex-row gap-5 items-center justify-center p-3">
+                <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+                  <span className="text-l">Deposits</span>
+                </Button>
+                <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+                  <span className="text-l">Stake</span>
+                </Button>
                 <Button
                   variant="tertiary"
                   className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
