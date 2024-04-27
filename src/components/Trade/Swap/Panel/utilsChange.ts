@@ -4,6 +4,8 @@ import { writeContract } from '@wagmi/core'
 import { Abi } from 'viem'
 import { config } from '@/src/app/layout'
 import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
+import { getWeb3Provider } from '@/src/library/utils/web3'
+import { IToken } from '@/src/library/types'
 
 interface ApproveTokenParams {
   tokenAddress: `0x${string}`
@@ -30,6 +32,7 @@ export const approveToken = async ({
       functionName: 'approve',
       args: [contractAddress, approvalAmount],
     })
+    console.log(hash)
     onSuccess()
     return hash
   } catch (error) {

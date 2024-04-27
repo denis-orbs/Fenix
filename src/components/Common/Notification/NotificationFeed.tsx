@@ -11,10 +11,12 @@ const NotificationFeed = () => {
         <Notification
           key={notification.id}
           id={notification.id}
-          createTime={notification.createTime}
-          message={notification.message}
-          notificationType={notification.notificationType}
-          txHash={'notification.txHash'}
+          createTime={notification?.createTime}
+          message={notification?.message}
+          notificationType={notification?.notificationType}
+          txHash={notification?.txHash}
+          timeToShow={notification?.timeToShow}
+          notificationDuration={notification?.notificationDuration}
         />
       ))}
     </div>

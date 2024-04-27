@@ -442,6 +442,20 @@ body {
     width: 100%;
   }
 }
-.animate-progress-toast {
-  animation: progress 4.5s linear;
+.animate-progress-toast-3000 {
+  animation: progress 3s linear;
+}
+.animate-progress-toast-4000 {
+  animation: progress 4s linear;
+}
+
+.animate-progress-toast-5000 {
+  animation: progress 5s linear;
+}
+
+.animate-progress-toast-10000 {
+  animation: progress 10s linear;
+}
+.animate-progress-toast-15000 {
+  animation: progress 15s linear;
 }
