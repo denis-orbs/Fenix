@@ -1,18 +1,23 @@
 'use client'
+
+import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
+
 const generateChartUrl = (tokenA: string, tokenB: string) => {
+  tokenA = tokenA === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : tokenA
+  tokenB = tokenB === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : tokenB
+
+  // all pools should be on lower case
   const baseUrls: {
     [key: string]: string
   } = {
     '0x4300000000000000000000000000000000000003/0x4300000000000000000000000000000000000004':
-      'https://www.defined.fi/blast/0x7be481d464cad7ad99500ce8a637599eb8d0fcdb?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT', // USDB/WETH
-    '0x4300000000000000000000000000000000000003/0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692':
-      'https://www.defined.fi/blast/0xecb1c17a51d782ac2757e2ab568d159854b9b4bd?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT', // USDB/WBTC
+      'https://www.defined.fi/blast/0x1d74611f3ef04e7252f7651526711a937aa1f75e?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT', // USDB/WETH
+
     '0x4300000000000000000000000000000000000004/0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692':
-      'https://dexscreener.com/zksync/0xe5716Ad6873f7d9919b0A72f5b33570f77c1a615?embed=1&theme=dark&trades=0&info=0', // WETH/WBTC
-    '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692':
-      'https://dexscreener.com/zksync/0xe5716Ad6873f7d9919b0A72f5b33570f77c1a615?embed=1&theme=dark&trades=0&info=0', // ETH/WBTC
-    '0x4300000000000000000000000000000000000003/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee':
-      'https://www.defined.fi/blast/0x7be481d464cad7ad99500ce8a637599eb8d0fcdb?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT', // USDB/EETH
+      'https://www.defined.fi/blast/0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT', // WETH/WBTC
+
+    '0x4300000000000000000000000000000000000004/0xeb466342c4d449bc9f53a865d5cb90586f405215':
+      'https://www.defined.fi/blast/0x86d1da56fc79accc0daf76ca75668a4d98cb90a7?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT',
   }
 
   const key = `${tokenA}/${tokenB}`
