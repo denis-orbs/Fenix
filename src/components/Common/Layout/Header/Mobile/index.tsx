@@ -33,7 +33,7 @@ const MobileHeader = () => {
           </Link>
           <div className="flex items-center gap-2">
             <AccountHandler isMenuMobile={false} />
-            {/* <Toggle onClick={handleShowMenu} /> */}
+            <Toggle onClick={handleShowMenu} />
           </div>
           <Menu showMenu={showMenu} setShowMenu={setShowMenu} />
         </div>
