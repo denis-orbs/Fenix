@@ -369,6 +369,10 @@ const Panel = () => {
 
   // manage button click
   const handleSwapClick = () => {
+    if (!account) {
+      openConnectModal && openConnectModal()
+      return
+    }
     if (currentButtonState === ButtonState.SWAP || currentButtonState === ButtonState.PRICE_IMPACT_ALERT) {
       callAlgebraRouter()
     } else if (currentButtonState === ButtonState.APPROVAL_REQUIRED) {
