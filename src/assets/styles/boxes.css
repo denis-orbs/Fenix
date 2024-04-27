@@ -1350,15 +1350,18 @@ opacity-70
 }
 .info-box {
   @apply relative px-5 py-3
-  2xl:bg-[url("/static/images/landing/main/info-box.svg")]
+  xl:bg-[url("/static/images/landing/main/info-box.svg")]
+  lg:bg-[url("/static/images/landing/main/info-box-small.svg")]
   bg-[url("/static/images/landing/main/info-box.svg")]
-  max-2xl:bg-[url("/static/images/landing/main/tablet-info-box.svg")]
+  max-lg:bg-[url("/static/images/landing/main/tablet-info-box.svg")]
   bg-no-repeat
   bg-cover
-  2xl:w-[1135px]
-  2xl:h-[133px]
-  max-2xl:w-[532px]
-  max-2xl:h-[420px];
+  xl:w-[1135px]
+  lg:w-[968px]
+  lg:h-[133px]
+  max-lg:w-[532px]
+  max-lg:h-[420px]
+  mx-auto;
 }
 
 .mobile-info-box {
