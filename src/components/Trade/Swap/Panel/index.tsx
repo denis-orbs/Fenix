@@ -245,7 +245,7 @@ const Panel = () => {
         toast.error('No swap available')
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -322,6 +322,8 @@ const Panel = () => {
       parseUnits(swapValue, tokenSell.decimals),
     ],
   })
+  console.log(quoteExactInputCall?.data?.result)
+  // TODO: VER SI SE USA ESTO?
   const sqrtPriceX96After = swapAvailable
     ? singleSwapAvailable
       ? quoteExactInputSingleCall?.data?.result[2] || 0n

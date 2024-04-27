@@ -17,7 +17,12 @@ import { algebra_client } from '@/src/library/apollo/client'
 import { blastClient } from '@/src/library/apollo/client/protocolCoreClient'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
-import { GET_UNISWAP_FACTORY_DATA, GET_V2_PAIR_ID, GET_V3_FACTORY_DATA } from '@/src/library/apollo/queries/global'
+import {
+  GET_UNISWAP_FACTORY_DATA,
+  GET_V2_PAIR_ID,
+  GET_V3_FACTORY_DATA,
+  NATIVE_PRICE,
+} from '@/src/library/apollo/queries/global'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -169,10 +174,24 @@ export const fetchv2PairId = async (token0Id: any, token1Id: any, isStable: Bool
     })
     // console.log(data)
     // // Data is available in `data.pools`
-    console.log(data.pairs)
+    // console.log(data.pairs)
     return data.pairs as V2PairId[]
   } catch (error) {
     console.error('Error fetching pool data:', error)
+    return []
+  }
+}
+// Function to native price of user data
+export const fetchNativePrice = async () => {
+  try {
+    const { data } = await algebra_client.query({
+      query: NATIVE_PRICE,
+    })
+    // Data is available in `data.positions`
+    console.log(data.bundles[0].maticPriceUSD, 'price')
+    return data.bundles[0].maticPriceUSD as string
+  } catch (error) {
+    console.error('Error fetching positions:', error)
     return []
   }
 }

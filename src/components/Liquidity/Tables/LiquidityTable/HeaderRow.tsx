@@ -89,7 +89,7 @@ const HeaderRow = ({
   return (
     <div className="relative">
       <div className="w-full mb-2.5 xl:mb-5">
-        <div className="hidden lg:block">
+        <div className="hidden 2xl:block">
           <TableHead
             items={[
               {
@@ -98,7 +98,7 @@ const HeaderRow = ({
                 sortable: true,
               },
               RANGE,
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-center`, sortable: true },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right`, sortable: true },
               { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
