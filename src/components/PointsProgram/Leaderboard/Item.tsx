@@ -12,7 +12,7 @@ const Item = ({ data }: any) => {
       </span>
       <span className="text-white w-full">
         <div className="flex items-center gap-4">
-          <Image src="/static/images/orbit.svg" alt="user" width={40} height={40} className="w-10 h-10" />
+          <Image src="/static/images/tokens/FNX.svg" alt="user" width={40} height={40} className="w-10 h-10" />
           <p className="text-sm max-w-[100px] xl:max-w-auto truncate">{data.recipient}</p>
         </div>
       </span>

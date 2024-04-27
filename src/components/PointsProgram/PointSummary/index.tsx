@@ -95,7 +95,7 @@ const PointSummary = ({ userData }: any) => {
         <div className="point-summary-box">
           <p className="text-base mb-2 text-white w-full text-left">Orbits</p>
           <div className="flex items-center gap-4 w-full">
-            <Image src="/static/images/orbit-letter.svg" alt="token" width={45} height={14}  />
+            <Image src="/static/images/tokens/FNX.svg" alt="token" width={20} height={20} className="w-8 h-8" />
             <div className="">
               <h3 className="text-lg font-medium text-white"> {formatCurrency(userData?.amount) ?? '-'}</h3>
               <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
