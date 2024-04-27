@@ -42,11 +42,22 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
   try {
     const client = getProtocolCoreClient()
     if (!client) return []
-    const pairsV2 = await getAllPairsForUser(address)
-    const availablePairsV2 = pairsV2.filter((pair) => pair.pair_address.toLowerCase() != AddressZero)
-    const availableTokenData = await fetchTokens()
-    const availablePairsV3 = await fetchPoolData()
-    const availablePairsV2Subgraph = await fetchv2PoolData()
+
+    const results = await Promise.allSettled([
+      getAllPairsForUser(address),
+      fetchTokens(),
+      fetchPoolData(),
+      fetchv2PoolData(),
+    ])
+
+    const availablePairsV2 =
+      results[0].status === 'fulfilled'
+        ? results[0].value.filter((pair) => pair.pair_address.toLowerCase() !== AddressZero)
+        : []
+    const availableTokenData = results[1].status === 'fulfilled' ? results[1].value : []
+    const availablePairsV3 = results[2].status === 'fulfilled' ? results[2].value : []
+    const availablePairsV2Subgraph = results[3].status === 'fulfilled' ? results[3].value : []
+
     if (!availablePairsV2 && !availableTokenData) return []
 
     const pairs: { [pair: Address]: LiquidityTableElement } = {}
