@@ -84,7 +84,7 @@ const Panel = () => {
       .then((transactionReceipt) => {
         setTimeout(() => {
           readNotification(id)
-        }, 1250)
+        }, 1000)
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
@@ -184,13 +184,12 @@ const Panel = () => {
             value: parseUnits(swapValue, tokenSell.decimals),
           },
           {
-            onSuccess: async (data) => {
-              // txHash SEND
+            onSuccess: async (txHash) => {
               setForValue('')
               setSwapValue('')
               setTimeout(() => {
-                handleTransactionSuccess(hash, tokenSell, tokenGet)
-              }, 1250)
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
             },
             onError: (e) => {
               handleTransactionError(e)
@@ -207,12 +206,12 @@ const Panel = () => {
             args: [parseUnits(swapValue, tokenSell.decimals)],
           },
           {
-            onSuccess: async (data) => {
+            onSuccess: async (txHash) => {
               setForValue('')
               setSwapValue('')
               setTimeout(() => {
-                handleTransactionSuccess(hash, tokenSell, tokenGet)
-              }, 1250)
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
             },
             onError: (e) => {
               handleTransactionError(e)
@@ -220,10 +219,7 @@ const Panel = () => {
           }
         )
         return
-      }
-
-      // OJO VER LOS FUCKIGNS RETUSN
-      else if (singleSwapAvailable) {
+      } else if (singleSwapAvailable) {
         const txHash = writeContract(
           {
             address: contractAddressList.cl_swap as `0x${string}`,
@@ -245,12 +241,12 @@ const Panel = () => {
             ],
           },
           {
-            onSuccess: async (data) => {
+            onSuccess: async (txHash) => {
               setForValue('')
               setSwapValue('')
               setTimeout(() => {
-                handleTransactionSuccess(hash, tokenSell, tokenGet)
-              }, 1250)
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
             },
             onError: (e) => {
               handleTransactionError(e)
@@ -277,12 +273,12 @@ const Panel = () => {
             ],
           },
           {
-            onSuccess: async (data) => {
+            onSuccess: async (txHash) => {
               setForValue('')
               setSwapValue('')
               setTimeout(() => {
-                handleTransactionSuccess(hash, tokenSell, tokenGet)
-              }, 1250)
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
             },
             onError: (e: WriteContractErrorType) => {
               handleTransactionError(e)
