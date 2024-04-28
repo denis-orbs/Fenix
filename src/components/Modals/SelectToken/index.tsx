@@ -155,13 +155,13 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               _tokenList.filter(
                 (token) =>
                   token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-                  token.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+                  token?.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
               ).length > 0 ? (
                 _tokenList
                   .filter(
                     (token) =>
                       token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-                      token.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+                      token?.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
                   )
                   .map((token, index) => (
                     <div
