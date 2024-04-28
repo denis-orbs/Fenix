@@ -45,12 +45,13 @@ const Vote = () => {
           <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         </div>
         <div className="w-full xl:w-1/3">
-          <Search />
+          {/* <Search /> */}
+          Search...
         </div>
       </div>
       {activeVote && (
         <div className="mb-5">
-          <h1 className="text-2xl text-white">Vote Pools</h1>
+          <h2 className="text-2xl text-white">Vote Pools</h2>
           <div className="flex flex-wrap gap-2 justify-center">
             {/* <VotePools />
             <VotePools />
