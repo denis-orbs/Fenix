@@ -37,8 +37,9 @@ import { wethAbi } from '@/src/library/web3/abis/wethAbi'
 import { useNotificationAdderCallback, useReadNotificationCallback } from '@/src/state/notifications/hooks'
 import { NotificationDetails, NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+
 enum ButtonState {
-  CONNECT_WALLET = 'Connect Wallet',
   POOL_NOT_AVAILABLE = 'Pool Not Available',
   ENTER_AMOUNT = 'Enter Amount',
   APPROVAL_REQUIRED = 'Approval Required',
@@ -406,10 +407,6 @@ const Panel = () => {
 
   // manage button click
   const handleSwapClick = () => {
-    if (!account || !isConnected) {
-      openConnectModal && openConnectModal()
-      return
-    }
     if (currentButtonState === ButtonState.SWAP || currentButtonState === ButtonState.PRICE_IMPACT_ALERT) {
       callAlgebraRouter()
     } else if (currentButtonState === ButtonState.APPROVAL_REQUIRED) {
@@ -461,9 +458,7 @@ const Panel = () => {
   // const [multiHopSwapAvailable, setMultiHopSwapAvailable] = useState<boolean>(false)
 
   useEffect(() => {
-    if (!isConnected) {
-      setCurrentButtonState(ButtonState.CONNECT_WALLET)
-    } else if (
+    if (
       !(!loadingCurrentPool && currentPool === zeroAddress) &&
       (loadingStateOfAMM ||
         (approvalData.isLoading && !tokenSellIsNative) ||
@@ -628,6 +623,10 @@ const Panel = () => {
                 variant="primary"
                 className="w-full flex items-center justify-center gap-x-2"
                 onClick={handleSwapClick}
+                walletConfig={{
+                  needWalletConnected: true,
+                  needSupportedChain: true,
+                }}
                 disabled={
                   currentButtonState === ButtonState.LOADING ||
                   currentButtonState === ButtonState.APPROVING ||
