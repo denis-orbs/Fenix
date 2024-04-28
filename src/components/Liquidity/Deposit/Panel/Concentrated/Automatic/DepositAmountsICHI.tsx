@@ -372,7 +372,15 @@ const DepositAmountsICHI = ({
         </div>
       </div>
       {/* <Button onClick={testinPosition}>Deposit testing</Button> */}
-      <Button onClick={createPosition} variant="tertiary" className="w-full mx-auto !text-xs !h-[49px]">
+      <Button
+        onClick={createPosition}
+        variant="tertiary"
+        className="w-full mx-auto !text-xs !h-[49px]"
+        walletConfig={{
+          needWalletConnected: true,
+          needSupportedChain: true,
+        }}
+      >
         {loading && (
           <span className="m-2 text-sm">
             <Spinner />
