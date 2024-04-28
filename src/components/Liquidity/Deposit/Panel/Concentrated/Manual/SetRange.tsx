@@ -7,20 +7,28 @@ import Input from './Input'
 import { formatNumber } from '@/src/library/utils/numbers'
 import { IToken } from '@/src/library/types'
 
-const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, shownPercentage, token1, token2, multiplier }: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage: any, token1?: IToken, token2?: IToken, multiplier?: any}) => {
+const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, shownPercentage, token1, token2, multiplier, handleMinMaxInput, isInverse }: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage?: any, token1?: IToken, token2?: IToken, multiplier?: any, handleMinMaxInput?: any, isInverse?: any}) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
   const [currentPercentageShown, setCurrentPercentShown] = useState(5)
 
   useEffect(() => {
-    if(currentStrategy == StrategyType.NARROW) setCurrentPercentage(2.5)
-    if(currentStrategy == StrategyType.BALANCED) setCurrentPercentage(6)
-    if(currentStrategy == StrategyType.WIDE) setCurrentPercentage(15)
-    if(currentStrategy == StrategyType.FULL_RANGE) setCurrentPercentage(-1) //inf
+    if(currentStrategy == StrategyType.NARROW) setCurrentPercentage([-2.5, 2.5], false)
+    if(currentStrategy == StrategyType.BALANCED) setCurrentPercentage([-6, 6], false)
+    if(currentStrategy == StrategyType.WIDE) setCurrentPercentage([-15, 15], false)
+    if(currentStrategy == StrategyType.FULL_RANGE) setCurrentPercentage([-1, -1]) //inf
   }, [currentStrategy])
 
-  const handlePercentageChange = (percent: any) => {
-    setCurrentPercentage(percent)
-    setCurrentStrategy(null)
+  const handlePercentageChange = (percent: any, s=true) => {
+    percent[0] = isInverse ? invertPercentage(-percent[0]) : percent[0] 
+    percent[1] = isInverse ? invertPercentage(-percent[1]) : percent[1] 
+
+    setCurrentPercentage([percent[0], percent[1]])
+    if(s) setCurrentStrategy(null)
+  }
+
+  function invertPercentage(percent: number) {
+    const remaining = 1 + percent / 100;
+    return (1 / remaining - 1) * 100;
   }
 
   return (
@@ -29,37 +37,37 @@ const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, sho
 
       <div className="flex gap-[7px] mb-3">
         <Button
-          variant={currentPercentage === 5 ? 'primary' : 'tertiary'}
+          variant={currentPercentage[0] === -5  && currentPercentage[1] === 5 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange(5)}
+          onClick={() => handlePercentageChange([-5, 5])}
         >
           5%
         </Button>
         <Button
-          variant={currentPercentage === 10 ? 'primary' : 'tertiary'}
+          variant={currentPercentage[0] === -10 && currentPercentage[1] === 10 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange(10)}
+          onClick={() => handlePercentageChange([-10, 10])}
         >
           10%
         </Button>
         <Button
-          variant={currentPercentage === 25 ? 'primary' : 'tertiary'}
+          variant={currentPercentage[0] === -25 && currentPercentage[1] === 25 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange(25)}
+          onClick={() => handlePercentageChange([-25, 25])}
         >
           25%
         </Button>
         <Button
-          variant={currentPercentage === 50 ? 'primary' : 'tertiary'}
+          variant={currentPercentage[0] === -50 && currentPercentage[1] === 50 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange(50)}
+          onClick={() => handlePercentageChange([-50, 50])}
         >
           50%
         </Button>
         <Button
-          variant={currentPercentage === 100 ? 'primary' : 'tertiary'}
+          variant={currentPercentage[0] === -100 && currentPercentage[1] === 100 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange(100)}
+          onClick={() => handlePercentageChange([-100, 100])}
         >
           100%
         </Button>
@@ -74,11 +82,11 @@ const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, sho
           <InputRange
             height={8.412}
             thumbSize={14.421}
-            value={currentPercentage}
+            value={currentPercentageShown}
             min={1}
             max={100}
             disabled={false}
-            onChange={(value) => handlePercentageChange(value)}
+            onChange={(value) => handlePercentageChange([-value, value])}
             onChangeShown={(value) => setCurrentPercentShown(value)}
           />
         </div>
@@ -108,8 +116,24 @@ const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, sho
       </div>
 
       <div className="flex gap-[21px]">
-        <Input title={`Min Price`} percent={`-${currentPercentage == -1 ? 0 : shownPercentage[0]}`} value={currentPercentage == -1 ? "0" : formatNumber((price1 < price2 ? price1 : price2) * multiplier, 6) as string} />
-        <Input title={`Max Price`} percent={`+${currentPercentage == -1 ? "Infinity" : shownPercentage[1]}`} value={currentPercentage == -1 ? "Infinity" : formatNumber((price1 > price2 ? price1 : price2) * multiplier, 6) as string} />
+        <Input 
+          title={`Min Price`} 
+          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1  ? 0 : isInverse ? (invertPercentage(currentPercentage[1])).toFixed(1) : currentPercentage[0].toFixed(1) }`}
+          value={currentPercentage[0] == -1 && currentPercentage[1] == -1  ? "0" : formatNumber((isInverse ? 1/(price2 * multiplier) : price1 / multiplier), 6) as string} 
+          onChange={(value: any) => {
+            value.target.value = value.target.value * multiplier
+            handleMinMaxInput(value, isInverse)
+          }}
+        />
+        <Input 
+          title={`Max Price`} 
+          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1  ? "Infinity" : isInverse ? (invertPercentage(currentPercentage[0])).toFixed(1) : currentPercentage[1].toFixed(1)}`}
+          value={currentPercentage[0] == -1 && currentPercentage[1] == -1  ? "Infinity" : formatNumber((isInverse ? 1/(price1 * multiplier) : price2 / multiplier), 6) as string} 
+          onChange={(value: any) => {
+            value.target.value = value.target.value * multiplier
+            handleMinMaxInput(value, !isInverse)
+          }}
+        />
       </div>
     </div>
   )
