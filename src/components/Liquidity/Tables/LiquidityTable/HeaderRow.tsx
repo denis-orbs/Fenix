@@ -147,9 +147,9 @@ const HeaderRow = ({
               <br></br>
               <br></br>
               <div className="flex flex-col items-center justify-center mb-4">
-                <h1 className="mb-2 text-xl font-bold text-center text-white">
+                <h2 className="mb-2 text-xl font-bold text-center text-white">
                   You are in the wrong network/ Wallet not connected
-                </h1>
+                </h2>
                 <p className="text-sm text-shark-100 w-[261px] text-center">
                   Please switch to Blast Network to use Fenix Protocol.
                 </p>
