@@ -16,18 +16,18 @@ const Liquidity = () => {
   const [loading, setLoading] = useState(true)
   const [searchValue, setSearchValue] = useState<string>('')
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000)
-  }, [])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false)
+  //   }, 1000)
+  // }, [])
 
   const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
 
-  useEffect(() => {
-    // console.log('Loading ', loading)
-    // console.log('v2PairsData ', v2PairsData)
-  }, [v2PairsData, loading])
+  // useEffect(() => {
+  //   // console.log('Loading ', loading)
+  //   // console.log('v2PairsData ', v2PairsData)
+  // }, [v2PairsData, loading])
 
   const poolsData = useMemo<PoolData[]>(() => {
     if (loading || !v2PairsData) {
