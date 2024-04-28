@@ -27,7 +27,7 @@ const HeaderRow = ({
   titleHeader2 = '',
   activeRange = false,
 }: HeaderRowProps) => {
-  const tokensData = fetchTokens()
+  // const tokensData = fetchTokens()
   const [itemsPerPage, setItemPerPage] = useState<any>(5)
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
@@ -132,7 +132,7 @@ const HeaderRow = ({
               <Fragment key={index}>
                 <Row
                   row={row}
-                  tokensData={tokensData}
+                  tokensData={null}
                   activeRange={activeRange}
                   titleHeader={titleHeader}
                   titleHeader2={titleHeader2}
