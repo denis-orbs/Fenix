@@ -146,8 +146,8 @@ const Panel = () => {
   useEffect(() => {
     const fetchTokenPrices = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`)
-        const data = await response.json()
+        const data = await fetchTokens()
+
         // USDB Because it's the default token sell
         const sellPrice = updateTokenPrice(data, 'USDB')
         if (sellPrice !== null && tokenSell?.symbol === 'USDB') setTokenSell((prev) => ({ ...prev, price: sellPrice }))

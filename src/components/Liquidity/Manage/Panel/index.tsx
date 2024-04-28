@@ -8,6 +8,7 @@ import { Address, isAddress } from 'viem'
 import { V2PairId } from '@/src/state/liquidity/types'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 const DepositTypeValues = {
   VOLATILE: 'VOLATILE',
@@ -59,10 +60,8 @@ const Panel = () => {
   useEffect(() => {
     const getList = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
-          method: 'GET',
-        })
-        const responseData = await response.json()
+        const responseData = await fetchTokens()
+
         const parsedData = responseData.map((item: any) => {
           return {
             id: 0,
