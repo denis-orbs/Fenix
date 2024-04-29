@@ -77,17 +77,17 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
-              message: `✅ Fees Claimed successfully.`,
+              message: `Fees Claimed successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
               notificationDuration: NotificationDuration.DURATION_15000,
             })
           } else {
-            // toast(`❌ Fees Claimed Tx failed`)
+            // toast(`Fees Claimed Tx failed`)
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
-              message: `❌ Fees Claimed Tx failed`,
+              message: `Fees Claimed Tx failed`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
               notificationDuration: NotificationDuration.DURATION_15000,
@@ -95,11 +95,11 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
           }
         },
         onError: (e) => {
-          // toast(`❌ Fees Claimed Tx failed.`)
+          // toast(`Fees Claimed Tx failed.`)
           addNotification({
             id: crypto.randomUUID(),
             createTime: new Date().toISOString(),
-            message: `❌ Fees Claimed Tx failed`,
+            message: `Fees Claimed Tx failed`,
             notificationType: NotificationType.ERROR,
             txHash: '',
             notificationDuration: NotificationDuration.DURATION_15000,
