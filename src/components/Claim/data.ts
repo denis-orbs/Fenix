@@ -186,8 +186,7 @@ export const STEPS = [
   },
   {
     title: 'Migration',
-    description:
-      'Claimable tokens will appear after you migrate, Claim will start before Fenix Launch',
+    description: 'Claimable tokens will appear after you migrate, Claim will start before Fenix Launch',
     icon: 'icon-download',
   },
 ]
