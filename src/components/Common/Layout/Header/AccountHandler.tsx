@@ -16,6 +16,7 @@ import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { config, configwallets } from '@/src/app/layout'
 import cn from '@/src/library/utils/cn'
 import { blast } from 'viem/chains'
+import { isSupportedChain } from '@/src/library/constants/chains'
 
 interface Points {
   userLiqPoints: number[]
@@ -47,7 +48,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const [data, setData] = useState<Points>({} as Points)
   const { address, chainId } = useAccount()
   const { switchChainAsync } = useSwitchChain()
-  const wrongChain = chainId?.toString() !== process.env.NEXT_PUBLIC_CHAINID
+  const wrongChain = !isSupportedChain(chainId)
   useEffect(() => {
     const fetchData = async (campaignId: string, pairAddress: string, address: Address) => {
       try {
@@ -56,7 +57,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
         const ob = response.data.data.filter((element: any) => {
           return element.recipient.toLowerCase() === address.toLowerCase()
         })
-        let totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
+        const totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
 
         return (totalPercentage / 100) * response.data.pointsandgold.LIQUIDITY.available
       } catch (error) {
@@ -72,7 +73,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
         const ob = response.data.data.filter((element: any) => {
           return element.recipient.toLowerCase() === address.toLowerCase()
         })
-        let totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
+        const totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
 
         return (totalPercentage / 100) * response.data.pointsandgold.LIQUIDITY.available
       } catch (error) {

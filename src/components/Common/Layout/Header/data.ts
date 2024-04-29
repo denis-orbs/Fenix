@@ -21,12 +21,12 @@ export const MENU_LINKS = [
   //   name: 'Lock',
   //   href: '/lock',
   // },
+  // {
+  //   name: 'Migration',
+  //   href: '/migration',
+  // },
   {
-    name: 'Migration',
-    href: 'https://claim.fenixfinance.io/claim',
-  },
-  {
-    name: 'Orbit Points',
+    name: 'Ring Points',
     href: '/points-program',
   },
   // {

@@ -10,6 +10,7 @@ import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { formatCurrency } from '@/src/library/utils/numbers'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 interface SelectTokenProps {
   openModal: boolean
@@ -42,10 +43,8 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   useEffect(() => {
     const getList = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
-          method: 'GET',
-        })
-        const responseData = await response.json()
+        const responseData = await fetchTokens()
+
         const parsedData = responseData.map((item: any) => {
           return {
             id: 0,
@@ -139,7 +138,11 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                     <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
                       {_tokenBalances
                         ? `$${formatCurrency(
-                            ((parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals) * token.price)
+                            (
+                              (parseInt(_tokenBalances[(token.address as Address).toLowerCase() as `0x${string}`]) /
+                                10 ** token.decimals) *
+                              token.price
+                            )
                               .toFixed(2)
                               .replace('NaN', '0')
                           )}`
@@ -152,13 +155,13 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               _tokenList.filter(
                 (token) =>
                   token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-                  token.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+                  token?.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
               ).length > 0 ? (
                 _tokenList
                   .filter(
                     (token) =>
                       token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-                      token.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+                      token?.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
                   )
                   .map((token, index) => (
                     <div

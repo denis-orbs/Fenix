@@ -1,14 +1,16 @@
 import { Button, Pagination, PaginationMobile, TableBody, TableHead, TableSkeleton } from '@/src/components/UI'
-import { PoolData } from '@/src/state/liquidity/types'
+import { BasicPool, PoolData } from '@/src/state/liquidity/types'
 import { Fragment, useEffect, useState } from 'react'
 import Row from './Row'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useAccount, useChainId, useChains } from 'wagmi'
 import { useWindowSize } from 'usehooks-ts'
+import { isSupportedChain } from '@/src/library/constants/chains'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
 interface HeaderRowProps {
   loading: boolean
-  poolsData: PoolData[]
+  poolsData: BasicPool[]
   activePagination?: boolean
   titleHeader?: string
   titleHeader2?: string
@@ -27,11 +29,11 @@ const HeaderRow = ({
   titleHeader2 = '',
   activeRange = false,
 }: HeaderRowProps) => {
-  const tokensData = fetchTokens()
+  // const tokensData = fetchTokens()
   const [itemsPerPage, setItemPerPage] = useState<any>(5)
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
-  const [paginationResult, setPaginationResult] = useState<PoolData[]>(poolsData)
+  const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
   const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
   const [sortIndex, setSortIndex] = useState<number>(0)
@@ -40,7 +42,7 @@ const HeaderRow = ({
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
     : { text: '', className: 'w-[0%]', sortable: true }
 
-  function paginate(items: PoolData[], currentPage: number, itemsPerPage: number) {
+  function paginate(items: BasicPool[], currentPage: number, itemsPerPage: number) {
     // Calculate total pages
     const totalPages = Math.ceil(items.length / itemsPerPage)
 
@@ -56,19 +58,20 @@ const HeaderRow = ({
 
   const { chainId } = useAccount()
   const activeChain = useChains()
+  const { isConnected } = useActiveConnectionDetails()
 
   useEffect(() => {
     if (paginationStatus && paginationResult && paginationResult.length > 0) {
       if (sort === 'asc') {
         setPaginationResult(
           paginationResult.sort((a, b) => {
-            return compareBigDecimal(Number(a.pairDetails.tvl), Number(b.pairDetails.tvl))
+            return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
           })
         )
       } else {
         setPaginationResult(
           paginationResult.sort((a, b) => {
-            return compareBigDecimal(Number(b.pairDetails.tvl), Number(a.pairDetails.tvl))
+            return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
           })
         )
       }
@@ -89,7 +92,7 @@ const HeaderRow = ({
   return (
     <div className="relative">
       <div className="w-full mb-2.5 xl:mb-5">
-        <div className="hidden lg:block">
+        <div className="hidden 2xl:block">
           <TableHead
             items={[
               {
@@ -98,7 +101,7 @@ const HeaderRow = ({
                 sortable: true,
               },
               RANGE,
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-center`, sortable: true },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right`, sortable: true },
               { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
@@ -127,12 +130,12 @@ const HeaderRow = ({
                 <TableSkeleton key={index} />
               ))}
             </>
-          ) : chainId?.toString() === process.env.NEXT_PUBLIC_CHAINID ? (
+          ) : (
             pagination.map((row, index) => (
               <Fragment key={index}>
                 <Row
                   row={row}
-                  tokensData={tokensData}
+                  tokensData={null}
                   activeRange={activeRange}
                   titleHeader={titleHeader}
                   titleHeader2={titleHeader2}
@@ -141,22 +144,6 @@ const HeaderRow = ({
                 />
               </Fragment>
             ))
-          ) : (
-            <div>
-              <br></br>
-              <br></br>
-              <br></br>
-              <div className="flex flex-col items-center justify-center mb-4">
-                <h1 className="mb-2 text-xl font-bold text-center text-white">
-                  You are in the wrong network/ Wallet not connected
-                </h1>
-                <p className="text-sm text-shark-100 w-[261px] text-center">
-                  Please switch to Blast Network to use Fenix Protocol.
-                </p>
-              </div>
-              <br></br>
-              <br></br>
-            </div>
           )}
         </TableBody>
       </div>

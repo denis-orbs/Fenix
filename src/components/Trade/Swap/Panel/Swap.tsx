@@ -9,8 +9,11 @@ import { IToken } from '@/src/library/types'
 import { useBalance, useReadContract } from 'wagmi'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { ERC20_ABI } from '@/src/library/constants/abi'
-import { BN_TEN, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
+import { BN_TEN, formatDollarAmount, formatPrice, fromWei, toBN } from '@/src/library/utils/numbers'
 import { NumericalInput } from '@/src/components/UI/Input'
+import { zeroAddress } from 'viem'
+import { ethers } from 'ethers'
+import { isNativeToken } from './utilsChange'
 
 interface SwapProps {
   token: IToken
@@ -25,24 +28,37 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
   const { account, isConnected } = useActiveConnectionDetails()
-
+  const userBalance = useBalance({
+    address: account || zeroAddress,
+  })
   const tokenData = useReadContract({
     address: token.address,
     functionName: 'balanceOf',
     args: [account],
     abi: ERC20_ABI,
   })
+  const nativeToken = isNativeToken(token?.address)
   const [tokenBalance, setTokenBalance] = useState('-')
   useEffect(() => {
+    if (nativeToken) {
+      setTokenBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
+      setTokenSellUserBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
+    }
+  }, [nativeToken, userBalance?.data?.value, setTokenSellUserBalance, token])
+  useEffect(() => {
+    if (nativeToken) return
     if (tokenData.isSuccess) {
       const myNumber = tokenData.data as bigint
       const myBigNumber = toBN(myNumber.toString())
-      const resultado = myBigNumber.div(BN_TEN.pow(token.decimals)).toString()
+      const userTokenBalance = myBigNumber.div(BN_TEN.pow(token.decimals)).toString() // the balance of the token
+      const resultado = userTokenBalance
+      console.log(resultado)
       setTokenBalance(resultado)
       setTokenSellUserBalance(resultado)
     }
-  }, [tokenData, token.decimals, account, setTokenSellUserBalance])
+  }, [tokenData, token, account, setTokenSellUserBalance, nativeToken])
   const handlerSelectToken = () => setOpenSelectToken(true)
+
   return (
     <div className="exchange-box-x1">
       <div className="flex items-center justify-between mb-3">
@@ -64,7 +80,8 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
                 }
               }}
             >
-              Available: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
+              Available: {(!tokenData.isLoading || nativeToken) && isConnected ? formatPrice(tokenBalance, 6) : '-'}{' '}
+              {token.symbol}
             </span>
           </div>
         </div>

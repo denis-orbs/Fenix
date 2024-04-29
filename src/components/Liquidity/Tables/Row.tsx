@@ -55,7 +55,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 {row.pairDetails.pairSymbol === 'Concentrated pool' && (
                   <span
                     className="py-1 px-2  text-xs rounded-lg 
-                    bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
+                    bg-outrageous-orange-500 border border-solid border-1 border-outrageous-orange-400 text-white bg-opacity-40 "
                   >
                     Concentrated
                   </span>

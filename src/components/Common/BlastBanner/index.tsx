@@ -23,8 +23,8 @@ const BlastBanner = () => {
       </div>
       <div className="relative z-10 max-lg:max-w-[80%]">
         <p className="text-white text-xs">Deposit liquidty to earn your share of</p>
-        <h4 className="text-gradient max-xs:text-sm xs:text-base md:text-lg xl:text-2xl">
-          Blast Gold, Blast Points and Fenix Orbits
+        <h4 className="text-gradient text-sm xs:text-base md:text-xl lg:text-2xl">
+          Blast Gold, Blast Points and Fenix Rings
         </h4>
         <div className='text-white max-xs:text-sm'>
           Earn your share in <span className='font-bold text-transparent text-xs hover:text-white transition-all airdrop-gradient max-lg:text-white max-lg:rounded-none rounded-[100px] py-1 px-2'>ONE OF THE BIGGEST AIRDROPS</span> in crypto history

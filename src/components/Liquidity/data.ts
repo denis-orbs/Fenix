@@ -19,17 +19,17 @@ export const STEPS = [
 export const EXCHANGE_LIST = [
   {
     label: 'Total Value Locked',
-    description: '$ 0.00',
+    description: '$0.00',
     icon: 'icon-lock',
   },
   {
     label: 'Fees',
-    description: '$ 0.00',
+    description: '$0.00',
     icon: 'icon-pig',
   },
   {
     label: 'Volume',
-    description: '$ 0.00',
+    description: '$0.00',
     icon: 'icon-coins',
   },
 ]
@@ -73,8 +73,9 @@ export const DATA_ROW = [
     APR: '48.00',
   },
 ]
+// export const OPTIONS_FILTER = ['All Pools', 'Stable', 'Volatile', 'Concentrated']
 
-export const OPTIONS_FILTER = ['All Pools', 'Stable', 'Volatile', 'Concentrated']
+export const OPTIONS_FILTER = ['All Pools', 'Concentrated']
 
 export const NAV_LIST = [
   {
@@ -93,7 +94,7 @@ export const NAV_LIST = [
   // },
   {
     name: 'My Positions',
-    description: "Check your position",
+    description: 'Check your position',
     icon: 'icon-auto-graph',
     path: '/dashboard',
     active: true,

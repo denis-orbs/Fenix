@@ -27,6 +27,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import { formatNumber } from '@/src/library/utils/numbers'
 import Loader from '@/src/components/UI/Icons/Loader'
+import ApproveButtons from '../../../Common/ApproveButtons'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 interface PositionData {
   id: number
@@ -60,7 +64,7 @@ const Manage = ({}: {}) => {
     id: 1,
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023' as Address,
-    img: '/static/images/tokens/WETH.svg',
+    img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
@@ -79,6 +83,9 @@ const Manage = ({}: {}) => {
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
 
   const { writeContractAsync } = useWriteContract()
+
+  const addNotification = useNotificationAdderCallback()
+
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
     setFirstValue('')
@@ -102,10 +109,8 @@ const Manage = ({}: {}) => {
   }
   const getList = async (token0: Address, token1: Address) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
-        method: 'GET',
-      })
-      const responseData = await response.json()
+      const responseData = await fetchTokens()
+
       const parsedData = responseData.map((item: any) => {
         return {
           id: 0,
@@ -133,7 +138,7 @@ const Manage = ({}: {}) => {
     asyncGetAllowance(data.token0, data.token1)
     getList(data.token0, data.token1)
     setLpValue(Number(BigInt(data.liquidity) / BigInt(2)))
-    console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
+    // console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
   }
 
   useEffect(() => {
@@ -215,9 +220,9 @@ const Manage = ({}: {}) => {
             positionData.id,
             ethers.utils.parseUnits(firstValue, 'ether'),
             ethers.utils.parseUnits(secondValue, 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1-slippage)), 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1-slippage)), 'ether'),
-            11114224550,
+            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1 - slippage)), 'ether'),
+            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1 - slippage)), 'ether'),
+            parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
       }),
@@ -237,17 +242,41 @@ const Manage = ({}: {}) => {
 
       {
         onSuccess: async (x) => {
-          console.log('success', x, +new Date())
+          // console.log('success', x, +new Date())
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Added successfully.`)
+            // toast(`Added successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Added successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
+            // toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Add LP TX failed, tx: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
           updatePositionData(positionData.id)
         },
         onError: (e) => {
-          toast(`Add LP failed. ${e}`)
+          // toast(`Add LP failed. ${e}`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Add LP failed. ${e}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }
@@ -266,9 +295,9 @@ const Manage = ({}: {}) => {
           [
             positionData.id,
             lpValue,
-            Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
-            Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
-            11114224550,
+            Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
+            Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
+            parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
       }),
@@ -289,7 +318,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           firstToken.address,
-          Math.floor(Number(formatNumber(Number(firstValue) * (1-slippage))) * (10**firstToken.decimals)),
+          Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
           account.address,
         ],
       }),
@@ -298,7 +327,7 @@ const Manage = ({}: {}) => {
         functionName: 'sweepToken',
         args: [
           secondToken.address,
-          Math.floor(Number(formatNumber(Number(secondValue) * (1-slippage))) * (10**secondToken.decimals)),
+          Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
           account.address,
         ],
       }),
@@ -316,15 +345,39 @@ const Manage = ({}: {}) => {
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Removed successfully.`)
+            // toast(`Removed successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Removed successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
+            // toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Remove LP TX failed, hash: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
 
           updatePositionData(positionData.id)
         },
         onError: (e) => {
-          toast(`Remove LP failed. ${e}`)
+          // toast(`Remove LP failed. ${e}`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Add LP failed. ${e}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }
@@ -345,16 +398,40 @@ const Manage = ({}: {}) => {
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Approved successfully`)
+            // toast(`Approved successfully`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approved successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            // toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approve TX failed, tx: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
 
           asyncGetAllowance(firstToken.address as Address, secondToken.address as Address)
           setIsLoading(false)
         },
         onError: (e) => {
-          toast(`Approve failed. ${e}`)
+          // toast(`Approve failed. ${e}`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Approve failed. ${e}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }
@@ -396,11 +473,11 @@ const Manage = ({}: {}) => {
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{(Number(positionData?.amount0) / 10 ** firstToken.decimals).toFixed(2)}</span>
+                <span>{formatNumber(Number(positionData?.amount0) / 10 ** firstToken.decimals, 8)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{(Number(positionData?.amount1) / 10 ** secondToken.decimals).toFixed(2)}</span>
+                <span>{formatNumber(Number(positionData?.amount1) / 10 ** secondToken.decimals, 8)}</span>
               </p>
             </div>
           </div>
@@ -477,30 +554,16 @@ const Manage = ({}: {}) => {
         />
       </div>
 
-      <Button
-        className="w-full mx-auto !text-xs !h-[49px]"
-        variant="tertiary"
-        onClick={() => {
-          optionActive == 'ADD'
-            ? shouldApproveFirst
-              ? handleApprove(firstToken.address as Address)
-              : shouldApproveSecond
-                ? handleApprove(secondToken.address as Address)
-                : handleIncreaseLiquidity()
-            : handleDecreaseLiquidity()
-        }}
-      >
-        {
-        isLoading ? 
-          <Loader color="white" size={20} /> 
-        : optionActive == 'ADD'
-          ? shouldApproveFirst
-            ? `Approve ${firstToken.symbol}`
-            : shouldApproveSecond
-              ? `Approve ${secondToken.symbol}`
-              : `Add Liquidity`
-          : `Remove Liquidity`}
-      </Button>
+      <ApproveButtons
+        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : shouldApproveFirst}
+        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : shouldApproveSecond}
+        token0={firstToken}
+        token1={secondToken}
+        handleApprove={handleApprove}
+        mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity}
+        mainText={optionActive === 'WITHDRAW' ? 'Withdraw Liquidity' : 'Add Liquidity'}
+        isLoading={isLoading}
+      />
     </>
   )
 }

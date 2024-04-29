@@ -1,20 +1,20 @@
-"use client"
+'use client'
 
 import React, { useEffect, useState } from 'react'
-import CardInsights from "./cardInsights"
-import Image from "next/image"
+import CardInsights from './cardInsights'
+import Image from 'next/image'
+import { posts } from './data'
 
 const Insights = () => {
-  const [posts, setPosts] = useState([])
-
-  useEffect(() => {
-    fetch('/api')
-    .then(response => response.json())
-    .then(data => {
-      setPosts(data.data)
-    })
-    .catch(error => console.error('Error publication:', error))
-  }, [])
+  // const [posts, setPosts] = useState([])
+  // useEffect(() => {
+  //   fetch('/api')
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     setPosts(data.data)
+  //   })
+  //   .catch(error => console.error('Error publication:', error))
+  // }, [])
 
   return (
     <div className="relative flex items-center flex-col justify-center mb-[50px] ">
@@ -36,9 +36,7 @@ const Insights = () => {
         </div>
       </div>
       <div className="flex flex-wrap justify-center gap-10">
-        {posts?.slice(0, 3).map((post, index) => (
-          <CardInsights key={index} post={post} />
-        ))}
+        {posts?.slice(0, 3).map((post, index) => <CardInsights key={index} post={post} />)}
       </div>
     </div>
   )

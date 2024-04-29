@@ -6,12 +6,18 @@ import { createConfig } from 'wagmi'
 import { ERC20_ABI } from '../../constants/abi'
 import { blast } from 'viem/chains'
 import { ethers } from 'ethers'
+import { publicClient } from '../../constants/viemClient'
+import { NATIVE_ETH_LOWERCASE } from '../../Constants'
 
 export async function getTokenBalance(token1: Address, user: Address) {
   if (!token1 || !user) return '0'
   /**
    * This hook is used to get token balance for a user address
    */
+
+  if(token1.toLowerCase() == NATIVE_ETH_LOWERCASE) {
+    return await publicClient.getBalance({ address: user })
+  }
 
   const balance = await multicall(
     createConfig({
@@ -46,6 +52,8 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
    */
 
   const contractsList = tokens.map((item) => {
+    if(item.toLowerCase() == "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") item = "0x4300000000000000000000000000000000000004"
+
     return {
       abi: ERC20_ABI,
       address: item,
@@ -67,6 +75,8 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
   )
 
   const balances: any = {}
+  balances["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"] = await publicClient.getBalance({ address: user })
+
   for (let i = 0; i < balance.length; i++) {
     balances[tokens[i]] = balance[i].result
   }

@@ -9,23 +9,27 @@ import { IToken } from '@/src/library/types'
 import { NumericalInput } from '@/src/components/UI/Input'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { ERC20_ABI } from '@/src/library/constants/abi'
-import { useReadContract } from 'wagmi'
+import { useBalance, useReadContract } from 'wagmi'
 import { BN_TEN, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
+import { zeroAddress } from 'viem'
+import { isNativeToken } from './utilsChange'
+import { ethers } from 'ethers'
 
 interface ForProps {
   token: IToken
   value: string
   setToken: (token: IToken) => void
   setValue: (value: string) => void
-  setInputForActive: (active: boolean) => void
 }
 
-const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) => {
+const For = ({ token, setToken, setValue, value }: ForProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
   const { account, isConnected } = useActiveConnectionDetails()
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
-
+  const userBalance = useBalance({
+    address: account || zeroAddress,
+  })
   const handlerSelectToken = () => setOpenSelectToken(true)
   const [tokenBalance, setTokenBalance] = useState('-')
   const tokenData = useReadContract({
@@ -34,14 +38,22 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
     args: [account],
     abi: ERC20_ABI,
   })
+  const nativeToken = isNativeToken(token?.address)
   useEffect(() => {
+    if (nativeToken) return
     if (tokenData.isSuccess) {
       const myNumber = tokenData.data as bigint
       const myBigNumber = toBN(myNumber.toString())
       const resultado = myBigNumber.div(BN_TEN.pow(token.decimals)).toString()
       setTokenBalance(resultado)
     }
-  }, [tokenData, token.decimals, account])
+  }, [tokenData, token.decimals, account, nativeToken])
+  useEffect(() => {
+    if (nativeToken) {
+      console.log(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
+      setTokenBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
+    }
+  }, [nativeToken, userBalance?.data?.value, token])
   return (
     <div className="exchange-box-x2">
       <div className="flex items-center justify-between mb-3">
@@ -63,7 +75,8 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
                 }
               }}
             >
-              Available: {!tokenData.isLoading && isConnected ? formatPrice(tokenBalance, 6) : '-'} {token.symbol}
+              Available: {(!tokenData.isLoading || nativeToken) && isConnected ? formatPrice(tokenBalance, 6) : '-'}{' '}
+              {token.symbol}
             </span>
           </div>
         </div>
@@ -77,7 +90,7 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
           >
             <div className="flex items-center gap-2">
               <Image
-                src={`/static/images/tokens/${token.symbol}.png`}
+                src={`/static/images/tokens/${token.symbol}.svg`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}
@@ -95,7 +108,6 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
             placeholder="0.0"
             disabled
             onUserInput={(input) => {
-              // setInputForActive(true)
               // setValue(input)
             }}
             precision={token.decimals}
@@ -109,3 +121,6 @@ const For = ({ token, setToken, setValue, value, setInputForActive }: ForProps) 
 }
 
 export default For
+function setTokenBalance(arg0: any) {
+  throw new Error('Function not implemented.')
+}

@@ -36,10 +36,10 @@ const HeaderRowVote = ({
   const dispatch = useDispatch<AppThunkDispatch>()
   const vote = useAppSelector((state) => state.vote as voteState)
   const lock = useAppSelector((state) => state.lock as lockState)
-  console.log(
-    vote.voteTableElement.map((row) => row.pair.pair_address),
-    'voteTableElement'
-  )
+  // console.log(
+  //   vote.voteTableElement.map((row) => row.pair.pair_address),
+  //   'voteTableElement'
+  // )
 
   useEffect(() => {
     if (address) dispatch(fetchGaugesAsync(address))
