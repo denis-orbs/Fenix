@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useReadContracts } from 'wagmi'
 import { formatUnits, zeroAddress } from 'viem'
-
 import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
 import { useSetToken0TypedValue, useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
 import { formatCurrency, toBN } from '@/src/library/utils/numbers'
@@ -14,7 +13,7 @@ import { erc20Abi } from 'viem'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { connectorsForWallets, useConnectModal } from '@rainbow-me/rainbowkit'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 import Spinner from '@/src/components/Common/Spinner'
 const DepositAmountsICHI = ({
@@ -245,21 +244,30 @@ const DepositAmountsICHI = ({
   }
 
   useEffect(() => {
-    // console.log(token0TypedValue)
-    Number(token0TypedValue) < 1 ? setBtnDisabled(true) : setBtnDisabled(false)
-  }, [token0TypedValue])
+    toBN(token0Balance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [token0Balance])
 
   const handleHalf = () => {
-    if (Number(token0TypedValue) < 1) {
-      if (!token0Balance) return
-      setToken0TypedValue(toBN(formatUnits(token0Balance, token0Decimals)).div(2).toString())
+    if (btnDisabled) {
+      setToken0TypedValue('')
+    } else {
+      if (token0Balance) {
+        return setToken0TypedValue(toBN(formatUnits(token0Balance, token0Decimals)).div(2).toString())
+      } else {
+        setToken0TypedValue('')
+      }
     }
   }
 
   const handleMax = () => {
-    if (Number(token0TypedValue) < 1) {
-      if (!token0Balance) return
-      setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
+    if (btnDisabled) {
+      setToken0TypedValue('')
+    } else {
+      if (token0Balance) {
+        return setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
+      } else {
+        setToken0TypedValue('')
+      }
     }
   }
 
@@ -288,10 +296,10 @@ const DepositAmountsICHI = ({
               className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             />
             <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
-              <Button disabled={btnDisabled} variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
                 Half
               </Button>
-              <Button disabled={btnDisabled} variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
                 Max
               </Button>
             </div>

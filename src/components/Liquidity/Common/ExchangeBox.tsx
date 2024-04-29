@@ -9,6 +9,7 @@ import { Address } from 'viem'
 import { ethers } from 'ethers'
 import { formatNumber } from '@/src/library/utils/numbers'
 import { NumericalInput } from '../../UI/Input'
+import { toBN } from '@/src/library/utils/numbers'
 
 interface ExchangeBoxProps {
   title?: string
@@ -17,18 +18,43 @@ interface ExchangeBoxProps {
   variant?: 'primary' | 'secondary'
   onTokenValueChange?: (arg0: any, token: any) => void
   value?: any
+  setValue: (value: string) => void
 }
 
-const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, value }: ExchangeBoxProps) => {
+const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, value, setValue }: ExchangeBoxProps) => {
   const boxVariant = variant === 'secondary' ? 'exchange-box-x2' : 'exchange-box-x1'
   const availableAlign = title ? 'justify-between' : 'justify-end'
   const account = useAccount()
-  const [balance, setBalance] = useState('0')
+  const [balance, setBalance] = useState('')
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
 
   useEffect(() => {
-    Number(value) < 1 ? setBtnDisabled(true) : setBtnDisabled(false)
-  }, [value])
+    toBN(balance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [balance])
+
+  const handleHalf = () => {
+    if (btnDisabled) {
+      setValue('')
+    } else {
+      if (onTokenValueChange) {
+        onTokenValueChange(ethers.utils.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
+      } else {
+        setValue('')
+      }
+    }
+  }
+
+  const handleMax = () => {
+    if (btnDisabled) {
+      setValue('')
+    } else {
+      if (onTokenValueChange) {
+        onTokenValueChange(ethers.utils.formatEther(balance.toString()), token)
+      } else {
+        setValue('')
+      }
+    }
+  }
 
   useEffect(() => {
     const asyncFn = async () => {
@@ -41,22 +67,6 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
 
   const handleOnChange = (e: any) => {
     if (onTokenValueChange) onTokenValueChange(e > 0 ? e : 0, token)
-  }
-
-  const handleHalf = () => {
-    if (Number(value) > 0) {
-      if (onTokenValueChange) {
-        onTokenValueChange(ethers.utils.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
-      }
-    }
-  }
-
-  const handleMax = () => {
-    if (Number(value) > 0) {
-      if (onTokenValueChange) {
-        onTokenValueChange(ethers.utils.formatEther(balance.toString()), token)
-      }
-    }
   }
 
   return (
@@ -105,10 +115,10 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
             precision={token.decimals}
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleHalf}>
+            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
               Half
             </Button>
-            <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleMax}>
+            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
               Max
             </Button>
           </div>

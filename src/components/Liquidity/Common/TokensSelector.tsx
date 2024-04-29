@@ -18,7 +18,7 @@ interface TokenSelectorProps {
   onTokenValueChange?: (arg0: any, token: IToken) => void
 }
 
-const TokenSelector = ({ token, setToken, variant, onTokenValueChange, value }: TokenSelectorProps) => {
+const TokenSelector = ({ token, setToken, variant, onTokenValueChange, value, setValue }: TokenSelectorProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
 
   return (
@@ -28,6 +28,7 @@ const TokenSelector = ({ token, setToken, variant, onTokenValueChange, value }: 
         onOpenModal={() => setOpenSelectToken(true)}
         variant={variant}
         onTokenValueChange={onTokenValueChange}
+        setValue={setValue}
         value={value}
       />
 

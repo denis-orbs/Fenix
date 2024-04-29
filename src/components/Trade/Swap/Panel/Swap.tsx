@@ -40,7 +40,6 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
   useEffect(() => {
     toBN(tokenBalance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
   }, [tokenBalance])
-
   const handleHalf = () => {
     if (btnDisabled) {
       setValue('')

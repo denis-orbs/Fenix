@@ -93,23 +93,32 @@ const WithdrawAmountsICHI = ({
   }
 
   useEffect(() => {
-    Number(amoutToWithdraw) < 1 ? setBtnDisabled(true) : setBtnDisabled(false)
-  }, [amoutToWithdraw])
+    toBN(totalUserShares).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [totalUserShares])
 
   const handleHalf = () => {
-    if (Number(amoutToWithdraw) > 0) {
-      if (!totalUserShares || totalUserShares == '') return
-      setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
+    if (btnDisabled) {
+      setAmountToWithdraw('')
+    } else {
+      if (!totalUserShares || totalUserShares == '') {
+        return setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
+      } else {
+        setAmountToWithdraw('')
+      }
     }
   }
 
   const handleMax = () => {
-    if (Number(amoutToWithdraw) > 0) {
-      if (!totalUserShares || totalUserShares == '') return
-      setAmountToWithdraw(toBN(totalUserShares).toString())
+    if (btnDisabled) {
+      setAmountToWithdraw('')
+    } else {
+      if (!totalUserShares || totalUserShares == '') {
+        return setAmountToWithdraw(toBN(totalUserShares).toString())
+      } else {
+        setAmountToWithdraw('')
+      }
     }
   }
-
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -135,10 +144,10 @@ const WithdrawAmountsICHI = ({
               className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             />
             <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
-              <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleHalf}>
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
                 Half
               </Button>
-              <Button variant="tertiary" className="!py-1 !px-3" disabled={btnDisabled} onClick={handleMax}>
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
                 Max
               </Button>
             </div>
