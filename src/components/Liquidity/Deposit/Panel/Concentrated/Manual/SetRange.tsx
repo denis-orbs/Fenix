@@ -9,19 +9,21 @@ import { IToken } from '@/src/library/types'
 
 const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, shownPercentage, token1, token2, multiplier, handleMinMaxInput, isInverse }: {setCurrentPercentage: any, currentPercentage: any, price1: any, price2: any, shownPercentage?: any, token1?: IToken, token2?: IToken, multiplier?: any, handleMinMaxInput?: any, isInverse?: any}) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
-  const [currentPercentageShown, setCurrentPercentShown] = useState(5)
+  const [currentPercentageShown, setCurrentPercentShown] = useState([5, 5])
 
   useEffect(() => {
-    if(currentStrategy == StrategyType.NARROW) setCurrentPercentage([-2.5, 2.5], false)
-    if(currentStrategy == StrategyType.BALANCED) setCurrentPercentage([-6, 6], false)
-    if(currentStrategy == StrategyType.WIDE) setCurrentPercentage([-15, 15], false)
-    if(currentStrategy == StrategyType.FULL_RANGE) setCurrentPercentage([-1, -1]) //inf
+    if(currentStrategy == StrategyType.NARROW) handlePercentageChange([-2.5, 2.5], false)
+    if(currentStrategy == StrategyType.BALANCED) handlePercentageChange([-6, 6], false)
+    if(currentStrategy == StrategyType.WIDE) handlePercentageChange([-15, 15], false)
+    if(currentStrategy == StrategyType.FULL_RANGE) handlePercentageChange([-1, -1]) //inf
   }, [currentStrategy])
 
   const handlePercentageChange = (percent: any, s=true) => {
-    percent[0] = isInverse ? invertPercentage(-percent[0]) : percent[0] 
-    percent[1] = isInverse ? invertPercentage(-percent[1]) : percent[1] 
-
+    
+    if(percent[0] != -1 && percent[1] != -1) {
+      percent[0] = isInverse ? invertPercentage(-percent[0]) : percent[0] 
+      percent[1] = isInverse ? invertPercentage(-percent[1]) : percent[1] 
+    }
     setCurrentPercentage([percent[0], percent[1]])
     if(s) setCurrentStrategy(null)
   }
@@ -76,18 +78,18 @@ const SetRange = ({ setCurrentPercentage, currentPercentage, price1, price2, sho
       <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
         <div className="flex items-center gap-2 text-white opacity-75">
           <span>±</span>
-          <span className="text-[30px] leading-normal font-light">{currentPercentageShown == -1 ? "Full Range" : currentPercentageShown}%</span>
+          <span className="text-[30px] leading-normal font-light">{(currentPercentageShown[0] == -1 && currentPercentageShown[1] == -1) ? "Full Range" : `${currentPercentageShown[1]}`}%</span>
         </div>
         <div className="max-w-[274px] flex-grow">
           <InputRange
             height={8.412}
             thumbSize={14.421}
-            value={currentPercentageShown}
+            value={currentPercentageShown[1]}
             min={1}
             max={100}
             disabled={false}
             onChange={(value) => handlePercentageChange([-value, value])}
-            onChangeShown={(value) => setCurrentPercentShown(value)}
+            onChangeShown={(value) => setCurrentPercentShown([-value, value])}
           />
         </div>
       </div>
