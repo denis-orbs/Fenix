@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-import { formatAmount, toBN } from '@/src/library/utils/numbers'
+import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
@@ -125,13 +125,16 @@ const WithdrawAmountsICHI = ({
   }, [totalUserShares])
 
   const handleHalf = () => {
+    console.log(!totalUserShares)
+    console.log()
+    console.log(totalUserShares)
     if (btnDisabled) {
       setAmountToWithdraw('')
     } else {
-      if (!totalUserShares || totalUserShares == '') {
-        return setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
-      } else {
+      if (!totalUserShares || totalUserShares === '') {
         setAmountToWithdraw('')
+      } else {
+        setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
       }
     }
   }
@@ -140,25 +143,39 @@ const WithdrawAmountsICHI = ({
     if (btnDisabled) {
       setAmountToWithdraw('')
     } else {
-      if (!totalUserShares || totalUserShares == '') {
-        return setAmountToWithdraw(toBN(totalUserShares).toString())
-      } else {
+      if (!totalUserShares || totalUserShares === '') {
         setAmountToWithdraw('')
+      } else {
+        setAmountToWithdraw(toBN(totalUserShares).toString())
       }
     }
   }
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
-        <div className="flex items-center mb-2 text-xs leading-normal w-full xl:w-3/5 justify-between">
-          <div className=" text-white">Withdraw amounts</div>
-          <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
-            <span className="icon-wallet text-xs"></span>
-            {/* Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'} */}
-            Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'}{' '}
-            {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
-          </span>
+        <div className="flex w-full items-center mb-2">
+          <div className="flex w-full xl:w-3/5 justify-between">
+            <div className="text-xs leading-normal text-white">Withdraw amounts</div>
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              {/* {amoutToWithdraw && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
+                ? formatDollarAmount(
+                    toBN(amoutToWithdraw)
+                      .multipliedBy(
+                        tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price || 0
+                      )
+                      .toString()
+                  )
+                : ''} */}
+            </span>
+          </div>
+          <div className="xl:w-2/5 flex-shrink-0 flex justify-end">
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              <span className="icon-wallet text-xs"></span>
+              Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares, 4) : '-'}{' '}
+            </span>
+          </div>
         </div>
+
         <div className="flex items-center gap-3">
           <div className="relative w-full xl:w-3/5">
             <Toaster />
