@@ -11,6 +11,7 @@ import { AddressZero } from '@/src/library/constants/misc'
 import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
 import { fetchPoolData, fetchv2PoolData } from './reducer'
 import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
+import cache from 'memory-cache'
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async (address: Address) => {
   try {
@@ -241,8 +242,25 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
     // console.log(e, 'error')
   }
 })
-
+// here
 export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => {
-  const data = await fetch('/api/statistics')
-  return data.json()
+  const cacheKey = 'global-statistics'
+  let cachedData = cache.get(cacheKey)
+  if (!cachedData) {
+    try {
+      const response = await fetch('/api/statistics')
+      const responseData = await response.json()
+      cachedData = responseData
+      cache.put(cacheKey, responseData, 1000 * 60 * 20)
+    } catch (error) {
+      console.error('Error fetching global statistics:', error)
+      return {
+        totalVolume: 0,
+        totalTVL: 0,
+        totalFees: 0,
+        lastUpdate: new Date().toISOString(),
+      }
+    }
+  }
+  return cachedData
 }
