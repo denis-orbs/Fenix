@@ -30,7 +30,7 @@ const BlastBanner = () => {
           Earn your share in <span className='font-bold text-transparent text-xs hover:text-white transition-all airdrop-gradient max-lg:text-white max-lg:rounded-none rounded-[100px] py-1 px-2'>ONE OF THE BIGGEST AIRDROPS</span> in crypto history
         </div>
       </div>
-      <Button variant="primary" className="relative z-10" href="/liquidity">
+      <Button variant="primary" className="relative z-10 max-lg:!px-2 max-lg:!py-1" href="/liquidity">
         <span>Deposit Now</span>
       </Button>
     </div>
