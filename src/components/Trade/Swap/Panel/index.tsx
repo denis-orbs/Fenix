@@ -80,7 +80,7 @@ const Panel = () => {
       message: !isApproval ? `Proccessing ${notificationMessage} swap...` : 'Proccessing approval...',
       notificationType: NotificationType.DEFAULT,
       txHash: hash,
-      notificationDuration: NotificationDuration.DURATION_15000,
+      notificationDuration: NotificationDuration.DURATION_25000,
     })
 
     if (!hash) return
