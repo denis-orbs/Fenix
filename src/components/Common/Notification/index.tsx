@@ -75,27 +75,29 @@ const Notification = ({
     [NotificationDuration.DURATION_10000]: 'animate-progress-toast-10000',
     [NotificationDuration.DURATION_15000]: 'animate-progress-toast-15000',
   }
-  // console.log(notificationDuration)
   return (
     <>
       <div className="notification box-invert animate-toast-in h-[80px] xl:h-[112px]  xl:w-[326px] z-50 px-4 xl:pt-1 xl:pb-3 ">
         <div className="relative z-50">
-          <div className="flex items-center justify-end w-20 right-0  gap-3 absolute">
+          <div className="flex items-center w-20 right-0  gap-3 absolute">
             <div
-              className={`h-[5px] w-20  flex rounded-lg overflow-hidden ${STATUS[notificationType].class} ${animationDuration[notificationDuration]}`}
+              className={`h-[5px] w-12 max-w-[48px]  flex rounded-lg overflow-hidden 
+              ${STATUS[notificationType].class}
+              ${animationDuration[notificationDuration]}
+              `}
             ></div>
             <span
               onClick={() => {
                 savedCallback.current(id)
               }}
-              className="text-base cursor-pointer icon-x text-shark-100"
+              className="text-base cursor-pointer icon-x text-shark-100 absolute right-0"
             ></span>
           </div>
           <div className="flex items-center w-full gap-2 mb-2 mt-3 xl:mt-5">
             <div className="flex items-center justify-center xl:w-10 xl:h-10 w-8 h-8 xl:p-2 rounded-lg bg-shark-300 bg-opacity-40">
               <span className={` text-sm xl:text-lg ${STATUS[notificationType].icon} `} />
             </div>
-            <p className="text-white text-xs max-w-[150px] flex-1">{message}</p>
+            <p className="text-white text-xs max-w-[150px] flex-1 line-clamp-2">{message}</p>
           </div>
           <div className="flex items-center gap-3">
             <p className={`flex  text-xs group ${STATUS[notificationType].color}`}>
