@@ -319,12 +319,12 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           />
         </div>
         <div className="flex flex-row gap-5 items-center justify-center p-3">
-          <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+          {/* <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
             <span className="text-l">Deposits</span>
           </Button>
           <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
             <span className="text-l">Stake</span>
-          </Button>
+          </Button> */}
           <Button
             variant="tertiary"
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
