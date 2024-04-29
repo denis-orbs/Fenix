@@ -122,15 +122,15 @@ const RowData = ({
         </TableCell>
 
         <TableCell className={`w-[10%]`}>
-          <div className="flex flex-col items-end justify-end w-full px-3">
+          <div className="flex flex-col items-end justify-center w-full px-3">
             {/* TVL */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
               </p>
-            </div>
+            </div> */}
           </div>
         </TableCell>
 
