@@ -4,7 +4,7 @@
 import { Button, TableCell, TableRow } from '@/src/components/UI'
 import { BasicPool, PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
-import MobileRow from './MobileRow'
+import MobileRow from './MobileRowNew'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
