@@ -26,7 +26,7 @@ const Leaderboard = ({ data }: any) => {
             {/* <i className="icon-chevron text-xs ml-2"></i> */}
           </span>
           <span className="text-white w-36 text-center text-sm">
-            ORBITS
+            RINGS
             <i className="icon-chevron text-xs ml-2"></i>
           </span>
         </div>

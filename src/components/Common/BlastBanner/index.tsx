@@ -18,7 +18,7 @@ const BlastBanner = () => {
       <div className="relative z-10">
         <p className="text-white text-xs">Deposit liquidty to earn your share of</p>
         <h4 className="text-gradient text-sm xs:text-base md:text-xl lg:text-2xl">
-          Blast Gold, Blast Points and Fenix Orbits
+          Blast Gold, Blast Points and Fenix Rings
         </h4>
       </div>
       <Button variant="primary" className="relative z-10" href="/liquidity">

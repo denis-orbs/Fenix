@@ -93,7 +93,7 @@ const PointSummary = ({ userData }: any) => {
       </div>
       <div className="flex flex-col xl:flex-row items-center justify-between gap-5 xl:gap-20 relative z-20">
         <div className="point-summary-box">
-          <p className="text-base mb-2 text-white w-full text-left">Orbits</p>
+          <p className="text-base mb-2 text-white w-full text-left">Rings</p>
           <div className="flex items-center gap-4 w-full">
             <Image src="/static/images/tokens/FNX.svg" alt="token" width={20} height={20} className="w-8 h-8" />
             <div className="">
