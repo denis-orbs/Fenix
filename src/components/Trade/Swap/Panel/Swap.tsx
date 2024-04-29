@@ -22,7 +22,7 @@ interface SwapProps {
 }
 
 const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: SwapProps) => {
-  const [openSelectToken, setOpenSelectToken] = useState<boolean>(true)
+  const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
   const { account, isConnected } = useActiveConnectionDetails()
