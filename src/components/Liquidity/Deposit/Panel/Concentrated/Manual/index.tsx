@@ -171,7 +171,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     const asyncFn = async () => {
       const state = await getAlgebraPoolPrice(firstToken.address as Address, secondToken.address as Address)
       setPoolState(state as StateType)
-
+      console.log(state, 'state')
       if (currentPercentage[0] == -1 && currentPercentage[1] == -1) {
         setRangePrice1(0)
         setRangePrice2(-1)
@@ -398,6 +398,19 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         handleMinMaxInput={handleMinMaxInput}
         isInverse={isInverse}
       />
+      <div className="flex items-center gap-3">
+        <p className="text-xs text-white bg-shark-400 bg-opacity-40 rounded-md border border-shark-300 px-2 py-1">
+          Current Pool Price:{' '}
+          {isInverse ? Number(1 / (poolState.price / 1e18)).toFixed(6) : Number(poolState.price / 1e18).toFixed(6)}{' '}
+          {isInverse
+            ? `${firstToken.symbol} per ${secondToken.symbol}`
+            : `${secondToken.symbol} per ${firstToken.symbol}`}
+        </p>
+        {/* <p className="text-xs text-white bg-shark-400 bg-opacity-40 rounded-md border border-shark-300 px-2 py-1">
+          Max: 454.73 FNX per ETH
+        </p> */}
+      </div>
+
       <TokensSelector
         firstToken={firstToken}
         secondToken={secondToken}
