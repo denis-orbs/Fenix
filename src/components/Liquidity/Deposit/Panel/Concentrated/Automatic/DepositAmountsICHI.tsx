@@ -16,6 +16,8 @@ import { IToken } from '@/src/library/types'
 import { connectorsForWallets, useConnectModal } from '@rainbow-me/rainbowkit'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 import Spinner from '@/src/components/Common/Spinner'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 const DepositAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
@@ -42,6 +44,8 @@ const DepositAmountsICHI = ({
   const token0 = useToken0()
 
   const token1 = useToken1()
+
+  const addNotification = useNotificationAdderCallback()
 
   useEffect(() => {
     tokenList
@@ -93,7 +97,16 @@ const DepositAmountsICHI = ({
       return
     }
     if (!vaultAddress || allIchiVaultsByTokenPair?.length === 0) {
-      toast.error('Vault not available')
+      // toast.error('Vault not available')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Vault not available.`,
+        notificationType: NotificationType.ERROR,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
+
       return
     }
     if (isToken0ApprovalRequired) {
@@ -120,7 +133,15 @@ const DepositAmountsICHI = ({
       }
     }
     if (!token0TypedValue) {
-      toast.error('Please enter a valid amount')
+      // toast.error('Please enter a valid amount')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Please enter a valid amount.`,
+        notificationType: NotificationType.ERROR,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
       setLoading(false)
       return
     }
@@ -141,7 +162,15 @@ const DepositAmountsICHI = ({
         1
       )
       await txDepositDetails.wait()
-      toast.success('Deposited successfully')
+      // toast.success('Deposited successfully')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Deposited successfully.`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
       setLoading(false)
     } catch (error) {
       // console.log('gg', error.reason)
@@ -150,16 +179,40 @@ const DepositAmountsICHI = ({
         if (error.code == 'ACTION_REJECTED') {
           console.log(error)
           // toast.error('Action rejected')
-          toast.error(error.message.split('(')[0].trim().toUpperCase())
+          // toast.error(error.message.split('(')[0].trim().toUpperCase())
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `${error.message.split('(')[0].trim().toUpperCase()}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setLoading(false)
         } else if (error.reason == 'IV.deposit: deposits too large') {
-          toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
+          // toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setLoading(false)
         }
       } else {
         // console.log(error.reason)
         // toast.error('Transaction failed')
-        toast.error(error.message.split('(')[0].trim().toUpperCase())
+        // toast.error(error.message.split('(')[0].trim().toUpperCase())
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `${e}`,
+          notificationType: NotificationType.ERROR,
+          txHash: '',
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
         setLoading(false)
       }
     }
@@ -387,7 +440,15 @@ const DepositAmountsICHI = ({
         </div>
       </div>
       {/* <Button onClick={testinPosition}>Deposit testing</Button> */}
-      <Button onClick={createPosition} variant="tertiary" className="w-full mx-auto !text-xs !h-[49px]">
+      <Button
+        onClick={createPosition}
+        variant="tertiary"
+        className="w-full mx-auto !text-xs !h-[49px]"
+        walletConfig={{
+          needWalletConnected: true,
+          needSupportedChain: true,
+        }}
+      >
         {loading && (
           <span className="m-2 text-sm">
             <Spinner />

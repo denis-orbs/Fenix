@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-
 export const POOL_FRAGMENT = gql`
   fragment PoolFields on Pool {
     id
@@ -44,11 +43,67 @@ export const POOL_DAY_DATA_FRAGMENT = gql`
     feesUSD
   }
 `
+export const BASIC_POOLS_LIST = gql`
+  query PoolsList {
+    pools {
+      id
+      fee
+      token0 {
+        id
+        symbol
+        name
+        decimals
+      }
+      token1 {
+        id
+        symbol
+        name
+        decimals
+      }
+      liquidity
+      totalValueLockedUSD
+      volumeUSD
+      feesUSD
+      untrackedFeesUSD
+      token0Price
+      token1Price
+    }
+  }
+`
 
 export const POOLS_LIST = gql`
   query PoolsList {
     pools {
-      ...PoolFields
+      id
+      fee
+      token0 {
+        id
+        symbol
+        name
+        decimals
+        derivedMatic
+      }
+      token1 {
+        id
+        symbol
+        name
+        decimals
+        derivedMatic
+      }
+      sqrtPrice
+      liquidity
+      volumeToken1
+      volumeToken0
+      feesToken0
+      feesToken1
+      tick
+      tickSpacing
+      totalValueLockedUSD
+      volumeUSD
+      feesUSD
+      untrackedFeesUSD
+      token0Price
+      token1Price
     }
   }
 `

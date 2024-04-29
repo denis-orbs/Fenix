@@ -11,6 +11,8 @@ import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 const WithdrawAmountsICHI = ({
@@ -26,6 +28,8 @@ const WithdrawAmountsICHI = ({
   const [selected, setIsSelected] = useState<string>('Choose one')
   const { account } = useActiveConnectionDetails()
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+
+  const addNotification = useNotificationAdderCallback()
 
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
@@ -83,12 +87,36 @@ const WithdrawAmountsICHI = ({
     if (!vaultAddress) return
     try {
       const txnDetails = await withdraw(account, amoutToWithdraw, vaultAddress.id, web3Provider, dex)
-      toast.success('Withdrawal Transaction Sent')
+      // toast.success('Withdrawal Transaction Sent')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Withdrawal Transaction Sent.`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
       txnDetails.wait()
-      toast.success('Withdrawal Successful')
+      // toast.success('Withdrawal Successful')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Withdrawal Successful.`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     } catch (error: any) {
       if (error?.code == 401) return
-      toast.error(error?.message)
+      // toast.error(error?.message)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `${error?.message}`,
+        notificationType: NotificationType.ERROR,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     }
   }
 
@@ -235,7 +263,15 @@ const WithdrawAmountsICHI = ({
         </div>
       </div>
 
-      <Button onClick={withdrawFromVault} variant="tertiary" className="w-full mx-auto !text-xs !h-[49px]">
+      <Button
+        onClick={withdrawFromVault}
+        walletConfig={{
+          needWalletConnected: true,
+          needSupportedChain: true,
+        }}
+        variant="tertiary"
+        className="w-full mx-auto !text-xs !h-[49px]"
+      >
         {getButtonText()}
       </Button>
     </>

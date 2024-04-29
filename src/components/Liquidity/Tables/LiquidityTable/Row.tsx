@@ -2,18 +2,18 @@
 'use client'
 
 import { Button, TableCell, TableRow } from '@/src/components/UI'
-import { PoolData, v3PoolData } from '@/src/state/liquidity/types'
+import { BasicPool, PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRow'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState, useRef } from 'react'
-import { formatCurrency } from '@/src/library/utils/numbers'
+import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
 
 interface RowDataProps {
-  row: PoolData
-  tokensData: Promise<Token[]>
+  row: BasicPool
+  tokensData: Promise<Token[]> | null
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string
@@ -30,11 +30,6 @@ const RowData = ({
   titleHeader2,
   activeRange,
 }: RowDataProps) => {
-  const [tokens, setTokens] = useState<Token[]>()
-  tokensData.then((data) => {
-    setTokens(data)
-  })
-
   const { width } = useWindowSize()
 
   const hoverRef = useRef(null)
@@ -49,14 +44,14 @@ const RowData = ({
           <div className="flex items-center gap-2">
             <div className="flex items-center">
               <Image
-                src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+                src={`/static/images/tokens/${row.token0.symbol}.png`}
                 alt="token"
                 className="rounded-full w-7 h-7"
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                src={`/static/images/tokens/${row.token1.symbol}.png`}
                 alt="token"
                 className="-ml-4 rounded-full w-7 h-7"
                 width={20}
@@ -65,20 +60,20 @@ const RowData = ({
             </div>
             <div className="flex flex-col">
               <h5 className="text-sm text-white">
-                {row.pairDetails.token0Symbol} / {row.pairDetails.token1Symbol}
+                {row.token0.symbol} / {row.token1.symbol}
               </h5>
               <div className="flex items-center gap-2">
-                {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
+                {/* {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
                   <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                     Volatile Pool{' '}
                   </span>
-                )}
-                {row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
+                )} */}
+                {/* {row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
                   <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
                     Stable Pool
                   </span>
-                )}
-                {row.pairDetails.pairSymbol === 'Concentrated pool' && (
+                )} */}
+                {/* {row.pairDetails.pairSymbol === 'Concentrated pool' && (
                   <span
                     className="py-1 px-2  text-xs rounded-lg 
                     bg-gradient-to-r from-outrageous-orange-500 to-festival-500"
@@ -86,9 +81,17 @@ const RowData = ({
                   >
                     Concentrated
                   </span>
-                )}
+                )} */}
+                <span
+                  className="py-1 px-2  text-xs rounded-lg 
+                    bg-gradient-to-r from-outrageous-orange-500 to-festival-500"
+                  // bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
+                >
+                  Concentrated
+                </span>
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  {row.pairDetails.fee}%
+                  {/* FEES */}
+                  {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
                 {/* <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
@@ -142,22 +145,23 @@ const RowData = ({
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+                src={`/static/images/tokens/${row.token0.symbol}.png`}
                 alt="token"
                 className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                src={`/static/images/tokens/${row.token1.symbol}.png`}
                 alt="token"
                 className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
             </span>
-            <p className="px-1 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.apr.toFixed(0)}%
+            <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              {/* APR */}
+              {formatAmount(toBN(row.fee).div(10000).div(row.totalValueLockedUSD).multipliedBy(100), 4)}%
             </p>
           </div>
           {/* <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
@@ -167,11 +171,12 @@ const RowData = ({
 
         <TableCell className={`${width <= 1250 ? 'w-[10%]' : 'w-[10%]'}`}>
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">${formatCurrency(Number(row.pairDetails.tvl))}</p>
+            {/* TVL */}
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src="/static/images/tokens/FNX.svg"
+                  src="/static/images/tokens/FNX.png"
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -180,7 +185,7 @@ const RowData = ({
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src="/static/images/tokens/ETH.svg"
+                  src="/static/images/tokens/ETH.png"
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -194,27 +199,28 @@ const RowData = ({
 
         <TableCell className="w-[20%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">${formatCurrency(Number(row.pairDetails.volumeUSD))}</p>
+            {/* VOLUME */}
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 font-normal text-xs text-shark-100 ">
                 <Image
-                  src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+                  src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.pairDetails.volumeToken0))} {row.pairDetails.token0Symbol}
+                {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100 font-normal ">
                 <Image
-                  src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                  src={`/static/images/tokens/${row.token1.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.pairDetails.volumeToken1))} {row.pairDetails.token1Symbol}
+                {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
@@ -222,31 +228,28 @@ const RowData = ({
 
         <TableCell className="w-[20%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">
-              ${formatCurrency(Number(row.pairDetails.volumeUSD) * (Number(row.pairDetails.fee) / 100))}{' '}
-            </p>
+            {/* FEES */}
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
-                  src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+                  src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.pairDetails.volumeToken0) * (Number(row.pairDetails.fee) / 100))}{' '}
-                {row.pairDetails.token0Symbol}
+                {formatCurrency(toBN(row.feesToken0), 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
-                  src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                  src={`/static/images/tokens/${row.token1.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.pairDetails.volumeToken1) * (Number(row.pairDetails.fee) / 100))}{' '}
-                {row.pairDetails.token1Symbol}
+                {formatCurrency(toBN(row.feesToken1), 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
@@ -255,10 +258,11 @@ const RowData = ({
         <TableCell className="flex  items-center w-[15%]">
           <div className="flex gap-2 w-full justify-center">
             {titleButton === '' ? (
-              <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs ">
-                <span className="icon-info"></span>
-                Info
-              </Button>
+              // <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs ">
+              //   <span className="icon-info"></span>
+              //   Info
+              // </Button>
+              <></>
             ) : (
               <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs">
                 <span className="icon-coin"></span>
@@ -270,7 +274,8 @@ const RowData = ({
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href={`/liquidity/deposit?type=${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'VOLATILE' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'STABLE' : 'CONCENTRATED_MANUAL'}&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`}
+                // href={`/liquidity/deposit?type=${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'VOLATILE' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'STABLE' : 'CONCENTRATED_MANUAL'}&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`}
+                href={`/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`}
               >
                 <span className="icon-circles"></span>
                 Deposit

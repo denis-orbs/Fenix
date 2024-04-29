@@ -556,11 +556,10 @@
   after:border-[transparent_transparent_#1a1d21];
 }
 
-
 .box-invert {
- @apply relative
+  @apply relative
   
-  w-full
+  xl:w-[312px]
   flex-shrink-0
   before:content-[""]
   before:absolute
@@ -583,7 +582,7 @@
   after:w-full
   after:z-40
   after:bottom-0
-  after:left-0
+  after:left-0;
 }
 
 
@@ -1489,7 +1488,7 @@ opacity-70
 }
 
 .blast-banner {
-  @apply relative flex w-full h-[100px] justify-between items-center px-10
+  @apply relative flex w-full h-[100px] max-lg:h-auto max-lg:py-3 justify-between max-lg:justify-center items-center max-lg:items-start px-10 max-lg:gap-2
   before:bg-[url("/static/images/blast-banner.svg")]
   before:w-[50%]
   before:h-full

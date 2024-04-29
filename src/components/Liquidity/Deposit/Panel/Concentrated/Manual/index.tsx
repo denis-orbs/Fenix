@@ -16,6 +16,8 @@ import { formatNumber } from '@/src/library/utils/numbers'
 import Loader from '@/src/components/UI/Icons/Loader'
 import ApproveButtons from '@/src/components/Liquidity/Common/ApproveButtons'
 import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
 interface StateType {
   price: number
@@ -38,7 +40,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     id: 1,
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023' as Address,
-    img: '/static/images/tokens/WETH.svg',
+    img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
@@ -65,6 +67,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
+
+  const addNotification = useNotificationAdderCallback()
 
   useEffect(() => {
     if (poolState.price == 0) {
@@ -219,15 +223,39 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Added LP successfully.`)
+            // toast(`Added LP successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Added LP successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
             toast(`Added LP TX failed, hash: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Added LP TX failed, hash: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
           setIsLoading(false)
         },
         onError: (e) => {
           // console.log(e)
-          toast(`Added LP failed. `)
+          // toast(`Added LP failed. `)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Added LP failed.`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }
@@ -248,9 +276,25 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Approved successfully`)
+            // toast(`Approved successfully`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approved successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            // toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approve TX failed, tx: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
 
           const allowanceFirst: any = await getTokenAllowance(
@@ -269,7 +313,15 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           setIsLoading(false)
         },
         onError: (e) => {
-          toast(`Approve failed.`)
+          // toast(`Approve failed.`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Approve failed.`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }

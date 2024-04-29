@@ -16,6 +16,8 @@ import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { Address, encodeFunctionData } from 'viem'
 import { useAccount, useWriteContract } from 'wagmi'
 import { MAX_INT } from '@/src/library/constants/misc'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
 type options = {
   value: string
@@ -35,6 +37,8 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
   const [isOpen, setIsOpen] = useState(false)
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
+
+  const addNotification = useNotificationAdderCallback()
 
   let ichitokens: IchiVault
   if (row.liquidity === 'ichi') {
@@ -69,13 +73,37 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`✅ Fees Claimed successfully.`)
+            // toast(`Fees Claimed successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Fees Claimed successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`❌ Fees Claimed Tx failed`)
+            // toast(`Fees Claimed Tx failed`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Fees Claimed Tx failed`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
         },
         onError: (e) => {
-          toast(`❌ Fees Claimed Tx failed.`)
+          // toast(`Fees Claimed Tx failed.`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Fees Claimed Tx failed`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
         },
       }
     )
@@ -242,6 +270,12 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                 token1Symbol={row.token1.symbol}
               />
               <div className="flex flex-row gap-5 items-center justify-center p-3">
+                <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+                  <span className="text-l">Deposits</span>
+                </Button>
+                <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+                  <span className="text-l">Stake</span>
+                </Button>
                 <Button
                   variant="tertiary"
                   className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
