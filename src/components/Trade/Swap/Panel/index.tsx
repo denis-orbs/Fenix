@@ -68,7 +68,7 @@ const Panel = () => {
     const provider = getWeb3Provider()
     const notificationMessage = `${tokenSell?.symbol} for ${tokenGet?.symbol}`
 
-    console.log(notificationMessage)
+    // console.log(notificationMessage)
     addNotification({
       id: id,
       createTime: new Date().toISOString(),
@@ -286,7 +286,7 @@ const Panel = () => {
           }
         )
       } else {
-        console.log('No swap available')
+        //  console.log('No swap available')
         toast.error('No swap available')
       }
     } catch (error) {
@@ -365,7 +365,7 @@ const Panel = () => {
       parseUnits(swapValue, tokenSell.decimals),
     ],
   })
-  console.log(quoteExactInputCall?.data?.result)
+  // console.log(quoteExactInputCall?.data?.result)
   const sqrtPriceX96After = swapAvailable
     ? singleSwapAvailable
       ? quoteExactInputSingleCall?.data?.result[2] || 0n
@@ -450,7 +450,7 @@ const Panel = () => {
   //     : '0'
 
   useEffect(() => {
-    console.log(currentButtonState)
+    // console.log(currentButtonState)
   }, [currentButtonState])
   // manage button state
   // currentPool == zeroAddress
@@ -522,8 +522,8 @@ const Panel = () => {
     const swapValuePrice = toBN(tokenSell.price).multipliedBy(swapValue)
     const forValuePrice = toBN(tokenGet.price).multipliedBy(forValue)
     const diff = swapValuePrice.minus(forValuePrice)
-    console.log(forValue)
-    console.log(tokenGet.price)
+    // console.log(forValue)
+    // console.log(tokenGet.price)
     setMultiHopPriceImpact(diff.div(swapValuePrice).times(100).abs().multipliedBy(-1).toString())
   }, [swapValue, forValue, tokenSell.price, tokenGet.price])
   const [expandTxDetails, setExpandTxDetails] = useState<boolean>(false)
@@ -558,7 +558,7 @@ const Panel = () => {
   }, [swapValue, nativeWETH_ETH])
 
   useEffect(() => {
-    console.log(tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE)
+    // console.log(tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE)
     if (tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE && !(nativeETH_WETH || nativeWETH_ETH)) {
       const price = tokenGet?.price
       setTokenGet({
@@ -571,7 +571,7 @@ const Panel = () => {
       })
     }
   }, [tokenSell?.address, tokenGet?.address])
-  console.log(hash, status)
+  // console.log(hash, status)
   return (
     <>
       <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>

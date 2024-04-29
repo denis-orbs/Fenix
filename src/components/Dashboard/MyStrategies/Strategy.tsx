@@ -332,6 +332,9 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
               if (row.liquidity !== 'ichi') {
                 router.push(`/liquidity/manage?id=${row?.id}`)
                 router.refresh()
+              } else {
+                router.push(`liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${row?.token0}&token1=${row?.token1}`)
+                // router.refresh()
               }
             }}
           >

@@ -123,7 +123,7 @@ export const useIchiPositions = () => {
             let tokenA
             let tokenB
             //const vaultInfo = useIchiVaultsData(item.vaultAddress)
-            console.log(tokenA)
+            //   console.log(tokenA)
 
             const getLp = async (vadd: string) => {
               const web3Provider = getWeb3Provider()
@@ -133,7 +133,7 @@ export const useIchiPositions = () => {
             }
 
             const app = await getLp(item.vaultAddress)
-            console.log('app', app)
+            //    console.log('app', app)
 
             return {
               id: item.vaultAddress,
@@ -202,7 +202,7 @@ export const useIchiPositions = () => {
             }
           })
         )
-        console.log(pos, 'pos')
+        //  console.log(pos, 'pos')
         setpositions(pos)
       }
     }

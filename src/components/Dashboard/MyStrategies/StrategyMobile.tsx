@@ -270,12 +270,12 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                 token1Symbol={row.token1.symbol}
               />
               <div className="flex flex-row gap-5 items-center justify-center p-3">
-                <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+                {/* <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
                   <span className="text-l">Deposits</span>
                 </Button>
                 <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
                   <span className="text-l">Stake</span>
-                </Button>
+                </Button> */}
                 <Button
                   variant="tertiary"
                   className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
@@ -283,6 +283,11 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                     if (row.liquidity !== 'ichi') {
                       router.push(`/liquidity/manage?id=${row?.id}`)
                       router.refresh()
+                    } else {
+                      router.push(
+                        `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${row?.token0}&token1=${row?.token1}`
+                      )
+                      // router.refresh()
                     }
                   }}
                 >
