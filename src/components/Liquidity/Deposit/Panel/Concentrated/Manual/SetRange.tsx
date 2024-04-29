@@ -54,56 +54,76 @@ const SetRange = ({
     return (1 / remaining - 1) * 100
   }
 
+  useEffect(() => {
+    if (currentPercentage[0] === -1 && currentPercentage[1] === -1) setCurrentPercentShown([-1, -1])
+  }, [currentPercentage])
+  const [showFullRange, setShowFullRange] = useState(false)
+  useEffect(() => {
+    console.log(currentPercentage)
+    if (currentPercentage[0] === -1 && currentPercentage[1] === -1) setShowFullRange(true)
+    else setShowFullRange(false)
+  }, [currentPercentage])
+  console.log(currentPercentage)
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="mb-2 text-xs leading-normal text-white">Selected Range</div>
-
       <div className="flex gap-[7px] mb-3">
         <Button
           variant={currentPercentage[0] === -5 && currentPercentage[1] === 5 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange([-5, 5])}
+          onClick={() => {
+            handlePercentageChange([-5, 5])
+            setCurrentPercentShown([-5, 5])
+          }}
         >
           5%
         </Button>
         <Button
           variant={currentPercentage[0] === -10 && currentPercentage[1] === 10 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange([-10, 10])}
+          onClick={() => {
+            handlePercentageChange([-10, 10])
+            setCurrentPercentShown([-10, 10])
+          }}
         >
           10%
         </Button>
         <Button
           variant={currentPercentage[0] === -25 && currentPercentage[1] === 25 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange([-25, 25])}
+          onClick={() => {
+            handlePercentageChange([-25, 25])
+            setCurrentPercentShown([-25, 25])
+          }}
         >
           25%
         </Button>
         <Button
           variant={currentPercentage[0] === -50 && currentPercentage[1] === 50 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange([-50, 50])}
+          onClick={() => {
+            handlePercentageChange([-50, 50])
+            setCurrentPercentShown([-50, 50])
+          }}
         >
           50%
         </Button>
         <Button
           variant={currentPercentage[0] === -100 && currentPercentage[1] === 100 ? 'primary' : 'tertiary'}
           className="flex-grow"
-          onClick={() => handlePercentageChange([-100, 100])}
+          onClick={() => {
+            setCurrentPercentShown([-100, 100])
+            handlePercentageChange([-100, 100])
+          }}
         >
           100%
         </Button>
       </div>
-
       <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
         <div className="flex items-center gap-2 text-white opacity-75">
           <span>±</span>
           <span className="text-[30px] leading-normal font-light">
-            {currentPercentageShown[0] == -1 && currentPercentageShown[1] == -1
-              ? 'Full Range'
-              : `${currentPercentageShown[1]}`}
-            %
+            {showFullRange ? 'Full Range' : `${currentPercentageShown[1]}`}%
           </span>
         </div>
         <div className="max-w-[274px] flex-grow">
@@ -124,27 +144,42 @@ const SetRange = ({
         <StrategyButton
           strategyType={StrategyType.NARROW}
           currentStrategy={currentStrategy}
-          onClick={(strategy) => setCurrentStrategy(strategy)}
+          onClick={() => {
+            setCurrentPercentShown([-2.5, 2.5])
+            handlePercentageChange([-2.5, 2.5])
+          }}
+          active={currentPercentage[0] === -2.5 && currentPercentage[1] === 2.5}
         />
         <StrategyButton
           strategyType={StrategyType.BALANCED}
           currentStrategy={currentStrategy}
-          onClick={(strategy) => setCurrentStrategy(strategy)}
+          onClick={() => {
+            handlePercentageChange([-6, 6])
+            setCurrentPercentShown([-6, 6])
+          }}
+          active={currentPercentage[0] === -6 && currentPercentage[1] === 6}
         />
         <StrategyButton
           strategyType={StrategyType.WIDE}
           currentStrategy={currentStrategy}
-          onClick={(strategy) => setCurrentStrategy(strategy)}
+          onClick={() => {
+            handlePercentageChange([-15, 15])
+            setCurrentPercentShown([-15, 15])
+          }}
+          active={currentPercentage[0] === -15 && currentPercentage[1] === 15}
         />
         <StrategyButton
           strategyType={StrategyType.FULL_RANGE}
           currentStrategy={currentStrategy}
-          onClick={(strategy) => setCurrentStrategy(strategy)}
+          onClick={() => {
+            setCurrentPercentShown([-1, -1])
+            handlePercentageChange([-1, -1], false)
+          }}
+          active={currentPercentage[0] === -1 && currentPercentage[1] === -1}
         />
       </div>
-
       <div className="flex gap-[21px]">
-        <Input
+        {/* <Input
           title={`Min Price (${token2?.symbol} per ${token1?.symbol})`}
           percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 0 : isInverse ? invertPercentage(currentPercentage[1]).toFixed(1) : currentPercentage[0].toFixed(1)}`}
           value={
@@ -169,7 +204,7 @@ const SetRange = ({
             value.target.value = value.target.value * multiplier
             handleMinMaxInput(value, !isInverse)
           }}
-        />
+        /> */}
       </div>
     </div>
   )
