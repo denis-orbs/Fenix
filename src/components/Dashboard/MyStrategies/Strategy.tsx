@@ -228,7 +228,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                         onClick={() => handlerOpenModal(option.value)}
                         key={index}
                         className="!py-1 !h-[33px]  !text-xs"
-                      >
+                      
                         {option.label}
                       </Button>
                     )
