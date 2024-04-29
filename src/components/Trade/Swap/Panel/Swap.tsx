@@ -1,10 +1,8 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import SelectToken from '@/src/components/Modals/SelectToken'
-
 import { IToken } from '@/src/library/types'
 import { useBalance, useReadContract } from 'wagmi'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
@@ -24,8 +22,8 @@ interface SwapProps {
 }
 
 const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: SwapProps) => {
-  const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
-
+  const [openSelectToken, setOpenSelectToken] = useState<boolean>(true)
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
   const { account, isConnected } = useActiveConnectionDetails()
   const userBalance = useBalance({
@@ -40,6 +38,30 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
   const nativeToken = isNativeToken(token?.address)
   const [tokenBalance, setTokenBalance] = useState('-')
   useEffect(() => {
+    toBN(tokenBalance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [tokenBalance])
+  const handleHalf = () => {
+    if (btnDisabled) {
+      setValue('')
+    } else {
+      if (tokenBalance && isConnected) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
+      else setValue('')
+    }
+  }
+
+  const handleMax = () => {
+    if (btnDisabled) {
+      setValue('')
+    } else {
+      if (tokenBalance && isConnected) {
+        setValue(toBN(formatPrice(tokenBalance, 12)).toString())
+      } else {
+        setValue('')
+      }
+    }
+  }
+
+  useEffect(() => {
     if (nativeToken) {
       setTokenBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
       setTokenSellUserBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
@@ -47,6 +69,7 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
   }, [nativeToken, userBalance?.data?.value, setTokenSellUserBalance, token])
   useEffect(() => {
     if (nativeToken) return
+
     if (tokenData.isSuccess) {
       const myNumber = tokenData.data as bigint
       const myBigNumber = toBN(myNumber.toString())
@@ -115,27 +138,10 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
           />
 
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              onClick={() => {
-                if (tokenBalance && isConnected) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
-                else setValue('')
-              }}
-            >
+            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
               Half
             </Button>
-            <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              onClick={() => {
-                if (tokenBalance && isConnected) {
-                  setValue(toBN(formatPrice(tokenBalance, 12)).toString())
-                } else {
-                  setValue('')
-                }
-              }}
-            >
+            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
               Max
             </Button>
           </div>

@@ -2,6 +2,7 @@
 import { useUnreadNotifications } from '@/src/state/notifications/hooks'
 import Notification from '.'
 
+
 const NotificationFeed = () => {
   const notifications = useUnreadNotifications()
   const visibleNotifications = notifications.slice(-7).reverse()
