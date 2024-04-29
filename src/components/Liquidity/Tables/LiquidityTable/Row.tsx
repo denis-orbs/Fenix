@@ -210,7 +210,7 @@ const RowData = ({
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.volumeToken0), 2)}VOL0 {row.token0.symbol}
+                {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100 font-normal ">
                 <Image
@@ -220,7 +220,7 @@ const RowData = ({
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.volumeToken1), 2)}VOL1 {row.token1.symbol}
+                {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
@@ -239,7 +239,7 @@ const RowData = ({
                   width={20}
                   height={20}
                 />
-                {formatCurrency(toBN(row.feesToken0).multipliedBy(row.token0Price), 2)} {row.token0.symbol}
+                {formatCurrency(toBN(row.feesToken0), 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
@@ -249,7 +249,7 @@ const RowData = ({
                   width={20}
                   height={20}
                 />
-                {formatCurrency(toBN(row.feesToken1).multipliedBy(row.token1Price), 2)} {row.token1.symbol}
+                {formatCurrency(toBN(row.feesToken1), 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
