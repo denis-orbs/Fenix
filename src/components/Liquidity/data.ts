@@ -19,17 +19,17 @@ export const STEPS = [
 export const EXCHANGE_LIST = [
   {
     label: 'Total Value Locked',
-    description: '$ 0.00',
+    description: '$0.00',
     icon: 'icon-lock',
   },
   {
     label: 'Fees',
-    description: '$ 0.00',
+    description: '$0.00',
     icon: 'icon-pig',
   },
   {
     label: 'Volume',
-    description: '$ 0.00',
+    description: '$0.00',
     icon: 'icon-coins',
   },
 ]

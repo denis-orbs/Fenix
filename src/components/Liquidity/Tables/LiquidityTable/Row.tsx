@@ -13,7 +13,7 @@ import { useWindowSize, useHover } from 'usehooks-ts'
 
 interface RowDataProps {
   row: PoolData
-  tokensData: Promise<Token[]>
+  tokensData: Promise<Token[]> | null
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string
@@ -30,11 +30,6 @@ const RowData = ({
   titleHeader2,
   activeRange,
 }: RowDataProps) => {
-  const [tokens, setTokens] = useState<Token[]>()
-  tokensData.then((data) => {
-    setTokens(data)
-  })
-
   const { width } = useWindowSize()
 
   const hoverRef = useRef(null)

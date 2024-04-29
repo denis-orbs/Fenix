@@ -249,7 +249,15 @@ const WithdrawAmountsICHI = ({
         </div>
       </div>
 
-      <Button onClick={withdrawFromVault} variant="tertiary" className="w-full mx-auto !text-xs !h-[49px]">
+      <Button
+        onClick={withdrawFromVault}
+        walletConfig={{
+          needWalletConnected: true,
+          needSupportedChain: true,
+        }}
+        variant="tertiary"
+        className="w-full mx-auto !text-xs !h-[49px]"
+      >
         {getButtonText()}
       </Button>
     </>

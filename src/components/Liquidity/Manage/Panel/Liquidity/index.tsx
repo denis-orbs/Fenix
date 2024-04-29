@@ -30,6 +30,7 @@ import Loader from '@/src/components/UI/Icons/Loader'
 import ApproveButtons from '../../../Common/ApproveButtons'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 interface PositionData {
   id: number
@@ -108,10 +109,8 @@ const Manage = ({}: {}) => {
   }
   const getList = async (token0: Address, token1: Address) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
-        method: 'GET',
-      })
-      const responseData = await response.json()
+      const responseData = await fetchTokens()
+
       const parsedData = responseData.map((item: any) => {
         return {
           id: 0,

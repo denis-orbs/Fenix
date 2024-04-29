@@ -10,6 +10,7 @@ import { getAllPairsForUser } from '@/src/library/web3/apis/PairAPIV3'
 import { AddressZero } from '@/src/library/constants/misc'
 import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
 import { fetchPoolData, fetchv2PoolData } from './reducer'
+import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async (address: Address) => {
   try {
@@ -42,13 +43,20 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
   try {
     const client = getProtocolCoreClient()
     if (!client) return []
-    const pairsV2 = await getAllPairsForUser(address)
-    const availablePairsV2 = pairsV2.filter((pair) => pair.pair_address.toLowerCase() != AddressZero)
-    const availableTokenData = await fetchTokens()
-    const availablePairsV3 = await fetchPoolData()
-    const availablePairsV2Subgraph = await fetchv2PoolData()
-    if (!availablePairsV2 && !availableTokenData) return []
+    // const pairsV2 = await getAllPairsForUser(address)
+    // const availableTokenData = await fetchTokens()
+    // const availablePairsV3 = await fetchPoolData()
+    // const availablePairsV2Subgraph = await fetchv2PoolData()
 
+    const [pairsV2, availableTokenData, availablePairsV3, availablePairsV2Subgraph] = await Promise.all([
+      getAllPairsForUser(address),
+      fetchTokens(),
+      fetchPoolData(),
+      fetchv2PoolData(),
+    ])
+    const availablePairsV2 = pairsV2.filter((pair) => pair.pair_address.toLowerCase() != AddressZero)
+
+    if (!availablePairsV2 && !availableTokenData) return []
     const pairs: { [pair: Address]: LiquidityTableElement } = {}
     availablePairsV2.forEach((pair) => {
       // console.log(pair)
@@ -233,3 +241,8 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
     // console.log(e, 'error')
   }
 })
+
+export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => {
+  const data = await fetch('/api/statistics')
+  return data.json()
+}

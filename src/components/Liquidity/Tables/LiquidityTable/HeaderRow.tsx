@@ -5,6 +5,8 @@ import Row from './Row'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useAccount, useChainId, useChains } from 'wagmi'
 import { useWindowSize } from 'usehooks-ts'
+import { isSupportedChain } from '@/src/library/constants/chains'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
 interface HeaderRowProps {
   loading: boolean
@@ -27,7 +29,7 @@ const HeaderRow = ({
   titleHeader2 = '',
   activeRange = false,
 }: HeaderRowProps) => {
-  const tokensData = fetchTokens()
+  // const tokensData = fetchTokens()
   const [itemsPerPage, setItemPerPage] = useState<any>(5)
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
@@ -56,6 +58,7 @@ const HeaderRow = ({
 
   const { chainId } = useAccount()
   const activeChain = useChains()
+  const { isConnected } = useActiveConnectionDetails()
 
   useEffect(() => {
     if (paginationStatus && paginationResult && paginationResult.length > 0) {
@@ -127,12 +130,12 @@ const HeaderRow = ({
                 <TableSkeleton key={index} />
               ))}
             </>
-          ) : chainId?.toString() === process.env.NEXT_PUBLIC_CHAINID ? (
+          ) : isSupportedChain(chainId) ? (
             pagination.map((row, index) => (
               <Fragment key={index}>
                 <Row
                   row={row}
-                  tokensData={tokensData}
+                  tokensData={null}
                   activeRange={activeRange}
                   titleHeader={titleHeader}
                   titleHeader2={titleHeader2}
@@ -147,12 +150,23 @@ const HeaderRow = ({
               <br></br>
               <br></br>
               <div className="flex flex-col items-center justify-center mb-4">
-                <h1 className="mb-2 text-xl font-bold text-center text-white">
-                  You are in the wrong network/ Wallet not connected
-                </h1>
+                <h2 className="mb-2 text-xl font-bold text-center text-white">
+                  {!isConnected && !isSupportedChain(chainId) && 'Wallet not connected / '}
+                  {isConnected && !isSupportedChain(chainId) && 'You are in the wrong network'}
+                </h2>
                 <p className="text-sm text-shark-100 w-[261px] text-center">
-                  Please switch to Blast Network to use Fenix Protocol.
+                  {!isConnected && !isSupportedChain(chainId) && 'Please connect your wallet to use Fenix Protocol.'}
+                  {isConnected && !isSupportedChain(chainId) && 'Please switch to Blast Network to use Fenix Protocol.'}
                 </p>
+                <Button
+                  className="mt-3"
+                  walletConfig={{
+                    needWalletConnected: true,
+                    needSupportedChain: true,
+                  }}
+                >
+                  hello
+                </Button>
               </div>
               <br></br>
               <br></br>
