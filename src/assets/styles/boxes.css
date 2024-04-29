@@ -559,7 +559,7 @@
 .box-invert {
   @apply relative
   
-  w-full
+  xl:w-[312px]
   flex-shrink-0
   before:content-[""]
   before:absolute
@@ -584,6 +584,8 @@
   after:bottom-0
   after:left-0;
 }
+
+
 
 .mini-box-vote {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
