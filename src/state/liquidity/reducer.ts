@@ -203,7 +203,7 @@ export const fetchNativePrice = async () => {
       query: NATIVE_PRICE,
     })
     // Data is available in `data.positions`
-    console.log(data.bundles[0].maticPriceUSD, 'price')
+    // console.log(data.bundles[0].maticPriceUSD, 'price')
     return data.bundles[0].maticPriceUSD as string
   } catch (error) {
     console.error('Error fetching positions:', error)

@@ -19,6 +19,7 @@ interface ButtonProps {
     needWalletConnected: boolean
     needSupportedChain: boolean
   }
+  style?: React.CSSProperties
 }
 
 const Button = ({

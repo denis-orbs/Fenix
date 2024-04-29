@@ -75,7 +75,7 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
       const myBigNumber = toBN(myNumber.toString())
       const userTokenBalance = myBigNumber.div(BN_TEN.pow(token.decimals)).toString() // the balance of the token
       const resultado = userTokenBalance
-      console.log(resultado)
+      // console.log(resultado)
       setTokenBalance(resultado)
       setTokenSellUserBalance(resultado)
     }

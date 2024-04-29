@@ -30,7 +30,7 @@ const LiquidityPools = () => {
   useEffect(() => {
     fetchGlobalStatistics().then((data) => {
       setGlobalStatistics(data)
-      console.log(data)
+      // console.log(data)
       EXCHANGE_LIST[0].description = '$ ' + data.totalTVL.toFixed(2).toString()
       EXCHANGE_LIST[1].description = '$ ' + data.totalFees.toFixed(2).toString()
       EXCHANGE_LIST[2].description = '$ ' + data.totalVolume.toFixed(2).toString()

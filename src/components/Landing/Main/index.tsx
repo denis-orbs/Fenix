@@ -65,7 +65,7 @@ const Main = () => {
   useEffect(() => {
     fetchGlobalStatistics().then((data) => {
       setGlobalStatistics(data)
-      console.log(data)
+      // console.log(data)
     })
   }, [])
   // const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
