@@ -18,6 +18,8 @@ import ApproveButtons from '@/src/components/Liquidity/Common/ApproveButtons'
 import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { isSupportedChain } from '@/src/library/constants/chains'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
 interface StateType {
   price: number
@@ -68,6 +70,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout>()
 
   const account = useAccount()
+  const { isConnected, chainId } = useActiveConnectionDetails()
+
   const { writeContractAsync } = useWriteContract()
 
   function invertPercentage(percent: number) {
@@ -405,16 +409,28 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setSecondValue={(value) => setSecondValue(value)}
         onTokenValueChange={handleOnTokenValueChange}
       />
-      <ApproveButtons
-        shouldApproveFirst={shouldApproveFirst}
-        shouldApproveSecond={shouldApproveSecond}
-        token0={firstToken}
-        token1={secondToken}
-        handleApprove={handleApprove}
-        mainFn={handleCLAdd}
-        mainText={'Create Position'}
-        isLoading={isLoading}
-      />
+      {!isConnected || !isSupportedChain(chainId) ? (
+        <Button
+          walletConfig={{
+            needSupportedChain: true,
+            needWalletConnected: true,
+          }}
+          className="w-full"
+        >
+          Connect Wallet
+        </Button>
+      ) : (
+        <ApproveButtons
+          shouldApproveFirst={shouldApproveFirst}
+          shouldApproveSecond={shouldApproveSecond}
+          token0={firstToken}
+          token1={secondToken}
+          handleApprove={handleApprove}
+          mainFn={handleCLAdd}
+          mainText={'Create Position'}
+          isLoading={isLoading}
+        />
+      )}
     </>
   )
 }

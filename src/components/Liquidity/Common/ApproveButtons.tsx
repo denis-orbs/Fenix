@@ -33,20 +33,12 @@ const ApproveButtons = ({
         }}
         className="button button-tertiary w-1/2 !text-xs !h-[49px]"
         style={{ marginRight: '10px' }}
-        walletConfig={{
-          needWalletConnected: true,
-          needSupportedChain: true,
-        }}
       >
         Approve {token0.symbol}
       </Button>
       <Button
         onClick={() => {
           handleApprove(token1.address as Address)
-        }}
-        walletConfig={{
-          needWalletConnected: true,
-          needSupportedChain: true,
         }}
         className="button button-tertiary w-1/2 !text-xs !h-[49px]"
       >
@@ -61,10 +53,6 @@ const ApproveButtons = ({
         }}
         className="button button-tertiary !text-xs !h-[49px]"
         style={{ marginRight: '10px' }}
-        walletConfig={{
-          needWalletConnected: true,
-          needSupportedChain: true,
-        }}
       >
         Approve {token0.symbol}
       </Button>
@@ -74,10 +62,6 @@ const ApproveButtons = ({
       <Button
         onClick={() => {
           handleApprove(token1.address as Address)
-        }}
-        walletConfig={{
-          needWalletConnected: true,
-          needSupportedChain: true,
         }}
         className="button button-tertiary !text-xs !h-[49px]"
         style={{ marginRight: '10px' }}
@@ -91,10 +75,6 @@ const ApproveButtons = ({
       variant="tertiary"
       onClick={() => {
         mainFn()
-      }}
-      walletConfig={{
-        needWalletConnected: true,
-        needSupportedChain: true,
       }}
     >
       {isLoading ? <Loader color="white" size={20} /> : `${mainText}`}
