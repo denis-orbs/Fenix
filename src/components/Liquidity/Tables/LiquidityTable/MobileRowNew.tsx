@@ -66,25 +66,6 @@ export default function MobileRowNew({
               </div>
             </div>
           </div>
-          {/* <div className="flex gap-2 ml-auto">
-            {titleButton2 === '' ? (
-              <Button
-                variant="tertiary"
-                className="flex items-center gap-2 w-full"
-                href={`/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`}
-              >
-                <span className="icon-circles"></span>
-              </Button>
-            ) : (
-              <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity/deposit">
-                <span className="icon-logout"></span>
-                Manage
-              </Button>
-            )}
-            <button type="button" onClick={() => setIsOpen(!isOpen)}>
-              <span className={`icon-chevron text-xs leading-[0] block ${isOpen ? 'rotate-180' : ''}`}></span>
-            </button>
-          </div> */}
         </div>
         {activeRange && (
           <div className="flex justify-between border mt-[21px] items-center  mb-2.5 border-shark-300 p-4 rounded-lg">

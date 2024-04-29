@@ -101,7 +101,8 @@ const HeaderRow = ({
                 sortable: true,
               },
               RANGE,
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[20%]'} text-right`, sortable: true },
+              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right` },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right`, sortable: true },
               { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
