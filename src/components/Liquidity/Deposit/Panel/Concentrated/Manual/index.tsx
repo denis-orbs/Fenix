@@ -65,56 +65,45 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const [isLoading, setIsLoading] = useState(true)
   const [slippage, setSlippage] = useState(0.05)
 
-  const [timeout, setTimeoutID] = useState<NodeJS.Timeout>() 
+  const [timeout, setTimeoutID] = useState<NodeJS.Timeout>()
 
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
 
   function invertPercentage(percent: number) {
-    const remaining = 1 + percent / 100;
-    return (1 / remaining - 1) * 100;
+    const remaining = 1 + percent / 100
+    return (1 / remaining - 1) * 100
   }
 
   const handleMinMaxInput = (value: any, isFirst: boolean) => {
-    if(timeout) clearTimeout(timeout)
+    if (timeout) clearTimeout(timeout)
 
-    const price = (isInverse ? 1/value.target.value : value.target.value)
+    const price = isInverse ? 1 / value.target.value : value.target.value
 
-    if(isFirst) {
+    if (isFirst) {
       setRangePrice2(price)
 
-      const p = ((price / (poolState.price/1e18) - 1) * 100).toFixed(1)
-      setShownPercentage([
-        shownPercentage[0],
-        isInverse ? invertPercentage(Number(p)).toFixed(1) : p,
-      ])
+      const p = ((price / (poolState.price / 1e18) - 1) * 100).toFixed(1)
+      setShownPercentage([shownPercentage[0], isInverse ? invertPercentage(Number(p)).toFixed(1) : p])
     } else {
       setRangePrice1(price)
 
-      const p = ((1 - price / (poolState.price/1e18)) * 100).toFixed(1)
-      setShownPercentage([
-        isInverse ? invertPercentage(Number(p)).toFixed(1) : p,
-        shownPercentage[1],
-      ])
+      const p = ((1 - price / (poolState.price / 1e18)) * 100).toFixed(1)
+      setShownPercentage([isInverse ? invertPercentage(Number(p)).toFixed(1) : p, shownPercentage[1]])
     }
 
     const newTimeout = setTimeout(() => {
-      const currentPrice = poolState.price/1e18
-  
-      const pricePercentage = (
-        (
-          (price-currentPrice) / currentPrice
-        )
-      ) * 100
-  
-      if(isFirst) setCurrentPercentage([currentPercentage[0], pricePercentage])
+      const currentPrice = poolState.price / 1e18
+
+      const pricePercentage = ((price - currentPrice) / currentPrice) * 100
+
+      if (isFirst) setCurrentPercentage([currentPercentage[0], pricePercentage])
       else setCurrentPercentage([pricePercentage, currentPercentage[1]])
     }, 2000)
 
     setTimeoutID(newTimeout)
   }
   const addNotification = useNotificationAdderCallback()
-
 
   useEffect(() => {
     if (poolState.price == 0) {
