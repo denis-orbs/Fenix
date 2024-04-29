@@ -1,8 +1,8 @@
-import getProtocolCoreClient from '@/src/library/apollo/client/protocolCoreClient'
+import getProtocolCoreClient, { getAlgebraClient } from '@/src/library/apollo/client/protocolCoreClient'
 import { GET_V2_PAIRS } from '@/src/library/apollo/queries/LIQUIDITY'
 import { queryAllForClient } from '@/src/library/apollo/utils'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { LiquidityTableElement, LiquidityV2PairDetails } from './types'
+import { BasicPool, LiquidityTableElement, LiquidityV2PairDetails } from './types'
 import { Address } from 'viem'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
@@ -12,6 +12,9 @@ import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
 import { fetchPoolData, fetchv2PoolData } from './reducer'
 import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
 import cache from 'memory-cache'
+import { BASIC_POOLS_LIST, POOLS_ID_LIST, POOLS_LIST, POOL_FRAGMENT } from '@/src/library/apollo/queries/pools'
+import { algebra_client } from '@/src/library/apollo/client'
+import { gql } from '@apollo/client'
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async (address: Address) => {
   try {
@@ -44,17 +47,17 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
   try {
     const client = getProtocolCoreClient()
     if (!client) return []
-    // const pairsV2 = await getAllPairsForUser(address)
-    // const availableTokenData = await fetchTokens()
-    // const availablePairsV3 = await fetchPoolData()
-    // const availablePairsV2Subgraph = await fetchv2PoolData()
+    const pairsV2 = await getAllPairsForUser(address)
+    const availableTokenData = await fetchTokens()
+    const availablePairsV3 = await fetchPoolData()
+    const availablePairsV2Subgraph = await fetchv2PoolData()
 
-    const [pairsV2, availableTokenData, availablePairsV3, availablePairsV2Subgraph] = await Promise.all([
-      getAllPairsForUser(address),
-      fetchTokens(),
-      fetchPoolData(),
-      fetchv2PoolData(),
-    ])
+    // const [pairsV2, availableTokenData, availablePairsV3, availablePairsV2Subgraph] = await Promise.all([
+    //   getAllPairsForUser(address),
+    //   fetchTokens(),
+    //   fetchPoolData(),
+    //   fetchv2PoolData(),
+    // ])
     const availablePairsV2 = pairsV2.filter((pair) => pair.pair_address.toLowerCase() != AddressZero)
 
     if (!availablePairsV2 && !availableTokenData) return []
@@ -264,3 +267,45 @@ export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => 
   }
   return cachedData
 }
+
+export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () => {
+  const client = getAlgebraClient()
+  try {
+    const { data } = await client.query({
+      query: POOLS_LIST,
+      fetchPolicy: 'cache-first',
+    })
+    const pools = data.pools.map((pool: BasicPool) => ({
+      id: pool.id,
+      volumeUSD: pool.volumeUSD,
+      feesUSD: pool.feesUSD,
+      liquidity: pool.liquidity,
+      totalValueLockedUSD: pool.totalValueLockedUSD,
+      poolType: 'concentrated', // CHANGE
+      token0Price: pool.token0Price,
+      token1Price: pool.token1Price,
+      feesToken0: pool.feesToken0,
+      feesToken1: pool.feesToken1,
+      volumeToken0: pool.volumeToken0,
+      volumeToken1: pool.volumeToken1,
+      fee: pool.fee,
+      token0: {
+        id: pool.token0.id,
+        decimals: pool.token0.decimals,
+        symbol: pool.token0.symbol,
+        name: pool.token0.name,
+      },
+      token1: {
+        id: pool.token1.id,
+        decimals: pool.token1.decimals,
+        symbol: pool.token1.symbol,
+        name: pool.token1.name,
+      },
+    }))
+
+    return pools
+  } catch (error) {
+    console.log(error)
+    throw new Error(`Unable to query data from Client`)
+  }
+})

@@ -1,5 +1,5 @@
 import { Button, Pagination, PaginationMobile, TableBody, TableHead, TableSkeleton } from '@/src/components/UI'
-import { PoolData } from '@/src/state/liquidity/types'
+import { BasicPool, PoolData } from '@/src/state/liquidity/types'
 import { Fragment, useEffect, useState } from 'react'
 import Row from './Row'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
@@ -10,7 +10,7 @@ import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnec
 
 interface HeaderRowProps {
   loading: boolean
-  poolsData: PoolData[]
+  poolsData: BasicPool[]
   activePagination?: boolean
   titleHeader?: string
   titleHeader2?: string
@@ -33,7 +33,7 @@ const HeaderRow = ({
   const [itemsPerPage, setItemPerPage] = useState<any>(5)
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
-  const [paginationResult, setPaginationResult] = useState<PoolData[]>(poolsData)
+  const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
   const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
   const [sortIndex, setSortIndex] = useState<number>(0)
@@ -42,7 +42,7 @@ const HeaderRow = ({
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
     : { text: '', className: 'w-[0%]', sortable: true }
 
-  function paginate(items: PoolData[], currentPage: number, itemsPerPage: number) {
+  function paginate(items: BasicPool[], currentPage: number, itemsPerPage: number) {
     // Calculate total pages
     const totalPages = Math.ceil(items.length / itemsPerPage)
 
@@ -65,13 +65,13 @@ const HeaderRow = ({
       if (sort === 'asc') {
         setPaginationResult(
           paginationResult.sort((a, b) => {
-            return compareBigDecimal(Number(a.pairDetails.tvl), Number(b.pairDetails.tvl))
+            return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
           })
         )
       } else {
         setPaginationResult(
           paginationResult.sort((a, b) => {
-            return compareBigDecimal(Number(b.pairDetails.tvl), Number(a.pairDetails.tvl))
+            return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
           })
         )
       }
@@ -130,7 +130,7 @@ const HeaderRow = ({
                 <TableSkeleton key={index} />
               ))}
             </>
-          ) : isSupportedChain(chainId) ? (
+          ) : (
             pagination.map((row, index) => (
               <Fragment key={index}>
                 <Row
@@ -144,33 +144,6 @@ const HeaderRow = ({
                 />
               </Fragment>
             ))
-          ) : (
-            <div>
-              <br></br>
-              <br></br>
-              <br></br>
-              <div className="flex flex-col items-center justify-center mb-4">
-                <h2 className="mb-2 text-xl font-bold text-center text-white">
-                  {!isConnected && !isSupportedChain(chainId) && 'Wallet not connected / '}
-                  {isConnected && !isSupportedChain(chainId) && 'You are in the wrong network'}
-                </h2>
-                <p className="text-sm text-shark-100 w-[261px] text-center">
-                  {!isConnected && !isSupportedChain(chainId) && 'Please connect your wallet to use Fenix Protocol.'}
-                  {isConnected && !isSupportedChain(chainId) && 'Please switch to Blast Network to use Fenix Protocol.'}
-                </p>
-                <Button
-                  className="mt-3"
-                  walletConfig={{
-                    needWalletConnected: true,
-                    needSupportedChain: true,
-                  }}
-                >
-                  hello
-                </Button>
-              </div>
-              <br></br>
-              <br></br>
-            </div>
           )}
         </TableBody>
       </div>

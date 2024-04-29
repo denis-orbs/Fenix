@@ -43,6 +43,33 @@ export const POOL_DAY_DATA_FRAGMENT = gql`
     feesUSD
   }
 `
+export const BASIC_POOLS_LIST = gql`
+  query PoolsList {
+    pools {
+      id
+      fee
+      token0 {
+        id
+        symbol
+        name
+        decimals
+      }
+      token1 {
+        id
+        symbol
+        name
+        decimals
+      }
+      liquidity
+      totalValueLockedUSD
+      volumeUSD
+      feesUSD
+      untrackedFeesUSD
+      token0Price
+      token1Price
+    }
+  }
+`
 
 export const POOLS_LIST = gql`
   query PoolsList {
