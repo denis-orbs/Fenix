@@ -94,7 +94,7 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
           >
             <div className="flex items-center gap-2">
               <Image
-                src={`/static/images/tokens/${token.symbol}.svg`}
+                src={`/static/images/tokens/${token.symbol}.png`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}
