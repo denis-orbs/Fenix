@@ -24,6 +24,8 @@ import { LiquidityTableElement } from '@/src/state/liquidity/types'
 import { useAppSelector } from '@/src/state'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { formatNumber } from '@/src/library/utils/numbers'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
 const Classic = ({
   depositType,
@@ -78,6 +80,8 @@ const Classic = ({
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
 
   const { writeContractAsync } = useWriteContract()
+
+  const addNotification = useNotificationAdderCallback()
 
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
@@ -225,13 +229,37 @@ const Classic = ({
           // console.log('success', x, +new Date())
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Added successfully.`)
+            // toast(`Added successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Added successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_15000,
+            })
           } else {
-            toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
+            // toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Add LP TX failed, hash`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_15000,
+            })
           }
         },
         onError: (e) => {
-          toast(`Add LP failed. ${e}`)
+          // toast(`Add LP failed. ${e}`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Add LP failed. ${e}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_15000,
+          })
         },
       }
     )
@@ -261,13 +289,37 @@ const Classic = ({
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Removed successfully.`)
+            // toast(`Removed successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Added successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_15000,
+            })
           } else {
-            toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
+            // toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Remove LP TX failed, hash: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_15000,
+            })
           }
         },
         onError: (e) => {
-          toast(`Remove LP failed. ${e}`)
+          // toast(`Remove LP failed. ${e}`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Add LP failed. ${e}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_15000,
+          })
         },
       }
     )
@@ -285,9 +337,25 @@ const Classic = ({
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Approved successfully`)
+            // toast(`Approved successfully`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approved successfully`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_15000,
+            })
           } else {
-            toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            // toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approve TX failed, tx: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_15000,
+            })
           }
 
           const allowanceFirst: any = await getTokenAllowance(
@@ -314,7 +382,15 @@ const Classic = ({
           setShouldApprovePair(allowanceLp == '0')
         },
         onError: (e) => {
-          toast(`Approve failed. ${e}`)
+          // toast(`Approve failed. ${e}`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Approve failed. ${e}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_15000,
+          })
         },
       }
     )
@@ -391,11 +467,11 @@ const Classic = ({
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{formatNumber((Number(firstReserve) / 1e18), 8)}</span>
+                <span>{formatNumber(Number(firstReserve) / 1e18, 8)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
-                <span>{formatNumber((Number(secondReserve) / 1e18), 8)}</span>
+                <span>{formatNumber(Number(secondReserve) / 1e18, 8)}</span>
               </p>
             </div>
           </div>

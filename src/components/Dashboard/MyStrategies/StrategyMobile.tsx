@@ -16,6 +16,8 @@ import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { Address, encodeFunctionData } from 'viem'
 import { useAccount, useWriteContract } from 'wagmi'
 import { MAX_INT } from '@/src/library/constants/misc'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
 type options = {
   value: string
@@ -35,6 +37,8 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
   const [isOpen, setIsOpen] = useState(false)
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
+
+  const addNotification = useNotificationAdderCallback()
 
   let ichitokens: IchiVault
   if (row.liquidity === 'ichi') {
@@ -69,13 +73,37 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`✅ Fees Claimed successfully.`)
+            // toast(`✅ Fees Claimed successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `✅ Fees Claimed successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_15000,
+            })
           } else {
-            toast(`❌ Fees Claimed Tx failed`)
+            // toast(`❌ Fees Claimed Tx failed`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `❌ Fees Claimed Tx failed`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_15000,
+            })
           }
         },
         onError: (e) => {
-          toast(`❌ Fees Claimed Tx failed.`)
+          // toast(`❌ Fees Claimed Tx failed.`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `❌ Fees Claimed Tx failed`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_15000,
+          })
         },
       }
     )

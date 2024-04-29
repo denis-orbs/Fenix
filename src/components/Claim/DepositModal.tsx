@@ -8,6 +8,8 @@ import { useContractWrite } from 'wagmi'
 import toast, { Toaster } from 'react-hot-toast'
 import { multicall } from '@wagmi/core'
 import BigNumber from 'bignumber.js'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 
 interface ABI {
   inputs?: {
@@ -60,6 +62,8 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
   const [isDeposited, setisDeposited] = useState([])
   const [balance, setBalance] = useState(0)
   const [depositiserror, setdepositiserror] = useState(false)
+
+  const addNotification = useNotificationAdderCallback()
 
   const {
     writeAsync: handleDeposit,
@@ -216,22 +220,70 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
 
   useEffect(() => {
     if (approvalIsError) {
-      toast(`${approvalError?.cause}`)
+      // toast(`${approvalError?.cause}`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `${approvalError?.cause}`,
+        notificationType: NotificationType.ERROR,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_15000,
+      })
     }
     if (depositIsError) {
-      toast(`${depositError?.cause}`)
+      // toast(`${depositError?.cause}`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `${depositError?.cause}`,
+        notificationType: NotificationType.ERROR,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_15000,
+      })
     }
     if (approvalIsLoading) {
-      toast(`Loading approval tx...`)
+      // toast(`Loading approval tx...`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Loading approval tx...`,
+        notificationType: NotificationType.DEFAULT,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_15000,
+      })
     }
     if (depositIsLoading) {
-      toast(`Loading Migration tx...`)
+      // toast(`Loading Migration tx...`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Loading Migration tx...`,
+        notificationType: NotificationType.DEFAULT,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_15000,
+      })
     }
     if (approvalIsSuccess) {
-      toast(`Submitted approval tx Successfully`)
+      // toast(`Submitted approval tx Successfully`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Submitted approval tx Successfully`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_15000,
+      })
     }
     if (depositIsSuccess) {
-      toast(`Submitted Migration tx Successfully`)
+      // toast(`Submitted Migration tx Successfully`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Submitted Migration tx Successfully`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_15000,
+      })
     }
   }, [approvalIsError, depositIsError, approvalIsLoading, depositIsLoading, approvalIsSuccess, depositIsSuccess])
 
@@ -290,7 +342,16 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
           </div>
         </div>
       </div>
-      {depositiserror ? toast(`${depositError?.cause}`) : null}
+      {depositiserror ? (
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `${depositError?.cause}`,
+          notificationType: NotificationType.SUCCESS,
+          txHash: hash,
+          notificationDuration: NotificationDuration.DURATION_15000,
+        })
+        ) : null}
     </Modal>
   )
 }
