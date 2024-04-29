@@ -107,7 +107,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   
       if(isFirst) setCurrentPercentage([currentPercentage[0], pricePercentage])
       else setCurrentPercentage([pricePercentage, currentPercentage[1]])
-    }, 2000)
+    }, 500)
 
     setTimeoutID(newTimeout)
   }
