@@ -28,6 +28,9 @@ import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import { formatNumber } from '@/src/library/utils/numbers'
 import Loader from '@/src/components/UI/Icons/Loader'
 import ApproveButtons from '../../../Common/ApproveButtons'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 interface PositionData {
   id: number
@@ -80,6 +83,9 @@ const Manage = ({}: {}) => {
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
 
   const { writeContractAsync } = useWriteContract()
+
+  const addNotification = useNotificationAdderCallback()
+
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
     setFirstValue('')
@@ -103,10 +109,8 @@ const Manage = ({}: {}) => {
   }
   const getList = async (token0: Address, token1: Address) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
-        method: 'GET',
-      })
-      const responseData = await response.json()
+      const responseData = await fetchTokens()
+
       const parsedData = responseData.map((item: any) => {
         return {
           id: 0,
@@ -241,14 +245,38 @@ const Manage = ({}: {}) => {
           // console.log('success', x, +new Date())
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Added successfully.`)
+            // toast(`Added successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Added successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
+            // toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Add LP TX failed, tx: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
           updatePositionData(positionData.id)
         },
         onError: (e) => {
-          toast(`Add LP failed. ${e}`)
+          // toast(`Add LP failed. ${e}`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Add LP failed. ${e}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }
@@ -317,15 +345,39 @@ const Manage = ({}: {}) => {
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Removed successfully.`)
+            // toast(`Removed successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Removed successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
+            // toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Remove LP TX failed, hash: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
 
           updatePositionData(positionData.id)
         },
         onError: (e) => {
-          toast(`Remove LP failed. ${e}`)
+          // toast(`Remove LP failed. ${e}`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Add LP failed. ${e}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }
@@ -346,16 +398,40 @@ const Manage = ({}: {}) => {
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Approved successfully`)
+            // toast(`Approved successfully`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approved successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            // toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approve TX failed, tx: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
 
           asyncGetAllowance(firstToken.address as Address, secondToken.address as Address)
           setIsLoading(false)
         },
         onError: (e) => {
-          toast(`Approve failed. ${e}`)
+          // toast(`Approve failed. ${e}`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Approve failed. ${e}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }

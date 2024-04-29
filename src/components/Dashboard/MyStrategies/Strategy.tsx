@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Button, Switch } from '@/src/components/UI'
 import Graph from './Graph'
 import ComponentVisible from '@/src/library/hooks/useVisible'
-import { fromWei } from '@/src/library/utils/numbers'
+import { formatDollarAmount, fromWei } from '@/src/library/utils/numbers'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
 import { useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
@@ -16,6 +16,8 @@ import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { Address, encodeFunctionData } from 'viem'
 import { useAccount, useWriteContract } from 'wagmi'
 import { MAX_INT } from '@/src/library/constants/misc'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
 type options = {
   value: string
@@ -95,6 +97,8 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
   const { address } = useAccount()
   const router = useRouter()
 
+  const addNotification = useNotificationAdderCallback()
+
   const handlerOpenModal = (option: string) => {
     setOpenModal(true)
     setModalSelected(option)
@@ -131,13 +135,37 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`✅ Fees Claimed successfully.`)
+            // toast(`Fees Claimed successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Fees Claimed successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`❌ Fees Claimed Tx failed`)
+            // toast(`Fees Claimed Tx failed`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Fees Claimed Tx failed`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
         },
         onError: (e) => {
-          toast(`❌ Fees Claimed Tx failed.`)
+          // toast(`Fees Claimed Tx failed.`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Fees Claimed Tx failed`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
         },
       }
     )
@@ -200,7 +228,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                         onClick={() => handlerOpenModal(option.value)}
                         key={index}
                         className="!py-1 !h-[33px]  !text-xs"
-                      >
+                      
                         {option.label}
                       </Button>
                     )
@@ -236,23 +264,23 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token0?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
-                {Number(row?.depositedToken0).toFixed(5)} ${' '}
+                {Number(row?.depositedToken0).toFixed(5)}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token0?.symbol}`}
               </h4>
               <p className="text-xs text-white">
-                ${' '}
-                {(
+                {' '}
+                {formatDollarAmount(
                   Number(row?.depositedToken0) *
-                  Number(
-                    tokens.find(
-                      (e) =>
-                        e.tokenAddress.toLowerCase() ===
-                        (row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase())
-                    )?.priceUSD
-                  )
-                ).toFixed(2)}
+                    Number(
+                      tokens.find(
+                        (e) =>
+                          e.tokenAddress.toLowerCase() ===
+                          (row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase())
+                      )?.priceUSD
+                    )
+                )}
               </p>
             </div>
             <div className="flex items-start flex-col p-4 w-1/2 border-l border-shark-400">
@@ -263,15 +291,13 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
               </h4>
               <h4 className="text-sm text-white">
                 {' '}
-                {Number(row?.depositedToken1).toFixed(5)} $
+                {Number(row?.depositedToken1).toFixed(5)}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token1?.symbol}`}
               </h4>
               <p className="text-xs text-white">
-                ${' '}
-                {(
-                  Number(row?.depositedToken1) *
+                {formatDollarAmount(
                   Number(
                     tokens.find(
                       (e) =>
@@ -279,7 +305,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                         (row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase())
                     )?.priceUSD
                   )
-                ).toFixed(2)}
+                )}
               </p>
             </div>
           </div>
@@ -293,18 +319,12 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           />
         </div>
         <div className="flex flex-row gap-5 items-center justify-center p-3">
-          <Button
-            variant="tertiary"
-            className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
-          >
+          {/* <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
             <span className="text-l">Deposits</span>
           </Button>
-          <Button
-            variant="tertiary"
-            className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
-          >
+          <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
             <span className="text-l">Stake</span>
-          </Button>
+          </Button> */}
           <Button
             variant="tertiary"
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
@@ -312,6 +332,9 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
               if (row.liquidity !== 'ichi') {
                 router.push(`/liquidity/manage?id=${row?.id}`)
                 router.refresh()
+              } else {
+                router.push(`liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${row?.token0}&token1=${row?.token1}`)
+                // router.refresh()
               }
             }}
           >

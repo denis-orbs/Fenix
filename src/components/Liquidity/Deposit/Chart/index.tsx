@@ -31,7 +31,7 @@ const generateChartUrl = (tokenA: string, tokenB: string) => {
   return null
 }
 const Chart = ({ token0, token1 }: { token0?: string | null; token1?: string | null }) => {
-  console.log(token0, token1, 'token0, token1')
+  //  console.log(token0, token1, 'token0, token1')
   if (!token0 || !token1) return null
   const chartUrl = generateChartUrl(token0.toLowerCase(), token1.toLowerCase())
   if (!chartUrl) return null

@@ -1,6 +1,6 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
-import { getConcentratedPools, getLiquidityV2Pairs } from './thunks'
+import { getAllPools, getConcentratedPools, getLiquidityV2Pairs } from './thunks'
 import { LiquidityState, V2PairId, v2FactoryData, v3FactoryData } from './types'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import {
@@ -35,6 +35,10 @@ export const initialState: LiquidityState = {
     state: ApiState.LOADING,
     data: [],
   },
+  pools: {
+    state: ApiState.LOADING,
+    data: [],
+  },
   token0: process.env.NEXT_PUBLIC_DEFAULT_TOKEN_0_ADDRESS as Address,
   token0TypedValue: '',
   token1: process.env.NEXT_PUBLIC_DEFAULT_TOKEN_1_ADDRESS as Address,
@@ -58,6 +62,17 @@ export default createReducer(initialState, (builder) => {
     })
     .addCase(updateClmProvider, (state, action) => {
       state.clmProvider = action.payload
+    })
+    .addCase(getAllPools.pending, (state) => {
+      state.pools.state = ApiState.LOADING
+    })
+    .addCase(getAllPools.fulfilled, (state, action) => {
+      state.pools.state = ApiState.SUCCESS
+      state.pools.data = action.payload
+    })
+    .addCase(getAllPools.rejected, (state) => {
+      state.pools.state = ApiState.ERROR
+      console.error('Error fetching pools')
     })
     .addCase(getLiquidityV2Pairs.pending, (state) => {
       state.v2Pairs.state = ApiState.LOADING
@@ -188,7 +203,7 @@ export const fetchNativePrice = async () => {
       query: NATIVE_PRICE,
     })
     // Data is available in `data.positions`
-    console.log(data.bundles[0].maticPriceUSD, 'price')
+    // console.log(data.bundles[0].maticPriceUSD, 'price')
     return data.bundles[0].maticPriceUSD as string
   } catch (error) {
     console.error('Error fetching positions:', error)

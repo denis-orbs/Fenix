@@ -88,7 +88,7 @@ const MyStrategies = () => {
   useEffect(() => {
     setLoading(true)
     if (ichipositions.length > 0) {
-      console.log('ichipos', ichipositions)
+      // console.log('ichipos', ichipositions)
       setposition((prevPositions) => [...prevPositions, ...ichipositions])
       setLoading(false)
     }
@@ -99,7 +99,7 @@ const MyStrategies = () => {
       {console.log('finalp', position)}
       {position.length !== 0 && loading === false && address ? (
         <div className="relative">
-          <div className='flex items-center w-[100%] mb-4 justify-between'>
+          <div className="flex items-center w-[100%] mb-4 justify-between">
             <h4 className="text-lg text-white">My Positions</h4>
             <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
               <span className="icon-logout"></span>New deposit

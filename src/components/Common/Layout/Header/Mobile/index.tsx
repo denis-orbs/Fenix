@@ -16,7 +16,7 @@ const MobileHeader = () => {
   const handleShowMenu = () => setShowMenu(!showMenu)
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   return (
-    <div className={`block ${pathname === '/' ? 'lg:hidden' : 'md:hidden'} px-5`}>
+    <div className={`block ${pathname === '/' ? 'lg:hidden' : 'lg:hidden'} px-5 container`}>
       <header
         className={`${pathname === '/' ? '' : 'header-mobile-box'} flex justify-between gap-5 p-0 mx-auto relative z-50`}
       >
@@ -33,7 +33,7 @@ const MobileHeader = () => {
           </Link>
           <div className="flex items-center gap-2">
             <AccountHandler isMenuMobile={false} />
-            {/* <Toggle onClick={handleShowMenu} /> */}
+            <Toggle onClick={handleShowMenu} />
           </div>
           <Menu showMenu={showMenu} setShowMenu={setShowMenu} />
         </div>

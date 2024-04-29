@@ -6,17 +6,18 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useReadContracts } from 'wagmi'
 import { formatUnits, zeroAddress } from 'viem'
-
 import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
 import { useSetToken0TypedValue, useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
-import { formatCurrency, toBN } from '@/src/library/utils/numbers'
+import { formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { erc20Abi } from 'viem'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { connectorsForWallets, useConnectModal } from '@rainbow-me/rainbowkit'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 import Spinner from '@/src/components/Common/Spinner'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 const DepositAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
@@ -28,6 +29,7 @@ const DepositAmountsICHI = ({
 }) => {
   const [isActive, setIsActive] = useState<boolean>(false)
   const [selected, setIsSelected] = useState<string>('Choose one')
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
 
   const { account } = useActiveConnectionDetails()
 
@@ -42,6 +44,8 @@ const DepositAmountsICHI = ({
   const token0 = useToken0()
 
   const token1 = useToken1()
+
+  const addNotification = useNotificationAdderCallback()
 
   useEffect(() => {
     tokenList
@@ -93,7 +97,16 @@ const DepositAmountsICHI = ({
       return
     }
     if (!vaultAddress || allIchiVaultsByTokenPair?.length === 0) {
-      toast.error('Vault not available')
+      // toast.error('Vault not available')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Vault not available.`,
+        notificationType: NotificationType.ERROR,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
+
       return
     }
     if (isToken0ApprovalRequired) {
@@ -120,7 +133,15 @@ const DepositAmountsICHI = ({
       }
     }
     if (!token0TypedValue) {
-      toast.error('Please enter a valid amount')
+      // toast.error('Please enter a valid amount')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Please enter a valid amount.`,
+        notificationType: NotificationType.ERROR,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
       setLoading(false)
       return
     }
@@ -141,7 +162,15 @@ const DepositAmountsICHI = ({
         1
       )
       await txDepositDetails.wait()
-      toast.success('Deposited successfully')
+      // toast.success('Deposited successfully')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Deposited successfully.`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
       setLoading(false)
     } catch (error) {
       // console.log('gg', error.reason)
@@ -150,16 +179,40 @@ const DepositAmountsICHI = ({
         if (error.code == 'ACTION_REJECTED') {
           console.log(error)
           // toast.error('Action rejected')
-          toast.error(error.message.split('(')[0].trim().toUpperCase())
+          // toast.error(error.message.split('(')[0].trim().toUpperCase())
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `${error.message.split('(')[0].trim().toUpperCase()}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setLoading(false)
         } else if (error.reason == 'IV.deposit: deposits too large') {
-          toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
+          // toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setLoading(false)
         }
       } else {
         // console.log(error.reason)
         // toast.error('Transaction failed')
-        toast.error(error.message.split('(')[0].trim().toUpperCase())
+        // toast.error(error.message.split('(')[0].trim().toUpperCase())
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `${e}`,
+          notificationType: NotificationType.ERROR,
+          txHash: '',
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
         setLoading(false)
       }
     }
@@ -227,33 +280,62 @@ const DepositAmountsICHI = ({
     if (loading) return 'Depositing'
     return 'Deposit'
   }
-  const testinPosition = async () => {
-    try {
-      const a = await deposit(
-        '0x7cc2E3Cce45bA98007D3884bB64917483Bd4A00C', // user address
-        0, // token0
-        10, // token1
-        '0x61a51eA57C1b4Fb22b24F9871Df3bdB597d51d06', // vault WETH-USDB
-        web3Provider,
-        dex // fenix dex
-      )
-      // console.log(a)
-    } catch (error) {
-      // console.log(error)
+
+  useEffect(() => {
+    toBN(token0Balance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [token0Balance])
+
+  const handleHalf = () => {
+    if (btnDisabled) {
+      setToken0TypedValue('')
+    } else {
+      if (token0Balance) {
+        return setToken0TypedValue(toBN(formatUnits(token0Balance, token0Decimals)).div(2).toString())
+      } else {
+        setToken0TypedValue('')
+      }
+    }
+  }
+
+  const handleMax = () => {
+    if (btnDisabled) {
+      setToken0TypedValue('')
+    } else {
+      if (token0Balance) {
+        return setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
+      } else {
+        setToken0TypedValue('')
+      }
     }
   }
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
-        <div className="flex w-full xl:w-3/5 justify-between mb-2">
-          <div className="text-xs leading-normal text-white ">Deposit amounts</div>
+        <div className="flex w-full items-center mb-2">
+          <div className="flex w-full xl:w-3/5 justify-between">
+            <div className="text-xs leading-normal text-white ">Deposit amounts</div>
 
-          <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
-            <span className="icon-wallet text-xs"></span>
-            Available: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
-            {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
-          </span>
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              {token0TypedValue && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
+                ? formatDollarAmount(
+                    toBN(token0TypedValue)
+                      .multipliedBy(
+                        tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price || 0
+                      )
+                      .toString()
+                  )
+                : ''}
+            </span>
+          </div>
+          <div className="xl:w-2/5 flex-shrink-0 flex justify-end">
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              <span className="icon-wallet text-xs"></span>
+              Available: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
+              {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
+            </span>
+          </div>
         </div>
+
         <div className="flex items-center gap-3">
           <div className="relative w-full xl:w-3/5">
             <Toaster />
@@ -267,24 +349,10 @@ const DepositAmountsICHI = ({
               className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             />
             <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!token0Balance) return
-                  setToken0TypedValue(toBN(formatUnits(token0Balance, token0Decimals)).div(2).toString())
-                }}
-              >
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
                 Half
               </Button>
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!token0Balance) return
-                  setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
-                }}
-              >
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
                 Max
               </Button>
             </div>
@@ -372,7 +440,15 @@ const DepositAmountsICHI = ({
         </div>
       </div>
       {/* <Button onClick={testinPosition}>Deposit testing</Button> */}
-      <Button onClick={createPosition} variant="tertiary" className="w-full mx-auto !text-xs !h-[49px]">
+      <Button
+        onClick={createPosition}
+        variant="tertiary"
+        className="w-full mx-auto !text-xs !h-[49px]"
+        walletConfig={{
+          needWalletConnected: true,
+          needSupportedChain: true,
+        }}
+      >
         {loading && (
           <span className="m-2 text-sm">
             <Spinner />

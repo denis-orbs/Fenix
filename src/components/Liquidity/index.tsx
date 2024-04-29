@@ -4,85 +4,46 @@ import Filter from '@/src/components/Common/Filter'
 import Search from '@/src/components/Common/Search'
 import Steps from '@/src/components/Common/Steps'
 import Deposit from '@/src/components/Liquidity/LiquidityPools'
-import { useV2PairsData } from '@/src/state/liquidity/hooks'
-import { PoolData, v3PoolData } from '@/src/state/liquidity/types'
-import { useEffect, useMemo, useState } from 'react'
+import { useAllPools } from '@/src/state/liquidity/hooks'
+import { BasicPool } from '@/src/state/liquidity/types'
+import { useEffect, useState } from 'react'
 import HeaderRow from './Tables/LiquidityTable/HeaderRow'
-import { DATA_ROW, OPTIONS_FILTER, STEPS } from './data'
+import { OPTIONS_FILTER, STEPS } from './data'
 
 const Liquidity = () => {
   const [currentTab, setCurrentTab] = useState<string>('ALL POOLS')
-  const [searchResults, setSearchResults] = useState<PoolData[]>([])
-  const [loading, setLoading] = useState(true)
   const [searchValue, setSearchValue] = useState<string>('')
+  const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
+  const { loading, data: pools } = useAllPools()
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000)
-  }, [])
-
-  const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
-
-  useEffect(() => {
-    // console.log('Loading ', loading)
-    // console.log('v2PairsData ', v2PairsData)
-  }, [v2PairsData, loading])
-
-  const poolsData = useMemo<PoolData[]>(() => {
-    if (loading || !v2PairsData) {
-      return []
-    }
-
-    return v2PairsData.map((pair) => {
-      const pd: PoolData = {
-        pairDetails: pair,
-      }
-
-      return pd
-    })
-  }, [loading, loadingV2Pairs, v2PairsData])
-
-  useEffect(() => {
-    setSearchResults(poolsData)
-  }, [poolsData])
-
-  useEffect(() => {
-    if (poolsData && poolsData.length > 0) {
+    if (pools && pools.length > 0) {
       if (currentTab === 'VOLATILE') {
-        const poolData = poolsData.filter(
-          (row) => !row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
-        )
-        // console.log('inn1')
-        setSearchResults(poolData)
+        // fix filter. user the type of position pool in BasicPool interface
+        setFilteredPools([])
       } else if (currentTab === 'STABLE') {
-        const poolData = poolsData.filter(
-          (row) => row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
-        )
-        // console.log('inn2')
-        setSearchResults(poolData)
+        setFilteredPools([])
       } else if (currentTab === 'CONCENTRATED') {
-        const poolData = poolsData.filter((row) => row.pairDetails.pairSymbol === 'Concentrated pool')
-        setSearchResults(poolData)
-        // console.log('inn3')
+        setFilteredPools(pools)
       } else {
-        // console.log('inn4')
-        setSearchResults(poolsData)
+        setFilteredPools(pools)
       }
     }
-  }, [currentTab, poolsData])
+  }, [currentTab, pools])
 
-  const filteredPoolsData = searchResults.filter((pool) =>
-    pool?.pairDetails?.token0Symbol.toLowerCase().includes(searchValue.toLowerCase())
+  const filteredPoolsData = filteredPools.filter(
+    (pool) =>
+      pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
+      pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
   )
 
   return (
     <section>
-      <div className="flex flex-col items-center gap-5 py-5 lg:flex-row">
-        <div className="w-full lg:w-2/3">
+      <div className="flex flex-col items-center gap-5 py-5 xl:flex-row">
+        <div className="w-full xl:w-2/3">
           <Deposit />
         </div>
-        <div className="w-full lg:w-1/3 self-auto">
+        <div className="w-full xl:w-1/3 self-auto">
           <Steps steps={STEPS} title="Start Now" />
         </div>
       </div>
@@ -94,7 +55,7 @@ const Liquidity = () => {
           <Search setSearchValue={setSearchValue} searchValue={searchValue} placeholder="Search by symbol" />
         </div>
       </div>
-      <HeaderRow loading={loadingV2Pairs} poolsData={filteredPoolsData} />
+      <HeaderRow loading={loading} poolsData={filteredPoolsData} />
     </section>
   )
 }
