@@ -73,8 +73,9 @@ export const DATA_ROW = [
     APR: '48.00',
   },
 ]
+// export const OPTIONS_FILTER = ['All Pools', 'Stable', 'Volatile', 'Concentrated']
 
-export const OPTIONS_FILTER = ['All Pools', 'Stable', 'Volatile', 'Concentrated']
+export const OPTIONS_FILTER = ['All Pools', 'Concentrated']
 
 export const NAV_LIST = [
   {
