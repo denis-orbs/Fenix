@@ -179,7 +179,7 @@ const SetRange = ({
         />
       </div>
       <div className="flex gap-[21px]">
-        {/* <Input
+        <Input
           title={`Min Price (${token2?.symbol} per ${token1?.symbol})`}
           percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 0 : isInverse ? invertPercentage(currentPercentage[1]).toFixed(1) : currentPercentage[0].toFixed(1)}`}
           value={
@@ -204,7 +204,7 @@ const SetRange = ({
             value.target.value = value.target.value * multiplier
             handleMinMaxInput(value, !isInverse)
           }}
-        /> */}
+        />
       </div>
     </div>
   )
