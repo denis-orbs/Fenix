@@ -73,7 +73,7 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            // toast(`✅ Fees Claimed successfully.`)
+            // toast(`Fees Claimed successfully.`)
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),

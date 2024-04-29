@@ -135,21 +135,21 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            // toast(`✅ Fees Claimed successfully.`)
+            // toast(`Fees Claimed successfully.`)
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
-              message: `✅ Fees Claimed successfully.`,
+              message: `Fees Claimed successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
               notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
-            // toast(`❌ Fees Claimed Tx failed`)
+            // toast(`Fees Claimed Tx failed`)
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
-              message: `❌ Fees Claimed Tx failed`,
+              message: `Fees Claimed Tx failed`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
               notificationDuration: NotificationDuration.DURATION_5000,
@@ -157,11 +157,11 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           }
         },
         onError: (e) => {
-          // toast(`❌ Fees Claimed Tx failed.`)
+          // toast(`Fees Claimed Tx failed.`)
           addNotification({
             id: crypto.randomUUID(),
             createTime: new Date().toISOString(),
-            message: `❌ Fees Claimed Tx failed`,
+            message: `Fees Claimed Tx failed`,
             notificationType: NotificationType.ERROR,
             txHash: '',
             notificationDuration: NotificationDuration.DURATION_5000,

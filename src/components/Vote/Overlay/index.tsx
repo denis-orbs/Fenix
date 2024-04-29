@@ -54,22 +54,22 @@ const Overlay = () => {
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))
       if (transactionReceipt.status === 'success') {
-        // toast('Voted Successfully ✅')
+        // toast('Voted Successfully')
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
-          message: `Voted Successfully ✅`,
+          message: `Voted Successfully`,
           notificationType: NotificationType.SUCCESS,
           txHash: transactionReceipt.transactionHash,
           notificationDuration: NotificationDuration.DURATION_5000,
         })
         setloading(false)
       } else {
-        // toast('Transaction failed ❌')
+        // toast('Transaction failed')
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
-          message: `Transaction failed ❌`,
+          message: `Transaction failed`,
           notificationType: NotificationType.ERROR,
           txHash: transaction.transactionHash,
           notificationDuration: NotificationDuration.DURATION_5000,
@@ -78,11 +78,11 @@ const Overlay = () => {
     } catch (err: any) {
       setloading(false)
       // console.log(err)
-      // toast('Transaction failed ❌')
+      // toast('Transaction failed')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
-        message: `Transaction failed ❌`,
+        message: `Transaction failed`,
         notificationType: NotificationType.ERROR,
         txHash: '',
         notificationDuration: NotificationDuration.DURATION_5000,
@@ -100,22 +100,22 @@ const Overlay = () => {
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))
       if (transactionReceipt.status === 'success') {
-        // toast('Reset Vote Successfully ✅')
+        // toast('Reset Vote Successfully')
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
-          message: `Reset Vote Successfully ✅`,
+          message: `Reset Vote Successfully`,
           notificationType: NotificationType.SUCCESS,
           txHash: transactionReceipt.transactionHash,
           notificationDuration: NotificationDuration.DURATION_5000,
         })
         setloading(false)
       } else {
-        // toast('Transaction failed ❌')
+        // toast('Transaction failed')
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
-          message: `Transaction failed ❌`,
+          message: `Transaction failed`,
           notificationType: NotificationType.ERROR,
           txHash: transaction.transactionHash,
           notificationDuration: NotificationDuration.DURATION_5000,
@@ -124,11 +124,11 @@ const Overlay = () => {
     } catch (err: any) {
       setloading(false)
       // console.log(err)
-      // toast('Transaction failed ❌')
+      // toast('Transaction failed')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
-        message: `Transaction failed ❌`,
+        message: `Transaction failed`,
         notificationType: NotificationType.ERROR,
         txHash: '',
         notificationDuration: NotificationDuration.DURATION_5000,
