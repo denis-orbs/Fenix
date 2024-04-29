@@ -37,7 +37,15 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
       setValue('')
     } else {
       if (onTokenValueChange) {
-        onTokenValueChange(ethers.utils.formatEther((BigInt(balance) / BigInt(2)).toString()), token)
+        onTokenValueChange(
+          toBN(balance)
+            .div(10 ** (token?.decimals || 18))
+            .div(2)
+            .toString(),
+
+          token
+        )
+        // onTokenValueChange('1', token)
       } else {
         setValue('')
       }
@@ -49,7 +57,14 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
       setValue('')
     } else {
       if (onTokenValueChange) {
-        onTokenValueChange(ethers.utils.formatEther(balance.toString()), token)
+        onTokenValueChange(
+          toBN(balance)
+            .div(10 ** (token?.decimals || 18))
+
+            .toString(),
+
+          token
+        )
       } else {
         setValue('')
       }
