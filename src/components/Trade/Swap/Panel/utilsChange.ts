@@ -14,7 +14,12 @@ interface ApproveTokenParams {
   amount?: BigNumber
   onSuccess: () => void
   onError: () => void
-  onTransactionSuccess: (hash: `0x${string}` | undefined, tokenSell: IToken, tokenGet: IToken) => void
+  onTransactionSuccess: (
+    hash: `0x${string}` | undefined,
+    tokenSell: IToken,
+    tokenGet: IToken,
+    isApproval: boolean
+  ) => void
   onTransactionError: (e: any) => void
 }
 
@@ -38,7 +43,7 @@ export const approveToken = async ({
     })
 
     onSuccess()
-    onTransactionSuccess(hash, { address: tokenAddress } as IToken, { address: contractAddress } as IToken)
+    onTransactionSuccess(hash, { address: tokenAddress } as IToken, { address: contractAddress } as IToken, true)
 
     return hash
   } catch (error) {

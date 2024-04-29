@@ -63,7 +63,12 @@ const Panel = () => {
   const { account, isConnected } = useActiveConnectionDetails()
   const addNotification = useNotificationAdderCallback()
   const readNotification = useReadNotificationCallback()
-  const handleTransactionSuccess = (hash: `0x${string}` | undefined, tokenSell: IToken, tokenGet: IToken) => {
+  const handleTransactionSuccess = (
+    hash: `0x${string}` | undefined,
+    tokenSell: IToken,
+    tokenGet: IToken,
+    isApproval: boolean = false
+  ) => {
     const id = crypto.randomUUID()
     const provider = getWeb3Provider()
     const notificationMessage = `${tokenSell?.symbol} for ${tokenGet?.symbol}`
@@ -72,10 +77,10 @@ const Panel = () => {
     addNotification({
       id: id,
       createTime: new Date().toISOString(),
-      message: `Proccessing ${notificationMessage} swap...`,
+      message: !isApproval ? `Proccessing ${notificationMessage} swap...` : 'Proccessing approval...',
       notificationType: NotificationType.DEFAULT,
       txHash: hash,
-      notificationDuration: NotificationDuration.DURATION_5000,
+      notificationDuration: NotificationDuration.DURATION_15000,
     })
 
     if (!hash) return
@@ -88,7 +93,9 @@ const Panel = () => {
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
-          message: `Swap ${notificationMessage} completed successfully`,
+          message: !isApproval
+            ? `Swap ${notificationMessage} completed successfully`
+            : 'Approval completed successfully',
           notificationType: NotificationType.SUCCESS,
           txHash: hash,
           notificationDuration: NotificationDuration.DURATION_5000,
