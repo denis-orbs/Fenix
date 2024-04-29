@@ -44,14 +44,14 @@ const RowData = ({
           <div className="flex items-center gap-2">
             <div className="flex items-center">
               <Image
-                src={`/static/images/tokens/${row.token0.symbol}.svg`}
+                src={`/static/images/tokens/${row.token0.symbol}.png`}
                 alt="token"
                 className="rounded-full w-7 h-7"
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.token1.symbol}.svg`}
+                src={`/static/images/tokens/${row.token1.symbol}.png`}
                 alt="token"
                 className="-ml-4 rounded-full w-7 h-7"
                 width={20}
@@ -145,14 +145,14 @@ const RowData = ({
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.token0.symbol}.svg`}
+                src={`/static/images/tokens/${row.token0.symbol}.png`}
                 alt="token"
                 className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.token1.symbol}.svg`}
+                src={`/static/images/tokens/${row.token1.symbol}.png`}
                 alt="token"
                 className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
@@ -176,7 +176,7 @@ const RowData = ({
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src="/static/images/tokens/FNX.svg"
+                  src="/static/images/tokens/FNX.png"
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -185,7 +185,7 @@ const RowData = ({
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src="/static/images/tokens/ETH.svg"
+                  src="/static/images/tokens/ETH.png"
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -204,7 +204,7 @@ const RowData = ({
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 font-normal text-xs text-shark-100 ">
                 <Image
-                  src={`/static/images/tokens/${row.token0.symbol}.svg`}
+                  src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -214,7 +214,7 @@ const RowData = ({
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100 font-normal ">
                 <Image
-                  src={`/static/images/tokens/${row.token1.symbol}.svg`}
+                  src={`/static/images/tokens/${row.token1.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -233,7 +233,7 @@ const RowData = ({
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
-                  src={`/static/images/tokens/${row.token0.symbol}.svg`}
+                  src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -243,7 +243,7 @@ const RowData = ({
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
-                  src={`/static/images/tokens/${row.token1.symbol}.svg`}
+                  src={`/static/images/tokens/${row.token1.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
