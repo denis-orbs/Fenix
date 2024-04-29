@@ -25,9 +25,7 @@ export default function MobileRowNew({
 
   return (
     <>
-      <div
-        className={`border border-shark-950 px-3 py-2 rounded-[10px] bg-shark-400 bg-opacity-60 ${'lg:hidden'}`}
-      >
+      <div className={`border border-shark-950 px-3 py-2 rounded-[10px] bg-shark-400 bg-opacity-60 ${'lg:hidden'}`}>
         <div className="flex gap-[9px] items-center justify-around pb-2">
           <div className="relative flex items-center">
             <Image
@@ -51,9 +49,7 @@ export default function MobileRowNew({
                 {row.token0.symbol} / {row.token1.symbol}
               </h5>
               <div className="flex items-center gap-2">
-                <span className="text-white py-2 px-6 text-xs rounded-lg button-primary">
-                  Concentrated
-                </span>
+                <span className="text-white py-2 px-6 text-xs rounded-lg button-primary">Concentrated</span>
                 <span className="!py-2 !h-[38px] px-4  text-xs font-400 text-white border border-solid bg-shark-400 rounded-lg bg-opacity-40 border-1 border-shark-300">
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
@@ -90,7 +86,7 @@ export default function MobileRowNew({
           </div>
         )}
         <div className="flex flex-col gap-1  mb-2.5">
-          <div className='flex items-center justify-between'>
+          <div className="flex items-center justify-between">
             <div
               className="flex flex-col items-center w-[30%] justify-between border border-shark-300 p-4 rounded-lg
             "
@@ -118,16 +114,14 @@ export default function MobileRowNew({
                   {formatDollarAmount(Number(row.totalValueLockedUSD))}
                 </div>
                 <div className="flex gap-2.5 text-shark-100">
-                  <div className="flex items-center gap-[5px]">
-                  </div>
-                  <div className="flex items-center gap-[5px]">
-                  </div>
+                  <div className="flex items-center gap-[5px]"></div>
+                  <div className="flex items-center gap-[5px]"></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className='flex items-center justify-between'>
+          <div className="flex items-center justify-between">
             <div className="flex flex-col items-center w-[49.5%] justify-between border border-shark-300 p-4 rounded-lg">
               <div className="flex items-center gap-1">
                 <span className="text-xs font-medium leading-normal">
@@ -147,7 +141,7 @@ export default function MobileRowNew({
                     />
                     <span className="text-xs leading-normal">
                       {' '}
-                      {formatCurrency(Number(row.token0.volumeUSD))} {row.token0.symbol}
+                      {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
                     </span>
                   </div>
                   <div className="flex items-center gap-[5px]">
@@ -159,7 +153,7 @@ export default function MobileRowNew({
                       height={10}
                     />
                     <span className="text-xs leading-normal">
-                      {formatCurrency(Number(row.token1.volumeUSD))} {row.token1.symbol}
+                      {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
                     </span>
                   </div>
                 </div>
@@ -183,7 +177,7 @@ export default function MobileRowNew({
                       height={10}
                     />
                     <span className="text-xs leading-normal">
-                      {formatCurrency(Number(row.token0.feesUSD))} {row.token0.symbol}
+                      {formatCurrency(toBN(row.feesToken0), 2)} {row.token0.symbol}
                     </span>
                   </div>
                   <div className="flex items-center gap-[5px]">
@@ -196,7 +190,7 @@ export default function MobileRowNew({
                     />
                     <span className="text-xs leading-normal">
                       {' '}
-                      {formatCurrency(Number(row.token1.feesUSD))} {row.token1.symbol}
+                      {formatCurrency(toBN(row.feesToken1), 2)} {row.token1.symbol}
                     </span>
                   </div>
                 </div>
