@@ -1486,7 +1486,7 @@ opacity-70
 }
 
 .blast-banner {
-  @apply relative flex w-full h-[100px] justify-between items-center px-10
+  @apply relative flex w-full h-[100px] max-lg:h-auto max-lg:py-3 justify-between max-lg:justify-center items-center max-lg:items-start px-10 max-lg:gap-2
   before:bg-[url("/static/images/blast-banner.svg")]
   before:w-[50%]
   before:h-full
