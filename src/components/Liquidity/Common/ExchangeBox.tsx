@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { getTokenBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { ethers } from 'ethers'
-import { formatNumber } from '@/src/library/utils/numbers'
+import { formatDollarAmount, formatNumber } from '@/src/library/utils/numbers'
 import { NumericalInput } from '../../UI/Input'
 import { toBN } from '@/src/library/utils/numbers'
 
@@ -83,16 +83,20 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
   const handleOnChange = (e: any) => {
     if (onTokenValueChange) onTokenValueChange(e > 0 ? e : 0, token)
   }
-
   return (
     <div className={boxVariant}>
       <div className={`flex items-center mb-3 ${availableAlign}`}>
         {title && <p className="text-white font-medium">{title}</p>}
-        <p className="text-shark-100 flex gap-3 text-sm items-center">
-          <span className="icon-wallet text-xs"></span>
-          <span>
-            Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol}
+        <p className="text-shark-100 flex text-sm justify-end gap-6 xl:gap-0 w-full xl:w-3/5 items-cente xl:justify-between">
+          <span className=" ml-3">
+            {value && value !== '' && token?.price && formatDollarAmount(toBN(value).multipliedBy(token?.price))}
           </span>
+          <div>
+            <span className="icon-wallet text-xs mr-2"></span>
+            <span>
+              Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol}
+            </span>
+          </div>
         </p>
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3">
