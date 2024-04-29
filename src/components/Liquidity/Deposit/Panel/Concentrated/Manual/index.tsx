@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import SetRange from './SetRange'
 import { Button } from '@/src/components/UI'
@@ -398,17 +399,49 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         handleMinMaxInput={handleMinMaxInput}
         isInverse={isInverse}
       />
-      <div className="flex items-center gap-3">
-        <p className="text-xs text-white bg-shark-400 bg-opacity-40 rounded-md border border-shark-300 px-2 py-1">
-          Current Pool Price:{' '}
-          {isInverse ? Number(1 / (poolState.price / 1e18)).toFixed(6) : Number(poolState.price / 1e18).toFixed(6)}{' '}
-          {isInverse
-            ? `${firstToken.symbol} per ${secondToken.symbol}`
-            : `${secondToken.symbol} per ${firstToken.symbol}`}
-        </p>
-        {/* <p className="text-xs text-white bg-shark-400 bg-opacity-40 rounded-md border border-shark-300 px-2 py-1">
-          Max: 454.73 FNX per ETH
-        </p> */}
+      <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
+        <div>
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <div className="flex items-center flex-shrink-0">
+              <Image
+                src={firstToken.img}
+                alt="token"
+                className="rounded-full max-md:w-5 max-md:h-5"
+                width={30.5}
+                height={30.5}
+              />
+              <Image
+                src={secondToken.img}
+                alt="token"
+                className="-ml-2.5 md:-ml-4 rounded-full max-md:w-5 max-md:h-5"
+                width={30.5}
+                height={30.5}
+              />
+            </div>
+            <div className="flex flex-col gap-px">
+              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">
+                {firstToken.symbol} / {secondToken.symbol}
+              </h5>
+            </div>
+          </div>
+          <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]">
+            <div className="text-white">Current Pool Price: </div>
+            <div className="flex items-center gap-2.5">
+              <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
+                {/* <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} /> */}
+                <span>
+                  {isInverse
+                    ? Number(1 / (poolState.price / 10 ** firstToken.decimals)).toFixed(6)
+                    : Number(poolState.price / 10 ** secondToken.decimals).toFixed(6)}{' '}
+                  {isInverse
+                    ? `${firstToken.symbol} per ${secondToken.symbol}`
+                    : `${secondToken.symbol} per ${firstToken.symbol}`}
+                </span>
+              </p>
+              <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0"></p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <TokensSelector
