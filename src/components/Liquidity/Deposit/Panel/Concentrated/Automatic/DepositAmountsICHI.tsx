@@ -8,7 +8,7 @@ import { useReadContracts } from 'wagmi'
 import { formatUnits, zeroAddress } from 'viem'
 import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
 import { useSetToken0TypedValue, useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
-import { formatCurrency, toBN } from '@/src/library/utils/numbers'
+import { formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { erc20Abi } from 'viem'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
@@ -280,21 +280,6 @@ const DepositAmountsICHI = ({
     if (loading) return 'Depositing'
     return 'Deposit'
   }
-  const testinPosition = async () => {
-    try {
-      const a = await deposit(
-        '0x7cc2E3Cce45bA98007D3884bB64917483Bd4A00C', // user address
-        0, // token0
-        10, // token1
-        '0x61a51eA57C1b4Fb22b24F9871Df3bdB597d51d06', // vault WETH-USDB
-        web3Provider,
-        dex // fenix dex
-      )
-      // console.log(a)
-    } catch (error) {
-      // console.log(error)
-    }
-  }
 
   useEffect(() => {
     toBN(token0Balance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
@@ -323,19 +308,34 @@ const DepositAmountsICHI = ({
       }
     }
   }
-
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
-        <div className="flex w-full xl:w-3/5 justify-between mb-2">
-          <div className="text-xs leading-normal text-white ">Deposit amounts</div>
+        <div className="flex w-full items-center mb-2">
+          <div className="flex w-full xl:w-3/5 justify-between">
+            <div className="text-xs leading-normal text-white ">Deposit amounts</div>
 
-          <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
-            <span className="icon-wallet text-xs"></span>
-            Available: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
-            {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
-          </span>
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              {token0TypedValue && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
+                ? formatDollarAmount(
+                    toBN(token0TypedValue)
+                      .multipliedBy(
+                        tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price || 0
+                      )
+                      .toString()
+                  )
+                : ''}
+            </span>
+          </div>
+          <div className="xl:w-2/5 flex-shrink-0 flex justify-end">
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              <span className="icon-wallet text-xs"></span>
+              Available: {token0Balance ? formatCurrency(formatUnits(token0Balance || 0n, token0Decimals)) : '-'}{' '}
+              {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
+            </span>
+          </div>
         </div>
+
         <div className="flex items-center gap-3">
           <div className="relative w-full xl:w-3/5">
             <Toaster />
