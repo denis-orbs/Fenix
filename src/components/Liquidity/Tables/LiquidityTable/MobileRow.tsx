@@ -28,7 +28,7 @@ export default function MobileRow({
       <div
         className={`border border-shark-950 px-3 py-2 rounded-[10px] bg-shark-400 ${
           isOpen ? 'bg-opacity-60' : 'bg-opacity-20'
-        } ${'2xl:hidden'}`}
+        } ${'lg:hidden'}`}
       >
         <div className="flex gap-[9px] items-center">
           <div className="relative flex items-center">

@@ -40,7 +40,7 @@ const HeaderRow = ({
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
-    : { text: '', className: 'w-[0%]', sortable: true }
+    : { text: '', className:'w-[0px] !p-0', sortable: true }
 
   function paginate(items: BasicPool[], currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -92,16 +92,16 @@ const HeaderRow = ({
   return (
     <div className="relative">
       <div className="w-full mb-2.5 xl:mb-5">
-        <div className="hidden 2xl:block">
+        <div className="hidden lg:block">
           <TableHead
             items={[
               {
                 text: 'Pair',
-                className: `${activeRange ? 'w-[20%]' : width >= 1300 ? 'w-[20%]' : 'w-[27%]'}`,
+                className: `${activeRange ? 'w-[20%]' : 'w-[20%]'}`,
                 sortable: true,
               },
               RANGE,
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right`, sortable: true },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[20%]'} text-right`, sortable: true },
               { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
@@ -114,7 +114,7 @@ const HeaderRow = ({
                 className: 'w-[20%] text-right',
                 sortable: true,
               },
-              { text: 'Action', className: 'w-[15%] flex justify-center', sortable: false },
+              { text: 'Action', className: 'w-[10%] flex justify-end', sortable: false },
             ]}
             setSort={setSort}
             sort={sort}

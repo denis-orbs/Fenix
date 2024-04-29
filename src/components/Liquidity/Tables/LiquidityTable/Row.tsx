@@ -37,12 +37,12 @@ const RowData = ({
 
   return (
     <>
-      <TableRow className="hidden 2xl:flex">
+      <TableRow className="hidden lg:flex">
         <TableCell
-          className={`${activeRange ? 'w-[20%]' : width >= 1300 ? 'w-[20%]' : width < 1300 || width >= 1280 ? 'w-[27%]' : 'w-[25%]'}`}
+          className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}
         >
           <div className="flex items-center gap-2">
-            <div className="flex items-center">
+            <div className="flex items-center max-xl:hidden">
               <Image
                 src={`/static/images/tokens/${row.token0.symbol}.svg`}
                 alt="token"
@@ -63,29 +63,9 @@ const RowData = ({
                 {row.token0.symbol} / {row.token1.symbol}
               </h5>
               <div className="flex items-center gap-2">
-                {/* {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
-                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
-                    Volatile Pool{' '}
-                  </span>
-                )} */}
-                {/* {row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
-                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
-                    Stable Pool
-                  </span>
-                )} */}
-                {/* {row.pairDetails.pairSymbol === 'Concentrated pool' && (
-                  <span
-                    className="py-1 px-2  text-xs rounded-lg 
-                    bg-gradient-to-r from-outrageous-orange-500 to-festival-500"
-                    // bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
-                  >
-                    Concentrated
-                  </span>
-                )} */}
                 <span
                   className="py-1 px-2  text-xs rounded-lg 
                     bg-gradient-to-r from-outrageous-orange-500 to-festival-500"
-                  // bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
                 >
                   Concentrated
                 </span>
@@ -93,42 +73,17 @@ const RowData = ({
                   {/* FEES */}
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
-                {/* <Button variant="tertiary" className="!py-1">
-                  <span className="icon-info"></span>
-                </Button> */}
               </div>
             </div>
           </div>
         </TableCell>
-        {/* {activeRange && (
-          <TableCell className={`w-[12%] flex items-center justify-center`}>
-            <div className="flex gap-2 items-center">
-              <span className="bg-green-600 w-4 h-4 rounded-full border-4 border-black"></span>
-              <div className="text-xs flex flex-col">
-                <p className="text-shark-100 text-center">Min Price</p>
-                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  $0.00
-                </span>
-              </div>
-              <div className="text-xs flex flex-col">
-                <p className="text-shark-100 text-center">Max Price</p>
-                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  $0.00
-                </span>
-              </div>
-            </div>
-          </TableCell>
-        )} */}
-
         <TableCell
-          className={`${activeRange ? 'w-[8%]' : width <= 1250 ? 'w-[10%]' : 'w-[15%]'} flex justify-end items-center`}
+          className={`${activeRange ? 'w-[8%]' : 'w-[20%]'} flex justify-end items-center`}
         >
           <div className="flex  justify-center items-center gap-2 ">
-            {/* {totalCampaigns.map((campaign) => { })} */}
             <span
               ref={hoverRef}
               className="flex flex-row transition-transform transform group"
-              // className="flex flex-row hover:flex-row-reverse transition-transform transform hover:scale-110 hover:-translate-x-4"
             >
               <Image
                 src={`/static/images/tokens/blastgold.png`}
@@ -164,34 +119,16 @@ const RowData = ({
               {formatAmount(toBN(row.fee).div(10000).div(row.totalValueLockedUSD).multipliedBy(100), 4)}%
             </p>
           </div>
-          {/* <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-            {row.pairDetails.apr.toFixed(0)} %{' '}
-          </p> */}
         </TableCell>
 
-        <TableCell className={`${width <= 1250 ? 'w-[10%]' : 'w-[10%]'}`}>
+        <TableCell className={`w-[10%]`}>
           <div className="flex flex-col items-end justify-end w-full px-3">
             {/* TVL */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                {/* <Image
-                  src="/static/images/tokens/FNX.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                /> */}
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                {/* <Image
-                  src="/static/images/tokens/ETH.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                225.38 */}
               </p>
             </div>
           </div>
@@ -255,13 +192,9 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="flex  items-center w-[15%]">
-          <div className="flex gap-2 w-full justify-center">
+        <TableCell className="flex  items-center justify-end w-[10%]">
+          <div className="flex gap-2 w-full justify-end">
             {titleButton === '' ? (
-              // <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs ">
-              //   <span className="icon-info"></span>
-              //   Info
-              // </Button>
               <></>
             ) : (
               <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs">
@@ -274,7 +207,6 @@ const RowData = ({
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2  w-24 h-9 !text-xs"
-                // href={`/liquidity/deposit?type=${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'VOLATILE' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'STABLE' : 'CONCENTRATED_MANUAL'}&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`}
                 href={`/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`}
               >
                 <span className="icon-circles"></span>
