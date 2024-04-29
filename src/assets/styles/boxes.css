@@ -559,7 +559,7 @@
 .box-invert {
   @apply relative
   
-  w-full
+  xl:w-[312px]
   flex-shrink-0
   before:content-[""]
   before:absolute
@@ -584,6 +584,8 @@
   after:bottom-0
   after:left-0;
 }
+
+
 
 .mini-box-vote {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
@@ -726,8 +728,8 @@
   /* 2xl:w-[615px] */
   bg-shark-400
   bg-opacity-40
-  lg:bg-transparent
-  lg:bg-opacity-100
+  xl:bg-transparent
+  xl:bg-opacity-100
   py-8
   2xl:py-12
   px-8
@@ -742,7 +744,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:lg:block
+  before:xl:block
 
   after:content-[""]
   after:absolute
@@ -755,7 +757,7 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:lg:block;
+  after:xl:block;
 }
 
 /* Background for main box */
@@ -767,8 +769,8 @@
   flex-shrink-0
   bg-shark-400
   bg-opacity-40
-  lg:bg-transparent
-  lg:bg-opacity-100
+  xl:bg-transparent
+  xl:bg-opacity-100
   py-8
   2xl:py-12
   px-8
@@ -784,7 +786,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:lg:block
+  before:xl:block
 
   after:content-[""]
   after:absolute
@@ -797,7 +799,7 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:lg:block;
+  after:xl:block;
 }
 
 /* Background for veFNXIDO boxes */

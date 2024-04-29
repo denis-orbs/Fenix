@@ -47,7 +47,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
   const [poolState, setPoolState] = useState<StateType>({ price: 0, currentTick: 0 })
 
-  const [currentPercentage, setCurrentPercentage] = useState(5)
+  const [currentPercentage, setCurrentPercentage] = useState([-5, 5])
   const [shownPercentage, setShownPercentage] = useState(['5', '5'])
   const [rangePrice1, setRangePrice1] = useState(0)
   const [rangePrice2, setRangePrice2] = useState(0)
@@ -65,10 +65,56 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const [isLoading, setIsLoading] = useState(true)
   const [slippage, setSlippage] = useState(0.05)
 
+  const [timeout, setTimeoutID] = useState<NodeJS.Timeout>() 
+
   const account = useAccount()
   const { writeContractAsync } = useWriteContract()
 
+  function invertPercentage(percent: number) {
+    const remaining = 1 + percent / 100;
+    return (1 / remaining - 1) * 100;
+  }
+
+  const handleMinMaxInput = (value: any, isFirst: boolean) => {
+    if(timeout) clearTimeout(timeout)
+
+    const price = (isInverse ? 1/value.target.value : value.target.value)
+
+    if(isFirst) {
+      setRangePrice2(price)
+
+      const p = ((price / (poolState.price/1e18) - 1) * 100).toFixed(1)
+      setShownPercentage([
+        shownPercentage[0],
+        isInverse ? invertPercentage(Number(p)).toFixed(1) : p,
+      ])
+    } else {
+      setRangePrice1(price)
+
+      const p = ((1 - price / (poolState.price/1e18)) * 100).toFixed(1)
+      setShownPercentage([
+        isInverse ? invertPercentage(Number(p)).toFixed(1) : p,
+        shownPercentage[1],
+      ])
+    }
+
+    const newTimeout = setTimeout(() => {
+      const currentPrice = poolState.price/1e18
+  
+      const pricePercentage = (
+        (
+          (price-currentPrice) / currentPrice
+        )
+      ) * 100
+  
+      if(isFirst) setCurrentPercentage([currentPercentage[0], pricePercentage])
+      else setCurrentPercentage([pricePercentage, currentPercentage[1]])
+    }, 2000)
+
+    setTimeoutID(newTimeout)
+  }
   const addNotification = useNotificationAdderCallback()
+
 
   useEffect(() => {
     if (poolState.price == 0) {
@@ -133,12 +179,12 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
       const state = await getAlgebraPoolPrice(firstToken.address as Address, secondToken.address as Address)
       setPoolState(state as StateType)
 
-      if (currentPercentage == -1) {
+      if (currentPercentage[0] == -1 && currentPercentage[1] == -1) {
         setRangePrice1(0)
         setRangePrice2(-1)
       } else {
-        setRangePrice1((Number(state.price) / 1e18) * (1 - currentPercentage / 100))
-        setRangePrice2((Number(state.price) / 1e18) * (1 + currentPercentage / 100))
+        setRangePrice1((Number(state.price) / 1e18) * (1 + currentPercentage[0] / 100))
+        setRangePrice2((Number(state.price) / 1e18) * (1 + currentPercentage[1] / 100))
       }
     }
 
@@ -147,7 +193,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   useEffect(() => {
     const asyncFn = async () => {
-      if (currentPercentage == -1) {
+      if (currentPercentage[0] == -1 && currentPercentage[1] == -1) {
         setLowerTick(-887220)
         setHigherTick(887220)
         setRangePrice1(0)
@@ -155,10 +201,10 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setShownPercentage(['', ''])
       } else {
         const priceAndTick1: { price: number; tick: number } = await getPriceAndTick(
-          (Number(poolState.price) / 1e18) * (1 - currentPercentage / 100)
+          (Number(poolState.price) / 1e18) * (1 + currentPercentage[0] / 100)
         )
         const priceAndTick2: { price: number; tick: number } = await getPriceAndTick(
-          (Number(poolState.price) / 1e18) * (1 + currentPercentage / 100)
+          (Number(poolState.price) / 1e18) * (1 + currentPercentage[1] / 100)
         )
 
         setLowerTick(priceAndTick1.tick)
@@ -351,11 +397,13 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         shownPercentage={shownPercentage}
         currentPercentage={currentPercentage}
         setCurrentPercentage={setCurrentPercentage}
-        price1={isInverse ? rangePrice1 : 1 / rangePrice1}
-        price2={isInverse ? rangePrice2 : 1 / rangePrice2}
+        price1={rangePrice1} //isInverse ? 1 / rangePrice1 : rangePrice1}
+        price2={rangePrice2} //isInverse ? 1 / rangePrice2 : rangePrice2}
         token1={isInverse ? secondToken : firstToken}
         token2={isInverse ? firstToken : secondToken}
         multiplier={decMultiplier}
+        handleMinMaxInput={handleMinMaxInput}
+        isInverse={isInverse}
       />
       <TokensSelector
         firstToken={firstToken}

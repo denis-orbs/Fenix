@@ -7,7 +7,7 @@ import Graph from './Graph'
 import { positions } from './Strategy'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
-import { fromWei } from '@/src/library/utils/numbers'
+import { formatDollarAmount, fromWei } from '@/src/library/utils/numbers'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { publicClient } from '@/src/library/constants/viemClient'
@@ -211,25 +211,25 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                       : `${row?.token0?.symbol}`}
                   </h4>
                   <h4 className="text-sm text-white">
-                    {Number(row?.depositedToken0).toFixed(5)} ${' '}
+                    {Number(row?.depositedToken0).toFixed(5)}{' '}
                     {row.liquidity === 'ichi'
                       ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
                       : `${row?.token0?.symbol}`}
                   </h4>
                   <p className="text-xs text-white">
-                    {Number(row?.depositedToken0).toFixed(5)} $ ${' '}
-                    {(
+                    {Number(row?.depositedToken0).toFixed(5)}{' '}
+                    {formatDollarAmount(
                       Number(row?.depositedToken0) *
-                      Number(
-                        tokens.find(
-                          (e) =>
-                            e.tokenAddress.toLowerCase() ===
-                            (row.liquidity === 'ichi'
-                              ? ichitokens?.tokenA.toLowerCase()
-                              : row?.token0?.id.toLowerCase())
-                        )?.priceUSD
-                      )
-                    ).toFixed(2)}
+                        Number(
+                          tokens.find(
+                            (e) =>
+                              e.tokenAddress.toLowerCase() ===
+                              (row.liquidity === 'ichi'
+                                ? ichitokens?.tokenA.toLowerCase()
+                                : row?.token0?.id.toLowerCase())
+                          )?.priceUSD
+                        )
+                    )}
                   </p>
                 </div>
                 <div className="flex items-start flex-col p-4 w-1/2 border-l border-shark-400">
@@ -240,25 +240,25 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                   </h4>
                   <h4 className="text-sm text-white">
                     {' '}
-                    {Number(row?.depositedToken1).toFixed(5)} $
+                    {Number(row?.depositedToken1).toFixed(5)}{' '}
                     {row.liquidity === 'ichi'
                       ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
                       : `${row?.token1?.symbol}`}
                   </h4>
                   <p className="text-xs text-white">
                     ${' '}
-                    {(
+                    {formatDollarAmount(
                       Number(row?.depositedToken1) *
-                      Number(
-                        tokens.find(
-                          (e) =>
-                            e.tokenAddress.toLowerCase() ===
-                            (row.liquidity === 'ichi'
-                              ? ichitokens?.tokenB.toLowerCase()
-                              : row?.token1?.id.toLowerCase())
-                        )?.priceUSD
-                      )
-                    ).toFixed(2)}
+                        Number(
+                          tokens.find(
+                            (e) =>
+                              e.tokenAddress.toLowerCase() ===
+                              (row.liquidity === 'ichi'
+                                ? ichitokens?.tokenB.toLowerCase()
+                                : row?.token1?.id.toLowerCase())
+                          )?.priceUSD
+                        )
+                    )}
                   </p>
                 </div>
               </div>
