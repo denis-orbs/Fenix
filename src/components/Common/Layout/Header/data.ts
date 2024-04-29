@@ -26,7 +26,7 @@ export const MENU_LINKS = [
   //   href: '/migration',
   // },
   {
-    name: 'Orbit Points',
+    name: 'Ring Points',
     href: '/points-program',
   },
   // {
