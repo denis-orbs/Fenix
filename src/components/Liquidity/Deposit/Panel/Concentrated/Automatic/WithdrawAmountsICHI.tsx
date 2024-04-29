@@ -4,7 +4,6 @@ import { INPUT_PRECISION } from '@/src/library/constants/misc'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-
 import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { formatAmount, toBN } from '@/src/library/utils/numbers'
@@ -28,6 +27,7 @@ const WithdrawAmountsICHI = ({
   const [isActive, setIsActive] = useState<boolean>(false)
   const [selected, setIsSelected] = useState<string>('Choose one')
   const { account } = useActiveConnectionDetails()
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
 
   const addNotification = useNotificationAdderCallback()
 
@@ -119,6 +119,34 @@ const WithdrawAmountsICHI = ({
       })
     }
   }
+
+  useEffect(() => {
+    toBN(totalUserShares).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [totalUserShares])
+
+  const handleHalf = () => {
+    if (btnDisabled) {
+      setAmountToWithdraw('')
+    } else {
+      if (!totalUserShares || totalUserShares == '') {
+        return setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
+      } else {
+        setAmountToWithdraw('')
+      }
+    }
+  }
+
+  const handleMax = () => {
+    if (btnDisabled) {
+      setAmountToWithdraw('')
+    } else {
+      if (!totalUserShares || totalUserShares == '') {
+        return setAmountToWithdraw(toBN(totalUserShares).toString())
+      } else {
+        setAmountToWithdraw('')
+      }
+    }
+  }
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -144,24 +172,10 @@ const WithdrawAmountsICHI = ({
               className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             />
             <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!totalUserShares || totalUserShares == '') return
-                  setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
-                }}
-              >
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
                 Half
               </Button>
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!totalUserShares || totalUserShares == '') return
-                  setAmountToWithdraw(toBN(totalUserShares).toString())
-                }}
-              >
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
                 Max
               </Button>
             </div>
