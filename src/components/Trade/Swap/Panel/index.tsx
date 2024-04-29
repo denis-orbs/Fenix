@@ -627,9 +627,11 @@ const Panel = () => {
                   needSupportedChain: true,
                 }}
                 disabled={
-                  currentButtonState === ButtonState.LOADING ||
-                  currentButtonState === ButtonState.APPROVING ||
-                  currentButtonState === ButtonState.WAITING_APPROVAL
+                  !isConnected
+                    ? false
+                    : currentButtonState === ButtonState.LOADING ||
+                      currentButtonState === ButtonState.APPROVING ||
+                      currentButtonState === ButtonState.WAITING_APPROVAL
                 }
               >
                 {currentButtonState === ButtonState.LOADING ? (

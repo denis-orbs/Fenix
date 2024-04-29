@@ -1,10 +1,10 @@
 export const totalCampaigns = [
   {
-    campaignId: '0x2624965fc2cf8c9f1516c025da99a4c742c997df32ddc7862629a8479d179a32',
-    pairAddress: '0x30330761b2b7548a8CeB92a45E914387a78C02Ec',
+    campaignId: '0xa683091c29d3ffdc566dc50cf0e8ede8c4a978d43ea030ba178ebd9a9c356383',
+    pairAddress: '0xC066A3e5D7c22Bd3BEaF74d4C0925520B455bB6F',
   },
   {
-    campaignId: '0x2624965fc2cf8c9f1516c025da99a4c742c997df32ddc7862629a8479d179a32',
-    pairAddress: '0xf13ebe82f017c3c07c4ff4b814b98fb4c834504e',
+    campaignId: '0xee399484502a282a8ae00c6a1cf90746b476312e60baf3f0947873596ae09482',
+    pairAddress: '0x1D74611f3EF04E7252f7651526711a937Aa1f75e',
   },
 ]

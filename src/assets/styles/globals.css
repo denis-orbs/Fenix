@@ -63,7 +63,12 @@ body {
 }
 
 .container {
-  @apply mx-auto max-w-[1860px] px-5;
+  @apply mx-auto 
+  lg:max-w-[calc(100%-150px)]
+  xl:max-w-[calc(100%-150px)] 
+  2xl:max-w-[1600px]
+  px-2
+ xl:px-[40px]
 }
 
 .svgcontainer {
@@ -434,7 +439,12 @@ body {
   background: linear-gradient(101deg, rgba(41, 45, 50, 0.4) 33.56%, rgba(123, 138, 152, 0.4) 158.95%);
 }
 .airdrop-gradient {
+
   background: var(--Fenix-Gradient, linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%));
+}
+
+
+  background: var(--Fenix-Gradient, linear-gradient(90deg, #fe5e35 10.49%, #f67702 92.04%, #ffef76 158.76%));
 }
 
 @keyframes progress-toast {

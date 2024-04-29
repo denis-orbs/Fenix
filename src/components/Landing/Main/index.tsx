@@ -60,6 +60,7 @@ const Main = () => {
   const handleIsHoverInactive = () => setIsHover(false)
 
   const handlerConnectWallet = () => setWalletSelectionModal(true)
+
   const [globalStatistics, setGlobalStatistics] = useState<Awaited<ReturnType<typeof fetchGlobalStatistics>>>()
   useEffect(() => {
     fetchGlobalStatistics().then((data) => {

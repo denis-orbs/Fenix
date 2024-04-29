@@ -14,7 +14,7 @@ const Header = () => {
 
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   return (
-    <header className={`hidden mx-auto ${pathname === '/' ? 'lg:block' : 'md:block'}  container`}>
+    <header className={`hidden mx-auto ${pathname === '/' ? 'lg:block' : 'lg:block'}  container`}>
       <div
         className={`${pathname === '/' ? '' : 'header-box px-5 pb-3'} flex justify-between items-center ${width < 860 ? 'gap-1' : 'gap-5'} rounded-l`}
       >

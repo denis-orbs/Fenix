@@ -129,7 +129,8 @@ const PointSummary = ({ userData }: any) => {
         </div>
         <div className="point-summary-box">
           <p className="text-base text-white w-full mb-4">
-            Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span>
+            Next Points Drop
+            {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
           </p>
           <div className="w-full">
             <Countdown key={time} date={time} daysInHours={true} autoStart={true} renderer={renderer} />

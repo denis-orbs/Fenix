@@ -33,7 +33,7 @@ const Leaderboard = ({ data }: any) => {
         {data.map((data: any, index: number) => (
           <Item key={index} data={data} />
         ))}
-        <Pagination className="mx-auto" numberPages={7} />
+        {/* <Pagination className="mx-auto" numberPages={7} /> */}
       </div>
     </div>
   )

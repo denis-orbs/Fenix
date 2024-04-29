@@ -92,6 +92,10 @@ export const POOLS_LIST = gql`
       }
       sqrtPrice
       liquidity
+      volumeToken1
+      volumeToken0
+      feesToken0
+      feesToken1
       tick
       tickSpacing
       totalValueLockedUSD

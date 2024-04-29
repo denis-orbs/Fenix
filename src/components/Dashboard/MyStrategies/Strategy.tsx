@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Button, Switch } from '@/src/components/UI'
 import Graph from './Graph'
 import ComponentVisible from '@/src/library/hooks/useVisible'
-import { fromWei } from '@/src/library/utils/numbers'
+import { formatDollarAmount, fromWei } from '@/src/library/utils/numbers'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
 import { useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
@@ -264,23 +264,23 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token0?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
-                {Number(row?.depositedToken0).toFixed(5)} ${' '}
+                {Number(row?.depositedToken0).toFixed(5)}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token0?.symbol}`}
               </h4>
               <p className="text-xs text-white">
-                ${' '}
-                {(
+                {' '}
+                {formatDollarAmount(
                   Number(row?.depositedToken0) *
-                  Number(
-                    tokens.find(
-                      (e) =>
-                        e.tokenAddress.toLowerCase() ===
-                        (row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase())
-                    )?.priceUSD
-                  )
-                ).toFixed(2)}
+                    Number(
+                      tokens.find(
+                        (e) =>
+                          e.tokenAddress.toLowerCase() ===
+                          (row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase())
+                      )?.priceUSD
+                    )
+                )}
               </p>
             </div>
             <div className="flex items-start flex-col p-4 w-1/2 border-l border-shark-400">
@@ -291,15 +291,13 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
               </h4>
               <h4 className="text-sm text-white">
                 {' '}
-                {Number(row?.depositedToken1).toFixed(5)} $
+                {Number(row?.depositedToken1).toFixed(5)}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token1?.symbol}`}
               </h4>
               <p className="text-xs text-white">
-                ${' '}
-                {(
-                  Number(row?.depositedToken1) *
+                {formatDollarAmount(
                   Number(
                     tokens.find(
                       (e) =>
@@ -307,7 +305,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                         (row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase())
                     )?.priceUSD
                   )
-                ).toFixed(2)}
+                )}
               </p>
             </div>
           </div>
@@ -321,12 +319,12 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           />
         </div>
         <div className="flex flex-row gap-5 items-center justify-center p-3">
-          <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
+          {/* <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
             <span className="text-l">Deposits</span>
           </Button>
           <Button variant="tertiary" className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center">
             <span className="text-l">Stake</span>
-          </Button>
+          </Button> */}
           <Button
             variant="tertiary"
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
