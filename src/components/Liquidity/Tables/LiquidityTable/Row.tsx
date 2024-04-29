@@ -138,8 +138,8 @@ const RowData = ({
           <div className="flex flex-col items-end justify-end w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
-            <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 font-normal text-xs text-shark-100 ">
+            <div className="flex items-center justify-end text-right gap-2">
+              <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 <Image
                   src={`/static/images/tokens/${row.token0.symbol}.svg`}
                   alt="token"
@@ -149,7 +149,7 @@ const RowData = ({
                 />
                 {formatCurrency(Number(row.volumeToken0), 2)}VOL0 {row.token0.symbol}
               </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100 font-normal ">
+              <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100 font-normal ">
                 <Image
                   src={`/static/images/tokens/${row.token1.symbol}.svg`}
                   alt="token"
@@ -167,8 +167,8 @@ const RowData = ({
           <div className="flex flex-col items-end justify-end w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
-            <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 text-xs text-shark-100">
+            <div className="flex items-center gap-2 justify-end text-right">
+              <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
                 <Image
                   src={`/static/images/tokens/${row.token0.symbol}.svg`}
                   alt="token"
@@ -178,7 +178,7 @@ const RowData = ({
                 />
                 {formatCurrency(toBN(row.feesToken0).multipliedBy(row.token0Price), 2)} {row.token0.symbol}
               </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
+              <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
                 <Image
                   src={`/static/images/tokens/${row.token1.symbol}.svg`}
                   alt="token"
