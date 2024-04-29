@@ -108,7 +108,7 @@ export default function MobileRowNew({
             </div>
           </div>
         )}
-        <div className="flex flex-col gap-2.5  mb-2.5">
+        <div className="flex flex-col gap-1  mb-2.5">
           <div className='flex items-center justify-between'>
             <div
               className="flex flex-col items-center w-[30%] justify-between border border-shark-300 p-4 rounded-lg
