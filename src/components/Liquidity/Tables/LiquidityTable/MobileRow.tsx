@@ -213,8 +213,7 @@ export default function MobileRow({
                         height={10}
                       />
                       <span className="text-xs leading-normal">
-                        {' '}
-                        {formatCurrency(Number(row.token0.volumeUSD))} {row.token0.symbol}
+                        {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
                       </span>
                     </div>
                     <div className="flex items-center gap-[5px]">
@@ -226,7 +225,7 @@ export default function MobileRow({
                         height={10}
                       />
                       <span className="text-xs leading-normal">
-                        {formatCurrency(Number(row.token1.volumeUSD))} {row.token1.symbol}
+                        {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
                       </span>
                     </div>
                   </div>
@@ -251,7 +250,7 @@ export default function MobileRow({
                         height={10}
                       />
                       <span className="text-xs leading-normal">
-                        {formatCurrency(Number(row.token0.feesUSD))} {row.token0.symbol}
+                        {formatCurrency(toBN(row.feesToken0), 2)} {row.token0.symbol}
                       </span>
                     </div>
                     <div className="flex items-center gap-[5px]">
@@ -263,8 +262,7 @@ export default function MobileRow({
                         height={10}
                       />
                       <span className="text-xs leading-normal">
-                        {' '}
-                        {formatCurrency(Number(row.token1.feesUSD))} {row.token1.symbol}
+                        {formatCurrency(toBN(row.feesToken1), 2)} {row.token1.symbol}
                       </span>
                     </div>
                   </div>
