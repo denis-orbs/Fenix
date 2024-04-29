@@ -93,7 +93,7 @@ const PointSummary = ({ userData }: any) => {
       </div>
       <div className="flex flex-col xl:flex-row items-center justify-between gap-5 xl:gap-20 relative z-20">
         <div className="point-summary-box">
-          <p className="text-base mb-2 text-white w-full text-left">Orbits</p>
+          <p className="text-base mb-2 text-white w-full text-left">Rings</p>
           <div className="flex items-center gap-4 w-full">
             <Image src="/static/images/tokens/FNX.svg" alt="token" width={20} height={20} className="w-8 h-8" />
             <div className="">
@@ -129,7 +129,8 @@ const PointSummary = ({ userData }: any) => {
         </div>
         <div className="point-summary-box">
           <p className="text-base text-white w-full mb-4">
-            Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span>
+            Next Points Drop
+            {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
           </p>
           <div className="w-full">
             <Countdown key={time} date={time} daysInHours={true} autoStart={true} renderer={renderer} />

@@ -16,6 +16,8 @@ import { formatNumber } from '@/src/library/utils/numbers'
 import Loader from '@/src/components/UI/Icons/Loader'
 import ApproveButtons from '@/src/components/Liquidity/Common/ApproveButtons'
 import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
 interface StateType {
   price: number
@@ -38,7 +40,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     id: 1,
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023' as Address,
-    img: '/static/images/tokens/WETH.svg',
+    img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
@@ -58,10 +60,10 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     parseInt(firstToken.address as string) > parseInt(secondToken.address as string)
   )
 
-  const [decMultiplier, setDecMultiplier] = useState(1) 
+  const [decMultiplier, setDecMultiplier] = useState(1)
 
   const [isLoading, setIsLoading] = useState(true)
-  const [slippage, setSlippage] = useState(0.05) 
+  const [slippage, setSlippage] = useState(0.05)
 
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout>() 
 
@@ -111,27 +113,33 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
     setTimeoutID(newTimeout)
   }
+  const addNotification = useNotificationAdderCallback()
+
 
   useEffect(() => {
-    if (poolState.price == 0) { 
+    if (poolState.price == 0) {
       setRatio(1)
-      return 
+      return
     }
 
     const asyncFn = async () => {
       const realRatio: number = parseFloat(await getRatio(poolState.currentTick, higherTick, lowerTick))
       const decimalDifference = 10 ** Math.abs(firstToken.decimals - secondToken.decimals)
-      const decimalMultiplier = firstToken.decimals > secondToken.decimals ? decimalDifference : 1/decimalDifference
+      const decimalMultiplier = firstToken.decimals > secondToken.decimals ? decimalDifference : 1 / decimalDifference
 
       setDecMultiplier(decimalMultiplier)
-      setRatio(isInverse ? parseFloat(realRatio.toString()) / decimalMultiplier : 1 / parseFloat(realRatio.toString()) / decimalMultiplier)
+      setRatio(
+        isInverse
+          ? parseFloat(realRatio.toString()) / decimalMultiplier
+          : 1 / parseFloat(realRatio.toString()) / decimalMultiplier
+      )
     }
 
     asyncFn()
   }, [lowerTick, higherTick, poolState, isInverse])
 
   useEffect(() => {
-    setSecondValue((formatNumber(Number(firstValue) * ratio)))
+    setSecondValue(formatNumber(Number(firstValue) * ratio))
   }, [ratio])
 
   useEffect(() => {
@@ -221,11 +229,20 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     const _firstValue = isInverse ? secondValue : firstValue
     const _secondValue = isInverse ? firstValue : secondValue
 
-    const _ethValue = _firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? BigInt(Math.floor(Number(formatNumber(Number(_firstValue))) * (1e18))) 
-                      : _secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? BigInt(Math.floor(Number(formatNumber(Number(_secondValue))) * (1e18))) 
-                      : BigInt(0)
-    _firstToken.address = _firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : _firstToken.address
-    _secondToken.address = _secondToken.address?.toLocaleLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : _secondToken.address
+    const _ethValue =
+      _firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE
+        ? BigInt(Math.floor(Number(formatNumber(Number(_firstValue))) * 1e18))
+        : _secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE
+          ? BigInt(Math.floor(Number(formatNumber(Number(_secondValue))) * 1e18))
+          : BigInt(0)
+    _firstToken.address =
+      _firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE
+        ? '0x4300000000000000000000000000000000000004'
+        : _firstToken.address
+    _secondToken.address =
+      _secondToken.address?.toLocaleLowerCase() == NATIVE_ETH_LOWERCASE
+        ? '0x4300000000000000000000000000000000000004'
+        : _secondToken.address
 
     writeContractAsync(
       {
@@ -238,29 +255,53 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
             _secondToken.address as Address,
             lowerTick,
             higherTick,
-            Math.floor(Number(formatNumber(Number(_firstValue))) * (10**_firstToken.decimals)),
-            Math.floor(Number(formatNumber(Number(_secondValue))) * (10**_secondToken.decimals)),
-            Math.floor(Number(formatNumber(Number(_firstValue) * (1-slippage))) * (10**_firstToken.decimals)),
-            Math.floor(Number(formatNumber(Number(_secondValue) * (1-slippage))) * (10**_secondToken.decimals)),
+            Math.floor(Number(formatNumber(Number(_firstValue))) * 10 ** _firstToken.decimals),
+            Math.floor(Number(formatNumber(Number(_secondValue))) * 10 ** _secondToken.decimals),
+            Math.floor(Number(formatNumber(Number(_firstValue) * (1 - slippage))) * 10 ** _firstToken.decimals),
+            Math.floor(Number(formatNumber(Number(_secondValue) * (1 - slippage))) * 10 ** _secondToken.decimals),
             account.address as Address,
             parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
-        value: _ethValue
+        value: _ethValue,
       },
       {
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Added LP successfully.`)
+            // toast(`Added LP successfully.`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Added LP successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
             toast(`Added LP TX failed, hash: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Added LP TX failed, hash: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
           setIsLoading(false)
         },
         onError: (e) => {
-          console.log(e)
-          toast(`Added LP failed. `)
+          // console.log(e)
+          // toast(`Added LP failed. `)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Added LP failed.`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }
@@ -281,9 +322,25 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            toast(`Approved successfully`)
+            // toast(`Approved successfully`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approved successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           } else {
-            toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            // toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Approve TX failed, tx: ${transaction.transactionHash}`,
+              notificationType: NotificationType.ERROR,
+              txHash: transaction.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
           }
 
           const allowanceFirst: any = await getTokenAllowance(
@@ -302,7 +359,15 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           setIsLoading(false)
         },
         onError: (e) => {
-          toast(`Approve failed.`)
+          // toast(`Approve failed.`)
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Approve failed.`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
           setIsLoading(false)
         },
       }
@@ -312,12 +377,12 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const handleOnTokenValueChange = async (input: any, token: IToken) => {
     // TODO: handle if pair is not created
     if (firstToken.address === token.address) {
-      if (parseFloat(input) != 0) setSecondValue(formatNumber((parseFloat(input) * Number(ratio)), secondToken.decimals))
+      if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(ratio), secondToken.decimals))
       if (parseFloat(input) == 0) setSecondValue('')
       setFirstValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input), firstToken.decimals) : input)
     } else {
       if (parseFloat(input) != 0)
-        setFirstValue(formatNumber((parseFloat(input) / (Number(ratio) == 0 ? 1 : Number(ratio))), firstToken.decimals))
+        setFirstValue(formatNumber(parseFloat(input) / (Number(ratio) == 0 ? 1 : Number(ratio)), firstToken.decimals))
       if (parseFloat(input) == 0) setFirstValue('')
       setSecondValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input), secondToken.decimals) : input)
     }
@@ -351,15 +416,15 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setSecondValue={(value) => setSecondValue(value)}
         onTokenValueChange={handleOnTokenValueChange}
       />
-      <ApproveButtons 
-        shouldApproveFirst={shouldApproveFirst} 
-        shouldApproveSecond={shouldApproveSecond} 
-        token0={firstToken} 
-        token1={secondToken} 
-        handleApprove={handleApprove} 
-        mainFn={handleCLAdd} 
-        mainText={'Create Position'} 
-        isLoading={isLoading}      
+      <ApproveButtons
+        shouldApproveFirst={shouldApproveFirst}
+        shouldApproveSecond={shouldApproveSecond}
+        token0={firstToken}
+        token1={secondToken}
+        handleApprove={handleApprove}
+        mainFn={handleCLAdd}
+        mainText={'Create Position'}
+        isLoading={isLoading}
       />
     </>
   )

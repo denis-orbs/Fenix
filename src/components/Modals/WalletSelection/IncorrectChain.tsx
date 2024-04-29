@@ -3,12 +3,11 @@
 import { Button } from '@/src/components/UI'
 import Image from 'next/image'
 
-interface SlippageToleranceProps {
+interface IncorrectChainProps {
   setOpenModal: (openModal: boolean) => void
 }
 
-const IncorrectChain = ({ setOpenModal }: SlippageToleranceProps) => {
-
+const IncorrectChain = ({ setOpenModal }: IncorrectChainProps) => {
   const handlerClose = () => setOpenModal(false)
 
   return (

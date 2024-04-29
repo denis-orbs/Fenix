@@ -59,7 +59,7 @@ const Item = ({ option }: { option: IOption }) => {
   const isMobile = useIsMobile()
   const token0 = useToken0()
   const token1 = useToken1()
-  console.log(logo)
+  // console.log(logo)
   //  const { apr } = useIchiVaultInfo(token0, token1)
   return (
     <div className="flex h-[30px] items-center min-w-0 text-ellipsis whitespace-nowrap flex-grow justify-between">

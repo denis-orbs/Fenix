@@ -36,9 +36,9 @@ const Slippage = () => {
   // when input changes, validate schema
   useEffect(() => {
     try {
-      console.log(slippageInput)
+      // console.log(slippageInput)
       const parsedInput = slippageInput === 'auto' ? 'auto' : parseFloat(slippageInput)
-      console.log(parsedInput)
+      // console.log(parsedInput)
       slippageSchema.parse(parsedInput)
       setInvalidInput(false)
     } catch (error) {

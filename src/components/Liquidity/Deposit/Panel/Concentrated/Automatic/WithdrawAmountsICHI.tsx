@@ -4,14 +4,15 @@ import { INPUT_PRECISION } from '@/src/library/constants/misc'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-
 import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-import { formatAmount, toBN } from '@/src/library/utils/numbers'
+import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 const WithdrawAmountsICHI = ({
@@ -26,6 +27,9 @@ const WithdrawAmountsICHI = ({
   const [isActive, setIsActive] = useState<boolean>(false)
   const [selected, setIsSelected] = useState<string>('Choose one')
   const { account } = useActiveConnectionDetails()
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+
+  const addNotification = useNotificationAdderCallback()
 
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
@@ -83,26 +87,95 @@ const WithdrawAmountsICHI = ({
     if (!vaultAddress) return
     try {
       const txnDetails = await withdraw(account, amoutToWithdraw, vaultAddress.id, web3Provider, dex)
-      toast.success('Withdrawal Transaction Sent')
+      // toast.success('Withdrawal Transaction Sent')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Withdrawal Transaction Sent.`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
       txnDetails.wait()
-      toast.success('Withdrawal Successful')
+      // toast.success('Withdrawal Successful')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Withdrawal Successful.`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     } catch (error: any) {
       if (error?.code == 401) return
-      toast.error(error?.message)
+      // toast.error(error?.message)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `${error?.message}`,
+        notificationType: NotificationType.ERROR,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
+    }
+  }
+
+  useEffect(() => {
+    toBN(totalUserShares).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [totalUserShares])
+
+  const handleHalf = () => {
+    console.log(!totalUserShares)
+    console.log()
+    console.log(totalUserShares)
+    if (btnDisabled) {
+      setAmountToWithdraw('')
+    } else {
+      if (!totalUserShares || totalUserShares === '') {
+        setAmountToWithdraw('')
+      } else {
+        setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
+      }
+    }
+  }
+
+  const handleMax = () => {
+    if (btnDisabled) {
+      setAmountToWithdraw('')
+    } else {
+      if (!totalUserShares || totalUserShares === '') {
+        setAmountToWithdraw('')
+      } else {
+        setAmountToWithdraw(toBN(totalUserShares).toString())
+      }
     }
   }
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
-        <div className="flex items-center mb-2 text-xs leading-normal w-full xl:w-3/5 justify-between">
-          <div className=" text-white">Withdraw amounts</div>
-          <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
-            <span className="icon-wallet text-xs"></span>
-            {/* Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'} */}
-            Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'}{' '}
-            {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
-          </span>
+        <div className="flex w-full items-center mb-2">
+          <div className="flex w-full xl:w-3/5 justify-between">
+            <div className="text-xs leading-normal text-white">Withdraw amounts</div>
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              {/* {amoutToWithdraw && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
+                ? formatDollarAmount(
+                    toBN(amoutToWithdraw)
+                      .multipliedBy(
+                        tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price || 0
+                      )
+                      .toString()
+                  )
+                : ''} */}
+            </span>
+          </div>
+          <div className="xl:w-2/5 flex-shrink-0 flex justify-end">
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              <span className="icon-wallet text-xs"></span>
+              Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares, 4) : '-'}{' '}
+            </span>
+          </div>
         </div>
+
         <div className="flex items-center gap-3">
           <div className="relative w-full xl:w-3/5">
             <Toaster />
@@ -116,24 +189,10 @@ const WithdrawAmountsICHI = ({
               className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             />
             <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!totalUserShares || totalUserShares == '') return
-                  setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
-                }}
-              >
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
                 Half
               </Button>
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!totalUserShares || totalUserShares == '') return
-                  setAmountToWithdraw(toBN(totalUserShares).toString())
-                }}
-              >
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
                 Max
               </Button>
             </div>
@@ -221,7 +280,15 @@ const WithdrawAmountsICHI = ({
         </div>
       </div>
 
-      <Button onClick={withdrawFromVault} variant="tertiary" className="w-full mx-auto !text-xs !h-[49px]">
+      <Button
+        onClick={withdrawFromVault}
+        walletConfig={{
+          needWalletConnected: true,
+          needSupportedChain: true,
+        }}
+        variant="tertiary"
+        className="w-full mx-auto !text-xs !h-[49px]"
+      >
         {getButtonText()}
       </Button>
     </>

@@ -105,3 +105,11 @@ export function useSetToken1TypedValue() {
     [dispatch]
   )
 }
+
+export function useAllPools() {
+  const pools = useAppSelector((state) => state.liquidity.pools)
+  return {
+    loading: pools.state === ApiState.LOADING,
+    data: pools.data,
+  }
+}

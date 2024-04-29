@@ -16,6 +16,7 @@ import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { config, configwallets } from '@/src/app/layout'
 import cn from '@/src/library/utils/cn'
 import { blast } from 'viem/chains'
+import { isSupportedChain } from '@/src/library/constants/chains'
 
 interface Points {
   userLiqPoints: number[]
@@ -47,7 +48,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const [data, setData] = useState<Points>({} as Points)
   const { address, chainId } = useAccount()
   const { switchChainAsync } = useSwitchChain()
-  const wrongChain = chainId?.toString() !== process.env.NEXT_PUBLIC_CHAINID
+  const wrongChain = !isSupportedChain(chainId)
   useEffect(() => {
     const fetchData = async (campaignId: string, pairAddress: string, address: Address) => {
       try {
