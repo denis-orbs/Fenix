@@ -236,7 +236,7 @@ const Classic = ({
               message: `Added successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
             // toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
@@ -246,7 +246,7 @@ const Classic = ({
               message: `Add LP TX failed, hash`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           }
         },
@@ -258,7 +258,7 @@ const Classic = ({
             message: `Add LP failed. ${e}`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
         },
       }
@@ -296,7 +296,7 @@ const Classic = ({
               message: `Added successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
             // toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
@@ -306,7 +306,7 @@ const Classic = ({
               message: `Remove LP TX failed, hash: ${transaction.transactionHash}`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           }
         },
@@ -318,7 +318,7 @@ const Classic = ({
             message: `Add LP failed. ${e}`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
         },
       }
@@ -344,7 +344,7 @@ const Classic = ({
               message: `Approved successfully`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
             // toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
@@ -354,7 +354,7 @@ const Classic = ({
               message: `Approve TX failed, tx: ${transaction.transactionHash}`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           }
 
@@ -389,7 +389,7 @@ const Classic = ({
             message: `Approve failed. ${e}`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
         },
       }

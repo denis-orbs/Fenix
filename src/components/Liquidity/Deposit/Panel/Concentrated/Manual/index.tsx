@@ -230,7 +230,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
               message: `Added LP successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
             toast(`Added LP TX failed, hash: ${transaction.transactionHash}`)
@@ -240,7 +240,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
               message: `Added LP TX failed, hash: ${transaction.transactionHash}`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           }
           setIsLoading(false)
@@ -254,7 +254,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
             message: `Added LP failed.`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
           setIsLoading(false)
         },
@@ -283,7 +283,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
               message: `Approved successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
             // toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
@@ -293,7 +293,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
               message: `Approve TX failed, tx: ${transaction.transactionHash}`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           }
 
@@ -320,7 +320,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
             message: `Approve failed.`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
           setIsLoading(false)
         },

@@ -69,14 +69,13 @@ const Panel = () => {
     const notificationMessage = `${tokenSell?.symbol} for ${tokenGet?.symbol}`
 
     console.log(notificationMessage)
-
     addNotification({
       id: id,
       createTime: new Date().toISOString(),
       message: `Proccessing ${notificationMessage} swap...`,
       notificationType: NotificationType.DEFAULT,
       txHash: hash,
-      notificationDuration: NotificationDuration.DURATION_15000,
+      notificationDuration: NotificationDuration.DURATION_5000,
     })
 
     if (!hash) return

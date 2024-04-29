@@ -80,7 +80,7 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
               message: `Fees Claimed successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
             // toast(`Fees Claimed Tx failed`)
@@ -90,7 +90,7 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
               message: `Fees Claimed Tx failed`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           }
         },
@@ -102,7 +102,7 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
             message: `Fees Claimed Tx failed`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
         },
       }

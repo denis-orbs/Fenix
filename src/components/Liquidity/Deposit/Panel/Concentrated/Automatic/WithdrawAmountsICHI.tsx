@@ -94,7 +94,7 @@ const WithdrawAmountsICHI = ({
         message: `Withdrawal Transaction Sent.`,
         notificationType: NotificationType.SUCCESS,
         txHash: '',
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
       txnDetails.wait()
       // toast.success('Withdrawal Successful')
@@ -104,7 +104,7 @@ const WithdrawAmountsICHI = ({
         message: `Withdrawal Successful.`,
         notificationType: NotificationType.SUCCESS,
         txHash: '',
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     } catch (error: any) {
       if (error?.code == 401) return
@@ -115,7 +115,7 @@ const WithdrawAmountsICHI = ({
         message: `${error?.message}`,
         notificationType: NotificationType.ERROR,
         txHash: '',
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
   }

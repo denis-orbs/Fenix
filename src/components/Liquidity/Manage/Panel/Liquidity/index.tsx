@@ -252,7 +252,7 @@ const Manage = ({}: {}) => {
               message: `Added successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
             // toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
@@ -262,7 +262,7 @@ const Manage = ({}: {}) => {
               message: `Add LP TX failed, tx: ${transaction.transactionHash}`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           }
           updatePositionData(positionData.id)
@@ -275,7 +275,7 @@ const Manage = ({}: {}) => {
             message: `Add LP failed. ${e}`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
           setIsLoading(false)
         },
@@ -352,7 +352,7 @@ const Manage = ({}: {}) => {
               message: `Removed successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
             // toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
@@ -362,7 +362,7 @@ const Manage = ({}: {}) => {
               message: `Remove LP TX failed, hash: ${transaction.transactionHash}`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           }
 
@@ -376,7 +376,7 @@ const Manage = ({}: {}) => {
             message: `Add LP failed. ${e}`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
           setIsLoading(false)
         },
@@ -405,7 +405,7 @@ const Manage = ({}: {}) => {
               message: `Approved successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           } else {
             // toast(`Approve TX failed, tx: ${transaction.transactionHash}`)
@@ -415,7 +415,7 @@ const Manage = ({}: {}) => {
               message: `Approve TX failed, tx: ${transaction.transactionHash}`,
               notificationType: NotificationType.ERROR,
               txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_15000,
+              notificationDuration: NotificationDuration.DURATION_5000,
             })
           }
 
@@ -430,7 +430,7 @@ const Manage = ({}: {}) => {
             message: `Approve failed. ${e}`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
           setIsLoading(false)
         },

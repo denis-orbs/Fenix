@@ -104,7 +104,7 @@ const DepositAmountsICHI = ({
         message: `Vault not available.`,
         notificationType: NotificationType.ERROR,
         txHash: '',
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
 
       return
@@ -140,7 +140,7 @@ const DepositAmountsICHI = ({
         message: `Please enter a valid amount.`,
         notificationType: NotificationType.ERROR,
         txHash: '',
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
       setLoading(false)
       return
@@ -169,7 +169,7 @@ const DepositAmountsICHI = ({
         message: `Deposited successfully.`,
         notificationType: NotificationType.SUCCESS,
         txHash: '',
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
       setLoading(false)
     } catch (error) {
@@ -186,7 +186,7 @@ const DepositAmountsICHI = ({
             message: `${error.message.split('(')[0].trim().toUpperCase()}`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
           setLoading(false)
         } else if (error.reason == 'IV.deposit: deposits too large') {
@@ -197,7 +197,7 @@ const DepositAmountsICHI = ({
             message: `${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`,
             notificationType: NotificationType.ERROR,
             txHash: '',
-            notificationDuration: NotificationDuration.DURATION_15000,
+            notificationDuration: NotificationDuration.DURATION_5000,
           })
           setLoading(false)
         }
@@ -211,7 +211,7 @@ const DepositAmountsICHI = ({
           message: `${e}`,
           notificationType: NotificationType.ERROR,
           txHash: '',
-          notificationDuration: NotificationDuration.DURATION_15000,
+          notificationDuration: NotificationDuration.DURATION_5000,
         })
         setLoading(false)
       }

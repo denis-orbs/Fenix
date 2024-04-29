@@ -227,7 +227,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
         message: `${approvalError?.cause}`,
         notificationType: NotificationType.ERROR,
         txHash: hash,
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
     if (depositIsError) {
@@ -238,7 +238,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
         message: `${depositError?.cause}`,
         notificationType: NotificationType.ERROR,
         txHash: hash,
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
     if (approvalIsLoading) {
@@ -249,7 +249,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
         message: `Loading approval tx...`,
         notificationType: NotificationType.DEFAULT,
         txHash: hash,
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
     if (depositIsLoading) {
@@ -260,7 +260,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
         message: `Loading Migration tx...`,
         notificationType: NotificationType.DEFAULT,
         txHash: hash,
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
     if (approvalIsSuccess) {
@@ -271,7 +271,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
         message: `Submitted approval tx Successfully`,
         notificationType: NotificationType.SUCCESS,
         txHash: hash,
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
     if (depositIsSuccess) {
@@ -282,7 +282,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
         message: `Submitted Migration tx Successfully`,
         notificationType: NotificationType.SUCCESS,
         txHash: hash,
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
   }, [approvalIsError, depositIsError, approvalIsLoading, depositIsLoading, approvalIsSuccess, depositIsSuccess])
@@ -349,7 +349,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
           message: `${depositError?.cause}`,
           notificationType: NotificationType.SUCCESS,
           txHash: hash,
-          notificationDuration: NotificationDuration.DURATION_15000,
+          notificationDuration: NotificationDuration.DURATION_5000,
         })
         ) : null}
     </Modal>

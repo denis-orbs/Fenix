@@ -61,7 +61,7 @@ const Overlay = () => {
           message: `Voted Successfully ✅`,
           notificationType: NotificationType.SUCCESS,
           txHash: transactionReceipt.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_15000,
+          notificationDuration: NotificationDuration.DURATION_5000,
         })
         setloading(false)
       } else {
@@ -72,7 +72,7 @@ const Overlay = () => {
           message: `Transaction failed ❌`,
           notificationType: NotificationType.ERROR,
           txHash: transaction.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_15000,
+          notificationDuration: NotificationDuration.DURATION_5000,
         })
       }
     } catch (err: any) {
@@ -85,7 +85,7 @@ const Overlay = () => {
         message: `Transaction failed ❌`,
         notificationType: NotificationType.ERROR,
         txHash: '',
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
   }
@@ -107,7 +107,7 @@ const Overlay = () => {
           message: `Reset Vote Successfully ✅`,
           notificationType: NotificationType.SUCCESS,
           txHash: transactionReceipt.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_15000,
+          notificationDuration: NotificationDuration.DURATION_5000,
         })
         setloading(false)
       } else {
@@ -118,7 +118,7 @@ const Overlay = () => {
           message: `Transaction failed ❌`,
           notificationType: NotificationType.ERROR,
           txHash: transaction.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_15000,
+          notificationDuration: NotificationDuration.DURATION_5000,
         })
       }
     } catch (err: any) {
@@ -131,7 +131,7 @@ const Overlay = () => {
         message: `Transaction failed ❌`,
         notificationType: NotificationType.ERROR,
         txHash: '',
-        notificationDuration: NotificationDuration.DURATION_15000,
+        notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
   }
