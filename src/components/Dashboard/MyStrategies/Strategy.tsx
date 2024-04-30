@@ -297,14 +297,17 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token1?.symbol}`}
               </h4>
               <p className="text-xs text-white">
+                {/* {console.log('token B', tokens)} */}
+
                 {formatDollarAmount(
-                  Number(
-                    tokens.find(
-                      (e) =>
-                        e.tokenAddress.toLowerCase() ===
-                        (row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase())
-                    )?.priceUSD
-                  )
+                  Number(row?.depositedToken1) *
+                    Number(
+                      tokens.find(
+                        (e) =>
+                          e.tokenAddress.toLowerCase() ===
+                          (row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase())
+                      )?.priceUSD
+                    )
                 )}
               </p>
             </div>

@@ -29,7 +29,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   return (
-    <footer className="relative mx-auto mt-24 flex flex-col gap-3">
+    <footer className="relative mx-auto mt-auto flex flex-col gap-3">
       <div className="container relative ">
         {pathname === '/' && (
           <div className="absolute overflow-hidden 2xl:-left-[340px] -left-[158px]  h-[600px] right-0 bottom-0 ">
