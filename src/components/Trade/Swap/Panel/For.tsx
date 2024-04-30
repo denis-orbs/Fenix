@@ -38,6 +38,15 @@ const For = ({ token, setToken, setValue, value }: ForProps) => {
     args: [account],
     abi: ERC20_ABI,
   })
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      userBalance.refetch()
+      tokenData.refetch()
+    }, 5000)
+
+    return () => clearInterval(intervalId)
+  }, [])
   const nativeToken = isNativeToken(token?.address)
   useEffect(() => {
     if (nativeToken) return

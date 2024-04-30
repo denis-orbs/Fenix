@@ -60,7 +60,14 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
       }
     }
   }
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      userBalance.refetch()
+      tokenData.refetch()
+    }, 5000)
 
+    return () => clearInterval(intervalId)
+  }, [])
   useEffect(() => {
     if (nativeToken) {
       setTokenBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
