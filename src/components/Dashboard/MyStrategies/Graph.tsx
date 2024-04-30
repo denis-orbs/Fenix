@@ -26,6 +26,7 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
   const handlerSwitch = () => {
     setshowtoken0(!showtoken0)
   }
+
   const sqrtPrice = Math.pow(1.0001, 887220 / 2)
   // return Math.pow(sqrtPrice, 2)
   console.log(Math.pow(sqrtPrice, 2))
@@ -58,7 +59,7 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
   const currentPoolPrice = Number(poolGlobalState?.price / 10 ** Number(row.token1.decimals)).toFixed(6)
 
   const isInRange =
-    (Number(currentPoolPrice) < maxPrice && Number(currentPoolPrice) < maxPrice) || row.liquidity === 'ichi'
+    (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || row.liquidity === 'ichi'
 
   return (
     <div className="w-full">
