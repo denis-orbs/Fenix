@@ -88,7 +88,7 @@ export default function MobileRowNew({
         <div className="flex flex-col gap-1  mb-2.5">
           <div className="flex items-center justify-between">
             <div
-              className="flex flex-col items-center w-[30%] justify-between border border-shark-300 p-4 rounded-lg
+              className="flex flex-col items-center w-[25%] justify-between border border-shark-300 p-4 rounded-lg
             "
             >
               <div className="flex items-center gap-1">
@@ -104,7 +104,40 @@ export default function MobileRowNew({
                 ></div>
               </div>
             </div>
-            <div className="flex flex-col items-center w-[69%] justify-between border  border-shark-300 p-4 rounded-lg">
+            <div
+              className="flex flex-col items-center w-[35%] justify-between border border-shark-300 p-3 rounded-lg
+            "
+            >
+              <div className="flex items-center gap-1">
+                <span className="text-xs font-medium leading-normal">Point Stack</span>
+              </div>
+              <div className="flex justify-center items-center gap-2 ">
+                <span className="flex flex-row justify-center gap-2">
+                  <Image
+                    src={`/static/images/point-stack/fenix-ring.svg`}
+                    alt="token"
+                    className={`rounded-full w-7 h-7`}
+                    width={20}
+                    height={20}
+                  />
+                  <Image
+                    src={`/static/images/point-stack/blast.svg`}
+                    alt="token"
+                    className={`rounded-full w-7 h-7`}
+                    width={20}
+                    height={20}
+                  />
+                  <Image
+                    src={`/static/images/point-stack/blast-gold.svg`}
+                    alt="token"
+                    className={`rounded-full w-7 h-7`}
+                    width={20}
+                    height={20}
+                  />
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-col items-center w-[39%] justify-between border  border-shark-300 p-4 rounded-lg">
               <div className="flex items-center gap-1">
                 <span className="text-xs font-medium leading-normal">TVL</span>
               </div>
@@ -140,8 +173,7 @@ export default function MobileRowNew({
                       height={10}
                     />
                     <span className="text-xs leading-normal">
-                      {' '}
-                      {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
+                      {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}{' '}
                     </span>
                   </div>
                   <div className="flex items-center gap-[5px]">
@@ -153,7 +185,7 @@ export default function MobileRowNew({
                       height={10}
                     />
                     <span className="text-xs leading-normal">
-                      {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
+                      {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}{' '}
                     </span>
                   </div>
                 </div>
