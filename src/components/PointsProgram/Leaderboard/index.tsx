@@ -26,14 +26,14 @@ const Leaderboard = ({ data }: any) => {
             {/* <i className="icon-chevron text-xs ml-2"></i> */}
           </span>
           <span className="text-white w-36 text-center text-sm">
-            ORBITS
+            RINGS
             <i className="icon-chevron text-xs ml-2"></i>
           </span>
         </div>
         {data.map((data: any, index: number) => (
           <Item key={index} data={data} />
         ))}
-        <Pagination className="mx-auto" numberPages={7} />
+        {/* <Pagination className="mx-auto" numberPages={7} /> */}
       </div>
     </div>
   )

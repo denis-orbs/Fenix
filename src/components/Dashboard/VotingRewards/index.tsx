@@ -6,6 +6,7 @@ import HeaderRowVote from '@/src/components/Vote/Tables/HeaderRowVote'
 import { PROPS_HEADER_ROW_VOTE } from '../types'
 import INFO_API from '../data'
 
+
 const VotingRewards = () => {
   
   return (

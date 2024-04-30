@@ -15,32 +15,61 @@ interface ApproveButtonsProps {
   isLoading: boolean
 }
 
-const ApproveButtons = ({ token0, token1, shouldApproveFirst, shouldApproveSecond, handleApprove, mainFn, mainText, isLoading }: ApproveButtonsProps) => {
-  return (
-    shouldApproveFirst && shouldApproveSecond ? (
-      <div style={{ display: 'flex' }} >
-        <button onClick={() => {handleApprove(token0.address as Address)}} className="button button-tertiary w-1/2 !text-xs !h-[49px]" style={{ marginRight: '10px' }}>Approve {token0.symbol}</button>
-        <button onClick={() => {handleApprove(token1.address as Address)}} className="button button-tertiary w-1/2 !text-xs !h-[49px]">Approve {token1.symbol}</button>
-      </div>
-    ) : shouldApproveFirst ?  (
-      <div style={{ display: 'flex' }} >
-        <button onClick={() => {handleApprove(token0.address as Address)}} className="button button-tertiary !text-xs !h-[49px]" style={{ marginRight: '10px' }}>Approve {token0.symbol}</button>
-      </div>
-    ) : shouldApproveSecond ? (
-      <div style={{ display: 'flex' }} >
-        <button onClick={() => {handleApprove(token1.address as Address)}} className="button button-tertiary !text-xs !h-[49px]" style={{ marginRight: '10px' }}>Approve {token1.symbol}</button>
-      </div>
-    ) : (
+const ApproveButtons = ({
+  token0,
+  token1,
+  shouldApproveFirst,
+  shouldApproveSecond,
+  handleApprove,
+  mainFn,
+  mainText,
+  isLoading,
+}: ApproveButtonsProps) => {
+  return shouldApproveFirst || shouldApproveSecond ? (
+    <div className="flex">
       <Button
-        className="w-full mx-auto !text-xs !h-[49px]"
-        variant="tertiary"
-        onClick={() => {mainFn()}}
+        onClick={() => {
+          if (shouldApproveFirst) handleApprove(token0.address as Address)
+        }}
+        className="button button-tertiary w-1/2 !text-xs !h-[49px] mr-[10px]"
+        disabled={!shouldApproveFirst}
       >
-        {isLoading ? (
-          <Loader color="white" size={20} />
-        ) : `${mainText}`}
+        {shouldApproveFirst ? (
+          <> Approve {token0.symbol}</>
+        ) : (
+          <div className="flex items-center">
+            <span className="text-[12px] 2xl:text-lg icon-check text-white mr-2"></span>
+            Approved {token0.symbol}
+          </div>
+        )}
       </Button>
-    )
+      <Button
+        onClick={() => {
+          if (shouldApproveSecond) handleApprove(token1.address as Address)
+        }}
+        disabled={!shouldApproveSecond}
+        className="button button-tertiary w-1/2 !text-xs !h-[49px]"
+      >
+        {shouldApproveSecond ? (
+          <> Approve {token1.symbol}</>
+        ) : (
+          <div className="flex items-center">
+            <span className="text-[12px] 2xl:text-lg icon-check text-white mr-2"></span>
+            Approved {token1.symbol}
+          </div>
+        )}
+      </Button>
+    </div>
+  ) : (
+    <Button
+      className="w-full mx-auto !text-xs !h-[49px]"
+      variant="tertiary"
+      onClick={() => {
+        mainFn()
+      }}
+    >
+      {isLoading ? <Loader color="white" size={20} /> : `${mainText}`}
+    </Button>
   )
 }
 

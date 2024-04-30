@@ -10,11 +10,15 @@ import toast, { Toaster } from 'react-hot-toast'
 import { waitForTransactionReceipt } from '@wagmi/core'
 import { config } from '@/src/app/layout'
 import { voteState } from '@/src/state/vote/types'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
 const Overlay = () => {
   const [loading, setloading] = useState<Boolean>(false)
   const lock = useAppSelector((state) => state.lock as LockElement)
   const voteValue = useAppSelector((state) => state.vote as voteState)
+
+  const addNotification = useNotificationAdderCallback()
 
   const castVote = async () => {
     try {
@@ -50,15 +54,39 @@ const Overlay = () => {
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))
       if (transactionReceipt.status === 'success') {
-        toast('Voted Successfully ✅')
+        // toast('Voted Successfully')
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `Voted Successfully`,
+          notificationType: NotificationType.SUCCESS,
+          txHash: transactionReceipt.transactionHash,
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
         setloading(false)
       } else {
-        toast('Transaction failed ❌')
+        // toast('Transaction failed')
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `Transaction failed`,
+          notificationType: NotificationType.ERROR,
+          txHash: transaction.transactionHash,
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
       }
     } catch (err: any) {
       setloading(false)
-      console.log(err)
-      toast('Transaction failed ❌')
+      // console.log(err)
+      // toast('Transaction failed')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Transaction failed`,
+        notificationType: NotificationType.ERROR,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     }
   }
 
@@ -72,15 +100,39 @@ const Overlay = () => {
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))
       if (transactionReceipt.status === 'success') {
-        toast('Reset Vote Successfully ✅')
+        // toast('Reset Vote Successfully')
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `Reset Vote Successfully`,
+          notificationType: NotificationType.SUCCESS,
+          txHash: transactionReceipt.transactionHash,
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
         setloading(false)
       } else {
-        toast('Transaction failed ❌')
+        // toast('Transaction failed')
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `Transaction failed`,
+          notificationType: NotificationType.ERROR,
+          txHash: transaction.transactionHash,
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
       }
     } catch (err: any) {
       setloading(false)
-      console.log(err)
-      toast('Transaction failed ❌')
+      // console.log(err)
+      // toast('Transaction failed')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Transaction failed`,
+        notificationType: NotificationType.ERROR,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     }
   }
 

@@ -1,86 +1,125 @@
 'use client'
+import { useReadNotificationCallback } from '@/src/state/notifications/hooks'
+import { NotificationDetails, NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
-
-interface NotificationProps {
-  show: boolean
-  status: string
-  txHash?: number
-  timestamp?: number
-  message?: string
-  time?: number
-}
+import React, { useEffect, useRef, useState } from 'react'
 
 type StatusInfo = {
   class: string
-  text: string
   icon: string
   color: string
 }
 
-const Notification = ({ show = true, status, timestamp, txHash , time = 3000 }: NotificationProps) => {
+function secondsAgo(createTime: string) {
+  const now = new Date()
+  const createTimeDate = new Date(createTime)
+  const differenceInMilliseconds = now.getTime() - createTimeDate.getTime()
+  return Math.floor(differenceInMilliseconds / 1000)
+}
+
+const Notification = ({
+  id,
+  createTime,
+  message,
+  notificationType,
+  txHash,
+  notificationDuration = NotificationDuration.DURATION_4000,
+}: NotificationDetails) => {
+  const readNotification = useReadNotificationCallback()
+  const savedCallback = useRef(readNotification)
+  const [seconds, setSeconds] = useState(() => secondsAgo(createTime || new Date().toISOString()))
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds(secondsAgo(createTime))
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [createTime])
+
+  useEffect(() => {
+    savedCallback.current = readNotification
+  }, [readNotification])
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      document.querySelector('.notification')?.classList.add('hidden')
-    }, time)
+      savedCallback.current(id)
+    }, notificationDuration)
     return () => clearTimeout(timer)
-  }, [])
+  }, [readNotification, id, notificationDuration])
 
-  const STATUS: { [key: string]: StatusInfo } = {
-    default: {
+  const STATUS: { [key in NotificationType]: StatusInfo } = {
+    [NotificationType.DEFAULT]: {
       class: ' bg-gradient-to-r from-outrageous-orange-500 to-chilean-fire-500 ',
-      text: 'Wallet (0x98b...6de3c) Connected Successfully',
-      icon: 'icon-wallet text-gradient',
+      icon: 'icon-info text-gradient',
       color: 'text-gradient',
     },
-    warning: {
+    [NotificationType.WARNING]: {
       class: ' bg-gradient-to-r from-festival-100 to-festival-200 ',
-      text: 'Something is wrong! Invalid Decimal Value',
       icon: 'icon-warning text-festival-200',
       color: 'text-festival-200',
     },
-    error: {
-      class: ' bg-gradient-to-r from-alizarin-crimson-600 to-alizarin-crimson-700 ',
-      text: 'User Rejected Request!',
+    [NotificationType.ERROR]: {
+      class: ' bg-gradient-to-r from-alizarin-crimson-600 to-alizarin-crimson-700  ',
       icon: 'icon-info text-alizarin-crimson-600',
       color: 'text-alizarin-crimson-600',
     },
-    success: {
+    [NotificationType.SUCCESS]: {
       class: ' bg-gradient-to-r from-green-200 to-green-300 ',
-      text: 'FNX swapped for ETH',
       icon: 'icon-party text-green-300',
       color: 'text-green-300',
     },
   }
-  if (!show) return null
-
+  const animationDuration = {
+    [NotificationDuration.DURATION_3000]: 'animate-progress-toast-3000',
+    [NotificationDuration.DURATION_4000]: 'animate-progress-toast-4000',
+    [NotificationDuration.DURATION_5000]: 'animate-progress-toast-5000',
+    [NotificationDuration.DURATION_10000]: 'animate-progress-toast-10000',
+    [NotificationDuration.DURATION_5000]: 'animate-progress-toast-15000',
+  }
   return (
     <>
-      <div className="notification  box-invert animate-toast-in    fixed top-[150px] right-5 w-[326px]  px-4 pt-1 pb-3">
+      <div className="notification box-invert animate-toast-in h-[80px] xl:h-[112px]  xl:w-[326px] z-50 px-4 xl:pt-1 xl:pb-3 ">
         <div className="relative z-50">
-          <div className="flex items-center justify-end w-full  gap-3">
-            <div className="h-[5px] w-10 bg-shark-400 flex rounded-lg overflow-hidden">
-              <div className={`h-full ${STATUS[status].class} animate-progress`}></div>
-            </div>
-            <span className="text-base icon-bell text-shark-100"></span>
+          <div className="flex items-center w-20 right-0  gap-3 absolute">
+            <div
+              className={`h-[5px] w-12 max-w-[48px]  flex rounded-lg overflow-hidden 
+              ${STATUS[notificationType].class}
+              ${animationDuration[notificationDuration]}
+              `}
+            ></div>
+            <span
+              onClick={() => {
+                savedCallback.current(id)
+              }}
+              className="text-base cursor-pointer icon-x text-shark-100 absolute right-0"
+            ></span>
           </div>
-          <div className="flex items-center w-full gap-4 mb-3">
-            <div className="flex items-center justify-center w-10 h-10 p-2 rounded-lg bg-shark-400 bg-opacity-40">
-              <span className={`inline-block text-xl ${STATUS[status].icon} `} />
+          <div className="flex items-center w-full gap-2 mb-2 mt-3 xl:mt-5">
+            <div className="flex items-center justify-center xl:w-10 xl:h-10 w-8 h-8 xl:p-2 rounded-lg bg-shark-300 bg-opacity-40">
+              <span className={` text-sm xl:text-lg ${STATUS[notificationType].icon} `} />
             </div>
-            <p className="text-white text-xs max-w-[150px]">{STATUS[status].text} </p>
+            <p className="text-white text-xs max-w-[150px] flex-1 line-clamp-2">{message}</p>
           </div>
           <div className="flex items-center gap-3">
-            <p className={`inline-block text-xs ${STATUS[status].color}`}>
-              <span className="mr-2 icon-link"></span>
-              <Link href={`https://blastscan.io/tx/${txHash}`} target="_blank">
-                View In Explorer
-              </Link>
+            <p className={`flex  text-xs group ${STATUS[notificationType].color}`}>
+              {txHash && (
+                <>
+                  <span className="mr-2 icon-link group-hover:underline "></span>
+                  <Link
+                    className="group-hover:underline  whitespace-nowrap"
+                    href={`https://blastscan.io/tx/${txHash}`}
+                    target="_blank"
+                  >
+                    View In Explorer
+                  </Link>
+                </>
+              )}
             </p>
-            <p className="inline-block text-xs text-shark-100">
-              <span className="mr-2 icon-clock"></span>
-              {timestamp} seconds ago...
-            </p>
+            {createTime && (
+              <div className="text-xs  text-shark-100 flex line-clamp-1">
+                <span className="mr-2 icon-clock" />
+                <p className="">{seconds} seconds ago</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

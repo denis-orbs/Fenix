@@ -14,7 +14,7 @@ const HowToEarn = () => {
             <span className="inline-block text-xl text-gradient icon-coin-received"></span>
           </div>
           <h4 className="text-sm text-white text-center mb-2">Provide Liquidity</h4>
-          <p className="text-sm text-shark-100 text-center">Earn Orbits by supplying liquidity over time on Fenix.</p>
+          <p className="text-sm text-shark-100 text-center">Earn Rings by supplying liquidity over time on Fenix.</p>
         </div>
       </div>
     </div>

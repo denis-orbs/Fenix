@@ -1,14 +1,13 @@
-/* eslint-disable react/no-multi-comp */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-//@ts-nocheck
+// @ts-nocheck
 'use client'
 
 import { useEffect, useState } from 'react'
+import { MainBox } from '@/src/components/UI'
 import { EXCHANGE_LIST } from '../data'
-import InfoBox from '@/src/components/Common/InfoBox'
+import InfoBox from '@/src/components/Common/InfoBoxClaim'
 import Countdown from 'react-countdown'
 import { useAccount } from 'wagmi'
-import chrmigrateabi from '@/src/assets/abi/chrmigrate.json'
+import chrmigrateabi from '../../../abi/chrmigrate.json'
 import BigNumber from 'bignumber.js'
 import { multicall } from '@wagmi/core'
 
@@ -61,29 +60,35 @@ const Migration = () => {
       contracts: [
         {
           abi: chrmigrateabi,
-          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
-          functionName: 'depositDuration',
+          address: '0xc8D8F5937Ed9dbB39505Ea4179a96b90C5f3A149',
+          functionName: 'depositDurationnsh',
         },
         {
           abi: chrmigrateabi,
-          address: '0x5152875C0982b57dd9515A8230eE3621E774aCB1',
+          address: '0xc8D8F5937Ed9dbB39505Ea4179a96b90C5f3A149',
           functionName: 'deploymentTimestamp',
         },
       ],
     }).then((data) => {
       setfinalDate(parseInt(new BigNumber(data[0]?.result + data[1]?.result)))
     })
-  }, [])
+  }, [account?.address])
 
   return (
-    <div className="flex flex-col justify-between w-full md:gap-10 md:flex-row md:items-center">
+    <div className="flex flex-col justify-between w-full md:gap-10 md:flex-row md:items-center z-50 relative">
       <div className="w-full my-5 md:w-[50%] xl:w-[40%] md:m-0">
         <h4 className="mb-3 text-xl text-white">Migration Claim</h4>
-        <p className="mb-4 text-sm text-shark-100">Deposit your CHR Tokens in order to migrate to our new Protocol!</p>
+        <p className="mb-4 text-sm text-shark-100">
+          Deposit your CHR ecosystem tokens in order to migrate to our new Fenix!
+        </p>
+
+        <p className="mb-4 text-sm text-shark-100">Snapshot migrators will be able to migrate anytime!</p>
         <div className="flex items-center gap-3 mb-4">
           <div className="flex items-center justify-between w-full gap-3 px-4 py-2 rounded-lg md:gap-5 2xl:gap-8 2xl:justify-start bg-shark-400 bg-opacity-40">
             <div>
-              <h5 className="mb-1 text-xs text-shark-100">Migration</h5>
+              <h5 className="mb-1 text-xs text-shark-100">
+                Migration For <br></br>Non-Snapshot
+              </h5>
               <p className="text-xs text-green-500">Open</p>
             </div>
             <Countdown date={new Date(finalDate * 1000)} daysInHours={true} autoStart={true} renderer={renderer} />
@@ -101,6 +106,7 @@ const Migration = () => {
           </a>
         </div>
       </div>
+
       <div className="relative flex flex-col w-full md:w-[40%] max-h-[390px] overflow-y-auto overflow-x-none pr-4">
         {EXCHANGE_LIST.map((exchange, index) => (
           <InfoBox key={index} data={exchange} setShowTooltip={setShow} hasTooltip />

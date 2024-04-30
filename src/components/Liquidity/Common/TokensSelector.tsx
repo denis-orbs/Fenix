@@ -7,6 +7,7 @@ import SelectToken from '@/src/components/Modals/SelectToken'
 import { IToken } from '@/src/library/types'
 import ExchangeBox from '@/src/components/Liquidity/Common/ExchangeBox'
 import Separator from '@/src/components/Trade/Common/Separator'
+import { switchTokensValues } from '../../Trade/Swap/Panel/utilsChange'
 
 interface TokenSelectorProps {
   token: IToken
@@ -15,9 +16,18 @@ interface TokenSelectorProps {
   setValue: (value: string) => void
   variant?: 'primary' | 'secondary'
   onTokenValueChange?: (arg0: any, token: IToken) => void
+  option?: string
 }
 
-const TokenSelector = ({ token, setToken, variant, onTokenValueChange, value }: TokenSelectorProps) => {
+const TokenSelector = ({
+  token,
+  setToken,
+  variant,
+  onTokenValueChange,
+  value,
+  setValue,
+  option,
+}: TokenSelectorProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
 
   return (
@@ -27,7 +37,9 @@ const TokenSelector = ({ token, setToken, variant, onTokenValueChange, value }: 
         onOpenModal={() => setOpenSelectToken(true)}
         variant={variant}
         onTokenValueChange={onTokenValueChange}
+        setValue={setValue}
         value={value}
+        option={option}
       />
 
       <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
@@ -45,6 +57,7 @@ const TokensSelector = ({
   setFirstValue,
   setSecondValue,
   onTokenValueChange,
+  option,
 }: {
   firstToken: IToken
   secondToken: IToken
@@ -55,6 +68,7 @@ const TokensSelector = ({
   setFirstValue: (value: string) => void
   setSecondValue: (value: string) => void
   onTokenValueChange: (arg0: any, token: IToken) => void
+  option?: string
 }) => {
   return (
     <div className="flex flex-col gap-1 mb-2 relative">
@@ -65,8 +79,14 @@ const TokensSelector = ({
         setValue={(value) => setFirstValue(value)}
         variant="primary"
         onTokenValueChange={onTokenValueChange}
+        option={option}
       />
-      <Separator single />
+      {/* <Separator 
+      onClick={()=>{
+        switchTokensValues(firstToken, secondToken, setFirstToken, setSecondToken)
+      }}
+      
+      /> */}
       <TokenSelector
         token={secondToken}
         value={secondValue}
@@ -74,6 +94,7 @@ const TokensSelector = ({
         setValue={(value) => setSecondValue(value)}
         variant="secondary"
         onTokenValueChange={onTokenValueChange}
+        option={option}
       />
     </div>
   )

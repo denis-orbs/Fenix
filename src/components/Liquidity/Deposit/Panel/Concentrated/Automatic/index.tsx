@@ -4,7 +4,6 @@ import PairSelector from '@/src/components/Liquidity/Common/PairSelector'
 import CLMProviderSelector from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/CLMProviderSelector'
 import DepositAmountsICHI from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsICHI'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-
 import { Button } from '@/src/components/UI'
 import { useSearchParams } from 'next/navigation'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
@@ -45,7 +44,7 @@ const Automatic = () => {
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023',
     price: 0,
-    img: '/static/images/tokens/WETH.svg',
+    img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [currentProvider, setCurrentProvider] = useState<string>('1')
   const [tokenList, setTokenList] = useState<IToken[]>([])

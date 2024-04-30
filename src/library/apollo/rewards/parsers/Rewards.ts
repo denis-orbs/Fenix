@@ -76,7 +76,7 @@ export async function getCurrentEpochRewardTokens(availableTokensDictionary: {
 
     // return bribeList;
   } catch (e) {
-    console.log(e)
+    // console.log(e)
     return {}
   }
 }

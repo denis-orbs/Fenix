@@ -127,6 +127,7 @@ const config: Config = {
         xxxs: '256px',
         xxs: '384px',
         xs: '512px',
+        xxl: '1450px',
       },
     },
     container: {

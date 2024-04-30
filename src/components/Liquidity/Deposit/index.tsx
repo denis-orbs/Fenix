@@ -1,11 +1,11 @@
 'use client'
-import { useShowChart } from "@/src/state/user/hooks"
+import { useShowChart } from '@/src/state/user/hooks'
 import Panel from '@/src/components/Liquidity/Deposit/Panel'
 import Chart from '@/src/components/Liquidity/Deposit/Chart'
 import { getPair } from '@/src/library/hooks/liquidity/useClassic'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
-import { useSearchParams } from "next/navigation"
+import { useSearchParams } from 'next/navigation'
 
 const DepositLiquidity = () => {
   const searchParams = useSearchParams()
@@ -32,16 +32,15 @@ const DepositLiquidity = () => {
   useEffect(() => {
     setToken0(searchParams.get('token0'))
     setToken1(searchParams.get('token1'))
-    console.log('token1 :>> ', token1)
+    // console.log('token1 :>> ', token1)
   }, [searchParams])
-
 
   return (
     <div className="flex flex-col items-start gap-6 mb-4 xl:gap-10 xl:flex-row">
       <div className="flex flex-col w-full h-[100%]">
         <div className="flex flex-wrap justify-center w-full h-[100%] xl:gap-5 mb-10 xl:flex-nowrap">
           <Panel />
-          { showChart && <Chart token0={token0} token1={token1}/> }
+          {showChart && <Chart token0={token0} token1={token1} />}
         </div>
       </div>
     </div>
