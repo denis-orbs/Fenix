@@ -89,15 +89,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     overlayBlur: 'small',
                   })}
                 >
-                  <Updaters />
-                  <Header />
-                  <Slippage />
-                  <Toaster />
-                  <NotificationFeed />
-                  <MobileHeader />
-                  {children}
-                  <Footer />
-                  <Decorator />
+                  <div className="flex flex-col min-h-screen">
+                    <Updaters />
+                    <Header />
+                    <Slippage />
+                    <Toaster />
+                    <NotificationFeed />
+                    <MobileHeader />
+                    <div className="flex-1">{children}</div>
+                    <div className="mt-auto">
+                      <Footer />
+                    </div>
+                    <Decorator />
+                  </div>
                 </RainbowKitProvider>
               </QueryClientProvider>
             </WagmiProvider>

@@ -83,7 +83,7 @@ const PointsProgram = () => {
     <section className="relative max-w-7xl mx-auto">
       <div className="py-10">
         <div className="flex items-center justify-center flex-col mb-8">
-          <Image src={'/static/images/points-program/orbit.png'} alt="" height={51} width={52} />
+          <Image src={'/static/images/points-program/orbit.svg'} alt="" height={51} width={52} />
           <h5 className="text-white text-2xl mb-3 font-medium">Fenix Rings</h5>
           <p className="text-white text-sm text-center">
             Fenix Rings are designed to quantify and recognise users for their contributions to the growth of the

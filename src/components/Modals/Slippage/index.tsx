@@ -3,6 +3,7 @@
 import { Button, Modal } from '@/src/components/UI'
 import { useSetSlippageToleranceCallback, useSlippageTolerance } from '@/src/state/user/hooks'
 import useStore from '@/src/state/zustand'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
 const slippageOptions = [
@@ -104,7 +105,9 @@ const Slippage = () => {
           </div>
           <div className="flex items-center justify-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
             <span className="icon-discord"></span>
-            <p className="text-sm">Need help?</p>
+            <Link href="https://discord.com/invite/fenixfi" className="text-sm">
+              Need help?
+            </Link>
           </div>
         </div>
       </div>

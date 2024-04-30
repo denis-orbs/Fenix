@@ -26,7 +26,6 @@ const InputRange = ({
   const [currentValue, setCurrentValue] = useState(value)
 
   const percent = useMemo(() => ((currentValue - min) / (max - min)) * 100, [currentValue, min, max])
-
   useEffect(() => {
     setCurrentValue(value)
   }, [value])

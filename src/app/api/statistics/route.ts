@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
   const cacheKey = 'global-statistics'
   let cachedData = cache.get(cacheKey)
   if (!cachedData) {
-    console.log('Performing heavy calculations...')
+    //console.log('Performing heavy calculations...')
     const availablePairsV3 = (await fetchPoolData()) as V3PairInfo[]
     const totalVolume = availablePairsV3.reduce((acc, pair) => {
       return acc + toBN(pair.volumeUSD).toNumber()

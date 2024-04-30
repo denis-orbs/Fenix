@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import SetRange from './SetRange'
 import { Button } from '@/src/components/UI'
@@ -19,6 +20,8 @@ import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { useSetToken0, useSetToken1 } from '@/src/state/liquidity/hooks'
+import { isSupportedChain } from '@/src/library/constants/chains'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
 interface StateType {
   price: number
@@ -66,52 +69,44 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const [isLoading, setIsLoading] = useState(true)
   const [slippage, setSlippage] = useState(0.05)
 
-  const [timeout, setTimeoutID] = useState<NodeJS.Timeout>() 
+  const [timeout, setTimeoutID] = useState<NodeJS.Timeout>()
 
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
   
   const account = useAccount()
+  const { isConnected, chainId } = useActiveConnectionDetails()
+
   const { writeContractAsync } = useWriteContract()
 
   function invertPercentage(percent: number) {
-    const remaining = 1 + percent / 100;
-    return (1 / remaining - 1) * 100;
+    const remaining = 1 + percent / 100
+    return (1 / remaining - 1) * 100
   }
 
   const handleMinMaxInput = (value: any, isFirst: boolean) => {
-    if(timeout) clearTimeout(timeout)
+    if (timeout) clearTimeout(timeout)
 
-    const price = (isInverse ? 1/value.target.value : value.target.value)
+    const price = isInverse ? 1 / value.target.value : value.target.value
 
-    if(isFirst) {
+    if (isFirst) {
       setRangePrice2(price)
 
-      const p = ((price / (poolState.price/1e18) - 1) * 100).toFixed(1)
-      setShownPercentage([
-        shownPercentage[0],
-        isInverse ? invertPercentage(Number(p)).toFixed(1) : p,
-      ])
+      const p = ((price / (poolState.price / 1e18) - 1) * 100).toFixed(1)
+      setShownPercentage([shownPercentage[0], isInverse ? invertPercentage(Number(p)).toFixed(1) : p])
     } else {
       setRangePrice1(price)
 
-      const p = ((1 - price / (poolState.price/1e18)) * 100).toFixed(1)
-      setShownPercentage([
-        isInverse ? invertPercentage(Number(p)).toFixed(1) : p,
-        shownPercentage[1],
-      ])
+      const p = ((1 - price / (poolState.price / 1e18)) * 100).toFixed(1)
+      setShownPercentage([isInverse ? invertPercentage(Number(p)).toFixed(1) : p, shownPercentage[1]])
     }
 
     const newTimeout = setTimeout(() => {
-      const currentPrice = poolState.price/1e18
-  
-      const pricePercentage = (
-        (
-          (price-currentPrice) / currentPrice
-        )
-      ) * 100
-  
-      if(isFirst) setCurrentPercentage([currentPercentage[0], pricePercentage])
+      const currentPrice = poolState.price / 1e18
+
+      const pricePercentage = ((price - currentPrice) / currentPrice) * 100
+
+      if (isFirst) setCurrentPercentage([currentPercentage[0], pricePercentage])
       else setCurrentPercentage([pricePercentage, currentPercentage[1]])
     }, 2000)
 
@@ -186,7 +181,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     const asyncFn = async () => {
       const state = await getAlgebraPoolPrice(firstToken.address as Address, secondToken.address as Address)
       setPoolState(state as StateType)
-
+      console.log(state, 'state')
       if (currentPercentage[0] == -1 && currentPercentage[1] == -1) {
         setRangePrice1(0)
         setRangePrice2(-1)
@@ -413,6 +408,51 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         handleMinMaxInput={handleMinMaxInput}
         isInverse={isInverse}
       />
+      <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
+        <div>
+          <div className="flex items-center gap-2.5 mb-2.5">
+            <div className="flex items-center flex-shrink-0">
+              <Image
+                src={firstToken.img}
+                alt="token"
+                className="rounded-full max-md:w-5 max-md:h-5"
+                width={30.5}
+                height={30.5}
+              />
+              <Image
+                src={secondToken.img}
+                alt="token"
+                className="-ml-2.5 md:-ml-4 rounded-full max-md:w-5 max-md:h-5"
+                width={30.5}
+                height={30.5}
+              />
+            </div>
+            <div className="flex flex-col gap-px">
+              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">
+                {firstToken.symbol} / {secondToken.symbol}
+              </h5>
+            </div>
+          </div>
+          <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]">
+            <div className="text-white">Current Pool Price: </div>
+            <div className="flex items-center gap-2.5">
+              <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
+                {/* <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} /> */}
+                <span>
+                  {isInverse
+                    ? Number(1 / (poolState.price / 10 ** firstToken.decimals)).toFixed(6)
+                    : Number(poolState.price / 10 ** secondToken.decimals).toFixed(6)}{' '}
+                  {isInverse
+                    ? `${firstToken.symbol} per ${secondToken.symbol}`
+                    : `${secondToken.symbol} per ${firstToken.symbol}`}
+                </span>
+              </p>
+              <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <TokensSelector
         firstToken={firstToken}
         secondToken={secondToken}
@@ -424,16 +464,28 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setSecondValue={(value) => setSecondValue(value)}
         onTokenValueChange={handleOnTokenValueChange}
       />
-      <ApproveButtons
-        shouldApproveFirst={shouldApproveFirst}
-        shouldApproveSecond={shouldApproveSecond}
-        token0={firstToken}
-        token1={secondToken}
-        handleApprove={handleApprove}
-        mainFn={handleCLAdd}
-        mainText={'Create Position'}
-        isLoading={isLoading}
-      />
+      {!isConnected || !isSupportedChain(chainId) ? (
+        <Button
+          walletConfig={{
+            needSupportedChain: true,
+            needWalletConnected: true,
+          }}
+          className="w-full"
+        >
+          Connect Wallet
+        </Button>
+      ) : (
+        <ApproveButtons
+          shouldApproveFirst={shouldApproveFirst}
+          shouldApproveSecond={shouldApproveSecond}
+          token0={firstToken}
+          token1={secondToken}
+          handleApprove={handleApprove}
+          mainFn={handleCLAdd}
+          mainText={'Create Position'}
+          isLoading={isLoading}
+        />
+      )}
     </>
   )
 }

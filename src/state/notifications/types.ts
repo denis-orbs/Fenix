@@ -20,4 +20,5 @@ export enum NotificationDuration {
   DURATION_5000 = 5000,
   DURATION_10000 = 10000,
   DURATION_15000 = 15000,
+  DURATION_25000 = 25000,
 }
