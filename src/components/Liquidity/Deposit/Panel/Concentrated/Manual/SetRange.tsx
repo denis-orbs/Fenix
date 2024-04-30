@@ -18,6 +18,7 @@ const SetRange = ({
   multiplier,
   handleMinMaxInput,
   isInverse,
+  swapTokens
 }: {
   setCurrentPercentage: any
   currentPercentage: any
@@ -29,6 +30,7 @@ const SetRange = ({
   multiplier?: any
   handleMinMaxInput?: any
   isInverse?: any
+  swapTokens?: any
 }) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
   const [currentPercentageShown, setCurrentPercentShown] = useState([5, 5])
@@ -59,11 +61,9 @@ const SetRange = ({
   }, [currentPercentage])
   const [showFullRange, setShowFullRange] = useState(false)
   useEffect(() => {
-    console.log(currentPercentage)
     if (currentPercentage[0] === -1 && currentPercentage[1] === -1) setShowFullRange(true)
     else setShowFullRange(false)
   }, [currentPercentage])
-  console.log(currentPercentage)
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="mb-2 text-xs leading-normal text-white">Selected Range</div>
@@ -191,6 +191,7 @@ const SetRange = ({
             value.target.value = value.target.value * multiplier
             handleMinMaxInput(value, isInverse)
           }}
+          onTitleClick={swapTokens}
         />
         <Input
           title={`Max Price (${token2?.symbol} per ${token1?.symbol})`}
@@ -204,6 +205,7 @@ const SetRange = ({
             value.target.value = value.target.value * multiplier
             handleMinMaxInput(value, !isInverse)
           }}
+          onTitleClick={swapTokens}
         />
       </div>
     </div>
