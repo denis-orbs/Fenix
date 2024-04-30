@@ -81,6 +81,8 @@ const Manage = ({}: {}) => {
   const [isLoading, setIsLoading] = useState(true)
   const [slippage, setSlippage] = useState(0.05) //1%
 
+  const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
+
   const account = useAccount()
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
 
@@ -197,14 +199,28 @@ const Manage = ({}: {}) => {
       if (firstToken.address === token.address) {
         if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(positionData?.ratio)))
         if (parseFloat(input) == 0) setSecondValue('')
-        setFirstValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
+        setFirstValue(input == "" ? 0 : input)
+
+        if(timeout) clearTimeout(timeout)
+        setTimeoutID(
+          setTimeout(()=> {
+            setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
+          }, 500)
+        )
       } else {
         if (parseFloat(input) != 0)
           setFirstValue(
             formatNumber(parseFloat(input) / (Number(positionData?.ratio) == 0 ? 1 : Number(positionData?.ratio)))
           )
         if (parseFloat(input) == 0) setFirstValue('')
-        setSecondValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
+        setSecondValue(input == "" ? 0 : input)
+
+        if(timeout) clearTimeout(timeout)
+        setTimeoutID(
+          setTimeout(()=> {
+            setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
+          }, 500)
+        )
       }
     }
   }
