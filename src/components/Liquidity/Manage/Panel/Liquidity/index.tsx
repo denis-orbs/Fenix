@@ -31,6 +31,7 @@ import ApproveButtons from '../../../Common/ApproveButtons'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useSelector } from 'react-redux'
 
 interface PositionData {
   id: number
@@ -44,6 +45,7 @@ interface PositionData {
 }
 
 const Manage = ({}: {}) => {
+  const { apr } = useSelector<any>((state) => state.apr)
   const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934'
 
   const searchParams = useSearchParams()
@@ -487,13 +489,16 @@ const Manage = ({}: {}) => {
           <div className="md:mb-[5px] text-right">APR</div>
 
           <p className="py-[5px] px-5 border border-solid bg-shark-400 rounded-[10px] bg-opacity-40 border-1 border-shark-300">
+            {apr ? apr : '0%'}
+          </p>
+          {/* <p className="py-[5px] px-5 border border-solid bg-shark-400 rounded-[10px] bg-opacity-40 border-1 border-shark-300">
             {
               pairs.find(
                 (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
               )?.apr
             }{' '}
             %
-          </p>
+          </p> */}
         </div>
       </div>
 

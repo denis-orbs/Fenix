@@ -18,6 +18,8 @@ import { useAccount, useWriteContract } from 'wagmi'
 import { MAX_INT } from '@/src/library/constants/misc'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { useDispatch } from 'react-redux'
+import { setApr } from '@/src/state/apr/reducer'
 
 type options = {
   value: string
@@ -92,6 +94,7 @@ interface StrategyProps {
 }
 
 const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyProps) => {
+  const dispatch = useDispatch()
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
@@ -210,31 +213,6 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                 <p className="text-xs">{row.liquidity === 'ichi' ? 'Ichi Position' : 'ID: ' + row?.id}</p>
               </div>
             </div>
-            {/* <div
-              onClick={() => setIsVisible(!isVisible)}
-              className="flex items-center justify-center cursor-pointer flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
-            >
-              <span className="text-lg icon-cog text-white"></span>
-              {isVisible && (
-                <div
-                  ref={ref}
-                  className="w-[300px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 absolute top-14 z-50  translate-x-1"
-                >
-                  {options.map((option, index) => {
-                    return (
-                      <Button
-                        variant="default"
-                        onClick={() => handlerOpenModal(option.value)}
-                        key={index}
-                        className="!py-1 !h-[33px]  !text-xs"
-                      
-                        {option.label}
-                      </Button>
-                    )
-                  })}
-                </div>
-              )}
-            </div> */}
           </div>
           <div className="flex gap-2 my-2">
             <div className="flex flex-col gap-2 w-1/2 items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
@@ -265,7 +243,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token0?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
-                {formatAmount(toBN(Number(row?.depositedToken0)), 6)}{' '}
+                {formatCurrency(formatAmount(toBN(Number(row?.depositedToken0)), 6))}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token0?.symbol}`}
@@ -290,13 +268,12 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token1?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
-                {formatAmount(toBN(Number(row?.depositedToken1)), 6)}
+                {formatCurrency(formatAmount(toBN(Number(row?.depositedToken1)), 6))}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token1?.symbol}`}
               </h4>
               <p className="text-xs text-white">
-
                 {formatDollarAmount(
                   Number(row?.depositedToken1) *
                     Number(
@@ -331,10 +308,13 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
             onClick={() => {
               if (row.liquidity !== 'ichi') {
+                dispatch(setApr(`${row?.apr}`))
                 router.push(`/liquidity/manage?id=${row?.id}`)
                 router.refresh()
               } else {
-                router.push(`liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${row?.token0}&token1=${row?.token1}`)
+                router.push(
+                  `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${row?.token0?.id}&token1=${row?.token1?.id}`
+                )
                 // router.refresh()
               }
             }}
