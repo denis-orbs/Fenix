@@ -79,7 +79,7 @@ const Manage = ({}: {}) => {
 
   const [positionData, setPositionData] = useState<PositionData>()
   const [isLoading, setIsLoading] = useState(true)
-  const [slippage, setSlippage] = useState(0.05) //1%
+  const [slippage, setSlippage] = useState(0.1) 
 
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
@@ -144,6 +144,18 @@ const Manage = ({}: {}) => {
     setLpValue(Number(BigInt(data.liquidity) / BigInt(2)))
     // console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
   }
+
+  useEffect(() => {
+    if(!positionData) return
+
+    const temp = positionData
+
+    const decimalDifference = 10 ** Math.abs(firstToken.decimals - secondToken.decimals)
+    const decimalMultiplier = firstToken.decimals > secondToken.decimals ? decimalDifference : 1 / decimalDifference
+    temp.ratio = temp.ratio / decimalMultiplier
+
+    setPositionData(temp)
+  }, [positionData, firstToken, secondToken])
 
   useEffect(() => {
     const positionId = searchParams.get('id')
@@ -236,10 +248,10 @@ const Manage = ({}: {}) => {
         args: [
           [
             positionData.id,
-            ethers.utils.parseUnits(firstValue, 'ether'),
-            ethers.utils.parseUnits(secondValue, 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1 - slippage)), 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1 - slippage)), 'ether'),
+            Math.floor(Number(formatNumber(Number(firstValue))) * 10 ** firstToken.decimals),
+            Math.floor(Number(formatNumber(Number(secondValue))) * 10 ** secondToken.decimals),
+            Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
+            Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
             parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],
