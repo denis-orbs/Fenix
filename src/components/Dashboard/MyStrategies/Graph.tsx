@@ -109,9 +109,9 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
             )}
           ></div>
         )}
-        <div className="absolute bottom-0 left-[50%] w-[1px] h-1/2 bg-white"></div>
+        {isInRange && <div className="absolute bottom-0 left-[50%] w-[1px] h-1/2 bg-white"></div>}
       </div>
-      <div className="flex items-center w-full justify-center px-10 py-3 border-t-2 border-shark-400">
+      <div className="flex items-center w-full justify-center px-10 border-t-2 border-shark-400">
         <p className="text-white text-xs">
           {isInRange ? <span className="text-green-400">In range</span> : 'Out of range'}
           <span>
