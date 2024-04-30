@@ -5,6 +5,7 @@ import lock from './lock/reducer'
 import vote from './vote/reducer'
 import user from './user/reducer'
 import notifications from './notifications/reducer'
+import apr from './apr/reducer'
 
 const reducer = combineReducers({
   user,
@@ -12,6 +13,7 @@ const reducer = combineReducers({
   lock,
   vote,
   notifications,
+  apr,
 })
 
 export default reducer

@@ -18,6 +18,8 @@ import { useAccount, useWriteContract } from 'wagmi'
 import { MAX_INT } from '@/src/library/constants/misc'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { useDispatch } from 'react-redux'
+import { setApr } from '@/src/state/apr/reducer'
 
 type options = {
   value: string
@@ -34,6 +36,7 @@ interface StrategyMobileProps {
 
 const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
   const router = useRouter()
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
@@ -281,6 +284,7 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                   className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
                   onClick={() => {
                     if (row.liquidity !== 'ichi') {
+                      dispatch(setApr(`${row?.apr}`))
                       router.push(`/liquidity/manage?id=${row?.id}`)
                       router.refresh()
                     } else {
