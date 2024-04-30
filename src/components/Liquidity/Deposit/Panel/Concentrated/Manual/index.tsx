@@ -94,11 +94,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const handleMinMaxInput = (value: any, isFirst: boolean, multiplier: any) => {
     if (timeout) clearTimeout(timeout[0])
 
-    // if(isFirst) {
-    //   setRangePrice2Text(value.target.value)
-    // } else {
-    //   setRangePrice1Text(value.target.value)
-    // }
+    if(isFirst) {
+      setRangePrice2Text(value.target.value)
+    } else {
+      setRangePrice1Text(value.target.value)
+    }
 
     // console.log("123", value.target.value)
 

@@ -140,8 +140,8 @@ const SetRange = ({
             min={1}
             max={100}
             disabled={false}
-            onChange={(value) => handlePercentageChange([-value, value])}
-            onChangeShown={(value) => { if(value != 101) setCurrentPercentShown([-value, value])}}
+            onChange={(value) => { console.log(value); handlePercentageChange([-value, value])}}
+            onChangeShown={(value) => { {console.log(value); if(value != 101) setCurrentPercentShown([-value, value])}}}
           />
         </div>
       </div>
@@ -189,11 +189,18 @@ const SetRange = ({
           title={`Min Price (${token2?.symbol} per ${token1?.symbol})`}
           percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 0 : isInverse ? invertPercentage(currentPercentage[1]).toFixed(1) : currentPercentage[0].toFixed(1)}`}
           value={
-            //price2text == price2.toString() ?
-              currentPercentage[0] == -1 && currentPercentage[1] == -1
-                ? '0'
-                : (formatNumber(isInverse ? 1 / (price2 * multiplier) : price1 / multiplier, 6) as string)
-            //: price2text
+            isInverse ?
+              price2text == price2.toString() ?
+                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                  ? '0'
+                  : (formatNumber(1 / (price2 * multiplier), 6) as string)
+              : price2text
+            : 
+              price1text == price1.toString() ?
+                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                  ? '0'
+                  : (formatNumber(price1 / multiplier, 6) as string)
+              : price1text
           }
           onChange={(value: any) => {
             handleMinMaxInput(value, isInverse, multiplier)
@@ -204,11 +211,18 @@ const SetRange = ({
           title={`Max Price (${token2?.symbol} per ${token1?.symbol})`}
           percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 'Infinity' : isInverse ? invertPercentage(currentPercentage[0]).toFixed(1) : currentPercentage[1].toFixed(1)}`}
           value={
-            //price1text == price1.toString() ?
-              currentPercentage[0] == -1 && currentPercentage[1] == -1
-                ? 'Infinity'
-                : (formatNumber(isInverse ? 1 / (price1 * multiplier) : price2 / multiplier, 6) as string)
-            //: price1text
+            isInverse ?
+              price1text == price1.toString() ?
+                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                  ? 'Infinity'
+                  : (formatNumber(1 / (price1 * multiplier), 6) as string)
+              : price1text
+            : 
+              price2text == price2.toString() ?
+                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                  ? 'Infinity'
+                  : (formatNumber(price2 / multiplier, 6) as string)
+              : price2text
           }
           onChange={(value: any) => {
             handleMinMaxInput(value, !isInverse, multiplier)
