@@ -31,7 +31,6 @@ import ApproveButtons from '../../../Common/ApproveButtons'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
-import { useSelector } from 'react-redux'
 
 interface PositionData {
   id: number
@@ -45,11 +44,20 @@ interface PositionData {
 }
 
 const Manage = ({}: {}) => {
-  const { apr } = useSelector<any>((state) => state.apr)
   const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934'
 
   const searchParams = useSearchParams()
   const router = useRouter()
+
+  const [apr, setApr] = useState(null)
+  const pid = searchParams.get('id')
+  useEffect(() => {
+    if (apr === null) {
+      const localApr = JSON.parse(localStorage.getItem('apr'))
+      if (localApr.id == pid) setApr(localApr.apr)
+    }
+  }, [apr])
+  console.log('gg', apr)
 
   const [firstToken, setFirstToken] = useState({
     name: 'Fenix',
