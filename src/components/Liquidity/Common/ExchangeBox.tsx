@@ -91,7 +91,7 @@ const ExchangeBox = ({
   }, [token, account.address])
 
   const handleOnChange = (e: any) => {
-    if (onTokenValueChange) onTokenValueChange(e > 0 ? e : 0, token)
+    if (onTokenValueChange) onTokenValueChange((e < 0 || e == "") ? 0 : e, token)
   }
   return (
     <div className={boxVariant}>

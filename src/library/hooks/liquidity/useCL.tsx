@@ -17,7 +17,6 @@ import { ethers } from 'ethers'
 import { contractAddressList } from '../../constants/contactAddresses'
 import { injected } from 'wagmi/connectors'
 import { NATIVE_ETH_LOWERCASE } from '../../Constants'
-import { MaxUint256 } from '@cryptoalgebra/integral-sdk'
 
 export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
   if (token1.toLowerCase() == NATIVE_ETH_LOWERCASE) token1 = '0x4300000000000000000000000000000000000004' as Address
@@ -146,8 +145,9 @@ export async function getPriceToTick(price: any) {
 }
 
 export async function getPriceAndTick(price: any) {
-  if (price == Infinity) return { price: MaxUint256, tick: 887220 }
-  if (price == 0 || isNaN(price)) return { price: 0, tick: 0 }
+  if (price == Infinity) return { price: 115792089237316195423570985008687907853269984665640564039457584007913129639935, tick: 887220 }
+  if (price == 0) return { price: 0, tick: -887220 }
+  if (isNaN(price)) return { price: 0, tick: 0 }
   price = priceToSqrtPrice(price > 1 ? BigInt(price * 1e18) : parseInt((price * 1e18).toString()))
   /**
    * This hook is used to get info from AlgebraPool
