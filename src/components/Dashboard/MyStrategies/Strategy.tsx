@@ -109,10 +109,10 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
   const handlerSwitch = () => {
     setshowtoken0(!showtoken0)
   }
-  let ichitokens: IchiVault
-  if (row.liquidity === 'ichi') {
-    ichitokens = useIchiVaultsData(row?.id)
-  }
+  const ichitokens: IchiVault = useIchiVaultsData(row?.id)
+  // if (row.liquidity === 'ichi') {
+  //   ichitokens = useIchiVaultsData(row?.id)
+  // }
 
   const handleClaim = (id: string) => {
     const multi = [
