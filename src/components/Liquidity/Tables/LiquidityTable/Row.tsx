@@ -86,20 +86,27 @@ const RowData = ({
               className="flex flex-row transition-transform transform group"
             >
               <Image
-                src={`/static/images/tokens/blastgold.png`}
+                src={`/static/images/point-stack/fenix-ring.svg`}
                 alt="token"
-                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
+                className={`-mr-3 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/blastpoints.png`}
+                src={`/static/images/point-stack/blast.svg`}
                 alt="token"
-                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
+                className={`-mr-3 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
+                src={`/static/images/point-stack/blast-gold.svg`}
+                alt="token"
+                className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+              {/* <Image
                 src={`/static/images/tokens/${row.token0.symbol}.png`}
                 alt="token"
                 className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
@@ -112,7 +119,7 @@ const RowData = ({
                 className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
-              />
+              /> */}
             </span>
           </div>
         </TableCell>
