@@ -18,6 +18,7 @@ const SetRange = ({
   multiplier,
   handleMinMaxInput,
   isInverse,
+  swapTokens
 }: {
   setCurrentPercentage: any
   currentPercentage: any
@@ -29,21 +30,24 @@ const SetRange = ({
   multiplier?: any
   handleMinMaxInput?: any
   isInverse?: any
+  swapTokens?: any
 }) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
   const [currentPercentageShown, setCurrentPercentShown] = useState([5, 5])
 
   useEffect(() => {
-    if (currentStrategy == StrategyType.NARROW) handlePercentageChange([-2.5, 2.5], false)
-    if (currentStrategy == StrategyType.BALANCED) handlePercentageChange([-6, 6], false)
-    if (currentStrategy == StrategyType.WIDE) handlePercentageChange([-15, 15], false)
-    if (currentStrategy == StrategyType.FULL_RANGE) handlePercentageChange([-1, -1]) //inf
+    if(currentStrategy == StrategyType.NARROW) handlePercentageChange([-2.5, 2.5], false)
+    if(currentStrategy == StrategyType.BALANCED) handlePercentageChange([-6, 6], false)
+    if(currentStrategy == StrategyType.WIDE) handlePercentageChange([-15, 15], false)
+    if(currentStrategy == StrategyType.FULL_RANGE) handlePercentageChange([-1, -1], false) //inf
   }, [currentStrategy])
 
-  const handlePercentageChange = (percent: any, s = true) => {
-    if (percent[0] != -1 && percent[1] != -1) {
-      percent[0] = isInverse ? invertPercentage(-percent[0]) : percent[0]
-      percent[1] = isInverse ? invertPercentage(-percent[1]) : percent[1]
+  const handlePercentageChange = (percent: any, s=true) => {
+    setCurrentPercentShown(percent)
+
+    if(percent[0] != -1 && percent[1] != -1) {
+      percent[0] = isInverse ? invertPercentage(-percent[0]) : percent[0] 
+      percent[1] = isInverse ? invertPercentage(-percent[1]) : percent[1] 
     }
     setCurrentPercentage([percent[0], percent[1]])
     if (s) setCurrentStrategy(null)
@@ -59,11 +63,9 @@ const SetRange = ({
   }, [currentPercentage])
   const [showFullRange, setShowFullRange] = useState(false)
   useEffect(() => {
-    console.log(currentPercentage)
     if (currentPercentage[0] === -1 && currentPercentage[1] === -1) setShowFullRange(true)
     else setShowFullRange(false)
   }, [currentPercentage])
-  console.log(currentPercentage)
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="mb-2 text-xs leading-normal text-white">Selected Range</div>
@@ -130,12 +132,12 @@ const SetRange = ({
           <InputRange
             height={8.412}
             thumbSize={14.421}
-            value={currentPercentageShown[1]}
+            value={currentPercentageShown[1] == -1 ? 101 : currentPercentageShown[1]}
             min={1}
             max={100}
             disabled={false}
             onChange={(value) => handlePercentageChange([-value, value])}
-            onChangeShown={(value) => setCurrentPercentShown([-value, value])}
+            onChangeShown={(value) => { if(value != 101) setCurrentPercentShown([-value, value])}}
           />
         </div>
       </div>
@@ -191,6 +193,7 @@ const SetRange = ({
             value.target.value = value.target.value * multiplier
             handleMinMaxInput(value, isInverse)
           }}
+          onTitleClick={swapTokens}
         />
         <Input
           title={`Max Price (${token2?.symbol} per ${token1?.symbol})`}
@@ -204,6 +207,7 @@ const SetRange = ({
             value.target.value = value.target.value * multiplier
             handleMinMaxInput(value, !isInverse)
           }}
+          onTitleClick={swapTokens}
         />
       </div>
     </div>

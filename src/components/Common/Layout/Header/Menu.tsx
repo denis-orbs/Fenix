@@ -19,19 +19,24 @@ const Menu = () => {
 
   return (
     <ul
-      className={`${pathname === '/' ? 'header-box-landing' : ''} flex item-center md:gap-2 2xl:gap-3 justify-center`}
+      className={`${pathname === '/' ? 'header-box-landing' : ''} flex items-center md:gap-2 2xl:gap-3 justify-center `}
     >
       {MENU_LINKS.map((link, index) => (
-        <Link
-          href={link.href}
-          key={index}
-          className={`${isActive(link.href) ? activeButtonClass : inactiveButtonClass} 
-          rounded-[8px] py-2.5 px-3 md:px-1 flex items-center justify-center min-w-[80px] gap-2.5 text-white text-xs leading-normal group transition-all`}
-        >
-          <span className={`${isActive(link.href) ? activeButtonTextClass : inactiveButtonTextClass}`}>
-            {link.name}
-          </span>
-        </Link>
+        <>
+          <Link
+            href={link.href}
+            key={index}
+            className={`${isActive(link.href) ? activeButtonClass : inactiveButtonClass} 
+          rounded-[8px] relative z-50 py-2.5 px-3 md:px-1 flex items-center justify-center min-w-[80px] gap-2.5 text-white text-xs leading-normal group transition-all`}
+          >
+            <span className={`${isActive(link.href) ? activeButtonTextClass : inactiveButtonTextClass} `}>
+              {link.name}
+            </span>
+          </Link>
+          {pathname === '/' && (
+            <>{index !== MENU_LINKS.length - 1 && <div className=" border-r solid border-white h-[22px]"></div>}</>
+          )}
+        </>
       ))}
     </ul>
   )

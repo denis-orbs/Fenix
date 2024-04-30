@@ -120,8 +120,16 @@ export const useIchiPositions = () => {
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
         const pos = await Promise.all(
           amounts?.map(async (item) => {
-            let tokenA
-            let tokenB
+            const tokenAid = ichiVaults.find((v) => {
+              if (v.id === item.vaultAddress) {
+                return v
+              }
+            })
+            const tokenBid = ichiVaults.find((v) => {
+              if (v.id === item.vaultAddress) {
+                return v
+              }
+            })
             //const vaultInfo = useIchiVaultsData(item.vaultAddress)
             //   console.log(tokenA)
 
@@ -131,6 +139,8 @@ export const useIchiPositions = () => {
               const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
               return averageDtr
             }
+
+            console.log('item', item)
 
             const app = await getLp(item.vaultAddress)
             //    console.log('app', app)
@@ -151,14 +161,14 @@ export const useIchiPositions = () => {
                 tickIdx: '',
               },
               token0: {
-                id: 'string',
+                id: tokenAid?.tokenA,
                 symbol: 'string',
                 name: 'string',
                 decimals: 'string',
                 derivedMatic: 'string',
               },
               token1: {
-                id: 'string',
+                id: tokenBid?.tokenB,
                 symbol: 'string',
                 name: 'string',
                 decimals: 'string',

@@ -38,9 +38,7 @@ const RowData = ({
   return (
     <>
       <TableRow className="hidden lg:flex">
-        <TableCell
-          className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}
-        >
+        <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
           <div className="flex items-center gap-2">
             <div className="flex items-center max-2xl:hidden">
               <Image
@@ -77,29 +75,31 @@ const RowData = ({
             </div>
           </div>
         </TableCell>
-        <TableCell
-          className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}
-        >
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
-            <span
-              ref={hoverRef}
-              className="flex flex-row transition-transform transform group"
-            >
+            <span ref={hoverRef} className="flex flex-row transition-transform transform group">
               <Image
-                src={`/static/images/tokens/blastgold.png`}
+                src={`/static/images/point-stack/fenix-ring.svg`}
                 alt="token"
-                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
+                className={`-mr-3 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/blastpoints.png`}
+                src={`/static/images/point-stack/blast.svg`}
                 alt="token"
-                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
+                className={`-mr-3 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
+                src={`/static/images/point-stack/blast-gold.svg`}
+                alt="token"
+                className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
+                width={20}
+                height={20}
+              />
+              {/* <Image
                 src={`/static/images/tokens/${row.token0.symbol}.png`}
                 alt="token"
                 className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
@@ -112,17 +112,15 @@ const RowData = ({
                 className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
-              />
+              /> */}
             </span>
           </div>
         </TableCell>
-        <TableCell
-          className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}
-        >
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
-              {formatAmount(toBN(row.fee).div(10000).div(row.totalValueLockedUSD).multipliedBy(100), 4)}%
+              {formatAmount(row?.apr, 4)}%
             </p>
           </div>
         </TableCell>

@@ -1,8 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Switch } from '../../UI'
 import { positions } from './Strategy'
+import { formatAmount } from '@/src/library/utils/numbers'
+import { getAlgebraPoolPrice } from '@/src/library/hooks/liquidity/useCL'
+import cn from '@/src/library/utils/cn'
 
 type GraphProps = {
   row: positions
@@ -20,10 +23,42 @@ type GraphProps = {
 
 const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphProps) => {
   const [showtoken0, setshowtoken0] = useState(true)
-
   const handlerSwitch = () => {
     setshowtoken0(!showtoken0)
   }
+  const sqrtPrice = Math.pow(1.0001, 887220 / 2)
+  // return Math.pow(sqrtPrice, 2)
+  console.log(Math.pow(sqrtPrice, 2))
+
+  /* price0 / 1e(token1.decimals - token0.decimals) */
+
+  /* price0 * 1e(token0.decimals - token1.decimals) */
+
+  const minPrice = parseFloat(tickLower?.price0) * 10 ** (Number(row?.token0?.decimals) - Number(row?.token1?.decimals))
+  const maxPrice = parseFloat(tickUpper?.price0) * 10 ** (Number(row?.token0?.decimals) - Number(row?.token1?.decimals))
+  const minPriceIsZero = minPrice < 1e-5
+  const maxPriceIsInfinity = maxPrice > 1e12
+  const [poolGlobalState, setPoolGlobalState] = useState<{
+    price: number
+    currentTick: number
+  }>({
+    price: 0,
+    currentTick: 0,
+  })
+  const getPoolCurrentState = async () => {
+    const state = await getAlgebraPoolPrice(row?.token0?.id as `0x${string}`, row?.token1?.id as `0x${string}`)
+    if (state) {
+      setPoolGlobalState(state)
+    }
+  }
+  useEffect(() => {
+    getPoolCurrentState()
+  }, [])
+
+  const currentPoolPrice = Number(poolGlobalState?.price / 10 ** Number(row.token1.decimals)).toFixed(6)
+
+  const isInRange =
+    (Number(currentPoolPrice) < maxPrice && Number(currentPoolPrice) < maxPrice) || row.liquidity === 'ichi'
 
   return (
     <div className="w-full">
@@ -51,38 +86,38 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
           showtoken0 && (
             <>
               <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
-                Min. Price: {Number(tickLower?.price0) < 1e-5 ? 0 : Number(tickLower?.price0).toFixed(5)} {token0Symbol}
-                /{token1Symbol}
+                Min. Price: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0Symbol}/{token1Symbol}
               </p>
 
               <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
-                Max. Price: {Number(tickUpper?.price0) > 1e12 ? '∞' : Number(tickUpper?.price0).toFixed(5)}{' '}
-                {token0Symbol}/{token1Symbol}
+                Max. Price: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0Symbol}/{token1Symbol}
               </p>
             </>
           )
         )}
-        {/* {!showtoken0 && (
+        {minPriceIsZero && maxPriceIsInfinity ? (
           <>
-            <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
-              Min. Price: {Number(tickLower?.price1) < 1e-5 ? 0 : Number(tickLower?.price1).toFixed(5)} {token1Symbol}/
-              {token0Symbol}
-            </p>
-
-            <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
-              Max. Price: {Number(tickUpper?.price1) > 1e12 ? '∞' : Number(tickUpper?.price1).toFixed(5)} {token1Symbol}
-              /{token0Symbol}
-            </p>
+            <div className="absolute bottom-0 left-[8%] w-[84%] h-1/2 bg-gradient-to-b from-shark-400 to-green-500 border-x-2 border-green-500 opacity-30"></div>
           </>
-        )} */}
-        <div className="absolute bottom-0 left-[40%] w-[20%] h-1/2 bg-gradient-to-b from-shark-400 to-green-500 border-x-2 border-green-500 opacity-30"></div>
-        <div className="absolute bottom-0 left-[50%] w-[1px] h-1/2 bg-white"></div>
+        ) : (
+          <div
+            className={cn(
+              'absolute bottom-0 left-[40%] w-[20%] h-1/2   border-x-2  opacity-30',
+              isInRange
+                ? 'border-green-500 bg-gradient-to-b from-shark-400 to-green-500'
+                : 'border-red-500 to-red-500 bg-gradient-to-b from-shark-400'
+            )}
+          ></div>
+        )}
+        {isInRange && <div className="absolute bottom-0 left-[50%] w-[1px] h-1/2 bg-white"></div>}
       </div>
-      <div className="flex items-center w-full justify-between px-10 py-3 border-t-2 border-shark-400">
-        {/* <p className="text-white text-xs">0.00</p>
-        <p className="text-white text-xs">1,328.19</p>
-        <p className="text-white text-xs">3,672.06</p>
-        <p className="text-white text-xs">6,015.93</p> */}
+      <div className="flex items-center w-full justify-center px-10 border-t-2 border-shark-400">
+        <p className="text-white text-xs">
+          {isInRange ? <span className="text-green-400">In range</span> : 'Out of range'}
+          <span>
+            {currentPoolPrice !== '0' && !isNaN(Number(currentPoolPrice)) && <span> ({currentPoolPrice})</span>}
+          </span>
+        </p>
       </div>
     </div>
   )

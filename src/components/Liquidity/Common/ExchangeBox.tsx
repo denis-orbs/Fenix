@@ -19,9 +19,19 @@ interface ExchangeBoxProps {
   onTokenValueChange?: (arg0: any, token: any) => void
   value?: any
   setValue: (value: string) => void
+  option?: string
 }
 
-const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, value, setValue }: ExchangeBoxProps) => {
+const ExchangeBox = ({
+  title,
+  token,
+  onOpenModal,
+  variant,
+  onTokenValueChange,
+  value,
+  setValue,
+  option,
+}: ExchangeBoxProps) => {
   const boxVariant = variant === 'secondary' ? 'exchange-box-x2' : 'exchange-box-x1'
   const availableAlign = title ? 'justify-between' : 'justify-end'
   const account = useAccount()
@@ -91,12 +101,14 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
           <span className=" ml-3">
             {value && value !== '' && token?.price && formatDollarAmount(toBN(value).multipliedBy(token?.price))}
           </span>
-          <div>
-            <span className="icon-wallet text-xs mr-2"></span>
-            <span>
-              Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol}
-            </span>
-          </div>
+          {option !== 'WITHDRAW' && (
+            <div>
+              <span className="icon-wallet text-xs mr-2"></span>
+              <span>
+                Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol}
+              </span>
+            </div>
+          )}
         </p>
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3">
@@ -119,28 +131,30 @@ const ExchangeBox = ({ title, token, onOpenModal, variant, onTokenValueChange, v
           </div>
         </div>
         <div className="relative w-full xl:w-3/5">
-          {/* <input
+          <input
             type="number"
             placeholder="0"
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             onChange={handleOnChange}
             value={value}
-          /> */}
-          <NumericalInput
+          />
+          {/* <NumericalInput
             value={value}
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             placeholder="0.0"
             onUserInput={(input) => handleOnChange(input)}
             precision={token.decimals}
-          />
-          <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
-              Half
-            </Button>
-            <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
-              Max
-            </Button>
-          </div>
+          /> */}
+          {option !== 'WITHDRAW' && (
+            <div className="absolute right-2 top-[10px] flex items-center gap-1">
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
+                Half
+              </Button>
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
+                Max
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

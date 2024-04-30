@@ -49,6 +49,16 @@ const Manage = ({}: {}) => {
   const searchParams = useSearchParams()
   const router = useRouter()
 
+  const [apr, setApr] = useState(null)
+  const pid = searchParams.get('id')
+  useEffect(() => {
+    if (apr === null) {
+      const localApr = JSON.parse(localStorage.getItem('apr'))
+      if (localApr?.id == pid) setApr(localApr?.apr)
+    }
+  }, [apr])
+  console.log('gg', apr)
+
   const [firstToken, setFirstToken] = useState({
     name: 'Fenix',
     symbol: 'FNX',
@@ -487,13 +497,16 @@ const Manage = ({}: {}) => {
           <div className="md:mb-[5px] text-right">APR</div>
 
           <p className="py-[5px] px-5 border border-solid bg-shark-400 rounded-[10px] bg-opacity-40 border-1 border-shark-300">
+            {apr ? apr : '0%'}
+          </p>
+          {/* <p className="py-[5px] px-5 border border-solid bg-shark-400 rounded-[10px] bg-opacity-40 border-1 border-shark-300">
             {
               pairs.find(
                 (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
               )?.apr
             }{' '}
             %
-          </p>
+          </p> */}
         </div>
       </div>
 
@@ -551,6 +564,7 @@ const Manage = ({}: {}) => {
           secondValue={secondValue}
           setSecondValue={setSecondValue}
           onTokenValueChange={handleOnTokenValueChange}
+          option={optionActive}
         />
       </div>
 

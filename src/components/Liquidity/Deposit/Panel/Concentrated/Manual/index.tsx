@@ -19,6 +19,7 @@ import ApproveButtons from '@/src/components/Liquidity/Common/ApproveButtons'
 import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { useSetToken0, useSetToken1 } from '@/src/state/liquidity/hooks'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
@@ -70,6 +71,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout>()
 
+  const setToken0 = useSetToken0()
+  const setToken1 = useSetToken1()
+  
   const account = useAccount()
   const { isConnected, chainId } = useActiveConnectionDetails()
 
@@ -104,11 +108,16 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
       if (isFirst) setCurrentPercentage([currentPercentage[0], pricePercentage])
       else setCurrentPercentage([pricePercentage, currentPercentage[1]])
-    }, 2000)
+    }, 500)
 
     setTimeoutID(newTimeout)
   }
   const addNotification = useNotificationAdderCallback()
+
+  useEffect(() => {
+    setToken0(firstToken.address)
+    setToken1(secondToken.address)
+  }, [firstToken, secondToken])
 
   useEffect(() => {
     if (poolState.price == 0) {
@@ -172,7 +181,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     const asyncFn = async () => {
       const state = await getAlgebraPoolPrice(firstToken.address as Address, secondToken.address as Address)
       setPoolState(state as StateType)
-      console.log(state, 'state')
       if (currentPercentage[0] == -1 && currentPercentage[1] == -1) {
         setRangePrice1(0)
         setRangePrice2(-1)
@@ -215,6 +223,12 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     asyncFn()
   }, [currentPercentage, poolState])
 
+  const swapTokens = () => {
+    const temp = firstToken
+    setFirstToken(secondToken)
+    setSecondToken(firstToken)
+  }
+  
   const handleCLAdd = async () => {
     setIsLoading(true)
 
@@ -393,11 +407,12 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setCurrentPercentage={setCurrentPercentage}
         price1={rangePrice1} //isInverse ? 1 / rangePrice1 : rangePrice1}
         price2={rangePrice2} //isInverse ? 1 / rangePrice2 : rangePrice2}
-        token1={isInverse ? secondToken : firstToken}
-        token2={isInverse ? firstToken : secondToken}
+        token1={firstToken}
+        token2={secondToken}
         multiplier={decMultiplier}
         handleMinMaxInput={handleMinMaxInput}
         isInverse={isInverse}
+        swapTokens={swapTokens}
       />
       <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
         <div>
@@ -433,9 +448,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
                   {isInverse
                     ? Number(1 / (poolState.price / 10 ** firstToken.decimals)).toFixed(6)
                     : Number(poolState.price / 10 ** secondToken.decimals).toFixed(6)}{' '}
-                  {isInverse
-                    ? `${firstToken.symbol} per ${secondToken.symbol}`
-                    : `${secondToken.symbol} per ${firstToken.symbol}`}
+                  {`${secondToken.symbol} per ${firstToken.symbol}`}
                 </span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0"></p>
@@ -472,7 +485,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           token0={firstToken}
           token1={secondToken}
           handleApprove={handleApprove}
-          mainFn={handleCLAdd}
+          mainFn={swapTokens}
           mainText={'Create Position'}
           isLoading={isLoading}
         />

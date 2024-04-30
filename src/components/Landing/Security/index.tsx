@@ -136,7 +136,7 @@ const Security = () => {
         </div>
       </div>
       <div className="relative">
-        <div className="absolute -z-10  h-[1000px] top-[-50rem] left-0 right-0 overflow-hidden">
+        <div className="absolute -z-10  h-[500px] top-[-50rem] left-0 right-0 overflow-hidden">
           <div className="min-w-full min-h-full mx-auto relative">
             <ScrollParallax isAbsolutelyPositioned>
               <Image

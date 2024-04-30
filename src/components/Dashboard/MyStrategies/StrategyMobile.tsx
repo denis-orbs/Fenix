@@ -281,6 +281,7 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                   className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
                   onClick={() => {
                     if (row.liquidity !== 'ichi') {
+                      localStorage.setItem('apr', JSON.stringify({ id: row?.id, apr: row?.apr }))
                       router.push(`/liquidity/manage?id=${row?.id}`)
                       router.refresh()
                     } else {

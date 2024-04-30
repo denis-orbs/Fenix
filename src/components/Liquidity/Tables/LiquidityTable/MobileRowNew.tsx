@@ -88,23 +88,54 @@ export default function MobileRowNew({
         <div className="flex flex-col gap-1  mb-2.5">
           <div className="flex items-center justify-between">
             <div
-              className="flex flex-col items-center w-[30%] justify-between border border-shark-300 p-4 rounded-lg
+              className="flex flex-col items-center w-[25%] justify-between border border-shark-300 p-4 rounded-lg
             "
             >
               <div className="flex items-center gap-1">
                 <span className="text-xs font-medium leading-normal">APR</span>
               </div>
               <div className="flex gap-[7px]">
-                <div className="ml-auto text-xs leading-normal">
-                  {formatAmount(toBN(row.fee).div(10000).div(row.totalValueLockedUSD).multipliedBy(100), 4)}%
-                </div>
+                <div className="ml-auto text-xs leading-normal">{formatAmount(row?.apr, 4)}%</div>
                 <div
                   className="flex items-center gap-[5px] cursor-pointer
                     text-shark-100 hover:text-transparent hover:bg-gradient-to-r hover:from-outrageous-orange-500 hover:to-festival-500 hover:bg-clip-text"
                 ></div>
               </div>
             </div>
-            <div className="flex flex-col items-center w-[69%] justify-between border  border-shark-300 p-4 rounded-lg">
+            <div
+              className="flex flex-col items-center w-[35%] justify-between border border-shark-300 p-3 rounded-lg
+            "
+            >
+              <div className="flex items-center gap-1">
+                <span className="text-xs font-medium leading-normal">Point Stack</span>
+              </div>
+              <div className="flex justify-center items-center gap-2 ">
+                <span className="flex flex-row justify-center gap-2">
+                  <Image
+                    src={`/static/images/point-stack/fenix-ring.svg`}
+                    alt="token"
+                    className={`rounded-full w-7 h-7`}
+                    width={20}
+                    height={20}
+                  />
+                  <Image
+                    src={`/static/images/point-stack/blast.svg`}
+                    alt="token"
+                    className={`rounded-full w-7 h-7`}
+                    width={20}
+                    height={20}
+                  />
+                  <Image
+                    src={`/static/images/point-stack/blast-gold.svg`}
+                    alt="token"
+                    className={`rounded-full w-7 h-7`}
+                    width={20}
+                    height={20}
+                  />
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-col items-center w-[39%] justify-between border  border-shark-300 p-4 rounded-lg">
               <div className="flex items-center gap-1">
                 <span className="text-xs font-medium leading-normal">TVL</span>
               </div>

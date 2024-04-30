@@ -11,9 +11,11 @@ export async function getPositionAPR(
 
   try {
     //     console.log(liquidity, pool, poolFeeData, nativePrice, 'huhuhu')
-
     // Today fees
-    const poolDayFees = poolFeeData && Boolean(poolFeeData.length) && Number(poolFeeData[0].feesUSD)
+    const poolDayFees =
+      poolFeeData &&
+      Boolean(poolFeeData.length) &&
+      Number(poolFeeData[0].feesUSD == '0' ? poolFeeData[1].feesUSD : poolFeeData[0].feesUSD)
 
     // Avg fees
     // const poolDayFees = poolFeeData && Boolean(poolFeeData.length) && poolFeeData.reduce((acc, v) => acc + Number(v.feesUSD), 0) / poolFeeData.length
