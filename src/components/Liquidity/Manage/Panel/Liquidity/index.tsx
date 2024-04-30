@@ -87,7 +87,9 @@ const Manage = ({}: {}) => {
 
   const [positionData, setPositionData] = useState<PositionData>()
   const [isLoading, setIsLoading] = useState(true)
-  const [slippage, setSlippage] = useState(0.05) //1%
+  const [slippage, setSlippage] = useState(0.1) 
+
+  const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
   const account = useAccount()
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
@@ -152,6 +154,18 @@ const Manage = ({}: {}) => {
   }
 
   useEffect(() => {
+    if(!positionData) return
+
+    const temp = positionData
+
+    const decimalDifference = 10 ** Math.abs(firstToken.decimals - secondToken.decimals)
+    const decimalMultiplier = firstToken.decimals > secondToken.decimals ? decimalDifference : 1 / decimalDifference
+    temp.ratio = temp.ratio / decimalMultiplier
+
+    setPositionData(temp)
+  }, [positionData, firstToken, secondToken])
+
+  useEffect(() => {
     const positionId = searchParams.get('id')
     if (!positionId) {
       router.push('/liquidity/deposit')
@@ -205,14 +219,28 @@ const Manage = ({}: {}) => {
       if (firstToken.address === token.address) {
         if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(positionData?.ratio)))
         if (parseFloat(input) == 0) setSecondValue('')
-        setFirstValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
+        setFirstValue(input == "" ? 0 : input)
+
+        if(timeout) clearTimeout(timeout)
+        setTimeoutID(
+          setTimeout(()=> {
+            setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
+          }, 500)
+        )
       } else {
         if (parseFloat(input) != 0)
           setFirstValue(
             formatNumber(parseFloat(input) / (Number(positionData?.ratio) == 0 ? 1 : Number(positionData?.ratio)))
           )
         if (parseFloat(input) == 0) setFirstValue('')
-        setSecondValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input)) : input)
+        setSecondValue(input == "" ? 0 : input)
+
+        if(timeout) clearTimeout(timeout)
+        setTimeoutID(
+          setTimeout(()=> {
+            setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
+          }, 500)
+        )
       }
     }
   }
@@ -228,10 +256,10 @@ const Manage = ({}: {}) => {
         args: [
           [
             positionData.id,
-            ethers.utils.parseUnits(firstValue, 'ether'),
-            ethers.utils.parseUnits(secondValue, 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(firstValue) * (1 - slippage)), 'ether'),
-            ethers.utils.parseUnits(formatNumber(Number(secondValue) * (1 - slippage)), 'ether'),
+            Math.floor(Number(formatNumber(Number(firstValue))) * 10 ** firstToken.decimals),
+            Math.floor(Number(formatNumber(Number(secondValue))) * 10 ** secondToken.decimals),
+            Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
+            Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
             parseInt((+new Date() / 1000).toString()) + 60 * 60,
           ],
         ],

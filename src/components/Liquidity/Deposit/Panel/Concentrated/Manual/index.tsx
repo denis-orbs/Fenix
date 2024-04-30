@@ -30,12 +30,12 @@ interface StateType {
 
 const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IToken[] }) => {
   const [firstToken, setFirstToken] = useState({
-    name: 'Fenix',
-    symbol: 'FNX',
+    name: 'USDB',
+    symbol: 'USDB',
     id: 0,
     decimals: 18,
-    address: '0xa12e4649fdddefd0fb390e4d4fb34ffbd2834fa6' as Address,
-    img: '/static/images/tokens/FNX.svg',
+    address: '0x4300000000000000000000000000000000000003' as Address,
+    img: 'https://fenix-dex-api.vercel.app/tokens/USDB.png',
   } as IToken)
   const [firstValue, setFirstValue] = useState('')
   const [secondToken, setSecondToken] = useState({
@@ -55,6 +55,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const [shownPercentage, setShownPercentage] = useState(['5', '5'])
   const [rangePrice1, setRangePrice1] = useState(0)
   const [rangePrice2, setRangePrice2] = useState(0)
+  const [rangePrice1Text, setRangePrice1Text] = useState("0")
+  const [rangePrice2Text, setRangePrice2Text] = useState("0")
 
   const [ratio, setRatio] = useState(1)
   const [lowerTick, setLowerTick] = useState(0)
@@ -69,7 +71,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const [isLoading, setIsLoading] = useState(true)
   const [slippage, setSlippage] = useState(0.05)
 
-  const [timeout, setTimeoutID] = useState<NodeJS.Timeout>()
+  const [timeout, setTimeoutID] = useState<[NodeJS.Timeout | undefined, NodeJS.Timeout | undefined]>([undefined, undefined])
 
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
@@ -84,9 +86,31 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     return (1 / remaining - 1) * 100
   }
 
-  const handleMinMaxInput = (value: any, isFirst: boolean) => {
-    if (timeout) clearTimeout(timeout)
+  useEffect(() => {
+    setRangePrice1Text(rangePrice1.toString())
+    setRangePrice2Text(rangePrice2.toString())
+  }, [rangePrice1, rangePrice2])
 
+  useEffect(() => {
+    if(BigInt(firstToken.address as string) > BigInt(secondToken.address as string)) {
+      const temp = firstToken
+      setFirstToken(secondToken)
+      setSecondToken(temp)
+    }
+  }, [firstToken, secondToken])
+
+  const handleMinMaxInput = (value: any, isFirst: boolean, multiplier: any) => {
+    if (timeout) clearTimeout(timeout[0])
+
+    if(isFirst) {
+      setRangePrice2Text(value.target.value)
+    } else {
+      setRangePrice1Text(value.target.value)
+    }
+
+    // console.log("123", value.target.value)
+
+    value.target.value = value.target.value * multiplier
     const price = isInverse ? 1 / value.target.value : value.target.value
 
     if (isFirst) {
@@ -110,7 +134,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
       else setCurrentPercentage([pricePercentage, currentPercentage[1]])
     }, 500)
 
-    setTimeoutID(newTimeout)
+    setTimeoutID([newTimeout, timeout[1]])
   }
   const addNotification = useNotificationAdderCallback()
 
@@ -387,12 +411,26 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     if (firstToken.address === token.address) {
       if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(ratio), secondToken.decimals))
       if (parseFloat(input) == 0) setSecondValue('')
-      setFirstValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input), firstToken.decimals) : input)
+      setFirstValue(input == "" ? 0 : input)
+
+      if(timeout[1]) clearTimeout(timeout[1])
+      setTimeoutID([timeout[0], 
+        setTimeout(()=> {
+          setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
+        }, 500)
+      ])
     } else {
       if (parseFloat(input) != 0)
         setFirstValue(formatNumber(parseFloat(input) / (Number(ratio) == 0 ? 1 : Number(ratio)), firstToken.decimals))
       if (parseFloat(input) == 0) setFirstValue('')
-      setSecondValue(parseFloat(input) != 0 ? formatNumber(parseFloat(input), secondToken.decimals) : input)
+      setSecondValue(input == "" ? 0 : input)
+
+      if(timeout[1]) clearTimeout(timeout[1])
+      setTimeoutID([timeout[0], 
+        setTimeout(()=> {
+          setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
+        }, 500)
+      ])
     }
   }
 
@@ -413,6 +451,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         handleMinMaxInput={handleMinMaxInput}
         isInverse={isInverse}
         swapTokens={swapTokens}
+        price1text={rangePrice1Text}
+        price2text={rangePrice2Text}
       />
       <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
         <div>
@@ -448,7 +488,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
                   {isInverse
                     ? Number(1 / (poolState.price / 10 ** firstToken.decimals)).toFixed(6)
                     : Number(poolState.price / 10 ** secondToken.decimals).toFixed(6)}{' '}
-                  {`${secondToken.symbol} per ${firstToken.symbol}`}
+                  {`${secondToken.symbol} per ${firstToken.symbol} ≈ `}
+                  {!isInverse
+                    ? Number(1 / (poolState.price / 10 ** firstToken.decimals)).toFixed(6)
+                    : Number(poolState.price / 10 ** secondToken.decimals).toFixed(6)}{' '}
+                  {`${firstToken.symbol} per ${secondToken.symbol}`}
                 </span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0"></p>
@@ -485,7 +529,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           token0={firstToken}
           token1={secondToken}
           handleApprove={handleApprove}
-          mainFn={swapTokens}
+          mainFn={handleCLAdd}
           mainText={'Create Position'}
           isLoading={isLoading}
         />
