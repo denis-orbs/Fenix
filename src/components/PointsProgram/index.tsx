@@ -44,7 +44,6 @@ const PointsProgram = () => {
         const rewardsObject = flattenedArray.reduce((acc, reward) => {
           const { recipient, amount } = reward
 
-          console.log(flattenedArray, 'heyy')
           if (acc[recipient]) {
             // If recipient exists, add points
             acc[recipient].amount = String(Number(acc[recipient].amount) + Number(amount))

@@ -240,7 +240,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token0?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
-                {Number(row?.depositedToken0).toFixed(6)}{' '}
+                {formatCurrency(formatAmount(toBN(Number(row?.depositedToken0)), 6))}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token0?.symbol}`}
@@ -265,7 +265,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token1?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
-                {Number(row?.depositedToken1).toFixed(6)}{' '}
+                {formatCurrency(formatAmount(toBN(Number(row?.depositedToken1)), 6))}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token1?.symbol}`}
