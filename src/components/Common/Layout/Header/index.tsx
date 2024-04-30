@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <header className={`hidden mx-auto ${pathname === '/' ? 'lg:block' : 'lg:block'}  container`}>
       <div className={`${pathname === '/' ? 'relative' : 'header-box px-5 pb-3'}  flex justify-center items-center  rounded-l`}>
-        <div className={`flex items-center   min-w-[50px]  z-10 h-[95px]  ${pathname === '/' && 'absolute w-full left-0'}`}>
+        <div className={`flex items-center   min-w-[50px]  z-10 h-[95px] w-full  ${pathname === '/' && 'absolute w-full left-0'}`}>
           <Link href="/">
             {width < 940 ? (
               <Image
@@ -47,7 +47,7 @@ const Header = () => {
         <div
           className={`flex  z-10 items-center gap-3.5 justify-end ${width < 860 ? 'px-1' : 'px-5'} 
           h-[95px]
-          ${pathname === '/' ? 'absolute right-0 w-full' : '2xl:w-3/5'}`}
+          ${pathname === '/' ? 'absolute right-0 w-full' : 'w-full'}`}
         >
           <AccountHandler isMenuMobile={false} />
         </div>
