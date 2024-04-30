@@ -54,7 +54,7 @@ const Manage = ({}: {}) => {
   useEffect(() => {
     if (apr === null) {
       const localApr = JSON.parse(localStorage.getItem('apr'))
-      if (localApr.id == pid) setApr(localApr.apr)
+      if (localApr?.id == pid) setApr(localApr?.apr)
     }
   }, [apr])
   console.log('gg', apr)
