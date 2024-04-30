@@ -30,12 +30,12 @@ interface StateType {
 
 const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IToken[] }) => {
   const [firstToken, setFirstToken] = useState({
-    name: 'Fenix',
-    symbol: 'FNX',
+    name: 'USDB',
+    symbol: 'USDB',
     id: 0,
     decimals: 18,
-    address: '0xa12e4649fdddefd0fb390e4d4fb34ffbd2834fa6' as Address,
-    img: '/static/images/tokens/FNX.svg',
+    address: '0x4300000000000000000000000000000000000003' as Address,
+    img: 'https://fenix-dex-api.vercel.app/tokens/USDB.png',
   } as IToken)
   const [firstValue, setFirstValue] = useState('')
   const [secondToken, setSecondToken] = useState({
@@ -90,6 +90,14 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     setRangePrice1Text(rangePrice1.toString())
     setRangePrice2Text(rangePrice2.toString())
   }, [rangePrice1, rangePrice2])
+
+  useEffect(() => {
+    if(BigInt(firstToken.address as string) > BigInt(secondToken.address as string)) {
+      const temp = firstToken
+      setFirstToken(secondToken)
+      setSecondToken(temp)
+    }
+  }, [firstToken, secondToken])
 
   const handleMinMaxInput = (value: any, isFirst: boolean, multiplier: any) => {
     if (timeout) clearTimeout(timeout[0])
@@ -480,7 +488,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
                   {isInverse
                     ? Number(1 / (poolState.price / 10 ** firstToken.decimals)).toFixed(6)
                     : Number(poolState.price / 10 ** secondToken.decimals).toFixed(6)}{' '}
-                  {`${secondToken.symbol} per ${firstToken.symbol}`}
+                  {`${secondToken.symbol} per ${firstToken.symbol} ≈ `}
+                  {!isInverse
+                    ? Number(1 / (poolState.price / 10 ** firstToken.decimals)).toFixed(6)
+                    : Number(poolState.price / 10 ** secondToken.decimals).toFixed(6)}{' '}
+                  {`${firstToken.symbol} per ${secondToken.symbol}`}
                 </span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0"></p>
