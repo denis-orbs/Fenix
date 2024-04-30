@@ -18,6 +18,7 @@ import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionsApr'
 import Spinner from '../../Common/Spinner'
 
 const MyStrategies = () => {
+  const slidesPerView = 3
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
@@ -25,6 +26,7 @@ const MyStrategies = () => {
   const [positionAmounts, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
   const [loading, setLoading] = useState(false)
+  const [progress, setProgress] = useState<number>(0)
 
   const tokensprice = async () => {
     setTokens(await fetchTokens())
@@ -34,13 +36,15 @@ const MyStrategies = () => {
   }, [])
 
   const slideToLeft = () => {
-    if (swiperRef.current) {
+    if (swiperRef.current && progress > 0) {
       swiperRef.current.slidePrev()
+      setProgress(swiperRef?.current?.progress)
     }
   }
   const slideToRight = () => {
-    if (swiperRef.current) {
+    if (swiperRef.current && progress < 1) {
       swiperRef.current.slideNext()
+      setProgress(swiperRef?.current?.progress)
     }
   }
   const { address } = useAccount()
@@ -93,7 +97,7 @@ const MyStrategies = () => {
 
   return (
     <>
-      {console.log('finalp', position)}
+      {/* {console.log('finalp', position)} */}
       {position.length !== 0 && loading === false && address ? (
         <div className="relative">
           <div className="flex items-center w-[100%] mb-4 justify-between">
@@ -105,7 +109,7 @@ const MyStrategies = () => {
           <div className="dashboard-box mb-10 hidden xl:block">
             <Swiper
               spaceBetween={50}
-              slidesPerView={3}
+              slidesPerView={slidesPerView}
               navigation={true}
               onSwiper={(swiper) => (swiperRef.current = swiper)}
             >
@@ -127,10 +131,10 @@ const MyStrategies = () => {
             </Swiper>
             <div className="flex gap-2 justify-center">
               <span
-                className="icon-arrow rotate-180 text-shark-400 text-2xl cursor-pointer"
+                className={`icon-arrow rotate-180 ${progress === 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
                 onClick={slideToLeft}
               ></span>
-              <span className="icon-arrow  text-white text-2xl cursor-pointer" onClick={slideToRight}></span>
+              <span className={`icon-arrow text-2xl ${progress === 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`} onClick={slideToRight}></span>
             </div>
           </div>
           <div className="dashboard-box mb-10 block xl:hidden">
