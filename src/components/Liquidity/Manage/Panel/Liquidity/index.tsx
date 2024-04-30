@@ -551,6 +551,7 @@ const Manage = ({}: {}) => {
           secondValue={secondValue}
           setSecondValue={setSecondValue}
           onTokenValueChange={handleOnTokenValueChange}
+          option={optionActive}
         />
       </div>
 
