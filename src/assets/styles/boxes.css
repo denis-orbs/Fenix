@@ -1011,6 +1011,7 @@
   flex-shrink-0
   bg-shark-400
   bg-opacity-40
+  backdrop-blur-[15px]
   2xl:bg-transparent
   2xl:bg-opacity-100
   py-5
