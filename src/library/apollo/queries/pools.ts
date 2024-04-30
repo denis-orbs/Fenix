@@ -107,6 +107,21 @@ export const POOLS_LIST = gql`
     }
   }
 `
+
+export const POOL_DAY_DATA = gql`
+  query MyQuery($date: Int!) {
+    poolDayDatas(where: { date: $date }) {
+      volumeUSD
+      date
+      id
+      feesUSD
+      pool {
+        id
+      }
+    }
+  }
+`
+
 export const POOLS_ID_LIST = gql`
   query PoolsList {
     pools {

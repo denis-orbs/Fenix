@@ -194,6 +194,7 @@ export interface BasicPool {
   fee: string
   token0: BasicToken
   token1: BasicToken
+  apr?: string
 }
 export interface BasicToken {
   id: string
