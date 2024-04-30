@@ -129,7 +129,7 @@ const SetRange = ({
         <div className="flex items-center gap-2 text-white opacity-75">
           <span>±</span>
           <span className="text-[30px] leading-normal font-light">
-            {showFullRange ? 'Full Range' : `${currentPercentageShown[1]}`}%
+            {showFullRange ? 'Full Range' : `${currentPercentageShown[1]}%`}
           </span>
         </div>
         <div className="max-w-[274px] flex-grow">

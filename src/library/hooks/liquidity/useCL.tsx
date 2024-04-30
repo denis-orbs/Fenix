@@ -146,7 +146,8 @@ export async function getPriceToTick(price: any) {
 
 export async function getPriceAndTick(price: any) {
   if (price == Infinity) return { price: 115792089237316195423570985008687907853269984665640564039457584007913129639935, tick: 887220 }
-  if (price == 0 || isNaN(price)) return { price: 0, tick: 0 }
+  if (price == 0) return { price: 0, tick: -887220 }
+  if (isNaN(price)) return { price: 0, tick: 0 }
   price = priceToSqrtPrice(price > 1 ? BigInt(price * 1e18) : parseInt((price * 1e18).toString()))
   /**
    * This hook is used to get info from AlgebraPool
