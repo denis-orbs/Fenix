@@ -19,6 +19,7 @@ import ApproveButtons from '@/src/components/Liquidity/Common/ApproveButtons'
 import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { useSetToken0, useSetToken1 } from '@/src/state/liquidity/hooks'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
@@ -70,6 +71,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout>()
 
+  const setToken0 = useSetToken0()
+  const setToken1 = useSetToken1()
+  
   const account = useAccount()
   const { isConnected, chainId } = useActiveConnectionDetails()
 
@@ -109,6 +113,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     setTimeoutID(newTimeout)
   }
   const addNotification = useNotificationAdderCallback()
+
+  useEffect(() => {
+    setToken0(firstToken.address)
+    setToken1(secondToken.address)
+  }, [firstToken, secondToken])
 
   useEffect(() => {
     if (poolState.price == 0) {
