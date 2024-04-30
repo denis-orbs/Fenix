@@ -25,48 +25,39 @@ const ApproveButtons = ({
   mainText,
   isLoading,
 }: ApproveButtonsProps) => {
-  return shouldApproveFirst && shouldApproveSecond ? (
-    <div style={{ display: 'flex' }}>
+  return shouldApproveFirst || shouldApproveSecond ? (
+    <div className="flex">
       <Button
         onClick={() => {
-          handleApprove(token0.address as Address)
+          if (shouldApproveFirst) handleApprove(token0.address as Address)
         }}
+        className="button button-tertiary w-1/2 !text-xs !h-[49px] mr-[10px]"
+        disabled={!shouldApproveFirst}
+      >
+        {shouldApproveFirst ? (
+          <> Approve {token0.symbol}</>
+        ) : (
+          <div className="flex items-center">
+            <span className="text-[12px] 2xl:text-lg icon-check text-white mr-2"></span>
+            Approved {token0.symbol}
+          </div>
+        )}
+      </Button>
+      <Button
+        onClick={() => {
+          if (shouldApproveSecond) handleApprove(token1.address as Address)
+        }}
+        disabled={!shouldApproveSecond}
         className="button button-tertiary w-1/2 !text-xs !h-[49px]"
-        style={{ marginRight: '10px' }}
       >
-        Approve {token0.symbol}
-      </Button>
-      <Button
-        onClick={() => {
-          handleApprove(token1.address as Address)
-        }}
-        className="button button-tertiary w-1/2 !text-xs !h-[49px]"
-      >
-        Approve {token1.symbol}
-      </Button>
-    </div>
-  ) : shouldApproveFirst ? (
-    <div style={{ display: 'flex' }}>
-      <Button
-        onClick={() => {
-          handleApprove(token0.address as Address)
-        }}
-        className="button button-tertiary !text-xs !h-[49px]"
-        style={{ marginRight: '10px' }}
-      >
-        Approve {token0.symbol}
-      </Button>
-    </div>
-  ) : shouldApproveSecond ? (
-    <div style={{ display: 'flex' }}>
-      <Button
-        onClick={() => {
-          handleApprove(token1.address as Address)
-        }}
-        className="button button-tertiary !text-xs !h-[49px]"
-        style={{ marginRight: '10px' }}
-      >
-        Approve {token1.symbol}
+        {shouldApproveSecond ? (
+          <> Approve {token1.symbol}</>
+        ) : (
+          <div className="flex items-center">
+            <span className="text-[12px] 2xl:text-lg icon-check text-white mr-2"></span>
+            Approved {token1.symbol}
+          </div>
+        )}
       </Button>
     </div>
   ) : (

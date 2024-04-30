@@ -84,7 +84,6 @@ const MyStrategies = () => {
   }, [address])
 
   const ichipositions = useIchiPositions()
-
   useEffect(() => {
     setLoading(true)
     if (ichipositions.length > 0) {

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Button, Switch } from '@/src/components/UI'
 import Graph from './Graph'
 import ComponentVisible from '@/src/library/hooks/useVisible'
-import { formatDollarAmount, fromWei } from '@/src/library/utils/numbers'
+import { formatAmount, formatCurrency, formatDollarAmount, fromWei, toBN } from '@/src/library/utils/numbers'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
 import { useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
@@ -170,7 +170,6 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
       }
     )
   }
-
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
       <div className="relative z-10">
@@ -208,7 +207,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                     : `${row?.token0?.symbol} / ${row?.token1?.symbol}`}
                 </p>
 
-                <p className="text-xs">ID: {row.liquidity === 'ichi' ? 'Ichi Position' : row?.id}</p>
+                <p className="text-xs">{row.liquidity === 'ichi' ? 'Ichi Position' : 'ID: ' + row?.id}</p>
               </div>
             </div>
             {/* <div
@@ -240,17 +239,19 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           <div className="flex gap-2 my-2">
             <div className="flex flex-col gap-2 w-1/2 items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
               <p className="text-white">
-                APR <span className="icon-info text-xs"></span>
+                APR
+                {/* <span className="icon-info text-xs"></span> */}
               </p>
-              <h1 className="text-green-400 text-2xl">{row?.apr}</h1>
+              <h2 className="text-green-400 text-2xl">{row?.apr}</h2>
             </div>
             <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
               <p className="text-white">
-                Liquidity <span className="icon-info text-xs"></span>
+                Liquidity
+                {/* <span className="icon-info text-xs"></span> */}
               </p>
-              <h1 className="text-white text-2xl">
-                {row.liquidity === 'ichi' ? 'ICHI' : Number(fromWei(row?.liquidity)).toFixed(5)} LP
-              </h1>
+              <h2 className="text-white text-2xl">
+                {row.liquidity === 'ichi' ? 'ICHI' : formatCurrency(fromWei(row?.liquidity))} LP
+              </h2>
             </div>
           </div>
         </div>
@@ -264,13 +265,12 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token0?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
-                {Number(row?.depositedToken0).toFixed(5)}{' '}
+                {formatAmount(toBN(Number(row?.depositedToken0)), 6)}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token0?.symbol}`}
               </h4>
               <p className="text-xs text-white">
-                {' '}
                 {formatDollarAmount(
                   Number(row?.depositedToken0) *
                     Number(
@@ -290,14 +290,12 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token1?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
-                {' '}
-                {Number(row?.depositedToken1).toFixed(5)}{' '}
+                {formatAmount(toBN(Number(row?.depositedToken1)), 6)}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
                   : `${row?.token1?.symbol}`}
               </h4>
               <p className="text-xs text-white">
-                {/* {console.log('token B', tokens)} */}
 
                 {formatDollarAmount(
                   Number(row?.depositedToken1) *
