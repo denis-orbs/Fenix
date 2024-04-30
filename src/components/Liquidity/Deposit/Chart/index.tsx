@@ -11,13 +11,13 @@ const generateChartUrl = (tokenA: string, tokenB: string) => {
     [key: string]: string
   } = {
     '0x4300000000000000000000000000000000000003/0x4300000000000000000000000000000000000004':
-      'https://www.defined.fi/blast/0x1d74611f3ef04e7252f7651526711a937aa1f75e?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT', // USDB/WETH
+      'https://www.defined.fi/blast/0x1d74611f3ef04e7252f7651526711a937aa1f75e?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT&quoteCurrency=TOKEN', // USDB/WETH
 
     '0x4300000000000000000000000000000000000004/0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692':
-      'https://www.defined.fi/blast/0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT', // WETH/WBTC
+      'https://www.defined.fi/blast/0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT&quoteCurrency=TOKEN', // WETH/WBTC
 
     '0x4300000000000000000000000000000000000004/0xeb466342c4d449bc9f53a865d5cb90586f405215':
-      'https://www.defined.fi/blast/0x86d1da56fc79accc0daf76ca75668a4d98cb90a7?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT',
+      'https://www.defined.fi/blast/0x86d1da56fc79accc0daf76ca75668a4d98cb90a7?quoteToken=token0&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT&quoteCurrency=TOKEN',
   }
 
   const key = `${tokenA}/${tokenB}`
