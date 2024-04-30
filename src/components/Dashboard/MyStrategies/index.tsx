@@ -57,7 +57,6 @@ const MyStrategies = () => {
       }
     })
     const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
-
     // TODO: Fetch APR for each position
     const aprs = await Promise.all(
       positions.map((position: positions, index: number) => {
@@ -70,14 +69,13 @@ const MyStrategies = () => {
         ...position,
         depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
         depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
-        apr: isNaN(aprs[index]) ? '0.00 %' : aprs[index].toFixed(2) + ' %',
+        apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
       }
     })
     setposition((prevPositions) => [...prevPositions, ...final])
     setpositionAmounts(amounts)
     setLoading(false)
   }
-
   useEffect(() => {
     if (address) fetchpositions(address)
     setLoading(true)
