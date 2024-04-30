@@ -36,7 +36,7 @@ const BuildInfo = () => {
         </div>
         <div
           className="hidden absolute max-w-[1600px] w-full h-[10px]
-          2xl:flex justify-center after:content-['']
+          xl:flex justify-center after:content-['']
           after:w-[10%] after:bg-opacity-10
           before:bg-shark-400
           before:rounded-full

@@ -217,7 +217,7 @@ const HowItWorks = () => {
         <div className="w-[100%] flex items-center flex-col xl:flex-row  justify-center ">
           <div className="w-full xl:w-1/2 flex items-center flex-col justify-center text-white  my-3">
             {articles.map((item, index) => (
-              <div key={index} className="card !my-2 w-full sm:w-[70%] xl:max-w-[613px] group">
+              <div key={index} className="card !my-2 w-full max-sm:max-w-[350px] sm:w-[70%] xl:max-w-[613px] group">
                 <div
                   className="relative inner h-36 md:h-28 py-5 px-10 max-sm:py-3 max-sm:px-5
                  flex items-center justify-between w-[100%]"
@@ -280,7 +280,6 @@ const HowItWorks = () => {
           </div>
           <div
             className="relative xl:-top-16 
-            
             xl:-left-10 overflow-hidden 
             2xl:[&>div]:!h-[640px] 
             2xl:[&>div]:!w-[640px] xl:h-[550px]
