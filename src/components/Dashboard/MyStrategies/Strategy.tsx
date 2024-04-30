@@ -296,15 +296,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   : `${row?.token1?.symbol}`}
               </h4>
               <p className="text-xs text-white">
-                {/* {formatDollarAmount(
-                  Number(
-                    tokens.find(
-                      (e) =>
-                        e.tokenAddress.toLowerCase() ===
-                        (row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase())
-                    )?.priceUSD
-                  )
-                )} */}
+
                 {formatDollarAmount(
                   Number(row?.depositedToken1) *
                     Number(
