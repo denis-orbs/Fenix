@@ -10,7 +10,7 @@ export const FOUNDATION = [
     loading: false,
   },
   {
-    label: 'FNX AIRDROP for early LPs',
+    label: 'Fenix Airdrop for Open Beta LPs',
     checked: true,
     loading: false,
   },
@@ -44,18 +44,18 @@ export const FOUNDATION = [
 export const LAUNCH = [
   {
     label: 'V1.0 Blast Mainnet Launch',
-    checked: true,
-    loading: false,
+    checked: false,
+    loading: true,
   },
   {
     label: 'Public LBP',
-    checked: true,
+    checked: false,
     loading: false,
   },
   {
     label: 'Token Generation Event',
     checked: false,
-    loading: true,
+    loading: false,
   },
   {
     label: 'Emissions Start',
