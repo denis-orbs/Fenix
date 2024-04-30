@@ -9,7 +9,7 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getAllPairsForUser } from '@/src/library/web3/apis/PairAPIV3'
 import { AddressZero } from '@/src/library/constants/misc'
 import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
-import { fetchPoolData, fetchv2PoolData } from './reducer'
+import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData } from './reducer'
 import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
 import cache from 'memory-cache'
 import { BASIC_POOLS_LIST, POOLS_ID_LIST, POOLS_LIST, POOL_FRAGMENT } from '@/src/library/apollo/queries/pools'
@@ -176,7 +176,13 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
 
         apr = ((Number(volumeUSD) * (Number(pair.fee) / 1000000)) / Number(tvl)) * 100
         maxAPR = apr * 2
-
+        console.log(
+          'apr',
+          volumeUSD.toFixed(2).toString(),
+          Number(volumeUSD),
+          Number(volumeUSD) * (Number(pair.fee) / 1000000),
+          Number(tvl)
+        )
         // if (BLACKLISTED.includes(tokenA.symbol) || BLACKLISTED.includes(tokenB.symbol)) {
         //   apr = 0.0
         //   maxAPR = 0.0
@@ -198,9 +204,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
           priceB: tokenBprice ? tokenBprice : 0,
           isInactiveGauge: false,
           fee: (Number(pair.fee) / 10000).toString(),
-          volumeUSD: (Number(pair.volumeToken0) * tokenAprice + Number(pair.volumeToken1) * tokenBprice)
-            .toFixed(2)
-            .toString(),
+          volumeUSD: volumeUSD.toFixed(2).toString(),
           volumeToken0: pair.volumeToken0,
           volumeToken1: pair.volumeToken1,
           totalPoolAmountValue,
@@ -275,6 +279,8 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
       query: POOLS_LIST,
       fetchPolicy: 'cache-first',
     })
+    const data2 = await fetchV3PoolDayData()
+
     const pools = data.pools.map((pool: BasicPool) => ({
       id: pool.id,
       volumeUSD: pool.volumeUSD,
@@ -301,6 +307,9 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
         symbol: pool.token1.symbol,
         name: pool.token1.name,
       },
+      apr:
+        (Number(data2.poolDayDatas.filter((p: any) => p.pool.id === pool.id)[0].feesUSD) * 365 * 100) /
+        Number(pool.totalValueLockedUSD),
     }))
 
     return pools
