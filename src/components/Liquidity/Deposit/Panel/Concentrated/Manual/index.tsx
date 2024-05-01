@@ -490,7 +490,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
                     : Number(poolState.price / 10 ** secondToken.decimals).toFixed(6)}{' '}
                   {`${secondToken.symbol} per ${firstToken.symbol} ≈ `}
                   {!isInverse
-                    ? Number(1 / (poolState.price / 10 ** firstToken.decimals)).toFixed(6)
+                    ? Number(1 / (poolState.price / 10 ** secondToken.decimals)).toFixed(6)
                     : Number(poolState.price / 10 ** secondToken.decimals).toFixed(6)}{' '}
                   {`${firstToken.symbol} per ${secondToken.symbol}`}
                 </span>
