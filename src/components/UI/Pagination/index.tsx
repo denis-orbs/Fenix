@@ -2,15 +2,26 @@
 
 import { useState } from 'react'
 import cn from '@/src/library/utils/cn'
+import Button from '../Button'
 
 interface PaginationProps {
   numberPages: number
   className: string
   activePage: number
   setActivePage: (page: number) => void
+  itemsPerPage: number
+  setItemPerPage: (item: number) => void
 }
 
-const Pagination = ({ className, numberPages, setActivePage, activePage }: PaginationProps) => {
+const Pagination = ({
+  className,
+  numberPages,
+  setActivePage,
+  activePage,
+  itemsPerPage,
+  setItemPerPage,
+}: PaginationProps) => {
+  const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const mergeClassName = cn('text-white text-xs w-full md:max-w-[785px] box-large hidden xl:block', className)
 
   const pageClassName = (index: number) => {
@@ -55,6 +66,35 @@ const Pagination = ({ className, numberPages, setActivePage, activePage }: Pagin
             <span className="icon-arrow"></span>
           </button>
         )}
+        <div
+          className="flex items-center justify-center cursor-default flex-shrink-0 w-12 h-12 px-4 transition-colors
+        border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400 relative"
+          onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
+        >
+          <span className="text-lg icon-cog text-white "></span>
+          {isOpenItemsPerPage && (
+            <div
+              className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute left-full bottom-0 translate-x-1"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Button onClick={() => setItemPerPage(5)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
+                5
+              </Button>
+              <Button onClick={() => setItemPerPage(10)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
+                10
+              </Button>
+              <Button onClick={() => setItemPerPage(20)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
+                20
+              </Button>
+              <Button onClick={() => setItemPerPage(50)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
+                50
+              </Button>
+              <Button onClick={() => setItemPerPage(100)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
+                100
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
