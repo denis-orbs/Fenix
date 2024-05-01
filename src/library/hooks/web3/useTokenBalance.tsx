@@ -24,7 +24,7 @@ export async function getTokenBalance(token1: Address, user: Address) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -71,7 +71,7 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },

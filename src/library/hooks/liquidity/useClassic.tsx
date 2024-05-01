@@ -23,7 +23,7 @@ export async function getTokenAllowance(token: Address, owner: Address, spender:
       transports: {
         //[blast.id]: http(),
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -56,7 +56,7 @@ export async function getTokenReserve(token1: Address, token2: Address, stable: 
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -87,7 +87,7 @@ export async function getLiquidityRemoveQuote(amount: Number, token1: Address, t
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -119,7 +119,7 @@ export async function getPair(token1: Address, token2: Address, stable: boolean)
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
