@@ -55,8 +55,11 @@ const PointsProgram = () => {
         }, {})
 
         // Step 2: Convert object back to array
-        const mergedRewardsArray = Object.values(rewardsObject)
-
+        const unmergedRewardsArray = Object.values(rewardsObject)
+        const mergedRewardsArray = unmergedRewardsArray.sort((a: any, b: any) => {
+          return b?.amount - a?.amount
+        })
+        // CHANGE unmergedRewardsArray
         //  Step 3: Assign ranks to each object based on their position in the sorted array
         const rankedData = mergedRewardsArray.map((obj, index) => ({
           ...obj,
