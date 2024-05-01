@@ -77,11 +77,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     functionName: 'balanceOf',
     args: [useAccount().address],
   })
+
   useEffect(() => {
     if (rangePrice1 > rangePrice2) {
       setButtonText("Min price can't be higher than max price")
-    }
-    if (
+    } else if (
       account &&
       isConnected &&
       (firstValue > formatUnits((token1Balance?.data as bigint) || 0n, firstToken?.decimals) ||
