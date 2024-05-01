@@ -17,7 +17,7 @@ const Item = ({ data }: any) => {
           <p className="text-sm max-w-[100px] xl:max-w-auto truncate">{data.recipient}</p>
         </div>
       </span>
-      <span className="text-white xl:w-36 text-center text-sm">{formatCurrency(data.amount / 1e12)}</span>
+      <span className="text-white xl:w-36 text-center text-sm">{formatCurrency(data.amount / 1e6)}</span>
     </div>
   )
 }

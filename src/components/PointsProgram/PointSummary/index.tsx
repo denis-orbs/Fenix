@@ -107,7 +107,7 @@ const PointSummary = ({ userData }: any) => {
             </div>
             <div className="h-12 flex flex-col justify-between">
               <h3 className="text-3xl font-medium text-white">
-                {formatCurrency(isNaN(userData?.amount / 1e12) ? '0' : formatCurrency(userData?.amount / 1e12)) ?? '-'}
+                {formatCurrency(isNaN(userData?.amount / 1e6) ? '0' : formatCurrency(userData?.amount / 1e6)) ?? '-'}
               </h3>
               <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 Your Total points
