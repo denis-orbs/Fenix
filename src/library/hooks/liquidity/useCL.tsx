@@ -2,7 +2,7 @@
 
 import { Address, http } from 'viem'
 import { multicall, writeContract } from '@wagmi/core'
-import { createConfig, useAccount, useChainId, useContractWrite, useWriteContract } from 'wagmi'
+import { createConfig, fallback, useAccount, useChainId, useContractWrite, useWriteContract } from 'wagmi'
 import {
   ALGEBRA_ABI,
   ALGEBRA_FACTORY_ABI,
@@ -30,7 +30,10 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -49,7 +52,10 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -96,7 +102,10 @@ export async function getTickToPrice(tick: any) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -125,7 +134,10 @@ export async function getPriceToTick(price: any) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -145,7 +157,8 @@ export async function getPriceToTick(price: any) {
 }
 
 export async function getPriceAndTick(price: any) {
-  if (price == Infinity) return { price: 115792089237316195423570985008687907853269984665640564039457584007913129639935, tick: 887220 }
+  if (price == Infinity)
+    return { price: 115792089237316195423570985008687907853269984665640564039457584007913129639935, tick: 887220 }
   if (price == 0) return { price: 0, tick: -887220 }
   if (isNaN(price)) return { price: 0, tick: 0 }
   price = priceToSqrtPrice(price > 1 ? BigInt(price * 1e18) : parseInt((price * 1e18).toString()))
@@ -157,7 +170,10 @@ export async function getPriceAndTick(price: any) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -189,7 +205,10 @@ export async function getAmounts(cTick: any, hTick: any, lTick: any, amount0: an
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -228,7 +247,10 @@ export async function getRatio(cTick: any, hTick: any, lTick: any) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -256,8 +278,12 @@ export async function getPositionData(id: any) {
   const positions = await multicall(
     createConfig({
       chains: [blast],
+
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -284,7 +310,10 @@ export async function getPositionData(id: any) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -303,7 +332,10 @@ export async function getPositionData(id: any) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -332,7 +364,10 @@ export async function getPositionData(id: any) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -366,7 +401,10 @@ export async function getPositionDataByPoolAddresses(addresses: any) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -404,7 +442,10 @@ export async function getPositionDataByPoolAddresses(addresses: any) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
