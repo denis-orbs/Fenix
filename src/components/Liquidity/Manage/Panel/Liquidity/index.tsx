@@ -87,7 +87,7 @@ const Manage = ({}: {}) => {
 
   const [positionData, setPositionData] = useState<PositionData>()
   const [isLoading, setIsLoading] = useState(true)
-  const [slippage, setSlippage] = useState(0.1) 
+  const [slippage, setSlippage] = useState(0.1)
 
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
@@ -154,7 +154,7 @@ const Manage = ({}: {}) => {
   }
 
   useEffect(() => {
-    if(!positionData) return
+    if (!positionData) return
 
     const temp = positionData
 
@@ -219,11 +219,11 @@ const Manage = ({}: {}) => {
       if (firstToken.address === token.address) {
         if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(positionData?.ratio)))
         if (parseFloat(input) == 0) setSecondValue('')
-        setFirstValue(input == "" ? 0 : input)
+        setFirstValue(input == '' ? 0 : input)
 
-        if(timeout) clearTimeout(timeout)
+        if (timeout) clearTimeout(timeout)
         setTimeoutID(
-          setTimeout(()=> {
+          setTimeout(() => {
             setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
           }, 500)
         )
@@ -233,11 +233,11 @@ const Manage = ({}: {}) => {
             formatNumber(parseFloat(input) / (Number(positionData?.ratio) == 0 ? 1 : Number(positionData?.ratio)))
           )
         if (parseFloat(input) == 0) setFirstValue('')
-        setSecondValue(input == "" ? 0 : input)
+        setSecondValue(input == '' ? 0 : input)
 
-        if(timeout) clearTimeout(timeout)
+        if (timeout) clearTimeout(timeout)
         setTimeoutID(
-          setTimeout(()=> {
+          setTimeout(() => {
             setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
           }, 500)
         )
