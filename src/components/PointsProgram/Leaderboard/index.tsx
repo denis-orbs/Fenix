@@ -7,6 +7,9 @@ import axios from 'axios'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
 
 const Leaderboard = ({ data }: any) => {
+  const arr = [...data, data]
+  const [sort, setSort] = useState(false)
+  const handleSort = () => setSort(!sort)
   return (
     <div className="mb-10 w-full">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center">
@@ -27,13 +30,16 @@ const Leaderboard = ({ data }: any) => {
           </span>
           <span className="text-white w-36 text-center text-sm">
             RINGS
-            <i className="icon-chevron text-xs ml-2"></i>
+            <i
+              className={`icon-chevron text-xs ml-2 cursor-pointer ${sort ? '' : 'rotate-180'}`}
+              onClick={() => handleSort()}
+            ></i>
           </span>
         </div>
-        {data.map((data: any, index: number) => (
-          <Item key={index} data={data} />
-        ))}
-        {/* <Pagination className="mx-auto" numberPages={7} /> */}
+        {sort === false && data.map((data: any, index: number) => <Item key={index} data={data} />)}
+        {sort &&
+          arr.sort((a, b) => b.rank - a.rank).map((data: any, index: number) => <Item key={index} data={data} />)}
+        <Pagination className="mx-auto" numberPages={Math.round(data.length / 10)} activePage={1} />
       </div>
     </div>
   )
