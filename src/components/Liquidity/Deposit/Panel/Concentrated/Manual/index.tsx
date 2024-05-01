@@ -91,13 +91,13 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     setRangePrice2Text(rangePrice2.toString())
   }, [rangePrice1, rangePrice2])
 
-  useEffect(() => {
-    if(BigInt(firstToken.address as string) > BigInt(secondToken.address as string)) {
-      const temp = firstToken
-      setFirstToken(secondToken)
-      setSecondToken(temp)
-    }
-  }, [firstToken, secondToken])
+  // useEffect(() => {
+  //   if(BigInt(firstToken.address as string) > BigInt(secondToken.address as string)) {
+  //     const temp = firstToken
+  //     setFirstToken(secondToken)
+  //     setSecondToken(temp)
+  //   }
+  // }, [firstToken, secondToken])
 
   const handleMinMaxInput = (value: any, isFirst: boolean, multiplier: any) => {
     if (timeout) clearTimeout(timeout[0])
