@@ -81,12 +81,11 @@ const TokensSelector = ({
         onTokenValueChange={onTokenValueChange}
         option={option}
       />
-      {/* <Separator 
-      onClick={()=>{
-        switchTokensValues(firstToken, secondToken, setFirstToken, setSecondToken)
-      }}
-      
-      /> */}
+      <Separator
+        onClick={() => {
+          switchTokensValues(firstToken, secondToken, setFirstToken, setSecondToken)
+        }}
+      />
       <TokenSelector
         token={secondToken}
         value={secondValue}
