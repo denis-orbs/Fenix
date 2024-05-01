@@ -125,7 +125,7 @@ const SetRange = ({
           100%
         </Button>
       </div>
-      <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
+      {/* <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
         <div className="flex items-center gap-2 text-white opacity-75">
           <span>±</span>
           <span className="text-[30px] leading-normal font-light">
@@ -144,7 +144,7 @@ const SetRange = ({
             onChangeShown={(value) => { {console.log(value); if(value != 101) setCurrentPercentShown([-value, value])}}}
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="flex gap-2.5 mb-4">
         <StrategyButton
