@@ -69,7 +69,7 @@ const Leaderboard = ({ data }: any) => {
           itemsPerPage={itemsPerPage}
           setItemPerPage={setItemPerPage}
         />
-        <div className="xl:hidden">
+        <div className="lg:hidden">
           <PaginationMobile
             count={data.length}
             itemsPerPage={itemsPerPage}
