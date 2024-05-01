@@ -111,27 +111,31 @@ export default function MobileRowNew({
               </div>
               <div className="flex justify-center items-center gap-2 ">
                 <span className="flex flex-row justify-center gap-2">
-                  <Image
-                    src={`/static/images/point-stack/fenix-ring.svg`}
-                    alt="token"
-                    className={`rounded-full w-7 h-7`}
-                    width={20}
-                    height={20}
-                  />
-                  <Image
-                    src={`/static/images/point-stack/blast.svg`}
-                    alt="token"
-                    className={`rounded-full w-7 h-7`}
-                    width={20}
-                    height={20}
-                  />
-                  <Image
-                    src={`/static/images/point-stack/blast-gold.svg`}
-                    alt="token"
-                    className={`rounded-full w-7 h-7`}
-                    width={20}
-                    height={20}
-                  />
+                  {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
+                    <>
+                      <Image
+                        src={`/static/images/point-stack/fenix-ring.svg`}
+                        alt="token"
+                        className={`rounded-full w-7 h-7`}
+                        width={20}
+                        height={20}
+                      />
+                      <Image
+                        src={`/static/images/point-stack/blast.svg`}
+                        alt="token"
+                        className={`rounded-full w-7 h-7`}
+                        width={20}
+                        height={20}
+                      />
+                      <Image
+                        src={`/static/images/point-stack/blast-gold.svg`}
+                        alt="token"
+                        className={`rounded-full w-7 h-7`}
+                        width={20}
+                        height={20}
+                      />
+                    </>
+                  )}
                 </span>
               </div>
             </div>
