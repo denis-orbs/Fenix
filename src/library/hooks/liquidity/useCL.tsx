@@ -31,7 +31,7 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -53,7 +53,7 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -103,7 +103,7 @@ export async function getTickToPrice(tick: any) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -135,7 +135,7 @@ export async function getPriceToTick(price: any) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -171,7 +171,7 @@ export async function getPriceAndTick(price: any) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -206,7 +206,7 @@ export async function getAmounts(cTick: any, hTick: any, lTick: any, amount0: an
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -248,7 +248,7 @@ export async function getRatio(cTick: any, hTick: any, lTick: any) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -281,7 +281,7 @@ export async function getPositionData(id: any) {
 
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -311,7 +311,7 @@ export async function getPositionData(id: any) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -333,7 +333,7 @@ export async function getPositionData(id: any) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -365,7 +365,7 @@ export async function getPositionData(id: any) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -402,7 +402,7 @@ export async function getPositionDataByPoolAddresses(addresses: any) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
@@ -443,7 +443,7 @@ export async function getPositionDataByPoolAddresses(addresses: any) {
       chains: [blast],
       transports: {
         [blast.id]: fallback([
-          http('https://greatest-burned-sound.blast-mainnet.quiknode.pro/95e0cd3a4e184253f3dbe57d870069d3ca63fa6f/'),
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
           http('https://rpc.blast.io'),
         ]),
       },
