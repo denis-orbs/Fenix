@@ -3,11 +3,11 @@ import Image from 'next/image'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import SetRange from './SetRange'
 import { Button } from '@/src/components/UI'
-import { Address, maxUint256 } from 'viem'
+import { Address, formatUnits, maxUint256 } from 'viem'
 import { IToken } from '@/src/library/types'
 import { CL_MANAGER_ABI, ERC20_ABI } from '@/src/library/constants/abi'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
-import { useAccount, useWriteContract } from 'wagmi'
+import { useAccount, useReadContract, useWriteContract } from 'wagmi'
 import { publicClient } from '@/src/library/constants/viemClient'
 import toast, { Toaster } from 'react-hot-toast'
 import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
@@ -50,17 +50,59 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
   const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
   const [poolState, setPoolState] = useState<StateType>({ price: 0, currentTick: 0 })
+  const { isConnected, chainId } = useActiveConnectionDetails()
 
   const [currentPercentage, setCurrentPercentage] = useState([-5, 5])
   const [shownPercentage, setShownPercentage] = useState(['5', '5'])
   const [rangePrice1, setRangePrice1] = useState(0)
   const [rangePrice2, setRangePrice2] = useState(0)
-  const [rangePrice1Text, setRangePrice1Text] = useState("0")
-  const [rangePrice2Text, setRangePrice2Text] = useState("0")
+  const [rangePrice1Text, setRangePrice1Text] = useState('0')
+  const [rangePrice2Text, setRangePrice2Text] = useState('0')
+  const [buttonText, setButtonText] = useState('Create Position')
 
   const [ratio, setRatio] = useState(1)
   const [lowerTick, setLowerTick] = useState(0)
   const [higherTick, setHigherTick] = useState(0)
+  const token1Balance = useReadContract({
+    abi: ERC20_ABI,
+    address: firstToken.address,
+    functionName: 'balanceOf',
+    args: [useAccount().address],
+  })
+  const account = useAccount()
+
+  const token2Balance = useReadContract({
+    abi: ERC20_ABI,
+    address: secondToken.address,
+    functionName: 'balanceOf',
+    args: [useAccount().address],
+  })
+
+  useEffect(() => {
+    if (rangePrice1 > rangePrice2) {
+      setButtonText("Min price can't be higher than max price")
+    } else if (
+      account &&
+      isConnected &&
+      (firstValue > formatUnits((token1Balance?.data as bigint) || 0n, firstToken?.decimals) ||
+        secondValue > formatUnits((token2Balance?.data as bigint) || 0n, secondToken?.decimals))
+    ) {
+      setButtonText('Insufficient balance')
+    } else {
+      setButtonText('Create Position')
+    }
+  }, [
+    rangePrice1,
+    rangePrice2,
+    account,
+    isConnected,
+    firstValue,
+    secondValue,
+    token1Balance,
+    token2Balance,
+    firstToken,
+    secondToken,
+  ])
 
   const [isInverse, setIsInverse] = useState(
     parseInt(firstToken.address as string) > parseInt(secondToken.address as string)
@@ -71,13 +113,13 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const [isLoading, setIsLoading] = useState(true)
   const [slippage, setSlippage] = useState(0.05)
 
-  const [timeout, setTimeoutID] = useState<[NodeJS.Timeout | undefined, NodeJS.Timeout | undefined]>([undefined, undefined])
+  const [timeout, setTimeoutID] = useState<[NodeJS.Timeout | undefined, NodeJS.Timeout | undefined]>([
+    undefined,
+    undefined,
+  ])
 
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
-  
-  const account = useAccount()
-  const { isConnected, chainId } = useActiveConnectionDetails()
 
   const { writeContractAsync } = useWriteContract()
 
@@ -102,7 +144,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const handleMinMaxInput = (value: any, isFirst: boolean, multiplier: any) => {
     if (timeout) clearTimeout(timeout[0])
 
-    if(isFirst) {
+    if (isFirst) {
       setRangePrice2Text(value.target.value)
     } else {
       setRangePrice1Text(value.target.value)
@@ -252,7 +294,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     setFirstToken(secondToken)
     setSecondToken(firstToken)
   }
-  
+
   const handleCLAdd = async () => {
     setIsLoading(true)
 
@@ -411,25 +453,27 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     if (firstToken.address === token.address) {
       if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(ratio), secondToken.decimals))
       if (parseFloat(input) == 0) setSecondValue('')
-      setFirstValue(input == "" ? 0 : input)
+      setFirstValue(input == '' ? 0 : input)
 
-      if(timeout[1]) clearTimeout(timeout[1])
-      setTimeoutID([timeout[0], 
-        setTimeout(()=> {
+      if (timeout[1]) clearTimeout(timeout[1])
+      setTimeoutID([
+        timeout[0],
+        setTimeout(() => {
           setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
-        }, 500)
+        }, 500),
       ])
     } else {
       if (parseFloat(input) != 0)
         setFirstValue(formatNumber(parseFloat(input) / (Number(ratio) == 0 ? 1 : Number(ratio)), firstToken.decimals))
       if (parseFloat(input) == 0) setFirstValue('')
-      setSecondValue(input == "" ? 0 : input)
+      setSecondValue(input == '' ? 0 : input)
 
-      if(timeout[1]) clearTimeout(timeout[1])
-      setTimeoutID([timeout[0], 
-        setTimeout(()=> {
+      if (timeout[1]) clearTimeout(timeout[1])
+      setTimeoutID([
+        timeout[0],
+        setTimeout(() => {
           setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
-        }, 500)
+        }, 500),
       ])
     }
   }
@@ -530,7 +574,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           token1={secondToken}
           handleApprove={handleApprove}
           mainFn={handleCLAdd}
-          mainText={'Create Position'}
+          mainText={buttonText}
           isLoading={isLoading}
         />
       )}
