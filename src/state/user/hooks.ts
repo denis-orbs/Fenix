@@ -12,14 +12,14 @@ export function useResetUser() {
 export function useSetSlippageToleranceCallback(): (slippageTolerance: number | 'auto') => void {
   const dispatch = useAppDispatch()
   return useCallback(
-    (slippageTolerance: number | 'auto') => {
+    (slippageTolerance: number | 'Auto') => {
       dispatch(updateSlippageTolerance({ slippageTolerance }))
     },
     [dispatch]
   )
 }
 
-export function useSlippageTolerance(): number | 'auto' {
+export function useSlippageTolerance(): number | 'Auto' {
   return useAppSelector((state) => state.user.slippageTolerance)
 }
 

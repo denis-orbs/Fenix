@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit'
 
 export const resetUser = createAction('user/resetUser')
-export const updateSlippageTolerance = createAction<{ slippageTolerance: number | 'auto' }>(
+export const updateSlippageTolerance = createAction<{ slippageTolerance: number | 'Auto' }>(
   'user/updateSlippageTolerance'
 )
 export const setChart = createAction<boolean>('user/setChart')
