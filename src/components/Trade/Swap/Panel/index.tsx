@@ -625,8 +625,9 @@ const Panel = () => {
                 />
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
               </div>
-              <div className={`${toBN(priceImpact).abs().gt(3) ? 'text-white text-xs' : 'hidden'}`}>
-                Price Impact Too High. Swap Anyway
+              <div className={`${toBN(priceImpact).abs().gt(3) ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}>
+                <span className="icon-info text-base"></span>
+                This transaction apperars to have a price impact greater than 5%. Research risks before swapping.
               </div>
               <Button
                 variant="primary"
@@ -641,8 +642,7 @@ const Panel = () => {
                     ? false
                     : currentButtonState === ButtonState.LOADING ||
                       currentButtonState === ButtonState.APPROVING ||
-                      currentButtonState === ButtonState.WAITING_APPROVAL ||
-                      toBN(priceImpact).abs().gt(3)
+                      currentButtonState === ButtonState.WAITING_APPROVAL
                 }
               >
                 {currentButtonState === ButtonState.LOADING ? (
