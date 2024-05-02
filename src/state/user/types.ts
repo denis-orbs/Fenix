@@ -1,5 +1,5 @@
 export interface UserState {
   userDarkMode: boolean
-  slippageTolerance: number | 'auto'
+  slippageTolerance: number | 'Auto'
   showChart: boolean
 }

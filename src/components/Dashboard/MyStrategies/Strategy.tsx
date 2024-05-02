@@ -18,6 +18,7 @@ import { useAccount, useWriteContract } from 'wagmi'
 import { MAX_INT } from '@/src/library/constants/misc'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { useDispatch } from 'react-redux'
 
 type options = {
   value: string
@@ -92,6 +93,7 @@ interface StrategyProps {
 }
 
 const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyProps) => {
+  const dispatch = useDispatch()
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
@@ -170,6 +172,10 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
       }
     )
   }
+  function setAPR(apr: any): any {
+    throw new Error('Function not implemented.')
+  }
+
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
       <div className="relative z-10">
@@ -305,6 +311,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
             onClick={() => {
               if (row.liquidity !== 'ichi') {
+                // dispatch(setAPR(row?.apr))
                 localStorage.setItem('apr', JSON.stringify({ id: row?.id, apr: row?.apr }))
                 router.push(`/liquidity/manage?id=${row?.id}`)
                 router.refresh()

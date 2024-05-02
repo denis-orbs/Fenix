@@ -16,7 +16,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import { createConfig, http, WagmiProvider } from 'wagmi'
+import { createConfig, fallback, http, WagmiProvider } from 'wagmi'
 import { blast, blastSepolia, holesky, polygon } from 'wagmi/chains'
 import store, { persistor } from '../state'
 import { usePathname } from 'next/navigation'
@@ -36,7 +36,10 @@ const { wallets } = getDefaultWallets()
 export const configwallets = createConfig({
   chains: [blast],
   transports: {
-    [blast.id]: http(),
+    [blast.id]: fallback([
+      http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+      http('https://rpc.blast.io'),
+    ]),
   },
 })
 

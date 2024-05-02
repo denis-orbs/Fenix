@@ -91,7 +91,7 @@ const ExchangeBox = ({
   }, [token, account.address])
 
   const handleOnChange = (e: any) => {
-    if (onTokenValueChange) onTokenValueChange(e > 0 ? e : 0, token)
+    if (onTokenValueChange) onTokenValueChange(e < 0 || e == '' ? 0 : e, token)
   }
   return (
     <div className={boxVariant}>
@@ -131,20 +131,20 @@ const ExchangeBox = ({
           </div>
         </div>
         <div className="relative w-full xl:w-3/5">
-          <input
+          {/* <input
             type="number"
             placeholder="0"
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             onChange={handleOnChange}
             value={value}
-          />
-          {/* <NumericalInput
+          /> */}
+          <NumericalInput
             value={value}
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             placeholder="0.0"
             onUserInput={(input) => handleOnChange(input)}
             precision={token.decimals}
-          /> */}
+          />
           {option !== 'WITHDRAW' && (
             <div className="absolute right-2 top-[10px] flex items-center gap-1">
               <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>

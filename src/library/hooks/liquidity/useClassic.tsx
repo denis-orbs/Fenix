@@ -2,7 +2,7 @@
 
 import { Address, http, maxUint256 } from 'viem'
 import { multicall, writeContract } from '@wagmi/core'
-import { createConfig, useAccount, useChainId, useContractWrite, useWriteContract } from 'wagmi'
+import { createConfig, fallback, useAccount, useChainId, useContractWrite, useWriteContract } from 'wagmi'
 import { ERC20_ABI, FACTORY_ABI, ROUTERV2_ABI } from '../../constants/abi'
 import { blast } from 'viem/chains'
 import { ethers } from 'ethers'
@@ -22,7 +22,10 @@ export async function getTokenAllowance(token: Address, owner: Address, spender:
       chains: [blast],
       transports: {
         //[blast.id]: http(),
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -52,7 +55,10 @@ export async function getTokenReserve(token1: Address, token2: Address, stable: 
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -80,7 +86,10 @@ export async function getLiquidityRemoveQuote(amount: Number, token1: Address, t
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -109,7 +118,10 @@ export async function getPair(token1: Address, token2: Address, stable: boolean)
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
