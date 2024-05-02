@@ -49,23 +49,23 @@ const LiquidityPools = () => {
     <MainBox>
       <div
         className="flex flex-col items-center justify-between
-       w-full xl:flex-row relative z-10 xl:min-h-[350px]"
+       w-full xl:flex-row relative z-10 "
       >
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
-          <p className="mb-4 text-sm text-shark-100">
+          <p className="mb-4 text-xs text-shark-100">
             Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and stake liquidity to earn rewards.
           </p>
           <div className="flex flex-col gap-2 mb-8 md:flex-row">
             <Button href="liquidity/deposit?type=CONCENTRATED_MANUAL&token0=0x4300000000000000000000000000000000000003&token1=0x4300000000000000000000000000000000000004">
-              <div className="flex gap-2">
+              <div className="flex gap-2 text-xs">
                 <span className="icon-send"></span>
                 Create Position
               </div>
             </Button>
           </div>
-          <p className="flex items-center gap-3 mb-4 text-sm text-shark-100">
-            <span className="inline-block text-lg text-transparent icon-circles bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+          <p className="flex items-center gap-3 mb-4 text-shark-100 text-xs">
+            <span className="inline-block  text-transparent icon-circles bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
             There are currently {tokens.toString()} tokens listed.
           </p>
         </div>

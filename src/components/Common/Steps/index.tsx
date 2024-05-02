@@ -25,8 +25,8 @@ const Steps = ({ steps, title = 'Start now' }: StepsProps) => {
   return (
     <StepBox>
       <div className="flex flex-col justify-center w-full">
-        <h4 className="w-full mb-3 text-sm text-white relative">{title}</h4>
-        <div className="relative flex flex-col w-auto z-10">
+        <h4 className="w-full mb-3 text-sm text-white absolute top-3 left-10">{title}</h4>
+        <div className="relative flex flex-col w-auto z-10 py-3">
           {steps.map((step, index) => (
             <InfoBox data={step} key={index} hasDecorator={index !== steps.length - 1} />
           ))}
