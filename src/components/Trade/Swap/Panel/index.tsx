@@ -598,7 +598,7 @@ const Panel = () => {
                   <Switch active={showChart} setActive={handleSwitch} />
                   <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
                 </div> */}
-                <span onClick={handleSwitch} className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-info`}></span>
+                <span onClick={handleSwitch} className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}></span>
                 <ReloadIcon
                   className="text-shark-100 !cursor-pointer"
                   onClick={() => {
