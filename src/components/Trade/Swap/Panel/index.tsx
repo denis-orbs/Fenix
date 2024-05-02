@@ -591,7 +591,7 @@ const Panel = () => {
 
               <div className="flex gap-x-3 items-center">
                 <span className="text-shark-100 text-sm">
-                  {swapFee && swapFee != '0' && `${formatUnits(BigInt(swapFee), 4)}% fee`}
+                  {/* {swapFee && swapFee != '0' && `${formatUnits(BigInt(swapFee), 4)}% fee`} */}
                 </span>
                 <div className="flex flex-row-reverse  items-center gap-3">
                   <Switch active={showChart} setActive={handleSwitch} />
