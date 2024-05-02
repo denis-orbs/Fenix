@@ -683,14 +683,14 @@ const Panel = () => {
             </span>
           </p>
           <p className="">
-            Slippage{' '}
+            Slippage:{' '}
             <span className="text-shark-100">
               {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage == 'Auto' ? 'Auto' : slippage}
             </span>
           </p>
 
           <p className="">
-            Minimum Amount Recieved
+            Minimum Amount Recieved:{' '}
             <span className="text-shark-100">
               {(nativeETH_WETH || nativeWETH_ETH) && formatNumber(Number(forValue || 0), 6).toString()}
               {amountOutMinimum &&
@@ -703,7 +703,7 @@ const Panel = () => {
             </span>
           </p>
           <p className="">
-            Price Impact{' '}
+            Price Impact:{' '}
             <span className="text-shark-100">
               {nativeETH_WETH || nativeWETH_ETH ? '0' : parseFloat(priceImpact.toString()).toFixed(2)}%
             </span>
