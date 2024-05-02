@@ -31,13 +31,13 @@ const Steps = ({ steps, title = 'Start now' }: StepsProps) => {
             <InfoBox data={step} key={index} hasDecorator={index !== steps.length - 1} />
           ))}
         </div>
-        <p
+        {/* <p
           className="flex items-center justify-end gap-3 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500 relative z-10"
           onClick={handleReadMore}
         >
           <span className="text-lg icon-link"></span>
           Read More
-        </p>
+        </p> */}
       </div>
       <ReadMoreModal />
     </StepBox>

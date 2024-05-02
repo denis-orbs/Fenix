@@ -84,14 +84,14 @@ const LiquidityPools = () => {
         </div>
       </div>
       <div className="hidden lg:block text-shark-100 rounded-2xl lg:rounded-none relative z-10">
-        <Link
+        {/* <Link
           target="_blank"
           href="https://discord.com/invite/fenixfi"
           className="flex gap-3 justify-end cursor-pointer"
         >
           <span className="icon-discord"></span>
           <p className="me-10">Need some help?</p>
-        </Link>
+        </Link> */}
       </div>
     </MainBox>
   )

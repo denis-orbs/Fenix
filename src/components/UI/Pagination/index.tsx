@@ -11,7 +11,7 @@ interface PaginationProps {
 }
 
 const Pagination = ({ className, numberPages, setActivePage, activePage }: PaginationProps) => {
-  const mergeClassName = cn('text-white text-xs w-full md:max-w-[785px] box-large hidden xl:block', className)
+  const mergeClassName = cn('text-white text-xs w-full md:max-w-[785px] box-large hidden lg:block', className)
 
   const pageClassName = (index: number) => {
     return cn(

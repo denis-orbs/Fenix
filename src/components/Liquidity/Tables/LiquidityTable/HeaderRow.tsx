@@ -101,21 +101,21 @@ const HeaderRow = ({
                 sortable: true,
               },
               RANGE,
-              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right` },
+              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[20%]'} text-right` },
               { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right`, sortable: true },
-              { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
+              // { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
-                className: 'w-[20%] text-right',
+                className: 'w-[15%] text-right',
                 sortable: true,
               },
               // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
-                className: 'w-[20%] text-right',
+                className: 'w-[15%] text-right',
                 sortable: true,
               },
-              { text: 'Action', className: 'w-[10%] flex justify-end', sortable: false },
+              { text: 'Action', className: 'w-[20%] flex justify-end', sortable: false },
             ]}
             setSort={setSort}
             sort={sort}
@@ -151,7 +151,7 @@ const HeaderRow = ({
 
       {activePagination && (
         <>
-          <div className="items-center hidden xl:flex">
+          <div className="items-center hidden lg:flex">
             {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
             <Pagination
               activePage={activePage}
@@ -188,7 +188,7 @@ const HeaderRow = ({
               <span className="text-lg icon-cog text-white cursor-pointer"></span>
             </div>
           </div>
-          <div className="xl:hidden">
+          <div className="lg:hidden py-5">
             <PaginationMobile
               count={poolsData.length}
               itemsPerPage={itemsPerPage}

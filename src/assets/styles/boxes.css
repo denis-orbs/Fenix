@@ -193,7 +193,7 @@
 }
 
 .search-box {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center h-[62px];
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center min-h-[60px];
 }
 
 .filter-lock-box {
