@@ -10,6 +10,7 @@ import { useEffect, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
+import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 
 interface RowDataProps {
   row: BasicPool
@@ -36,6 +37,13 @@ const RowData = ({
   const isHover = useHover(hoverRef)
 
   const [openInfo, setOpenInfo] = useState<boolean>(false)
+
+  const aprIchi = useIchiVault(row.token0.id, row.token1.id)
+  let aprdisplay
+  if (aprIchi && aprIchi.length > 0) {
+    if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[0].apr.toFixed(0)
+  }
+  // console.log('gg', aprIchi, row.token0.name, row.token1.name)
 
   return (
     <>
@@ -154,7 +162,7 @@ const RowData = ({
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-sm">Ichi</p>
-                  <p className="text-sm text-chilean-fire-600">41.648%</p>
+                  <p className="text-sm text-chilean-fire-600">{aprdisplay ? aprdisplay : 0}%</p>
                 </div>
               </div>
             )}
