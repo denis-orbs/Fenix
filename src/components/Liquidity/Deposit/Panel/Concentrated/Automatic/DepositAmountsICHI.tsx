@@ -123,6 +123,7 @@ const DepositAmountsICHI = ({
         await txApproveDepositDetails.wait()
         setIsToken0ApprovalRequired(false)
         setWaitingApproval(false)
+        setToken0TypedValue('')
 
         return
       } catch (error) {
