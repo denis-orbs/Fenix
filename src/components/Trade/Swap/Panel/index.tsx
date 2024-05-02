@@ -683,7 +683,10 @@ const Panel = () => {
             </span>
           </p>
           <p className="">
-            Slippage <span className="text-shark-100">{nativeETH_WETH || nativeWETH_ETH ? '0' : slippage}</span>
+            Slippage{' '}
+            <span className="text-shark-100">
+              {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage == 'auto' ? 'Auto' : slippage}
+            </span>
           </p>
 
           <p className="">
