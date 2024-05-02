@@ -83,9 +83,9 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
         <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
         <div className="relative z-10 w-full h-full">
           <h1 className="text-lg font-medium text-white">Select a Token</h1>
-          <p className="mb-2 text-sm text-shark-100">
+          {/* <p className="mb-2 text-sm text-shark-100">
             Select a token from our default list or search for a token by symbol or address.
-          </p>
+          </p> */}
 
           <div className="mb-2">
             <Search setSearchValue={setSearchValue} searchValue={searchValue} />
@@ -108,7 +108,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               <></>
             )}
           </div>
-          <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto">
+          <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto">
             {_tokenList && searchValue === '' ? (
               _tokenList.map((token, index) => (
                 <div
@@ -215,10 +215,10 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               Confirm SelectToken
             </Button> */}
           </div>
-          <div className="flex items-center justify-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
+          {/* <div className="flex items-center justify-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
             <span className="icon-discord"></span>
             <p className="text-sm">Need help?</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </Modal>
