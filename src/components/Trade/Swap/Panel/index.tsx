@@ -52,7 +52,7 @@ enum ButtonState {
   LOADING = 'Loading...',
 }
 const Panel = () => {
-  const [isButtonActive, setIsButtonActive] = useState(false)
+  const [isButtonPrimary, setisButtonPrimary] = useState(false)
   const [swapValue, setSwapValue] = useState<string>('')
   const [forValue, setForValue] = useState<string>('')
   const { setSlippageModal } = useStore()
@@ -543,9 +543,9 @@ const Panel = () => {
   }, [swapValue])
   useEffect(() => {
     if (currentButtonState === "Enter Amount" && swapValue === '' && forValue === '') {
-      setIsButtonActive(false)
+      setisButtonPrimary(false)
     } else {
-      setIsButtonActive(true)
+      setisButtonPrimary(true)
     }
   }, [currentButtonState, swapValue, forValue])
   const [isChartVisible, setIsChartVisible] = useState(showChart)
@@ -634,7 +634,7 @@ const Panel = () => {
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
               </div>
               <Button
-                variant={`${isButtonActive ? 'primary' : 'tertiary'}`}
+                variant={`${isButtonPrimary ? 'primary' : 'tertiary'}`}
                 className="w-full flex items-center justify-center gap-x-2"
                 onClick={handleSwapClick}
                 walletConfig={{
