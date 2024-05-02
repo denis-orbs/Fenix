@@ -625,6 +625,9 @@ const Panel = () => {
                 />
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
               </div>
+              <div className={`${toBN(priceImpact).abs().gt(3) ? 'text-white text-xs' : 'hidden'}`}>
+                Price Impact Too High. Swap Anyway
+              </div>
               <Button
                 variant="primary"
                 className="w-full flex items-center justify-center gap-x-2"
@@ -638,7 +641,8 @@ const Panel = () => {
                     ? false
                     : currentButtonState === ButtonState.LOADING ||
                       currentButtonState === ButtonState.APPROVING ||
-                      currentButtonState === ButtonState.WAITING_APPROVAL
+                      currentButtonState === ButtonState.WAITING_APPROVAL ||
+                      toBN(priceImpact).abs().gt(3)
                 }
               >
                 {currentButtonState === ButtonState.LOADING ? (
