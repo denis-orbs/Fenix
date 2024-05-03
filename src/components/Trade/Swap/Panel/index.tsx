@@ -635,6 +635,10 @@ const Panel = () => {
                 />
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
               </div>
+              <div className={`${toBN(priceImpact).abs().gt(3) ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}>
+                <span className="icon-info text-base"></span>
+                This transaction apperars to have a price impact greater than 5%. Research risks before swapping.
+              </div>
               <Button
                 variant={`${isButtonPrimary ? 'primary' : 'tertiary'}`}
                 className="w-full flex items-center justify-center gap-x-2"
