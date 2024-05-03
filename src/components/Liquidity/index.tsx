@@ -28,7 +28,6 @@ const Liquidity = () => {
       } else {
         setFilteredPools(pools)
       }
-      console.log(pools, 'apr')
     }
   }, [currentTab, pools])
 
