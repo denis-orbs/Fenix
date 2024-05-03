@@ -43,7 +43,6 @@ const RowData = ({
   if (aprIchi && aprIchi.length > 0) {
     if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[0].apr.toFixed(0)
   }
-  // console.log('gg', aprIchi, row.token0.name, row.token1.name)
 
   return (
     <>
@@ -148,7 +147,7 @@ const RowData = ({
                   <p className="text-sm pb-1">Average</p>
                   <p className="text-sm pb-1 text-chilean-fire-600">41.648%</p>
                 </div>
-                <div className="flex justify-between items-center">
+                {/* <div className="flex justify-between items-center">
                   <p className="text-sm pb-1">Narrow</p>
                   <p className="text-sm pb-1 text-chilean-fire-600">55.956%</p>
                 </div>
@@ -159,7 +158,7 @@ const RowData = ({
                 <div className="flex justify-between items-center">
                   <p className="text-sm pb-1">Wide</p>
                   <p className="text-sm pb-1 text-chilean-fire-600">16.281%</p>
-                </div>
+                </div> */}
                 <div className="flex justify-between items-center">
                   <p className="text-sm">Ichi</p>
                   <p className="text-sm text-chilean-fire-600">{aprdisplay ? aprdisplay : 0}%</p>
