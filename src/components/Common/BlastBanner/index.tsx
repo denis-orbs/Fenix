@@ -16,10 +16,10 @@ const BlastBanner = () => {
     <div className="blast-banner max-lg:flex-col overflow-hidden rounded-tl-[26px] rounded-br-[26px] rounded-tr-xl rounded-bl-xl">
       <Image src={'/static/images/blast-point-banner/fenix-orbit.svg'} alt='fenix orbit' className='max-lg:hidden w-[56px] h-[56px] absolute top-0 xl:left-[750px] left-[630px] z-[5]' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/fenix-orbit.svg'} alt='fenix orbit' className='lg:hidden w-[53px] h-[53px] absolute top-0 right-[30px] z-[5]' width={10} height={10}/>
-      <Image src={'/static/images/blast-point-banner/noise-texture.svg'} alt='Noise Texture' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5]' width={10} height={10}/>
-      <Image src={'/static/images/blast-point-banner/noise-texture-mobile.svg'} alt='Noise Texture Mobile' className='lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5]' width={10} height={10}/>
-      <Image src={'/static/images/blast-point-banner/cell.svg'} alt='Cell' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5]' width={10} height={10}/>
-      <Image src={'/static/images/blast-point-banner/cell-mobile.svg'} alt='Cell Mobile' className='lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5]' width={10} height={10}/>
+      <Image src={'/static/images/blast-point-banner/noise-texture.svg'} alt='Noise Texture' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5] rounded-tl-[26px] rounded-br-[26px] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
+      <Image src={'/static/images/blast-point-banner/noise-texture-mobile.svg'} alt='Noise Texture Mobile' className='lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5] rounded-tl-[56px] rounded-br-[56px] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
+      <Image src={'/static/images/blast-point-banner/cell.svg'} alt='Cell' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5] rounded-tl-[26px] rounded-br-[26px] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
+      <Image src={'/static/images/blast-point-banner/cell-mobile.svg'} alt='Cell Mobile' className='lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5] rounded-tl-[56px] rounded-br-[56px] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
       <div className='absolute xl:right-[200px] lg:right-[170px] max-lg:right-[10px] -bottom-2 z-[50] w-[140px] h-[100px]'>
         <Image src={'/static/images/blast-point-banner/lingot.svg'} alt='Lingot' className='w-[88px] h-[64px] absolute top-1/2 -translate-y-1/2 transform left-1/2 -translate-x-1/2 z-[6]' width={10} height={10}/>
         <Image src={'/static/images/blast-point-banner/blast.svg'} alt='Blast' className='w-[15px] h-[15px] absolute top-5 left-5 z-[6]' width={10} height={10}/>
@@ -32,11 +32,10 @@ const BlastBanner = () => {
       <Image src={'/static/images/blast-point-banner/left-ellipse.svg'} alt='Left Ellipse' className='max-lg:hidden w-[496px] h-[214px] absolute top-0 left-0 z-[10]' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/right-ellipse.svg'} alt='Right Ellipse' className='max-lg:hidden w-[496px] h-[214px] absolute top-0 right-0 z-[10]' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/mobile-ellipse.svg'} alt='Mobile Ellipse' className='lg:hidden w-[375px] h-[162px] absolute bottom-0 left-0 z-[10]' width={10} height={10}/>
-      <Image src={'/static/images/blast-point-banner/mobile-ellipse-top.svg'} alt='Mobile Ellipse Top' className='lg:hidden w-[285px] h-[285px] absolute top-[-100px] left-0 z-[10]' width={10} height={10}/>
       <div className="text-white absolute text-sm right-3 top-2 z-20 cursor-pointer" onClick={handlerClose}>
         <span className="icon-x"></span>
       </div>
-      <div className="relative z-10 max-lg:max-w-[75%] flex flex-col gap-2 max-lg:gap-1 mt-4">
+      <div className="relative z-10 max-lg:max-w-[75%] flex flex-col gap-2 max-lg:gap-1 max-lg:mt-4">
         <div className='items-center gap-2'>
           <span className="text-white text-xs font-normal">Deposit liquidty to earn your Share of</span>
           <span className="text-gradient ml-1 max-xs:text-sm xs:text-base md:text-lg xl:text-2xl">
