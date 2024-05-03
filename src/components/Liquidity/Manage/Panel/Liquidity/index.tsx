@@ -31,6 +31,7 @@ import ApproveButtons from '../../../Common/ApproveButtons'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useSelector } from 'react-redux'
 
 interface PositionData {
   id: number
@@ -49,15 +50,17 @@ const Manage = ({}: {}) => {
   const searchParams = useSearchParams()
   const router = useRouter()
 
-  const [apr, setApr] = useState(null)
+  const { apr } = useSelector<any>((store) => store.apr)
+
+  const [aprId, setAprId] = useState(null)
   const pid = searchParams.get('id')
   useEffect(() => {
-    if (apr === null) {
-      const localApr = JSON.parse(localStorage.getItem('apr'))
-      if (localApr?.id == pid) setApr(localApr?.apr)
+    if (aprId === null) {
+      const actualApr = apr.find((pos) => pos.id == pid)
+      if (actualApr) setAprId(actualApr?.apr)
     }
   }, [apr])
-  console.log('gg', apr)
+  // console.log('gg', apr)
 
   const [firstToken, setFirstToken] = useState({
     name: 'Fenix',
@@ -525,7 +528,7 @@ const Manage = ({}: {}) => {
           <div className="md:mb-[5px] text-right">APR</div>
 
           <p className="py-[5px] px-5 border border-solid bg-shark-400 rounded-[10px] bg-opacity-40 border-1 border-shark-300">
-            {apr ? apr : '0%'}
+            {aprId ? aprId : '0%'}
           </p>
           {/* <p className="py-[5px] px-5 border border-solid bg-shark-400 rounded-[10px] bg-opacity-40 border-1 border-shark-300">
             {
