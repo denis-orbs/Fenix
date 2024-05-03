@@ -52,6 +52,7 @@ enum ButtonState {
   LOADING = 'Loading...',
 }
 const Panel = () => {
+  const [isButtonPrimary, setisButtonPrimary] = useState(false)
   const [swapValue, setSwapValue] = useState<string>('')
   const [forValue, setForValue] = useState<string>('')
   const { setSlippageModal } = useStore()
@@ -170,7 +171,7 @@ const Panel = () => {
   }, [updateTokenPrice])
 
   // function to make the swap
-  const slippageValue = slippage == 'auto' || !slippage ? 100 - 0.5 : 100 - slippage
+  const slippageValue = slippage == 'Auto' || !slippage ? 100 - 0.5 : 100 - slippage
 
   const amountOutMinimum = toBN(Number(parseUnits(forValue, tokenGet.decimals)))
     .multipliedBy(slippageValue)
@@ -540,6 +541,13 @@ const Panel = () => {
   useEffect(() => {
     if (swapValue == '') setForValue('')
   }, [swapValue])
+  useEffect(() => {
+    if (currentButtonState === "Enter Amount" && swapValue === '' && forValue === '') {
+      setisButtonPrimary(false)
+    } else {
+      setisButtonPrimary(true)
+    }
+  }, [currentButtonState, swapValue, forValue])
   const [isChartVisible, setIsChartVisible] = useState(showChart)
 
   const handleSwitch = () => {
@@ -626,7 +634,7 @@ const Panel = () => {
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
               </div>
               <Button
-                variant="primary"
+                variant={`${isButtonPrimary ? 'primary' : 'tertiary'}`}
                 className="w-full flex items-center justify-center gap-x-2"
                 onClick={handleSwapClick}
                 walletConfig={{
@@ -683,21 +691,27 @@ const Panel = () => {
             </span>
           </p>
           <p className="">
-            Slippage <span className="text-shark-100">{nativeETH_WETH || nativeWETH_ETH ? '0' : slippage}</span>
+            Slippage:{' '}
+            <span className="text-shark-100">
+              {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage == 'Auto' ? 'Auto' : slippage}
+            </span>
           </p>
 
           <p className="">
-            Minimum Amount Recieved
+            Minimum Amount Recieved:{' '}
             <span className="text-shark-100">
               {(nativeETH_WETH || nativeWETH_ETH) && formatNumber(Number(forValue || 0), 6).toString()}
               {amountOutMinimum &&
                 !(nativeETH_WETH || nativeWETH_ETH) &&
-                formatUnits(BigInt(Number(amountOutMinimum.toString().split('.')[0])), tokenGet.decimals).toString()}
+                formatUnits(
+                  BigInt(Number(amountOutMinimum.toString().split('.')[0]) ?? 0),
+                  tokenGet.decimals
+                ).toString()}
               {!amountOutMinimum && !(nativeETH_WETH || nativeWETH_ETH) && '-'} {tokenGet.symbol}
             </span>
           </p>
           <p className="">
-            Price Impact{' '}
+            Price Impact:{' '}
             <span className="text-shark-100">
               {nativeETH_WETH || nativeWETH_ETH ? '0' : parseFloat(priceImpact.toString()).toFixed(2)}%
             </span>

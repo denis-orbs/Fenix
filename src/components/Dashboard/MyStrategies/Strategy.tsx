@@ -21,6 +21,7 @@ import { NotificationDuration, NotificationType } from '@/src/state/notification
 import { useDispatch } from 'react-redux'
 import { setApr } from '@/src/state/apr/reducer'
 
+
 type options = {
   value: string
   label: string
@@ -173,6 +174,10 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
       }
     )
   }
+  function setAPR(apr: any): any {
+    throw new Error('Function not implemented.')
+  }
+
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">
       <div className="relative z-10">
