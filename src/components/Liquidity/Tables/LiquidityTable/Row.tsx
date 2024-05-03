@@ -134,7 +134,7 @@ const RowData = ({
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
-              {formatAmount(row?.apr, 4)}%{' '}
+              {formatAmount(row?.apr, 2)}%{' '}
               <span
                 className="icon-info"
                 onMouseEnter={() => setOpenInfo(true)}
@@ -145,7 +145,7 @@ const RowData = ({
               <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12">
                 <div className="flex justify-between items-center gap-3">
                   <p className="text-sm pb-1">Average</p>
-                  <p className="text-sm pb-1 text-chilean-fire-600">41.648%</p>
+                  <p className="text-sm pb-1 text-chilean-fire-600">{formatAmount(row?.apr, 2)}%</p>
                 </div>
                 {/* <div className="flex justify-between items-center">
                   <p className="text-sm pb-1">Narrow</p>
