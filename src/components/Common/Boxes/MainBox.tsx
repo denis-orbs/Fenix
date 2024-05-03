@@ -8,7 +8,7 @@ interface MainBoxProps {
 
 const MainBox = ({ children, className }: MainBoxProps) => {
 
-  const mergeClassName = cn('main-box ', className)
+  const mergeClassName = cn('main-box  min-h-[270px]', className)
 
   return <div className={mergeClassName}>{children}</div>
 }

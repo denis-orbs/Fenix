@@ -33,9 +33,9 @@ const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false, bgBox
           ></span>
         </div>
         <div className="flex items-center justify-between w-full">
-          <div className="max-w-[280px]">
-            <h5 className="text-[11px] leading-3 2xl:text-xs text-shark-100">{data.label}</h5>
-            <p className="text-[11px]  leading-3 2xl:text-xs font-normal text-white line-clamp-2">
+          <div className="xl:max-w-[280px] w-full">
+            <h5 className="text-[11px] leading-4 2xl:text-xs text-shark-100">{data.label}</h5>
+            <p className="text-[11px]  leading-4 font-normal text-white line-clamp-2">
               {data.amount || data.description}
             </p>
           </div>

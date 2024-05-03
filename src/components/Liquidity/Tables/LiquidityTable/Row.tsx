@@ -39,7 +39,7 @@ const RowData = ({
     <>
       <TableRow className="hidden lg:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
-          <div className="flex items-center gap-2">
+          <div className="flex justify-center items-center gap-2">
             <div className="flex items-center max-2xl:hidden">
               <Image
                 src={`/static/images/tokens/${row.token0.symbol}.png`}
@@ -57,7 +57,7 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col">
-              <h5 className="text-sm text-white">
+              <h5 className="text-xs text-white">
                 {row.token0.symbol} / {row.token1.symbol}
               </h5>
               <div className="flex items-center gap-2">
@@ -144,7 +144,7 @@ const RowData = ({
         </TableCell> */}
 
         <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
+          <div className="flex flex-col items-end justify-center w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
             <div className="flex flex-col gap-2">
@@ -173,7 +173,7 @@ const RowData = ({
         </TableCell>
 
         <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
+          <div className="flex flex-col items-end justify-center w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
             <div className="flex flex-col  gap-2">

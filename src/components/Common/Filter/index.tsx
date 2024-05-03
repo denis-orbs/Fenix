@@ -18,7 +18,8 @@ const Filter = ({ options, currentTab, setCurrentTab }: FilterProps) => {
 
   return (
     <>
-      <div className="max-h-[45px] flex flex-wrap items-center w-full gap-2 px-2 py-2 
+      <div className="max-h-[45px] flex items-center w-full gap-2 px-2 py-2 
+     
       rounded-xl xl:flex-row 2xl:gap-3 xl:w-full bg-opacity-40 bg-shark-400">
         {options.map((option, index) => {
           return (

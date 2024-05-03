@@ -9,7 +9,7 @@ interface TableCellProps {
 }
 
 const TableCell = ({ className, children }: TableCellProps) => {
-   const mergeClass = cn('flex  p-2.5', className)
+   const mergeClass = cn('flex  px-2.5 py-2', className)
 
    return <div className={mergeClass}>{children}</div>
 }
