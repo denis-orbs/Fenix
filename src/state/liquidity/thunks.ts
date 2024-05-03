@@ -280,6 +280,12 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
       fetchPolicy: 'cache-first',
     })
     const data2 = await fetchV3PoolDayData()
+    const weekFeesUsd = data2.poolDayDatas.reduce((acc: any, current: any) => {
+      acc += Number(current.feesUSD)
+      return acc
+    }, 0)
+
+    console.log(data2, weekFeesUsd, 'huhuh')
 
     const pools = data.pools.map((pool: BasicPool) => ({
       id: pool.id,
@@ -307,9 +313,7 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
         symbol: pool.token1.symbol,
         name: pool.token1.name,
       },
-      apr:
-        (Number(data2.poolDayDatas.filter((p: any) => p.pool.id === pool.id)[0].feesUSD) * 365 * 100) /
-        Number(pool.totalValueLockedUSD),
+      apr: ((weekFeesUsd / 7) * 365 * 100) / Number(pool.totalValueLockedUSD),
     }))
 
     return pools
