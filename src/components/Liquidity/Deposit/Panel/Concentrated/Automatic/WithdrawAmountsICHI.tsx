@@ -260,9 +260,9 @@ const WithdrawAmountsICHI = ({
                           {vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
+                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
                                 ? '0'
-                                : vault?.apr[0]?.apr?.toFixed(0)}
+                                : vault?.apr[1]?.apr?.toFixed(0)}
                               %
                             </span>
                           )}

@@ -209,7 +209,7 @@ export const useIchiPositions = () => {
                   feesUSD: 'string',
                 },
               },
-              apr: app[0]?.apr <= 0 ? '0.00%' : app[0]?.apr.toFixed(0) + '%',
+              apr: [1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
             }
           })
         )
