@@ -4,7 +4,15 @@ import { INPUT_PRECISION } from '@/src/library/constants/misc'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
+import {
+  getAllUserAmounts,
+  getUserAmounts,
+  getUserBalance,
+  IchiVault,
+  SupportedDex,
+  UserAmountsInVault,
+  withdraw,
+} from '@ichidao/ichi-vaults-sdk'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
@@ -13,6 +21,7 @@ import { IToken } from '@/src/library/types'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { ichiVaults } from './ichiVaults'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 const WithdrawAmountsICHI = ({
@@ -67,6 +76,24 @@ const WithdrawAmountsICHI = ({
     setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
     const getTotalUserShares = async () => {
       const data = await getUserBalance(account, vaultAddress.id, web3Provider, dex)
+      const amounts: [string, string] & { amount0: string; amount1: string } = await getUserAmounts(
+        account,
+        vaultAddress.id,
+        web3Provider,
+        dex
+      )
+      const tokenAid = ichiVaults.find((v) => {
+        if (v.id === vaultAddress.id) {
+          return v
+        }
+      })
+      const tokenBid = ichiVaults.find((v) => {
+        if (v.id === vaultAddress.id) {
+          return v
+        }
+      })
+      console.log('amounts', Number(amounts.amount0), Number(amounts.amount1))
+
       setTotalUserShares(data)
     }
     getTotalUserShares()
@@ -157,6 +184,7 @@ const WithdrawAmountsICHI = ({
           <div className="flex w-full xl:w-3/5 justify-between">
             <div className="text-xs leading-normal text-white">Withdraw amounts</div>
             <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              100$
               {/* {amoutToWithdraw && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
                 ? formatDollarAmount(
                     toBN(amoutToWithdraw)
@@ -260,9 +288,9 @@ const WithdrawAmountsICHI = ({
                           {vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
+                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
                                 ? '0'
-                                : vault?.apr[0]?.apr?.toFixed(0)}
+                                : vault?.apr[1]?.apr?.toFixed(0)}
                               %
                             </span>
                           )}

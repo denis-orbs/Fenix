@@ -543,7 +543,7 @@ const Panel = () => {
     if (swapValue == '') setForValue('')
   }, [swapValue])
   useEffect(() => {
-    if (currentButtonState === "Enter Amount" && swapValue === '' && forValue === '') {
+    if (currentButtonState === 'Enter Amount' && swapValue === '' && forValue === '') {
       setisButtonPrimary(false)
     } else {
       setisButtonPrimary(true)

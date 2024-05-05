@@ -141,10 +141,7 @@ export const useIchiPositions = () => {
               return averageDtr
             }
 
-            console.log('item', item)
-
             const app = await getLp(item.vaultAddress)
-            //    console.log('app', app)
 
             return {
               id: item.vaultAddress,
@@ -209,7 +206,7 @@ export const useIchiPositions = () => {
                   feesUSD: 'string',
                 },
               },
-              apr: app[0]?.apr <= 0 ? '0.00%' : app[0]?.apr.toFixed(0) + '%',
+              apr: app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
             }
           })
         )
