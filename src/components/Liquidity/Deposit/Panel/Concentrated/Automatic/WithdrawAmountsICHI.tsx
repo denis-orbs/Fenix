@@ -4,7 +4,7 @@ import { INPUT_PRECISION } from '@/src/library/constants/misc'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
+import { getUserAmounts, getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
@@ -13,6 +13,8 @@ import { IToken } from '@/src/library/types'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { ichiVaults } from './ichiVaults'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 const WithdrawAmountsICHI = ({
@@ -28,6 +30,7 @@ const WithdrawAmountsICHI = ({
   const [selected, setIsSelected] = useState<string>('Choose one')
   const { account } = useActiveConnectionDetails()
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+  const [totalShareDollar, setTotalShareDollar] = useState<Number>(0)
 
   const addNotification = useNotificationAdderCallback()
 
@@ -67,6 +70,27 @@ const WithdrawAmountsICHI = ({
     setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
     const getTotalUserShares = async () => {
       const data = await getUserBalance(account, vaultAddress.id, web3Provider, dex)
+      const amounts: [string, string] & { amount0: string; amount1: string } = await getUserAmounts(
+        account,
+        vaultAddress.id,
+        web3Provider,
+        dex
+      )
+      const tokenAid = ichiVaults.find((v) => {
+        if (v.id === vaultAddress.id) {
+          return v
+        }
+      })?.tokenA
+      const tokenBid = ichiVaults.find((v) => {
+        if (v.id === vaultAddress.id) {
+          return v
+        }
+      })?.tokenB
+      const tokenList = await fetchTokens()
+      const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
+      const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
+      setTotalShareDollar(Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice))
+
       setTotalUserShares(data)
     }
     getTotalUserShares()
@@ -157,6 +181,9 @@ const WithdrawAmountsICHI = ({
           <div className="flex w-full xl:w-3/5 justify-between">
             <div className="text-xs leading-normal text-white">Withdraw amounts</div>
             <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              {totalShareDollar
+                ? formatDollarAmount((Number(totalShareDollar) / Number(totalUserShares)) * Number(amoutToWithdraw))
+                : '$ 0'}
               {/* {amoutToWithdraw && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
                 ? formatDollarAmount(
                     toBN(amoutToWithdraw)
