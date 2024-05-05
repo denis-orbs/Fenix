@@ -23,13 +23,9 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 }
-
 module.exports = nextConfig
 
-
-// Injected content via Sentry wizard below
-
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs')
 
 module.exports = withSentryConfig(
   module.exports,
@@ -39,8 +35,8 @@ module.exports = withSentryConfig(
 
     // Suppresses source map uploading logs during build
     silent: true,
-    org: "fenix-y2",
-    project: "javascript-nextjs",
+    org: 'fenix-xl',
+    project: 'interface',
   },
   {
     // For all available options, see:
@@ -56,7 +52,7 @@ module.exports = withSentryConfig(
     // This can increase your server load as well as your hosting bill.
     // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
     // side errors will fail.
-    tunnelRoute: "/monitoring",
+    tunnelRoute: '/monitoring',
 
     // Hides source maps from generated client bundles
     hideSourceMaps: true,
@@ -70,4 +66,6 @@ module.exports = withSentryConfig(
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
   }
-);
+)
+
+// Injected content via Sentry wizard below
