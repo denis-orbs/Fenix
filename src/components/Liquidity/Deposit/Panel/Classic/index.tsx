@@ -514,7 +514,9 @@ const Classic = ({
             <div className="mb-3">
               {
                 // TODO: handle LP tokens list
+                // FIXME: HAZ
               }
+
               <ExchangeBox
                 value={lpValue}
                 token={

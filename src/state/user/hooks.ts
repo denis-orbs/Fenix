@@ -9,7 +9,7 @@ export function useResetUser() {
   }, [dispatch])
 }
 
-export function useSetSlippageToleranceCallback(): (slippageTolerance: number | 'auto') => void {
+export function useSetSlippageToleranceCallback(): (slippageTolerance: number | 'Auto') => void {
   const dispatch = useAppDispatch()
   return useCallback(
     (slippageTolerance: number | 'Auto') => {

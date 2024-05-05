@@ -28,6 +28,7 @@ export default function MobileRowNew({
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
   let aprdisplay
   if (aprIchi && aprIchi.length > 0) {
+    // FIXME: STARK
     if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
   }
 

@@ -73,7 +73,8 @@ const Notification = ({
     [NotificationDuration.DURATION_4000]: 'animate-progress-toast-4000',
     [NotificationDuration.DURATION_5000]: 'animate-progress-toast-5000',
     [NotificationDuration.DURATION_10000]: 'animate-progress-toast-10000',
-    [NotificationDuration.DURATION_5000]: 'animate-progress-toast-15000',
+    [NotificationDuration.DURATION_15000]: 'animate-progress-toast-15000',
+    [NotificationDuration.DURATION_25000]: 'animate-progress-toast-25000',
   }
   return (
     <>
