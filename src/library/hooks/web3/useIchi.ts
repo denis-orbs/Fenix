@@ -140,10 +140,7 @@ export const useIchiPositions = () => {
               return averageDtr
             }
 
-            console.log('item', item)
-
             const app = await getLp(item.vaultAddress)
-            //    console.log('app', app)
 
             return {
               id: item.vaultAddress,
