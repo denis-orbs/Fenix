@@ -134,7 +134,9 @@ export default function MobileRowNew({
                     </div> */}
                     <div className="flex justify-between items-center">
                       <p className="text-sm">Ichi</p>
-                      <p className="text-sm text-chilean-fire-600">{aprdisplay ? aprdisplay : 0}%</p>
+                      <p className="text-sm text-chilean-fire-600">
+                        {aprdisplay === null || aprdisplay < 0 ? '0' : aprdisplay}%
+                      </p>
                     </div>
                   </div>
                 )}
