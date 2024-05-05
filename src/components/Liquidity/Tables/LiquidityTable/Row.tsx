@@ -41,7 +41,7 @@ const RowData = ({
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
   let aprdisplay
   if (aprIchi && aprIchi.length > 0) {
-    if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[0].apr.toFixed(0)
+    if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
   }
 
   return (
@@ -159,10 +159,14 @@ const RowData = ({
                   <p className="text-sm pb-1">Wide</p>
                   <p className="text-sm pb-1 text-chilean-fire-600">16.281%</p>
                 </div> */}
-                <div className="flex justify-between items-center">
-                  <p className="text-sm">Ichi</p>
-                  <p className="text-sm text-chilean-fire-600">{aprdisplay ? aprdisplay : 0}%</p>
-                </div>
+                {aprIchi && aprIchi.length > 0 && (
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm">Ichi</p>
+                    <p className="text-sm text-chilean-fire-600">
+                      {aprdisplay === null || aprdisplay < 0 || aprdisplay === undefined ? '0' : aprdisplay}%
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>

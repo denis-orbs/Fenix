@@ -15,6 +15,10 @@ import cache from 'memory-cache'
 import { BASIC_POOLS_LIST, POOLS_ID_LIST, POOLS_LIST, POOL_FRAGMENT } from '@/src/library/apollo/queries/pools'
 import { algebra_client } from '@/src/library/apollo/client'
 import { gql } from '@apollo/client'
+import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
+import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
+import { getWeb3Provider } from '@/src/library/utils/web3'
+import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async (address: Address) => {
   try {
@@ -284,8 +288,22 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
       acc += Number(current.feesUSD)
       return acc
     }, 0)
+    // const web3Provider = getWeb3Provider()
+    // const dex = SupportedDex.Fenix
 
-    console.log(data2, weekFeesUsd, 'huhuh')
+    // const aprIchi = data.pools.map(async (pool: BasicPool) => {
+    //   const tokenVaults = ichiVaults.filter((vault) => {
+    //     return (
+    //       vault.tokenA.toLowerCase() === pool.token0.id.toLowerCase() &&
+    //       vault.tokenB.toLowerCase() === pool.token1.id.toLowerCase()
+    //     )
+    //   })
+    //  console.log(tokenVaults, 'tokenVaults')
+    // const averageDtr: (VaultApr | null)[] =
+    //   tokenVaults.length > 0 ? await getLpApr(tokenVaults[0].id, web3Provider, SupportedDex.Fenix) : []
+    // console.log(averageDtr.length > 0 ? averageDtr[1]?.apr?.toFixed(0) : 0, 'averageDtr')
+    // return averageDtr.length > 0 ? averageDtr[1]?.apr?.toFixed(0) : 0
+    // })
 
     const pools = data.pools.map((pool: BasicPool) => ({
       id: pool.id,
