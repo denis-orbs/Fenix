@@ -198,7 +198,7 @@ const WithdrawAmountsICHI = ({
           <div className="xl:w-2/5 flex-shrink-0 flex justify-end">
             <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
               <span className="icon-wallet text-xs"></span>
-              Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares, 4) : '-'}{' '}
+              Withdrawable LP : {totalUserShares != '0' ? formatAmount(totalUserShares, 4) : '-'}{' '}
             </span>
           </div>
         </div>
