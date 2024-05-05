@@ -35,16 +35,18 @@ const PointSummary = ({ userData }: any) => {
 
   const timeSet = () => {
     if (time === '' && count === 0 && timestampsArray.length > 0) {
+      // FIXME: STARK
       setTime(timestampsArray[0])
       count++
     } else {
+      // FIXME: STARK
       setTime(timestampsArray[count])
       count++
     }
   }
 
   useEffect(() => timeSet(), [])
-
+  // FIXME: STARK
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a completed state

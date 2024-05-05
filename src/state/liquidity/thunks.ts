@@ -127,13 +127,13 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
           volumeToken0: matchedPair?.volumeToken0 || '0',
           volumeToken1: matchedPair?.volumeToken1 || '0',
           isInactiveGauge: false,
-          totalPoolAmountValue,
+          totalPoolAmountValue: totalPoolAmountValue.toString(),
           myPoolAmountValue,
           myStackedAmountValueV2,
           myStackedAmountValueV3: new BigDecimal(0n, 18),
           apr,
           maxAPR,
-          tvl: tvl,
+          tvl: tvl.toString(),
           token0Symbol,
           token1Symbol,
           unmigrated: pair.account_gauge_balance > 0n,
@@ -157,17 +157,9 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
       if (tokenA && tokenB) {
         const fnxToken = availableTokenData.find((t) => t.tokenAddress.toLowerCase() === FNXTokenAddress.toLowerCase())
 
-        //  if (!fnxToken) return
-
-        /*const lp100 = 100 / parseFloat(
-                getParsedTokenBalance(
-                  tokenA.price_quote! * pair.reserve0 + tokenB.price_quote! * pair.reserve1, 18)) / pair.total_supply);*/
-
         let apr = 0.0
         let maxAPR = 0.0
-        let tvl
-        // Calculating emissions APR
-        tvl = (
+        const tvl = (
           Number(pair.totalValueLockedToken0) * tokenAprice +
           Number(pair.totalValueLockedToken1) * tokenBprice
         ).toFixed(2)
@@ -199,7 +191,8 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
         pairs[pair.id!] = {
           pairAddress: pair.id,
           pairSymbol: 'Concentrated pool',
-          pairInformationV2: { token0: tokenA, token1: tokenB },
+          // FIXME: STARK
+          pairInformationV2: { token0: pair.token0, token1: tokenB },
           priceA: tokenAprice ? tokenAprice : 0,
           priceB: tokenBprice ? tokenBprice : 0,
           isInactiveGauge: false,

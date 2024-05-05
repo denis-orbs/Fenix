@@ -285,6 +285,9 @@ const WithdrawAmountsICHI = ({
                               ]
                             }
                           </span>
+                          {
+                            // FIXME: STARK
+                          }
                           {vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}

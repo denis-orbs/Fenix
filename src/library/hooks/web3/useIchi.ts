@@ -53,6 +53,7 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
 
     tokenVaults.forEach(async (v) => {
       const kapr = await getLp(v.id)
+      // FIXME: STARK
       v.apr = kapr
       // console.log(v)
       return v
@@ -65,7 +66,7 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
     //   return token
     // })
     // console.log('mod', tokenVaultsWithApr)
-
+    // FIXME: STARK
     setVault(tokenVaults)
   }, [token0, token1, tokenA, tokenB])
 
@@ -206,10 +207,12 @@ export const useIchiPositions = () => {
                   feesUSD: 'string',
                 },
               },
+              // FIXME: STARK
               apr: app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
             }
           })
         )
+        // FIXME: STARK
         //  console.log(pos, 'pos')
         setpositions(pos)
       }
@@ -223,6 +226,7 @@ export const useIchiPositions = () => {
 export const useIchiVaultsData = (vaultAddress: string) => {
   const dex = SupportedDex.Fenix
   const chain = SupportedChainId.blast
+  // FIXME: STARK
   const [vaultData, setvaultData] = useState<IchiVault>({
     id: '',
     tokenA: '',
@@ -234,6 +238,7 @@ export const useIchiVaultsData = (vaultAddress: string) => {
   useEffect(() => {
     const fetchVault = async () => {
       const vaultInfo = await getIchiVaultInfo(chain, dex, vaultAddress)
+      // FIXME: STARK
       if (vaultInfo) setvaultData(vaultInfo)
     }
     fetchVault()
