@@ -41,7 +41,8 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
   const getLp = async (vadd: string) => {
     const web3Provider = getWeb3Provider()
     const dex = SupportedDex.Fenix
-    const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
+    // get the apr for 7 days
+    const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex, 7)
     return averageDtr
   }
 

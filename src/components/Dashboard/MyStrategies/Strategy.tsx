@@ -174,9 +174,6 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
       }
     )
   }
-  function setAPR(apr: any): any {
-    throw new Error('Function not implemented.')
-  }
 
   return (
     <div className="steps-box w-auto xl:min-w-[350px]">

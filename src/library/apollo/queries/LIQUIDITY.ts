@@ -113,7 +113,7 @@ export const GET_POSITIONV3_USER = gql`
           decimals
           derivedMatic
         }
-        poolDayData(first: 2, orderBy: date, orderDirection: desc) {
+        poolDayData(first: 7, orderBy: date, orderDirection: desc) {
           feesUSD
         }
       }
