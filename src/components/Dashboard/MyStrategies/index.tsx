@@ -37,7 +37,7 @@ const MyStrategies = () => {
   useEffect(() => {
     tokensprice()
   }, [])
-
+  
   const slideToLeft = () => {
     if (swiperRef.current && progress > 0) {
       swiperRef.current.slidePrev()
@@ -119,7 +119,14 @@ const MyStrategies = () => {
               spaceBetween={50}
               slidesPerView={slidesPerView}
               navigation={true}
-              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper
+                swiper.on('slideChangeTransitionEnd', () => {
+                  if (swiperRef.current) {
+                    setProgress(swiper.progress)
+                  }
+                })
+              }}
             >
               {Array.from({ length: position.length }).map((_, index) => {
                 return (
@@ -139,11 +146,11 @@ const MyStrategies = () => {
             </Swiper>
             <div className="flex gap-2 justify-center">
               <span
-                className={`icon-arrow rotate-180 ${progress === 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
+                className={`icon-arrow rotate-180 ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
                 onClick={slideToLeft}
               ></span>
               <span
-                className={`icon-arrow text-2xl ${progress === 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                className={`icon-arrow text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
                 onClick={slideToRight}
               ></span>
             </div>
