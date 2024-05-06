@@ -64,7 +64,7 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
   return (
     <div className="w-full">
       <div className="flex items-start relative h-20">
-        <div className="absolute h-full bottom-0 w-full flex items-end">
+        <div className="absolute h-full bottom-0 w-full flex items-end z-50">
           <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
             0
           </p>
@@ -79,18 +79,18 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
 
         {row.liquidity === 'ichi' ? (
           <>
-            <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
+            <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1 z-50">
               Position Managed by ichi
             </p>
           </>
         ) : (
           showtoken0 && (
             <>
-              <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
+              <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs z-[100] px-3 py-1 rounded-sm mx-auto mt-1">
                 Min. Price: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0Symbol}/{token1Symbol}
               </p>
 
-              <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
+              <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs z-[100] px-3 py-1 rounded-sm mx-auto mt-1">
                 Max. Price: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0Symbol}/{token1Symbol}
               </p>
             </>
