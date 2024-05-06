@@ -73,7 +73,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
-  
+
   const account = useAccount()
   const { isConnected, chainId } = useActiveConnectionDetails()
 
@@ -188,8 +188,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setRangePrice1((Number(state.price) / 1e18) * (1 + currentPercentage[0] / 100))
         setRangePrice2((Number(state.price) / 1e18) * (1 + currentPercentage[1] / 100))
       }
-      setFirstValue('')
-      setSecondValue('')
     }
 
     asyncFn()
@@ -230,7 +228,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     setFirstToken(secondToken)
     setSecondToken(firstToken)
   }
-  
+
   const handleCLAdd = async () => {
     setIsLoading(true)
 
@@ -365,8 +363,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
           setShouldApproveFirst(allowanceFirst == '0')
           setShouldApproveSecond(allowanceSecond == '0')
-          setFirstValue('')
-          setSecondValue('')
           setIsLoading(false)
         },
         onError: (e) => {
