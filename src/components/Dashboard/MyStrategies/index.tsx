@@ -99,6 +99,7 @@ const MyStrategies = () => {
   }, [ichipositions])
 
   useEffect(() => {
+    // FIXME: STARK
     dispatch(setApr(position))
   }, [position, dispatch])
 

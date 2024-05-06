@@ -49,7 +49,7 @@ const Manage = ({}: {}) => {
 
   const searchParams = useSearchParams()
   const router = useRouter()
-
+  // FIXME: STARK
   const { apr } = useSelector<any>((store) => store.apr)
 
   const [aprId, setAprId] = useState(null)

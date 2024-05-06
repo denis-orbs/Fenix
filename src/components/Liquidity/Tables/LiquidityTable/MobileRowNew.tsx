@@ -28,7 +28,8 @@ export default function MobileRowNew({
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
   let aprdisplay
   if (aprIchi && aprIchi.length > 0) {
-    if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[0].apr.toFixed(0)
+    // FIXME: STARK
+    if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
   }
 
   return (
@@ -134,7 +135,9 @@ export default function MobileRowNew({
                     </div> */}
                     <div className="flex justify-between items-center">
                       <p className="text-sm">Ichi</p>
-                      <p className="text-sm text-chilean-fire-600">{aprdisplay ? aprdisplay : 0}%</p>
+                      <p className="text-sm text-chilean-fire-600">
+                        {aprdisplay === null || aprdisplay < 0 ? '0' : aprdisplay}%%
+                      </p>
                     </div>
                   </div>
                 )}

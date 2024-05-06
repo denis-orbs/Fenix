@@ -9,16 +9,28 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useAccount } from 'wagmi'
 
+interface MerklReward {
+  recipient: string
+  reason: string
+  amount: string
+  rewardToken: string
+  rank?: number
+}
+
+interface RewardAccumulator {
+  [key: string]: MerklReward & { rank?: number }
+}
+
 const PointsProgram = () => {
-  const [data, setData] = useState<any>([])
-  const [userData, setUserData] = useState<any>({})
+  const [data, setData] = useState<MerklReward[]>([])
+  const [userData, setUserData] = useState<MerklReward>()
   const { address } = useAccount()
   useEffect(() => {
     const fetchRewardsReport = async (campaignId: string) => {
       const url = `https://api.merkl.xyz/v3/rewardsReport?chainId=81457&campaignId=${campaignId}`
 
       try {
-        const response = await axios.get(url)
+        const response = await axios.get<MerklReward[]>(url)
 
         // Step 1: Sort the array based on the 'amount' field in descending order
         return response.data.sort((a, b) => parseInt(b.amount) - parseInt(a.amount))
@@ -35,13 +47,9 @@ const PointsProgram = () => {
     // Wait for all Promises to resolve
     Promise.all(promises)
       .then((results) => {
-        const combinedArray: any = []
-        for (const result of results) {
-          combinedArray.concat(result)
-        }
         // Use the flat method with depth 1 to flatten the array
         const flattenedArray = results.flat(1)
-        const rewardsObject = flattenedArray.reduce((acc, reward) => {
+        const rewardsObject = flattenedArray.reduce<RewardAccumulator>((acc, reward) => {
           const { recipient, amount } = reward
 
           if (acc[recipient]) {
@@ -56,8 +64,8 @@ const PointsProgram = () => {
 
         // Step 2: Convert object back to array
         const unmergedRewardsArray = Object.values(rewardsObject)
-        const mergedRewardsArray = unmergedRewardsArray.sort((a: any, b: any) => {
-          return b?.amount - a?.amount
+        const mergedRewardsArray = unmergedRewardsArray.sort((a: MerklReward, b: MerklReward) => {
+          return parseInt(b.amount) - parseInt(a.amount)
         })
         // CHANGE unmergedRewardsArray
         //  Step 3: Assign ranks to each object based on their position in the sorted array
