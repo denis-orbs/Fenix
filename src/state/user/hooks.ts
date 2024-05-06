@@ -9,17 +9,17 @@ export function useResetUser() {
   }, [dispatch])
 }
 
-export function useSetSlippageToleranceCallback(): (slippageTolerance: number | 'auto') => void {
+export function useSetSlippageToleranceCallback(): (slippageTolerance: number | 'Auto') => void {
   const dispatch = useAppDispatch()
   return useCallback(
-    (slippageTolerance: number | 'auto') => {
+    (slippageTolerance: number | 'Auto') => {
       dispatch(updateSlippageTolerance({ slippageTolerance }))
     },
     [dispatch]
   )
 }
 
-export function useSlippageTolerance(): number | 'auto' {
+export function useSlippageTolerance(): number | 'Auto' {
   return useAppSelector((state) => state.user.slippageTolerance)
 }
 

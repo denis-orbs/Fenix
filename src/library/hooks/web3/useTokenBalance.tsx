@@ -2,7 +2,7 @@
 
 import { Address, http } from 'viem'
 import { multicall } from '@wagmi/core'
-import { createConfig } from 'wagmi'
+import { createConfig, fallback } from 'wagmi'
 import { ERC20_ABI } from '../../constants/abi'
 import { blast } from 'viem/chains'
 import { ethers } from 'ethers'
@@ -15,7 +15,7 @@ export async function getTokenBalance(token1: Address, user: Address) {
    * This hook is used to get token balance for a user address
    */
 
-  if(token1.toLowerCase() == NATIVE_ETH_LOWERCASE) {
+  if (token1.toLowerCase() == NATIVE_ETH_LOWERCASE) {
     return await publicClient.getBalance({ address: user })
   }
 
@@ -23,7 +23,10 @@ export async function getTokenBalance(token1: Address, user: Address) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -52,7 +55,8 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
    */
 
   const contractsList = tokens.map((item) => {
-    if(item.toLowerCase() == "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") item = "0x4300000000000000000000000000000000000004"
+    if (item.toLowerCase() == '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+      item = '0x4300000000000000000000000000000000000004'
 
     return {
       abi: ERC20_ABI,
@@ -66,7 +70,10 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
     createConfig({
       chains: [blast],
       transports: {
-        [blast.id]: http(),
+        [blast.id]: fallback([
+          http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+          http('https://rpc.blast.io'),
+        ]),
       },
     }),
     {
@@ -75,7 +82,7 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
   )
 
   const balances: any = {}
-  balances["0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"] = await publicClient.getBalance({ address: user })
+  balances['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'] = await publicClient.getBalance({ address: user })
 
   for (let i = 0; i < balance.length; i++) {
     balances[tokens[i]] = balance[i].result

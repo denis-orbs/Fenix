@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -52,6 +53,7 @@ enum ButtonState {
   LOADING = 'Loading...',
 }
 const Panel = () => {
+  const [isButtonPrimary, setisButtonPrimary] = useState(false)
   const [swapValue, setSwapValue] = useState<string>('')
   const [forValue, setForValue] = useState<string>('')
   const { setSlippageModal } = useStore()
@@ -170,7 +172,7 @@ const Panel = () => {
   }, [updateTokenPrice])
 
   // function to make the swap
-  const slippageValue = slippage == 'auto' || !slippage ? 100 - 0.5 : 100 - slippage
+  const slippageValue = slippage == 'Auto' || !slippage ? 100 - 0.5 : 100 - slippage
 
   const amountOutMinimum = toBN(Number(parseUnits(forValue, tokenGet.decimals)))
     .multipliedBy(slippageValue)
@@ -540,6 +542,13 @@ const Panel = () => {
   useEffect(() => {
     if (swapValue == '') setForValue('')
   }, [swapValue])
+  useEffect(() => {
+    if (currentButtonState === 'Enter Amount' && swapValue === '' && forValue === '') {
+      setisButtonPrimary(false)
+    } else {
+      setisButtonPrimary(true)
+    }
+  }, [currentButtonState, swapValue, forValue])
   const [isChartVisible, setIsChartVisible] = useState(showChart)
 
   const handleSwitch = () => {
@@ -593,10 +602,11 @@ const Panel = () => {
                 <span className="text-shark-100 text-sm">
                   {swapFee && swapFee != '0' && `${formatUnits(BigInt(swapFee), 4)}% fee`}
                 </span>
-                <div className="flex items-center gap-3">
+                {/* <div className="flex items-center gap-3">
                   <Switch active={showChart} setActive={handleSwitch} />
                   <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
-                </div>
+                </div> */}
+                <span onClick={handleSwitch} className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}></span>
                 <ReloadIcon
                   className="text-shark-100 !cursor-pointer"
                   onClick={() => {
@@ -625,8 +635,12 @@ const Panel = () => {
                 />
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
               </div>
+              <div className={`${toBN(priceImpact).abs().gt(3) ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}>
+                <span className="icon-info text-base"></span>
+                This transaction apperars to have a price impact greater than 5%. Research risks before swapping.
+              </div>
               <Button
-                variant="primary"
+                variant={`${isButtonPrimary ? 'primary' : 'tertiary'}`}
                 className="w-full flex items-center justify-center gap-x-2"
                 onClick={handleSwapClick}
                 walletConfig={{
@@ -683,21 +697,27 @@ const Panel = () => {
             </span>
           </p>
           <p className="">
-            Slippage <span className="text-shark-100">{nativeETH_WETH || nativeWETH_ETH ? '0' : slippage}</span>
+            Slippage:{' '}
+            <span className="text-shark-100">
+              {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage == 'Auto' ? 'Auto' : slippage}
+            </span>
           </p>
 
           <p className="">
-            Minimum Amount Recieved
+            Minimum Amount Recieved:{' '}
             <span className="text-shark-100">
               {(nativeETH_WETH || nativeWETH_ETH) && formatNumber(Number(forValue || 0), 6).toString()}
               {amountOutMinimum &&
                 !(nativeETH_WETH || nativeWETH_ETH) &&
-                formatUnits(BigInt(Number(amountOutMinimum.toString().split('.')[0])), tokenGet.decimals).toString()}
+                formatUnits(
+                  BigInt(Number(amountOutMinimum.toString().split('.')[0]) ?? 0),
+                  tokenGet.decimals
+                ).toString()}
               {!amountOutMinimum && !(nativeETH_WETH || nativeWETH_ETH) && '-'} {tokenGet.symbol}
             </span>
           </p>
           <p className="">
-            Price Impact{' '}
+            Price Impact:{' '}
             <span className="text-shark-100">
               {nativeETH_WETH || nativeWETH_ETH ? '0' : parseFloat(priceImpact.toString()).toFixed(2)}%
             </span>

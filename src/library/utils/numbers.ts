@@ -124,3 +124,17 @@ export function formatNumber(n: number, dec: number = 18) {
     return n.toFixed(dec).replace(/(\.\d*?[1-9])0+$|\.$/, '$1')
   }
 }
+
+export const parseCurrency = (formattedValue: string): BigNumber => {
+  if (formattedValue.includes('b')) {
+    return new BigNumber(formattedValue.replace('b', '').replace(',', '')).multipliedBy(1e9)
+  } else if (formattedValue.includes('m')) {
+    return new BigNumber(formattedValue.replace('m', '').replace(',', '')).multipliedBy(1e6)
+  } else if (formattedValue.includes('k')) {
+    return new BigNumber(formattedValue.replace('k', '').replace(',', '')).multipliedBy(1e3)
+  } else if (formattedValue === '< 0.001') {
+    return new BigNumber(0)
+  } else {
+    return new BigNumber(formattedValue.replace(',', ''))
+  }
+}

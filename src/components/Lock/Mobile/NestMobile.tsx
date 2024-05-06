@@ -58,7 +58,7 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
                               </div>
                               <div className="flex items-center gap-3">
                                 <p className="text-xs flex justify-center items-center text-shark-100 bg-shark-400 py-1 px-3 rounded-lg border-shark-100 border-solid border">
-                                  <span className='line-clamp-1'>Updated 2 days ago</span>
+                                  <span className="line-clamp-1">Updated 2 days ago</span>
                                 </p>
                                 <p
                                   className="text-xs flex items-center justify-center text-shark-100 
@@ -100,7 +100,11 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
                                   </p>
                                 </div>
                               </div>
-                              <Button onClick={handlerNavigation} variant="tertiary" className="w-full !text-xs  flex gap-4">
+                              <Button
+                                onClick={handlerNavigation}
+                                variant="tertiary"
+                                className="w-full !text-xs  flex gap-4"
+                              >
                                 Deposit Lock <span className="icon-link text-xlg"></span>
                               </Button>
                               <div className="flex flex-col gap-2 border border-shark-100 rounded-lg p-2">
@@ -126,7 +130,15 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
             </TableBody>
             {activePagination && (
               <div className="mt-5">
-                <PaginationMobile />
+                <PaginationMobile
+                  activePage={1}
+                  className=""
+                  count={10}
+                  itemsPerPage={10}
+                  numberPages={7}
+                  setActivePage={() => {}}
+                  setItemPerPage={() => {}}
+                />
               </div>
             )}
           </>

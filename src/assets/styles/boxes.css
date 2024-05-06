@@ -193,7 +193,7 @@
 }
 
 .search-box {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center h-[62px];
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center h-[45px];
 }
 
 .filter-lock-box {
@@ -348,7 +348,7 @@
   after:bg-cover
   after:w-1/2
   after:top-0
-  after:right-0
+  after:right-0;
 }
 
 /* .rectangulo {
@@ -603,8 +603,6 @@
   after:bottom-0
   after:left-0;
 }
-
-
 
 .mini-box-vote {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
@@ -1029,7 +1027,7 @@
   sm:w-[480px]
   sm:min-h-[470px]
   flex-shrink-0
-  bg-shark-400
+  bg-shark-700
   bg-opacity-40
   backdrop-blur-[15px]
   2xl:bg-transparent
@@ -1558,6 +1556,45 @@ opacity-70
   after:content-[""]
   after:absolute
   after:bg-[url("/static/images/components/box/points/point-summary.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:h-full
+  after:bg-cover
+  after:w-1/2
+  after:top-0
+  after:right-0
+  after:hidden
+  after:xl:block;
+}
+
+.your-provide-box {
+  @apply 
+  w-full
+  xl:h-[120px]
+  p-5
+  xl:py-14
+  xl:px-10
+  mb-10
+  bg-shark-400
+  xl:bg-transparent
+  bg-opacity-40
+  rounded-lg
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/points/provide.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-1/2
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/points/provide.svg")]
   after:bg-no-repeat
   after:bg-right
   after:h-full

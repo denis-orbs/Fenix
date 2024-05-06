@@ -18,7 +18,9 @@ const SetRange = ({
   multiplier,
   handleMinMaxInput,
   isInverse,
-  swapTokens
+  swapTokens,
+  price1text,
+  price2text
 }: {
   setCurrentPercentage: any
   currentPercentage: any
@@ -31,6 +33,8 @@ const SetRange = ({
   handleMinMaxInput?: any
   isInverse?: any
   swapTokens?: any
+  price1text?: any
+  price2text?: any
 }) => {
   const [currentStrategy, setCurrentStrategy] = useState<StrategyType | null>(null)
   const [currentPercentageShown, setCurrentPercentShown] = useState([5, 5])
@@ -121,11 +125,11 @@ const SetRange = ({
           100%
         </Button>
       </div>
-      <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
+      {/* <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
         <div className="flex items-center gap-2 text-white opacity-75">
           <span>±</span>
           <span className="text-[30px] leading-normal font-light">
-            {showFullRange ? 'Full Range' : `${currentPercentageShown[1]}`}%
+            {showFullRange ? 'Full Range' : `${currentPercentageShown[1]}%`}
           </span>
         </div>
         <div className="max-w-[274px] flex-grow">
@@ -136,11 +140,11 @@ const SetRange = ({
             min={1}
             max={100}
             disabled={false}
-            onChange={(value) => handlePercentageChange([-value, value])}
-            onChangeShown={(value) => { if(value != 101) setCurrentPercentShown([-value, value])}}
+            onChange={(value) => { console.log(value); handlePercentageChange([-value, value])}}
+            onChangeShown={(value) => { {console.log(value); if(value != 101) setCurrentPercentShown([-value, value])}}}
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="flex gap-2.5 mb-4">
         <StrategyButton
@@ -185,13 +189,21 @@ const SetRange = ({
           title={`Min Price (${token2?.symbol} per ${token1?.symbol})`}
           percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 0 : isInverse ? invertPercentage(currentPercentage[1]).toFixed(1) : currentPercentage[0].toFixed(1)}`}
           value={
-            currentPercentage[0] == -1 && currentPercentage[1] == -1
-              ? '0'
-              : (formatNumber(isInverse ? 1 / (price2 * multiplier) : price1 / multiplier, 6) as string)
+            isInverse ?
+              price2text == price2.toString() ?
+                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                  ? '0'
+                  : (formatNumber(1 / (price2 * multiplier), 6) as string)
+              : price2text
+            : 
+              price1text == price1.toString() ?
+                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                  ? '0'
+                  : (formatNumber(price1 / multiplier, 6) as string)
+              : price1text
           }
           onChange={(value: any) => {
-            value.target.value = value.target.value * multiplier
-            handleMinMaxInput(value, isInverse)
+            handleMinMaxInput(value, isInverse, multiplier)
           }}
           onTitleClick={swapTokens}
         />
@@ -199,13 +211,21 @@ const SetRange = ({
           title={`Max Price (${token2?.symbol} per ${token1?.symbol})`}
           percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 'Infinity' : isInverse ? invertPercentage(currentPercentage[0]).toFixed(1) : currentPercentage[1].toFixed(1)}`}
           value={
-            currentPercentage[0] == -1 && currentPercentage[1] == -1
-              ? 'Infinity'
-              : (formatNumber(isInverse ? 1 / (price1 * multiplier) : price2 / multiplier, 6) as string)
+            isInverse ?
+              price1text == price1.toString() ?
+                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                  ? 'Infinity'
+                  : (formatNumber(1 / (price1 * multiplier), 6) as string)
+              : price1text
+            : 
+              price2text == price2.toString() ?
+                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                  ? 'Infinity'
+                  : (formatNumber(price2 / multiplier, 6) as string)
+              : price2text
           }
           onChange={(value: any) => {
-            value.target.value = value.target.value * multiplier
-            handleMinMaxInput(value, !isInverse)
+            handleMinMaxInput(value, !isInverse, multiplier)
           }}
           onTitleClick={swapTokens}
         />

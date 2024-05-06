@@ -25,7 +25,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
         <TotalMigrated />
       </div>
 
-      {migrateStatus !== 'success' && migrateStatus !== 'wrong'  && (
+      {migrateStatus !== 'success' && migrateStatus !== 'wrong' && (
         <>
           <div className="flex flex-col items-center justify-center py-10 rounded-lg bg-shark-400 bg-opacity-40">
             <span className="text-5xl icon-circles text-shark-100"></span>
@@ -36,7 +36,13 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
       {migrateStatus === 'success' && (
         <>
           <div className="w-full mb-10">
-            <TableHead items={[{ text: 'Token', className: 'text-left w-[20%]', sortable: true }]} />
+            <TableHead
+              items={[{ text: 'Token', className: 'text-left w-[20%]', sortable: true }]}
+              setSort={() => {}}
+              sort={null}
+              setSortIndex={() => {}}
+              sortIndex={1}
+            />
 
             <TableBody>
               {TOKENS_LIST.map((item, index) => (
@@ -119,7 +125,15 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
             </TableBody>
           </div>
           <div>
-            <PaginationMobile />
+            <PaginationMobile
+              activePage={1}
+              setActivePage={() => {}}
+              itemsPerPage={10}
+              setItemPerPage={() => {}}
+              numberPages={7}
+              className=""
+              count={10}
+            />
           </div>
         </>
       )}
@@ -127,7 +141,13 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
       {migrateStatus === 'wrong' && (
         <>
           <div className="w-full mb-10">
-            <TableHead items={[{ text: 'Tokens', className: 'text-left w-[100%]', sortable: true }]} />
+            <TableHead
+              items={[{ text: 'Tokens', className: 'text-left w-[100%]', sortable: true }]}
+              setSort={() => {}}
+              sort={null}
+              setSortIndex={() => {}}
+              sortIndex={1}
+            />
 
             <TableBody>
               {TOKENS_LIST.map((item, index) => (
@@ -165,7 +185,15 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
               ))}
             </TableBody>
           </div>
-          <PaginationMobile/>
+          <PaginationMobile
+            activePage={1}
+            setActivePage={() => {}}
+            itemsPerPage={10}
+            setItemPerPage={() => {}}
+            numberPages={7}
+            className=""
+            count={10}
+          />
         </>
       )}
     </div>

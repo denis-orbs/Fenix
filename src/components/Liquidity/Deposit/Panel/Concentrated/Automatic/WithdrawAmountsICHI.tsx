@@ -4,7 +4,16 @@ import { INPUT_PRECISION } from '@/src/library/constants/misc'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
+import {
+  getAllUserAmounts,
+  getUserAmounts,
+  getUserBalance,
+  IchiVault,
+  SupportedDex,
+  UserAmountsInVault,
+  VaultApr,
+  withdraw,
+} from '@ichidao/ichi-vaults-sdk'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
@@ -13,7 +22,12 @@ import { IToken } from '@/src/library/types'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { ichiVaults } from './ichiVaults'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
+
+interface modifiedIchiVault extends IchiVault {
+  apr?: VaultApr
+}
 
 const WithdrawAmountsICHI = ({
   token,
@@ -21,7 +35,7 @@ const WithdrawAmountsICHI = ({
   tokenList,
 }: {
   token: IToken | undefined
-  allIchiVaultsByTokenPair: IchiVault[] | undefined | null
+  allIchiVaultsByTokenPair: modifiedIchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
   const [isActive, setIsActive] = useState<boolean>(false)
@@ -67,6 +81,24 @@ const WithdrawAmountsICHI = ({
     setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
     const getTotalUserShares = async () => {
       const data = await getUserBalance(account, vaultAddress.id, web3Provider, dex)
+      const amounts: [string, string] & { amount0: string; amount1: string } = await getUserAmounts(
+        account,
+        vaultAddress.id,
+        web3Provider,
+        dex
+      )
+      const tokenAid = ichiVaults.find((v) => {
+        if (v.id === vaultAddress.id) {
+          return v
+        }
+      })
+      const tokenBid = ichiVaults.find((v) => {
+        if (v.id === vaultAddress.id) {
+          return v
+        }
+      })
+      console.log('amounts', Number(amounts.amount0), Number(amounts.amount1))
+
       setTotalUserShares(data)
     }
     getTotalUserShares()
@@ -158,6 +190,7 @@ const WithdrawAmountsICHI = ({
           <div className="flex w-full xl:w-3/5 justify-between">
             <div className="text-xs leading-normal text-white">Withdraw amounts</div>
             <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              100$
               {/* {amoutToWithdraw && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
                 ? formatDollarAmount(
                     toBN(amoutToWithdraw)
@@ -228,7 +261,7 @@ const WithdrawAmountsICHI = ({
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
                     ${isActive ? 'visible bg-shark-500 !bg-opacity-80 border-shark-200' : 'hidden'}`}
                   >
-                    {allIchiVaultsByTokenPair.map((vault) => (
+                    {allIchiVaultsByTokenPair.map((vault: modifiedIchiVault) => (
                       <div
                         className="flex justify-start items-center gap-3 cursor-pointer m-1 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}
@@ -258,12 +291,18 @@ const WithdrawAmountsICHI = ({
                               ]
                             }
                           </span>
+                          {
+                            // FIXME: STARK
+                          }
                           {vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
-                                ? '0'
-                                : vault?.apr[0]?.apr?.toFixed(0)}
+                              {/* {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0 ? '0' : vault?.apr[1]?.apr?.toFixed(0)} */}
+                              {Array.isArray(vault.apr) && typeof vault.apr[1]?.apr === 'number'
+                                ? vault.apr[1]?.apr >= 0
+                                  ? vault.apr[1]?.apr.toFixed(0)
+                                  : '0'
+                                : '0'}
                               %
                             </span>
                           )}

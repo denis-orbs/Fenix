@@ -35,17 +35,29 @@ const PointSummary = ({ userData }: any) => {
 
   const timeSet = () => {
     if (time === '' && count === 0 && timestampsArray.length > 0) {
-      setTime(timestampsArray[0])
+      // FIXME: STARK
+      setTime(timestampsArray[0].toString())
       count++
     } else {
-      setTime(timestampsArray[count])
+      // FIXME: STARK
+      setTime(timestampsArray[count].toString())
       count++
     }
   }
 
   useEffect(() => timeSet(), [])
-
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+  // FIXME: STARK
+  const renderer = ({
+    hours,
+    minutes,
+    seconds,
+    completed,
+  }: {
+    hours: any
+    minutes: any
+    seconds: any
+    completed: any
+  }) => {
     if (completed) {
       // Render a completed state
       // return <span>You are good to go!</span>
@@ -107,7 +119,7 @@ const PointSummary = ({ userData }: any) => {
             </div>
             <div className="h-12 flex flex-col justify-between">
               <h3 className="text-3xl font-medium text-white">
-                {formatCurrency(isNaN(userData?.amount / 1e18) ? '0' : userData?.amount / 1e18) ?? '-'}
+                {isNaN(Number(userData?.amount) / 1e6) ? '0' : formatCurrency(userData?.amount / 1e6)}
               </h3>
               <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 Your Total points
