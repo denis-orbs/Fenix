@@ -123,16 +123,11 @@ export const useIchiPositions = () => {
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
         const pos = await Promise.all(
           amounts?.map(async (item) => {
-            const tokenAid = ichiVaults.find((v) => {
-              if (v.id === item.vaultAddress) {
-                return v
-              }
-            })
-            const tokenBid = ichiVaults.find((v) => {
-              if (v.id === item.vaultAddress) {
-                return v
-              }
-            })
+            const chain = SupportedChainId.blast
+
+            const vaultInfo = await getIchiVaultInfo(chain, dex, item.vaultAddress)
+            const tokenAid = vaultInfo.tokenA
+            const tokenBid = vaultInfo.tokenB
             //const vaultInfo = useIchiVaultsData(item.vaultAddress)
             //   console.log(tokenA)
 
@@ -161,14 +156,14 @@ export const useIchiPositions = () => {
                 tickIdx: '',
               },
               token0: {
-                id: tokenAid?.tokenA,
+                id: tokenAid,
                 symbol: 'string',
                 name: 'string',
                 decimals: 'string',
                 derivedMatic: 'string',
               },
               token1: {
-                id: tokenBid?.tokenB,
+                id: tokenBid,
                 symbol: 'string',
                 name: 'string',
                 decimals: 'string',
