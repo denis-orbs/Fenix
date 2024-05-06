@@ -4,6 +4,7 @@ import { INPUT_PRECISION } from '@/src/library/constants/misc'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+
 import {
   getAllUserAmounts,
   getUserAmounts,
@@ -23,6 +24,8 @@ import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymb
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { ichiVaults } from './ichiVaults'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 interface modifiedIchiVault extends IchiVault {
@@ -42,6 +45,7 @@ const WithdrawAmountsICHI = ({
   const [selected, setIsSelected] = useState<string>('Choose one')
   const { account } = useActiveConnectionDetails()
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+  const [totalShareDollar, setTotalShareDollar] = useState<Number>(0)
 
   const addNotification = useNotificationAdderCallback()
 
@@ -91,13 +95,19 @@ const WithdrawAmountsICHI = ({
         if (v.id === vaultAddress.id) {
           return v
         }
+      })?.tokenA
       })
       const tokenBid = ichiVaults.find((v) => {
         if (v.id === vaultAddress.id) {
           return v
         }
+      })?.tokenB
+      const tokenList = await fetchTokens()
+      const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
+      const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
+      setTotalShareDollar(Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice))
       })
-      console.log('amounts', Number(amounts.amount0), Number(amounts.amount1))
+
 
       setTotalUserShares(data)
     }
@@ -190,7 +200,10 @@ const WithdrawAmountsICHI = ({
           <div className="flex w-full xl:w-3/5 justify-between">
             <div className="text-xs leading-normal text-white">Withdraw amounts</div>
             <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
-              100$
+              {totalShareDollar
+                ? formatDollarAmount((Number(totalShareDollar) / Number(totalUserShares)) * Number(amoutToWithdraw))
+                : '$ 0'}
+
               {/* {amoutToWithdraw && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
                 ? formatDollarAmount(
                     toBN(amoutToWithdraw)
@@ -205,7 +218,7 @@ const WithdrawAmountsICHI = ({
           <div className="xl:w-2/5 flex-shrink-0 flex justify-end">
             <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
               <span className="icon-wallet text-xs"></span>
-              Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares, 4) : '-'}{' '}
+              Withdrawable LP : {totalUserShares != '0' ? formatAmount(totalUserShares, 4) : '-'}{' '}
             </span>
           </div>
         </div>

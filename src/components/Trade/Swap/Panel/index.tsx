@@ -356,6 +356,7 @@ const Panel = () => {
       },
     ],
   })
+
   const route = useAlgebraMultiRouting(tokenGet, tokenSell)
   const multiHopAvailable = route !== null
   const singleSwapAvailable = currentPool != zeroAddress
@@ -709,6 +710,7 @@ const Panel = () => {
               {(nativeETH_WETH || nativeWETH_ETH) && formatNumber(Number(forValue || 0), 6).toString()}
               {amountOutMinimum &&
                 !(nativeETH_WETH || nativeWETH_ETH) &&
+                !isNaN(Number(amountOutMinimum.toString())) &&
                 formatUnits(
                   BigInt(Number(amountOutMinimum.toString().split('.')[0]) ?? 0),
                   tokenGet.decimals

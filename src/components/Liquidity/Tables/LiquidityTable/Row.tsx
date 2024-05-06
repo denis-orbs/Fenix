@@ -45,6 +45,7 @@ const RowData = ({
   //   if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
   // }
   if (aprIchi && aprIchi.length > 0) {
+
     if (aprIchi[0].apr && Array.isArray(aprIchi[0].apr) && aprIchi[0].apr.length > 1) {
       const aprValue = aprIchi[0].apr[0]?.apr
       if (typeof aprValue === 'number') {
@@ -168,12 +169,15 @@ const RowData = ({
                   <p className="text-sm pb-1">Wide</p>
                   <p className="text-sm pb-1 text-chilean-fire-600">16.281%</p>
                 </div> */}
-                <div className="flex justify-between items-center">
-                  <p className="text-sm">Ichi</p>
-                  <p className="text-sm text-chilean-fire-600">
-                    {aprdisplay === null || aprdisplay < 0 ? '0' : aprdisplay}%
-                  </p>
-                </div>
+                {aprIchi && aprIchi.length > 0 && (
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm">Ichi</p>
+                    <p className="text-sm text-chilean-fire-600">
+                      {aprdisplay === null || aprdisplay < 0 || aprdisplay === undefined ? '0' : aprdisplay}%
+                    </p>
+                  </div>
+                )}
+
               </div>
             )}
           </div>

@@ -10,10 +10,8 @@ const nextConfig = {
     domains: ['fenix-dex-api.vercel.app', 'fenix-api-testnet.vercel.app', 'cdn-images-1.medium.com', 'miro.medium.com'],
   },
 }
-
 module.exports = nextConfig
 
-// Injected content via Sentry wizard below
 
 const { withSentryConfig } = require('@sentry/nextjs')
 
@@ -25,8 +23,9 @@ module.exports = withSentryConfig(
 
     // Suppresses source map uploading logs during build
     silent: true,
-    org: 'fenix-y2',
-    project: 'javascript-nextjs',
+    org: 'fenix-xl',
+    project: 'interface',
+
   },
   {
     // For all available options, see:
@@ -57,3 +56,4 @@ module.exports = withSentryConfig(
     automaticVercelMonitors: true,
   }
 )
+

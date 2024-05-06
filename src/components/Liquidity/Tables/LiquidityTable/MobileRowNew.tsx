@@ -32,6 +32,7 @@ export default function MobileRowNew({
   // }
   let aprdisplay = 0
   if (aprIchi && aprIchi.length > 0) {
+
     if (aprIchi[0].apr && Array.isArray(aprIchi[0].apr) && aprIchi[0].apr.length > 1) {
       const aprValue = aprIchi[0].apr[1]?.apr
       if (typeof aprValue === 'number') {
@@ -144,7 +145,7 @@ export default function MobileRowNew({
                     <div className="flex justify-between items-center">
                       <p className="text-sm">Ichi</p>
                       <p className="text-sm text-chilean-fire-600">
-                        {aprdisplay === null || aprdisplay < 0 ? '0' : aprdisplay}%%
+                        {aprdisplay === null || aprdisplay < 0 ? '0' : aprdisplay}%
                       </p>
                     </div>
                   </div>

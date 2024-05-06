@@ -203,6 +203,7 @@ export const useIchiPositions = () => {
                   feesUSD: 'string',
                 },
               },
+
               // FIXME: STARK
               // apr: app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
               apr: app[1] && app[1]?.apr ? (app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%') : '0.00%',

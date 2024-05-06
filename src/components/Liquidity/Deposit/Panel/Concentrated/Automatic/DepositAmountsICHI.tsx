@@ -435,6 +435,7 @@ const DepositAmountsICHI = ({
                           {vault?.apr ? (
                             <span className="text-sm">
                               APR :{' '}
+
                               {/* {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0 ? '0' : vault?.apr[1]?.apr?.toFixed(0)} */}
                               {Array.isArray(vault.apr) && typeof vault.apr[1]?.apr === 'number'
                                 ? vault.apr[1]?.apr >= 0
