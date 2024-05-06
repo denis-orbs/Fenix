@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react'
 import { useAppSelector } from '@/src/state'
 import { fetchGlobalStatistics } from '@/src/state/liquidity/thunks'
 import { formatDollarAmount, toBN } from '@/src/library/utils/numbers'
+import { fetchv3Factories } from '@/src/state/liquidity/reducer'
 
 const michroma = Michroma({
   weight: ['400'],
@@ -63,10 +64,16 @@ const Main = () => {
 
   const [globalStatistics, setGlobalStatistics] = useState<Awaited<ReturnType<typeof fetchGlobalStatistics>>>()
   useEffect(() => {
-    fetchGlobalStatistics().then((data) => {
-      setGlobalStatistics(data)
-      // console.log(data)
-    })
+    const fetchAndSetStatistics = async () => {
+      const statistics = await fetchv3Factories()
+      setGlobalStatistics({
+        totalTVL: toBN(statistics[0].totalValueLockedUSD).toNumber(),
+        totalVolume: toBN(statistics[0].totalVolumeUSD).toNumber(),
+        totalFees: toBN(statistics[0].totalFeesUSD).toNumber(),
+        lastUpdate: new Date().toISOString(),
+      })
+    }
+    fetchAndSetStatistics()
   }, [])
   // const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
   // console.log(liquidityTable, 'liquidityTable')
