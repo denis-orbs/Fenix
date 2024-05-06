@@ -13,10 +13,6 @@ interface PaginationProps {
   setItemPerPage: (item: number) => void
 }
 
-<<<<<<< HEAD
-const Pagination = ({ className, numberPages, setActivePage, activePage }: PaginationProps) => {
-  const mergeClassName = cn('text-white text-xs w-full md:max-w-[785px] box-large hidden lg:block', className)
-=======
 const Pagination = ({
   className,
   numberPages,
@@ -27,7 +23,6 @@ const Pagination = ({
 }: PaginationProps) => {
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const mergeClassName = cn('text-white text-xs w-full md:max-w-full box-large hidden lg:block', className)
->>>>>>> dev
 
   const pageClassName = (index: number) => {
     return cn(

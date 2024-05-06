@@ -161,7 +161,7 @@ const HeaderRow = ({
               className="mx-auto"
               numberPages={Math.ceil(poolsData.length / itemsPerPage)}
             />
-            <div
+            {/* <div
               onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
               className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
             >
@@ -188,7 +188,7 @@ const HeaderRow = ({
                 </div>
               )}
               <span className="text-lg icon-cog text-white cursor-pointer"></span>
-            </div>
+            </div> */}
           </div>
           <div className="lg:hidden py-5">
             <PaginationMobile
