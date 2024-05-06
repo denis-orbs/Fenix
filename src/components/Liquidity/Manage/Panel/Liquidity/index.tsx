@@ -57,7 +57,7 @@ const Manage = ({}: {}) => {
   const [aprId, setAprId] = useState(null)
   const pid = searchParams.get('id')
   useEffect(() => {
-    if (aprId === null) {
+    if (aprId !== null) {
       const actualApr = apr.find((pos: positions) => pos.id == pid)
       if (actualApr) setAprId(actualApr?.apr)
     }
