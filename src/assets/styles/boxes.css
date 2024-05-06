@@ -1027,9 +1027,9 @@
   sm:w-[480px]
   sm:min-h-[470px]
   flex-shrink-0
-  bg-shark-400
+  bg-shark-700
   bg-opacity-40
-  /* backdrop-blur-[15px] */
+  backdrop-blur-[15px]
   2xl:bg-transparent
   2xl:bg-opacity-100
   py-5

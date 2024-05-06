@@ -16,8 +16,11 @@ import { getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/us
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionsApr'
 import Spinner from '../../Common/Spinner'
+import { useDispatch } from 'react-redux'
+import { setApr } from '@/src/state/apr/reducer'
 
 const MyStrategies = () => {
+  const dispatch = useDispatch()
   const slidesPerView = 3
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
@@ -95,6 +98,11 @@ const MyStrategies = () => {
     }
   }, [ichipositions])
 
+  useEffect(() => {
+    // FIXME: STARK
+    dispatch(setApr(position))
+  }, [position, dispatch])
+
   return (
     <>
       {/* {console.log('finalp', position)} */}
@@ -134,7 +142,10 @@ const MyStrategies = () => {
                 className={`icon-arrow rotate-180 ${progress === 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
                 onClick={slideToLeft}
               ></span>
-              <span className={`icon-arrow text-2xl ${progress === 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`} onClick={slideToRight}></span>
+              <span
+                className={`icon-arrow text-2xl ${progress === 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                onClick={slideToRight}
+              ></span>
             </div>
           </div>
           <div className="dashboard-box mb-10 block xl:hidden">

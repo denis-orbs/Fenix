@@ -57,7 +57,7 @@ const Lock = () => {
               <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
             </div>
             <div className="w-full xl:w-1/3">
-              <Search />
+              <Search searchValue="" setSearchValue={() => {}} />
             </div>
           </div>
           <MyLocks Locks={LOCKS_FILTER} />

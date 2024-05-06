@@ -1,5 +1,9 @@
 import TradeLayout from '@/src/components/Trade/Common/Layout'
 
+export const metadata = {
+  title: 'Bridge - Fenix Finance',
+}
+
 export default function Page() {
   const config = {
     companyName: 'Fenix',

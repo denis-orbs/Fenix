@@ -56,6 +56,10 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
               { text: 'Vote Status', className: 'text-center w-[15%]', sortable: true },
               { text: 'Action', className: 'text-right w-[25%]', sortable: false },
             ]}
+            setSort={() => {}}
+            setSortIndex={() => {}}
+            sort={null}
+            sortIndex={1}
           />
           {lock.positions.length !== 0 ? (
             <>
@@ -158,7 +162,14 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
               {activePagination && (
                 <div className="items-center hidden md:flex">
                   <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
-                  <Pagination className="mx-auto" numberPages={7} />
+                  <Pagination
+                    className="mx-auto"
+                    numberPages={7}
+                    activePage={1}
+                    itemsPerPage={20}
+                    setActivePage={() => {}}
+                    setItemPerPage={() => {}}
+                  />
                   <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
                     <span className="text-lg text-white icon-cog cursor-pointer"></span>
                   </div>

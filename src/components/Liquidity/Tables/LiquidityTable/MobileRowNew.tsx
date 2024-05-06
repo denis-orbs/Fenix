@@ -1,4 +1,5 @@
 import { Button } from '@/src/components/UI'
+import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { BasicPool, PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
@@ -23,6 +24,13 @@ export default function MobileRowNew({
 }: RowDataProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [openInfo, setOpenInfo] = useState<boolean>(false)
+
+  const aprIchi = useIchiVault(row.token0.id, row.token1.id)
+  let aprdisplay
+  if (aprIchi && aprIchi.length > 0) {
+    // FIXME: STARK
+    if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
+  }
 
   return (
     <>
@@ -96,7 +104,7 @@ export default function MobileRowNew({
                 <span className="text-xs font-medium leading-normal">APR</span>
               </div>
               <div className=" relative flex gap-[7px]">
-                <div className="ml-auto text-xs leading-normal">{formatAmount(row?.apr, 4)}%</div>
+                <div className="ml-auto text-xs leading-normal">{formatAmount(row?.apr, 2)}%</div>
                 <div
                   className="flex items-center gap-[5px] cursor-pointer
                     text-shark-100 hover:text-transparent hover:bg-gradient-to-r hover:from-outrageous-orange-500 hover:to-festival-500 hover:bg-clip-text"
@@ -111,9 +119,9 @@ export default function MobileRowNew({
                   <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-9 px-5 py-3 left-0 xl:-left-12">
                     <div className="flex justify-between items-center gap-3">
                       <p className="text-sm pb-1">Average</p>
-                      <p className="text-sm pb-1 text-chilean-fire-600">41.648%</p>
+                      <p className="text-sm pb-1 text-chilean-fire-600">{formatAmount(row?.apr, 2)}%</p>
                     </div>
-                    <div className="flex justify-between items-center">
+                    {/* <div className="flex justify-between items-center">
                       <p className="text-sm pb-1">Narrow</p>
                       <p className="text-sm pb-1 text-chilean-fire-600">55.956%</p>
                     </div>
@@ -124,10 +132,12 @@ export default function MobileRowNew({
                     <div className="flex justify-between items-center">
                       <p className="text-sm pb-1">Wide</p>
                       <p className="text-sm pb-1 text-chilean-fire-600">16.281%</p>
-                    </div>
+                    </div> */}
                     <div className="flex justify-between items-center">
                       <p className="text-sm">Ichi</p>
-                      <p className="text-sm text-chilean-fire-600">41.648%</p>
+                      <p className="text-sm text-chilean-fire-600">
+                        {aprdisplay === null || aprdisplay < 0 ? '0' : aprdisplay}%%
+                      </p>
                     </div>
                   </div>
                 )}
