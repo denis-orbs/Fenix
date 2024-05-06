@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 
 export const getWeb3Provider = () => {
-  let web3Provider: ethers.providers.BaseProvider
+  let web3Provider: ethers.providers.JsonRpcProvider | ethers.providers.Web3Provider
   if (window.ethereum) {
     web3Provider = new ethers.providers.Web3Provider(window.ethereum)
   } else {

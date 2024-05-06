@@ -70,17 +70,17 @@ const Automatic = () => {
       })
       setTokenList(parsedTokens)
       const token0Data = parsedTokens.find(
-        (token: any) => token.address.toLowerCase() === searchParamToken0?.toLowerCase()
+        (token: IToken) => token?.address?.toLowerCase() === searchParamToken0?.toLowerCase()
       )
       const token1Data = parsedTokens.find(
-        (token: any) => token.address.toLowerCase() === searchParamToken1?.toLowerCase()
+        (token: IToken) => token?.address?.toLowerCase() === searchParamToken1?.toLowerCase()
       )
-      if (token0.toLowerCase() !== firstToken?.address?.toLowerCase()) {
+      if (token0.toLowerCase() !== firstToken?.address?.toLowerCase() && token0Data) {
         setToken0(token0Data?.address.toLowerCase())
         setFirstToken(token0Data)
       }
 
-      if (token1.toLowerCase() !== secondToken?.address?.toLowerCase()) {
+      if (token1.toLowerCase() !== secondToken?.address?.toLowerCase() && token1Data) {
         setToken1(token1Data?.address.toLowerCase())
         setSecondToken(token1Data)
       }

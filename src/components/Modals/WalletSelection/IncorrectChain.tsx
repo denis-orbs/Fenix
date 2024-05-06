@@ -11,15 +11,13 @@ const IncorrectChain = ({ setOpenModal, open }: IncorrectChainProps) => {
   const handlerClose = () => setOpenModal(false)
 
   return (
-    <Modal className="justify-center" openModal={open}>
+    <Modal className="justify-center" openModal={open} setOpenModal={setOpenModal}>
       <div className="common-modal min-w-[370px]">
         <span
           className="absolute text-2xl cursor-pointer top-5  right-4  2xl:top-0  2xl:right-0  icon-x text-shark-100"
           onClick={handlerClose}
         />
-        <div
-          className="absolute top-4 left-4 flex justify-center items-center w-12 h-12 border  border-solid rounded-lg bg-shark-400 border-shark-400"
-        >
+        <div className="absolute top-4 left-4 flex justify-center items-center w-12 h-12 border  border-solid rounded-lg bg-shark-400 border-shark-400">
           <span className="text-lg text-transparent icon-unplug bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text" />
         </div>
         <div className="relative z-10 w-full h-full">

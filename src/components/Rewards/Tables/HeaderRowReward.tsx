@@ -36,6 +36,10 @@ const HeaderRowReward = ({
               { text: 'Rewards', className: 'text-center  w-[20%]', sortable: true },
               { text: 'Action', className: 'w-[30%] text-right', sortable: true },
             ]}
+            setSort={() => {}}
+            sort={null}
+            setSortIndex={() => {}}
+            sortIndex={1}
           />
         </div>
 
@@ -64,13 +68,28 @@ const HeaderRowReward = ({
         <>
           <div className="items-center hidden xl:flex">
             <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
-            <Pagination className="mx-auto" numberPages={7} />
+            <Pagination
+              className="mx-auto"
+              numberPages={7}
+              activePage={1}
+              setActivePage={() => {}}
+              itemsPerPage={10}
+              setItemPerPage={() => {}}
+            />
             <div className="flex items-center justify-center cursor-pointer w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
               <span className="text-lg icon-cog text-white"></span>
             </div>
           </div>
           <div className="block xl:hidden">
-            <PaginationMobile />
+            <PaginationMobile
+              numberPages={7}
+              activePage={1}
+              setActivePage={() => {}}
+              itemsPerPage={10}
+              setItemPerPage={() => {}}
+              className=""
+              count={7}
+            />
           </div>
         </>
       )}

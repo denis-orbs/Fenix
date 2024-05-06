@@ -146,17 +146,19 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   // console.log(timestampsArray.map((timestamp) => new Date(timestamp).toUTCString()))
 
   const timeSet = () => {
+    // FIXME: STARK
     if (time === '' && count === 0 && timestampsArray.length > 0) {
       setTime(timestampsArray[0])
       count++
     } else {
+      // FIXME: STARK
       setTime(timestampsArray[count])
       count++
     }
   }
 
   useEffect(() => timeSet(), [])
-
+  // FIXME: HAZ
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a completed state
@@ -176,7 +178,9 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   }
 
   return (
-    <div className="flex items-center gap-2 xl:gap-3 w-full md:w-max-content xl:w-auto flex-row">
+    <div
+      className={`flex items-center  gap-2 xl:gap-3 w-full md:w-max-content xl:w-auto flex-row ${pathname !== '/' && 'xl:absolute  xl:right-[90px]'}`}
+    >
       {isConnected && !wrongChain && (
         <div className="relative w-full">
           <div
@@ -294,10 +298,10 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
           ) : (
             <Button
               onClick={handlerConnectWallet}
-              className={`${pathname === '/' && !isMenuMobile ? 'w-fit whitespace-nowrap' : 'w-full xl:w-[300px]'} gap-3.5 h-[40px] xl:h-[49px] ${pathname === '/' && isMenuMobile ? '!justify-start' : ''}`}
+              className={`${pathname === '/' && !isMenuMobile ? 'w-fit whitespace-nowrap' : 'w-full xl:w-[290px]'} gap-3.5 h-[40px] xl:h-[49px] ${pathname === '/' && isMenuMobile ? '!justify-start' : ''}`}
             >
               <span className="icon-wallet text-md !ml-0"></span>
-              <span className="text-xs md:text-sm">Connect your Wallet</span>
+              <span className="text-xs ">Connect your Wallet</span>
             </Button>
           )}
         </div>

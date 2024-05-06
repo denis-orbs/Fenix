@@ -1,8 +1,9 @@
-import React from 'react'
 import Landing from '@/src/components/Landing'
 
 import Main from '@/src/components/Landing/Main'
-
+export const metadata = {
+  title: 'Fenix Finance',
+}
 const HomePage = () => {
   return (
     <main>
