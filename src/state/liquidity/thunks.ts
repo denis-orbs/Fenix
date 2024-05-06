@@ -192,6 +192,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
           pairAddress: pair.id,
           pairSymbol: 'Concentrated pool',
           // FIXME: STARK
+          //DEV FIX
           pairInformationV2: { token0: pair.token0, token1: tokenB },
           priceA: tokenAprice ? tokenAprice : 0,
           priceB: tokenBprice ? tokenBprice : 0,

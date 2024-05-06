@@ -215,6 +215,7 @@ export const useIchiPositions = () => {
           })
         )
         // FIXME: STARK
+        //DEV FIX
         //  console.log(pos, 'pos')
         setpositions(pos)
       }
