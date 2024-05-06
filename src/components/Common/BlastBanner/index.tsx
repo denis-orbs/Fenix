@@ -3,13 +3,20 @@ import { useState } from 'react'
 
 import { Button } from '@/src/components/UI'
 import Image from 'next/image'
+import { useCloseBanner, useShowBanner } from '@/src/state/user/hooks'
+
 
 const BlastBanner = () => {
-  const [close, setClose] = useState<boolean>(false)
+  const showBanner = useShowBanner()
+  const setCloseBanner = useCloseBanner()
+  const [close, setClose] = useState<boolean>(showBanner)
 
   if (close) return null
 
-  const handlerClose = () => setClose(true)
+  const handlerClose = () => {
+    setCloseBanner(true)
+    setClose((prevState) => !prevState)
+  }
 
   return (
     <div className="blast-banner max-lg:flex-col overflow-hidden">
