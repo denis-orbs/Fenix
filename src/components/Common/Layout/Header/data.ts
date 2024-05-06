@@ -3,14 +3,18 @@ export const MENU_LINKS = [
     name: 'Trade',
     // href: '/trade/dca',
     href: '/trade/swap',
+    new: false,
   },
+  
   {
     name: 'Dashboard',
     href: '/dashboard',
+    new: false,
   },
   {
     name: 'Liquidity',
     href: '/liquidity',
+    new: false,
   },
 
   // {
@@ -26,8 +30,9 @@ export const MENU_LINKS = [
   //   href: '/migration',
   // },
   {
-    name: 'Ring Points',
+    name: 'Fenix Rings',
     href: '/points-program',
+    new: true,
   },
   // {
   //   name: 'Bribes',
