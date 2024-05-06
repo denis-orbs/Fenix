@@ -1,7 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type aprState = {
-  apr: any
+  apr: positions[] | ''
 }
 
 const initialState: aprState = {
@@ -12,7 +13,7 @@ const apr = createSlice({
   name: 'apr',
   initialState,
   reducers: {
-    setApr: (state, action: any) => {
+    setApr: (state, action: PayloadAction<positions[]>) => {
       state.apr = action.payload
     },
   },

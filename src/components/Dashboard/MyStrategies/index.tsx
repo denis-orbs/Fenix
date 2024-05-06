@@ -16,8 +16,11 @@ import { getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/us
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionsApr'
 import Spinner from '../../Common/Spinner'
+import { useDispatch } from 'react-redux'
+import { setApr } from '@/src/state/apr/reducer'
 
 const MyStrategies = () => {
+  const dispatch = useDispatch()
   const slidesPerView = 3
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
@@ -34,7 +37,7 @@ const MyStrategies = () => {
   useEffect(() => {
     tokensprice()
   }, [])
-
+  
   const slideToLeft = () => {
     if (swiperRef.current && progress > 0) {
       swiperRef.current.slidePrev()
@@ -95,6 +98,11 @@ const MyStrategies = () => {
     }
   }, [ichipositions])
 
+  useEffect(() => {
+    // FIXME: STARK
+    dispatch(setApr(position))
+  }, [position, dispatch])
+
   return (
     <>
       {/* {console.log('finalp', position)} */}
@@ -111,7 +119,16 @@ const MyStrategies = () => {
               spaceBetween={50}
               slidesPerView={slidesPerView}
               navigation={true}
-              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper
+                swiper.on('slideChangeTransitionEnd', () => {
+                  if (swiperRef.current) {
+                    setProgress(swiper.progress)
+                  }
+                })
+              }}
+        allowTouchMove={false}
+
             >
               {Array.from({ length: position.length }).map((_, index) => {
                 return (
@@ -131,10 +148,13 @@ const MyStrategies = () => {
             </Swiper>
             <div className="flex gap-2 justify-center">
               <span
-                className={`icon-arrow rotate-180 ${progress === 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
+                className={`icon-arrow rotate-180 ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
                 onClick={slideToLeft}
               ></span>
-              <span className={`icon-arrow text-2xl ${progress === 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`} onClick={slideToRight}></span>
+              <span
+                className={`icon-arrow text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                onClick={slideToRight}
+              ></span>
             </div>
           </div>
           <div className="dashboard-box mb-10 block xl:hidden">

@@ -104,15 +104,19 @@ const MylocksMobile = ({ activePagination = true, Locks }: MylocksMobileProps) =
                                   <div>
                                     <p className="text-shark-100 text-center">Vote Status</p>
                                     {lock.VOTE ? (
-                                      <span className="flex items-center bg-opacity-20 lg:w-[105px] 
+                                      <span
+                                        className="flex items-center bg-opacity-20 lg:w-[105px] 
                                       text-xs justify-center  py-1 px-2
-                                      text-white border border-solid border-green-400 bg-green-500 rounded-xl ">
+                                      text-white border border-solid border-green-400 bg-green-500 rounded-xl "
+                                      >
                                         Voted
                                       </span>
                                     ) : (
-                                      <span className="flex items-center bg-opacity-20 px-2 lg:w-[105px]  
+                                      <span
+                                        className="flex items-center bg-opacity-20 px-2 lg:w-[105px]  
                                       text-xs justify-center py-1 text-white border 
-                                      border-solid border-red-600 bg-red-700 rounded-xl ">
+                                      border-solid border-red-600 bg-red-700 rounded-xl "
+                                      >
                                         Not Voted
                                       </span>
                                     )}
@@ -133,7 +137,15 @@ const MylocksMobile = ({ activePagination = true, Locks }: MylocksMobileProps) =
             </TableBody>
             {activePagination && (
               <div className="mt-5">
-                <PaginationMobile />
+                <PaginationMobile
+                  activePage={1}
+                  className=""
+                  count={10}
+                  itemsPerPage={10}
+                  numberPages={7}
+                  setActivePage={() => {}}
+                  setItemPerPage={() => {}}
+                />
               </div>
             )}
           </>

@@ -145,9 +145,9 @@ const WithdrawAmountsGAMMA = ({
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                setToken1TypedValue(
-                  toBN(ethers.utils.formatUnits(token1Range[1], 18)).div(2).toFixed(INPUT_PRECISION).toString()
-                )
+                // setToken1TypedValue(
+                //   toBN(ethers.utils.formatUnits(token1Range[1], 18)).div(2).toFixed(INPUT_PRECISION).toString()
+                // )
               }}
             >
               Half
@@ -156,9 +156,9 @@ const WithdrawAmountsGAMMA = ({
               variant="tertiary"
               className="!py-1 !px-3"
               onClick={() => {
-                setToken1TypedValue(
-                  toBN(ethers.utils.formatUnits(token1Range[1], 18)).toFixed(INPUT_PRECISION).toString()
-                )
+                // setToken1TypedValue(
+                //   toBN(ethers.utils.formatUnits(token1Range[1], 18)).toFixed(INPUT_PRECISION).toString()
+                // )
               }}
             >
               Max

@@ -146,18 +146,20 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   // console.log(timestampsArray.map((timestamp) => new Date(timestamp).toUTCString()))
 
   const timeSet = () => {
+    // FIXME: STARK
     if (time === '' && count === 0 && timestampsArray.length > 0) {
-      setTime(timestampsArray[0])
+      setTime(timestampsArray[0].toString())
       count++
     } else {
-      setTime(timestampsArray[count])
+      // FIXME: STARK
+      setTime(timestampsArray[count].toString())
       count++
     }
   }
 
   useEffect(() => timeSet(), [])
-
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+  // FIXME: HAZ
+  const renderer = ({ hours, completed }: { hours: any; completed: any }) => {
     if (completed) {
       // Render a completed state
       // return <span>You are good to go!</span>
@@ -296,7 +298,6 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
           ) : (
             <Button
               onClick={handlerConnectWallet}
-              
               className={`${pathname === '/' && !isMenuMobile ? 'w-fit whitespace-nowrap' : 'w-full xl:w-[290px]'} gap-3.5 h-[40px] xl:h-[49px] ${pathname === '/' && isMenuMobile ? '!justify-start' : ''}`}
             >
               <span className="icon-wallet text-md !ml-0"></span>
