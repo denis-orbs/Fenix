@@ -10,7 +10,7 @@ const Menu = () => {
   const isActive = (path: string) => {
     const regex = new RegExp(`^${path}`)
     return regex.test(pathname)
-}
+  }
 
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   const activeButtonClass = 'button-primary'
