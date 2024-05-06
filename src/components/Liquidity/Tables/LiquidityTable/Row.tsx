@@ -10,6 +10,7 @@ import { useEffect, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
+import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 
 interface RowDataProps {
   row: BasicPool
@@ -34,6 +35,15 @@ const RowData = ({
 
   const hoverRef = useRef(null)
   const isHover = useHover(hoverRef)
+
+  const [openInfo, setOpenInfo] = useState<boolean>(false)
+
+  const aprIchi = useIchiVault(row.token0.id, row.token1.id)
+  let aprdisplay
+  if (aprIchi && aprIchi.length > 0) {
+    // FIXME: STARK
+    if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
+  }
 
   return (
     <>
@@ -120,11 +130,42 @@ const RowData = ({
           </div>
         </TableCell>
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
-          <div className="flex  justify-center items-center gap-2 ">
+          <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
-              {formatAmount(row?.apr, 4)}%
+              {formatAmount(row?.apr, 2)}%{' '}
+              <span
+                className="icon-info"
+                onMouseEnter={() => setOpenInfo(true)}
+                onMouseLeave={() => setOpenInfo(false)}
+              ></span>
             </p>
+            {openInfo && (
+              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12">
+                <div className="flex justify-between items-center gap-3">
+                  <p className="text-sm pb-1">Average</p>
+                  <p className="text-sm pb-1 text-chilean-fire-600">{formatAmount(row?.apr, 2)}%</p>
+                </div>
+                {/* <div className="flex justify-between items-center">
+                  <p className="text-sm pb-1">Narrow</p>
+                  <p className="text-sm pb-1 text-chilean-fire-600">55.956%</p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p className="text-sm pb-1">Balanced</p>
+                  <p className="text-sm pb-1 text-chilean-fire-600">19.139%</p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p className="text-sm pb-1">Wide</p>
+                  <p className="text-sm pb-1 text-chilean-fire-600">16.281%</p>
+                </div> */}
+                <div className="flex justify-between items-center">
+                  <p className="text-sm">Ichi</p>
+                  <p className="text-sm text-chilean-fire-600">
+                    {aprdisplay === null || aprdisplay < 0 ? '0' : aprdisplay}%
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </TableCell>
 

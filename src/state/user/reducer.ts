@@ -5,7 +5,7 @@ import { resetUser, updateSlippageTolerance, setChart } from './actions'
 export const initialState: UserState = {
   userDarkMode: true,
   slippageTolerance: 0.5,
-  showChart: true,
+  showChart: false,
 }
 
 export default createReducer(initialState, (builder) => {

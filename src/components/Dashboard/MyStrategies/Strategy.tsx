@@ -19,6 +19,8 @@ import { MAX_INT } from '@/src/library/constants/misc'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { useDispatch } from 'react-redux'
+import { setApr } from '@/src/state/apr/reducer'
+
 
 type options = {
   value: string
@@ -172,9 +174,6 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
       }
     )
   }
-  function setAPR(apr: any): any {
-    throw new Error('Function not implemented.')
-  }
 
   return (
     <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
@@ -311,8 +310,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
             onClick={() => {
               if (row.liquidity !== 'ichi') {
-                // dispatch(setAPR(row?.apr))
-                localStorage.setItem('apr', JSON.stringify({ id: row?.id, apr: row?.apr }))
+                dispatch(setApr(row?.apr))
                 router.push(`/liquidity/manage?id=${row?.id}`)
                 router.refresh()
               } else {

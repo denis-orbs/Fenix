@@ -7,7 +7,7 @@ interface SearchProps {
   setSearchValue: (value: string) => void
 }
 
-const Search = ({ setSearchValue, searchValue, placeholder = 'Search by name, symbol or address..' }: SearchProps) => {
+const Search = ({ setSearchValue, searchValue, placeholder = 'Search by Name, Symbol or Address..' }: SearchProps) => {
   return (
     <div className="search-box  ">
       <span className="flex items-center justify-center w-8 h-5 text-2xl icon-search text-shark-100" />

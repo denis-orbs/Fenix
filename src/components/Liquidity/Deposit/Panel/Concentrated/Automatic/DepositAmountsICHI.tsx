@@ -74,13 +74,13 @@ const DepositAmountsICHI = ({
     allowFailure: false,
     contracts: [
       {
-        address: selected,
+        address: selected as `0x${string}`,
         abi: erc20Abi,
         functionName: 'balanceOf',
         args: [account || zeroAddress],
       },
       {
-        address: selected,
+        address: selected as `0x${string}`,
         abi: erc20Abi,
         functionName: 'decimals',
       },
@@ -189,7 +189,8 @@ const DepositAmountsICHI = ({
             notificationDuration: NotificationDuration.DURATION_5000,
           })
           setLoading(false)
-        } else if (error.reason == 'IV.deposit: deposits too large') {
+          // FIXME: STARK
+        } else if (error?.reason == 'IV.deposit: deposits too large') {
           // toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
           addNotification({
             id: crypto.randomUUID(),
@@ -205,6 +206,7 @@ const DepositAmountsICHI = ({
         // console.log(error.reason)
         // toast.error('Transaction failed')
         // toast.error(error.message.split('(')[0].trim().toUpperCase())
+        // FIXME: STARK
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
@@ -282,7 +284,7 @@ const DepositAmountsICHI = ({
   }
 
   useEffect(() => {
-    toBN(token0Balance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+    toBN(Number(token0Balance)).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
   }, [token0Balance])
 
   const handleHalf = () => {
@@ -416,12 +418,13 @@ const DepositAmountsICHI = ({
                               ]
                             }
                           </span>
+                          {/* // FIXME: STARK */}
                           {vault?.apr ? (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
+                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
                                 ? '0'
-                                : vault?.apr[0]?.apr?.toFixed(0)}
+                                : vault?.apr[1]?.apr?.toFixed(0)}
                               %
                             </span>
                           ) : (

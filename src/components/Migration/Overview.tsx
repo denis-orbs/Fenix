@@ -17,7 +17,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
       <h5 className="mb-4 text-lg text-white">Migration Overview</h5>
       <div className="flex flex-col gap-5 mb-5 md:items-center md:justify-between 2xl:flex-row">
         <AddressCheck migrateStatus={migrateStatus} setMigrateStatus={setMigrateStatus} />
-        <TotalMigrated state={migrateStatus}/>
+        <TotalMigrated state={migrateStatus} />
       </div>
       {migrateStatus !== 'success' && migrateStatus !== 'wrong' && (
         <>
@@ -38,6 +38,10 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                 { text: 'Claimable Token', className: 'text-right w-[20%]', sortable: true },
                 { text: 'Action', className: 'text-right w-[20%]', sortable: false },
               ]}
+              setSort={() => {}}
+              setSortIndex={() => {}}
+              sort={null}
+              sortIndex={1}
             />
 
             <TableBody>
@@ -110,7 +114,14 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
           </div>
           <div className="items-center hidden md:flex">
             <p className="mb-5 text-sm text-shark-100 md:mb-0">Showing 2 out of 2 migrations...</p>
-            <Pagination className="mx-auto mb-5 md:mb-0" numberPages={7} />
+            <Pagination
+              className="mx-auto mb-5 md:mb-0"
+              numberPages={7}
+              activePage={1}
+              setActivePage={() => {}}
+              itemsPerPage={10}
+              setItemPerPage={() => {}}
+            />
             <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 text-white transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
               <span className="text-lg icon-cog"></span>
             </div>
@@ -126,6 +137,10 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
                 { text: 'Token', className: 'text-left w-[50%]', sortable: true },
                 { text: 'My Migrated Amount', className: 'text-right w-[50%]', sortable: true },
               ]}
+              setSort={() => {}}
+              setSortIndex={() => {}}
+              sortIndex={1}
+              sort={null}
             />
 
             <TableBody>
@@ -163,7 +178,14 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
           </div>
           <div className="items-center hidden md:flex">
             <p className="mb-5 text-sm text-shark-100 md:mb-0">Showing 2 out of 2 migrations...</p>
-            <Pagination className="mx-auto mb-5 md:mb-0" numberPages={7} />
+            <Pagination
+              className="mx-auto mb-5 md:mb-0"
+              numberPages={7}
+              activePage={1}
+              setActivePage={() => {}}
+              itemsPerPage={10}
+              setItemPerPage={() => {}}
+            />
             <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 text-white transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
               <span className="text-lg icon-cog"></span>
             </div>

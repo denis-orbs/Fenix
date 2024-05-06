@@ -1,6 +1,10 @@
 import Decorator from '@/src/components/Common/Layout/Background'
 import Dashboard from '@/src/components/Dashboard'
 
+export const metadata = {
+  title: 'Dashboard - Fenix Finance',
+}
+
 const DashboardPage = () => {
   return (
     <main>

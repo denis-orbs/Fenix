@@ -109,8 +109,8 @@ export const POOLS_LIST = gql`
 `
 
 export const POOL_DAY_DATA = gql`
-  query MyQuery($date: Int!) {
-    poolDayDatas(where: { date: $date }) {
+  query PoolDayDatas {
+    poolDayDatas(first: 7, orderDirection: desc, orderBy: date) {
       volumeUSD
       date
       id

@@ -467,7 +467,7 @@ function sqrtPriceToPrice(sqrtPrice: string) {
   return priceNumber
 }
 
-function priceToSqrtPrice(priceNumber: any): string {
+export function priceToSqrtPrice(priceNumber: any): string {
   if (priceNumber == 0) return '0'
   const priceBigInt: bigint = BigInt(priceNumber) << BigInt(2 * 96)
   const sqrted = sqrtBigInt(priceBigInt / BigInt(1e18))

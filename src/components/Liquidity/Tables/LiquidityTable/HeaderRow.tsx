@@ -40,7 +40,7 @@ const HeaderRow = ({
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
-    : { text: '', className:'w-[0px] !p-0', sortable: true }
+    : { text: '', className: 'w-[0px] !p-0', sortable: true }
 
   function paginate(items: BasicPool[], currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -154,6 +154,8 @@ const HeaderRow = ({
           <div className="items-center hidden lg:flex">
             {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
             <Pagination
+              itemsPerPage={10}
+              setItemPerPage={setItemPerPage}
               activePage={activePage}
               setActivePage={setActivePage}
               className="mx-auto"
