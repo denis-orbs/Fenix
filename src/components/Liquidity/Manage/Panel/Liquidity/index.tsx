@@ -32,6 +32,7 @@ import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useSelector } from 'react-redux'
+import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 
 interface PositionData {
   id: number
@@ -50,13 +51,13 @@ const Manage = ({}: {}) => {
   const searchParams = useSearchParams()
   const router = useRouter()
   // FIXME: STARK
-  const { apr } = useSelector<any>((store) => store.apr)
+  const { apr } = useSelector<any>((store) => store.apr as positions | '')
 
   const [aprId, setAprId] = useState(null)
   const pid = searchParams.get('id')
   useEffect(() => {
     if (aprId === null) {
-      const actualApr = apr.find((pos) => pos.id == pid)
+      const actualApr = apr.find((pos: positions) => pos.id == pid)
       if (actualApr) setAprId(actualApr?.apr)
     }
   }, [apr])

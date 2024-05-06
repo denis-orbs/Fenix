@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+// import { useToken0, useToken1 } from '@/src/state/apr/liquidity/hooks'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import {
   SupportedChainId,
@@ -23,7 +24,7 @@ export interface IchiVault {
   tokenB: string
   allowTokenA: boolean
   allowTokenB: boolean
-  apr: VaultApr
+  apr: (VaultApr | null)[]
 }
 
 export const useIchiVault = (providedToken0?: string, providedToken1?: string) => {
@@ -47,11 +48,11 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
   }
 
   useEffect(() => {
-    const tokenVaults = ichiVaults.filter((vault) => {
+    const tokenVaults = ichiVaults.filter((vault: IchiVault) => {
       return vault.tokenA === tokenA && vault.tokenB === tokenB
     })
 
-    tokenVaults.forEach(async (v) => {
+    tokenVaults.forEach(async (v: IchiVault) => {
       const kapr = await getLp(v.id)
       // FIXME: STARK
       v.apr = kapr
@@ -142,7 +143,7 @@ export const useIchiPositions = () => {
               return averageDtr
             }
 
-            const app = await getLp(item.vaultAddress)
+            const app: (VaultApr | null)[] = await getLp(item.vaultAddress)
 
             return {
               id: item.vaultAddress,
@@ -208,7 +209,8 @@ export const useIchiPositions = () => {
                 },
               },
               // FIXME: STARK
-              apr: app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
+              // apr: app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
+              apr: app[1] && app[1]?.apr ? (app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%') : '0.00%',
             }
           })
         )
@@ -227,12 +229,13 @@ export const useIchiVaultsData = (vaultAddress: string) => {
   const dex = SupportedDex.Fenix
   const chain = SupportedChainId.blast
   // FIXME: STARK
-  const [vaultData, setvaultData] = useState<IchiVault>({
+  const [vaultData, setvaultData] = useState<any>({
     id: '',
     tokenA: '',
     tokenB: '',
     allowTokenA: false,
     allowTokenB: false,
+    apr: [],
   })
 
   useEffect(() => {

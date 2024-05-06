@@ -148,18 +148,18 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const timeSet = () => {
     // FIXME: STARK
     if (time === '' && count === 0 && timestampsArray.length > 0) {
-      setTime(timestampsArray[0])
+      setTime(timestampsArray[0].toString())
       count++
     } else {
       // FIXME: STARK
-      setTime(timestampsArray[count])
+      setTime(timestampsArray[count].toString())
       count++
     }
   }
 
   useEffect(() => timeSet(), [])
   // FIXME: HAZ
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+  const renderer = ({ hours, completed }: { hours: any; completed: any }) => {
     if (completed) {
       // Render a completed state
       // return <span>You are good to go!</span>
