@@ -26,10 +26,18 @@ export default function MobileRowNew({
   const [openInfo, setOpenInfo] = useState<boolean>(false)
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
-  let aprdisplay
+  // if (aprIchi && aprIchi.length > 0) {
+  //   // FIXME: STARK
+  //   if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
+  // }
+  let aprdisplay = 0
   if (aprIchi && aprIchi.length > 0) {
-    // FIXME: STARK
-    if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
+    if (aprIchi[0].apr && Array.isArray(aprIchi[0].apr) && aprIchi[0].apr.length > 1) {
+      const aprValue = aprIchi[0].apr[1]?.apr
+      if (typeof aprValue === 'number') {
+        aprdisplay = aprValue >= 0 ? Number(aprValue.toFixed(0)) : 0
+      }
+    }
   }
 
   return (

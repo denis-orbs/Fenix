@@ -127,6 +127,8 @@ const MyStrategies = () => {
                   }
                 })
               }}
+        allowTouchMove={false}
+
             >
               {Array.from({ length: position.length }).map((_, index) => {
                 return (

@@ -11,6 +11,7 @@ import {
   IchiVault,
   SupportedDex,
   UserAmountsInVault,
+  VaultApr,
   withdraw,
 } from '@ichidao/ichi-vaults-sdk'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
@@ -24,13 +25,17 @@ import { NotificationDuration, NotificationType } from '@/src/state/notification
 import { ichiVaults } from './ichiVaults'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
+interface modifiedIchiVault extends IchiVault {
+  apr?: VaultApr
+}
+
 const WithdrawAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
   tokenList,
 }: {
   token: IToken | undefined
-  allIchiVaultsByTokenPair: IchiVault[] | undefined | null
+  allIchiVaultsByTokenPair: modifiedIchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
   const [isActive, setIsActive] = useState<boolean>(false)
@@ -133,6 +138,7 @@ const WithdrawAmountsICHI = ({
         txHash: '',
         notificationDuration: NotificationDuration.DURATION_5000,
       })
+      setAmountToWithdraw('')
     } catch (error: any) {
       if (error?.code == 401) return
       // toast.error(error?.message)
@@ -255,7 +261,7 @@ const WithdrawAmountsICHI = ({
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
                     ${isActive ? 'visible bg-shark-500 !bg-opacity-80 border-shark-200' : 'hidden'}`}
                   >
-                    {allIchiVaultsByTokenPair.map((vault) => (
+                    {allIchiVaultsByTokenPair.map((vault: modifiedIchiVault) => (
                       <div
                         className="flex justify-start items-center gap-3 cursor-pointer m-1 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}
@@ -291,9 +297,12 @@ const WithdrawAmountsICHI = ({
                           {vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
-                                ? '0'
-                                : vault?.apr[1]?.apr?.toFixed(0)}
+                              {/* {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0 ? '0' : vault?.apr[1]?.apr?.toFixed(0)} */}
+                              {Array.isArray(vault.apr) && typeof vault.apr[1]?.apr === 'number'
+                                ? vault.apr[1]?.apr >= 0
+                                  ? vault.apr[1]?.apr.toFixed(0)
+                                  : '0'
+                                : '0'}
                               %
                             </span>
                           )}
