@@ -138,6 +138,7 @@ const WithdrawAmountsICHI = ({
         txHash: '',
         notificationDuration: NotificationDuration.DURATION_5000,
       })
+      setAmountToWithdraw('')
     } catch (error: any) {
       if (error?.code == 401) return
       // toast.error(error?.message)
