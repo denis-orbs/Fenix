@@ -119,6 +119,7 @@ const MyStrategies = () => {
               spaceBetween={50}
               slidesPerView={slidesPerView}
               navigation={true}
+              allowTouchMove={false}
               onSwiper={(swiper) => (swiperRef.current = swiper)}
             >
               {Array.from({ length: position.length }).map((_, index) => {
