@@ -45,7 +45,6 @@ const RowData = ({
   //   if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
   // }
   if (aprIchi && aprIchi.length > 0) {
-
     if (aprIchi[0].apr && Array.isArray(aprIchi[0].apr) && aprIchi[0].apr.length > 1) {
       const aprValue = aprIchi[0].apr[0]?.apr
       if (typeof aprValue === 'number') {
@@ -58,28 +57,30 @@ const RowData = ({
     <>
       <TableRow className="hidden lg:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center max-2xl:hidden">
-              <Image
-                src={`/static/images/tokens/${row.token0.symbol}.png`}
-                alt="token"
-                className="rounded-full w-7 h-7"
-                width={20}
-                height={20}
-              />
-              <Image
-                src={`/static/images/tokens/${row.token1.symbol}.png`}
-                alt="token"
-                className="-ml-4 rounded-full w-7 h-7"
-                width={20}
-                height={20}
-              />
-            </div>
-            <div className="flex flex-col">
-              <h5 className="text-sm text-white">
-                {row.token0.symbol} / {row.token1.symbol}
-              </h5>
-              <div className="flex items-center gap-2">
+          <div className="flex items-center">
+            <div className="flex flex-col w-[100%]">
+              <div className="flex items-center justify-around w-[100%]">
+                <h5 className="text-sm text-white">
+                  {row.token0.symbol} / {row.token1.symbol}
+                </h5>
+                <div className="flex items-center">
+                  <Image
+                    src={`/static/images/tokens/${row.token0.symbol}.png`}
+                    alt="token"
+                    className="rounded-full w-7 h-7"
+                    width={20}
+                    height={20}
+                  />
+                  <Image
+                    src={`/static/images/tokens/${row.token1.symbol}.png`}
+                    alt="token"
+                    className="-ml-4 rounded-full w-7 h-7"
+                    width={20}
+                    height={20}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-around gap-2 mt-1 w-[100%]">
                 <span
                   className="py-1 px-2  text-xs rounded-lg 
                     bg-gradient-to-r from-outrageous-orange-500 to-festival-500"
@@ -177,7 +178,6 @@ const RowData = ({
                     </p>
                   </div>
                 )}
-
               </div>
             )}
           </div>
@@ -202,25 +202,25 @@ const RowData = ({
           <div className="flex flex-col items-end justify-end w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
-            <div className="flex items-center justify-end text-right gap-2">
+            <div className="flex items-center justify-end text-right gap-3">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
-                <Image
+                {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100 font-normal ">
-                <Image
+                {/* <Image
                   src={`/static/images/tokens/${row.token1.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
               </p>
             </div>
@@ -231,25 +231,25 @@ const RowData = ({
           <div className="flex flex-col items-end justify-end w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
-            <div className="flex items-center gap-2 justify-end text-right">
+            <div className="flex items-center gap-3 justify-end text-right">
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
-                <Image
+                {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {formatCurrency(toBN(row.feesToken0), 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
-                <Image
+                {/* <Image
                   src={`/static/images/tokens/${row.token1.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {formatCurrency(toBN(row.feesToken1), 2)} {row.token1.symbol}
               </p>
             </div>
