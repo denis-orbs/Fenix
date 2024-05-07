@@ -5,6 +5,7 @@ import LiquidityPositions from '@/src/components/Dashboard/LiquidityPositions'
 import MyLocks from '@/src/components/Dashboard/MyLocks'
 import VotingRewards from '@/src/components/Dashboard/VotingRewards'
 import MyStrategies from '@/src/components/Dashboard/MyStrategies'
+import MyPositions from './MyPositions'
 
 const Dashboard = () => {
   return (
@@ -17,6 +18,7 @@ const Dashboard = () => {
       <br></br>
       {/* <LiquidityPositions /> */}
       {/* <StrategiesDCA /> */}
+      <MyPositions />
     </div>
   )
 }
