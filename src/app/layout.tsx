@@ -23,7 +23,6 @@ import { usePathname } from 'next/navigation'
 import Slippage from '../components/Modals/Slippage'
 import { Toaster } from 'react-hot-toast'
 import NotificationFeed from '../components/Common/Notification/NotificationFeed'
-import MetadataComponent from '../components/Common/Layout/Metadata'
 
 const poppins = Poppins({
   weight: ['400', '500', '600', '700', '900'],
@@ -76,7 +75,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MetadataComponent/>
       <body
         suppressHydrationWarning={true}
         className={`${poppins.className}  relative pt-[26px]  mix-blend-lighten ${pathname === '/' ? 'bg-cover ' : ''}`}
