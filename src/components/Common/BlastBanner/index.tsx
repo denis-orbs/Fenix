@@ -43,7 +43,7 @@ const BlastBanner = () => {
           </span>
         </div>
         <div className='text-white max-xs:text-sm'>
-          Earn your share in <span className='font-bold text-transparent text-xs hover:text-white transition-all airdrop-gradient max-lg:text-white max-lg:rounded-none rounded-[100px] py-1 px-2'>ONE OF THE BIGGEST AIRDROPS</span> in crypto history
+          Earn your share in <span className='font-bold text-white text-opacity-20 text-xs hover:text-opacity-100 transition-all hover:delay-[0s] delay-[3s] airdrop-gradient max-lg:text-white max-lg:rounded-none rounded-[100px] py-1 px-2'>ONE OF THE BIGGEST AIRDROPS</span> in crypto history
         </div>
       </div>
       <Button variant="primary" className="relative z-10 max-lg:!px-2 max-lg:!py-1 mb-4" href="/liquidity">

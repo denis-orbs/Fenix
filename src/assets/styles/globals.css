@@ -442,3 +442,13 @@ body {
 .airdrop-gradient {
   background: var(--Fenix-Gradient, linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%));
 }
+
+.text-opacity-transition {
+  transition: opacity 300ms ease;
+  transition-delay: 1s;
+}
+
+.text-opacity-transition:hover {
+  opacity: 1;
+  transition-delay: 1s;
+}
