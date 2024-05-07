@@ -56,29 +56,29 @@ const RowData = ({
   return (
     <>
       <TableRow className="hidden lg:flex">
-        <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
+        <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[30%]'}`}>
           <div className="flex items-center">
-            <div className="flex flex-col w-[100%]">
-              <div className="flex items-center justify-around w-[100%]">
+            <div className="flex items-center">
+              <Image
+                src={`/static/images/tokens/${row.token0.symbol}.png`}
+                alt="token"
+                className="rounded-full w-7 h-7"
+                width={20}
+                height={20}
+              />
+              <Image
+                src={`/static/images/tokens/${row.token1.symbol}.png`}
+                alt="token"
+                className="-ml-4 rounded-full w-7 h-7"
+                width={20}
+                height={20}
+              />
+            </div>
+            <div className="flex flex-col w-[100%] ml-3">
+              <div className="flex items-center w-[100%]">
                 <h5 className="text-sm text-white">
                   {row.token0.symbol} / {row.token1.symbol}
                 </h5>
-                <div className="flex items-center">
-                  <Image
-                    src={`/static/images/tokens/${row.token0.symbol}.png`}
-                    alt="token"
-                    className="rounded-full w-7 h-7"
-                    width={20}
-                    height={20}
-                  />
-                  <Image
-                    src={`/static/images/tokens/${row.token1.symbol}.png`}
-                    alt="token"
-                    className="-ml-4 rounded-full w-7 h-7"
-                    width={20}
-                    height={20}
-                  />
-                </div>
               </div>
               <div className="flex items-center justify-around gap-2 mt-1 w-[100%]">
                 <span
@@ -95,7 +95,7 @@ const RowData = ({
             </div>
           </div>
         </TableCell>
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[12%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
             <span ref={hoverRef} className="flex flex-row transition-transform transform group">
               {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
@@ -198,11 +198,11 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="w-[20%]">
+        <TableCell className="w-[14%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
-            <div className="flex items-center justify-end text-right gap-3">
+            <div className="flex flex-col items-end justify-end text-right gap-1">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
@@ -227,11 +227,11 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="w-[20%]">
+        <TableCell className="w-[14%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
-            <div className="flex items-center gap-3 justify-end text-right">
+            <div className="flex flex-col items-end gap-1 justify-end text-right">
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}

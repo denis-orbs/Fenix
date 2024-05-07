@@ -97,22 +97,22 @@ const HeaderRow = ({
             items={[
               {
                 text: 'Pair',
-                className: `${activeRange ? 'w-[20%]' : 'w-[20%]'}`,
+                className: `${activeRange ? 'w-[20%]' : 'w-[30%]'}`,
                 sortable: true,
               },
               RANGE,
-              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right` },
+              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[12%]'} text-right` },
               { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right`, sortable: true },
               { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
-                className: 'w-[20%] text-right',
+                className: 'w-[14%] text-right',
                 sortable: true,
               },
               // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
-                className: 'w-[20%] text-right',
+                className: 'w-[14%] text-right',
                 sortable: true,
               },
               { text: 'Action', className: 'w-[10%] flex justify-end', sortable: false },
