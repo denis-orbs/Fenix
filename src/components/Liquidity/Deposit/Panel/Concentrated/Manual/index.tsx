@@ -121,8 +121,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
 
-  const account = useAccount()
-  const { isConnected, chainId } = useActiveConnectionDetails()
+  // const account = useAccount()
+  // const { isConnected, chainId } = useActiveConnectionDetails()
 
 
   const { writeContractAsync } = useWriteContract()
