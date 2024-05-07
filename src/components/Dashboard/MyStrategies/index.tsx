@@ -117,6 +117,12 @@ const MyStrategies = () => {
           <div className="dashboard-box mb-10 hidden xl:block">
             <Swiper
               spaceBetween={50}
+              breakpoints={{
+                1700: { slidesPerView: 2.8 },
+                1480: { slidesPerView: 2.5 },
+                1380: { slidesPerView: 2.2 },
+                1200: { slidesPerView: 2 },
+              }}
               slidesPerView={slidesPerView}
               navigation={true}
               onSwiper={(swiper) => {
@@ -127,8 +133,7 @@ const MyStrategies = () => {
                   }
                 })
               }}
-        allowTouchMove={false}
-
+              allowTouchMove={false}
             >
               {Array.from({ length: position.length }).map((_, index) => {
                 return (
