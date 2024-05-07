@@ -84,6 +84,17 @@ const HeaderRow = ({
     setPaginationResult(poolsData)
   }, [poolsData])
 
+  useEffect(() => {
+    if (paginationStatus && paginationResult && paginationResult.length > 0) {
+      setSort('asc')
+      setPaginationResult(
+        paginationResult.sort((a, b) => {
+          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+        })
+      )
+    }
+  }, [paginationStatus, paginationResult])
+
   function compareBigDecimal(a: any, b: any) {
     return a - b
   }
