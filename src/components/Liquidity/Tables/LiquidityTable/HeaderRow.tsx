@@ -36,7 +36,7 @@ const HeaderRow = ({
   const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
   const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
-  const [sortIndex, setSortIndex] = useState<number>(0)
+  const [sortIndex, setSortIndex] = useState<number>(-1)
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
