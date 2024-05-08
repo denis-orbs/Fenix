@@ -219,7 +219,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           <div className="flex gap-2 my-2">
             <div className="flex flex-col gap-2 w-1/2 items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
               <p className="text-white">
-                APR
+                APR 
                 {/* <span className="icon-info text-xs"></span> */}
               </p>
               <h2 className="text-green-400 text-2xl">{row?.apr}</h2>

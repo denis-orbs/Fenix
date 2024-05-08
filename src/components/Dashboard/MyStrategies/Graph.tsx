@@ -62,23 +62,35 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
     (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || row.liquidity === 'ichi'
 
   return (
-    <div className="flex flex-col w-full h-32 justify-end ">
+    <div className="flex flex-col w-full h-32 justify-endñ ">
       <div className="flex flex-col  relative ">
         <div className="flex w-full">
           {row.liquidity === 'ichi' ? (
             <>
-              <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-2  rounded-sm  z-50">
+              <p
+                className="bg-shark-300 
+               h-[50px]
+               flex items-center
+              bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-2  rounded-sm  z-50"
+              >
                 Position Managed by ichi
               </p>
             </>
           ) : (
             showtoken0 && (
               <div className="flex gap-2 w-full">
-                <p className="bg-shark-300 w-full bg-opacity-40 border border-shark-400 text-white text-xs z-[100] px-3 py-2  rounded-sm ">
+                <p
+                  className="bg-shark-300 w-full bg-opacity-40 border 
+                sm:h-[50px]
+                border-shark-400 text-white text-xs z-[100] px-3 py-2  rounded-sm "
+                >
                   Min. Price: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0Symbol}/{token1Symbol}
                 </p>
 
-                <p className="bg-shark-300 w-full bg-opacity-40 border border-shark-400 text-white text-xs z-[100] px-3 py-2  rounded-sm ">
+                <p
+                  className="bg-shark-300 w-full bg-opacity-40 border border-shark-400 text-white text-xs z-[100]
+                sm:h-[50px] px-3 py-2  rounded-sm "
+                >
                   Max. Price: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0Symbol}/{token1Symbol}
                 </p>
               </div>
@@ -86,10 +98,14 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
           )}
         </div>
         <div className="w-full flex relative pt-2">
-          <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
+          <p
+            className="bg-shark-300 bg-opacity-40 border border-shark-400 
+            
+          text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1"
+          >
             0
           </p>
-          <div className="flex gap-1 left-[25%] absolute top-[50%] bottom-[50%]">
+          <div className="flex items-start inset-0 justify-center w-full absolute top-[50%] bottom-[50%]">
             {Array.from({ length: 10 }).map((_, index) => (
               <span key={index} className="h-5 w-5 border-l border-shark-300 " />
             ))}
@@ -107,7 +123,7 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
                 )}
               ></div>
             )}
-            {isInRange && <div className=" left-[50%] absolute w-[1px] h-1/2 bg-white"></div>}
+            {isInRange && <div className="left-[50%] bottom-0 right-[50%] absolute w-[1px] h-1/2 bg-white"></div>}
           </div>
           <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
             ∞
