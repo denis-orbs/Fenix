@@ -1,5 +1,6 @@
 import { Button } from '@/src/components/UI'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
+import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { BasicPool, PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
@@ -54,7 +55,7 @@ export default function MobileRowNew({
           <div className="flex flex-col">
             <div>
               <h5 className="text-sm font-semibold leading-normal mb-1.5">
-                {row.token0.symbol} / {row.token1.symbol}
+                {row.token0.symbol} / {row.token1.symbol} {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
               </h5>
               <div className="flex items-center gap-2">
                 <span className="text-white py-2 px-6 text-xs rounded-lg button-primary">Concentrated</span>
@@ -165,7 +166,7 @@ export default function MobileRowNew({
               </div>
               <div className="flex justify-center items-center gap-2 ">
                 <span className="flex flex-row justify-center gap-2">
-                  {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
+                {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())  && (
                     <>
                       <Image
                         src={`/static/images/point-stack/fenix-ring.svg`}
