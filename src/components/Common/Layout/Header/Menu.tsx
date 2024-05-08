@@ -22,7 +22,7 @@ const Menu = () => {
 
   return (
     <ul
-      className={`${pathname === '/' ? 'header-box-landing z-[1000]' : ''} flex items-center md:gap-2 2xl:gap-3 justify-center `}
+      className={`${pathname === '/' ? 'header-box-landing z-[1000] max-xl:px-2' : ''} flex items-center md:gap-2 2xl:gap-3 justify-center `}
     >
       {MENU_LINKS.map((link, index) => (
         <span className="flex items-center relative" key={index}>
@@ -41,7 +41,7 @@ const Menu = () => {
             </span>
           )}
           {pathname === '/' && (
-            <>{index !== MENU_LINKS.length - 1 && <div className=" border-r solid border-white h-[22px] z-[100] relative mx-3 right-[-7px]"></div>}</>
+            <>{index !== MENU_LINKS.length - 1 && <div className=" border-r solid border-white h-[22px] z-[100] relative mx-3 max-xl:mx-2 right-[-7px] max-xl:right-[-3px]"></div>}</>
           )}
         </span>
       ))}
