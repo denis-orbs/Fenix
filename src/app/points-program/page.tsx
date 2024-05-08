@@ -6,8 +6,7 @@ import React from 'react'
 
 export const metadata = {
   title: 'Fenix Rings - Fenix Finance',
-  description:
-    "The Unified Trading and Liquidity Marketplace for Blast | Audited by @hatsfinance <br/> <a href='https://www.fenixfinance.io/trade/swap'>Trade</a> - <a href='https://www.fenixfinance.io/dashboard'>Dashboard</a> - <a href='https://www.fenixfinance.io/liquidity'>Liquidity</a> - <a href='https://www.fenixfinance.io/points-program'>Fenix Rings</a>",
+  description: 'Track your Rings balance for the Fenix airdrop',
 }
 
 const PointsProgramPage = () => {
