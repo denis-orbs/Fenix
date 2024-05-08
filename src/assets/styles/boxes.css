@@ -1021,13 +1021,13 @@
   flex-col
   items-center
   justify-center
-  w-full
+  w-[320px]
   rounded-2xl
   
   sm:w-[480px]
   sm:min-h-[470px]
   flex-shrink-0
-  bg-shark-700
+  bg-shark-400
   bg-opacity-40
   backdrop-blur-[15px]
   2xl:bg-transparent
@@ -1036,7 +1036,14 @@
   2xl:py-8
   px-5
   2xl:px-8
-
+  border
+  border-solid
+  border-outrageous-orange-400
+  shadow-sm
+  shadow-outrageous-orange-400
+  
+  2xl:border-none
+  2xl:shadow-none
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/modals/modal.svg")]

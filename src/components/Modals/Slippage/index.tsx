@@ -53,14 +53,14 @@ const Slippage = () => {
     <Modal className="mx-auto" openModal={openModal} setOpenModal={setSlippageModal}>
       <div className="common-modal">
         <span
-          className="absolute top-[2px] right-[2px] text-2xl cursor-pointer icon-x text-shark-100"
+          className="absolute top-2 right-4 2xl:top-[2px] 2xl:right-[2px] text-2xl cursor-pointer icon-x text-shark-100"
           onClick={handleClose}
         />
         <div className="relative w-full h-full">
-          <h2 className="mt-5 text-lg font-semibold text-center text-white sm:mt-10 lg:mt-10">Slippage Tolerance</h2>
-          <p className="text-shark-100 text-sm font-normal mt-3 text-center lg:mb-6 sm:mb-6 mb-2 max-w-[300px] mx-auto">
+          <h2 className="mt-5 text-lg font-semibold text-center text-white my-10">Slippage Tolerance</h2>
+          {/* <p className="text-shark-100 text-sm font-normal mt-3 text-center lg:mb-6 sm:mb-6 mb-2 max-w-[300px] mx-auto">
             Adjust to your personal preferences.
-          </p>
+          </p> */}
           <div className="relative">
             {/* <input
               type="text"
@@ -100,8 +100,9 @@ const Slippage = () => {
             ))}
           </div>
           <p className="text-xs font-normal text-center text-shark-200">
-            Setting a high slippage tolerance can help transactions filled succesfully, but you may not get such a good
-            price. Use with caution.
+            Difference between expected and actual trade values due to asset volatility. Exceeding the user-defined
+            range reverses the transaction. Setting a higher slippage can help transactions be filled successfully, but
+            can also lead to a higher price difference. Use with caution.
           </p>
           <div className="flex justify-center">
             <Button
@@ -117,10 +118,10 @@ const Slippage = () => {
             </Button>
           </div>
           <div className="flex items-center justify-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
-            <span className="icon-discord"></span>
+            {/* <span className="icon-discord"></span>
             <Link href="https://discord.com/invite/fenixfi" className="text-sm">
               Need help?
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
