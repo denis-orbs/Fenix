@@ -45,6 +45,8 @@ const Slippage = () => {
       setInvalidInput(true)
     }
   }, [slippageInput])
+
+
   return (
     <Modal className="mx-auto" openModal={openModal} setOpenModal={setSlippageModal}>
       <div className="common-modal">
