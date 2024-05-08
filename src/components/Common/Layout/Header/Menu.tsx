@@ -36,7 +36,7 @@ const Menu = () => {
             </span>
           </Link>
           {link.new && (
-            <span className="absolute -top-2 right-1 text-[9px]  bg-alizarin-crimson-600 rounded-md w-7 h-5 flex items-center justify-center z-[100] text-white">
+            <span className="absolute -top-2 right-[-5px] text-[9px]  bg-alizarin-crimson-600 rounded-md w-7 h-5 flex items-center justify-center z-[100] text-white">
               New
             </span>
           )}
