@@ -228,11 +228,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
             )}
 
             {titleButton2 === '' ? (
-              <Button
-                variant="tertiary"
-                className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href="/liquidity"
-              >
+              <Button variant="tertiary" className="flex items-center gap-2  w-24 h-9 !text-xs" href="/liquidity">
                 <span className="icon-circles"></span>
                 Deposit
               </Button>

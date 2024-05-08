@@ -5,25 +5,13 @@ const nextConfig = {
     locales: ['en-US', 'zh-CN'],
     defaultLocale: 'en-US',
   },
-  // TODO: REMOVE
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+
   images: {
     domains: ['fenix-dex-api.vercel.app', 'fenix-api-testnet.vercel.app', 'cdn-images-1.medium.com', 'miro.medium.com'],
   },
-  // TODO: REMOVE
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 }
 module.exports = nextConfig
+
 
 const { withSentryConfig } = require('@sentry/nextjs')
 
@@ -37,6 +25,7 @@ module.exports = withSentryConfig(
     silent: true,
     org: 'fenix-xl',
     project: 'interface',
+
   },
   {
     // For all available options, see:
@@ -68,4 +57,3 @@ module.exports = withSentryConfig(
   }
 )
 
-// Injected content via Sentry wizard below
