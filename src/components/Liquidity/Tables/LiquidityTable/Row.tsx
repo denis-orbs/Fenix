@@ -39,6 +39,7 @@ const RowData = ({
   const [openInfo, setOpenInfo] = useState<boolean>(false)
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
+
   let aprdisplay = 0
   // if (aprIchi && aprIchi.length > 0) {
   //   // FIXME: STARK
@@ -77,7 +78,7 @@ const RowData = ({
             </div>
             <div className="flex flex-col">
               <h5 className="text-sm text-white">
-                {row.token0.symbol} / {row.token1.symbol}
+                {row.token0.symbol} / {row.token1.symbol} {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
               </h5>
               <div className="flex items-center gap-2">
                 <span
@@ -97,7 +98,7 @@ const RowData = ({
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
             <span ref={hoverRef} className="flex flex-row transition-transform transform group">
-              {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
+              {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                 <>
                   <Image
                     src={`/static/images/point-stack/fenix-ring.svg`}
@@ -144,7 +145,16 @@ const RowData = ({
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
-              {formatAmount(row?.apr, 2)}%{' '}
+              {aprdisplayIchi
+                ? formatAmount(
+                    toBN(row?.apr || 0)
+                      .plus(aprdisplayIchi)
+                      .div(2)
+                      .toString(),
+                    2
+                  )
+                : formatAmount(row?.apr, 2)}
+              %{' '}
               <span
                 className="icon-info"
                 onMouseEnter={() => setOpenInfo(true)}
@@ -173,7 +183,10 @@ const RowData = ({
                   <div className="flex justify-between items-center">
                     <p className="text-sm">Ichi</p>
                     <p className="text-sm text-chilean-fire-600">
-                      {aprdisplay === null || aprdisplay < 0 || aprdisplay === undefined ? '0' : aprdisplay}%
+                      {aprdisplayIchi === null || aprdisplayIchi < 0 || aprdisplayIchi === undefined
+                        ? '0'
+                        : aprdisplayIchi}
+                      %
                     </p>
                   </div>
                 )}
