@@ -5,6 +5,8 @@ import useStore from '@/src/state/zustand'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
+import { NumericalInput } from '../../UI/Input'
+
 const slippageOptions = [
   { label: 'Auto', value: 'Auto' },
   { label: '0.5%', value: 0.5 },
@@ -60,7 +62,7 @@ const Slippage = () => {
             Adjust to your personal preferences.
           </p>
           <div className="relative">
-            <input
+            {/* <input
               type="text"
               placeholder="0"
               value={slippageInput}
@@ -68,6 +70,13 @@ const Slippage = () => {
                 setSlippageInput(e.target.value)
               }}
               className="p-4 w-full h-[55px] rounded-lg outline-none bg-shark-400 text-white"
+            /> */}
+            <NumericalInput
+              value={slippageInput}
+              className="p-4 w-full h-[55px] rounded-lg outline-none bg-shark-400 text-white"
+              placeholder="0"
+              onUserInput={(input) => setSlippageInput(input)}
+              precision={2}
             />
             <button
               onClick={() => {
