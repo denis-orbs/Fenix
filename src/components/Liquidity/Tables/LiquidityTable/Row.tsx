@@ -67,7 +67,7 @@ const RowData = ({
             </div>
             <div className="flex flex-col">
               <h5 className="text-sm text-white">
-                {row.token0.symbol} / {row.token1.symbol}
+                {row.token0.symbol} / {row.token1.symbol} {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
               </h5>
               <div className="flex items-center gap-2">
                 <span
@@ -87,7 +87,7 @@ const RowData = ({
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
             <span ref={hoverRef} className="flex flex-row transition-transform transform group">
-              {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
+              {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                 <>
                   <Image
                     src={`/static/images/point-stack/fenix-ring.svg`}
