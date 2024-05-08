@@ -118,9 +118,9 @@ const MyStrategies = () => {
             <Swiper
               spaceBetween={50}
               breakpoints={{
-                1700: { slidesPerView: 2.8 },
-                1480: { slidesPerView: 2.5 },
-                1380: { slidesPerView: 2.2 },
+                1560: { slidesPerView: 3 },
+                1480: { slidesPerView: 3 },
+                1380: { slidesPerView: 2 },
                 1200: { slidesPerView: 2 },
               }}
               slidesPerView={slidesPerView}

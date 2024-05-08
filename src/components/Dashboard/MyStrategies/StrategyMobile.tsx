@@ -191,7 +191,10 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                 <p className="text-white text-xs lg:text-sm">
                   APR <span className="icon-info"></span>
                 </p>
-                <h1 className="text-green-400 text-2xl w-full line-clamp-1">{row?.apr}</h1>
+                {/* <h1 className="text-green-400 text-2xl w-full line-clamp-1">{row?.apr}</h1> */}
+                <h2 className={`text-green-400 ${row?.apr.length > 10 ? 'text-base' : 'text-2xl'} flex justify-center`}>
+                  {row?.apr}
+                </h2>
               </div>
               <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
                 <p className="text-white text-xs lg:text-sm">
