@@ -1,5 +1,4 @@
 'use client'
-
 import { Button, Modal } from '@/src/components/UI'
 import { useSetSlippageToleranceCallback, useSlippageTolerance } from '@/src/state/user/hooks'
 import useStore from '@/src/state/zustand'
@@ -18,7 +17,7 @@ interface SlippageProps {
   openModal: boolean
   setOpenModal: (openModal: boolean) => void
 }
-const slippageSchema = z.union([z.number().min(0).max(50), z.literal('Auto')])
+const slippageSchema = z.union([z.number().min(0).max(50), z.literal('auto')])
 const Slippage = () => {
   // const handlerClose = () => setOpenModal(false)
   const openModal = useStore((state) => state.slippageModal)
@@ -38,7 +37,7 @@ const Slippage = () => {
   useEffect(() => {
     try {
       // console.log(slippageInput)
-      const parsedInput = slippageInput === 'Auto' ? 'Auto' : parseFloat(slippageInput)
+      const parsedInput = slippageInput.toString().toLowerCase() === 'auto' ? 'auto' : parseFloat(slippageInput)
       // console.log(parsedInput)
       slippageSchema.parse(parsedInput)
       setInvalidInput(false)
