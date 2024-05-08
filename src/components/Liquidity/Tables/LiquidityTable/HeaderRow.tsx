@@ -30,7 +30,7 @@ const HeaderRow = ({
   activeRange = false,
 }: HeaderRowProps) => {
   // const tokensData = fetchTokens()
-  const [itemsPerPage, setItemPerPage] = useState<any>(5)
+  const [itemsPerPage, setItemPerPage] = useState<any>(20)
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
@@ -40,7 +40,7 @@ const HeaderRow = ({
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
-    : { text: '', className:'w-[0px] !p-0', sortable: true }
+    : { text: '', className: 'w-[0px] !p-0', sortable: true }
 
   function paginate(items: BasicPool[], currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -78,7 +78,7 @@ const HeaderRow = ({
     } else {
       setPaginationStatus(true)
     }
-  }, [sort, chainId])
+  }, [sort, chainId, paginationStatus, paginationResult])
 
   useEffect(() => {
     setPaginationResult(poolsData)
@@ -165,12 +165,14 @@ const HeaderRow = ({
           <div className="items-center hidden xl:flex">
             {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
             <Pagination
+              itemsPerPage={itemsPerPage}
+              setItemPerPage={setItemPerPage}
               activePage={activePage}
               setActivePage={setActivePage}
               className="mx-auto"
               numberPages={Math.ceil(poolsData.length / itemsPerPage)}
             />
-            <div
+            {/* <div
               onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
               className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
             >
@@ -197,7 +199,7 @@ const HeaderRow = ({
                 </div>
               )}
               <span className="text-lg icon-cog text-white cursor-pointer"></span>
-            </div>
+            </div> */}
           </div>
           <div className="xl:hidden">
             <PaginationMobile

@@ -39,7 +39,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
             </div>
             <div className="flex flex-col">
               <h5 className="text-sm text-white">
-                {row.pairDetails.pairInformationV2?.token0_symbol} / {row.pairDetails.pairInformationV2?.token1_symbol} 
+                {row.pairDetails.pairInformationV2?.token0_symbol} / {row.pairDetails.pairInformationV2?.token1_symbol}
               </h5>
               <div className="flex items-center gap-2">
                 {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
@@ -228,11 +228,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
             )}
 
             {titleButton2 === '' ? (
-              <Button
-                variant="tertiary"
-                className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href="/liquidity"
-              >
+              <Button variant="tertiary" className="flex items-center gap-2  w-24 h-9 !text-xs" href="/liquidity">
                 <span className="icon-circles"></span>
                 Deposit
               </Button>
@@ -240,6 +236,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2 w-24 h-9 !text-xs "
+                // eslint-disable-next-line max-len
                 href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'volatile' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'stable' : 'manual'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
               >
                 <span className="icon-logout"></span>
