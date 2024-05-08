@@ -96,7 +96,7 @@ const WithdrawAmountsICHI = ({
           return v
         }
       })?.tokenA
-      })
+      
       const tokenBid = ichiVaults.find((v) => {
         if (v.id === vaultAddress.id) {
           return v
@@ -106,7 +106,7 @@ const WithdrawAmountsICHI = ({
       const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
       const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
       setTotalShareDollar(Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice))
-      })
+      
 
 
       setTotalUserShares(data)
