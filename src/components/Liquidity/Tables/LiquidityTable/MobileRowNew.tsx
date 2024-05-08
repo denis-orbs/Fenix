@@ -32,16 +32,14 @@ export default function MobileRowNew({
   //   // FIXME: STARK
   //   if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
   // }
-  let aprdisplay = 0
+  let aprdisplayIchi = 0
   if (aprIchi && aprIchi.length > 0) {
-
     if (aprIchi[0].apr && Array.isArray(aprIchi[0].apr) && aprIchi[0].apr.length > 1) {
       const aprValue = aprIchi[0].apr[1]?.apr
       if (typeof aprValue === 'number') {
-        aprdisplay = aprValue >= 0 ? Number(aprValue.toFixed(0)) : 0
+        aprdisplayIchi = aprValue >= 0 ? Number(aprValue.toFixed(0)) : 0
       }
     }
-
   }
 
   return (
@@ -67,7 +65,8 @@ export default function MobileRowNew({
           <div className="flex flex-col">
             <div>
               <h5 className="text-sm font-semibold leading-normal mb-1.5">
-                {row.token0.symbol} / {row.token1.symbol} {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
+                {row.token0.symbol} / {row.token1.symbol}{' '}
+                {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
               </h5>
               <div className="flex items-center gap-2">
                 <span className="text-white py-2 px-6 text-xs rounded-lg button-primary">Concentrated</span>
@@ -178,7 +177,7 @@ export default function MobileRowNew({
               </div>
               <div className="flex justify-center items-center gap-2 ">
                 <span className="flex flex-row justify-center gap-2">
-                {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())  && (
+                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                     <>
                       <Image
                         src={`/static/images/point-stack/fenix-ring.svg`}

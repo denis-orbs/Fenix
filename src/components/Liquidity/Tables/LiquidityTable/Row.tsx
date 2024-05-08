@@ -40,17 +40,16 @@ const RowData = ({
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
 
-  let aprdisplay = 0
+  let aprdisplayIchi = 0
   // if (aprIchi && aprIchi.length > 0) {
   //   // FIXME: STARK
   //   if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
   // }
   if (aprIchi && aprIchi.length > 0) {
-
     if (aprIchi[0].apr && Array.isArray(aprIchi[0].apr) && aprIchi[0].apr.length > 1) {
       const aprValue = aprIchi[0].apr[0]?.apr
       if (typeof aprValue === 'number') {
-        aprdisplay = aprValue >= 0 ? Number(aprValue.toFixed(0)) : 0
+        aprdisplayIchi = aprValue >= 0 ? Number(aprValue.toFixed(0)) : 0
       }
     }
   }
@@ -78,7 +77,8 @@ const RowData = ({
             </div>
             <div className="flex flex-col">
               <h5 className="text-sm text-white">
-                {row.token0.symbol} / {row.token1.symbol} {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
+                {row.token0.symbol} / {row.token1.symbol}{' '}
+                {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
               </h5>
               <div className="flex items-center gap-2">
                 <span
@@ -98,7 +98,7 @@ const RowData = ({
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
             <span ref={hoverRef} className="flex flex-row transition-transform transform group">
-              {totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
+              {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                 <>
                   <Image
                     src={`/static/images/point-stack/fenix-ring.svg`}
@@ -190,7 +190,6 @@ const RowData = ({
                     </p>
                   </div>
                 )}
-
               </div>
             )}
           </div>
