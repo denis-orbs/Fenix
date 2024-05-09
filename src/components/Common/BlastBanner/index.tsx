@@ -44,7 +44,7 @@ const BlastBanner = () => {
       </div>
       <div className="relative z-10 max-lg:max-w-[75%] flex flex-col gap-2 max-lg:gap-1 max-lg:mt-4">
         <div className='flex flex-col items-start gap-1'>
-          <div className="text-white text-sm font-normal">Deposit liquidty to earn your Share of</div>
+          <div className="text-white text-sm font-normal">Deposit liquidty to earn your share of</div>
           <div className="text-gradient max-xs:text-sm xs:text-base md:text-lg xl:text-2xl">
             Blast Gold, Blast Points and Fenix Orbits
           </div>
@@ -53,7 +53,7 @@ const BlastBanner = () => {
           Earn your share in <span className='font-bold text-white text-opacity-20 text-xs hover:text-opacity-100 transition-all hover:delay-[0s] delay-[3s] airdrop-gradient max-lg:text-white max-lg:rounded-none rounded-[100px] py-1 px-2'>ONE OF THE BIGGEST AIRDROPS</span> in crypto history
         </div> */}
       </div>
-      <Button variant="primary" className="relative z-10 max-lg:!px-2 max-lg:!py-1 mb-4" href="/liquidity">
+      <Button variant="primary" className="relative z-10 max-lg:!px-2 max-lg:!py-1 max-lg:mb-4" href="/liquidity">
         <span>Deposit Now</span>
       </Button>
     </div>
