@@ -1608,6 +1608,31 @@ opacity-70
   after:xl:block;
 }
 
+
+.box-warning {
+  @apply 
+  relative
+  flex
+  
+  xl:min-w-[391px]
+  before:content-[""]
+  before:bg-[url("/static/images/modals/box-warning.svg")]
+  before:bg-no-repeat
+  before:bg-cover
+  before:h-[61px]
+  before:w-1/2
+
+  after:content-[""]
+  after:bg-[url("/static/images/modals/box-warning.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:bg-cover
+  after:h-[61px]
+  after:w-1/2
+}
+
+
+
 .box-pagination {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
 

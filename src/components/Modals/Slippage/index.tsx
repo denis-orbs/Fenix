@@ -35,6 +35,7 @@ const Slippage = () => {
     setSlippageInput(slippage?.toString())
   }, [slippage])
 
+
   // when input changes, validate schema
   useEffect(() => {
     try {
@@ -87,7 +88,19 @@ const Slippage = () => {
               %
             </button>
           </div>
-          <div className="flex flex-wrap justify-center gap-3 p-3 lg:flex-nowrap">
+          {Number(slippageInput) > 50 && (
+            <div className="py-2 relative z-[200]">
+              <div className="box-warning">
+                <div className="absolute top-[50%] bottom-[50%] flex items-center w-full justify-center">
+                  <p className="text-alizarin-crimson-600 text-xs flex gap-1 items-center">
+                    <span className="icon-info text-base" />
+                    Slippage above 50% is not allowed.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className={`flex flex-wrap justify-center gap-3  ${Number(slippageInput) > 50 ? "pb-2" : "p-3"}  lg:flex-nowrap`}>
             {slippageOptions.map((option) => (
               <Button
                 key={option.label}
@@ -99,6 +112,7 @@ const Slippage = () => {
               </Button>
             ))}
           </div>
+
           <p className="text-xs font-normal text-center text-shark-200">
             Difference between expected and actual trade values due to asset volatility. Exceeding the user-defined
             range reverses the transaction. Setting a higher slippage can help transactions be filled successfully, but
