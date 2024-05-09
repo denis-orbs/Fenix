@@ -10,6 +10,7 @@ import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { formatCurrency } from '@/src/library/utils/numbers'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 interface SelectTokenProps {
   openModal: boolean
@@ -42,10 +43,8 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   useEffect(() => {
     const getList = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
-          method: 'GET',
-        })
-        const responseData = await response.json()
+        const responseData = await fetchTokens()
+
         const parsedData = responseData.map((item: any) => {
           return {
             id: 0,
@@ -83,17 +82,17 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
       <div className="common-modal">
         <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
         <div className="relative z-10 w-full h-full">
-          <h1 className="text-lg font-medium text-white">Select a Token</h1>
-          <p className="mb-4 text-sm text-shark-100">
+          <h1 className="text-md font-medium text-white">Select a Token</h1>
+          {/* <p className="mb-2 text-sm text-shark-100">
             Select a token from our default list or search for a token by symbol or address.
-          </p>
+          </p> */}
 
-          <div className="mb-4">
+          <div className="mb-2">
             <Search setSearchValue={setSearchValue} searchValue={searchValue} />
           </div>
 
-          <div className="mb-2 text-sm text-white">Common Tokens</div>
-          <div className="flex flex-col items-center gap-1 mb-4 xl:flex-row">
+          {/* <div className="mb-1 text-sm text-white">Common Tokens</div> */}
+          <div className="flex flex-row items-center gap-1 mb-1">
             {_commonList ? (
               _commonList.map((token, index) => (
                 <div
@@ -109,13 +108,13 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               <></>
             )}
           </div>
-          <div className="flex flex-col gap-2 max-h-[130px] overflow-y-auto">
+          <div className="flex flex-col gap-2 max-h-[400px] overflow-y-auto">
             {_tokenList && searchValue === '' ? (
               _tokenList.map((token, index) => (
                 <div
                   key={index}
                   onClick={() => handlerSelectToken(token)}
-                  className="flex items-center justify-between p-3 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
+                  className="flex items-center justify-between py-1 px-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
                 >
                   <div className="flex items-center gap-2">
                     <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-7 h-7" />
@@ -139,7 +138,11 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                     <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
                       {_tokenBalances
                         ? `$${formatCurrency(
-                            ((parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals) * token.price)
+                            (
+                              (parseInt(_tokenBalances[(token.address as Address).toLowerCase() as `0x${string}`]) /
+                                10 ** token.decimals) *
+                              token.price
+                            )
                               .toFixed(2)
                               .replace('NaN', '0')
                           )}`
@@ -152,19 +155,19 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               _tokenList.filter(
                 (token) =>
                   token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-                  token.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+                  token?.address?.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
               ).length > 0 ? (
                 _tokenList
                   .filter(
                     (token) =>
                       token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-                      token.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+                      token?.address?.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
                   )
                   .map((token, index) => (
                     <div
                       key={index}
                       onClick={() => handlerSelectToken(token)}
-                      className="flex items-center justify-between p-3 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
+                      className="flex items-center justify-between py-1 px-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
                     >
                       <div className="flex items-center gap-2">
                         <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-7 h-7" />
@@ -212,10 +215,10 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               Confirm SelectToken
             </Button> */}
           </div>
-          <div className="flex items-center justify-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
+          {/* <div className="flex items-center justify-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
             <span className="icon-discord"></span>
             <p className="text-sm">Need help?</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </Modal>

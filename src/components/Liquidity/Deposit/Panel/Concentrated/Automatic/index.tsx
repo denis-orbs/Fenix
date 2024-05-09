@@ -4,7 +4,6 @@ import PairSelector from '@/src/components/Liquidity/Common/PairSelector'
 import CLMProviderSelector from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/CLMProviderSelector'
 import DepositAmountsICHI from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/DepositAmountsICHI'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-
 import { Button } from '@/src/components/UI'
 import { useSearchParams } from 'next/navigation'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
@@ -45,7 +44,7 @@ const Automatic = () => {
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023',
     price: 0,
-    img: '/static/images/tokens/WETH.svg',
+    img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [currentProvider, setCurrentProvider] = useState<string>('1')
   const [tokenList, setTokenList] = useState<IToken[]>([])
@@ -71,17 +70,17 @@ const Automatic = () => {
       })
       setTokenList(parsedTokens)
       const token0Data = parsedTokens.find(
-        (token: any) => token.address.toLowerCase() === searchParamToken0?.toLowerCase()
+        (token: IToken) => token?.address?.toLowerCase() === searchParamToken0?.toLowerCase()
       )
       const token1Data = parsedTokens.find(
-        (token: any) => token.address.toLowerCase() === searchParamToken1?.toLowerCase()
+        (token: IToken) => token?.address?.toLowerCase() === searchParamToken1?.toLowerCase()
       )
-      if (token0.toLowerCase() !== firstToken?.address?.toLowerCase()) {
+      if (token0.toLowerCase() !== firstToken?.address?.toLowerCase() && token0Data) {
         setToken0(token0Data?.address.toLowerCase())
         setFirstToken(token0Data)
       }
 
-      if (token1.toLowerCase() !== secondToken?.address?.toLowerCase()) {
+      if (token1.toLowerCase() !== secondToken?.address?.toLowerCase() && token1Data) {
         setToken1(token1Data?.address.toLowerCase())
         setSecondToken(token1Data)
       }

@@ -14,8 +14,12 @@ export interface LiquidityState {
   v2Pairs: {
     state: ApiState
     tablestate: ApiState
-    data: LiquidityV2PairDetails[]
+    data: PairInfoV3[]
     tableData?: LiquidityTableElement[]
+  }
+  pools: {
+    state: ApiState
+    data: LiquidityTableElement[]
   }
   concentratedPools: { state: ApiState; data: any }
 }
@@ -173,4 +177,41 @@ export interface v3FactoryData {
 export interface v2FactoryData {
   totalLiquidityUSD: string
   totalVolumeUSD: string
+}
+export interface BasicPool {
+  id: string
+  volumeUSD: string
+  feesUSD: string
+  liquidity: string
+  totalValueLockedUSD: string
+  poolType: 'concentrated' | 'stable' | 'volatile'
+  token0Price: string
+  token1Price: string
+  feesToken0: string
+  feesToken1: string
+  volumeToken0: string
+  volumeToken1: string
+  fee: string
+  token0: BasicToken
+  token1: BasicToken
+  apr?: string
+}
+export interface BasicToken {
+  id: string
+  decimals: string
+  symbol: string
+  name: string
+}
+export interface ConcentratedPool extends BasicPool {
+  poolType: 'concentrated'
+  token0: BasicToken & {
+    derivedMatic: string
+  }
+  token1: BasicToken & {
+    derivedMatic: string
+  }
+  sqrtPrice: string
+  tick: string
+  tickSpacing: string
+  untrackedFeesUSD: string
 }

@@ -636,3 +636,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Sentry Config File
+.sentryclirc
+
+# Sentry Config File
+.sentryclirc

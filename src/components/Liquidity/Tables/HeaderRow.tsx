@@ -52,6 +52,10 @@ const HeaderRow = ({
               },
               { text: 'Action', className: 'w-[15%] text-right', sortable: true },
             ]}
+            setSort={() => {}}
+            sort={null}
+            sortIndex={1}
+            setSortIndex={() => {}}
           />
         </div>
 
@@ -83,13 +87,28 @@ const HeaderRow = ({
         <>
           <div className="items-center hidden xl:flex">
             <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
-            <Pagination className="mx-auto" numberPages={7} />
+            <Pagination
+              className="mx-auto"
+              numberPages={7}
+              activePage={1}
+              itemsPerPage={10}
+              setActivePage={() => {}}
+              setItemPerPage={() => {}}
+            />
             <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
               <span className="text-lg icon-cog text-white cursor-pointer"></span>
             </div>
           </div>
           <div className="xl:hidden">
-            <PaginationMobile />
+            <PaginationMobile
+              activePage={1}
+              className=""
+              count={10}
+              itemsPerPage={10}
+              numberPages={7}
+              setActivePage={() => {}}
+              setItemPerPage={() => {}}
+            />
           </div>
         </>
       )}

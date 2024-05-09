@@ -3,18 +3,25 @@
 import { useState } from 'react'
 
 import { Button } from '@/src/components/UI'
-import Image  from 'next/image'
+import Image from 'next/image'
+import { useCloseBanner, useShowBanner } from '@/src/state/user/hooks'
+
 
 const BlastBanner = () => {
-  const [close, setClose] = useState<boolean>(false)
+  const showBanner = useShowBanner()
+  const setCloseBanner = useCloseBanner()
+  const [close, setClose] = useState<boolean>(showBanner)
 
   if (close) return null
 
-  const handlerClose = () => setClose(true)
+  const handlerClose = () => {
+    setCloseBanner(true)
+    setClose((prevState) => !prevState)
+  }
 
   return (
     <div className="blast-banner max-lg:flex-col overflow-hidden rounded-tl-[26px] rounded-br-[26px] rounded-tr-xl rounded-bl-xl">
-      <Image src={'/static/images/blast-point-banner/fenix-orbit.svg'} alt='fenix orbit' className='max-lg:hidden w-[56px] h-[56px] absolute top-0 xl:left-[750px] left-[630px] z-[5]' width={10} height={10}/>
+      <Image src={'/static/images/blast-point-banner/fenix-orbit.svg'} alt='fenix orbit' className='max-lg:hidden w-[56px] h-[56px] absolute top-0 xl:left-[550px] lg:left-[500px] z-[5]' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/fenix-orbit.svg'} alt='fenix orbit' className='lg:hidden w-[53px] h-[53px] absolute top-0 right-[30px] z-[5]' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/noise-texture.svg'} alt='Noise Texture' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5] rounded-tl-[26px] rounded-br-[26px] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/noise-texture-mobile.svg'} alt='Noise Texture Mobile' className='lg:hidden w-[100%] h-[100%] absolute top-0 left-0px bottom-0 right-0 z-[5] rounded-tl-[56px] rounded-br-[56px] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>

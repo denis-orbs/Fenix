@@ -6,6 +6,8 @@ import Pagination from './Pagination'
 import PaginationMobile from './Pagination/PaginationMobile'
 import Switch from './Switch'
 import ProgressBar from './ProgressBar'
+import MainBox from './Boxes/MainBox'
+import StepBox from './Boxes/StepBox'
 import { TableBody, TableHead, TableCell, TableRow, TableSkeleton } from './Table'
 
 export {
@@ -22,4 +24,6 @@ export {
   Switch,
   PaginationMobile,
   ProgressBar,
+  MainBox,
+  StepBox,
 }

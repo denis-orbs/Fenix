@@ -214,3 +214,10 @@
 .icon-time:before {
   content: '\e889';
 } /* '' */
+
+.icon-warning:before {
+  content: '\e88f';
+} /* '' */
+
+.icon-chart-fenix:before { content: '\e891'; } /* '' */
+.icon-recurso-9:before { content: '\e892'; } /* '' */

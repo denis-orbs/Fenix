@@ -1,13 +1,19 @@
 'use client'
-
+import { useShowChart } from '@/src/state/user/hooks'
 import Panel from '@/src/components/Liquidity/Deposit/Panel'
-import Chart from '@/src/components/Chart'
+import Chart from '@/src/components/Liquidity/Deposit/Chart'
 import { getPair } from '@/src/library/hooks/liquidity/useClassic'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
+import { useSearchParams } from 'next/navigation'
 
 const DepositLiquidity = () => {
+  const searchParams = useSearchParams()
+  const showChart = useShowChart()
   const [pairAddress, setPairAddress] = useState<Address>('0x')
+  const [token0, setToken0] = useState(searchParams.get('token0'))
+  const [token1, setToken1] = useState(searchParams.get('token1'))
+
   useEffect(() => {
     const asyncGetPair = async () => {
       const hash = window.location.hash
@@ -22,20 +28,19 @@ const DepositLiquidity = () => {
 
     asyncGetPair()
   }, [])
+
+  useEffect(() => {
+    setToken0(searchParams.get('token0'))
+    setToken1(searchParams.get('token1'))
+    // console.log('token1 :>> ', token1)
+  }, [searchParams])
+
   return (
     <div className="flex flex-col items-start gap-6 mb-4 xl:gap-10 xl:flex-row">
-      <div className="flex flex-col w-full">
-        <div className="flex flex-wrap justify-center w-full gap-5 mb-10 xl:flex-nowrap">
+      <div className="flex flex-col w-full h-[100%]">
+        <div className="flex flex-wrap justify-center w-full h-[100%] xl:gap-5 mb-10 xl:flex-nowrap">
           <Panel />
-          {/* <iframe
-            id="dextools-widget"
-            title="DEXTools Trading Chart"
-            width="10000"
-            height="730"
-            src={`https://www.dextools.io/widget-chart/en/blast/pe-light/0xf00da13d2960cf113edcef6e3f30d92e52906537?theme=dark&chartType=1&chartResolution=30&drawingToolbars=true`}
-          ></iframe> */}
-
-          {/* <Chart className="w-full xl:w-full" /> */}
+          {showChart && <Chart token0={token0} token1={token1} />}
         </div>
       </div>
     </div>

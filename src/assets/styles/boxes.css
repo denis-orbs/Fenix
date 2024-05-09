@@ -193,7 +193,7 @@
 }
 
 .search-box {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center h-[62px];
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center h-[45px];
 }
 
 .filter-lock-box {
@@ -324,12 +324,31 @@
 }
 .header-box-landing {
   @apply relative
-  /* 2xl:bg-[url("/static/images/header/header-landing2.svg")] */
-  bg-[url("/static/images/header/header-landing3.svg")]
   bg-no-repeat
   bg-cover
-  w-[540px]
-  h-[72px];
+  xl:w-[420px]
+  h-[80px]
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/header/header-landing3.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-1/2
+  before:top-0
+  before:left-0
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/header/header-landing3.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:h-full
+  after:bg-cover
+  after:w-1/2
+  after:top-0
+  after:right-0;
 }
 
 /* .rectangulo {
@@ -434,6 +453,47 @@
   after:z-[-1]
   after:xl:block;
 }
+/* .box-panel-trade-chart {
+  @apply relative
+  w-full
+  flex-shrink-0
+  xl:rounded-2xl
+  rounded-t-2xl
+  xl:w-[667px]
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  py-12
+  px-8
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/trade/trade-panel.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:z-[-1]
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/trade/trade-panel.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:z-[-1]
+  after:xl:block;
+} */
 
 .box-navigation-trade {
   @apply relative
@@ -513,6 +573,35 @@
   after:border-r-[25px]
   after:border-b-[25px]
   after:border-[transparent_transparent_#1a1d21];
+}
+
+.box-invert {
+  @apply relative
+  
+  xl:w-[312px]
+  flex-shrink-0
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/notifications/notification.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:z-40
+  before:top-0
+  before:left-0
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/notifications/notification.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:z-40
+  after:bottom-0
+  after:left-0;
 }
 
 .mini-box-vote {
@@ -656,8 +745,8 @@
   /* 2xl:w-[615px] */
   bg-shark-400
   bg-opacity-40
-  lg:bg-transparent
-  lg:bg-opacity-100
+  xl:bg-transparent
+  xl:bg-opacity-100
   py-8
   2xl:py-12
   px-8
@@ -672,7 +761,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:lg:block
+  before:xl:block
 
   after:content-[""]
   after:absolute
@@ -685,8 +774,51 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:lg:block;
+  after:xl:block;
 }
+
+.steps-box-dashboard {
+  @apply relative
+  w-full
+  rounded-2xl
+  /* 2xl:max-w-[615px] */
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  py-8
+  px-8
+  /* xl:h-[440px] */
+  2xl:h-[500px]
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/step.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/steps/step.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
+
+
+
 
 /* Background for main box */
 .main-box {
@@ -697,8 +829,8 @@
   flex-shrink-0
   bg-shark-400
   bg-opacity-40
-  lg:bg-transparent
-  lg:bg-opacity-100
+  xl:bg-transparent
+  xl:bg-opacity-100
   py-8
   2xl:py-12
   px-8
@@ -714,7 +846,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:lg:block
+  before:xl:block
 
   after:content-[""]
   after:absolute
@@ -727,7 +859,7 @@
   after:bottom-0
   after:left-0
   after:hidden
-  after:lg:block;
+  after:xl:block;
 }
 
 /* Background for veFNXIDO boxes */
@@ -934,11 +1066,13 @@
   justify-center
   w-full
   rounded-2xl
+  
   sm:w-[480px]
   sm:min-h-[470px]
   flex-shrink-0
-  bg-shark-400
+  bg-shark-700
   bg-opacity-40
+  backdrop-blur-[15px]
   2xl:bg-transparent
   2xl:bg-opacity-100
   py-5
@@ -1094,17 +1228,15 @@
   2xl:max-w-[1800px]
   flex
   flex-col
-  gap-5
   min-h-[470px]
-
   bg-shark-400
   bg-opacity-40
   2xl:bg-transparent
   2xl:bg-opacity-100
-  py-8
+  py-6
   px-4
   2xl:py-12
-  2xl:px-12
+  2xl:px-6
 
   before:content-[""]
   before:absolute
@@ -1134,7 +1266,7 @@
 }
 
 .box-strategies {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-2
 
   before:hidden
   xl:before:block
@@ -1465,6 +1597,45 @@ opacity-70
   after:content-[""]
   after:absolute
   after:bg-[url("/static/images/components/box/points/point-summary.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:h-full
+  after:bg-cover
+  after:w-1/2
+  after:top-0
+  after:right-0
+  after:hidden
+  after:xl:block;
+}
+
+.your-provide-box {
+  @apply 
+  w-full
+  xl:h-[120px]
+  p-5
+  xl:py-14
+  xl:px-10
+  mb-10
+  bg-shark-400
+  xl:bg-transparent
+  bg-opacity-40
+  rounded-lg
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/points/provide.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-1/2
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/points/provide.svg")]
   after:bg-no-repeat
   after:bg-right
   after:h-full

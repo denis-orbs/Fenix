@@ -1,15 +1,24 @@
-import getProtocolCoreClient from '@/src/library/apollo/client/protocolCoreClient'
+import getProtocolCoreClient, { getAlgebraClient } from '@/src/library/apollo/client/protocolCoreClient'
 import { GET_V2_PAIRS } from '@/src/library/apollo/queries/LIQUIDITY'
 import { queryAllForClient } from '@/src/library/apollo/utils'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { LiquidityTableElement, LiquidityV2PairDetails } from './types'
+import { BasicPool, LiquidityTableElement, LiquidityV2PairDetails } from './types'
 import { Address } from 'viem'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getAllPairsForUser } from '@/src/library/web3/apis/PairAPIV3'
 import { AddressZero } from '@/src/library/constants/misc'
 import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
-import { fetchPoolData, fetchv2PoolData } from './reducer'
+import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData } from './reducer'
+import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
+import cache from 'memory-cache'
+import { BASIC_POOLS_LIST, POOLS_ID_LIST, POOLS_LIST, POOL_FRAGMENT } from '@/src/library/apollo/queries/pools'
+import { algebra_client } from '@/src/library/apollo/client'
+import { gql } from '@apollo/client'
+import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
+import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
+import { getWeb3Provider } from '@/src/library/utils/web3'
+import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async (address: Address) => {
   try {
@@ -43,12 +52,19 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
     const client = getProtocolCoreClient()
     if (!client) return []
     const pairsV2 = await getAllPairsForUser(address)
-    const availablePairsV2 = pairsV2.filter((pair) => pair.pair_address.toLowerCase() != AddressZero)
     const availableTokenData = await fetchTokens()
     const availablePairsV3 = await fetchPoolData()
     const availablePairsV2Subgraph = await fetchv2PoolData()
-    if (!availablePairsV2 && !availableTokenData) return []
 
+    // const [pairsV2, availableTokenData, availablePairsV3, availablePairsV2Subgraph] = await Promise.all([
+    //   getAllPairsForUser(address),
+    //   fetchTokens(),
+    //   fetchPoolData(),
+    //   fetchv2PoolData(),
+    // ])
+    const availablePairsV2 = pairsV2.filter((pair) => pair.pair_address.toLowerCase() != AddressZero)
+
+    if (!availablePairsV2 && !availableTokenData) return []
     const pairs: { [pair: Address]: LiquidityTableElement } = {}
     availablePairsV2.forEach((pair) => {
       // console.log(pair)
@@ -115,13 +131,13 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
           volumeToken0: matchedPair?.volumeToken0 || '0',
           volumeToken1: matchedPair?.volumeToken1 || '0',
           isInactiveGauge: false,
-          totalPoolAmountValue,
+          totalPoolAmountValue: totalPoolAmountValue.toString(),
           myPoolAmountValue,
           myStackedAmountValueV2,
           myStackedAmountValueV3: new BigDecimal(0n, 18),
           apr,
           maxAPR,
-          tvl: tvl,
+          tvl: tvl.toString(),
           token0Symbol,
           token1Symbol,
           unmigrated: pair.account_gauge_balance > 0n,
@@ -145,26 +161,24 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
       if (tokenA && tokenB) {
         const fnxToken = availableTokenData.find((t) => t.tokenAddress.toLowerCase() === FNXTokenAddress.toLowerCase())
 
-        //  if (!fnxToken) return
-
-        /*const lp100 = 100 / parseFloat(
-                getParsedTokenBalance(
-                  tokenA.price_quote! * pair.reserve0 + tokenB.price_quote! * pair.reserve1, 18)) / pair.total_supply);*/
-
         let apr = 0.0
         let maxAPR = 0.0
-        let tvl
-        // Calculating emissions APR
-        tvl = (
+        const tvl = (
           Number(pair.totalValueLockedToken0) * tokenAprice +
           Number(pair.totalValueLockedToken1) * tokenBprice
         ).toFixed(2)
 
-        let volumeUSD = Number(pair.volumeToken0) * tokenAprice + Number(pair.volumeToken1) * tokenBprice
+        const volumeUSD = Number(pair.volumeToken0) * tokenAprice + Number(pair.volumeToken1) * tokenBprice
 
         apr = ((Number(volumeUSD) * (Number(pair.fee) / 1000000)) / Number(tvl)) * 100
         maxAPR = apr * 2
-
+        console.log(
+          'apr',
+          volumeUSD.toFixed(2).toString(),
+          Number(volumeUSD),
+          Number(volumeUSD) * (Number(pair.fee) / 1000000),
+          Number(tvl)
+        )
         // if (BLACKLISTED.includes(tokenA.symbol) || BLACKLISTED.includes(tokenB.symbol)) {
         //   apr = 0.0
         //   maxAPR = 0.0
@@ -181,14 +195,14 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
         pairs[pair.id!] = {
           pairAddress: pair.id,
           pairSymbol: 'Concentrated pool',
+          // FIXME: STARK
+          //DEV FIX
           pairInformationV2: { token0: tokenA, token1: tokenB },
           priceA: tokenAprice ? tokenAprice : 0,
           priceB: tokenBprice ? tokenBprice : 0,
           isInactiveGauge: false,
           fee: (Number(pair.fee) / 10000).toString(),
-          volumeUSD: (Number(pair.volumeToken0) * tokenAprice + Number(pair.volumeToken1) * tokenBprice)
-            .toFixed(2)
-            .toString(),
+          volumeUSD: volumeUSD.toFixed(2).toString(),
           volumeToken0: pair.volumeToken0,
           volumeToken1: pair.volumeToken1,
           totalPoolAmountValue,
@@ -230,6 +244,93 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
 
     return liqElements
   } catch (e) {
-    console.log(e, 'error')
+    // console.log(e, 'error')
+  }
+})
+// here
+export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => {
+  const cacheKey = 'global-statistics'
+  let cachedData = cache.get(cacheKey)
+  if (!cachedData) {
+    try {
+      const response = await fetch('/api/statistics')
+      const responseData = await response.json()
+      cachedData = responseData
+      cache.put(cacheKey, responseData, 1000 * 60 * 20)
+    } catch (error) {
+      console.error('Error fetching global statistics:', error)
+      return {
+        totalVolume: 0,
+        totalTVL: 0,
+        totalFees: 0,
+        lastUpdate: new Date().toISOString(),
+      }
+    }
+  }
+  return cachedData
+}
+
+export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () => {
+  const client = getAlgebraClient()
+  try {
+    const { data } = await client.query({
+      query: POOLS_LIST,
+      fetchPolicy: 'cache-first',
+    })
+    const data2 = await fetchV3PoolDayData()
+    const weekFeesUsd = data2.poolDayDatas.reduce((acc: any, current: any) => {
+      acc += Number(current.feesUSD)
+      return acc
+    }, 0)
+    // const web3Provider = getWeb3Provider()
+    // const dex = SupportedDex.Fenix
+
+    // const aprIchi = data.pools.map(async (pool: BasicPool) => {
+    //   const tokenVaults = ichiVaults.filter((vault) => {
+    //     return (
+    //       vault.tokenA.toLowerCase() === pool.token0.id.toLowerCase() &&
+    //       vault.tokenB.toLowerCase() === pool.token1.id.toLowerCase()
+    //     )
+    //   })
+    //  console.log(tokenVaults, 'tokenVaults')
+    // const averageDtr: (VaultApr | null)[] =
+    //   tokenVaults.length > 0 ? await getLpApr(tokenVaults[0].id, web3Provider, SupportedDex.Fenix) : []
+    // console.log(averageDtr.length > 0 ? averageDtr[1]?.apr?.toFixed(0) : 0, 'averageDtr')
+    // return averageDtr.length > 0 ? averageDtr[1]?.apr?.toFixed(0) : 0
+    // })
+
+    const pools = data.pools.map((pool: BasicPool) => ({
+      id: pool.id,
+      volumeUSD: pool.volumeUSD,
+      feesUSD: pool.feesUSD,
+      liquidity: pool.liquidity,
+      totalValueLockedUSD: pool.totalValueLockedUSD,
+      poolType: 'concentrated', // CHANGE
+      token0Price: pool.token0Price,
+      token1Price: pool.token1Price,
+      feesToken0: pool.feesToken0,
+      feesToken1: pool.feesToken1,
+      volumeToken0: pool.volumeToken0,
+      volumeToken1: pool.volumeToken1,
+      fee: pool.fee,
+      token0: {
+        id: pool.token0.id,
+        decimals: pool.token0.decimals,
+        symbol: pool.token0.symbol,
+        name: pool.token0.name,
+      },
+      token1: {
+        id: pool.token1.id,
+        decimals: pool.token1.decimals,
+        symbol: pool.token1.symbol,
+        name: pool.token1.name,
+      },
+      apr: ((weekFeesUsd / 7) * 365 * 100) / Number(pool.totalValueLockedUSD),
+    }))
+
+    return pools
+  } catch (error) {
+    console.log(error)
+    throw new Error(`Unable to query data from Client`)
   }
 })

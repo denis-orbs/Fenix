@@ -1,4 +1,4 @@
-import { ProtocolSubgraph } from '../../web3/ContractAddresses'
+import { AlgebraSubgraph, ProtocolSubgraph } from '../../web3/ContractAddresses'
 import createApolloClient from './index'
 
 // const baseClient = createApolloClient(`https://api.thegraph.com/subgraphs/name/navid-fkh/symmio_base`)
@@ -8,4 +8,8 @@ export const blastClient = createApolloClient(ProtocolSubgraph)
 
 export default function getProtocolCoreClient() {
   return blastClient
+}
+export const alebraClient = createApolloClient(AlgebraSubgraph)
+export function getAlgebraClient() {
+  return alebraClient
 }

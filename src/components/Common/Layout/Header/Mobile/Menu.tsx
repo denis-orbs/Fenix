@@ -13,6 +13,7 @@ interface MenuProps {
   setShowMenu: (showMenu: boolean) => void
 }
 
+
 const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
   const pathname = usePathname()
   const className = cn(
@@ -30,9 +31,16 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
 
       <div className="flex flex-col mb-4">
         {MENU_LINKS.map((link, index) => (
-          <Link onClick={() => handleCloseMenu()} href={link.href} key={index} className="text-white text-xs py-4">
-            <span>{link.name}</span>
-          </Link>
+          <div className="relative" key={index}>
+            <Link onClick={() => handleCloseMenu()} href={link.href} className="text-white text-xs py-4">
+              <span>{link.name}</span>
+            </Link>
+            {link.new && (
+              <span className="absolute left-20 text-[9px] top-1 bg-alizarin-crimson-600 rounded-md w-7 h-5 flex items-center justify-center z-[100] text-white">
+                New
+              </span>
+            )}
+          </div>
         ))}
       </div>
 

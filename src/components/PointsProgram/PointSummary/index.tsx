@@ -6,6 +6,9 @@ import { formatCurrency } from '@/src/library/utils/numbers'
 import Countdown from 'react-countdown'
 import { ReactNode, useEffect, useState } from 'react'
 import { log } from 'console'
+import { useRingsPoints } from '@/src/library/hooks/rings/useRingsPoints'
+import Loader from '../../UI/Icons/Loader'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
 const PointSummary = ({ userData }: any) => {
   //  console.log(userData, 'userData')
@@ -29,23 +32,37 @@ const PointSummary = ({ userData }: any) => {
     return eightHourTimestamps.reverse() // Reverse the array to have timestamps in ascending order
   }
 
+  //  HERE
+  const { points, isLoading } = useRingsPoints()
   // Example usage
   const timestampsArray = getCurrentEightHourTimestampArray()
   // console.log(timestampsArray.map((timestamp) => new Date(timestamp).toUTCString()))
 
   const timeSet = () => {
     if (time === '' && count === 0 && timestampsArray.length > 0) {
-      setTime(timestampsArray[0])
+      // FIXME: STARK
+      setTime(timestampsArray[0].toString())
       count++
     } else {
-      setTime(timestampsArray[count])
+      // FIXME: STARK
+      setTime(timestampsArray[count].toString())
       count++
     }
   }
 
   useEffect(() => timeSet(), [])
-
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+  // FIXME: STARK
+  const renderer = ({
+    hours,
+    minutes,
+    seconds,
+    completed,
+  }: {
+    hours: any
+    minutes: any
+    seconds: any
+    completed: any
+  }) => {
     if (completed) {
       // Render a completed state
       // return <span>You are good to go!</span>
@@ -82,7 +99,6 @@ const PointSummary = ({ userData }: any) => {
       )
     }
   }
-
   return (
     <section className="your-point-box">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center relative z-10">
@@ -93,11 +109,22 @@ const PointSummary = ({ userData }: any) => {
       </div>
       <div className="flex flex-col xl:flex-row items-center justify-between gap-5 xl:gap-20 relative z-20">
         <div className="point-summary-box">
-          <p className="text-base mb-2 text-white w-full text-left">Orbits</p>
+          <p className="text-base mb-2 text-white w-full text-left">Rings</p>
           <div className="flex items-center gap-4 w-full">
-            <Image src="/static/images/tokens/FNX.svg" alt="token" width={20} height={20} className="w-8 h-8" />
-            <div className="">
-              <h3 className="text-lg font-medium text-white"> {formatCurrency(userData?.amount) ?? '-'}</h3>
+            <div className="flex flex-col items-center h-12 justify-center gap-y-1 mt-1">
+              <Image
+                src="/static/images/points-program/orbit.svg"
+                alt="token"
+                width={20}
+                height={20}
+                // className="w-8 h-8"
+              />
+              <p className="text-xs text-white">Fenix Rings</p>
+            </div>
+            <div className="h-12 flex flex-col justify-between">
+              <h3 className="text-3xl font-medium text-white">
+                {isLoading ? <Loader size={'20px'} /> : formatCurrency(points) ?? '-'}
+              </h3>
               <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 Your Total points
               </p>
@@ -114,9 +141,9 @@ const PointSummary = ({ userData }: any) => {
               <h3 className="text-3xl font-medium text-white">{userData?.rank ?? '-'}</h3>
               <div className="">
                 <p className="text-white text-xs">RANK</p>
-                {/* <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                  {formatCurrency(userData?.amount) ?? '-'}
-                </p> */}
+                <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
+                  {formatCurrency(userData?.amount / 10 ** 6) ?? '-'} points
+                </p>
               </div>
             </div>
           </div>
@@ -129,7 +156,8 @@ const PointSummary = ({ userData }: any) => {
         </div>
         <div className="point-summary-box">
           <p className="text-base text-white w-full mb-4">
-            Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span>
+            Next Points Drop
+            {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
           </p>
           <div className="w-full">
             <Countdown key={time} date={time} daysInHours={true} autoStart={true} renderer={renderer} />

@@ -8,6 +8,8 @@ import { useContractWrite } from 'wagmi'
 import toast, { Toaster } from 'react-hot-toast'
 import { multicall } from '@wagmi/core'
 import BigNumber from 'bignumber.js'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 
 interface ABI {
   inputs?: {
@@ -55,11 +57,13 @@ interface DepositModalProp {
 
 const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateStatus }: DepositModalProp) => {
   const handleClose = () => setOpenModal(false)
-  const [depositAmount, setdepositAmount] = useState('0')
+  const [depositAmount, setdepositAmount] = useState('')
   const [tokenIds, settokenIds] = useState([])
   const [isDeposited, setisDeposited] = useState([])
   const [balance, setBalance] = useState(0)
   const [depositiserror, setdepositiserror] = useState(false)
+
+  const addNotification = useNotificationAdderCallback()
 
   const {
     writeAsync: handleDeposit,
@@ -74,8 +78,8 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
     functionName: migrateStatus === 'success' ? 'deposit' : 'depositnsh',
     args:
       item.token === 'CHR' || item.token === 'spCHR' || item.token === 'elCHR'
-        ? [BigInt(depositAmount) * 10n ** 18n]
-        : [BigInt(depositAmount)],
+        ? [(depositAmount) * 10 ** 18]
+        : [(depositAmount)],
   })
 
   const {
@@ -91,8 +95,8 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
     functionName: 'approve',
     args:
       item.token === 'CHR' || item.token === 'spCHR' || item.token === 'elCHR'
-        ? [item.migrateAddress, BigInt(depositAmount) * 10n ** 18n]
-        : [item.migrateAddress, BigInt(depositAmount)],
+        ? [item.migrateAddress, (depositAmount) * 10 ** 18]
+        : [item.migrateAddress, (depositAmount)],
   })
   const handlerdepositCheck = async () => {
     try {
@@ -151,9 +155,10 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
                 for (let i = 0; i < ids.length; i++) {
                   depositedIds.push(deposit[i]?.result)
                 }
-                const filteredArray = nftids.map((value, index) => {
+                const filteredArray = []
+                nftids.map((value, index) => {
                   if (!depositedIds[index]) {
-                    return value
+                    filteredArray.push(nftids[index])
                   }
                 })
                 settokenIds(filteredArray)
@@ -215,22 +220,70 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
 
   useEffect(() => {
     if (approvalIsError) {
-      toast(`${approvalError?.cause}`)
+      // toast(`${approvalError?.cause}`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `${approvalError?.cause}`,
+        notificationType: NotificationType.ERROR,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     }
     if (depositIsError) {
-      toast(`${depositError?.cause}`)
+      // toast(`${depositError?.cause}`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `${depositError?.cause}`,
+        notificationType: NotificationType.ERROR,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     }
     if (approvalIsLoading) {
-      toast(`Loading approval tx...`)
+      // toast(`Loading approval tx...`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Loading approval tx...`,
+        notificationType: NotificationType.DEFAULT,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     }
     if (depositIsLoading) {
-      toast(`Loading Migration tx...`)
+      // toast(`Loading Migration tx...`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Loading Migration tx...`,
+        notificationType: NotificationType.DEFAULT,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     }
     if (approvalIsSuccess) {
-      toast(`Submitted approval tx Successfully`)
+      // toast(`Submitted approval tx Successfully`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Submitted approval tx Successfully`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     }
     if (depositIsSuccess) {
-      toast(`Submitted Migration tx Successfully`)
+      // toast(`Submitted Migration tx Successfully`)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Submitted Migration tx Successfully`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: hash,
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
     }
   }, [approvalIsError, depositIsError, approvalIsLoading, depositIsLoading, approvalIsSuccess, depositIsSuccess])
 
@@ -246,15 +299,19 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
         >
           <span className="icon-x"></span>
         </button>
+        
         <div className="p-5 text-center">
+        {item.token === 'veCHR'?<><label>Input tokenId one by one, to be able to migrate</label><br></br><br></br></>:item.token === 'chrNFT'?<><label>chrNFTs need to be unstaked in order to be able to be migrated</label><br></br><br></br></>:null}
+        
           <div className="w-100 my-2">
             <input
               className="me-8 px-3 py-1 text-xs md:text-sm border rounded-lg text-center text-shark-100 bg-shark-400 border-shark-300 truncate max-w-[200px]"
               type="text"
               value={depositAmount}
+              placeholder={...item.token === 'chrNFT' || item.token === 'veCHR' ?'Input your token ID, one by one, to be able to migrate':'Input Amount'}
               onChange={(e) => setdepositAmount(e.target.value)}
             />
-            <div
+            <span
               onClick={() => {
                 if (migrateAmount >= balance) setdepositAmount(balance)
                 else setdepositAmount(migrateAmount)
@@ -275,7 +332,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
                     ? tokenIds.join(',')
                     : null}
               </label>
-            </div>
+            </span>
           </div>
           <div className="w-100 flex justify-center items-center my-5">
             <Button onClick={handlerdepositCheck}>
@@ -285,7 +342,16 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
           </div>
         </div>
       </div>
-      {depositiserror ? toast(`${depositError?.cause}`) : null}
+      {depositiserror ? (
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `${depositError?.cause}`,
+          notificationType: NotificationType.SUCCESS,
+          txHash: hash,
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
+        ) : null}
     </Modal>
   )
 }

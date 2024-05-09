@@ -36,10 +36,10 @@ const HeaderRowVote = ({
   const dispatch = useDispatch<AppThunkDispatch>()
   const vote = useAppSelector((state) => state.vote as voteState)
   const lock = useAppSelector((state) => state.lock as lockState)
-  console.log(
-    vote.voteTableElement.map((row) => row.pair.pair_address),
-    'voteTableElement'
-  )
+  // console.log(
+  //   vote.voteTableElement.map((row) => row.pair.pair_address),
+  //   'voteTableElement'
+  // )
 
   useEffect(() => {
     if (address) dispatch(fetchGaugesAsync(address))
@@ -72,6 +72,10 @@ const HeaderRowVote = ({
               },
               { text: 'Vote', className: 'w-[20%] text-right', sortable: true },
             ]}
+            setSort={() => {}}
+            sort={null}
+            setSortIndex={() => {}}
+            sortIndex={1}
           />
         </div>
 
@@ -102,7 +106,14 @@ const HeaderRowVote = ({
         <>
           <div className="items-center hidden xl:flex">
             <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
-            <Pagination className="mx-auto" numberPages={7} />
+            <Pagination
+              className="mx-auto"
+              numberPages={7}
+              activePage={1}
+              setActivePage={() => {}}
+              itemsPerPage={10}
+              setItemPerPage={() => {}}
+            />
             <div
               className="flex items-center justify-center
       cursor-pointer w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
@@ -111,7 +122,15 @@ const HeaderRowVote = ({
             </div>
           </div>
           <div className="block xl:hidden">
-            <PaginationMobile />
+            <PaginationMobile
+              className=""
+              numberPages={7}
+              count={10}
+              activePage={1}
+              setActivePage={() => {}}
+              itemsPerPage={10}
+              setItemPerPage={() => {}}
+            />
           </div>
         </>
       )}

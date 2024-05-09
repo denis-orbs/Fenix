@@ -1,6 +1,6 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
-import { getConcentratedPools, getLiquidityV2Pairs } from './thunks'
+import { getAllPools, getConcentratedPools, getLiquidityV2Pairs } from './thunks'
 import { LiquidityState, V2PairId, v2FactoryData, v3FactoryData } from './types'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import {
@@ -17,7 +17,13 @@ import { algebra_client } from '@/src/library/apollo/client'
 import { blastClient } from '@/src/library/apollo/client/protocolCoreClient'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
-import { GET_UNISWAP_FACTORY_DATA, GET_V2_PAIR_ID, GET_V3_FACTORY_DATA } from '@/src/library/apollo/queries/global'
+import {
+  GET_UNISWAP_FACTORY_DATA,
+  GET_V2_PAIR_ID,
+  GET_V3_FACTORY_DATA,
+  NATIVE_PRICE,
+} from '@/src/library/apollo/queries/global'
+import { POOL_DAY_DATA } from '@/src/library/apollo/queries/pools'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -27,6 +33,10 @@ export const initialState: LiquidityState = {
     tableData: [],
   },
   concentratedPools: {
+    state: ApiState.LOADING,
+    data: [],
+  },
+  pools: {
     state: ApiState.LOADING,
     data: [],
   },
@@ -53,6 +63,17 @@ export default createReducer(initialState, (builder) => {
     })
     .addCase(updateClmProvider, (state, action) => {
       state.clmProvider = action.payload
+    })
+    .addCase(getAllPools.pending, (state) => {
+      state.pools.state = ApiState.LOADING
+    })
+    .addCase(getAllPools.fulfilled, (state, action) => {
+      state.pools.state = ApiState.SUCCESS
+      state.pools.data = action.payload
+    })
+    .addCase(getAllPools.rejected, (state) => {
+      state.pools.state = ApiState.ERROR
+      console.error('Error fetching pools')
     })
     .addCase(getLiquidityV2Pairs.pending, (state) => {
       state.v2Pairs.state = ApiState.LOADING
@@ -169,10 +190,59 @@ export const fetchv2PairId = async (token0Id: any, token1Id: any, isStable: Bool
     })
     // console.log(data)
     // // Data is available in `data.pools`
-    console.log(data.pairs)
+    // console.log(data.pairs)
     return data.pairs as V2PairId[]
   } catch (error) {
     console.error('Error fetching pool data:', error)
+    return []
+  }
+}
+// Function to native price of user data
+export const fetchNativePrice = async () => {
+  try {
+    const { data } = await algebra_client.query({
+      query: NATIVE_PRICE,
+    })
+    // Data is available in `data.positions`
+    // console.log(data.bundles[0].maticPriceUSD, 'price')
+    return data.bundles[0].maticPriceUSD as string
+  } catch (error) {
+    console.error('Error fetching positions:', error)
+    return []
+  }
+}
+
+export const fetchV3PoolDayData = async () => {
+  try {
+    // const currentDate = new Date()
+    // const currentUTCTimestamp = Date.UTC(
+    //   currentDate.getUTCFullYear(),
+    //   currentDate.getUTCMonth(),
+    //   currentDate.getUTCDate(),
+    //   0,
+    //   0,
+    //   0,
+    //   0
+    // )
+
+    // // Calculate the beginning of today (00:00:00 GMT) timestamp
+    // const todayStart = currentUTCTimestamp
+
+    // // Calculate yesterday's 00:00:00 GMT timestamp
+    // const yesterdayStart = todayStart - 24 * 60 * 60 * 1000
+
+    // // Determine which timestamp to use based on current time
+    // const selectedDateTimestamp = currentUTCTimestamp < todayStart ? yesterdayStart : todayStart
+
+    const { data } = await algebra_client.query({
+      query: POOL_DAY_DATA,
+      // variables: { date: selectedDateTimestamp / 1000 }, // Pass the user variable as owner
+    })
+    console.log(data, 'data')
+    // Data is available in `data.positions`
+    return data
+  } catch (error) {
+    console.error('Error fetching positions:', error)
     return []
   }
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+// import { useToken0, useToken1 } from '@/src/state/apr/liquidity/hooks'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import {
   SupportedChainId,
@@ -23,7 +24,7 @@ export interface IchiVault {
   tokenB: string
   allowTokenA: boolean
   allowTokenB: boolean
-  apr: VaultApr
+  apr: (VaultApr | null)[]
 }
 
 export const useIchiVault = (providedToken0?: string, providedToken1?: string) => {
@@ -41,17 +42,19 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
   const getLp = async (vadd: string) => {
     const web3Provider = getWeb3Provider()
     const dex = SupportedDex.Fenix
-    const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
+    // get the apr for 7 days
+    const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex, [7])
     return averageDtr
   }
 
   useEffect(() => {
-    const tokenVaults = ichiVaults.filter((vault) => {
+    const tokenVaults = ichiVaults.filter((vault: IchiVault) => {
       return vault.tokenA === tokenA && vault.tokenB === tokenB
     })
 
-    tokenVaults.forEach(async (v) => {
+    tokenVaults.forEach(async (v: IchiVault) => {
       const kapr = await getLp(v.id)
+      // FIXME: STARK
       v.apr = kapr
       // console.log(v)
       return v
@@ -64,7 +67,7 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
     //   return token
     // })
     // console.log('mod', tokenVaultsWithApr)
-
+    // FIXME: STARK
     setVault(tokenVaults)
   }, [token0, token1, tokenA, tokenB])
 
@@ -118,38 +121,98 @@ export const useIchiPositions = () => {
     const fetchpositions = async () => {
       if (address) {
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
-        const pos = amounts?.map((item) => {
-          let tokenA
-          let tokenB
-          //const vaultInfo = useIchiVaultsData(item.vaultAddress)
-          console.log(tokenA)
+        const pos = await Promise.all(
+          amounts?.map(async (item) => {
+            const chain = SupportedChainId.blast
 
-          return {
-            id: item.vaultAddress,
-            liquidity: 'ichi',
-            depositedToken0: item.userAmounts[0],
-            depositedToken1: item.userAmounts[1],
-            tickLower: {
-              price0: '0',
-              price1: '0',
-            },
-            tickUpper: {
-              price0: '0',
-              price1: '0',
-            },
-            token0: {
-              name: 'token0',
-              id: 'vaultInfo?.tokenA!',
-              symbol: 'token0',
-            },
-            token1: {
-              id: 'vaultInfo?.tokenB!',
-              symbol: 'token1',
-              name: 'token1',
-            },
-          }
-        })
-        console.log(pos, 'pos')
+            const vaultInfo = await getIchiVaultInfo(chain, dex, item.vaultAddress)
+            const tokenAid = vaultInfo.tokenA
+            const tokenBid = vaultInfo.tokenB
+            //const vaultInfo = useIchiVaultsData(item.vaultAddress)
+            //   console.log(tokenA)
+
+            const getLp = async (vadd: string) => {
+              const web3Provider = getWeb3Provider()
+              const dex = SupportedDex.Fenix
+              const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
+              return averageDtr
+            }
+
+            const app: (VaultApr | null)[] = await getLp(item.vaultAddress)
+
+            return {
+              id: item.vaultAddress,
+              liquidity: 'ichi',
+              depositedToken0: Number(item.userAmounts[0]),
+              depositedToken1: Number(item.userAmounts[1]),
+              tickLower: {
+                price0: '0',
+                price1: '0',
+                tickIdx: '',
+              },
+              tickUpper: {
+                price0: '0',
+                price1: '0',
+                tickIdx: '',
+              },
+              token0: {
+                id: tokenAid,
+                symbol: 'string',
+                name: 'string',
+                decimals: 'string',
+                derivedMatic: 'string',
+              },
+              token1: {
+                id: tokenBid,
+                symbol: 'string',
+                name: 'string',
+                decimals: 'string',
+                derivedMatic: 'string',
+              },
+              owner: address,
+              withdrawnToken0: '',
+              withdrawnToken1: '',
+              pool: {
+                id: 'string',
+                fee: 'string',
+                sqrtPrice: 'string',
+                liquidity: 'string',
+                tick: 'string',
+                tickSpacing: 'string',
+                totalValueLockedUSD: 'string',
+                volumeUSD: 'string',
+                feesUSD: 'string',
+                untrackedFeesUSD: 'string',
+                token0Price: 'string',
+                token1Price: 'string',
+                token0: {
+                  id: 'string',
+                  symbol: 'string',
+                  name: 'string',
+                  decimals: 'string',
+                  derivedMatic: 'string',
+                },
+                token1: {
+                  id: 'string',
+                  symbol: 'string',
+                  name: 'string',
+                  decimals: 'string',
+                  derivedMatic: 'string',
+                },
+                poolDayData: {
+                  feesUSD: 'string',
+                },
+              },
+
+              // FIXME: STARK
+              // apr: app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
+              apr: app[1] && app[1]?.apr ? (app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%') : '0.00%',
+            }
+          })
+        )
+        // FIXME: STARK
+        //DEV FIX
+        //  console.log(pos, 'pos')
         setpositions(pos)
       }
     }
@@ -162,17 +225,20 @@ export const useIchiPositions = () => {
 export const useIchiVaultsData = (vaultAddress: string) => {
   const dex = SupportedDex.Fenix
   const chain = SupportedChainId.blast
-  const [vaultData, setvaultData] = useState<IchiVault>({
+  // FIXME: STARK
+  const [vaultData, setvaultData] = useState<any>({
     id: '',
     tokenA: '',
     tokenB: '',
     allowTokenA: false,
     allowTokenB: false,
+    apr: [],
   })
 
   useEffect(() => {
     const fetchVault = async () => {
       const vaultInfo = await getIchiVaultInfo(chain, dex, vaultAddress)
+      // FIXME: STARK
       if (vaultInfo) setvaultData(vaultInfo)
     }
     fetchVault()

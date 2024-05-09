@@ -17,10 +17,12 @@ const StrategyButton = ({
   strategyType,
   currentStrategy,
   onClick,
+  active,
 }: {
   strategyType: StrategyType
   currentStrategy: StrategyType | null
-  onClick: (strategyType: StrategyType | null) => void
+  onClick: () => void
+  active: boolean
 }) => {
   const [isHover, setIsHover] = useState(false)
   const [showTooltip, setShowTooltip] = useState(false)
@@ -28,17 +30,17 @@ const StrategyButton = ({
   const currentIcon = useMemo(() => {
     switch (strategyType) {
       case StrategyType.NARROW:
-        return <NarrowIcon isHovered={strategyType === currentStrategy} />
+        return <NarrowIcon isHovered={active} />
       case StrategyType.BALANCED:
-        return <BalancedIcon isHovered={strategyType === currentStrategy} />
+        return <BalancedIcon isHovered={active} />
       case StrategyType.WIDE:
-        return <WideIcon isHovered={strategyType === currentStrategy} />
+        return <WideIcon isHovered={active} />
       case StrategyType.FULL_RANGE:
-        return <FullRange isHovered={strategyType === currentStrategy} />
+        return <FullRange isHovered={active} />
       default:
         return null
     }
-  }, [strategyType, isHover, currentStrategy, strategyType])
+  }, [strategyType, active])
 
   const tooltipText = useMemo(() => {
     switch (strategyType) {
@@ -64,9 +66,9 @@ const StrategyButton = ({
         type="button"
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        onClick={() => onClick(strategyType === currentStrategy ? null : strategyType)}
+        onClick={onClick}
         className={`bg-shark-300 bg-opacity-40 px-5 pt-[17px] pb-[7px] rounded-[10px] border border-shark-200 w-full flex flex-col gap-1 items-center justify-center hover:bg-shark-400 mb-2.5 max-md:w-[46.166px] max-md:h-[36.716px] ${
-          strategyType === currentStrategy ? 'bg-button-primary-hover' : ''
+          active ? 'bg-button-primary-hover' : ''
         }`}
       >
         <span>{currentIcon}</span>

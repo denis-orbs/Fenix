@@ -5,10 +5,10 @@ import VoterV3ABI from './abis/VoterV3ABI'
 
 import { VoterV3Address } from './ContractAddresses'
 import { encodeFunctionData } from 'viem'
-import { config } from '@/src/app/layout'
+import { wagmiConfig } from '@/src/app/layout'
 
 export async function resetVotes(tokenId: number): Promise<Hash> {
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: VoterV3Address,
     abi: VoterV3ABI,
     functionName: 'reset',
@@ -19,8 +19,8 @@ export async function resetVotes(tokenId: number): Promise<Hash> {
 }
 
 export async function castVotes(tokenId: number, poolAddresses: Address[], weights: bigint[]): Promise<Hash> {
-  const provider = getPublicClient(config)
-  const signer = await getWalletClient(config)
+  const provider = getPublicClient(wagmiConfig)
+  const signer = await getWalletClient(wagmiConfig)
 
   const gas = await provider?.estimateGas({
     // args: [tokenId],
@@ -34,7 +34,7 @@ export async function castVotes(tokenId: number, poolAddresses: Address[], weigh
   })
   // const gas = await contract.estimateGas.vote(tokenId, poolAddresses, weights);
 
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: VoterV3Address,
     abi: VoterV3ABI,
     functionName: 'vote',
@@ -46,7 +46,7 @@ export async function castVotes(tokenId: number, poolAddresses: Address[], weigh
 }
 
 export async function getPoolWeight(pairAddress: Address): Promise<bigint> {
-  const weight = (await readContract(config, {
+  const weight = (await readContract(wagmiConfig, {
     address: VoterV3Address,
     abi: VoterV3ABI,
     functionName: 'weights',
@@ -57,7 +57,7 @@ export async function getPoolWeight(pairAddress: Address): Promise<bigint> {
 }
 
 export async function getTotalWeight(): Promise<bigint> {
-  const weight = (await readContract(config, {
+  const weight = (await readContract(wagmiConfig, {
     address: VoterV3Address,
     abi: VoterV3ABI,
     functionName: 'totalWeight',

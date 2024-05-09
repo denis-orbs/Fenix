@@ -5,14 +5,32 @@ import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnec
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import { getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
+import {
+  getAllUserAmounts,
+  getUserAmounts,
+  getUserBalance,
+  IchiVault,
+  SupportedDex,
+  UserAmountsInVault,
+  VaultApr,
+  withdraw,
+} from '@ichidao/ichi-vaults-sdk'
 import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-import { formatAmount, toBN } from '@/src/library/utils/numbers'
+import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { ichiVaults } from './ichiVaults'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
+
+interface modifiedIchiVault extends IchiVault {
+  apr?: VaultApr
+}
 
 const WithdrawAmountsICHI = ({
   token,
@@ -20,12 +38,16 @@ const WithdrawAmountsICHI = ({
   tokenList,
 }: {
   token: IToken | undefined
-  allIchiVaultsByTokenPair: IchiVault[] | undefined | null
+  allIchiVaultsByTokenPair: modifiedIchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
   const [isActive, setIsActive] = useState<boolean>(false)
   const [selected, setIsSelected] = useState<string>('Choose one')
   const { account } = useActiveConnectionDetails()
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+  const [totalShareDollar, setTotalShareDollar] = useState<Number>(0)
+
+  const addNotification = useNotificationAdderCallback()
 
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
@@ -63,6 +85,30 @@ const WithdrawAmountsICHI = ({
     setIsSelected(vaultAddress.allowTokenA ? vaultAddress.tokenA.toLowerCase() : vaultAddress.tokenB.toLowerCase())
     const getTotalUserShares = async () => {
       const data = await getUserBalance(account, vaultAddress.id, web3Provider, dex)
+      const amounts: [string, string] & { amount0: string; amount1: string } = await getUserAmounts(
+        account,
+        vaultAddress.id,
+        web3Provider,
+        dex
+      )
+      const tokenAid = ichiVaults.find((v) => {
+        if (v.id === vaultAddress.id) {
+          return v
+        }
+      })?.tokenA
+      
+      const tokenBid = ichiVaults.find((v) => {
+        if (v.id === vaultAddress.id) {
+          return v
+        }
+      })?.tokenB
+      const tokenList = await fetchTokens()
+      const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
+      const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
+      setTotalShareDollar(Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice))
+      
+
+
       setTotalUserShares(data)
     }
     getTotalUserShares()
@@ -83,26 +129,100 @@ const WithdrawAmountsICHI = ({
     if (!vaultAddress) return
     try {
       const txnDetails = await withdraw(account, amoutToWithdraw, vaultAddress.id, web3Provider, dex)
-      toast.success('Withdrawal Transaction Sent')
+      // toast.success('Withdrawal Transaction Sent')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Withdrawal Transaction Sent.`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
       txnDetails.wait()
-      toast.success('Withdrawal Successful')
+      // toast.success('Withdrawal Successful')
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `Withdrawal Successful.`,
+        notificationType: NotificationType.SUCCESS,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
+      setAmountToWithdraw('')
     } catch (error: any) {
       if (error?.code == 401) return
-      toast.error(error?.message)
+      // toast.error(error?.message)
+      addNotification({
+        id: crypto.randomUUID(),
+        createTime: new Date().toISOString(),
+        message: `${error?.message}`,
+        notificationType: NotificationType.ERROR,
+        txHash: '',
+        notificationDuration: NotificationDuration.DURATION_5000,
+      })
+    }
+  }
+
+  useEffect(() => {
+    toBN(totalUserShares).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+  }, [totalUserShares])
+
+  const handleHalf = () => {
+    // console.log(!totalUserShares)
+    // console.log()
+    // console.log(totalUserShares)
+    if (btnDisabled) {
+      setAmountToWithdraw('')
+    } else {
+      if (!totalUserShares || totalUserShares === '') {
+        setAmountToWithdraw('')
+      } else {
+        setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
+      }
+    }
+  }
+
+  const handleMax = () => {
+    if (btnDisabled) {
+      setAmountToWithdraw('')
+    } else {
+      if (!totalUserShares || totalUserShares === '') {
+        setAmountToWithdraw('')
+      } else {
+        setAmountToWithdraw(toBN(totalUserShares).toString())
+      }
     }
   }
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
-        <div className="flex items-center mb-2 text-xs leading-normal w-full xl:w-3/5 justify-between">
-          <div className=" text-white">Withdraw amounts</div>
-          <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
-            <span className="icon-wallet text-xs"></span>
-            {/* Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'} */}
-            Withdrawable: {totalUserShares != '0' ? formatAmount(totalUserShares) : '-'}{' '}
-            {tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.symbol}
-          </span>
+        <div className="flex w-full items-center mb-2">
+          <div className="flex w-full xl:w-3/5 justify-between">
+            <div className="text-xs leading-normal text-white">Withdraw amounts</div>
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              {totalShareDollar
+                ? formatDollarAmount((Number(totalShareDollar) / Number(totalUserShares)) * Number(amoutToWithdraw))
+                : '$ 0'}
+
+              {/* {amoutToWithdraw && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
+                ? formatDollarAmount(
+                    toBN(amoutToWithdraw)
+                      .multipliedBy(
+                        tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price || 0
+                      )
+                      .toString()
+                  )
+                : ''} */}
+            </span>
+          </div>
+          <div className="xl:w-2/5 flex-shrink-0 flex justify-end">
+            <span className="text-xs leading-normal text-shark-100 mr-4 flex items-center gap-x-2">
+              <span className="icon-wallet text-xs"></span>
+              Withdrawable LP : {totalUserShares != '0' ? formatAmount(totalUserShares, 4) : '-'}{' '}
+            </span>
+          </div>
         </div>
+
         <div className="flex items-center gap-3">
           <div className="relative w-full xl:w-3/5">
             <Toaster />
@@ -116,24 +236,10 @@ const WithdrawAmountsICHI = ({
               className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
             />
             <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!totalUserShares || totalUserShares == '') return
-                  setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
-                }}
-              >
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
                 Half
               </Button>
-              <Button
-                variant="tertiary"
-                className="!py-1 !px-3"
-                onClick={() => {
-                  if (!totalUserShares || totalUserShares == '') return
-                  setAmountToWithdraw(toBN(totalUserShares).toString())
-                }}
-              >
+              <Button variant="tertiary" className="!py-1 !px-3" onClick={handleMax}>
                 Max
               </Button>
             </div>
@@ -168,7 +274,7 @@ const WithdrawAmountsICHI = ({
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
                     ${isActive ? 'visible bg-shark-500 !bg-opacity-80 border-shark-200' : 'hidden'}`}
                   >
-                    {allIchiVaultsByTokenPair.map((vault) => (
+                    {allIchiVaultsByTokenPair.map((vault: modifiedIchiVault) => (
                       <div
                         className="flex justify-start items-center gap-3 cursor-pointer m-1 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}
@@ -198,12 +304,18 @@ const WithdrawAmountsICHI = ({
                               ]
                             }
                           </span>
+                          {
+                            // FIXME: STARK
+                          }
                           {vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[0]?.apr === null || vault?.apr[0]?.apr < 0
-                                ? '0'
-                                : vault?.apr[0]?.apr?.toFixed(0)}
+                              {/* {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0 ? '0' : vault?.apr[1]?.apr?.toFixed(0)} */}
+                              {Array.isArray(vault.apr) && typeof vault.apr[1]?.apr === 'number'
+                                ? vault.apr[1]?.apr >= 0
+                                  ? vault.apr[1]?.apr.toFixed(0)
+                                  : '0'
+                                : '0'}
                               %
                             </span>
                           )}
@@ -221,7 +333,15 @@ const WithdrawAmountsICHI = ({
         </div>
       </div>
 
-      <Button onClick={withdrawFromVault} variant="tertiary" className="w-full mx-auto !text-xs !h-[49px]">
+      <Button
+        onClick={withdrawFromVault}
+        walletConfig={{
+          needWalletConnected: true,
+          needSupportedChain: true,
+        }}
+        variant="tertiary"
+        className="w-full mx-auto !text-xs !h-[49px]"
+      >
         {getButtonText()}
       </Button>
     </>

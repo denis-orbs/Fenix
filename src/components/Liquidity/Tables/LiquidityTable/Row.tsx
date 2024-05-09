@@ -2,18 +2,19 @@
 'use client'
 
 import { Button, TableCell, TableRow } from '@/src/components/UI'
-import { PoolData, v3PoolData } from '@/src/state/liquidity/types'
+import { BasicPool, PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
-import MobileRow from './MobileRow'
+import MobileRow from './MobileRowNew'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState, useRef } from 'react'
-import { formatCurrency } from '@/src/library/utils/numbers'
+import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
+import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 
 interface RowDataProps {
-  row: PoolData
-  tokensData: Promise<Token[]>
+  row: BasicPool
+  tokensData: Promise<Token[]> | null
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string
@@ -30,33 +31,44 @@ const RowData = ({
   titleHeader2,
   activeRange,
 }: RowDataProps) => {
-  const [tokens, setTokens] = useState<Token[]>()
-  tokensData.then((data) => {
-    setTokens(data)
-  })
-
   const { width } = useWindowSize()
 
   const hoverRef = useRef(null)
   const isHover = useHover(hoverRef)
 
+  const [openInfo, setOpenInfo] = useState<boolean>(false)
+
+  const aprIchi = useIchiVault(row.token0.id, row.token1.id)
+
+  let aprdisplayIchi = 0
+  // if (aprIchi && aprIchi.length > 0) {
+  //   // FIXME: STARK
+  //   if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
+  // }
+  if (aprIchi && aprIchi.length > 0) {
+    if (aprIchi[0].apr && Array.isArray(aprIchi[0].apr) && aprIchi[0].apr.length > 1) {
+      const aprValue = aprIchi[0].apr[0]?.apr
+      if (typeof aprValue === 'number') {
+        aprdisplayIchi = aprValue >= 0 ? Number(aprValue.toFixed(0)) : 0
+      }
+    }
+  }
+
   return (
     <>
-      <TableRow className="hidden 2xl:flex">
-        <TableCell
-          className={`${activeRange ? 'w-[20%]' : width >= 1300 ? 'w-[20%]' : width < 1300 || width >= 1280 ? 'w-[27%]' : 'w-[25%]'}`}
-        >
+      <TableRow className="hidden lg:flex">
+        <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
           <div className="flex items-center gap-2">
-            <div className="flex items-center">
+            <div className="flex items-center max-2xl:hidden">
               <Image
-                src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+                src={`/static/images/tokens/${row.token0.symbol}.png`}
                 alt="token"
                 className="rounded-full w-7 h-7"
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                src={`/static/images/tokens/${row.token1.symbol}.png`}
                 alt="token"
                 className="-ml-4 rounded-full w-7 h-7"
                 width={20}
@@ -64,133 +76,164 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col">
-              <h5 className="text-sm text-white">
-                {row.pairDetails.token0Symbol} / {row.pairDetails.token1Symbol}
+              <h5 className={`text-sm text-white ${(totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier) ? 'flex items-center justify-around' : ''}`}>
+                <div>{row.token0.symbol} / {row.token1.symbol}</div> <div>{totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}</div>
+
               </h5>
-              <div className="flex items-center gap-2">
-                {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
-                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
-                    Volatile Pool{' '}
-                  </span>
-                )}
-                {row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
-                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
-                    Stable Pool
-                  </span>
-                )}
-                {row.pairDetails.pairSymbol === 'Concentrated pool' && (
-                  <span
-                    className="py-1 px-2  text-xs rounded-lg 
+              <div className="flex items-center justify-around gap-2">
+                <span
+                  className="py-1 px-2  text-xs rounded-lg 
                     bg-gradient-to-r from-outrageous-orange-500 to-festival-500"
-                    // bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
-                  >
-                    Concentrated
-                  </span>
-                )}
+                >
+                  Concentrated
+                </span>
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  {row.pairDetails.fee}%
+                  {/* FEES */}
+                  {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
-                {/* <Button variant="tertiary" className="!py-1">
-                  <span className="icon-info"></span>
-                </Button> */}
               </div>
             </div>
           </div>
         </TableCell>
-        {/* {activeRange && (
-          <TableCell className={`w-[12%] flex items-center justify-center`}>
-            <div className="flex gap-2 items-center">
-              <span className="bg-green-600 w-4 h-4 rounded-full border-4 border-black"></span>
-              <div className="text-xs flex flex-col">
-                <p className="text-shark-100 text-center">Min Price</p>
-                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  $0.00
-                </span>
-              </div>
-              <div className="text-xs flex flex-col">
-                <p className="text-shark-100 text-center">Max Price</p>
-                <span className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  $0.00
-                </span>
-              </div>
-            </div>
-          </TableCell>
-        )} */}
-
-        <TableCell
-          className={`${activeRange ? 'w-[8%]' : width <= 1250 ? 'w-[10%]' : 'w-[15%]'} flex justify-center items-center`}
-        >
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
-            {/* {totalCampaigns.map((campaign) => { })} */}
-            <span
-              ref={hoverRef}
-              className="flex flex-row hover:flex-row-reverse transition-transform transform hover:scale-110"
-              // className="flex flex-row hover:flex-row-reverse transition-transform transform hover:scale-110 hover:-translate-x-4"
-            >
-              <Image
-                src={`/static/images/tokens/blastgold.png`}
+            <span ref={hoverRef} className="flex flex-row transition-transform transform group">
+              {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
+                <>
+                  <Image
+                    src={`/static/images/point-stack/fenix-ring.svg`}
+                    alt="token"
+                    className={`-mr-3 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
+                    width={20}
+                    height={20}
+                  />
+                  <Image
+                    src={`/static/images/point-stack/blast.svg`}
+                    alt="token"
+                    className={`-mr-3 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
+                    width={20}
+                    height={20}
+                  />
+                  <Image
+                    src={`/static/images/point-stack/blast-gold.svg`}
+                    alt="token"
+                    className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
+                    width={20}
+                    height={20}
+                  />
+                </>
+              )}
+
+              {/* <Image
+                src={`/static/images/tokens/${row.token0.symbol}.png`}
                 alt="token"
-                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
-                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/blastpoints.png`}
+                src={`/static/images/tokens/${row.token1.symbol}.png`}
                 alt="token"
-                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
-                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
+                className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
                 width={20}
                 height={20}
-              />
-              <Image
-                src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
-                alt="token"
-                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
-                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
-                width={20}
-                height={20}
-              />
-              <Image
-                src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
-                alt="token"
-                // className={`${!isHover ? '-ml-4' : 'transition-all duration-300 scaleX(-1) hover:delay-200'} rounded-full w-7 h-7`}
-                className={`${!isHover ? '-ml-4' : 'm-1 transition-all duration-300 hover:delay-200'} rounded-full w-7 h-7`}
-                width={20}
-                height={20}
-              />
+              /> */}
             </span>
-            <p className="px-1 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.apr.toFixed(0)}%
-            </p>
           </div>
-          {/* <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-            {row.pairDetails.apr.toFixed(0)} %{' '}
-          </p> */}
+        </TableCell>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
+          <div className="relative flex justify-center items-center gap-2 ">
+            <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              {/* APR */}
+              {aprdisplayIchi
+                ? formatAmount(
+                    toBN(row?.apr || 0)
+                      .plus(aprdisplayIchi)
+                      .div(2)
+                      .toString(),
+                    2
+                  )
+                : formatAmount(row?.apr, 2)}
+              %{' '}
+              <span
+                className="icon-info"
+                onMouseEnter={() => setOpenInfo(true)}
+                onMouseLeave={() => setOpenInfo(false)}
+              ></span>
+            </p>
+            {openInfo && (
+              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12">
+                <div className="flex justify-between items-center gap-3">
+                  <p className="text-sm pb-1">Average</p>
+                  <p className="text-sm pb-1 text-chilean-fire-600">{formatAmount(row?.apr, 2)}%</p>
+                </div>
+                {/* <div className="flex justify-between items-center">
+                  <p className="text-sm pb-1">Narrow</p>
+                  <p className="text-sm pb-1 text-chilean-fire-600">55.956%</p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p className="text-sm pb-1">Balanced</p>
+                  <p className="text-sm pb-1 text-chilean-fire-600">19.139%</p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p className="text-sm pb-1">Wide</p>
+                  <p className="text-sm pb-1 text-chilean-fire-600">16.281%</p>
+                </div> */}
+                {aprIchi && aprIchi.length > 0 && (
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm">Ichi</p>
+                    <p className="text-sm text-chilean-fire-600">
+                      {aprdisplayIchi === null || aprdisplayIchi < 0 || aprdisplayIchi === undefined
+                        ? '0'
+                        : aprdisplayIchi}
+                      %
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </TableCell>
 
-        <TableCell className={`${width <= 1250 ? 'w-[10%]' : 'w-[10%]'}`}>
-          <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">${formatCurrency(Number(row.pairDetails.tvl))}</p>
-            <div className="flex items-center gap-4">
+        <TableCell className={`w-[10%]`}>
+          <div className="flex flex-col items-end justify-center w-full px-3">
+            {/* TVL */}
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
+            {/* <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                {/* <Image
-                  src="/static/images/tokens/FNX.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                /> */}
+
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                {/* <Image
-                  src="/static/images/tokens/ETH.svg"
+
+              </p>
+            </div> */}
+          </div>
+        </TableCell>
+
+        <TableCell className="w-[20%]">
+          <div className="flex flex-col items-end justify-end w-full px-3">
+            {/* VOLUME */}
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
+            <div className="flex items-center justify-end text-right gap-2">
+              <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
+                <Image
+                  src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 />
-                225.38 */}
+                {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
+              </p>
+              <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100 font-normal ">
+                <Image
+                  src={`/static/images/tokens/${row.token1.symbol}.png`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
+                {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
@@ -198,71 +241,37 @@ const RowData = ({
 
         <TableCell className="w-[20%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">${formatCurrency(Number(row.pairDetails.volumeUSD))}</p>
-            <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 font-normal text-xs text-shark-100 ">
+            {/* FEES */}
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
+            <div className="flex items-center gap-2 justify-end text-right">
+              <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
                 <Image
-                  src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
+                  src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.pairDetails.volumeToken0))} {row.pairDetails.token0Symbol}
+                {formatCurrency(toBN(row.feesToken0), 2)} {row.token0.symbol}
               </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100 font-normal ">
+              <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
                 <Image
-                  src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
+                  src={`/static/images/tokens/${row.token1.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 />
-                {formatCurrency(Number(row.pairDetails.volumeToken1))} {row.pairDetails.token1Symbol}
-              </p>
-            </div>
-          </div>
-        </TableCell>
-
-        <TableCell className="w-[20%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">
-              ${formatCurrency(Number(row.pairDetails.volumeUSD) * (Number(row.pairDetails.fee) / 100))}{' '}
-            </p>
-            <div className="flex items-center gap-2">
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
-                  src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                {formatCurrency(Number(row.pairDetails.volumeToken0) * (Number(row.pairDetails.fee) / 100))}{' '}
-                {row.pairDetails.token0Symbol}
-              </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
-                  src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                {formatCurrency(Number(row.pairDetails.volumeToken1) * (Number(row.pairDetails.fee) / 100))}{' '}
-                {row.pairDetails.token1Symbol}
+                {formatCurrency(toBN(row.feesToken1), 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
         </TableCell>
 
-        <TableCell className="flex  items-center w-[15%]">
-          <div className="flex gap-2 w-full justify-center">
+        <TableCell className="flex  items-center justify-end w-[10%]">
+          <div className="flex gap-2 w-full justify-end">
             {titleButton === '' ? (
-              <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs ">
-                <span className="icon-info"></span>
-                Info
-              </Button>
+              <></>
             ) : (
               <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs">
                 <span className="icon-coin"></span>
@@ -274,7 +283,7 @@ const RowData = ({
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href={`/liquidity/deposit?type=${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'VOLATILE' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'STABLE' : 'CONCENTRATED_MANUAL'}&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`}
+                href={`/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`}
               >
                 <span className="icon-circles"></span>
                 Deposit

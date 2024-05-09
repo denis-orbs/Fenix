@@ -3,14 +3,18 @@ export const MENU_LINKS = [
     name: 'Trade',
     // href: '/trade/dca',
     href: '/trade/swap',
+    new: false,
   },
+  
   {
     name: 'Dashboard',
     href: '/dashboard',
+    new: false,
   },
   {
     name: 'Liquidity',
     href: '/liquidity',
+    new: false,
   },
 
   // {
@@ -21,13 +25,14 @@ export const MENU_LINKS = [
   //   name: 'Lock',
   //   href: '/lock',
   // },
+  // {
+  //   name: 'Migration',
+  //   href: '/migration',
+  // },
   {
-    name: 'Migration',
-    href: 'https://claim.fenixfinance.io/claim',
-  },
-  {
-    name: 'Orbit Points',
+    name: 'Fenix Rings',
     href: '/points-program',
+    new: true,
   },
   // {
   //   name: 'Bribes',

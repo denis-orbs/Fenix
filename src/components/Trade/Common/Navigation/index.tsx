@@ -1,5 +1,4 @@
 'use client'
-
 import NavItem from './NavItem'
 import { NAV_LIST } from '../../data'
 

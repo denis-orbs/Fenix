@@ -8,6 +8,7 @@ import { Address, isAddress } from 'viem'
 import { V2PairId } from '@/src/state/liquidity/types'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 const DepositTypeValues = {
   VOLATILE: 'VOLATILE',
@@ -59,10 +60,8 @@ const Panel = () => {
   useEffect(() => {
     const getList = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/token-prices`, {
-          method: 'GET',
-        })
-        const responseData = await response.json()
+        const responseData = await fetchTokens()
+
         const parsedData = responseData.map((item: any) => {
           return {
             id: 0,
@@ -99,9 +98,9 @@ const Panel = () => {
             <h4 className="text-lg md:text-xl text-white font-medium">Manage Position</h4>
             <div className="flex items-center gap-[13px]">
               <div className="flex items-center gap-[9px] h-10"></div>
-              <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
+              {/* <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
                 <span className="icon-cog text-white"></span>
-              </div>
+              </div> */}
             </div>
           </div>
 

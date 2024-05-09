@@ -39,7 +39,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
             </div>
             <div className="flex flex-col">
               <h5 className="text-sm text-white">
-                {row.pairDetails.pairInformationV2?.token0_symbol} / {row.pairDetails.pairInformationV2?.token1_symbol}
+                {row.pairDetails.pairInformationV2?.token0_symbol} / {row.pairDetails.pairInformationV2?.token1_symbol} 
               </h5>
               <div className="flex items-center gap-2">
                 {!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' && (
@@ -55,7 +55,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 {row.pairDetails.pairSymbol === 'Concentrated pool' && (
                   <span
                     className="py-1 px-2  text-xs rounded-lg 
-                    bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
+                    bg-outrageous-orange-500 border border-solid border-1 border-outrageous-orange-400 text-white bg-opacity-40 "
                   >
                     Concentrated
                   </span>
@@ -228,11 +228,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
             )}
 
             {titleButton2 === '' ? (
-              <Button
-                variant="tertiary"
-                className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href="/liquidity"
-              >
+              <Button variant="tertiary" className="flex items-center gap-2  w-24 h-9 !text-xs" href="/liquidity">
                 <span className="icon-circles"></span>
                 Deposit
               </Button>
