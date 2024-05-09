@@ -8,6 +8,9 @@ import { BasicPool, PoolData } from '@/src/state/liquidity/types'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useState } from 'react'
+import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVaults'
+import { SupportedDex, getLpApr } from '@ichidao/ichi-vaults-sdk'
+import { getWeb3Provider } from '@/src/library/utils/web3'
 
 interface RowDataProps {
   row: BasicPool
@@ -159,7 +162,7 @@ export default function MobileRowNew({
                     <Loader />
                   ) : (
                     <>
-                      {getAverageApr(Number(row?.apr), Number(ichiApr), Number(ringsApr))}%{' '}
+                      {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%{' '}
                       <div
                         className="flex items-center gap-[5px] cursor-pointer
                     text-shark-100 hover:text-transparent hover:bg-gradient-to-r hover:from-outrageous-orange-500 hover:to-festival-500 hover:bg-clip-text"
@@ -173,42 +176,17 @@ export default function MobileRowNew({
                     </>
                   )}
                 </div>
-                {/* {openInfo && (
-                  <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                    <div className="flex justify-between items-center gap-3">
-                      <p className="text-sm">Manual</p>
-                      <p className="text-sm text-chilean-fire-600">{formatAmount(row?.apr, 2)}%</p>
-                    </div>
-                    {ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
-                      <div className="flex justify-between items-center gap-3">
-                        <p className="text-sm">Ichi</p>
-                        <p className="text-sm text-chilean-fire-600">{formatAmount(ichiApr, 2)}%</p>
-                      </div>
-                    )}
-                    {ringsApr !== null && Number(ringsApr) !== 0 && (
-                      <div className="flex justify-between items-center gap-3">
-                        <p className="text-sm">Fenix Rings</p>
-                        <p className="text-sm text-chilean-fire-600">{formatAmount(ringsApr, 2)}%</p>
-                      </div>
-                    )}
-                  </div>
-                )} */}
+    
                 {openInfo && (
-                  <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                  <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-">
                     <div className="flex justify-between items-center gap-3">
-                      <p className="text-sm">Manual</p>
-                      <p className="text-sm text-chilean-fire-600">{formatAmount(row?.apr, 2)}%</p>
+                      <p className="text-sm">Average</p>
+                      <p className="text-sm text-chilean-fire-600">{formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%</p>
                     </div>
                     {ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                       <div className="flex justify-between items-center gap-3">
                         <p className="text-sm">Ichi</p>
-                        <p className="text-sm text-chilean-fire-600">{formatAmount(ichiApr, 2)}%</p>
-                      </div>
-                    )}
-                    {ringsApr !== null && Number(ringsApr) !== 0 && (
-                      <div className="flex justify-between items-center gap-3">
-                        <p className="text-sm">Rings</p>
-                        <p className="text-sm text-chilean-fire-600">{formatAmount(ringsApr, 2)}%</p>
+                        <p className="text-sm text-chilean-fire-600">{formatAmount((Number(ichiApr) || 0) + (Number(ringsApr) || 0) , 2)}%</p>
                       </div>
                     )}
                   </div>
