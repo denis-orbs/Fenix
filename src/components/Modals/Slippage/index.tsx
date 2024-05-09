@@ -90,7 +90,7 @@ const Slippage = () => {
           </div>
           {Number(slippageInput) > 50 && (
             <div className="py-2 relative z-[200]">
-              <div className="box-warning">
+              <div className="box-warning h-[38px]">
                 <div className="absolute top-[50%] bottom-[50%] flex items-center w-full justify-center">
                   <p className="text-alizarin-crimson-600 text-xs flex gap-1 items-center">
                     <span className="icon-info text-base" />
@@ -100,7 +100,9 @@ const Slippage = () => {
               </div>
             </div>
           )}
-          <div className={`flex flex-wrap justify-center gap-3  ${Number(slippageInput) > 50 ? "pb-2" : "p-3"}  lg:flex-nowrap`}>
+          <div
+            className={`flex flex-wrap justify-center gap-3  ${Number(slippageInput) > 50 ? 'pb-2' : 'p-3'}  lg:flex-nowrap`}
+          >
             {slippageOptions.map((option) => (
               <Button
                 key={option.label}

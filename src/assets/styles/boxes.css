@@ -1613,13 +1613,15 @@ opacity-70
   @apply 
   relative
   flex
-  
+
   xl:min-w-[391px]
   before:content-[""]
   before:bg-[url("/static/images/modals/box-warning.svg")]
   before:bg-no-repeat
   before:bg-cover
-  before:h-[61px]
+  before:absolute
+  before:left-0
+  before:h-[38px]
   before:w-1/2
 
   after:content-[""]
@@ -1627,7 +1629,9 @@ opacity-70
   after:bg-no-repeat
   after:bg-right
   after:bg-cover
-  after:h-[61px]
+  after:h-[38px]
+  after:right-0
+  after:absolute
   after:w-1/2
 }
 
