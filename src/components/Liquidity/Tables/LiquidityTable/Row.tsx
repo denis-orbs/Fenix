@@ -11,6 +11,12 @@ import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } f
 import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
+import { useQuery } from '@tanstack/react-query'
+import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
+import { getWeb3Provider } from '@/src/library/utils/web3'
+import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVaults'
+import Loader from '@/src/components/UI/Icons/Loader'
 
 interface RowDataProps {
   row: BasicPool
@@ -54,6 +60,54 @@ const RowData = ({
     }
   }
 
+  const { data: ichiApr, isLoading: ichiAprLoading } = useQuery({
+    queryKey: ['ichiApr', row?.id],
+    staleTime: 1000 * 60 * 20,
+    queryFn: async () => {
+      const allIchiVaults = ichiVaults.filter((vault) => {
+        return vault?.pool?.toLowerCase() === row?.id?.toLowerCase()
+      })
+      if (ichiVaults.length === 0) return 0
+      const reducer = await Promise.all(
+        allIchiVaults.map(async (vault) => {
+          const response = await getLpApr(vault?.id, getWeb3Provider(), SupportedDex.Fenix, [7])
+          return response[0]?.apr || 0
+        })
+      )
+      const totalApr = reducer.reduce((acc, curr) => acc + curr, 0)
+      const averageApr = totalApr / reducer.length // Se calcula la media dividiendo la suma total por la cantidad de APRs
+      return isNaN(averageApr) ? 0 : averageApr
+    },
+  })
+
+  const { data: ringsApr, isLoading: rignsAprLoading } = useQuery({
+    queryKey: ['ringsPointsCampaign'],
+    staleTime: 1000 * 60 * 5,
+    queryFn: async () => {
+      const response = await fetch('/api/rings/campaign')
+      return response.json()
+    },
+    select: (data: RingCampaignData) => {
+      if (!row?.id) return 0
+      const pool = data?.boostedPools?.find((pool) => pool?.id?.toLowerCase() == row?.id?.toLowerCase()) || null
+      if (!pool) return 0
+      const apr = toBN(pool?.points)
+        .multipliedBy(data?.pricePerPoint)
+        .multipliedBy(4 * 12)
+        .dividedBy(row?.totalValueLockedUSD)
+        .multipliedBy(100)
+        .toString()
+      return apr
+    },
+  })
+  function getAverageApr(...aprs: number[]): string {
+    const values = aprs.filter((apr) => apr !== 0)
+    const sum = values.reduce((acc, curr) => acc + curr, 0)
+    const average = sum / values.length
+    return formatAmount(average.toString(), 2)
+  }
+  // console.log(data?.boostedPools?.find((pool: string) => pool?.toLowerCase() == row?.id?.toLowerCase()))
+
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -76,8 +130,10 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col">
+
               <h5 className={`text-xs text-white ${(totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier) ? 'flex items-center justify-around' : ''}`}>
                 <div>{row.token0.symbol} / {row.token1.symbol}</div> <div>{totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}</div>
+
 
               </h5>
               <div className="flex items-center gap-2">
@@ -145,51 +201,33 @@ const RowData = ({
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
-              {aprdisplayIchi
-                ? formatAmount(
-                    toBN(row?.apr || 0)
-                      .plus(aprdisplayIchi)
-                      .div(2)
-                      .toString(),
-                    2
-                  )
-                : formatAmount(row?.apr, 2)}
-              %{' '}
-              <span
-                className="icon-info"
-                onMouseEnter={() => setOpenInfo(true)}
-                onMouseLeave={() => setOpenInfo(false)}
-              ></span>
+              {rignsAprLoading || ichiAprLoading || false ? (
+                <Loader />
+              ) : (
+                <>
+               
+                  {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%{' '}
+                  <span
+                    className="icon-info"
+                    onMouseEnter={() => setOpenInfo(true)}
+                    onMouseLeave={() => setOpenInfo(false)}
+                  ></span>
+                </>
+              )}
             </p>
             {openInfo && (
-              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12">
+              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                 <div className="flex justify-between items-center gap-3">
-                  <p className="text-sm pb-1">Average</p>
-                  <p className="text-sm pb-1 text-chilean-fire-600">{formatAmount(row?.apr, 2)}%</p>
+                  <p className="text-sm">Average</p>
+                  <p className="text-sm text-chilean-fire-600">{formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%</p>
                 </div>
-                {/* <div className="flex justify-between items-center">
-                  <p className="text-sm pb-1">Narrow</p>
-                  <p className="text-sm pb-1 text-chilean-fire-600">55.956%</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <p className="text-sm pb-1">Balanced</p>
-                  <p className="text-sm pb-1 text-chilean-fire-600">19.139%</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <p className="text-sm pb-1">Wide</p>
-                  <p className="text-sm pb-1 text-chilean-fire-600">16.281%</p>
-                </div> */}
-                {aprIchi && aprIchi.length > 0 && (
-                  <div className="flex justify-between items-center">
+                {ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
+                  <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">Ichi</p>
-                    <p className="text-sm text-chilean-fire-600">
-                      {aprdisplayIchi === null || aprdisplayIchi < 0 || aprdisplayIchi === undefined
-                        ? '0'
-                        : aprdisplayIchi}
-                      %
-                    </p>
+                    <p className="text-sm text-chilean-fire-600">{formatAmount((Number(ichiApr) || 0) + (Number(ringsApr) || 0) , 2)}%</p>
                   </div>
                 )}
+              
               </div>
             )}
           </div>
