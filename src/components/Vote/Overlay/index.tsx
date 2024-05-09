@@ -8,7 +8,7 @@ import { useAppSelector } from '@/src/state'
 import React, { useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { waitForTransactionReceipt } from '@wagmi/core'
-import { config } from '@/src/app/layout'
+import { wagmiConfig } from '@/src/app/layout'
 import { voteState } from '@/src/state/vote/types'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
@@ -50,7 +50,7 @@ const Overlay = () => {
       setloading(true)
       // console.log(Number(lock?.veNFTInfo.id), weights, addresses, 'cast vote')
       const hash = await castVotes(Number(lock?.veNFTInfo.id), addresses, weights)
-      const transactionReceipt = await waitForTransactionReceipt(config, { hash: hash, confirmations: 1 })
+      const transactionReceipt = await waitForTransactionReceipt(wagmiConfig, { hash: hash, confirmations: 1 })
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))
       if (transactionReceipt.status === 'success') {
@@ -96,7 +96,7 @@ const Overlay = () => {
 
       setloading(true)
       const hash = await resetVotes(Number(lock?.veNFTInfo.id))
-      const transactionReceipt = await waitForTransactionReceipt(config, { hash: hash, confirmations: 1 })
+      const transactionReceipt = await waitForTransactionReceipt(wagmiConfig, { hash: hash, confirmations: 1 })
       // wait for 2 secs for transaction to get processed
       await new Promise((resolve) => setTimeout(resolve, 10000))
       if (transactionReceipt.status === 'success') {
