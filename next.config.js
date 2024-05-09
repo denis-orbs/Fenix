@@ -18,14 +18,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/rings/:path*',
-        destination: 'https://api.merkl.xyz/v3/:path*',
-      },
-    ]
-  },
 }
 module.exports = nextConfig
 

@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import useActiveConnectionDetails from '../web3/useActiveConnectionDetails'
-import { RING_POINTS_BACKEND_URL } from '../../constants/apis'
 import { RING_POINTS_ADDRESS } from '../../constants/addresses'
 import { toBN } from '../../utils/numbers'
 
@@ -8,7 +7,7 @@ export const useRingsPoints = () => {
   const { account, chainId } = useActiveConnectionDetails()
 
   const fetchPoints = async () => {
-    const response = await fetch(`${RING_POINTS_BACKEND_URL}/rewards?user=${account}`)
+    const response = await fetch(`https://api.merkl.xyz/v3/rewards?user=${account}`)
     if (!response.ok) {
       return {
         points: 0,
@@ -26,7 +25,7 @@ export const useRingsPoints = () => {
     queryKey: ['ringsPoints', account],
     queryFn: fetchPoints,
     enabled: !!account,
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: 1000 * 60 * 20, // 20 minutes
     select: (data) => {
       if (!chainId || !RING_POINTS_ADDRESS[chainId]) return 0
       const accumulatedRaw = data?.[chainId]?.tokenData?.[RING_POINTS_ADDRESS[chainId]]?.accumulated
