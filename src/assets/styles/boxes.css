@@ -1030,17 +1030,12 @@
   bg-shark-400
   bg-opacity-40
   backdrop-blur-[15px]
-  2xl:bg-transparent
-  2xl:bg-opacity-100
+ xl:bg-transparent
+ xl:bg-opacity-100
   py-5
-  2xl:py-8
+ xl:py-8
   px-5
-  2xl:px-8
-  border
-  border-solid
-  border-outrageous-orange-400
-  shadow-sm
-  shadow-outrageous-orange-400
+ xl:px-8
   
   2xl:border-none
   2xl:shadow-none
@@ -1054,7 +1049,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:2xl:block
+  before:xl:block
 
   after:content-[""]
   after:absolute
@@ -1069,7 +1064,7 @@
   after:hidden
   after:pointer-events-none
   after:z-[-1]
-  after:2xl:block;
+  after:xl:block;
 }
 
 .common-landing {

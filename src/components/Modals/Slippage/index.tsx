@@ -53,7 +53,7 @@ const Slippage = () => {
     <Modal className="mx-auto" openModal={openModal} setOpenModal={setSlippageModal}>
       <div className="common-modal">
         <span
-          className="absolute top-2 right-4 2xl:top-[2px] 2xl:right-[2px] text-2xl cursor-pointer icon-x text-shark-100"
+          className="absolute top-2 right-4 xl:top-[2px] xl:right-[2px] text-2xl cursor-pointer icon-x text-shark-100"
           onClick={handleClose}
         />
         <div className="relative w-full h-full">
