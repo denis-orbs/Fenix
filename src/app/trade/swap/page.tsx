@@ -1,10 +1,10 @@
 import Swap from '@/src/components/Trade/Swap'
 import TradeLayout from '@/src/components/Trade/Common/Layout'
 export const metadata = {
-  title: 'Swap - Fenix Finance',
+  title: 'Trade on Blast - Fenix Finance',
   description:
     // eslint-disable-next-line max-len
-    'Trade on Blast',
+    'Fenix provides deepest liquidity to ensure that you have the best prices for any token swap on Blast.',
 }
 
 const TradePage = () => {

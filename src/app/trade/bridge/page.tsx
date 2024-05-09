@@ -1,10 +1,10 @@
 import TradeLayout from '@/src/components/Trade/Common/Layout'
 
 export const metadata = {
-  title: 'Bridge - Fenix Finance',
+  title: 'Bridge tokens to the Blast network - Fenix Finance',
   description:
     // eslint-disable-next-line max-len
-    ' Bridge tokens to the Blast network',
+    'Perform cross-chain transfers directly on Fenix to import your tokens onto the Blast network.',
 }
 
 export default function Page() {

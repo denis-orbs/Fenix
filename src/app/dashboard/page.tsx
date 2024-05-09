@@ -4,7 +4,7 @@ import Dashboard from '@/src/components/Dashboard'
 
 export const metadata = {
   title: 'Dashboard - Fenix Finance',
-  description: 'Monitor your liquidity positions',
+  description: 'Track all your positions and accumulated platform rewards in real time.',
 }
 
 const DashboardPage = () => {
