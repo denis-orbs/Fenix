@@ -130,11 +130,15 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col">
-
-              <h5 className={`text-xs text-white ${(totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier) ? 'flex items-center justify-around' : ''}`}>
-                <div>{row.token0.symbol} / {row.token1.symbol}</div> <div>{totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}</div>
-
-
+              <h5
+                className={`text-xs text-white ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'flex items-center justify-around' : ''}`}
+              >
+                <div>
+                  {row.token0.symbol} / {row.token1.symbol}
+                </div>{' '}
+                <div>
+                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
+                </div>
               </h5>
               <div className="flex items-center gap-2">
                 <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
@@ -143,8 +147,8 @@ const RowData = ({
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
               </div>
-              <div className='py-2'>
-                <p className='text-xs'>TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
+              <div className="py-2">
+                <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
               </div>
             </div>
           </div>
@@ -153,34 +157,34 @@ const RowData = ({
           <div className="flex  justify-center items-center gap-2 ">
             <span ref={hoverRef} className="flex gap-2">
               {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
-            <span ref={hoverRef} className="flex flex-row transition-transform transform group">
-              {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
-                <>
-                  <Image
-                    src={`/static/images/point-stack/fenix-ring.svg`}
-                    alt="token"
-                    className={''}
-                    width={20}
-                    height={20}
-                  />
-                  <Image
-                    src={`/static/images/point-stack/blast.svg`}
-                    alt="token"
-                    className={''}
-                    width={20}
-                    height={20}
-                  />
-                  <Image
-                    src={`/static/images/point-stack/blast-gold.svg`}
-                    alt="token"
-                    className={``}
-                    width={20}
-                    height={20}
-                  />
-                </>
-              )}
+                <span ref={hoverRef} className="flex flex-row transition-transform transform group">
+                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
+                    <>
+                      <Image
+                        src={`/static/images/point-stack/fenix-ring.svg`}
+                        alt="token"
+                        className={''}
+                        width={20}
+                        height={20}
+                      />
+                      <Image
+                        src={`/static/images/point-stack/blast.svg`}
+                        alt="token"
+                        className={''}
+                        width={20}
+                        height={20}
+                      />
+                      <Image
+                        src={`/static/images/point-stack/blast-gold.svg`}
+                        alt="token"
+                        className={``}
+                        width={20}
+                        height={20}
+                      />
+                    </>
+                  )}
 
-              {/* <Image
+                  {/* <Image
                 src={`/static/images/tokens/${row.token0.symbol}.png`}
                 alt="token"
                 className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
@@ -194,6 +198,8 @@ const RowData = ({
                 width={20}
                 height={20}
               /> */}
+                </span>
+              )}
             </span>
           </div>
         </TableCell>
@@ -205,7 +211,6 @@ const RowData = ({
                 <Loader />
               ) : (
                 <>
-               
                   {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%{' '}
                   <span
                     className="icon-info"
@@ -219,15 +224,18 @@ const RowData = ({
               <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                 <div className="flex justify-between items-center gap-3">
                   <p className="text-sm">Average</p>
-                  <p className="text-sm text-chilean-fire-600">{formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%</p>
+                  <p className="text-sm text-chilean-fire-600">
+                    {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%
+                  </p>
                 </div>
                 {ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">Ichi</p>
-                    <p className="text-sm text-chilean-fire-600">{formatAmount((Number(ichiApr) || 0) + (Number(ringsApr) || 0) , 2)}%</p>
+                    <p className="text-sm text-chilean-fire-600">
+                      {formatAmount((Number(ichiApr) || 0) + (Number(ringsApr) || 0), 2)}%
+                    </p>
                   </div>
                 )}
-              
               </div>
             )}
           </div>
