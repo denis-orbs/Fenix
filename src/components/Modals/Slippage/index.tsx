@@ -19,14 +19,14 @@ interface SlippageProps {
   openModal: boolean
   setOpenModal: (openModal: boolean) => void
 }
-const slippageSchema = z.union([z.number().min(0).max(50), z.literal('auto')])
+const slippageSchema = z.union([z.number().min(0).max(50), z.literal('Auto')])
 const Slippage = () => {
   // const handlerClose = () => setOpenModal(false)
   const openModal = useStore((state) => state.slippageModal)
   const { setSlippageModal } = useStore()
   const setSlippage = useSetSlippageToleranceCallback()
   const slippage = useSlippageTolerance()
-  const [slippageInput, setSlippageInput] = useState<any>(slippage?.toString())
+  const [slippageInput, setSlippageInput] = useState<any>("Auto")
   const [invalidInput, setInvalidInput] = useState<boolean>(false)
   const handleClose = () => setSlippageModal(false)
 
@@ -40,7 +40,7 @@ const Slippage = () => {
   useEffect(() => {
     try {
       // console.log(slippageInput)
-      const parsedInput = slippageInput.toString().toLowerCase() === 'auto' ? 'auto' : parseFloat(slippageInput)
+      const parsedInput = slippageInput.toString().toLowerCase() === 'auto' ? 'Auto' : parseFloat(slippageInput)
       // console.log(parsedInput)
       slippageSchema.parse(parsedInput)
       setInvalidInput(false)
@@ -90,7 +90,7 @@ const Slippage = () => {
           </div>
           {Number(slippageInput) > 50 && (
             <div className="py-2 relative z-[200]">
-              <div className="box-warning h-[38px]">
+              <div className="w-full bg-alizarin-crimson-600 bg-opacity-20 border-alizarin-crimson-600 border  rounded-lg h-[38px]">
                 <div className="absolute top-[50%] bottom-[50%] flex items-center w-full justify-center">
                   <p className="text-alizarin-crimson-600 text-xs flex gap-1 items-center">
                     <span className="icon-info text-base" />

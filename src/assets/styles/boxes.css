@@ -1030,15 +1030,13 @@
   bg-shark-400
   bg-opacity-40
   backdrop-blur-[15px]
- xl:bg-transparent
- xl:bg-opacity-100
+  xl:bg-transparent
+  xl:bg-opacity-100
   py-5
- xl:py-8
+  xl:py-8
   px-5
- xl:px-8
+  xl:px-8
   
-  2xl:border-none
-  2xl:shadow-none
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/modals/modal.svg")]
@@ -1570,8 +1568,7 @@ opacity-70
 }
 
 .your-provide-box {
-  @apply 
-  w-full
+  @apply w-full
   xl:h-[120px]
   p-5
   xl:py-14
@@ -1606,33 +1603,6 @@ opacity-70
   after:right-0
   after:hidden
   after:xl:block;
-}
-
-
-.box-warning {
-  @apply 
-  relative
-  flex
-
-  xl:min-w-[391px]
-  before:content-[""]
-  before:bg-[url("/static/images/modals/box-warning.svg")]
-  before:bg-no-repeat
-  before:bg-cover
-  before:absolute
-  before:left-0
-  before:h-[38px]
-  before:w-1/2
-
-  after:content-[""]
-  after:bg-[url("/static/images/modals/box-warning.svg")]
-  after:bg-no-repeat
-  after:bg-right
-  after:bg-cover
-  after:h-[38px]
-  after:right-0
-  after:absolute
-  after:w-1/2
 }
 
 
