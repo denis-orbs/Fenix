@@ -355,7 +355,9 @@ const Panel = () => {
         limitSqrtPrice: 0n,
       },
     ],
+    account: zeroAddress,
   })
+
   const route = useAlgebraMultiRouting(tokenGet, tokenSell)
   const multiHopAvailable = route !== null
   const singleSwapAvailable = currentPool != zeroAddress
@@ -373,6 +375,7 @@ const Panel = () => {
         : '0x000',
       parseUnits(swapValue, tokenSell.decimals),
     ],
+    account: zeroAddress,
   })
   // console.log(quoteExactInputCall?.data?.result)
   const sqrtPriceX96After = swapAvailable
@@ -699,7 +702,7 @@ const Panel = () => {
           <p className="">
             Slippage:{' '}
             <span className="text-shark-100">
-              {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage == 'Auto' ? 'Auto' : slippage}
+              {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage.toString().toLowerCase() == 'auto' ? 'Auto' : slippage}
             </span>
           </p>
 
@@ -709,6 +712,7 @@ const Panel = () => {
               {(nativeETH_WETH || nativeWETH_ETH) && formatNumber(Number(forValue || 0), 6).toString()}
               {amountOutMinimum &&
                 !(nativeETH_WETH || nativeWETH_ETH) &&
+                !isNaN(Number(amountOutMinimum.toString())) &&
                 formatUnits(
                   BigInt(Number(amountOutMinimum.toString().split('.')[0]) ?? 0),
                   tokenGet.decimals

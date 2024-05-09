@@ -37,7 +37,7 @@ const MyStrategies = () => {
   useEffect(() => {
     tokensprice()
   }, [])
-
+  
   const slideToLeft = () => {
     if (swiperRef.current && progress > 0) {
       swiperRef.current.slidePrev()
@@ -117,9 +117,23 @@ const MyStrategies = () => {
           <div className="dashboard-box mb-10 hidden xl:block">
             <Swiper
               spaceBetween={50}
+              breakpoints={{
+                1560: { slidesPerView: 3 },
+                1480: { slidesPerView: 3 },
+                1380: { slidesPerView: 2 },
+                1200: { slidesPerView: 2 },
+              }}
               slidesPerView={slidesPerView}
               navigation={true}
-              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper
+                swiper.on('slideChangeTransitionEnd', () => {
+                  if (swiperRef.current) {
+                    setProgress(swiper.progress)
+                  }
+                })
+              }}
+              allowTouchMove={false}
             >
               {Array.from({ length: position.length }).map((_, index) => {
                 return (
@@ -139,11 +153,11 @@ const MyStrategies = () => {
             </Swiper>
             <div className="flex gap-2 justify-center">
               <span
-                className={`icon-arrow rotate-180 ${progress === 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
+                className={`icon-arrow rotate-180 ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
                 onClick={slideToLeft}
               ></span>
               <span
-                className={`icon-arrow text-2xl ${progress === 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                className={`icon-arrow text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
                 onClick={slideToRight}
               ></span>
             </div>

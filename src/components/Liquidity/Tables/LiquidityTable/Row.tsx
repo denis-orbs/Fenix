@@ -38,12 +38,21 @@ const RowData = ({
 
   const [openInfo, setOpenInfo] = useState<boolean>(false)
 
-  // const aprIchi = useIchiVault(row.token0.id, row.token1.id)
-  let aprdisplay
+  const aprIchi = useIchiVault(row.token0.id, row.token1.id)
+
+  let aprdisplayIchi = 0
   // if (aprIchi && aprIchi.length > 0) {
-    // FIXME: STARK
-    // if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0]?.apr[1]?.apr.toFixed(0)
+  //   // FIXME: STARK
+  //   if (aprIchi[0].hasOwnProperty('apr')) aprdisplay = aprIchi[0].apr[1].apr.toFixed(0)
   // }
+  if (aprIchi && aprIchi.length > 0) {
+    if (aprIchi[0].apr && Array.isArray(aprIchi[0].apr) && aprIchi[0].apr.length > 1) {
+      const aprValue = aprIchi[0].apr[0]?.apr
+      if (typeof aprValue === 'number') {
+        aprdisplayIchi = aprValue >= 0 ? Number(aprValue.toFixed(0)) : 0
+      }
+    }
+  }
 
   return (
     <>
@@ -67,8 +76,9 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col">
-              <h5 className="text-xs text-white">
-                {row.token0.symbol} / {row.token1.symbol}
+              <h5 className={`text-xs text-white ${(totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier) ? 'flex items-center justify-around' : ''}`}>
+                <div>{row.token0.symbol} / {row.token1.symbol}</div> <div>{totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}</div>
+
               </h5>
               <div className="flex items-center gap-2">
                 <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
@@ -87,6 +97,8 @@ const RowData = ({
           <div className="flex  justify-center items-center gap-2 ">
             <span ref={hoverRef} className="flex gap-2">
               {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
+            <span ref={hoverRef} className="flex flex-row transition-transform transform group">
+              {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                 <>
                   <Image
                     src={`/static/images/point-stack/fenix-ring.svg`}
@@ -133,7 +145,16 @@ const RowData = ({
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
-              {formatAmount(row?.apr, 2)}%{' '}
+              {aprdisplayIchi
+                ? formatAmount(
+                    toBN(row?.apr || 0)
+                      .plus(aprdisplayIchi)
+                      .div(2)
+                      .toString(),
+                    2
+                  )
+                : formatAmount(row?.apr, 2)}
+              %{' '}
               <span
                 className="icon-info"
                 onMouseEnter={() => setOpenInfo(true)}
@@ -158,12 +179,17 @@ const RowData = ({
                   <p className="text-sm pb-1">Wide</p>
                   <p className="text-sm pb-1 text-chilean-fire-600">16.281%</p>
                 </div> */}
-                <div className="flex justify-between items-center">
-                  <p className="text-sm">Ichi</p>
-                  <p className="text-sm text-chilean-fire-600">
-                    {aprdisplay === null || aprdisplay < 0 ? '0' : aprdisplay}%
-                  </p>
-                </div>
+                {aprIchi && aprIchi.length > 0 && (
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm">Ichi</p>
+                    <p className="text-sm text-chilean-fire-600">
+                      {aprdisplayIchi === null || aprdisplayIchi < 0 || aprdisplayIchi === undefined
+                        ? '0'
+                        : aprdisplayIchi}
+                      %
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>

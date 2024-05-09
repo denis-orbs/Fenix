@@ -121,6 +121,10 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
 
+  // const account = useAccount()
+  // const { isConnected, chainId } = useActiveConnectionDetails()
+
+
   const { writeContractAsync } = useWriteContract()
 
   function invertPercentage(percent: number) {
@@ -384,7 +388,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   const handleApprove = async (token: Address) => {
     setIsLoading(true)
-
     writeContractAsync(
       {
         abi: ERC20_ABI,

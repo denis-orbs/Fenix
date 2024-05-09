@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '..'
-import { resetUser, updateSlippageTolerance, setChart } from './actions'
+import { resetUser, updateSlippageTolerance, setChart, setCloseBanner } from './actions'
 
 export function useResetUser() {
   const dispatch = useAppDispatch()
@@ -32,7 +32,19 @@ export function useSetChart() {
     [dispatch]
   )
 }
+export function useCloseBanner() {
+  const dispatch = useAppDispatch()
+  return useCallback(
+    (closeBanner: boolean) => {
+      dispatch(setCloseBanner(closeBanner))
+    },
+    [dispatch]
+  )
+}
 
 export function useShowChart(): boolean {
   return useAppSelector((state) => state.user.showChart)
+}
+export function useShowBanner(): boolean {
+  return useAppSelector((state) => state.user.closeBanner)
 }

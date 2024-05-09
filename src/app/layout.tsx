@@ -43,9 +43,10 @@ export const configwallets = createConfig({
   },
 })
 
-export const config = getDefaultConfig({
-  appName: 'My RainbowKit App',
+export const wagmiConfig = getDefaultConfig({
+  appName: 'Fenix Finance',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
+
   chains: [
     {
       ...blast,
@@ -74,16 +75,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <body
         suppressHydrationWarning={true}
         className={`${poppins.className}  relative pt-[26px]  mix-blend-lighten ${pathname === '/' ? 'bg-cover ' : ''}`}
       >
         <ReduxProvider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <WagmiProvider config={config}>
+            <WagmiProvider config={wagmiConfig}>
               <QueryClientProvider client={queryClient}>
                 <RainbowKitProvider
+                  initialChain={blast.id}
                   theme={midnightTheme({
                     accentColor:
                       'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%)',

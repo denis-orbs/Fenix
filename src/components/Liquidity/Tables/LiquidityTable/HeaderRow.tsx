@@ -30,13 +30,13 @@ const HeaderRow = ({
   activeRange = false,
 }: HeaderRowProps) => {
   // const tokensData = fetchTokens()
-  const [itemsPerPage, setItemPerPage] = useState<any>(5)
+  const [itemsPerPage, setItemPerPage] = useState<any>(20)
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
   const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
-  const [sortIndex, setSortIndex] = useState<number>(0)
+  const [sortIndex, setSortIndex] = useState<number>(-1)
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
@@ -83,6 +83,17 @@ const HeaderRow = ({
   useEffect(() => {
     setPaginationResult(poolsData)
   }, [poolsData])
+
+  /* useEffect(() => {
+    if (paginationStatus && paginationResult && paginationResult.length > 0) {
+      // setSort('asc')
+      setPaginationResult(
+        paginationResult.sort((a, b) => {
+          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+        })
+      )
+    }
+  }, [paginationStatus, paginationResult]) */
 
   function compareBigDecimal(a: any, b: any) {
     return a - b
@@ -154,7 +165,7 @@ const HeaderRow = ({
           <div className="items-center hidden lg:flex">
             {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
             <Pagination
-              itemsPerPage={10}
+              itemsPerPage={itemsPerPage}
               setItemPerPage={setItemPerPage}
               activePage={activePage}
               setActivePage={setActivePage}

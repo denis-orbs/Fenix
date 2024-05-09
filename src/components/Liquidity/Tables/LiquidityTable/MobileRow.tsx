@@ -144,10 +144,8 @@ export default function MobileRow({
                     {formatDollarAmount(Number(row.totalValueLockedUSD))}
                   </div>
                   <div className="flex gap-2.5 text-shark-100">
-                    <div className="flex items-center gap-[5px]">
-                    </div>
-                    <div className="flex items-center gap-[5px]">
-                    </div>
+                    <div className="flex items-center gap-[5px]"></div>
+                    <div className="flex items-center gap-[5px]"></div>
                   </div>
                 </div>
               </div>

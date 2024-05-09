@@ -36,7 +36,9 @@ const Liquidity = () => {
     (pool) =>
       pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
       pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
-  )
+  ).sort((a, b) => {
+    return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
+  })
 
   return (
     <section>

@@ -819,6 +819,49 @@
   after:xl:block;
 }
 
+.steps-box-dashboard {
+  @apply relative
+  w-full
+  rounded-2xl
+  /* 2xl:max-w-[615px] */
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  py-8
+  px-8
+  /* xl:h-[440px] */
+  2xl:h-[500px]
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/step.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/steps/step.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
+
+
+
+
 /* Background for main box */
 .main-box {
   @apply relative
@@ -1062,22 +1105,22 @@
   flex-col
   items-center
   justify-center
-  w-full
+  w-[320px]
   rounded-2xl
   
   sm:w-[480px]
   sm:min-h-[470px]
   flex-shrink-0
-  bg-shark-700
+  bg-shark-400
   bg-opacity-40
   backdrop-blur-[15px]
-  2xl:bg-transparent
-  2xl:bg-opacity-100
+  xl:bg-transparent
+  xl:bg-opacity-100
   py-5
-  2xl:py-8
+  xl:py-8
   px-5
-  2xl:px-8
-
+  xl:px-8
+  
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/modals/modal.svg")]
@@ -1088,7 +1131,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:2xl:block
+  before:xl:block
 
   after:content-[""]
   after:absolute
@@ -1103,7 +1146,7 @@
   after:hidden
   after:pointer-events-none
   after:z-[-1]
-  after:2xl:block;
+  after:xl:block;
 }
 
 .common-landing {
@@ -1226,17 +1269,15 @@
   2xl:max-w-[1800px]
   flex
   flex-col
-  gap-5
   min-h-[470px]
-
   bg-shark-400
   bg-opacity-40
   2xl:bg-transparent
   2xl:bg-opacity-100
-  py-8
+  py-6
   px-4
   2xl:py-12
-  2xl:px-12
+  2xl:px-6
 
   before:content-[""]
   before:absolute
@@ -1266,7 +1307,7 @@
 }
 
 .box-strategies {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-2
 
   before:hidden
   xl:before:block
@@ -1548,7 +1589,7 @@ opacity-70
 }
 
 .blast-banner {
-  @apply relative flex w-full h-[100px] max-lg:h-auto max-lg:py-3 justify-between max-lg:justify-center items-center max-lg:items-start px-10 max-lg:gap-2
+  @apply relative flex w-full h-[80px] max-lg:h-auto max-lg:py-3 justify-between max-lg:justify-center items-center max-lg:items-start px-10 max-lg:gap-2
   before:bg-[url("/static/images/blast-banner.svg")]
   before:w-[50%]
   before:h-full
@@ -1607,6 +1648,46 @@ opacity-70
   after:hidden
   after:xl:block;
 }
+
+.your-provide-box {
+  @apply w-full
+  xl:h-[120px]
+  p-5
+  xl:py-14
+  xl:px-10
+  mb-10
+  bg-shark-400
+  xl:bg-transparent
+  bg-opacity-40
+  rounded-lg
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/points/provide.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-1/2
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/points/provide.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:h-full
+  after:bg-cover
+  after:w-1/2
+  after:top-0
+  after:right-0
+  after:hidden
+  after:xl:block;
+}
+
+
 
 .box-pagination {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3

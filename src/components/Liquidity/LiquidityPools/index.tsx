@@ -27,14 +27,27 @@ const LiquidityPools = () => {
     // fetchData()
   }, [])
   const [globalStatistics, setGlobalStatistics] = useState<Awaited<ReturnType<typeof fetchGlobalStatistics>>>()
+
   useEffect(() => {
-    fetchGlobalStatistics().then((data) => {
-      setGlobalStatistics(data)
-      // console.log(data)
-      EXCHANGE_LIST[0].description = '$ ' + data.totalTVL.toFixed(2).toString()
-      EXCHANGE_LIST[1].description = '$ ' + data.totalFees.toFixed(2).toString()
-      EXCHANGE_LIST[2].description = '$ ' + data.totalVolume.toFixed(2).toString()
-    })
+    const fetchAndSetStatistics = async () => {
+      const statistics = await fetchv3Factories()
+      setGlobalStatistics({
+        totalTVL: toBN(statistics[0].totalValueLockedUSD).toNumber(),
+        totalVolume: toBN(statistics[0].totalVolumeUSD).toNumber(),
+        totalFees: toBN(statistics[0].totalFeesUSD).toNumber(),
+        lastUpdate: new Date().toISOString(),
+      })
+      EXCHANGE_LIST[0].description = globalStatistics?.totalTVL
+        ? formatDollarAmount(toBN(globalStatistics?.totalTVL))
+        : '-'
+      EXCHANGE_LIST[1].description = globalStatistics?.totalFees
+        ? formatDollarAmount(toBN(globalStatistics?.totalFees))
+        : '-'
+      EXCHANGE_LIST[2].description = globalStatistics?.totalVolume
+        ? formatDollarAmount(toBN(globalStatistics?.totalVolume))
+        : '-'
+    }
+    fetchAndSetStatistics()
   }, [])
 
   EXCHANGE_LIST[0].description = globalStatistics?.totalTVL ? formatDollarAmount(toBN(globalStatistics?.totalTVL)) : '-'
