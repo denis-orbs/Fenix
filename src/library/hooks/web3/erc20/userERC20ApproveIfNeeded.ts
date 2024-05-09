@@ -22,7 +22,7 @@ export const useApproveERC20Token = ({
     setIsApproving(true)
     setError(null)
     try {
-      const amountToApprove = desiredAmountToApprove ?? ethers.MaxInt256
+      const amountToApprove = desiredAmountToApprove ?? BigInt(ethers.constants.MaxInt256.toNumber())
 
       await writeContractAsync({
         address: tokenAddress,

@@ -7,6 +7,7 @@ export interface GlobalStatisticsData {
   totalFees: number
   lastUpdate: string
 }
+
 export async function GET(request: NextRequest) {
   const fetchedFactoriesData = await fetchv3Factories()
 

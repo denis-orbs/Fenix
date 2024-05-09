@@ -5,6 +5,7 @@ export const ichiVaults = [
     tokenB: '0x4300000000000000000000000000000000000004',
     allowTokenA: false,
     allowTokenB: true,
+    apr: [],
   },
   {
     id: '0xcf5279e672392121f17bf3f4f7ceb739621c3896',
@@ -12,6 +13,7 @@ export const ichiVaults = [
     tokenB: '0x4300000000000000000000000000000000000004',
     allowTokenA: true,
     allowTokenB: false,
+    apr: [],
   },
   {
     id: '0x58f19585e956b001a1fead177d218c0e3e7a626e',
@@ -19,6 +21,7 @@ export const ichiVaults = [
     tokenB: '0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692',
     allowTokenA: false,
     allowTokenB: true,
+    apr: [],
   },
   {
     id: '0x322d253759ace10621fd602f8c8084d43c7dc584',
@@ -26,5 +29,6 @@ export const ichiVaults = [
     tokenB: '0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692',
     allowTokenA: true,
     allowTokenB: false,
+    apr: [],
   },
 ]

@@ -25,6 +25,10 @@ const Voted = () => {
             { text: 'Total Votes', className: 'w-[15%] text-center', sortable: true },
             { text: 'vApr', className: 'w-[15%] text-center', sortable: true },
           ]}
+          setSort={() => {}}
+          sort={null}
+          setSortIndex={() => {}}
+          sortIndex={1}
         />
 
         <TableBody>
@@ -128,7 +132,14 @@ const Voted = () => {
       </div>
       <div className="items-center hidden md:flex">
         <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
-        <Pagination className="mx-auto" numberPages={7} />
+        <Pagination
+          className="mx-auto"
+          numberPages={7}
+          activePage={1}
+          setActivePage={() => {}}
+          itemsPerPage={20}
+          setItemPerPage={() => {}}
+        />
         <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 cursor-pointer border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
           <span className="text-lg icon-cog text-white"></span>
         </div>
