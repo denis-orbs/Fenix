@@ -702,7 +702,7 @@ const Panel = () => {
           <p className="">
             Slippage:{' '}
             <span className="text-shark-100">
-              {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage == 'Auto' ? 'Auto' : slippage}
+              {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage.toString().toLowerCase() == 'auto' ? 'Auto' : slippage}
             </span>
           </p>
 
