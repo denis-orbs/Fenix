@@ -2,7 +2,7 @@ import Decorator from '@/src/components/Common/Layout/Background'
 import Liquidity from '@/src/components/Liquidity'
 
 export const metadata = {
-  title: 'Provide Liquidity to Earn Rewards - Fenix Finance',
+  title: 'Liquidity | Fenix Finance',
   description:
     // eslint-disable-next-line max-len
     'Fenix provides the most advanced liquidity platform on Blast with automated position management. Deposit liquidity and sit back to earn rewards.',

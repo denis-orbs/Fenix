@@ -3,7 +3,7 @@ import Decorator from '@/src/components/Common/Layout/Background'
 import Dashboard from '@/src/components/Dashboard'
 
 export const metadata = {
-  title: 'Dashboard - Fenix Finance',
+  title: 'Dashboard | Fenix Finance',
   description: 'Track all your positions and accumulated platform rewards in real time.',
 }
 
