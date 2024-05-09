@@ -58,7 +58,7 @@ const RowData = ({
     <>
       <TableRow className="hidden lg:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[30%]'}`}>
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <div className="flex items-center">
               <Image
                 src={`/static/images/tokens/${row.token0.symbol}.png`}
