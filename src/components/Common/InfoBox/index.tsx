@@ -25,25 +25,27 @@ const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false, bgBox
 
   return (
     <div className="relative">
-      <div className={`xl:h-[97px] flex gap-3 items-center p-3 mb-3 relative ${bgBox === '' ? 'box' : bgBox}`}>
-        <div className="flex items-center justify-center w-[32px] h-[32px] p-2 lg:w-12 lg:h-12 lg:p-3 rounded-lg bg-shark-400 bg-opacity-60">
+      <div className={`xl:h-[60px] flex  gap-2 items-center p-3 mb-3 relative ${bgBox === '' ? 'box' : bgBox}`}>
+        <div className="">
           <span
-            className={`inline-block lg:text-2xl text-transparent
-            text-[18px]
+            className={`inline-block text-lg text-transparent
             bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${data.icon}`}
           ></span>
         </div>
         <div className="flex items-center justify-between w-full">
-          <div className="max-w-[270px]">
-            <h5 className="text-xs text-shark-100">{data.label}</h5>
-            <p className="text-xs font-normal text-white line-clamp-2">{data.amount || data.description}</p>
+          <div className="xl:max-w-[280px] w-full">
+            <h5 className="text-[11px] leading-4 2xl:text-xs text-shark-100">{data.label}</h5>
+            <p className="text-[11px]  leading-4 font-normal text-white line-clamp-2">
+              {data.amount || data.description}
+            </p>
           </div>
         </div>
         {hasTooltip && (
           <span
             onMouseEnter={handleShowTooltip}
             onMouseLeave={handleHiddenTooltip}
-            className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"
+            className="flex items-center justify-center w-5 h-5 text-xs 
+            text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"
           ></span>
         )}
       </div>

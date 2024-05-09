@@ -58,7 +58,7 @@ const RowData = ({
     <>
       <TableRow className="hidden lg:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
-          <div className="flex items-center gap-2">
+          <div className="flex justify-center items-center gap-2">
             <div className="flex items-center max-2xl:hidden">
               <Image
                 src={`/static/images/tokens/${row.token0.symbol}.png`}
@@ -76,48 +76,48 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col">
-              <h5 className={`text-sm text-white ${(totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier) ? 'flex items-center justify-around' : ''}`}>
+              <h5 className={`text-xs text-white ${(totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier) ? 'flex items-center justify-around' : ''}`}>
                 <div>{row.token0.symbol} / {row.token1.symbol}</div> <div>{totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}</div>
 
               </h5>
-              <div className="flex items-center justify-around gap-2">
-                <span
-                  className="py-1 px-2  text-xs rounded-lg 
-                    bg-gradient-to-r from-outrageous-orange-500 to-festival-500"
-                >
-                  Concentrated
-                </span>
+              <div className="flex items-center gap-2">
+                <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                   {/* FEES */}
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
               </div>
+              <div className='py-2'>
+                <p className='text-xs'>TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
+              </div>
             </div>
           </div>
         </TableCell>
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[20%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
+            <span ref={hoverRef} className="flex gap-2">
+              {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
             <span ref={hoverRef} className="flex flex-row transition-transform transform group">
               {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                 <>
                   <Image
                     src={`/static/images/point-stack/fenix-ring.svg`}
                     alt="token"
-                    className={`-mr-3 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
+                    className={''}
                     width={20}
                     height={20}
                   />
                   <Image
                     src={`/static/images/point-stack/blast.svg`}
                     alt="token"
-                    className={`-mr-3 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
+                    className={''}
                     width={20}
                     height={20}
                   />
                   <Image
                     src={`/static/images/point-stack/blast-gold.svg`}
                     alt="token"
-                    className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
+                    className={``}
                     width={20}
                     height={20}
                   />
@@ -195,80 +195,80 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className={`w-[10%]`}>
+        {/* <TableCell className={`w-[10%]`}>
           <div className="flex flex-col items-end justify-center w-full px-3">
-            {/* TVL */}
+            TVL
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
-            {/* <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
 
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
 
               </p>
-            </div> */}
+            </div>
           </div>
-        </TableCell>
+        </TableCell> */}
 
-        <TableCell className="w-[20%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
+        <TableCell className="w-[15%]">
+          <div className="flex flex-col items-end justify-center w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
-            <div className="flex items-center justify-end text-right gap-2">
+            <div className="flex flex-col gap-2">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
-                <Image
+                {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100 font-normal ">
-                <Image
+                {/* <Image
                   src={`/static/images/tokens/${row.token1.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
         </TableCell>
 
-        <TableCell className="w-[20%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
+        <TableCell className="w-[15%]">
+          <div className="flex flex-col items-end justify-center w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
-            <div className="flex items-center gap-2 justify-end text-right">
-              <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
-                <Image
+            <div className="flex flex-col  gap-2">
+              <p className="flex  items-center justify-end text-right gap-2 text-xs text-shark-100">
+                {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {formatCurrency(toBN(row.feesToken0), 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
-                <Image
+                {/* <Image
                   src={`/static/images/tokens/${row.token1.symbol}.png`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {formatCurrency(toBN(row.feesToken1), 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
         </TableCell>
 
-        <TableCell className="flex  items-center justify-end w-[10%]">
+        <TableCell className="flex  items-center justify-end w-[20%]">
           <div className="flex gap-2 w-full justify-end">
             {titleButton === '' ? (
               <></>

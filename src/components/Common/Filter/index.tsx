@@ -18,7 +18,9 @@ const Filter = ({ options, currentTab, setCurrentTab }: FilterProps) => {
 
   return (
     <>
-      <div className="flex flex-wrap items-center w-full gap-2 px-2 py-2 rounded-xl xl:flex-row 2xl:gap-3 xl:w-full bg-opacity-40 bg-shark-400">
+      <div className="max-h-[45px] flex items-center w-full gap-2 px-2 py-2 
+     
+      rounded-xl xl:flex-row 2xl:gap-3 xl:w-full bg-opacity-40 bg-shark-400">
         {options.map((option, index) => {
           return (
             <Button
@@ -31,7 +33,7 @@ const Filter = ({ options, currentTab, setCurrentTab }: FilterProps) => {
                   ? 'primary'
                   : `${isMobile ? 'tertiary' : 'default'}`
               }
-              className="h-[40px] md:h-auto w-full md:w-auto
+              className=" w-full h-[32px] md:w-auto
               !text-xs !lg:text-xl
               "
             >

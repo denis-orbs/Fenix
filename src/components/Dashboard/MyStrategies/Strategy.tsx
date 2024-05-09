@@ -21,7 +21,6 @@ import { NotificationDuration, NotificationType } from '@/src/state/notification
 import { useDispatch } from 'react-redux'
 import { setApr } from '@/src/state/apr/reducer'
 
-
 type options = {
   value: string
   label: string
@@ -176,7 +175,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
   }
 
   return (
-    <div className="steps-box-dashboard  py-8 w-auto xl:min-w-[360px] ">
+    <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
       <div className="relative z-10">
         <div className="relative text-white flex flex-col">
           <div className="flex justify-between items-center box-strategies">
