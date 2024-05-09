@@ -8,7 +8,7 @@ export interface GlobalStatisticsData {
   totalFees: number
   lastUpdate: string
 }
-const DEFAULT_CACHE_EXPIRATION = 3600 * 2 // 2 hours
+const DEFAULT_CACHE_EXPIRATION = 60 * 45 // 2 hours
 export async function GET(request: NextRequest) {
   const cacheKey = 'global-statistics'
   let cachedData = cache.get(cacheKey)
