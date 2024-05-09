@@ -8,6 +8,7 @@ import { totalCampaigns } from '@/src/library/utils/campaigns'
 
 const Leaderboard = ({ data }: any) => {
   const [itemsPerPage, setItemPerPage] = useState<any>(20)
+
   const [activePage, setActivePage] = useState<number>(1)
   const arr = [...data]
   const [sort, setSort] = useState(false)

@@ -29,7 +29,7 @@ const TableHead = ({ items, setSort, setSortIndex, sortIndex, sort }: TableHeadP
   }
 
   const mergeClassName = (item: IItems) => {
-    return cn('p-2.5 ', item.sortable ? 'cursor-pointer relative select-none' : '', item.className)
+    return cn('px-2.5 ', item.sortable ? 'cursor-pointer relative select-none' : '', item.className)
   }
 
   const sortClassName = (item: IItems, index: number) => {
