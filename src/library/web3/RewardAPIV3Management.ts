@@ -7,7 +7,7 @@ import { Address } from 'viem'
 import { Token, TokenData } from '../structures/common/TokenData'
 import { readContract } from '@wagmi/core'
 import { getCurrentEpochRewardTokens } from '../apollo/rewards/parsers/Rewards'
-import { config } from '@/src/app/layout'
+import { wagmiConfig } from '@/src/app/layout'
 
 /**
  * RewardAPI: getPairBribe
@@ -15,7 +15,7 @@ import { config } from '@/src/app/layout'
  * @returns
  */
 export async function getPoolRewards(pairAddress: Address): Promise<Rewards> {
-  const rewardTokens = (await readContract(config, {
+  const rewardTokens = (await readContract(wagmiConfig, {
     address: RewardAPIV3Address,
     abi: RewardAPIABIV3,
     functionName: 'getPairBribe',
@@ -31,7 +31,7 @@ export async function getAllPairRewards(
 ): Promise<RewardPairInfo[]> {
   const l: RewardPairInfo[] = []
 
-  const rewardPairs = (await readContract(config, {
+  const rewardPairs = (await readContract(wagmiConfig, {
     address: RewardAPIV3Address,
     abi: RewardAPIABIV3,
     functionName: 'getAllPairRewards',
@@ -68,7 +68,7 @@ export async function getAllPairRewards(
 export async function getAllClPairRewards(user: Address, availableTokensData: { [tokenAddr: string]: Token }) {
   const l: RewardPairInfo[] = []
 
-  const rewardPairs = (await readContract(config, {
+  const rewardPairs = (await readContract(wagmiConfig, {
     address: RewardAPIV3Address,
     abi: RewardAPIABIV3,
     functionName: 'getAllCLPairRewards',
@@ -103,7 +103,7 @@ export async function getAllClPairRewards(user: Address, availableTokensData: { 
 }
 
 export async function getExpectedClaimForNextEpoch(tokenId: number, pairs: Address[]): Promise<Rewards[]> {
-  const rewards = (await readContract(config, {
+  const rewards = (await readContract(wagmiConfig, {
     address: RewardAPIV3Address,
     abi: RewardAPIABIV3,
     functionName: 'getExpectedClaimForNextEpoch',
@@ -117,7 +117,7 @@ export async function getAvailableRewards(
   tokenId: number,
   targetSearchPairs: [string[], string[][]]
 ): Promise<CurrentEpochReward[]> {
-  const rewards = (await readContract(config, {
+  const rewards = (await readContract(wagmiConfig, {
     address: RewardAPIV3Address,
     abi: RewardAPIABIV3,
     functionName: 'getAvailableRewards',
@@ -128,7 +128,7 @@ export async function getAvailableRewards(
 }
 
 export async function getAmountToClaimFromUser(user: Address, targetSearchPairs: [string[], string[][]]) {
-  const rewards = (await readContract(config, {
+  const rewards = (await readContract(wagmiConfig, {
     address: RewardAPIV3Address,
     abi: RewardAPIABIV3,
     functionName: 'getAmountToClaim',

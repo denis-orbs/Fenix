@@ -76,11 +76,11 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col">
-              <h5 className="text-sm text-white">
-                {row.token0.symbol} / {row.token1.symbol}{' '}
-                {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
+              <h5 className={`text-sm text-white ${(totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier) ? 'flex items-center justify-around' : ''}`}>
+                <div>{row.token0.symbol} / {row.token1.symbol}</div> <div>{totalCampaigns.find(add=> add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}</div>
+
               </h5>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-around gap-2">
                 <span
                   className="py-1 px-2  text-xs rounded-lg 
                     bg-gradient-to-r from-outrageous-orange-500 to-festival-500"
