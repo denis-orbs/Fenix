@@ -5,10 +5,10 @@ import { blast, blastSepolia } from '@wagmi/core/chains'
 import { MaNFTInfoV3, PairInfoV3 } from './pairAPI'
 import { PairAPIV3Address } from '../ContractAddresses'
 import { Address } from 'viem'
-import { config } from '@/src/app/layout'
+import { wagmiConfig } from '@/src/app/layout'
 
 export async function getPairInformation(user: Address, pair: Address): Promise<PairInfoV3> {
-  const publicClient = getPublicClient(config)
+  const publicClient = getPublicClient(wagmiConfig)
 
   const data = (await publicClient?.readContract({
     address: PairAPIV3Address,
@@ -21,7 +21,7 @@ export async function getPairInformation(user: Address, pair: Address): Promise<
 }
 
 export async function getCLPairInformation(user: Address, pair: Address): Promise<PairInfoV3> {
-  const publicClient = getPublicClient(config)
+  const publicClient = getPublicClient(wagmiConfig)
 
   const data = (await publicClient?.readContract({
     address: PairAPIV3Address,
@@ -34,7 +34,7 @@ export async function getCLPairInformation(user: Address, pair: Address): Promis
 }
 
 export async function getPositionsOfOwnerInGauge(owner: Address, gauge: Address): Promise<MaNFTInfoV3[]> {
-  const publicClient = getPublicClient(config)
+  const publicClient = getPublicClient(wagmiConfig)
   const positions = (await publicClient?.readContract({
     address: PairAPIV3Address,
     abi: pairAPIV3ABI,
@@ -80,7 +80,7 @@ export async function getPositionsOfOwnerInGauge(owner: Address, gauge: Address)
 }
 
 export async function getAllPairsForUser(user: Address): Promise<PairInfoV3[]> {
-  const publicClient = getPublicClient(config)
+  const publicClient = getPublicClient(wagmiConfig)
   const allPairs = (await publicClient?.readContract({
     address: PairAPIV3Address,
     abi: pairAPIV3ABI,
@@ -147,7 +147,7 @@ export async function getAllPairsForUser(user: Address): Promise<PairInfoV3[]> {
 }
 
 export async function getAllCLPairsForUser(user: Address): Promise<PairInfoV3[]> {
-  const publicClient = getPublicClient(config)
+  const publicClient = getPublicClient(wagmiConfig)
   const allPairs = (await publicClient?.readContract({
     address: PairAPIV3Address,
     abi: pairAPIV3ABI,

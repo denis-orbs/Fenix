@@ -777,6 +777,49 @@
   after:xl:block;
 }
 
+.steps-box-dashboard {
+  @apply relative
+  w-full
+  rounded-2xl
+  /* 2xl:max-w-[615px] */
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  py-8
+  px-8
+  /* xl:h-[440px] */
+  2xl:h-[500px]
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/step.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/steps/step.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
+
+
+
+
 /* Background for main box */
 .main-box {
   @apply relative
@@ -1185,17 +1228,15 @@
   2xl:max-w-[1800px]
   flex
   flex-col
-  gap-5
   min-h-[470px]
-
   bg-shark-400
   bg-opacity-40
   2xl:bg-transparent
   2xl:bg-opacity-100
-  py-8
+  py-6
   px-4
   2xl:py-12
-  2xl:px-12
+  2xl:px-6
 
   before:content-[""]
   before:absolute
@@ -1225,7 +1266,7 @@
 }
 
 .box-strategies {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-2
 
   before:hidden
   xl:before:block

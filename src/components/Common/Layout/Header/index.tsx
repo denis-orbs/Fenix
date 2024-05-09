@@ -45,7 +45,7 @@ const Header = () => {
         </div>
 
         <div
-          className={`${pathname === '/' ? 'flex  justify-center  items-center' : 'w-full flex justify-center relative z-10'} `}
+          className={`${pathname === '/' ? 'flex  justify-center  items-center' : 'w-full flex justify-center relative z-10 max-xl:mr-auto max-2xl:mr-[40px]'} `}
         >
           <Menu />
         </div>

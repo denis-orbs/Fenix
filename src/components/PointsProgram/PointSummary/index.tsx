@@ -6,6 +6,9 @@ import { formatCurrency } from '@/src/library/utils/numbers'
 import Countdown from 'react-countdown'
 import { ReactNode, useEffect, useState } from 'react'
 import { log } from 'console'
+import { useRingsPoints } from '@/src/library/hooks/rings/useRingsPoints'
+import Loader from '../../UI/Icons/Loader'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
 const PointSummary = ({ userData }: any) => {
   //  console.log(userData, 'userData')
@@ -29,6 +32,8 @@ const PointSummary = ({ userData }: any) => {
     return eightHourTimestamps.reverse() // Reverse the array to have timestamps in ascending order
   }
 
+  //  HERE
+  const { points, isLoading } = useRingsPoints()
   // Example usage
   const timestampsArray = getCurrentEightHourTimestampArray()
   // console.log(timestampsArray.map((timestamp) => new Date(timestamp).toUTCString()))
@@ -94,7 +99,6 @@ const PointSummary = ({ userData }: any) => {
       )
     }
   }
-
   return (
     <section className="your-point-box">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center relative z-10">
@@ -119,7 +123,7 @@ const PointSummary = ({ userData }: any) => {
             </div>
             <div className="h-12 flex flex-col justify-between">
               <h3 className="text-3xl font-medium text-white">
-                {isNaN(Number(userData?.amount) / 1e6) ? '0' : formatCurrency(userData?.amount / 1e6)}
+                {isLoading ? <Loader size={'20px'} /> : formatCurrency(points) ?? '-'}
               </h3>
               <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 Your Total points
@@ -137,9 +141,9 @@ const PointSummary = ({ userData }: any) => {
               <h3 className="text-3xl font-medium text-white">{userData?.rank ?? '-'}</h3>
               <div className="">
                 <p className="text-white text-xs">RANK</p>
-                {/* <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                  {formatCurrency(userData?.amount) ?? '-'}
-                </p> */}
+                <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
+                  {formatCurrency(userData?.amount / 10 ** 6) ?? '-'} points
+                </p>
               </div>
             </div>
           </div>

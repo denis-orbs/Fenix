@@ -43,7 +43,7 @@ export const configwallets = createConfig({
   },
 })
 
-export const config = getDefaultConfig({
+export const wagmiConfig = getDefaultConfig({
   appName: 'Fenix Finance',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
 
@@ -82,7 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <ReduxProvider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <WagmiProvider config={config}>
+            <WagmiProvider config={wagmiConfig}>
               <QueryClientProvider client={queryClient}>
                 <RainbowKitProvider
                   initialChain={blast.id}

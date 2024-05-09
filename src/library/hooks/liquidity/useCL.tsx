@@ -459,7 +459,7 @@ export async function getPositionDataByPoolAddresses(addresses: any) {
   })
 }
 
-function sqrtPriceToPrice(sqrtPrice: string) {
+export function sqrtPriceToPrice(sqrtPrice: string) {
   const priceQ64_96 = BigInt(sqrtPrice) * BigInt(sqrtPrice) * BigInt(1e18)
   const price = priceQ64_96 >> BigInt(2 * 96)
   const priceNumber = Number(price)
