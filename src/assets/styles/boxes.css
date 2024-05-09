@@ -520,7 +520,7 @@
   before:bg-no-repeat
   before:h-full
   before:bg-cover
-  before:w-[50%]
+  before:w-[calc(100%-400px)]
   before:top-0
   before:left-0
   before:hidden
@@ -534,7 +534,7 @@
   after:bg-right
   after:h-full
   after:bg-cover
-  after:w-[50%]
+  after:w-[400px]
   after:bottom-0
   after:right-0
   after:hidden
