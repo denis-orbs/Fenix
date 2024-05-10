@@ -157,17 +157,19 @@ export default function MobileRowNew({
                 {openInfo && (
                   <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-">
                     <div className="flex justify-between items-center gap-3">
-                      <p className="text-sm">Average</p>
-                      <p className="text-sm text-chilean-fire-600">
-                        {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%
-                      </p>
+                      <p className="text-sm">Fees APR</p>
+                      <p className="text-sm text-chilean-fire-600">{formatAmount(Number(row?.apr) || 0, 2)}%</p>
                     </div>
+                    {ringsApr !== null && !isNaN(Number(ringsApr)) && Number(ringsApr) !== 0 && (
+                      <div className="flex justify-between items-center gap-3">
+                        <p className="text-sm">Fenix Rings APR</p>
+                        <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ringsApr) || 0, 2)}%</p>
+                      </div>
+                    )}
                     {ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-sm">Ichi</p>
-                        <p className="text-sm text-chilean-fire-600">
-                          {formatAmount((Number(ichiApr) || 0) + (Number(ringsApr) || 0), 2)}%
-                        </p>
+                        <p className="text-sm">Ichi Strategy</p>
+                        <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>
                       </div>
                     )}
                   </div>
