@@ -14,6 +14,7 @@ const Liquidity = () => {
   const [currentTab, setCurrentTab] = useState<string>('ALL POOLS')
   const [searchValue, setSearchValue] = useState<string>('')
   const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
+  // console.log(filteredPools)
   const { loading, data: pools } = useAllPools()
 
   useEffect(() => {
@@ -42,8 +43,8 @@ const Liquidity = () => {
     })
   return (
     <section>
-      <div className="flex flex-col items-center gap-5 py-5 xl:flex-row">
-        <div className="w-full xl:w-2/3">
+      <div className="flex flex-col items-center overflow-hidden gap-5 py-5 xl:flex-row">
+        <div className="w-full xl:w-2/3 ">
           <Deposit />
         </div>
         <div className="w-full xl:w-1/3 self-auto">
@@ -51,9 +52,11 @@ const Liquidity = () => {
         </div>
       </div>
 
-      <h5 className="mb-4 text-lg lg:text-2xl text-white">Liquidity Pools</h5>
-      <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
-        <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
+      <div className="flex flex-col justify-between gap-5 mb-4 md:items-center xl:flex-row overflow-hidden">
+        <h5 className="text-lg mb-1 text-white max-xl:w-full    lg:flex-shrink-0">Liquidity Pools</h5>
+        <div className='w-full'>
+          <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
+        </div>
         <div className="w-full xl:w-1/3">
           <Search setSearchValue={setSearchValue} searchValue={searchValue} placeholder="Search by symbol" />
         </div>

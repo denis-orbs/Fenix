@@ -4,7 +4,17 @@ import { INPUT_PRECISION } from '@/src/library/constants/misc'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { getUserAmounts, getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
+
+import {
+  getAllUserAmounts,
+  getUserAmounts,
+  getUserBalance,
+  IchiVault,
+  SupportedDex,
+  UserAmountsInVault,
+  VaultApr,
+  withdraw,
+} from '@ichidao/ichi-vaults-sdk'
 import { useAllPools, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
@@ -20,13 +30,17 @@ import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import Loader from '@/src/components/UI/Icons/Loader'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
+interface modifiedIchiVault extends IchiVault {
+  apr?: VaultApr
+}
+
 const WithdrawAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
   tokenList,
 }: {
   token: IToken | undefined
-  allIchiVaultsByTokenPair: IchiVault[] | undefined | null
+  allIchiVaultsByTokenPair: modifiedIchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
   const [isActive, setIsActive] = useState<boolean>(false)
@@ -95,6 +109,7 @@ const WithdrawAmountsICHI = ({
           return v
         }
       })?.tokenA
+
       const tokenBid = ichiVaults.find((v) => {
         if (v.id === vaultAddress.id) {
           return v
@@ -144,6 +159,7 @@ const WithdrawAmountsICHI = ({
         txHash: '',
         notificationDuration: NotificationDuration.DURATION_5000,
       })
+      setAmountToWithdraw('')
     } catch (error: any) {
       if (error?.code == 401) return
       // toast.error(error?.message)
@@ -198,6 +214,7 @@ const WithdrawAmountsICHI = ({
               {totalShareDollar
                 ? formatDollarAmount((Number(totalShareDollar) / Number(totalUserShares)) * Number(amoutToWithdraw))
                 : '$ 0'}
+
               {/* {amoutToWithdraw && tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price
                 ? formatDollarAmount(
                     toBN(amoutToWithdraw)
@@ -268,7 +285,7 @@ const WithdrawAmountsICHI = ({
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
                     ${isActive ? 'visible bg-shark-500 !bg-opacity-80 border-shark-200' : 'hidden'}`}
                   >
-                    {allIchiVaultsByTokenPair.map((vault) => (
+                    {allIchiVaultsByTokenPair.map((vault: modifiedIchiVault) => (
                       <div
                         className="flex justify-start items-center gap-3 cursor-pointer m-1 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}

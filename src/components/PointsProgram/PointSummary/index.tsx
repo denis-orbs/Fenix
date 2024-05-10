@@ -40,17 +40,29 @@ const PointSummary = ({ userData }: any) => {
 
   const timeSet = () => {
     if (time === '' && count === 0 && timestampsArray.length > 0) {
-      setTime(timestampsArray[0])
+      // FIXME: STARK
+      setTime(timestampsArray[0].toString())
       count++
     } else {
-      setTime(timestampsArray[count])
+      // FIXME: STARK
+      setTime(timestampsArray[count].toString())
       count++
     }
   }
 
   useEffect(() => timeSet(), [])
-
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+  // FIXME: STARK
+  const renderer = ({
+    hours,
+    minutes,
+    seconds,
+    completed,
+  }: {
+    hours: any
+    minutes: any
+    seconds: any
+    completed: any
+  }) => {
     if (completed) {
       // Render a completed state
       // return <span>You are good to go!</span>
@@ -130,7 +142,7 @@ const PointSummary = ({ userData }: any) => {
               <div className="">
                 <p className="text-white text-xs">RANK</p>
                 <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                  {userData ? formatCurrency(userData / 10 ** 6) : '-'} points
+                  {userData ? formatCurrency(userData / 10 ** 6) + 'points' : ''}
                 </p>
               </div>
             </div>

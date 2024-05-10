@@ -6,7 +6,14 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useReadContracts } from 'wagmi'
 import { formatUnits, zeroAddress } from 'viem'
-import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
+import {
+  approveDepositToken,
+  deposit,
+  IchiVault,
+  isDepositTokenApproved,
+  SupportedDex,
+  VaultApr,
+} from '@ichidao/ichi-vaults-sdk'
 import {
   useAllPools,
   useSetToken0TypedValue,
@@ -24,6 +31,11 @@ import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymb
 import Spinner from '@/src/components/Common/Spinner'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+
+interface modifiedIchiVault extends IchiVault {
+  apr?: VaultApr
+}
+
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import Loader from '@/src/components/UI/Icons/Loader'
@@ -33,9 +45,10 @@ const DepositAmountsICHI = ({
   tokenList,
 }: {
   token: IToken | undefined
-  allIchiVaultsByTokenPair: IchiVault[] | undefined | null
+  allIchiVaultsByTokenPair: modifiedIchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
+  console.log('tt', allIchiVaultsByTokenPair)
   const [isActive, setIsActive] = useState<boolean>(false)
   const [selected, setIsSelected] = useState<string>('Choose one')
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
@@ -93,13 +106,13 @@ const DepositAmountsICHI = ({
     allowFailure: false,
     contracts: [
       {
-        address: selected,
+        address: selected as `0x${string}`,
         abi: erc20Abi,
         functionName: 'balanceOf',
         args: [account || zeroAddress],
       },
       {
-        address: selected,
+        address: selected as `0x${string}`,
         abi: erc20Abi,
         functionName: 'decimals',
       },
@@ -208,7 +221,8 @@ const DepositAmountsICHI = ({
             notificationDuration: NotificationDuration.DURATION_5000,
           })
           setLoading(false)
-        } else if (error?.reason == 'IV.deposit: deposits too large') {
+          // FIXME: STARK
+        } else if ('reason' in error && error?.reason == 'IV.deposit: deposits too large') {
           // toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
           addNotification({
             id: crypto.randomUUID(),
@@ -224,10 +238,11 @@ const DepositAmountsICHI = ({
         // console.log(error.reason)
         // toast.error('Transaction failed')
         // toast.error(error.message.split('(')[0].trim().toUpperCase())
+        // FIXME: STARK
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
-          message: `${e}`,
+          message: `${error}`,
           notificationType: NotificationType.ERROR,
           txHash: '',
           notificationDuration: NotificationDuration.DURATION_5000,
@@ -301,7 +316,7 @@ const DepositAmountsICHI = ({
   }
 
   useEffect(() => {
-    toBN(token0Balance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
+    toBN(Number(token0Balance)).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
   }, [token0Balance])
 
   const handleHalf = () => {
@@ -409,7 +424,7 @@ const DepositAmountsICHI = ({
                     className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3 
                     ${isActive ? 'visible bg-shark-500 !bg-opacity-80 border-shark-200' : 'hidden'}`}
                   >
-                    {allIchiVaultsByTokenPair.map((vault) => (
+                    {allIchiVaultsByTokenPair.map((vault: modifiedIchiVault) => (
                       <div
                         className="flex justify-start items-center gap-3 cursor-pointer m-1 p-2 bg-shark-300 border-shark-200 rounded-md hover:bg-shark-100"
                         key={vault.id}
