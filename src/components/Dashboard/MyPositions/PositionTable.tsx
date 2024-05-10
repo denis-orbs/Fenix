@@ -271,6 +271,10 @@ const PositionTable = ({ activePagination = true, data, tokens }: MyPositionssPr
       }
     )
   }
+  // console.log(
+  //   'position22',
+  //   toBN(pagination[0].liquidity).div(pagination[0].pool.liquidity).multipliedBy(100).toString()
+  // )
 
   return (
     <>
@@ -363,10 +367,10 @@ const PositionTable = ({ activePagination = true, data, tokens }: MyPositionssPr
                                   <p className="text-sm pb-1">Fees APR</p>
                                   <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
                                 </div>
-                                {/* <div className="flex justify-between items-center gap-3">
+                                <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Rings APR</p>
                                   <p className="text-sm pb-1 text-chilean-fire-600">{formatAmount(343, 2)}%</p>
-                                </div> */}
+                                </div>
                               </div>
                             }
                           />
