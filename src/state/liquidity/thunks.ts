@@ -299,7 +299,7 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
     // return averageDtr.length > 0 ? averageDtr[1]?.apr?.toFixed(0) : 0
     // })
 
-    const pools = data.pools.map((pool: BasicPool) => ({
+    const pools = data?.pools?.map((pool: BasicPool) => ({
       id: pool.id,
       volumeUSD: pool.volumeUSD,
       feesUSD: pool.feesUSD,

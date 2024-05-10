@@ -18,7 +18,7 @@ const Liquidity = () => {
   const { loading, data: pools } = useAllPools()
 
   useEffect(() => {
-    if (pools && pools.length > 0) {
+    if (pools && pools?.length > 0) {
       if (currentTab === 'VOLATILE') {
         // fix filter. user the type of position pool in BasicPool interface
         setFilteredPools([])
@@ -32,14 +32,15 @@ const Liquidity = () => {
     }
   }, [currentTab, pools])
 
-  const filteredPoolsData = filteredPools.filter(
-    (pool) =>
-      pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
-      pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
-  ).sort((a, b) => {
-    return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
-  })
-
+  const filteredPoolsData = filteredPools
+    .filter(
+      (pool) =>
+        pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
+        pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
+    )
+    .sort((a, b) => {
+      return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
+    })
   return (
     <section>
       <div className="flex flex-col items-center overflow-hidden gap-5 py-5 xl:flex-row">
