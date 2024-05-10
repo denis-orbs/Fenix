@@ -115,14 +115,14 @@ const RowData = ({
           <div className="flex justify-center items-center gap-2">
             <div className="flex items-center max-2xl:hidden">
               <Image
-                src={`/static/images/tokens/${row.token0.symbol}.png`}
+                src={`/static/images/tokens/${row.token0.symbol}.svg`}
                 alt="token"
                 className="rounded-full w-7 h-7"
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.token1.symbol}.png`}
+                src={`/static/images/tokens/${row.token1.symbol}.svg`}
                 alt="token"
                 className="-ml-4 rounded-full w-7 h-7"
                 width={20}
