@@ -11,6 +11,7 @@ import { useState } from 'react'
 import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import { SupportedDex, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
+import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 
 interface RowDataProps {
   row: BasicPool
@@ -57,32 +58,8 @@ export default function MobileRowNew({
     },
   })
 
-  const { data: ringsApr, isLoading: rignsAprLoading } = useQuery({
-    queryKey: ['ringsPointsCampaign'],
-    staleTime: 1000 * 60 * 5,
-    queryFn: async () => {
-      const response = await fetch('/api/rings/campaign')
-      return response.json()
-    },
-    select: (data: RingCampaignData) => {
-      if (!row?.id) return 0
-      const pool = data?.boostedPools?.find((pool) => pool?.id?.toLowerCase() == row?.id?.toLowerCase()) || null
-      if (!pool) return 0
-      const apr = toBN(pool?.points)
-        .multipliedBy(data?.pricePerPoint)
-        .multipliedBy(4 * 12)
-        .dividedBy(row?.totalValueLockedUSD)
-        .multipliedBy(100)
-        .toString()
-      return apr
-    },
-  })
-  function getAverageApr(...aprs: number[]): string {
-    const values = aprs.filter((apr) => apr !== 0)
-    const sum = values.reduce((acc, curr) => acc + curr, 0)
-    const average = sum / values.length
-    return formatAmount(average.toString(), 2)
-  }
+  const { data: ringsApr, isLoading: rignsAprLoading } = useRingsPoolApr(row)
+
   return (
     <>
       <div className={`border border-shark-950 px-3 py-2 rounded-[10px] bg-shark-400 bg-opacity-60 ${'lg:hidden'}`}>
@@ -176,17 +153,21 @@ export default function MobileRowNew({
                     </>
                   )}
                 </div>
-    
+
                 {openInfo && (
                   <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-">
                     <div className="flex justify-between items-center gap-3">
                       <p className="text-sm">Average</p>
-                      <p className="text-sm text-chilean-fire-600">{formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%</p>
+                      <p className="text-sm text-chilean-fire-600">
+                        {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%
+                      </p>
                     </div>
                     {ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                       <div className="flex justify-between items-center gap-3">
                         <p className="text-sm">Ichi</p>
-                        <p className="text-sm text-chilean-fire-600">{formatAmount((Number(ichiApr) || 0) + (Number(ringsApr) || 0) , 2)}%</p>
+                        <p className="text-sm text-chilean-fire-600">
+                          {formatAmount((Number(ichiApr) || 0) + (Number(ringsApr) || 0), 2)}%
+                        </p>
                       </div>
                     )}
                   </div>
