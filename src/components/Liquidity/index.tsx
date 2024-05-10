@@ -17,7 +17,7 @@ const Liquidity = () => {
   const { loading, data: pools } = useAllPools()
 
   useEffect(() => {
-    if (pools && pools.length > 0) {
+    if (pools && pools?.length > 0) {
       if (currentTab === 'VOLATILE') {
         // fix filter. user the type of position pool in BasicPool interface
         setFilteredPools([])
