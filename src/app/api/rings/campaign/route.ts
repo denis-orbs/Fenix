@@ -73,6 +73,7 @@ export async function GET(request: NextRequest) {
       id: '0x117106000ceb709ba3ec885027d111463204d6b6',
       points: 1000000,
       multiplier: 1,
+      apr: 0,
     },
     {
       pair: 'DUSD/USDB',
