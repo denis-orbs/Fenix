@@ -66,16 +66,6 @@ const MyPositions = () => {
     setLoading(true)
   }, [address])
 
-  const ichipositions = useIchiPositions()
-  useEffect(() => {
-    setLoading(true)
-    if (ichipositions.length > 0) {
-      // console.log('ichipos', ichipositions)
-      setposition((prevPositions) => [...prevPositions, ...ichipositions])
-      setLoading(false)
-    }
-  }, [ichipositions])
-
   useEffect(() => {
     // FIXME: STARK
     dispatch(setApr(position))

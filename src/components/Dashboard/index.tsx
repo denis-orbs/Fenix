@@ -13,12 +13,11 @@ const Dashboard = () => {
       {/* <MyLocks />
       <MyNest />
       <VotingRewards /> */}
-      <MyStrategies />
-      <br></br>
-      <br></br>
+      <MyPositions />
+
       {/* <LiquidityPositions /> */}
       {/* <StrategiesDCA /> */}
-      <MyPositions />
+      <MyStrategies />
     </div>
   )
 }

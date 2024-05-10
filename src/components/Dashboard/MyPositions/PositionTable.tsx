@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Button, Pagination, PaginationMobile, TableBody, TableCell, TableHead, TableRow } from '../../UI'
 import { positions } from '../MyStrategies/Strategy'
 import NoPositionFound from './NoPositionFound'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { Token } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
@@ -19,6 +19,8 @@ import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import { setApr } from '@/src/state/apr/reducer'
 import { getAlgebraPoolPrice } from '@/src/library/hooks/liquidity/useCL'
+import Loader from '../../UI/Icons/Loader'
+import { useQuery } from '@tanstack/react-query'
 
 interface MyPositionssProps {
   activePagination?: boolean
@@ -128,55 +130,53 @@ const PositionTable = ({ activePagination = true, data, tokens }: MyPositionssPr
     liquidity: string
   }
   const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity }: setStatusprops) => {
-    const minPrice = parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
-    const maxPrice = parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
-    const minPriceIsZero = minPrice < 1e-5
-    const maxPriceIsInfinity = maxPrice > 1e12
+    const minPrice = useMemo(() => {
+      return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+    }, [tickLower, token0?.decimals, token1?.decimals])
+    const maxPrice = useMemo(() => {
+      return parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+    }, [tickUpper, token0?.decimals, token1?.decimals])
 
-    const [poolGlobalState, setPoolGlobalState] = useState<{
-      price: number
-      currentTick: number
-    }>({
-      price: 0,
-      currentTick: 0,
+    const { data: poolPriceData, isLoading: isPoolPriceDataLoading } = useQuery({
+      queryKey: ['algebraPoolPrice', token0?.id, token1?.id],
+      staleTime: 1000 * 60 * 30,
+      queryFn: async () => {
+        const state = await getAlgebraPoolPrice(token0?.id as `0x${string}`, token1?.id as `0x${string}`)
+        return state
+      },
+      enabled: !!token0?.id && !!token1?.id,
     })
-    const getPoolCurrentState = async () => {
-      const state = await getAlgebraPoolPrice(token0?.id as `0x${string}`, token1?.id as `0x${string}`)
-      if (state) {
-        setPoolGlobalState(state)
-      }
+    const currentPoolPrice = poolPriceData
+      ? Number(poolPriceData?.price / 10 ** Number(token1.decimals)).toFixed(6)
+      : '0'
+
+    const isInRange = useMemo(() => {
+      return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
+    }, [minPrice, maxPrice, currentPoolPrice, liquidity])
+    if (isPoolPriceDataLoading) {
+      return <Loader />
     }
-    useEffect(() => {
-      getPoolCurrentState()
-    }, [])
-
-    const currentPoolPrice = Number(poolGlobalState?.price / 10 ** Number(token1.decimals)).toFixed(6)
-
-    const isInRange =
-      (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
-
     return (
       <>
-        {minPriceIsZero && maxPriceIsInfinity ? (
-          <div className="text-green-400 text-sm flex justify-center items-center gap-2">
-            <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="3" cy="3" r="3" fill="#2AED8F" />
-            </svg>
-            open
-          </div>
-        ) : isInRange ? (
-          <div className="text-green-400 text-sm flex justify-center items-center gap-2">
-            <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="3" cy="3" r="3" fill="#2AED8F" />
-            </svg>
-            open
+        {isInRange ? (
+          <div className="text-green-400 text-sm flex-col flex justify-center items-start gap-1">
+            <div className="flex items-center gap-x-1">
+              <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="3" cy="3" r="3" fill="#2AED8F" />
+              </svg>
+              <span>In range</span>
+            </div>
+            <span className="text-white">Pool price: {Number(currentPoolPrice)}</span>
           </div>
         ) : (
-          <div className="text-red-600 text-sm flex justify-center items-center gap-2">
-            <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="3" cy="3" r="3" fill="#dc2626" />
-            </svg>
-            closed
+          <div className="text-red-600 text-sm flex-col flex justify-center items-start gap-1">
+            <div className="flex items-center gap-x-1">
+              <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="3" cy="3" r="3" fill="#dc2626" />
+              </svg>
+              <span>Out of range</span>
+            </div>
+            <span className="text-white">Pool price: {Number(currentPoolPrice)}</span>
           </div>
         )}
       </>
@@ -278,9 +278,9 @@ const PositionTable = ({ activePagination = true, data, tokens }: MyPositionssPr
           <TableHead
             items={[
               { text: 'Your Positions', className: 'text-left w-[40%]', sortable: false },
-              { text: 'Status', className: 'text-right w-[10%]', sortable: false },
-              { text: 'APR', className: 'text-right w-[15%]', sortable: false },
-              { text: 'TVL', className: 'text-center w-[15%]', sortable: false },
+              { text: 'Status', className: 'text-left w-[15%]', sortable: false },
+              { text: 'APR', className: 'text-right w-[10%]', sortable: false },
+              { text: 'TVL', className: 'text-right w-[15%]', sortable: false },
               { text: 'Action', className: 'text-right w-[20%]', sortable: false },
             ]}
             setSort={() => {}}
@@ -344,7 +344,7 @@ const PositionTable = ({ activePagination = true, data, tokens }: MyPositionssPr
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="w-[10%] flex justify-end">
+                        <TableCell className="w-[15%] flex justify-start">
                           <SetStatus
                             token0={position.token0}
                             token1={position.token1}
@@ -353,7 +353,7 @@ const PositionTable = ({ activePagination = true, data, tokens }: MyPositionssPr
                             liquidity={position.liquidity}
                           />
                         </TableCell>
-                        <TableCell className="w-[15%] flex justify-end">
+                        <TableCell className="w-[10%] flex justify-end">
                           <div className="flex justify-center items-center min-w-10">
                             <p className="px-2 py-1 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                               {position.apr}
@@ -419,6 +419,7 @@ const PositionTable = ({ activePagination = true, data, tokens }: MyPositionssPr
                                   onClick={() => {
                                     if (position.liquidity !== 'ichi') {
                                       handleClaim(position.id)
+                                      console.log('hellooo')
                                     }
                                   }}
                                 >
