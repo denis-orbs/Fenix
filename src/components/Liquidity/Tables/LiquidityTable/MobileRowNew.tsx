@@ -35,8 +35,8 @@ export default function MobileRowNew({
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
   let aprdisplayIchi
-  if (aprIchi && aprIchi.length > 0) {
-    if (aprIchi[0].hasOwnProperty('apr')) aprdisplayIchi = aprIchi[0].apr[1].apr.toFixed(0)
+  if (aprIchi && aprIchi?.length > 0 && aprIchi[0]) {
+    if (aprIchi[0].hasOwnProperty('apr')) aprdisplayIchi = aprIchi[0]?.apr[1]?.apr?.toFixed(0)
   }
   const { data: ichiApr, isLoading: ichiAprLoading } = useQuery({
     queryKey: ['ichiApr', row?.id],
