@@ -13,6 +13,7 @@ import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionApr'
 import { Address } from 'viem'
 import Spinner from '../../Common/Spinner'
 import PositionTableMobile from './PositionTableMobile'
+import { useQuery } from '@tanstack/react-query'
 
 const MyPositions = () => {
   const dispatch = useDispatch()
@@ -71,9 +72,17 @@ const MyPositions = () => {
     dispatch(setApr(position))
   }, [position, dispatch])
 
+  const { data: ringsCampaign, isLoading: isLoadingRingsCampaign } = useQuery({
+    queryKey: ['ringsPointsCampaign'],
+    staleTime: 1000 * 60 * 5,
+    queryFn: async () => {
+      const response = await fetch('/api/rings/campaign')
+      return response.json()
+    },
+  })
   return (
     <>
-      {position.length !== 0 && loading === false && address ? (
+      {position.length !== 0 && loading === false && isLoadingRingsCampaign === false && address ? (
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">My Positions</h1>
@@ -82,11 +91,11 @@ const MyPositions = () => {
             </Button>
           </div>
           <div className="dashboard-box flex-col xl:flex-row">
-            <PositionTable data={position} tokens={tokens} />
-            <PositionTableMobile data={position} tokens={tokens} />
+            <PositionTable data={position} tokens={tokens} ringsCampaign={ringsCampaign} />
+            <PositionTableMobile data={position} tokens={tokens} ringsCampaign={ringsCampaign} />
           </div>
         </div>
-      ) : (position.length === 0 && loading === false) || address === undefined ? (
+      ) : (position.length === 0 && loading === false && isLoadingRingsCampaign === false) || address === undefined ? (
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
             <p className="flex gap-3 text-lg ms-2">My Positions</p>

@@ -21,14 +21,17 @@ import { setApr } from '@/src/state/apr/reducer'
 import { getAlgebraPoolPrice } from '@/src/library/hooks/liquidity/useCL'
 import { useQuery } from '@tanstack/react-query'
 import Loader from '../../UI/Icons/Loader'
+import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import AprBox from '../../UI/Pools/AprBox'
 
 interface MyPositionsMobileProps {
   activePagination?: boolean
   data: positions[]
   tokens: Token[]
+  ringsCampaign: RingCampaignData
 }
 
-const PositionTableMobile = ({ activePagination = true, data, tokens }: MyPositionsMobileProps) => {
+const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionsMobileProps) => {
   const router = useRouter()
   const dispatch = useDispatch()
   const { writeContractAsync } = useWriteContract()
@@ -272,6 +275,10 @@ const PositionTableMobile = ({ activePagination = true, data, tokens }: MyPositi
       {pagination.length > 0 ? (
         <>
           {pagination.map((position: positions) => {
+            const fenixRingApr =
+              ringsCampaign.boostedPools.find((pool) => {
+                return pool.id.toLowerCase() === position.pool.id.toLowerCase()
+              })?.apr || 0
             return (
               <>
                 <div
@@ -351,10 +358,25 @@ const PositionTableMobile = ({ activePagination = true, data, tokens }: MyPositi
                           />
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-white">APR</span>
-                          <p className="px-2 py-1 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                            {position.apr}
-                          </p>
+                          <AprBox
+                            apr={parseFloat(position?.apr) > 0 ? parseFloat(position?.apr) + fenixRingApr : 0}
+                            tooltip={
+                              <div>
+                                <div className="flex justify-between items-center gap-3">
+                                  <p className="text-sm pb-1">Fees APR</p>
+                                  <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
+                                </div>
+                                {fenixRingApr > 0 && parseFloat(position?.apr) > 0 && (
+                                  <div className="flex justify-between items-center gap-3">
+                                    <p className="text-sm pb-1">Rings APR</p>
+                                    <p className="text-sm pb-1 text-chilean-fire-600">
+                                      {formatAmount(fenixRingApr, 2)}%
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            }
+                          />
                         </div>
                         <div className="flex justify-between items-center">
                           <span className="text-white">TVL</span>
