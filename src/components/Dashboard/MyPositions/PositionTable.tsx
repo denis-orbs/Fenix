@@ -1,6 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 import Image from 'next/image'
-import { Button, Pagination, PaginationMobile, TableBody, TableCell, TableHead, TableRow } from '../../UI'
+import { Button, Pagination, PaginationMobile, TableBody, TableCell, TableHead, TableRow, Tooltip } from '../../UI'
 import { positions } from '../MyStrategies/Strategy'
 import NoPositionFound from './NoPositionFound'
 import { useEffect, useMemo, useState } from 'react'
@@ -21,6 +21,7 @@ import { setApr } from '@/src/state/apr/reducer'
 import { getAlgebraPoolPrice } from '@/src/library/hooks/liquidity/useCL'
 import Loader from '../../UI/Icons/Loader'
 import { useQuery } from '@tanstack/react-query'
+import AprBox from '../../UI/Pools/AprBox'
 
 interface MyPositionssProps {
   activePagination?: boolean
@@ -354,11 +355,21 @@ const PositionTable = ({ activePagination = true, data, tokens }: MyPositionssPr
                           />
                         </TableCell>
                         <TableCell className="w-[10%] flex justify-end">
-                          <div className="flex justify-center items-center min-w-10">
-                            <p className="px-2 py-1 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                              {position.apr}
-                            </p>
-                          </div>
+                          <AprBox
+                            apr={position?.apr}
+                            tooltip={
+                              <div>
+                                <div className="flex justify-between items-center gap-3">
+                                  <p className="text-sm pb-1">Fees APR</p>
+                                  <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
+                                </div>
+                                {/* <div className="flex justify-between items-center gap-3">
+                                  <p className="text-sm pb-1">Rings APR</p>
+                                  <p className="text-sm pb-1 text-chilean-fire-600">{formatAmount(343, 2)}%</p>
+                                </div> */}
+                              </div>
+                            }
+                          />
                         </TableCell>
                         <TableCell className="w-[15%] flex justify-end">
                           <div className="flex flex-col justify-center items-end">
