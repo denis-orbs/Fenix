@@ -2,7 +2,7 @@ import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnec
 import { BigNumber, ethers } from 'ethers'
 import { writeContract } from '@wagmi/core'
 import { Abi } from 'viem'
-import { config } from '@/src/app/layout'
+import { wagmiConfig } from '@/src/app/layout'
 import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
@@ -35,7 +35,7 @@ export const approveToken = async ({
 }: ApproveTokenParams) => {
   try {
     const approvalAmount = amount || ethers.constants.MaxUint256
-    const hash = await writeContract(config, {
+    const hash = await writeContract(wagmiConfig, {
       abi: abi,
       address: tokenAddress,
       functionName: 'approve',

@@ -6,7 +6,7 @@ import { Address, Hash } from 'viem'
 import { NULL_ADDRESS } from '../../Constants'
 import { gql } from '@apollo/client'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
-import { config } from '@/src/app/layout'
+import { wagmiConfig } from '@/src/app/layout'
 import { ProtocolSubgraph } from '../ContractAddresses'
 
 const GET_AVAILABLE_TOKENS = gql`
@@ -55,7 +55,7 @@ export async function checkIsApproveForAllOperator(
   operator: Address,
   nftContractAddress: Address
 ): Promise<boolean> {
-  const isApproved = (await readContract(config, {
+  const isApproved = (await readContract(wagmiConfig, {
     address: nftContractAddress,
     abi: ERC721ABI,
     functionName: 'isApprovedForAll',
@@ -79,7 +79,7 @@ export async function setApproveAllNFTsForOperator(
   approved: boolean,
   nftContractAddress: Address
 ): Promise<Hash> {
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: nftContractAddress,
     abi: ERC721ABI,
     functionName: 'setApprovalForAll',
@@ -99,7 +99,7 @@ export async function setApproveAllNFTsForOperator(
  * @returns
  */
 export async function approveNFTs(to: Address, tokenId: number, nftContractAddress: Address): Promise<Hash> {
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: nftContractAddress,
     abi: ERC721ABI,
     functionName: 'approve',
@@ -121,7 +121,7 @@ export async function approveNFTs(to: Address, tokenId: number, nftContractAddre
 export async function approveTokenUsage(tokenAddress: Address, allowanceAddress: Address): Promise<Hash> {
   // Approve allowanceAddress to spend tokenAddress
 
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: tokenAddress,
     abi: ERC20ABI,
     functionName: 'approve',
@@ -147,7 +147,7 @@ export async function getTokenAllowance(
 ): Promise<number> {
   // Obtain the tokens approved for routerAddress by address of tokenAddress
   try {
-    const allowance = (await readContract(config, {
+    const allowance = (await readContract(wagmiConfig, {
       address: tokenAddress,
       abi: ERC20ABI,
       functionName: 'allowance',

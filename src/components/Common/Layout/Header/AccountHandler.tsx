@@ -13,7 +13,7 @@ import axios from 'axios'
 import { Address } from 'viem'
 import { useAccount, useSwitchChain } from 'wagmi'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
-import { config, configwallets } from '@/src/app/layout'
+import { wagmiConfig, configwallets } from '@/src/app/layout'
 import cn from '@/src/library/utils/cn'
 import { blast } from 'viem/chains'
 import { isSupportedChain } from '@/src/library/constants/chains'
@@ -296,7 +296,6 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
           ) : (
             <Button
               onClick={handlerConnectWallet}
-              
               className={`${pathname === '/' && !isMenuMobile ? 'w-fit whitespace-nowrap' : 'w-full xl:w-[290px]'} gap-3.5 h-[40px] xl:h-[49px] ${pathname === '/' && isMenuMobile ? '!justify-start' : ''}`}
             >
               <span className="icon-wallet text-md !ml-0"></span>

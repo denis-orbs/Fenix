@@ -7,11 +7,11 @@ import { LockElement } from '../structures/lock/LockElement'
 import veNFTAPIABIV3 from './abis/VeNFTAPIV3ABI'
 import votingEscrowABI from './abis/veFNX'
 import { encodeFunctionData } from 'viem'
-import { config } from '@/src/app/layout'
+import { wagmiConfig } from '@/src/app/layout'
 
 export async function getUserVeFNXLockPositions(user: Address, retry = true): Promise<LockElement[]> {
   try {
-    const nfts = await readContract(config, {
+    const nfts = await readContract(wagmiConfig, {
       // name: 'VeNFTAPI',
       address: VeNFTAPIV3Address,
       abi: veNFTAPIABIV3,
@@ -54,7 +54,7 @@ export async function getUserVeFNXLockPositions(user: Address, retry = true): Pr
 }
 export async function getIdVeFNXLockPositions(id: Number, retry = true): Promise<LockElement> {
   try {
-    const nft = (await readContract(config, {
+    const nft = (await readContract(wagmiConfig, {
       // name: 'VeNFTAPI',
       address: VeNFTAPIV3Address,
       abi: veNFTAPIABIV3,
@@ -95,7 +95,7 @@ export async function getIdVeFNXLockPositions(id: Number, retry = true): Promise
 }
 
 export async function createLock(fnxAmount: bigint, lockDuration: number): Promise<Hash> {
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: VotingEscrowAddress,
     abi: votingEscrowABI,
     functionName: 'create_lock',
@@ -106,7 +106,7 @@ export async function createLock(fnxAmount: bigint, lockDuration: number): Promi
 }
 
 export async function mergeLock(tokenId1: number, tokenId2: number): Promise<Hash> {
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: VotingEscrowAddress,
     abi: votingEscrowABI,
     functionName: 'merge',
@@ -117,7 +117,7 @@ export async function mergeLock(tokenId1: number, tokenId2: number): Promise<Has
 }
 
 export async function transferLock(from: Address, to: Address, tokenId: number) {
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: VotingEscrowAddress,
     abi: votingEscrowABI,
     functionName: 'transferFrom',
@@ -128,7 +128,7 @@ export async function transferLock(from: Address, to: Address, tokenId: number) 
 }
 
 export async function splitLock(cachos: number[], tokenId: number) {
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: VotingEscrowAddress,
     abi: votingEscrowABI,
     functionName: 'split',
@@ -139,7 +139,7 @@ export async function splitLock(cachos: number[], tokenId: number) {
 }
 
 export async function increaseLock(tokenId: number, amount: bigint): Promise<Hash> {
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: VotingEscrowAddress,
     abi: votingEscrowABI,
     functionName: 'increase_amount',
@@ -150,7 +150,7 @@ export async function increaseLock(tokenId: number, amount: bigint): Promise<Has
 }
 
 export async function increaseLockUntilTime(tokenId: number, lockUntil: number): Promise<Hash> {
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: VotingEscrowAddress,
     abi: votingEscrowABI,
     functionName: 'increase_unlock_time',
@@ -161,8 +161,8 @@ export async function increaseLockUntilTime(tokenId: number, lockUntil: number):
 }
 
 export async function withdraw(tokenId: BigInt): Promise<Hash> {
-  const provider = getPublicClient(config)
-  const signer = await getWalletClient(config)
+  const provider = getPublicClient(wagmiConfig)
+  const signer = await getWalletClient(wagmiConfig)
   const gas = await provider?.estimateGas({
     // args: [tokenId],
     data: encodeFunctionData({
@@ -174,7 +174,7 @@ export async function withdraw(tokenId: BigInt): Promise<Hash> {
     account: signer.account,
   })
   // console.log('gas', gas?.toString())
-  const data = await writeContract(config, {
+  const data = await writeContract(wagmiConfig, {
     address: VotingEscrowAddress,
     abi: votingEscrowABI,
     functionName: 'withdraw',
