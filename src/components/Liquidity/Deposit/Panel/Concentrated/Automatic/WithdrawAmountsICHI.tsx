@@ -5,7 +5,7 @@ import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnec
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { getUserAmounts, getUserBalance, IchiVault, SupportedDex, withdraw } from '@ichidao/ichi-vaults-sdk'
-import { useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import { useAllPools, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
@@ -15,6 +15,9 @@ import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { ichiVaults } from './ichiVaults'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { BasicPool } from '@/src/state/liquidity/types'
+import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
+import Loader from '@/src/components/UI/Icons/Loader'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 const WithdrawAmountsICHI = ({
@@ -57,7 +60,18 @@ const WithdrawAmountsICHI = ({
     if (amoutToWithdraw > totalUserShares) return 'Insufficient balance'
     return BUTTON_TEXT_WITHDRAW
   }
-
+  const token0 = useToken0()
+  const token1 = useToken1()
+  const { data: pools } = useAllPools()
+  const currentPool = pools?.find((pool: BasicPool) => {
+    return (
+      (pool?.token0?.id?.toLowerCase() === token0?.toLowerCase() &&
+        pool?.token1?.id?.toLowerCase() === token1?.toLowerCase()) ||
+      (pool?.token0?.id?.toLowerCase() === token1?.toLowerCase() &&
+        pool?.token1?.id?.toLowerCase() === token0?.toLowerCase())
+    )
+  })
+  const { data: ringsApr, isLoading: rignsAprLoading } = useRingsPoolApr(currentPool)
   // const NOT_USE_THIS_VAULT = '0x468e041af71b28be7c3b2ad9f91696a0206f0053' // BNB Vault in thena for testing
 
   // useEffect to get the total user shares (balance in the vault)
@@ -284,12 +298,18 @@ const WithdrawAmountsICHI = ({
                               ]
                             }
                           </span>
-                          {vault?.apr && (
+                          {rignsAprLoading && <Loader />}
+                          {!rignsAprLoading && vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
                               {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
                                 ? '0'
-                                : vault?.apr[1]?.apr?.toFixed(0)}
+                                : formatAmount(
+                                    toBN(vault?.apr[1]?.apr?.toFixed(0))
+                                      .plus(ringsApr || 0)
+                                      .toString(),
+                                    2
+                                  )}
                               %
                             </span>
                           )}

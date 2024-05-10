@@ -7,8 +7,14 @@ import { useEffect, useState } from 'react'
 import { useReadContracts } from 'wagmi'
 import { formatUnits, zeroAddress } from 'viem'
 import { approveDepositToken, deposit, IchiVault, isDepositTokenApproved, SupportedDex } from '@ichidao/ichi-vaults-sdk'
-import { useSetToken0TypedValue, useToken0, useToken0TypedValue, useToken1 } from '@/src/state/liquidity/hooks'
-import { formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
+import {
+  useAllPools,
+  useSetToken0TypedValue,
+  useToken0,
+  useToken0TypedValue,
+  useToken1,
+} from '@/src/state/liquidity/hooks'
+import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { erc20Abi } from 'viem'
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
@@ -18,6 +24,9 @@ import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymb
 import Spinner from '@/src/components/Common/Spinner'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { BasicPool } from '@/src/state/liquidity/types'
+import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
+import Loader from '@/src/components/UI/Icons/Loader'
 const DepositAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
@@ -40,11 +49,21 @@ const DepositAmountsICHI = ({
   const handlerConnectWallet = () => {
     openConnectModal && openConnectModal()
   }
-
+  console.log(allIchiVaultsByTokenPair)
   const token0 = useToken0()
-
+  const { data: pools } = useAllPools()
+  console.log(pools)
   const token1 = useToken1()
 
+  const currentPool = pools?.find((pool: BasicPool) => {
+    return (
+      (pool?.token0?.id?.toLowerCase() === token0?.toLowerCase() &&
+        pool?.token1?.id?.toLowerCase() === token1?.toLowerCase()) ||
+      (pool?.token0?.id?.toLowerCase() === token1?.toLowerCase() &&
+        pool?.token1?.id?.toLowerCase() === token0?.toLowerCase())
+    )
+  })
+  const { data: ringsApr, isLoading: rignsAprLoading } = useRingsPoolApr(currentPool)
   const addNotification = useNotificationAdderCallback()
 
   useEffect(() => {
@@ -189,7 +208,7 @@ const DepositAmountsICHI = ({
             notificationDuration: NotificationDuration.DURATION_5000,
           })
           setLoading(false)
-        } else if (error.reason == 'IV.deposit: deposits too large') {
+        } else if (error?.reason == 'IV.deposit: deposits too large') {
           // toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
           addNotification({
             id: crypto.randomUUID(),
@@ -308,6 +327,7 @@ const DepositAmountsICHI = ({
       }
     }
   }
+
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -416,16 +436,20 @@ const DepositAmountsICHI = ({
                               ]
                             }
                           </span>
-                          {vault?.apr ? (
+                          {rignsAprLoading && <Loader />}
+                          {!rignsAprLoading && vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
                               {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
                                 ? '0'
-                                : vault?.apr[1]?.apr?.toFixed(0)}
+                                : formatAmount(
+                                    toBN(vault?.apr[1]?.apr?.toFixed(0))
+                                      .plus(ringsApr || 0)
+                                      .toString(),
+                                    2
+                                  )}
                               %
                             </span>
-                          ) : (
-                            <span className="text-sm">APR : 0%</span>
                           )}
                         </div>
                       </div>
