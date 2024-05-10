@@ -1,7 +1,7 @@
 import { toBN } from '@/src/library/utils/numbers'
 import { NextRequest, NextResponse } from 'next/server'
 
-const POINTS_SUPLY = 10_000_000
+const POINTS_SUPLY = 12_500_000
 const POINTS_TOTAL_VALUE = 33_500
 const PRICE_PER_POINT = POINTS_TOTAL_VALUE / POINTS_SUPLY
 

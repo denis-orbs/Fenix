@@ -31,14 +31,15 @@ const Liquidity = () => {
     }
   }, [currentTab, pools])
 
-  const filteredPoolsData = filteredPools.filter(
-    (pool) =>
-      pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
-      pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
-  ).sort((a, b) => {
-    return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
-  })
-
+  const filteredPoolsData = filteredPools
+    .filter(
+      (pool) =>
+        pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
+        pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
+    )
+    .sort((a, b) => {
+      return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
+    })
   return (
     <section>
       <div className="flex flex-col items-center gap-5 py-5 xl:flex-row">
