@@ -145,7 +145,7 @@ const Footer = () => {
             <div
               className={`
              
-              flex justify-between max-sm:w-full items-center gap-4 sm:py-10 ${pathname === '/' && 'max-md:flex-col max-md:items-end'}`}
+              flex justify-between max-sm:w-full items-center gap-6 sm:py-10 ${pathname === '/' && 'max-md:flex-col max-md:items-end'}`}
             >
               <Link
                 href={
@@ -155,20 +155,20 @@ const Footer = () => {
               >
                 <div className="flex items-center gap-1">
                   <Image
-                    src="/static/images/footer/Audit.svg"
-                    alt="pancake"
+                    src="/static/images/footer/hats-finance.svg"
+                    alt="hats-finance"
                     width={24}
                     height={24}
                     className="w-6 h-6 "
                   />
-                  <span className="text-[9px] 2xl:text-xs ">Audited by yAudit </span>
+                  <span className="text-[9px] 2xl:text-xs ">Audited by Hats Finance </span>
                 </div>
               </Link>
               <div className="flex items-center gap-2">
                 <span className="text-[9px] 2xl:text-xs">The Unified Trading and Liquidity Marketplace for </span>
                 <Image
                   src="/static/images/point-stack/blast.svg"
-                  alt="pancake"
+                  alt="Blast"
                   width={24}
                   height={24}
                   className="w-6 h-6 opacity-50"
