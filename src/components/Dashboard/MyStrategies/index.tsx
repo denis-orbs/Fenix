@@ -37,7 +37,7 @@ const MyStrategies = () => {
   useEffect(() => {
     tokensprice()
   }, [])
-  
+
   const slideToLeft = () => {
     if (swiperRef.current && progress > 0) {
       swiperRef.current.slidePrev()
@@ -52,48 +52,11 @@ const MyStrategies = () => {
   }
   const { address } = useAccount()
 
-  const fetchpositions = async (address: Address) => {
-    const positions = await fetchV3Positions(address)
-    const nativePrice = await fetchNativePrice()
-    const positionsPoolAddresses = await positions.map((position: positions) => {
-      return {
-        id: position.pool.id,
-        liq: position.liquidity,
-        lower: position.tickLower.tickIdx,
-        higher: position.tickUpper.tickIdx,
-      }
-    })
-    const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
-    // TODO: Fetch APR for each position
-    const aprs = await Promise.all(
-      positions.map((position: positions, index: number) => {
-        return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
-      })
-    )
-    const final = positions.map((position: positions, index: number) => {
-      // console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
-      return {
-        ...position,
-        depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
-        depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
-        apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
-      }
-    })
-    setposition((prevPositions) => [...prevPositions, ...final])
-    setpositionAmounts(amounts)
-    setLoading(false)
-  }
-  useEffect(() => {
-    if (address) fetchpositions(address)
-    setLoading(true)
-  }, [address])
-
   const ichipositions = useIchiPositions()
   useEffect(() => {
     setLoading(true)
     if (ichipositions.length > 0) {
-      // console.log('ichipos', ichipositions)
-      setposition((prevPositions) => [...prevPositions, ...ichipositions])
+      setposition(ichipositions)
       setLoading(false)
     }
   }, [ichipositions])
@@ -109,9 +72,11 @@ const MyStrategies = () => {
       {position.length !== 0 && loading === false && address ? (
         <div className="relative">
           <div className="flex items-center w-[100%] mb-4 justify-between">
-            <h4 className="text-lg text-white">My Positions</h4>
+            <h2 id="strategies" className="text-lg text-white">
+              My Strategies
+            </h2>
             <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
-              <span className="icon-logout"></span>New deposit
+              <span className="icon-logout"></span>New strategy
             </Button>
           </div>
           <div className="dashboard-box mb-10 hidden xl:block">
@@ -151,16 +116,18 @@ const MyStrategies = () => {
                 )
               })}
             </Swiper>
-            <div className="flex gap-2 justify-center">
-              <span
-                className={`icon-arrow rotate-180 ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
-                onClick={slideToLeft}
-              ></span>
-              <span
-                className={`icon-arrow text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
-                onClick={slideToRight}
-              ></span>
-            </div>
+            {position?.length >= 3 && (
+              <div className="flex gap-2 justify-center">
+                <span
+                  className={`icon-arrow rotate-180 ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
+                  onClick={slideToLeft}
+                ></span>
+                <span
+                  className={`icon-arrow text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                  onClick={slideToRight}
+                ></span>
+              </div>
+            )}
           </div>
           <div className="dashboard-box mb-10 block xl:hidden">
             <div className="">
