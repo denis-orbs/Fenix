@@ -142,7 +142,7 @@ const PointSummary = ({ userData }: any) => {
               <div className="">
                 <p className="text-white text-xs">RANK</p>
                 <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                  {userData ? formatCurrency(userData / 10 ** 6) + 'points' : ''}
+                  {userData?.amount ? formatCurrency(userData?.amount / 10 ** 6) + ' points' : ''}
                 </p>
               </div>
             </div>
