@@ -108,7 +108,7 @@ export default function MobileRowNew({
         <div className="flex flex-col gap-1  mb-2.5">
           <div className="flex items-center justify-between">
             <div
-              className={`flex flex-col items-center ${row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' ? 'w-[25%]' : 'w-[40%]'} h-[80px] justify-between border border-shark-300 p-4 rounded-lg
+              className={`flex flex-col items-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) ? 'w-[25%]' : 'w-[40%]'} h-[80px] justify-between border border-shark-300 p-4 rounded-lg
             `}
             >
               <div className="flex items-center gap-1">
@@ -169,12 +169,12 @@ export default function MobileRowNew({
               </div>
             </div>
             <div
-              className={`flex flex-col items-center w-[35%] h-[80px] justify-between border border-shark-300 p-3 rounded-lg ${row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' ? 'block' : 'hidden'}`}
+              className={`flex flex-col items-center w-[35%] h-[80px] justify-between border border-shark-300 p-3 rounded-lg ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) ? 'block' : 'hidden'}`}
             >
               <div className="flex items-center gap-1">
                 <span className="text-xs font-medium leading-normal">Point Stack</span>
               </div>
-              <div className={`flex justify-center items-center gap-2 ${row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' ? 'block' : 'hidden'}`}>
+              <div className={`flex justify-center items-center gap-2 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) ? 'block' : 'hidden'}`}>
                 <span className="flex flex-row justify-center gap-2">
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                     <>
@@ -204,7 +204,7 @@ export default function MobileRowNew({
                 </span>
               </div>
             </div>
-            <div className={`flex flex-col items-center ${row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' ? 'w-[39%]' : 'w-[59%]'} h-[80px] justify-between border border-shark-300 p-4 rounded-lg`}>
+            <div className={`flex flex-col items-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) ? 'w-[39%]' : 'w-[59%]'} h-[80px] justify-between border border-shark-300 p-4 rounded-lg`}>
               <div className="flex items-center gap-1">
                 <span className="text-xs font-medium leading-normal">TVL</span>
               </div>
