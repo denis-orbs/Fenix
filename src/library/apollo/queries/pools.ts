@@ -161,3 +161,12 @@ export const POOL_FEE_DATA = gql`
     }
   }
 `
+
+export const POOLS_TVL = gql`
+  query PoolsTVL {
+    pools {
+      id
+      totalValueLockedUSD
+    }
+  }
+`

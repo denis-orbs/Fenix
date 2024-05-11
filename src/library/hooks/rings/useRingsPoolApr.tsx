@@ -5,7 +5,7 @@ import { toBN } from '../../utils/numbers'
 
 export const useRingsPoolApr = (row: BasicPool) => {
   return useQuery({
-    queryKey: ['ringsPointsCampaign'],
+    queryKey: ['ringsPointsCampaign', row?.id],
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
       const response = await fetch('/api/rings/campaign')
@@ -15,12 +15,7 @@ export const useRingsPoolApr = (row: BasicPool) => {
       if (!row?.id) return 0
       const pool = data?.boostedPools?.find((pool) => pool?.id?.toLowerCase() == row?.id?.toLowerCase()) || null
       if (!pool) return 0
-      const apr = toBN(pool?.points)
-        .multipliedBy(data?.pricePerPoint)
-        .multipliedBy(4 * 12)
-        .dividedBy(row?.totalValueLockedUSD)
-        .multipliedBy(100)
-        .toString()
+      const apr = toBN(pool?.apr || 0).toString()
       return apr
     },
   })

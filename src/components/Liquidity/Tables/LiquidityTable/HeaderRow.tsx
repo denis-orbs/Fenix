@@ -78,7 +78,7 @@ const HeaderRow = ({
     } else {
       setPaginationStatus(true)
     }
-  }, [sort, chainId])
+  }, [sort, chainId, paginationStatus, paginationResult])
 
   useEffect(() => {
     setPaginationResult(poolsData)

@@ -1,13 +1,13 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { Button } from '@/src/components/UI'
+import { Button, Tooltip } from '@/src/components/UI'
 import ComponentVisible from '@/src/library/hooks/useVisible'
 import Graph from './Graph'
 import { positions } from './Strategy'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
-import { formatDollarAmount, fromWei } from '@/src/library/utils/numbers'
+import { formatAmount, formatDollarAmount, fromWei } from '@/src/library/utils/numbers'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { publicClient } from '@/src/library/constants/viemClient'
@@ -18,6 +18,9 @@ import { useAccount, useWriteContract } from 'wagmi'
 import { MAX_INT } from '@/src/library/constants/misc'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { ichiVaults } from '../../Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
+import { useQuery } from '@tanstack/react-query'
+import { BoostedPool } from '@/src/app/api/rings/campaign/route'
 
 type options = {
   value: string
@@ -108,6 +111,20 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
       }
     )
   }
+  const { data: ringsCampaign, isLoading: isLoadingRingsCampaign } = useQuery({
+    queryKey: ['ringsPointsCampaign'],
+    staleTime: 1000 * 60 * 5,
+    queryFn: async () => {
+      const response = await fetch('/api/rings/campaign')
+      return response.json()
+    },
+  })
+  const ichiVaultData = ichiVaults.find((e) => e.id.toLowerCase() === row?.id.toLowerCase())
+  const fenixRingApr =
+    ringsCampaign?.boostedPools.find((pool: BoostedPool) => {
+      console.log(pool?.id?.toLowerCase(), ichiVaultData?.pool.toLowerCase())
+      return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
+    })?.apr || 0
 
   return (
     <div className="w-full bg-shark-400 bg-opacity-40 p-4">
@@ -187,14 +204,32 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
         {isOpen && (
           <div>
             <div className="flex gap-2 my-2">
-              <div className="flex flex-col gap-2 w-1/2 items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
-                <p className="text-white text-xs lg:text-sm">
-                  APR <span className="icon-info"></span>
+              <div className="flex flex-col gap-2 w-1/2 items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg relative">
+                <p className="text-white text-xs lg:text-sm ">
+                  APR{' '}
+                  <span
+                    className="icon-info"
+                    onMouseEnter={() => setIsVisible(true)}
+                    onMouseLeave={() => setIsVisible(false)}
+                  ></span>
                 </p>
-                {/* <h1 className="text-green-400 text-2xl w-full line-clamp-1">{row?.apr}</h1> */}
-                <h2 className={`text-green-400 ${row?.apr.length > 10 ? 'text-base' : 'text-2xl'} flex justify-center`}>
-                  {row?.apr}
-                </h2>
+                <Tooltip
+                  className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-8 px-5 py-3 left-24"
+                  show={isVisible}
+                  setShow={setIsVisible}
+                >
+                  <div className="flex justify-between items-center gap-3 text-white">
+                    <p className="text-sm pb-1 ">Ichi strategy</p>
+                    <p className="text-sm pb-1 text-chilean-fire-600">{row?.apr}</p>
+                  </div>
+                  {fenixRingApr > 0 && (
+                    <div className="flex justify-between items-center gap-3 text-white">
+                      <p className="text-sm pb-1">Rings APR</p>
+                      <p className="text-sm pb-1 text-chilean-fire-600">{formatAmount(fenixRingApr, 2)}%</p>
+                    </div>
+                  )}
+                </Tooltip>
+                <h4 className="text-green-400 text-2xl">{formatAmount(parseFloat(row?.apr) + fenixRingApr, 2)}</h4>
               </div>
               <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
                 <p className="text-white text-xs lg:text-sm">

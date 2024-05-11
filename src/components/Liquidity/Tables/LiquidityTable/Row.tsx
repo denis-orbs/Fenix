@@ -180,7 +180,7 @@ const RowData = ({
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
-              {rignsAprLoading || ichiAprLoading || false ? (
+              {rignsAprLoading ? (
                 <Loader />
               ) : (
                 <>
@@ -205,7 +205,13 @@ const RowData = ({
                     <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ringsApr) || 0, 2)}%</p>
                   </div>
                 )}
-                {ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
+                {ichiAprLoading && (
+                  <div className="flex justify-between items-center gap-3">
+                    <p className="text-sm">Ichi Strategy</p>
+                    <Loader />
+                  </div>
+                )}
+                {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">Ichi Strategy</p>
                     <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>

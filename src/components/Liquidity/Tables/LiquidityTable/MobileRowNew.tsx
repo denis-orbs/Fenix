@@ -135,7 +135,7 @@ export default function MobileRowNew({
               <div className=" relative flex gap-[7px]">
                 <div className="ml-auto text-xs leading-normal flex gap-x-1">
                   {' '}
-                  {rignsAprLoading || ichiAprLoading || false ? (
+                  {rignsAprLoading ? (
                     <Loader />
                   ) : (
                     <>
@@ -166,7 +166,13 @@ export default function MobileRowNew({
                         <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ringsApr) || 0, 2)}%</p>
                       </div>
                     )}
-                    {ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
+                    {ichiAprLoading && (
+                      <div className="flex justify-between items-center gap-3">
+                        <p className="text-sm">Ichi Strategy</p>
+                        <Loader />
+                      </div>
+                    )}
+                    {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                       <div className="flex justify-between items-center gap-3">
                         <p className="text-sm">Ichi Strategy</p>
                         <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>
