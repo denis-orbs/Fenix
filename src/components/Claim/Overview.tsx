@@ -126,6 +126,10 @@ const Overview = () => {
                   { text: 'Claimable Token', className: 'md:max-w-[300px]', sortable: true },
                   { text: 'Action', className: 'hidden md:block md:max-w-[300px]', sortable: false },
                 ]}
+                setSort={() => {}}
+                setSortIndex={() => {}}
+                sortIndex={0}
+                sort={null}
               />
 
               <TableBody>
@@ -282,6 +286,10 @@ const Overview = () => {
                   { text: 'Non Snapshot Balance', className: 'md:max-w-[300px]', sortable: true },
                   { text: 'Action', className: 'hidden md:block md:max-w-[300px]', sortable: false },
                 ]}
+                setSort={() => {}}
+                setSortIndex={() => {}}
+                sortIndex={0}
+                sort={null}
               />
 
               <TableBody>

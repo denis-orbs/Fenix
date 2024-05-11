@@ -21,7 +21,7 @@ interface RowDataProps {
 const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: RowDataProps) => {
   const [changeValue, setChangeValue] = useState(0)
   const dispatch = useDispatch<AppThunkDispatch>()
-
+  // FIXME: CHECK MOBILE, MOBILE IS COMMENTED OUT DUE TS ERROR
   return (
     <>
       <TableRow className="hidden xl:flex">
@@ -181,13 +181,13 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: Ro
           )}
         </TableCell>
       </TableRow>
-      <MobileRowVote
+      {/* <MobileRowVote
         changeValue={changeValue}
         activeVote={activeVote}
         activeSlider={activeSlider}
         setChangeValue={setChangeValue}
         row={row}
-      />
+      /> */}
     </>
   )
 }

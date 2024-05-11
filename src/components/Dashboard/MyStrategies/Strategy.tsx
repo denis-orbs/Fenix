@@ -22,6 +22,7 @@ import { useDispatch } from 'react-redux'
 import { useQuery } from '@tanstack/react-query'
 import { ichiVaults } from '../../Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import { BoostedPool } from '@/src/app/api/rings/campaign/route'
+import { setApr } from '@/src/state/apr/reducer'
 
 type options = {
   value: string
@@ -191,7 +192,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
       return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
     })?.apr || 0
   return (
-    <div className="steps-box w-auto xl:min-w-[350px]">
+    <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
       <div className="relative z-10">
         <div className="relative text-white flex flex-col">
           <div className="flex justify-between items-center box-strategies">
@@ -205,8 +206,8 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   }
                   alt="token"
                   className="rounded-full "
-                  width={47}
-                  height={47}
+                  width={32}
+                  height={32}
                 />
                 <Image
                   src={
@@ -216,8 +217,8 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   }
                   alt="token"
                   className="-ml-4 rounded-full"
-                  width={47}
-                  height={47}
+                  width={32}
+                  height={32}
                 />
               </div>
               <div className="flex flex-col">
@@ -232,7 +233,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
             </div>
           </div>
           <div className="flex gap-2 my-2">
-            <div className="flex flex-col gap-2 w-1/2 items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
+            <div className="flex flex-col gap-2 w-1/2 h-full items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
               <p className="text-white flex items-center gap-x-1 relative">
                 APR
                 <span
@@ -344,8 +345,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
             onClick={() => {
               if (row.liquidity !== 'ichi') {
-                // dispatch(setAPR(row?.apr))
-                localStorage.setItem('apr', JSON.stringify({ id: row?.id, apr: row?.apr }))
+                dispatch(setApr(row?.apr))
                 router.push(`/liquidity/manage?id=${row?.id}`)
                 router.refresh()
               } else {

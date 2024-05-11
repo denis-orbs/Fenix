@@ -62,57 +62,75 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
     (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || row.liquidity === 'ichi'
 
   return (
-    <div className="w-full">
-      <div className="flex items-start relative h-20">
-        <div className="absolute h-full bottom-0 w-full flex items-end">
-          <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
+    <div className="flex flex-col w-full h-32 justify-endñ ">
+      <div className="flex flex-col  relative ">
+        <div className="flex w-full">
+          {row.liquidity === 'ichi' ? (
+            <>
+              <p
+                className="bg-shark-300 
+               h-[50px]
+               flex items-center
+              bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-2  rounded-sm  z-50"
+              >
+                Position Managed by ichi
+              </p>
+            </>
+          ) : (
+            showtoken0 && (
+              <div className="flex gap-2 w-full">
+                <p
+                  className="bg-shark-300 w-full bg-opacity-40 border 
+                sm:h-[50px]
+                border-shark-400 text-white text-xs z-[100] px-3 py-2  rounded-sm "
+                >
+                  Min. Price: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0Symbol}/{token1Symbol}
+                </p>
+
+                <p
+                  className="bg-shark-300 w-full bg-opacity-40 border border-shark-400 text-white text-xs z-[100]
+                sm:h-[50px] px-3 py-2  rounded-sm "
+                >
+                  Max. Price: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0Symbol}/{token1Symbol}
+                </p>
+              </div>
+            )
+          )}
+        </div>
+        <div className="w-full flex relative pt-2">
+          <p
+            className="bg-shark-300 bg-opacity-40 border border-shark-400 
+            
+          text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1"
+          >
             0
           </p>
-          {Array.from({ length: 30 }).map((_, index) => (
-            <span key={index} className="h-5 w-5 border-l border-shark-300 block"></span>
-          ))}
-
+          <div className="flex items-start inset-0 justify-center w-full absolute top-[50%] bottom-[50%]">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <span key={index} className="h-5 w-5 border-l border-shark-300 " />
+            ))}
+          </div>
+          <div className="w-full flex items-center relative">
+            {minPriceIsZero && maxPriceIsInfinity ? (
+              <div className=" bg-gradient-to-b from-shark-400 w-full to-green-500 border-x-2 border-green-500 opacity-30 p-4"></div>
+            ) : (
+              <div
+                className={cn(
+                  'left-[40%] w-[20%] mx-auto p-4  border-x-2  opacity-30',
+                  isInRange
+                    ? 'border-green-500 bg-gradient-to-b from-shark-400 to-green-500'
+                    : 'border-red-500 to-red-500 bg-gradient-to-b from-shark-400'
+                )}
+              ></div>
+            )}
+            {isInRange && <div className="left-[50%] bottom-0 right-[50%] absolute w-[1px] h-1/2 bg-white"></div>}
+          </div>
           <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
             ∞
           </p>
         </div>
-
-        {row.liquidity === 'ichi' ? (
-          <>
-            <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
-              Position Managed by ichi
-            </p>
-          </>
-        ) : (
-          showtoken0 && (
-            <>
-              <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
-                Min. Price: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0Symbol}/{token1Symbol}
-              </p>
-
-              <p className="bg-shark-300 bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-1 rounded-sm mx-auto mt-1">
-                Max. Price: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0Symbol}/{token1Symbol}
-              </p>
-            </>
-          )
-        )}
-        {minPriceIsZero && maxPriceIsInfinity ? (
-          <>
-            <div className="absolute bottom-0 left-[8%] w-[84%] h-1/2 bg-gradient-to-b from-shark-400 to-green-500 border-x-2 border-green-500 opacity-30"></div>
-          </>
-        ) : (
-          <div
-            className={cn(
-              'absolute bottom-0 left-[40%] w-[20%] h-1/2   border-x-2  opacity-30',
-              isInRange
-                ? 'border-green-500 bg-gradient-to-b from-shark-400 to-green-500'
-                : 'border-red-500 to-red-500 bg-gradient-to-b from-shark-400'
-            )}
-          ></div>
-        )}
-        {isInRange && <div className="absolute bottom-0 left-[50%] w-[1px] h-1/2 bg-white"></div>}
       </div>
-      <div className="flex items-center w-full justify-center px-10 border-t-2 border-shark-400">
+      <div className="flex items-center w-full justify-center px-10 py-2 border-t-2 border-shark-400">
         <p className="text-white text-xs">
           {isInRange ? <span className="text-green-400">In range</span> : 'Out of range'}
           <span>

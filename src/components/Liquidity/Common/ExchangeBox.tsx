@@ -16,7 +16,10 @@ interface ExchangeBoxProps {
   token: IToken
   onOpenModal?: () => void
   variant?: 'primary' | 'secondary'
+  // FIXME: HAZ
   onTokenValueChange?: (arg0: any, token: any) => void
+  // FIXME: HAZ
+
   value?: any
   setValue: (value: string) => void
   option?: string
@@ -84,6 +87,8 @@ const ExchangeBox = ({
   useEffect(() => {
     const asyncFn = async () => {
       const b = await getTokenBalance(token.address as Address, account.address as Address)
+      // FIXME: HAZ
+
       setBalance(b)
     }
 

@@ -7,6 +7,7 @@ export const useRingsPoints = () => {
   const { account, chainId } = useActiveConnectionDetails()
 
   const fetchPoints = async () => {
+    if (!account) return { points: 0, userAddress: account, error: 'No account', isLoading: false }
     const response = await fetch(`https://api.merkl.xyz/v3/rewards?user=${account}`)
     if (!response.ok) {
       return {

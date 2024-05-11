@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <header className={`hidden mx-auto ${pathname === '/' ? 'lg:block' : 'lg:block'}  container`}>
       <div
-        className={`${pathname === '/' ? 'relative' : 'header-box px-5 pb-3'}  flex justify-center items-center  rounded-l`}
+        className={`${pathname === '/' ? 'relative' : 'header-box h-[102px] px-5 pb-3'}  flex justify-center items-center  rounded-l`}
       >
         <div
           className={`flex items-center   min-w-[50px]  z-10 h-[95px] w-full  ${pathname === '/' && 'absolute w-full left-0'}`}
@@ -45,7 +45,7 @@ const Header = () => {
         </div>
 
         <div
-          className={`${pathname === '/' ? 'flex  justify-center  items-center' : 'w-full flex justify-center relative z-10'} `}
+          className={`${pathname === '/' ? 'flex  justify-center  items-center' : 'w-full flex justify-center relative z-10 max-xl:mr-auto max-2xl:mr-[40px]'} `}
         >
           <Menu />
         </div>

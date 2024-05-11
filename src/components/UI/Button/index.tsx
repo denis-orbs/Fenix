@@ -74,7 +74,7 @@ const Button = ({
   }
 
   return (
-    <button onClick={handleClick} className={mergeClassName} {...props}>
+    <button disabled={disabled} onClick={handleClick} className={mergeClassName} {...props}>
       {buttonText()}
     </button>
   )

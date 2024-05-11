@@ -31,7 +31,7 @@ const Rewards = () => {
       <h1 className="text-lg lg:text-2xl text-white">Rewards overview</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full ">
-          <Search />
+          <Search searchValue="" setSearchValue={() => {}} />
         </div>
       </div>
 

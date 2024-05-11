@@ -38,8 +38,30 @@ const Footer = () => {
               width={800}
               height={800}
               className={`${pathname === '/' ? '' : 'hidden'}
-            absolute 2xl:left-0 object-cover h-[480px] w-[400px] 2xl:h-[800px] 2xl:w-[800px]
-            2xl:-bottom-[340px] -bottom-52
+            absolute 
+            2xl:left-0 
+            object-cover 
+            h-[400px] 
+            w-[480px] 
+            sm:h-[480px] 
+            sm:w-[650px] 
+            sm:-left-28
+            sm:-bottom-40
+            -bottom-36
+            -left-10
+            lg:-bottom-60
+            md:-bottom-60
+            md:-left-32
+            lg:-left-36
+            md:h-[600px] 
+            md:w-[650px] 
+            lg:w-[780px] 
+            xl:-left-32
+            xl:h-[600px] 
+            xl:w-[780px] 
+            2xl:h-[800px] 
+            2xl:w-[800px]
+            2xl:-bottom-[340px] 
             `}
               // className={`absolute sm:bottom-[-270px] max-sm:bottom-[-220px] sm:left-[-270px] max-sm:left-[-220px] z-10 object-center object-cover min-w-[500px]`}
               alt="fenix-galaxy"
@@ -54,9 +76,11 @@ const Footer = () => {
               <div
                 className={`flex gap-2 flex-col mb-5 xl:mb-0 ${pathname === '/' ? 'xl:items-center xl:flex-row max-md:w-[100%] w-[70%]' : 'md:items-center md:flex-row sm:w-[70%]'}`}
               >
-                <div className="flex items-center gap-4">
-                  {pathname !== '/' && <FenixIcon className="text-4xl" />}
-                  {/* <p className="text-shark-100 text-sm leading-normal font-medium md:mb-0 block xl:hidden">Navigation</p> */}
+                <div className=" relative flex flex-col  gap-4">
+                  {/* {pathname !== '/' && <FenixIcon className="text-4xl" />} */}
+                  {pathname !== '/' && (
+                    <Image src={'/static/images/footer/fenix-logo.svg'} width={128} height={34} alt="fenix" />
+                  )}
                 </div>
                 <div className="flex  items-center relative">
                   {/* <p className="text-shark-100 text-sm leading-normal font-medium hidden xl:inline-block mb-2 xl:mb-0">
@@ -66,7 +90,7 @@ const Footer = () => {
                   <div
                     className={`grid grid-cols-3 xl:grid-cols-6 ${pathname === '/' ? 'gap-3 max-md:w-[100%]' : 'gap-2 text-center'}`}
                   >
-                    {NAV_LINKS.map((link, index) => (
+                    {/* {NAV_LINKS.map((link, index) => (
                       <Link
                         href={link.href}
                         key={index}
@@ -75,7 +99,7 @@ const Footer = () => {
                       >
                         {link.title}
                       </Link>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
               </div>
@@ -102,7 +126,7 @@ const Footer = () => {
         >
           <div className={`flex justify-between ${pathname === '/' ? 'lg:w-1/2' : 'md:w-1/2'}`}>
             <div className={`flex items-center gap-5 ${pathname === '/' && 'xl:ms-10'}`}>
-              <div>{currentYear} © Fenix Finance</div>
+              <div>Copyright {currentYear} Fenix. All rights reserved.</div>
             </div>
             <div
               className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}
@@ -118,9 +142,38 @@ const Footer = () => {
           <div
             className={`flex items-end flex-col gap-2 ${pathname === '/' ? 'justify-end lg:w-1/2 text-right' : 'justify-center md:justify-end md:w-1/2'}`}
           >
-            <div className={`flex items-center gap-2`}>
-              <span className="text-[9px] xl:text-xs">The Unified Trading and Liquidity Marketplace for </span>
-              <Image src="/static/images/footer/blast.svg" alt="pancake" width={24} height={24} className="w-6 h-6" />
+            <div
+              className={`
+             
+              flex justify-between max-sm:w-full items-center gap-4 sm:py-10 ${pathname === '/' && 'max-md:flex-col max-md:items-end'}`}
+            >
+              <Link
+                href={
+                  'https://app.hats.finance/audit-competitions/fenix-finance-0x83dbe5aa378f3ce160ed084daf85f621289fb92f/scope'
+                }
+                target="_blank"
+              >
+                <div className="flex items-center gap-1">
+                  <Image
+                    src="/static/images/footer/Audit.svg"
+                    alt="pancake"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 "
+                  />
+                  <span className="text-[9px] 2xl:text-xs ">Audited by yAudit </span>
+                </div>
+              </Link>
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] 2xl:text-xs">The Unified Trading and Liquidity Marketplace for </span>
+                <Image
+                  src="/static/images/point-stack/blast.svg"
+                  alt="pancake"
+                  width={24}
+                  height={24}
+                  className="w-6 h-6 opacity-50"
+                />
+              </div>
             </div>
           </div>
         </div>

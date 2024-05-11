@@ -12,8 +12,24 @@ import { Button } from '@/src/components/UI'
 import { IToken } from '@/src/library/types'
 
 const Panel = () => {
-  const [tokenSell, setTokenSell] = useState<IToken>({ name: 'Fenix', symbol: 'FNX' })
-  const [tokenGet, setTokenGet] = useState<IToken>({ name: 'USDC', symbol: 'USDC' })
+  const [tokenSell, setTokenSell] = useState<IToken>({
+    name: 'Fenix',
+    symbol: 'FNX',
+    id: 0,
+    decimals: 18,
+    address: '0xa12e4649fdddefd0fb390e4d4fb34ffbd2834fa6',
+    img: '/static/images/tokens/FNX.svg',
+    price: 0,
+  })
+  const [tokenGet, setTokenGet] = useState<IToken>({
+    name: 'Wrapped Ether',
+    symbol: 'ETH',
+    id: 1,
+    decimals: 18,
+    address: '0x4200000000000000000000000000000000000023',
+    price: 0,
+    img: '/static/images/tokens/WETH.png',
+  })
   const [allocateValue, setAllocateValue] = useState<number>(0)
   const [withValue, setWithValue] = useState<number>(0)
   const [purchaseValue, setPurchaseValue] = useState<number>(0)
