@@ -212,7 +212,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                 <div className="flex flex-col justify-center items-center">
                   <p className="text-shark-100 text-xs mb-2">PTS Pending</p>
                   <p className="text-white text-sm">
-                    {(Number(availablePoints) - Number(distributed)).toFixed(2).toString()}
+                    {/* {(Number(availablePoints) - Number(distributed)).toFixed(2).toString()} */}0
                   </p>
                 </div>
               </div>
