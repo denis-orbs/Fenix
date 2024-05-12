@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
     {
       pair: 'DUSD/USDB',
       id: '0xce274e4ae83baadd1d3b88e1ed24886e05aca345',
-      points: 333333,
+      points: 333334,
       multiplier: 0.3,
       apr: 0,
     },
@@ -116,13 +116,12 @@ export async function GET(request: NextRequest) {
     // },
     {
       pair: 'MCLB/WETH',
-      id: '',
+      id: '0xcf68cdfea89f9e6964d4c2bd8a42eba5da9f945d',
       points: 500000,
       multiplier: 0.5,
       apr: 0,
     },
   ]
-  console.log('pools', pools, '')
   const enhancedBoostedPools = boostedPools.map((pool) => {
     console.log(pool.id)
     const poolData = pools.find(
