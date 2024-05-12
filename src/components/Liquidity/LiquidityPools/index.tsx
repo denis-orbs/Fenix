@@ -26,15 +26,16 @@ const LiquidityPools = () => {
     tokensData(liquidityTable)
     // fetchData()
   }, [])
-  const [globalStatistics, setGlobalStatistics] = useState<Awaited<ReturnType<typeof fetchGlobalStatistics>>>()
+  const [globalStatistics, setGlobalStatistics] =
+    useState<Omit<Awaited<ReturnType<typeof fetchGlobalStatistics>>, 'totalUsers'>>()
 
   useEffect(() => {
     const fetchAndSetStatistics = async () => {
-      const statistics = await fetchv3Factories()
+      const statistics = await fetchGlobalStatistics()
       setGlobalStatistics({
-        totalTVL: toBN(statistics[0].totalValueLockedUSD).toNumber(),
-        totalVolume: toBN(statistics[0].totalVolumeUSD).toNumber(),
-        totalFees: toBN(statistics[0].totalFeesUSD).toNumber(),
+        totalTVL: toBN(statistics?.totalTVL || 0).toNumber(),
+        totalVolume: toBN(statistics?.totalVolume || 0).toNumber(),
+        totalFees: toBN(statistics?.totalFees || 0).toNumber(),
         lastUpdate: new Date().toISOString(),
       })
       EXCHANGE_LIST[0].description = globalStatistics?.totalTVL

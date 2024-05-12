@@ -264,6 +264,7 @@ export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => 
         totalTVL: 0,
         totalFees: 0,
         lastUpdate: new Date().toISOString(),
+        totalUsers: 0,
       }
     }
   }
