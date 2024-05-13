@@ -140,7 +140,6 @@ const HeaderRow = ({
   useEffect(() => {
     if (!isSetRingsApr) {
       if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
-        console.log('paginationResult >> ', paginationResult)
         const getRigns = async () => {
           let newArr: any = [...paginationResult]
           newArr = await Promise.all(newArr.map(async (pool:any) => {
@@ -161,9 +160,7 @@ const HeaderRow = ({
         getRigns()
       }
     }
-    console.log('paginationResult >> ', paginationResult)
   }, [paginationResult])
-  console.log('paginationResult >> ', paginationResult)
 
   /* useEffect(() => {
     if (paginationStatus && paginationResult && paginationResult.length > 0) {
