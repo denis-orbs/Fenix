@@ -1,3 +1,4 @@
+'use client'
 import { Button, Pagination, PaginationMobile, TableBody, TableHead, TableSkeleton } from '@/src/components/UI'
 import { BasicPool, PoolData } from '@/src/state/liquidity/types'
 import { Fragment, useEffect, useState } from 'react'
@@ -7,6 +8,12 @@ import { useAccount, useChainId, useChains } from 'wagmi'
 import { useWindowSize } from 'usehooks-ts'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import { formatAmount } from '@/src/library/utils/numbers'
+
+import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import { useQuery } from '@tanstack/react-query'
+import { toBN } from '../../../../library/utils/numbers'
+import { fetchRingsPoolApr } from './getAprRings'
 
 interface HeaderRowProps {
   loading: boolean
@@ -34,7 +41,7 @@ const HeaderRow = ({
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
-  const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
+  const [sort, setSort] = useState<'asc' | 'desc' | 'normal'>('normal')
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
   const [sortIndex, setSortIndex] = useState<number>(-1)
 
@@ -53,8 +60,6 @@ const HeaderRow = ({
     const end = start + itemsPerPage
     const paginatedItems = items.slice(start, end)
 
-    
-
     return paginatedItems
   }
 
@@ -62,23 +67,113 @@ const HeaderRow = ({
   const activeChain = useChains()
   const { isConnected } = useActiveConnectionDetails()
 
+  const paginationResultAPR = paginationResult.map((pool) => {
+    return {
+      ...pool,
+      aprRings: fetchRingsPoolApr(pool),
+    }
+  })
+  
   useEffect(() => {
-    if (paginationResult && paginationResult.length > 0) {
-      if (sort === 'asc') {
-        const sortedPaginationResult = [...paginationResult]
-        const sortArr = sortedPaginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
-        })
-        setPaginationResult([...sortArr])
-      } else {
-        const sortedPaginationResult = [...paginationResult]
-        const sortArr = paginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-        })
-        setPaginationResult([...sortArr])
+    const sortData = async () => {
+      if (paginationResult && paginationResult.length > 0) {
+        if (sort === 'asc') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          if (sortIndex === 0) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
+            })
+          }
+          if (sortIndex === 3) {
+            sortArr = sortArr.map(async (pool:any) => {
+              return {
+                ...pool,
+                aprRings: await fetchRingsPoolApr(pool),
+              }
+            })
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(formatAmount((Number(a?.apr) || 0) + (Number(a?.aprRings) || 0)), formatAmount((Number(b?.apr) || 0) + (Number(b?.aprRings) || 0)))
+            })
+          }
+          if (sortIndex === 4) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.volumeUSD), Number(b.volumeUSD))
+            })
+          }
+          if (sortIndex === 5) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.feesUSD), Number(b.feesUSD))
+            })
+          }
+          setPaginationResult([...sortArr])
+        } else if (sort === 'desc') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          if (sortIndex === 0) {
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+            })
+          }
+          if (sortIndex === 3) {
+            sortArr = sortArr.map(async (pool:any) => {
+              return {
+                ...pool,
+                aprRings: await fetchRingsPoolApr(pool),
+              }
+            })
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(formatAmount((Number(b?.apr) || 0) + (Number(b?.aprRings) || 0)), formatAmount((Number(a?.apr) || 0) + (Number(a?.aprRings) || 0)))
+            })
+          }
+          if (sortIndex === 4) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.volumeUSD), Number(a.volumeUSD))
+            })
+          }
+          if (sortIndex === 5) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.feesUSD), Number(a.feesUSD))
+            })
+          }
+          setPaginationResult([...sortArr])
+        } else if (sort === 'normal') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          sortArr = sortedPaginationResult.sort((a, b) => {
+            return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+          })
+          setPaginationResult([...sortArr])
+        }
       }
     }
-  }, [sort, chainId, paginationStatus, paginationResult])
+    sortData()
+  }, [sort, chainId])
+
+  console.log('paginationResult', paginationResult)
+
+  function useRingsPoolAprSort(row: BasicPool) {
+    return useQuery({
+      queryKey: ['ringsPointsCampaign'],
+      staleTime: 1000 * 60 * 5,
+      queryFn: async () => {
+        const response = await fetch('/api/rings/campaign')
+        return response.json()
+      },
+      select: (data: RingCampaignData) => {
+        if (!row?.id) return 0
+        const pool = data?.boostedPools?.find((pool) => pool?.id?.toLowerCase() == row?.id?.toLowerCase()) || null
+        if (!pool) return 0
+        const apr = toBN(pool?.points)
+          .multipliedBy(data?.pricePerPoint)
+          .multipliedBy(4 * 12)
+          .dividedBy(row?.totalValueLockedUSD)
+          .multipliedBy(100)
+          .toString()
+        return apr
+      },
+    })
+  }
 
   useEffect(() => {
     setPaginationResult(poolsData)
@@ -98,6 +193,7 @@ const HeaderRow = ({
   function compareBigDecimal(a: any, b: any) {
     return a - b
   }
+
   const pagination = paginate(paginationResult, activePage, itemsPerPage)
   const { width } = useWindowSize()
   return (
