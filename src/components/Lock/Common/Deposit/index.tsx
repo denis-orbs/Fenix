@@ -12,19 +12,19 @@ import DepositBox from './DepositBox'
 
 const DepositLock = () => {
   const [openModal, setOpenModal] = useState(false)
-  const [activeVote, setActiveVote] = useState(false)
+  const [activeVote, setActiveVote] = useState(true)
   const [checked, setChecked] = useState(false)
   const [loader, setLoader] = useState(false)
   const [changeState, setChangeState] = useState(false)
 
-  const handlerCheck = () => (checked ? setChecked(false) : setChecked(true))
+  const handlerCheck = () =>  (checked ? setChecked(false)  : setChecked(true))
   const handlerChange = () => (
     openModal ? setOpenModal(false) : setOpenModal(true), setLoader(false), setChangeState(false)
   )
   const handlerLoader = () => (loader ? setLoader(false) : setLoader(true))
   return (
-    <MainBox className="xl:min-w-[1300px]  ">
-      <div className="flex flex-col w-full xl:flex-row relative z-10 pb-60  xl:pb-40 xl:py-8">
+    <div className="w-full lock-box  ">
+      <div className="flex flex-col w-full xl:flex-row relative py-5  z-10">
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex flex-wrap xl:flex-nowrap items-center justify-between mb-5">
             <h4 className="text-xl text-white">Deposit Lock</h4>
@@ -57,15 +57,22 @@ const DepositLock = () => {
               <div>
                 <div className="flex gap-2">
                   <p className="text-white">veFnx Maxi</p>{' '}
-                  <p className="text-xs w-[71px] h-[21px] text-white bg-shark-400 flex items-center justify-center  rounded-lg  border-shark-300 border-solid border-2">
+                  <p className="text-xs w-[71px] h-[21px] text-white bg-shark-400 flex items-center justify-center  rounded-lg  border-shark-300 border-solid border">
                     ID 1230
                   </p>
                 </div>
                 <div className="flex gap-2 xs:flex-row flex-col xl:flex-row ">
-                  <p className="text-xs flex p-2 justify-center  items-center text-shark-100  w-full text-center  bg-shark-400  rounded-lg  border-shark-100 border-solid border-2">
+                  <p
+                    className="text-xs flex p-2 justify-center  items-center 
+                  text-shark-100  w-full text-center  bg-shark-400  rounded-lg  
+                  border-shark-300 border-solid border"
+                  >
                     Update 2 days ago
                   </p>
-                  <p className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 p-2 rounded-lg border border-shark-300 border-solid border-1">
+                  <p
+                    className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 p-2 rounded-lg 
+                   border-shark-300 border-solid border"
+                  >
                     0xc981...EF14f <span className="icon-document"></span>
                   </p>
                 </div>
@@ -88,10 +95,14 @@ const DepositLock = () => {
         <div className="flex justify-center items-center w-[10%] relative ">
           <div className="bg-shark-400 h-4/5 w-[1px]"></div>
         </div>
-        <div className="relative flex flex-col w-full xl:w-[45%] max-h-[390px]  overflow-x-none border-t-2 xl:border-none border-shark-400">
-          <div className="mt-4">
+        <div className=" flex flex-col w-full xl:w-[45%] max-h-[390px]  overflow-x-none border-t-2 xl:border-none border-shark-400">
+          <div className="mt-4 flex justify-between">
             <h1 className="text-white text-xl mb-5">Nest Deposit</h1>
+            <div className="xl:absolute max-xl:mt-3  xl:-top-[70px] z-10 w-28 xl:right-[28px]">
+              <ProgressBar progress={30} />
+            </div>
           </div>
+
           <div>
             <DepositBox
               changeState={changeState}
@@ -113,16 +124,17 @@ const DepositLock = () => {
             </>
           )}
           <div className="mt-16 ">
-            <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex gap-2 justify-center text-shark-100 cursor-pointer">
+            {/* <Link
+              target="_blank"
+              href="https://discord.com/invite/fenixfi"
+              className="flex gap-2 justify-center text-shark-100 cursor-pointer"
+            >
               <span className="icon-discord"></span>Need some help?
-            </Link>
-          </div>
-          <div className="absolute  top-7 xl:top-0 z-10 w-28 right-0">
-            <ProgressBar progress={50} />
+            </Link> */}
           </div>
         </div>
       </div>
-    </MainBox>
+    </div>
   )
 }
 

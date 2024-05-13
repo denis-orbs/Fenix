@@ -1,5 +1,4 @@
 'use client'
-
 import Link from 'next/link'
 import { Button } from '@/src/components/UI'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
@@ -30,27 +29,27 @@ const LockTokens = ({ changeState, setChangeState }: LockTokensProps) => {
   LOCK_LIST[2].amount = inactiveamount.toString() + ' veFNX'
   return (
     <MainBox>
-      <div className="flex flex-col items-center justify-between w-full xl:flex-row z-10 relative xl:min-h-[350px]">
+      <div className="flex flex-col items-center justify-between w-full xl:flex-row z-10 relative">
         <div className="w-full xl:w-1/2">
-          <h4 className="mb-3 text-xl text-white">Lock your Tokens</h4>
-          <p className="mb-4 text-sm text-shark-100">
+          <h4 className="mb-3 text-lg text-white">Lock your Tokens</h4>
+          <p className="mb-4 text-xs text-shark-100">
             Gain greater voting power and higher rewards, by locking more tokens for longer.
           </p>
-          <div className="flex flex-col gap-2 md:flex-row">
-            <Button onClick={handlerChangeState}>
-              <div className="flex gap-2">
+          <div className="flex  gap-2 md:flex-row mb-3 ">
+            <Button className=' !px-3' onClick={handlerChangeState}>
+              <div className="flex gap-2 text-xs">
                 <span className="icon-lock"></span>
                 Create a Lock
               </div>
             </Button>
-            <Button variant="default" href="/vote">
+            <Button className='!text-xs' variant="default" href="/vote">
               Vote
             </Button>
           </div>
-          <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex text-sm gap-2 p-2 xl:mt-8 text-[#53606A]">
+          {/* <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex text-sm gap-2 p-2 xl:mt-8 text-[#53606A]">
             <span className="icon-discord"></span>
             Need some help?
-          </Link>
+          </Link> */}
         </div>
         <div className="relative flex flex-col w-full xl:w-[40%] max-h-[390px]  overflow-x-none">
           {LOCK_LIST.map((exchange, index) => (

@@ -43,11 +43,13 @@ const Lock = () => {
         </div>
       ) : (
         <section>
-          <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row mb-4">
-            <div className="w-full 2xl:w-3/4">
+          <div className="flex flex-col items-center gap-5 py-5 xl:flex-row mb-4 overflow-hidden">
+            <div className="w-full xl:w-2/3">
               <LockTokens changeState={changeState} setChangeState={setChangeState} />
             </div>
-            <Steps steps={LOCK_STEPS} />
+            <div className="w-full xl:w-1/3 self-auto">
+              <Steps steps={LOCK_STEPS} />
+            </div>
           </div>
           <div className="flex items-center gap-2 mb-4">
             <h5 className="lg:text-2xl text-lg text-white">Locks</h5>
@@ -62,9 +64,11 @@ const Lock = () => {
           </div>
           <MyLocks Locks={LOCKS_FILTER} />
           <MylocksMobile Locks={LOCKS} />
-          <h5 className="lg:text-2xl text-lg text-white pt-5">Nest</h5>
-          {/* <Nest /> */}
-          {/* <NestMobile /> */}
+          <div>
+            <h5 className="lg:text-2xl text-lg text-white py-5">Nest</h5>
+            <Nest />
+            <NestMobile />
+          </div>
         </section>
       )}
     </>

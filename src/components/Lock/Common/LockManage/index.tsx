@@ -33,23 +33,24 @@ const LockManage = () => {
   }, [currentTab])
 
   return (
-    <div>
+    <div className='w-full flex justify-center flex-col items-center'>
       {currentTab === 'SPLIT' && (
         <NotificationLock info="Merging/splitting will cause a loss of unclaimed and pending rewards, make sure to claim everything beforehand." />
       )}
       {currentTab === 'TRANSFER' && (
         <NotificationLock info="Be aware of the address direction before you complete your transfer, it is not reversible." />
       )}
-      <MainBox className="xl:min-w-[1400px] relative w-full ">
-        <div className="flex flex-col w-full xl:flex-row relative z-10  xl:pb-0 xl:py-8">
-          <div className="w-full flex flex-col mb-5 xl:w-[40%]">
+      <div className="lock-box relative w-full ">
+        <div className="flex flex-col w-full xl:flex-row relative z-10">
+          <div className="w-full flex flex-col mb-5 xl:w-1/2">
             <div className="flex mb-5 justify-between">
               <h4 className="text-xl text-white">Manage Lock</h4>
-              <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
+              <span className="icon-reflesh text-red-400 text-xl cursor-pointer"/>
             </div>
             {/* space between manage lock and reset */}
             <div>
               <Filter
+                className='grid grid-cols-2 [&>button]:!w-full'
                 bgBox="filter-lock-box"
                 options={OPTIONS_TAB}
                 currentTab={currentTab}
@@ -219,22 +220,26 @@ const LockManage = () => {
             <div className="bg-shark-400 h-4/5 w-[1px]"></div>
           </div>
           {/* Line black */}
-          <div className="relative flex flex-col w-full xl:w-[35%] mx-auto overflow-x-none border-t-2 border-shark-400 xl:border-none ">
+          <div className="relative flex flex-col w-full xl:w-[40%] mx-auto overflow-x-none border-t-2 border-shark-400 xl:border-none ">
             <div>
               <h1 className="text-white text-center text-xl mb-10 mt-5">About your veFNX</h1>
             </div>
             <AboutFnx />
             <div className="justify-center xl:flex hidden mt-2 cursor-pointer">
-              <Link target="_blank" href="https://discord.com/invite/fenixfi"  className="flex gap-2 text-shark-100 mt-10">
+              <Link
+                target="_blank"
+                href="https://discord.com/invite/fenixfi"
+                className="flex gap-2 text-shark-100 mt-10"
+              >
                 <span className="icon-discord"></span> Need some help?
               </Link>
             </div>
-            <div className="absolute top-2 xl:top-0 z-10 w-28 right-0">
+            <div className="absolute top-2 xl:-top-[70px] z-10 w-28 right-0 xl:right-[28px]">
               <ProgressBar progress={50} />
             </div>
           </div>
         </div>
-      </MainBox>
+      </div>
     </div>
   )
 }
