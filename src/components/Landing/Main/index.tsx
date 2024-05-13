@@ -155,11 +155,8 @@ const Main = () => {
              justify-center items-center px-5 mx-auto ${isTablet ? 'info-box' : 'mobile-info-box'}`}
           >
             <Box text="Total Value Locked" value={formatDollarAmount(globalStatistics?.totalTVL?.toString()) || '-'} />
-            <Box
-              text="Annualized Volume"
-              value={formatDollarAmount(globalStatistics?.totalVolume?.toString()) || '-'}
-            />
-            <Box text="Annualized Fees" value={formatDollarAmount(globalStatistics?.totalFees?.toString()) || '-'} />
+            <Box text="Total Volume" value={formatDollarAmount(globalStatistics?.totalVolume?.toString()) || '-'} />
+            <Box text="Total Fees" value={formatDollarAmount(globalStatistics?.totalFees?.toString()) || '-'} />
             <Box text="Active Users" value={formatAmount(globalStatistics?.totalUsers?.toString()) || '-'} />
           </div>
         </div>
