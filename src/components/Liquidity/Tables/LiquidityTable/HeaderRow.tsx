@@ -14,6 +14,7 @@ import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
 import { useQuery } from '@tanstack/react-query'
 import { toBN } from '../../../../library/utils/numbers'
 import { fetchRingsPoolApr } from './getAprRings'
+import { number, set } from 'zod'
 
 interface HeaderRowProps {
   loading: boolean
@@ -44,6 +45,7 @@ const HeaderRow = ({
   const [sort, setSort] = useState<'asc' | 'desc' | 'normal'>('normal')
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
   const [sortIndex, setSortIndex] = useState<number>(-1)
+  const [isSetRingsApr, setIsSetRingsApr] = useState<boolean>(false)
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
@@ -66,13 +68,6 @@ const HeaderRow = ({
   const { chainId } = useAccount()
   const activeChain = useChains()
   const { isConnected } = useActiveConnectionDetails()
-
-  const paginationResultAPR = paginationResult.map((pool) => {
-    return {
-      ...pool,
-      aprRings: fetchRingsPoolApr(pool),
-    }
-  })
   
   useEffect(() => {
     const sortData = async () => {
@@ -86,14 +81,8 @@ const HeaderRow = ({
             })
           }
           if (sortIndex === 3) {
-            sortArr = sortArr.map(async (pool:any) => {
-              return {
-                ...pool,
-                aprRings: await fetchRingsPoolApr(pool),
-              }
-            })
             sortArr = paginationResult.sort((a, b) => {
-              return compareBigDecimal(formatAmount((Number(a?.apr) || 0) + (Number(a?.aprRings) || 0)), formatAmount((Number(b?.apr) || 0) + (Number(b?.aprRings) || 0)))
+              return compareBigDecimal(Number(a.aprRings), Number(b.aprRings))
             })
           }
           if (sortIndex === 4) {
@@ -116,14 +105,8 @@ const HeaderRow = ({
             })
           }
           if (sortIndex === 3) {
-            sortArr = sortArr.map(async (pool:any) => {
-              return {
-                ...pool,
-                aprRings: await fetchRingsPoolApr(pool),
-              }
-            })
             sortArr = paginationResult.sort((a, b) => {
-              return compareBigDecimal(formatAmount((Number(b?.apr) || 0) + (Number(b?.aprRings) || 0)), formatAmount((Number(a?.apr) || 0) + (Number(a?.aprRings) || 0)))
+              return compareBigDecimal(Number(b.aprRings), Number(a.aprRings))
             })
           }
           if (sortIndex === 4) {
@@ -150,34 +133,37 @@ const HeaderRow = ({
     sortData()
   }, [sort, chainId])
 
-  console.log('paginationResult', paginationResult)
-
-  function useRingsPoolAprSort(row: BasicPool) {
-    return useQuery({
-      queryKey: ['ringsPointsCampaign'],
-      staleTime: 1000 * 60 * 5,
-      queryFn: async () => {
-        const response = await fetch('/api/rings/campaign')
-        return response.json()
-      },
-      select: (data: RingCampaignData) => {
-        if (!row?.id) return 0
-        const pool = data?.boostedPools?.find((pool) => pool?.id?.toLowerCase() == row?.id?.toLowerCase()) || null
-        if (!pool) return 0
-        const apr = toBN(pool?.points)
-          .multipliedBy(data?.pricePerPoint)
-          .multipliedBy(4 * 12)
-          .dividedBy(row?.totalValueLockedUSD)
-          .multipliedBy(100)
-          .toString()
-        return apr
-      },
-    })
-  }
-
   useEffect(() => {
-    setPaginationResult(poolsData)
+    const arrNew = [...poolsData]
+    setPaginationResult([...arrNew])
   }, [poolsData])
+  useEffect(() => {
+    if (!isSetRingsApr) {
+      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
+        console.log('paginationResult >> ', paginationResult)
+        const getRigns = async () => {
+          let newArr: any = [...paginationResult]
+          newArr = await Promise.all(newArr.map(async (pool:any) => {
+            if (pool?.id) {
+              return {
+                ...pool,
+                aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+              }
+            } else {
+              return {
+                ...pool,
+              }
+            }
+          }))
+          setPaginationResult([...newArr])
+          setIsSetRingsApr(true)
+        }
+        getRigns()
+      }
+    }
+    console.log('paginationResult >> ', paginationResult)
+  }, [paginationResult])
+  console.log('paginationResult >> ', paginationResult)
 
   /* useEffect(() => {
     if (paginationStatus && paginationResult && paginationResult.length > 0) {
