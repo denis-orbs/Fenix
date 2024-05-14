@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/rings/distribution",
+      "schedule": "0 17 * * *"
+    },
+    {
+      "path": "/api/rings/distribution",
+      "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/rings/distribution",
+      "schedule": "0 9 * * *"
+    }
+  ]
+}
