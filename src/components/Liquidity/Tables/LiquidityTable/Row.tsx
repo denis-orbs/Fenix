@@ -174,7 +174,7 @@ const RowData = ({
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow animate-vibrate' }`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow notification' }`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {

@@ -478,3 +478,18 @@ body {
 .animate-progress-toast-15000 {
   animation: progress 15s linear;
 }
+
+@keyframes horizontal-shaking {
+  0% { transform: translateX(0); }
+  3% { transform: translateX(-1.2px); }
+  6% { transform: translateX(1.2px); }
+  9% { transform: translateX(-1.2px); }
+  12% { transform: translateX(1.2px); }
+  15% { transform: translateX(0px); }
+  75% { transform: translateX(0px); }
+  100% { transform: translateX(0); }
+}
+
+.notification {
+  animation: horizontal-shaking 4s infinite alternate;
+}

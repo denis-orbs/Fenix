@@ -38,12 +38,12 @@ const config: Config = {
             width: '100%',
           },
         },
-        'vibrate': {
+        /* 'vibrate': {
           '0%, 100%': { transform: 'translateX(0)' },
           '25%': { transform: 'translateX(-1px)' },
           '50%': { transform: 'translateX(1px)' },
           '75%': { transform: 'translateX(-1px)' },
-        },
+        }, */
       },
       animation: {
         'spin-slow': 'spin 25s linear infinite',
@@ -51,7 +51,7 @@ const config: Config = {
 
         'toast-in': 'toast-in 250ms linear',
         progress: 'progress 3s linear',
-        'vibrate': '0.3s ease-in-out infinite 2.7s'
+        // 'vibrate': '0.3s vibrate infinite 2.7s'
       },
       backgroundImage: {
         // Gradients
