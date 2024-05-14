@@ -29,7 +29,7 @@ const DepositLock = () => {
       <div className="flex flex-col w-full xl:flex-row relative py-5  z-10">
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex flex-wrap xl:flex-nowrap items-center justify-between mb-5">
-            <h4 className="text-xl text-white">Deposit Lock</h4>
+            <h4 className="text-xl font-semibold text-white">Deposit Lock</h4>
             <div>
               <Button className=" flex gap-2 items-center !py-3" variant="primary" onClick={handlerGoTo}>
                 <span className="icon-lock"></span>
@@ -99,8 +99,8 @@ const DepositLock = () => {
         </div>
         <div className=" flex flex-col w-full xl:w-[45%] xl:max-h-[390px]  overflow-x-none border-t-2 xl:border-none border-shark-400">
           <div className="mt-4 flex justify-between">
-            <h1 className="text-white text-xl mb-5">Nest Deposit</h1>
-            <div className="xl:absolute max-xl:mt-3  xl:-top-[70px] z-10 w-28 xl:right-[28px]">
+            <h1 className="text-white text-xl font-medium mb-5">Nest Deposit</h1>
+            <div className="xl:absolute max-xl:mt-3  xl:-top-[70px] max-w-[100px] z-10 w-28 xl:right-[30px]">
               <ProgressBar progress={30} />
             </div>
           </div>
@@ -117,7 +117,7 @@ const DepositLock = () => {
           {!loader && (
             <>
               {activeVote && (
-                <div className="mt-5">
+                <div className="mt-2">
                   <Button className="w-full" onClick={handlerLoader}>
                     Deposit
                   </Button>
@@ -125,13 +125,13 @@ const DepositLock = () => {
               )}
             </>
           )}
-          {/* <Link
+          <Link
               target="_blank"
               href="https://discord.com/invite/fenixfi"
-              className="py-4 absolute -bottom-20 right-36  text-xs flex gap-2 justify-center text-shark-100 cursor-pointer"
+              className="py-4 xl:absolute -bottom-20 right-36  text-sm flex gap-2 justify-center text-shark-100 cursor-pointer"
             >
               <span className="icon-discord"></span>Need some help?
-            </Link> */}
+            </Link>
         </div>
       </div>
     </div>

@@ -27,7 +27,7 @@ const Bribes = () => {
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex justify-between mb-5">
             <h4 className="text-lg text-white">Bribes</h4>
-            <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
+            <span className="icon-refresh text-shark-100 text-xl cursor-pointer"></span>
           </div>
 
           <div className="mb-3">

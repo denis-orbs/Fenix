@@ -32,24 +32,26 @@ const LockManage = () => {
   }, [currentTab])
 
   return (
-    <div className='w-full flex justify-center flex-col items-center'>
-      {currentTab === 'SPLIT' && (
-        <NotificationLock info="Merging/splitting will cause a loss of unclaimed and pending rewards, make sure to claim everything beforehand." />
-      )}
-      {currentTab === 'TRANSFER' && (
-        <NotificationLock info="Be aware of the address direction before you complete your transfer, it is not reversible." />
-      )}
+    <div className="w-full flex justify-center flex-col items-center relative mt-28 xl:mt-20">
       <div className="lock-box relative w-full ">
+        <div className="absolute xl:-top-14 -top-24 xl:left-10 left-0 w-full ">
+          {currentTab === 'SPLIT' && (
+            <NotificationLock info="Merging/splitting will cause a loss of unclaimed and pending rewards, make sure to claim everything beforehand." />
+          )}
+          {currentTab === 'TRANSFER' && (
+            <NotificationLock info="Be aware of the address direction before you complete your transfer, it is not reversible." />
+          )}
+        </div>
         <div className="flex flex-col w-full xl:flex-row relative z-10">
           <div className="w-full flex flex-col mb-5 xl:w-1/2">
             <div className="flex mb-5 justify-between">
-              <h4 className="text-xl text-white">Manage Lock</h4>
-              <span className="icon-reflesh text-red-400 text-xl cursor-pointer"/>
+              <h4 className="text-xl font-semibold text-white">Manage Lock</h4>
+              <span className="icon-refresh text-shark-100 text-xl cursor-pointer" />
             </div>
             {/* space between manage lock and reset */}
             <div>
               <Filter
-                className='grid grid-cols-2 [&>button]:!w-full'
+                className="grid grid-cols-2 [&>button]:!w-full"
                 bgBox="filter-lock-box"
                 options={OPTIONS_TAB}
                 currentTab={currentTab}
@@ -221,7 +223,7 @@ const LockManage = () => {
           {/* Line black */}
           <div className="relative flex flex-col w-full xl:w-[40%] mx-auto overflow-x-none border-t-2 border-shark-400 xl:border-none ">
             <div>
-              <h1 className="text-white text-center text-xl mb-10 mt-5">About your veFNX</h1>
+              <h1 className="text-white text-center text-xl font-medium mb-10 mt-5">About your veFNX</h1>
             </div>
             <AboutFnx />
             <div className="justify-center xl:flex hidden mt-2 cursor-pointer">
@@ -233,7 +235,7 @@ const LockManage = () => {
                 <span className="icon-discord"></span> Need some help?
               </Link>
             </div>
-            <div className="absolute top-2 xl:-top-[70px] z-10 w-28 right-0 xl:right-[28px]">
+            <div className="absolute top-2 xl:-top-[70px] z-10 w-28 right-0 xl:right-[30px] max-w-[100px]">
               <ProgressBar progress={50} />
             </div>
           </div>

@@ -1081,7 +1081,44 @@
 
 /* Background for notification */
 .box-notification {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
+   @apply relative
+   xl:flex
+  w-full
+  h-full
+  rounded-2xl
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  xl:max-w-[661px]
+  max-h-[88px]
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/notification-lock/box-notification.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/notification-lock/box-notification.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+  /* @apply relative 
+  bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
 
   before:hidden
   xl:before:block
@@ -1109,7 +1146,7 @@
   after:border-t-[25px]
   after:border-r-[25px]
   after:border-b-[25px]
-  after:border-[transparent_transparent_#131517];
+  after:border-[transparent_transparent_#131517]; */
 }
 
 .exchange-box-info {
