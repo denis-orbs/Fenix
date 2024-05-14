@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import MainBox from '@/src/components/Common/Boxes/MainBox'
 import Image from 'next/image'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import { Button, ProgressBar } from '@/src/components/UI'
@@ -152,9 +151,9 @@ const LockManage = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-3  mt-5 exchange-box-x1 p-5">
-                  <div className="text-sm flex justify-between">
-                    <p className="text-white text-sm text-left">Expires in</p>
-                    <div className="text-shark-100 flex gap-2">
+                  <div className="text-xs flex justify-between">
+                    <p className="text-white text-xs text-left">Expires in</p>
+                    <div className="text-shark-100 flex gap-2 text-xs">
                       <p>0Y</p>
                       <p>0M</p>
                       <p>7D</p>
@@ -184,7 +183,7 @@ const LockManage = () => {
 
             {/* input slider range */}
             {(currentTab === 'ADD' || currentTab === 'MERGE') && (
-              <div className="exchange-box-x1 p-5 mt-5 flex justify-between items-center text-white text-sm">
+              <div className="exchange-box-x1 xl:h-[60px] p-5 mt-5 flex justify-between items-center text-white text-xs">
                 <div>
                   <p>Voting Power</p>
                 </div>

@@ -921,7 +921,7 @@
   xl:px-20
   px-8
   py-12
-  min-h-[611px]
+  xl:max-h-[750px]
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/components/box/lock/lock.svg")]

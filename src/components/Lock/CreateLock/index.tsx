@@ -15,13 +15,13 @@ const CreateLock = () => {
 
   return (
     <div className="w-full  lock-box">
-      <div className="flex flex-col w-full xl:flex-row relative z-10  xl:py-8">
+      <div className="flex flex-col w-full xl:flex-row relative z-10  ">
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex justify-between">
             <h4 className="text-xl text-white">Create new Lock</h4>
             <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
           </div>
-          <div className="flex flex-col xl:flex-row items-center gap-3 justify-center mt-10 exchange-box-x1 p-5">
+          <div className="flex flex-col xl:flex-row items-center gap-3 justify-center my-4 exchange-box-x1 p-5">
             <div className="xl:w-2/5 w-full flex flex-col gap-2">
               <p className="text-xs  text-white">Amount to lock</p>
               <div className="flex text-white gap-3 items-center bg-shark-400  justify-between p-3 border border-shark-300 rounded-xl bg-opacity-40 ">
@@ -111,9 +111,9 @@ const CreateLock = () => {
           <div className="bg-shark-400 h-4/5 w-[1px]"></div>
         </div>
         <div className="relative flex flex-col w-full xl:w-[45%]  overflow-x-none">
-          <div className='flex justify-between'>
-            <h1 className="text-white text-xl mb-5 xl:mb-20">How it works</h1>
-            <div className="xl:absolute max-xl:mt-3  xl:-top-[95px] z-10 w-28 xl:right-[22px]">
+          <div className="flex justify-between">
+            <h1 className="text-white text-xl mb-5 xl:mt-10">How it works</h1>
+            <div className="xl:absolute max-xl:mt-3  xl:-top-[70px] z-10 w-28 xl:right-[22px]">
               <ProgressBar progress={50} />
             </div>
           </div>
@@ -122,19 +122,21 @@ const CreateLock = () => {
               hasDecorator={CREATE_LOCK_LIST.length === index + 1 ? false : true}
               bgBox="exchange-box-info"
               key={index}
+              variant='secondary'
               data={exchange}
               textColor={'text-shark-100'}
             />
           ))}
-          <div className="mt-16 cursor-pointer">
+          
             <Link
               target="_blank"
               href="https://discord.com/invite/fenixfi"
-              className="flex gap-2 justify-center text-shark-100"
+              className="xl:absolute -bottom-10 right-32  flex gap-2 justify-center text-shark-100"
+          
             >
               <span className="icon-discord"></span>Need some help?
             </Link>
-          </div>
+          
         </div>
       </div>
     </div>

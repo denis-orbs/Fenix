@@ -9,27 +9,29 @@ import CheckBox from '@/src/components/UI/CheckBox'
 import ActiveVote from '@/src/components/Vote/ActiveVote'
 import SelectVote from '@/src/components/Modals/SelectVote'
 import DepositBox from './DepositBox'
+import { useRouter } from 'next/navigation'
 
 const DepositLock = () => {
   const [openModal, setOpenModal] = useState(false)
-  const [activeVote, setActiveVote] = useState(true)
+  const [activeVote, setActiveVote] = useState(false)
   const [checked, setChecked] = useState(false)
   const [loader, setLoader] = useState(false)
   const [changeState, setChangeState] = useState(false)
-
-  const handlerCheck = () =>  (checked ? setChecked(false)  : setChecked(true))
+  const { push } = useRouter()
+  const handlerGoTo = ()=> push("/lock/create")
+  const handlerCheck = () => (checked ? setChecked(false) : setChecked(true))
   const handlerChange = () => (
     openModal ? setOpenModal(false) : setOpenModal(true), setLoader(false), setChangeState(false)
   )
   const handlerLoader = () => (loader ? setLoader(false) : setLoader(true))
   return (
-    <div className="w-full lock-box  ">
+    <div className="w-full h-auto lock-box">
       <div className="flex flex-col w-full xl:flex-row relative py-5  z-10">
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex flex-wrap xl:flex-nowrap items-center justify-between mb-5">
             <h4 className="text-xl text-white">Deposit Lock</h4>
             <div>
-              <Button className=" flex gap-2 items-center !py-3" variant="primary">
+              <Button className=" flex gap-2 items-center !py-3" variant="primary" onClick={handlerGoTo}>
                 <span className="icon-lock"></span>
                 Create New Lock
               </Button>
@@ -95,7 +97,7 @@ const DepositLock = () => {
         <div className="flex justify-center items-center w-[10%] relative ">
           <div className="bg-shark-400 h-4/5 w-[1px]"></div>
         </div>
-        <div className=" flex flex-col w-full xl:w-[45%] max-h-[390px]  overflow-x-none border-t-2 xl:border-none border-shark-400">
+        <div className=" flex flex-col w-full xl:w-[45%] xl:max-h-[390px]  overflow-x-none border-t-2 xl:border-none border-shark-400">
           <div className="mt-4 flex justify-between">
             <h1 className="text-white text-xl mb-5">Nest Deposit</h1>
             <div className="xl:absolute max-xl:mt-3  xl:-top-[70px] z-10 w-28 xl:right-[28px]">
@@ -123,15 +125,13 @@ const DepositLock = () => {
               )}
             </>
           )}
-          <div className="mt-16 ">
-            {/* <Link
+          {/* <Link
               target="_blank"
               href="https://discord.com/invite/fenixfi"
-              className="flex gap-2 justify-center text-shark-100 cursor-pointer"
+              className="py-4 absolute -bottom-20 right-36  text-xs flex gap-2 justify-center text-shark-100 cursor-pointer"
             >
               <span className="icon-discord"></span>Need some help?
             </Link> */}
-          </div>
         </div>
       </div>
     </div>
