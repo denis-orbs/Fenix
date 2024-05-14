@@ -9,28 +9,15 @@ import { log } from 'console'
 import { useRingsPointsLeaderboard } from '@/src/library/hooks/rings/useRingsPoints'
 import Loader from '../../UI/Icons/Loader'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import { getPointsDistributionTargetTimestamps } from '@/src/library/utils/campaigns'
 
 const PointSummary = ({ userData }: any) => {
   //  console.log(userData, 'userData')
   const [time, setTime] = useState('')
   let count = 0
 
-  const getTargetTimestamps = () => {
-    const now = new Date()
-    const year = now.getUTCFullYear()
-    const month = now.getUTCMonth()
-    const day = now.getUTCDate()
-    // This is the hours where the cron that updates the points runs
-    const times = [
-      '17:00:00', // 05:00 PM UTC
-      '01:00:00', // 01:00 AM UTC
-      '09:00:00', // 09:00 AM UTC
-    ]
-
-    return times.map((time) => new Date(Date.UTC(year, month, day, ...time.split(':').map(Number))))
-  }
   const timeSet = () => {
-    const timestampsArray = getTargetTimestamps()
+    const timestampsArray = getPointsDistributionTargetTimestamps()
     if (timestampsArray.length > 0) {
       if (time === '' && count === 0) {
         setTime(timestampsArray[0].toString())
@@ -44,7 +31,6 @@ const PointSummary = ({ userData }: any) => {
   }
 
   const { data, isLoading } = useRingsPointsLeaderboard()
-  const timestampsArray = getTargetTimestamps()
 
   useEffect(() => {
     const interval = setInterval(timeSet, 1000 * 60 * 60 * 8) // Update every 8 hours
