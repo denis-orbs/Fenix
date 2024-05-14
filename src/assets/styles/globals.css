@@ -491,5 +491,5 @@ body {
 }
 
 .notification {
-  animation: horizontal-shaking 4s infinite alternate;
+  animation: horizontal-shaking 3s infinite alternate;
 }
