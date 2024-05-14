@@ -172,13 +172,7 @@ export const getLiquidityTableElements = createAsyncThunk('liquidity/getPairInfo
 
         apr = ((Number(volumeUSD) * (Number(pair.fee) / 1000000)) / Number(tvl)) * 100
         maxAPR = apr * 2
-        console.log(
-          'apr',
-          volumeUSD.toFixed(2).toString(),
-          Number(volumeUSD),
-          Number(volumeUSD) * (Number(pair.fee) / 1000000),
-          Number(tvl)
-        )
+
         // if (BLACKLISTED.includes(tokenA.symbol) || BLACKLISTED.includes(tokenB.symbol)) {
         //   apr = 0.0
         //   maxAPR = 0.0
@@ -315,7 +309,7 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
 
     return pools
   } catch (error) {
-    console.log(error)
+    console.error(error)
     throw new Error(`Unable to query data from Client`)
   }
 })

@@ -183,7 +183,6 @@ export const fetchv2PoolData = async () => {
 // Function to fetch v2 algebra pool data
 export const fetchv2PairId = async (token0Id: any, token1Id: any, isStable: Boolean) => {
   try {
-    console.log(token0Id, token1Id, isStable)
     const { data } = await blastClient.query({
       query: GET_V2_PAIR_ID,
       variables: { token0Id, token1Id, isStable }, // Pass the user variable as owner
@@ -239,7 +238,6 @@ export const fetchV3PoolDayData = async () => {
       query: POOL_DAY_DATA,
       // variables: { date: selectedDateTimestamp / 1000 }, // Pass the user variable as owner
     })
-    console.log(data, 'data')
     // Data is available in `data.positions`
     return data
   } catch (error) {
