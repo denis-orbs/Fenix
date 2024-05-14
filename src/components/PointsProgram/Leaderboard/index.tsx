@@ -52,12 +52,12 @@ const Leaderboard = () => {
         <div className="flex items-center w-full mb-3">
           <span className="text-white w-36 text-center text-sm">#</span>
           <span className="text-white w-full text-sm">Ranking Addresses</span>
-          <span className="text-white w-36 text-center text-sm flex items-center justify-end gap-x-2 mr-4">
+          <span
+            className="text-white w-36 cursor-pointer text-center text-sm flex items-center justify-end gap-x-2 mr-4"
+            onClick={() => handleSort()}
+          >
             RINGS
-            <i
-              className={cn(`icon-chevron flex text-xs cursor-pointer`, sort ? '' : '-rotate-180')}
-              onClick={() => handleSort()}
-            ></i>
+            <i className={cn(`icon-chevron flex text-xs `, sort ? '' : '-rotate-180')}></i>
           </span>
         </div>
         {paginatedData.map((data, index: number) => (
