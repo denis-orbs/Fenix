@@ -44,7 +44,7 @@ const BlastBanner = () => {
       </div>
       <div className="relative z-10 max-lg:max-w-[75%] flex flex-col gap-2 max-lg:gap-1 max-lg:mt-4">
         <div className='flex flex-col items-start gap-1'>
-          <div className="text-white text-sm font-normal">Deposit liquidity into ETH/USDB to earn your share of</div>
+          <div className="text-white text-sm font-normal">Deposit liquidity into USDB/WETH to earn your share of</div>
           <div className="text-gradient max-xs:text-sm xs:text-base md:text-lg xl:text-2xl">
             Blast Gold, Blast Points and Fenix Orbits
           </div>
