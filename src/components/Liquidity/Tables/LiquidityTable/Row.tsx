@@ -150,7 +150,7 @@ const RowData = ({
                       <Image
                         src={`/static/images/point-stack/blast-gold.svg`}
                         alt="token"
-                        className={``}
+                        className={`${row.token0.symbol === 'USDB' && row.token1.symbol === 'WETH' ? '' : 'hidden'}`}
                         width={20}
                         height={20}
                       />
