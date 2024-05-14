@@ -17,4 +17,18 @@ model users {
   given_blast_gold_points   BigInt      @default(0)
   pending_blast_gold_points BigInt      @default(0)
   updated_at                DateTime @default(now()) @updatedAt
+  ring_distributions        ring_distribution[] 
+}
+
+model ring_distribution {
+  id          String   @id @default(uuid())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+  campaign_id     String
+  pool_id         String
+  ring_points BigInt
+  gold_points BigInt
+  user_id        String
+  user        users    @relation(fields: [user_id], references: [id])
+
 }
