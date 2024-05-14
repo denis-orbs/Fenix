@@ -8,7 +8,7 @@ import MobileRow from './MobileRowNew'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
-import { totalCampaigns } from '@/src/library/utils/campaigns'
+import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { useQuery } from '@tanstack/react-query'
@@ -44,6 +44,8 @@ const RowData = ({
   const isHover = useHover(hoverRef)
 
   const [openInfo, setOpenInfo] = useState<boolean>(false)
+  const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
+  const [campaign, setCampaign] = useState<Campaign>()
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
   let aprdisplayIchi
@@ -72,6 +74,11 @@ const RowData = ({
   })
 
   const { data: ringsApr, isLoading: rignsAprLoading } = useRingsPoolApr(row)
+
+  useEffect(() => {
+    const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
+    setCampaign({ ...campaign_ })    
+  }, [row])
 
   function getAverageApr(...aprs: number[]): string {
     const values = aprs.filter((apr) => apr !== 0)
@@ -128,7 +135,7 @@ const RowData = ({
         </TableCell>
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[20%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
-            <span ref={hoverRef} className="flex gap-2">
+            {/* <span ref={hoverRef} className="flex gap-2">
               {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
                 <span ref={hoverRef} className="flex flex-row transition-transform transform group">
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
@@ -156,24 +163,42 @@ const RowData = ({
                       />
                     </>
                   )}
-
-                  {/* <Image
-                src={`/static/images/tokens/${row.token0.symbol}.png`}
-                alt="token"
-                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
-                width={20}
-                height={20}
-              />
-              <Image
-                src={`/static/images/tokens/${row.token1.symbol}.png`}
-                alt="token"
-                className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
-                width={20}
-                height={20}
-              /> */}
                 </span>
               )}
-            </span>
+            </span> */}
+            {
+              <span ref={hoverRef} className="flex gap-2">
+                <span ref={hoverRef} className="flex flex-row transition-transform transform group">
+                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
+                    <>
+                      {campaign?.pointStack?.map((stack, index) => (
+                        <Image
+                          key={index}
+                          src={`/static/images/point-stack/${stack}.svg`}
+                          alt="token"
+                          className={''}
+                          width={20}
+                          height={20}
+                          onMouseEnter={() => {
+                            if (stack === 'blast-gold') {
+                              setOpenTooltipGold(true)
+                            }
+                          }}
+                          onMouseLeave={() => setOpenTooltipGold(false)}
+                        />
+                      ))}
+                    </>
+                  )}
+                  {openTooltipGold && (
+                    <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                      <div className="flex justify-between items-center gap-3">
+                        <p className="text-xs">This pool is receiving 7000 Gold</p>
+                      </div>
+                    </div>
+                  )}
+                </span>
+              </span>
+            }
           </div>
         </TableCell>
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
