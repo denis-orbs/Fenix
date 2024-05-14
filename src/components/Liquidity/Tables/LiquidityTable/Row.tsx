@@ -131,7 +131,7 @@ const RowData = ({
             </div>
           </div>
         </TableCell>
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[20%]'} flex justify-end items-center`}>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[15%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
             {/* <span ref={hoverRef} className="flex gap-2">
               {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
@@ -199,7 +199,7 @@ const RowData = ({
             }
           </div>
         </TableCell>
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[12%]'} flex justify-end items-center`}>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[13%]'} flex justify-end items-center`}>
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* TVL */}
@@ -207,7 +207,7 @@ const RowData = ({
             </p>
           </div>
         </TableCell>
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[12%]'} flex justify-end items-center`}>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[13%]'} flex justify-end items-center`}>
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
@@ -268,7 +268,7 @@ const RowData = ({
           </div>
         </TableCell> */}
 
-        <TableCell className="w-[12%]">
+        <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
@@ -297,7 +297,7 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="w-[12%]">
+        <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
@@ -326,7 +326,7 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="flex  items-center justify-end w-[12%]">
+        <TableCell className="flex  items-center justify-end w-[13%]">
           <div className="flex gap-2 w-full justify-end">
             {titleButton === '' ? (
               <></>
