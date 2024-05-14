@@ -109,27 +109,25 @@ const RowData = ({
                 height={20}
               />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <h5
-                className={`text-xs text-white ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'flex items-center justify-around' : ''}`}
+                className={`text-xs text-white`}
               >
                 <div>
                   {row.token0.symbol} / {row.token1.symbol}
                 </div>{' '}
-                <div>
-                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
-                </div>
               </h5>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
                 <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
-                <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-pointer rounded-lg bg-opacity-40 border-1 border-shark-300">
                   {/* FEES */}
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
               </div>
-              <div className="py-2">
-                <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
-              </div>
+              <span className={`!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-pointer rounded-lg bg-opacity-40 border-1 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}>
+                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
+                  {/* <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p> */}
+                </span>
             </div>
           </div>
         </TableCell>
@@ -204,6 +202,14 @@ const RowData = ({
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              {/* TVL */}
+              {formatDollarAmount(Number(row.totalValueLockedUSD))}
+            </p>
+          </div>
+        </TableCell>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
+          <div className="relative flex justify-center items-center gap-2 ">
+            <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
               {rignsAprLoading ? (
                 <Loader />
@@ -262,7 +268,7 @@ const RowData = ({
           </div>
         </TableCell> */}
 
-        <TableCell className="w-[15%]">
+        <TableCell className="w-[10%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
@@ -291,7 +297,7 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="w-[15%]">
+        <TableCell className="w-[10%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
