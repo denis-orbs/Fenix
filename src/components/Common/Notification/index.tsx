@@ -78,8 +78,8 @@ const Notification = ({
   }
   return (
     <>
-      <div className="notification box-invert animate-toast-in h-[80px] xl:h-[112px]  xl:w-[326px] z-50 px-4 xl:pt-1 xl:pb-3 ">
-        <div className="relative z-50">
+      <div className="notification box-invert animate-toast-in h-[80px] xl:h-[112px]  xl:w-[326px] z-[110] px-4 xl:pt-1 xl:pb-3 ">
+        <div className="relative z-[110]">
           <div className="flex items-center w-20 right-0  gap-3 absolute">
             <div
               className={`h-[5px] w-12 max-w-[48px]  flex rounded-lg overflow-hidden 

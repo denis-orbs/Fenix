@@ -741,6 +741,7 @@
   w-full
   rounded-2xl
   2xl:max-w-[615px]
+  z-[1]
   flex-shrink-0
   /* 2xl:w-[615px] */
   bg-shark-400
