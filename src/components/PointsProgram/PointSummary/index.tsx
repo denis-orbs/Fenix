@@ -4,9 +4,9 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import Countdown from 'react-countdown'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { log } from 'console'
-import { useRingsPoints } from '@/src/library/hooks/rings/useRingsPoints'
+import { useRingsPointsLeaderboard } from '@/src/library/hooks/rings/useRingsPoints'
 import Loader from '../../UI/Icons/Loader'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
@@ -15,25 +15,22 @@ const PointSummary = ({ userData }: any) => {
   const [time, setTime] = useState('')
   let count = 0
 
-  const getCurrentEightHourTimestampArray = () => {
-    const targetDate = new Date('2024-12-31T00:00:00Z').getTime()
-    const currentDate = new Date().getTime()
+  const getTargetTimestamps = () => {
+    const now = new Date()
+    const year = now.getUTCFullYear()
+    const month = now.getUTCMonth()
+    const day = now.getUTCDate()
+    // This is the hours where the cron that updates the points runs
+    const times = [
+      '17:00:00', // 05:00 PM UTC
+      '01:00:00', // 01:00 AM UTC
+      '09:00:00', // 09:00 AM UTC
+    ]
 
-    const timeDifference = targetDate - currentDate
-    const remainingHours = Math.ceil(timeDifference / (8 * 60 * 60 * 1000))
-
-    const eightHourTimestamps = []
-
-    for (let i = 0; i <= remainingHours; i++) {
-      const timestamp = targetDate - i * 8 * 60 * 60 * 1000
-      eightHourTimestamps.push(new Date(timestamp))
-    }
-
-    return eightHourTimestamps.reverse()
+    return times.map((time) => new Date(Date.UTC(year, month, day, ...time.split(':').map(Number))))
   }
-
   const timeSet = () => {
-    const timestampsArray = getCurrentEightHourTimestampArray()
+    const timestampsArray = getTargetTimestamps()
     if (timestampsArray.length > 0) {
       if (time === '' && count === 0) {
         setTime(timestampsArray[0].toString())
@@ -46,8 +43,8 @@ const PointSummary = ({ userData }: any) => {
     }
   }
 
-  const { points, isLoading } = useRingsPoints()
-  const timestampsArray = getCurrentEightHourTimestampArray()
+  const { data, isLoading } = useRingsPointsLeaderboard()
+  const timestampsArray = getTargetTimestamps()
 
   useEffect(() => {
     const interval = setInterval(timeSet, 1000 * 60 * 60 * 8) // Update every 8 hours
@@ -99,6 +96,19 @@ const PointSummary = ({ userData }: any) => {
       )
     }
   }
+  const { account } = useActiveConnectionDetails()
+  const userPoints = useMemo(() => {
+    if (!data || !account) {
+      return 0
+    }
+    return data.find((entry) => entry.id.toLowerCase() === account.toLowerCase())?.accumulated_rings_points
+  }, [data, account])
+  const userRank = useMemo(() => {
+    if (!data || !account) {
+      return '-'
+    }
+    return data.findIndex((entry) => entry.id.toLowerCase() === account.toLowerCase()) + 1
+  }, [data, account])
   return (
     <section className="your-point-box">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center relative z-10">
@@ -123,7 +133,7 @@ const PointSummary = ({ userData }: any) => {
             </div>
             <div className="h-12 flex flex-col justify-between">
               <h3 className="text-3xl font-medium text-white">
-                {isLoading ? <Loader size={'20px'} /> : formatCurrency(points) ?? '-'}
+                {isLoading ? <Loader size={'20px'} /> : userPoints ? formatCurrency(userPoints) : '-'}
               </h3>
               <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 Your Total points
@@ -138,12 +148,9 @@ const PointSummary = ({ userData }: any) => {
               <span className="text-lg text-transparent icon-circles bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text"></span>
             </div>
             <div className="flex items-center gap-2">
-              <h3 className="text-3xl font-medium text-white">{userData?.rank ?? '-'}</h3>
+              <h3 className="text-3xl font-medium text-white"> {isLoading ? <Loader size={'20px'} /> : userRank}</h3>
               <div className="">
                 <p className="text-white text-xs">RANK</p>
-                <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                  {userData?.amount ? formatCurrency(userData?.amount / 10 ** 6) + ' points' : ''}
-                </p>
               </div>
             </div>
           </div>
