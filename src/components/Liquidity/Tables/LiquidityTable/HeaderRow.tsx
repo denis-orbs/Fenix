@@ -113,20 +113,20 @@ const HeaderRow = ({
               },
               RANGE,
               { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[20%]'} text-right` },
-              { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right`, sortable: true },
+              { text: 'TVL', className: 'w-[12%] text-right', sortable: true },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[12%]'} text-right`, sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
-                className: 'w-[10%] text-right',
+                className: 'w-[12%] text-right',
                 sortable: true,
               },
               // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
-                className: 'w-[10%] text-right',
+                className: 'w-[12%] text-right',
                 sortable: true,
               },
-              { text: 'Action', className: 'w-[20%] flex justify-end', sortable: false },
+              { text: 'Action', className: 'w-[12%] flex justify-end', sortable: false },
             ]}
             setSort={setSort}
             sort={sort}
