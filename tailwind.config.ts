@@ -15,6 +15,9 @@ const config: Config = {
       DEFAULT: 'linear',
     },
     extend: {
+      boxShadow: {
+        'yellow-glow': '0 0 10px 3px rgba(255, 223, 0, 0.6)',
+      },
       width: {
         'max-content': 'max-content',
       },
@@ -35,6 +38,12 @@ const config: Config = {
             width: '100%',
           },
         },
+        'vibrate': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-1px)' },
+          '50%': { transform: 'translateX(1px)' },
+          '75%': { transform: 'translateX(-1px)' },
+        },
       },
       animation: {
         'spin-slow': 'spin 25s linear infinite',
@@ -42,6 +51,7 @@ const config: Config = {
 
         'toast-in': 'toast-in 250ms linear',
         progress: 'progress 3s linear',
+        'vibrate': '0.3s ease-in-out infinite 2.7s'
       },
       backgroundImage: {
         // Gradients
