@@ -25,11 +25,11 @@ const Deposit = () => {
               <div className="flex">Claim Earnings</div>
             </Button>
           </div>
-          <p className="flex items-center gap-3 mb-4 mt-4 text-sm text-shark-100">
+          <p className="flex items-center gap-3  text-sm text-shark-100">
             <span className="inline-block text-2xl text-transparent icon-circles bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
             There are currently 54 tokens listed.
           </p>
-          <div className="text-sm flex gap-2 text-shark-100 mb-4 xl:mb-0">
+          <div className="text-sm flex gap-2 text-shark-100 xl:mb-0">
             <p className="flex gap-2">
               <span className="icon-link"></span>
               View Tokens
@@ -40,7 +40,7 @@ const Deposit = () => {
             </p>
           </div>
         </div>
-        <div className="relative flex flex-col w-full xl:w-[40%]">
+        <div className="relative flex flex-col w-full max-h-[180px] overflow-y-auto overflow-x-hidden xl:w-[40%]">
           {EXCHANGE_LIST.map((exchange, index) => (
             <InfoBox key={index} data={exchange} hasTooltip={false} />
           ))}

@@ -32,14 +32,16 @@ const Vote = () => {
   }, [lock])
 
   return (
-    <section className="relative">
+    <section className="relative overflow-hidden">
       <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
-        <div className="w-full 2xl:w-3/4">
+        <div className="w-full xl:w-2/3">
           <Deposit />
         </div>
-        <VoteNow openModal={openModal} setOpenModal={setOpenModal} activeVote={activeVote} />
+        <div className='w-full xl:w-1/3'>
+          <VoteNow openModal={openModal} setOpenModal={setOpenModal} activeVote={activeVote} />
+        </div>
       </div>
-      <h1 className="text-lg lg:text-2xl text-white">Select Liquidity Pools for Voting</h1>
+      <h1 className="text-lg text-white">Select Liquidity Pools for Voting</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full xl:w-2/3">
           <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
@@ -60,7 +62,7 @@ const Vote = () => {
           </div>
         </div>
       )}
-      <HeaderRowVote activeVote={activeVote} filterData={filterData} loading={loading} />
+      {/* <HeaderRowVote activeVote={activeVote} filterData={filterData} loading={loading} /> */}
       <SelectVote
         activeVote={activeVote}
         setActiveVote={setActiveVote}

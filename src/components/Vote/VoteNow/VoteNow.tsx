@@ -25,14 +25,14 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
         <div className="relative flex flex-col w-auto">
           <ActiveVote handlerChange={handlerChange} />
         </div>
-        <div className="flex flex-wrap xl:flex-nowrap gap-3 py-3 mt-5 items-center w-full">
-          <div className="bg-shark-400 bg-opacity-40 text-sm rounded-lg py-5 flex flex-col items-center justify-center w-full xl:w-[30%]">
-            <p className="text-shark-100">Fenix Balance</p>
-            <p className="text-white text-2xl">0.00</p>
+        <div className="flex flex-wrap xl:flex-nowrap gap-3 items-center w-full">
+          <div className="bg-shark-400 bg-opacity-40 text-sm rounded-lg py-2 flex flex-col items-center justify-center w-full xl:w-[30%]">
+            <p className="text-shark-100 text-sm">Fenix Balance</p>
+            <p className="text-white text-xs">0.00</p>
           </div>
-          <div className="bg-shark-400 bg-opacity-40 rounded-lg text-sm py-5 flex flex-col items-center w-full xl:w-[30%]">
-            <p className="text-shark-100">Emissions / % of Vote</p>
-            <p className="text-2xl text-white">0%</p>
+          <div className="bg-shark-400 bg-opacity-40 rounded-lg text-sm py-2 flex flex-col items-center w-full xl:w-[30%]">
+            <p className="text-shark-100 text-sm line-clamp-1">Emissions / % of Vote</p>
+            <p className="text-xs text-white">0%</p>
           </div>
           <div className="xl:w-[40%] flex flex-col gap-3 w-full">
             <div className="flex text-xs text-white relative bg-shark-400 bg-opacity-40 w-full rounded-lg pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 justify-evenly">
@@ -44,7 +44,7 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
           </div>
         </div>
 
-        <div className="flex justify-center gap-4 mt-10">
+        {/* <div className="flex justify-center gap-4 mt-10">
           <p
             className="flex items-center gap-2 text-sm cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
             onClick={handleReadMore}
@@ -55,7 +55,7 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
           <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex items-center text-sm gap-2 text-shark-100 cursor-pointer ">
             <span className="icon-discord"></span>Need some help?
           </Link>
-        </div>
+        </div> */}
       </div>
       <ReadMoreModal />
     </StepBox>
