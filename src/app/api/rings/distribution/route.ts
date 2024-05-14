@@ -20,7 +20,9 @@ export async function GET(request: NextRequest) {
 
   for (const campaignId of campaignsId) {
     try {
-      const response = await fetch(`https://api.merkl.xyz/v3/rewardsReport?chainId=81457&campaignId=${campaignId}`)
+      const response = await fetch(`https://api.merkl.xyz/v3/rewardsReport?chainId=81457&campaignId=${campaignId}`, {
+        cache: 'no-cache',
+      })
       const data: Reward[] = await response.json()
       for (const reward of data) {
         const rewardAmount = BigInt(reward.amount) / 10n ** BigInt(RINGS_TOKEN_DECIMALS)
