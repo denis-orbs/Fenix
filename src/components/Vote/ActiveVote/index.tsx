@@ -37,7 +37,7 @@ const ActiveVote = ({ handlerChange }: ActiveVoteProps) => {
           />
           <div className="flex flex-col">
             <div className="flex gap-2 items-center ">
-              <p className="text-shark-100 text-xs">Selected Position</p>
+              <p className="text-shark-100 text-xs line-clamp-1">Selected Position</p>
             </div>
             <div className="flex text-xs gap-2 ">
               <p>{locks?.veNFTInfo.account != '0x' ? locks?.veNFTInfo.id.toString() : null}</p>
@@ -57,11 +57,11 @@ const ActiveVote = ({ handlerChange }: ActiveVoteProps) => {
       </div>
       <div className="flex xl:justify-end xl:gap-4 w-full justify-center gap-5 items-center">
         <div className="text-xs text-center  xl:w-auto">
-          <p className="text-shark-100">Position</p>
+          <p className="text-shark-100 line-clamp-1">Position</p>
           <p>{(Number(locks?.veNFTInfo.amount) / 10 ** 18).toFixed(2)} FNX</p>
         </div>
         <div className="text-xs text-center xl:w-auto">
-          <p className="text-shark-100">Voting Power</p>
+          <p className="text-shark-100 line-clamp-1">Voting Power</p>
           <p>{(Number(locks?.veNFTInfo.voting_amount) / 10 ** 18).toFixed(2)} veFNX</p>
         </div>
         <div className="text-xs text-center xl:w-auto">

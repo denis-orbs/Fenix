@@ -8,17 +8,17 @@ const RewardBox = () => {
     <MainBox>
       <div className="flex flex-col items-center justify-between w-full xl:flex-row relative z-10">
         <div className="w-full xl:w-1/2">
-          <h4 className="mb-3 text-2xl text-white">Rewards</h4>
-          <p className="mb-4 text-sm text-shark-100">
+          <h4 className="mb-3 text-2xl font-semibold text-white">Rewards</h4>
+          <p className="mb-4 text-xs text-shark-100 font-normal">
             Select your veFNX and use 100% of your votes for one or more pools to earn bribes and trading fees.
           </p>
           <div>
-            <Button variant="primary" className="flex gap-2 items-center !text-sm">
+            <Button variant="primary" className="flex gap-2 items-center !text-xs !font-normal">
               <span className="icon-wallet"></span>
               Connect your Wallet
             </Button>
           </div>
-          <div className="flex gap-2 items-center text-shark-100 text-sm py-2">
+          <div className="flex gap-2 items-center text-shark-100 text-xs py-2">
             <span className="icon-link"></span>
             <p>About Migration</p>
           </div>
@@ -27,12 +27,12 @@ const RewardBox = () => {
           {REWARD_LIST.map((exchange, index) => (
             <InfoBox key={index} data={exchange} hasTooltip={false} />
           ))}
-          <div className='mx-auto text-sm mt-5'>
+          {/* <div className='mx-auto text-sm mt-5'>
             <Link target="_blank" href="https://discord.com/invite/fenixfi" className="text-shark-100 gap-2 flex items-center">
               <span className="icon-discord"></span>
               Need some help?
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </MainBox>

@@ -32,9 +32,9 @@ const HeaderRowReward = ({
         <div className="max-xl:hidden">
           <TableHead
             items={[
-              { text: 'Pairs', className: 'w-[50%]', sortable: true },
-              { text: 'Rewards', className: 'text-center  w-[20%]', sortable: true },
-              { text: 'Action', className: 'w-[30%] text-right', sortable: true },
+              { text: 'Pairs', className: 'w-[50%] text-xs', sortable: true },
+              { text: 'Rewards', className: 'text-center  w-[20%] text-xs', sortable: true },
+              { text: 'Action', className: 'w-[30%] text-right text-xs', sortable: true },
             ]}
             setSort={() => {}}
             sort={null}
@@ -43,56 +43,61 @@ const HeaderRowReward = ({
           />
         </div>
 
-        <TableBody>
-          {loading ? (
-            <>
-              {Array.from({ length: filterData.length }).map((_, index) => (
-                <TableSkeleton key={index} />
-              ))}
-            </>
-          ) : (
-            <>
-              {activeVote &&
-                filterData.map((row, index) => (
-                  <Fragment key={index}>
-                    <RowReward row={row} activeVote={activeVote} activeSlider={activeSlider} />
-                  </Fragment>
-                ))}
+        {filterData.length !== 0 ? (
+          <>
+            <TableBody>
+              {loading ? (
+                <>
+                  {Array.from({ length: filterData.length }).map((_, index) => (
+                    <TableSkeleton key={index} />
+                  ))}
+                </>
+              ) : (
+                <>
+                  {activeVote &&
+                    filterData.map((row, index) => (
+                      <Fragment key={index}>
+                        <RowReward row={row} activeVote={activeVote} activeSlider={activeSlider} />
+                      </Fragment>
+                    ))}
 
-              {!activeVote && <NotFoundLock info={'You have not selected any veFNX yet.'} />}
-            </>
-          )}
-        </TableBody>
+                  {!activeVote && <NotFoundLock info={'You have not selected any veFNX yet.'} />}
+                </>
+              )}
+            </TableBody>
+            {activePagination && (
+              <>
+                <div className="items-center hidden xl:flex py-4">
+                  <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
+                  <Pagination
+                    className="mx-auto"
+                    numberPages={7}
+                    activePage={1}
+                    setActivePage={() => {}}
+                    itemsPerPage={10}
+                    setItemPerPage={() => {}}
+                  />
+                </div>
+                <div className="block xl:hidden py-4">
+                  <PaginationMobile
+                    numberPages={7}
+                    activePage={1}
+                    setActivePage={() => {}}
+                    itemsPerPage={10}
+                    setItemPerPage={() => {}}
+                    className=""
+                    count={7}
+                  />
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <NotFoundLock />
+          </>
+        )}
       </div>
-      {activePagination && (
-        <>
-          <div className="items-center hidden xl:flex">
-            <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
-            <Pagination
-              className="mx-auto"
-              numberPages={7}
-              activePage={1}
-              setActivePage={() => {}}
-              itemsPerPage={10}
-              setItemPerPage={() => {}}
-            />
-            <div className="flex items-center justify-center cursor-pointer w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
-              <span className="text-lg icon-cog text-white"></span>
-            </div>
-          </div>
-          <div className="block xl:hidden">
-            <PaginationMobile
-              numberPages={7}
-              activePage={1}
-              setActivePage={() => {}}
-              itemsPerPage={10}
-              setItemPerPage={() => {}}
-              className=""
-              count={7}
-            />
-          </div>
-        </>
-      )}
     </div>
   )
 }
