@@ -49,11 +49,12 @@ const Button = ({
 
       return
     }
-    if (walletConfig?.needSupportedChain && !isSupportedChain(chainId)) {
-      switchChain({ chainId: SupportedChainId.BLAST })
-
+    /* if (walletConfig?.needSupportedChain && !isSupportedChain(chainId)) {
+      if (chainId !== SupportedChainId.BLAST) {
+        switchChain({ chainId: SupportedChainId.BLAST })
+      }
       return
-    }
+    } */
     onClick && onClick()
   }
   const buttonText = () => {
@@ -66,6 +67,7 @@ const Button = ({
     return children
   }
   if (href) {
+    console.log('entro', href)
     return (
       <Link href={href} onClick={handleClick} className={mergeClassName} {...props}>
         {buttonText()}

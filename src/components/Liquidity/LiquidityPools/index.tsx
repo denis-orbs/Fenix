@@ -64,12 +64,12 @@ const LiquidityPools = () => {
         className="flex flex-col items-center justify-between
        w-full xl:flex-row relative z-10 "
       >
-        <div className="w-full xl:w-1/2">
+        <div className="w-full xl:w-1/2 relative">
           <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
           <p className="mb-4 text-xs text-shark-100">
             Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and stake liquidity to earn rewards.
           </p>
-          <div className="flex flex-col gap-2 mb-8 md:flex-row">
+          <div className="flex flex-col gap-2 mb-8 md:flex-row z-[3000]">
             <Button href="liquidity/deposit?type=CONCENTRATED_MANUAL&token0=0x4300000000000000000000000000000000000003&token1=0x4300000000000000000000000000000000000004">
               <div className="flex gap-2 text-xs">
                 <span className="icon-send"></span>
