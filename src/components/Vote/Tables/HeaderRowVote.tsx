@@ -61,17 +61,17 @@ const HeaderRowVote = ({
         <div className="max-xl:hidden">
           <TableHead
             items={[
-              { text: 'Assets', className: 'w-[30%]', sortable: true },
-              { text: 'APR', className: 'text-center  w-[10%]', sortable: true },
-              { text: 'Your Votes', className: 'w-[10%] text-right', sortable: true },
+              { text: 'Assets', className: 'w-[30%] text-xs', sortable: true },
+              { text: 'APR', className: 'text-center  w-[10%] text-xs', sortable: true },
+              { text: 'Your Votes', className: 'w-[10%] text-right text-xs', sortable: true },
               {
                 text: 'Total Rewards',
-                className: 'w-[30%] text-right',
+                className: 'w-[30%] text-right text-xs',
                 sortable: true,
                 showTooltip: showTooltip,
                 setShowTooltip: setShowTooltip,
               },
-              { text: 'Vote', className: 'w-[20%] text-right', sortable: true },
+              { text: 'Vote', className: 'w-[20%] text-right text-xs', sortable: true },
             ]}
             setSort={() => {}}
             sort={null}
