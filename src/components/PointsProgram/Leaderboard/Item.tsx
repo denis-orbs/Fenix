@@ -22,7 +22,7 @@ const Item = ({ data }: { data: RankingEntry }) => {
           <p className="text-sm max-w-[100px] xl:max-w-auto truncate">{data.id}</p>
         </div>
       </span>
-      <span className="text-white xl:w-36 text-center text-sm">{formatAmount(data.accumulated_rings_points)}</span>
+      <span className="text-white xl:w-36 text-center text-sm">{formatCurrency(data.accumulated_rings_points)}</span>
     </div>
   )
 }
