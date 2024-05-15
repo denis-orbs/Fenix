@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     {
       pair: 'WETH/USDB',
       id: '0x1d74611f3ef04e7252f7651526711a937aa1f75e',
-      points: 12_300_00,
+      points: 12_300_000,
       multiplier: 61.5,
       apr: 0,
     },
@@ -132,8 +132,8 @@ export async function GET(request: NextRequest) {
       apr: poolData?.totalValueLockedUSD
         ? toBN(pool.points)
             .multipliedBy(PRICE_PER_POINT)
-            .multipliedBy(4 * 12)
             .dividedBy(poolData.totalValueLockedUSD)
+            .multipliedBy(52)
             .multipliedBy(100)
             .toNumber()
         : 0,
