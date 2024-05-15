@@ -190,7 +190,7 @@ const RowData = ({
                   {openTooltipGold && (
                     <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-xs">This pool is receiving 7000 Gold</p>
+                        <p className="text-xs">This pool is receiving 7000 Gold over 3 weeks</p>
                       </div>
                     </div>
                   )}
