@@ -1,4 +1,5 @@
 import TradeLayout from '@/src/components/Trade/Common/Layout'
+import BlastBanner from '@/src/components/Common/BlastBanner'
 
 export const metadata = {
   title: 'Bridge | Fenix Finance',
@@ -53,7 +54,8 @@ export default function Page() {
 
   return (
     <TradeLayout>
-      <div className="flex justify-center">
+      <BlastBanner />
+      <div className="flex justify-center mt-4">
         <iframe className="w-[500px]" height="700" src={iframeSrc}></iframe>
       </div>
     </TradeLayout>
