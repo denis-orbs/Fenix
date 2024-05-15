@@ -42,12 +42,12 @@ export const totalCampaigns: Campaign[] = [
     multiplier: '🔥 Ring Boost' /* '🔥 1x Rings' */,
     pointStack: ['fenix-ring', 'blast'],
   },
-  {
-    campaignId: '',
-    pairAddress: '0xce274e4ae83baadd1d3b88e1ed24886e05aca345',
-    multiplier: '🔥 Ring Boost' /* '🔥 0.3x Rings' */,
-    pointStack: ['fenix-ring', 'blast'],
-  },
+  // {
+  //   campaignId: '',
+  //   pairAddress: '0xce274e4ae83baadd1d3b88e1ed24886e05aca345',
+  //   multiplier: '🔥 Ring Boost' /* '🔥 0.3x Rings' */,
+  //   pointStack: ['fenix-ring', 'blast'],
+  // },
   {
     campaignId: '0x7c7d58fde697e41f3600acbf7ca827d32854364ceef3c1ff6a02a296d13c78ae',
     pairAddress: '0xf2bb3403e80adc9272c43b386c76e54d5bb604a5',
