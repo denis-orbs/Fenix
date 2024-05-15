@@ -47,21 +47,21 @@ const Vote = () => {
           <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         </div>
         <div className="w-full xl:w-1/3">
-          <Search setSearchValue={()=> {}} searchValue={""} placeholder="Search by symbol" />
+          <Search setSearchValue={() => {}} searchValue={''} placeholder="Search by symbol" />
         </div>
       </div>
       {activeVote && (
         <div className="mb-5">
-          <h2 className="text-2xl text-white">Vote Pools</h2>
+          <h2 className="text-sm font-medium text-white">Vote Pools</h2>
           <div className="flex flex-wrap gap-2 justify-center">
-            {/* <VotePools />
             <VotePools />
             <VotePools />
-            <VotePools /> */}
+            <VotePools />
+            <VotePools />
           </div>
         </div>
       )}
-      {/* <HeaderRowVote activeVote={activeVote} filterData={filterData} loading={loading} /> */}
+      <HeaderRowVote activeVote={activeVote} filterData={filterData} loading={loading} />
       <SelectVote
         activeVote={activeVote}
         setActiveVote={setActiveVote}

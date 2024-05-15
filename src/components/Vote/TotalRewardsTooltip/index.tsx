@@ -9,10 +9,10 @@ interface TotalRewardsTooltipProps {
 
 const TotalRewardsTooltip = ({ show, setShow }: TotalRewardsTooltipProps) => {
   return (
-    <Tooltip setShow={setShow} show={show}>
-      <div className="text-shark-100 flex flex-col gap-1 p-1">
+    <Tooltip className='min-w-[275px] p-5' setShow={setShow} show={show}>
+      <div className="text-shark-100 flex flex-col">
         <span className="icon-info"></span>
-        <p className='text-xs'>This amount represents the Projected Returns at 100% of your Voting Power</p>
+        <p className='text-xs text-justify'>This amount represents the Projected Returns at 100% of your Voting Power</p>
       </div>
     </Tooltip>
   )

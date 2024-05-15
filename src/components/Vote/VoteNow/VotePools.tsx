@@ -3,8 +3,8 @@ import Image from 'next/image'
 
 const VotePools = () => {
   return (
-    <div className="flex  relative justify-between items-end vote-box p-8 gap-10  w-full xl:w-auto ">
-      <div className="flex items-center gap-2 ">
+    <div className="flex  justify-between items-end vote-box p-8 gap-10  w-full xl:w-auto ">
+      <div className="flex relative z-50 items-center gap-2 ">
         <div className="flex items-center w-full">
           <Image
             src="/static/images/tokens/FNX.svg"
@@ -30,12 +30,12 @@ const VotePools = () => {
           </div>
         </div>
       </div>
-      <div className='flex items-start'>
+      <div className="flex  relative z-50 items-start">
         <span className="py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
           0.3%
         </span>
       </div>
-      <div className="icon-x absolute iam p-2 right-0 top-0 text-shark-100"></div>
+      <div className="icon-x absolute z-50 p-2 right-0 top-0 text-shark-100"></div>
     </div>
   )
 }
