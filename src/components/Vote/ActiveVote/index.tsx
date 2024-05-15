@@ -26,7 +26,7 @@ const ActiveVote = ({ handlerChange }: ActiveVoteProps) => {
       className={`flex flex-wrap  xl:flex-nowrap items-center gap-8 p-5 text-white border-solid border-1
        border-shark-400 bg-shark-400 bg-opacity-40 rounded-xl`}
     >
-      <div className="flex justify-between w-full items-center cursor-pointer" onClick={handlerChange}>
+      <div className="flex justify-between w-full items-center cursor-pointer " onClick={handlerChange}>
         <div className="flex items-center gap-2  ">
           <Image
             alt="logo-fenix"
@@ -55,7 +55,7 @@ const ActiveVote = ({ handlerChange }: ActiveVoteProps) => {
         </div>
         <span className="icon-chevron"></span>
       </div>
-      <div className="flex xl:justify-end xl:gap-4 w-full justify-center gap-5 items-center">
+      <div className="flex xl:justify-end xl:gap-4 w-full  justify-center gap-5 items-center">
         <div className="text-xs text-center  xl:w-auto">
           <p className="text-shark-100">Position</p>
           <p>{(Number(locks?.veNFTInfo.amount) / 10 ** 18).toFixed(2)} FNX</p>

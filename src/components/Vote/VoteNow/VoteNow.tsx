@@ -17,15 +17,15 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
 
   const handleReadMore = () => setReadMoreModal(true)
   return (
-    <StepBox>
-      <div className="flex flex-col justify-center w-full rounded-2xl xl:rounded-none relative z-10">
-        <div className="flex items-center mb-3 justify-evenly">
-          <h4 className="w-full mb-3 text-sm text-white">Vote now</h4>
+    <StepBox >
+      <div className="flex flex-col justify-center w-full rounded-2xl xl:rounded-none  relative z-10">
+        <div className="flex items-center mb-3 justify-evenly 2xl:py-3">
+          <h4 className="w-full mb-3 text-sm xl:absolute font-medium -top-4 left-10 text-white">Vote now</h4>
         </div>
         <div className="relative flex flex-col w-auto">
           <ActiveVote handlerChange={handlerChange} />
         </div>
-        <div className="flex flex-wrap xl:flex-nowrap gap-3 items-center w-full">
+        <div className="flex flex-wrap xl:flex-nowrap gap-3 mt-2 items-center w-full">
           <div className="bg-shark-400 bg-opacity-40 text-sm rounded-lg py-2 flex flex-col items-center justify-center w-full xl:w-[30%]">
             <p className="text-shark-100 text-sm">Fenix Balance</p>
             <p className="text-white text-xs">0.00</p>
