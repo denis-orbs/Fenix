@@ -248,7 +248,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                 >
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm pb-1">Ichi strategy</p>
-                    <p className="text-sm pb-1 text-chilean-fire-600">{row?.apr}</p>
+                    <p className="text-sm pb-1 text-chilean-fire-600">{parseFloat(row?.apr) < 0 ? 0 : row?.apr}</p>
                   </div>
                   {fenixRingApr > 0 && (
                     <div className="flex justify-between items-center gap-3">
