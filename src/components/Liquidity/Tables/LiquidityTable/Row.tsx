@@ -174,7 +174,7 @@ const RowData = ({
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={''}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow notification' }`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
@@ -190,6 +190,7 @@ const RowData = ({
                   {openTooltipGold && (
                     <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                       <div className="flex justify-between items-center gap-3">
+
                         <p className="text-xs">The pool is receiving 7000 Gold from May 15th - 31st</p>
                       </div>
                     </div>
