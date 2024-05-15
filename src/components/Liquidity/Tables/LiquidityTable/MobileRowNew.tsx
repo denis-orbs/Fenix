@@ -89,8 +89,8 @@ export default function MobileRowNew({
             />
           </div>
           <div className="flex flex-col gap-1 w-[85%]">
-            <div className='flex items-center justify-between'>
-              <h5 className="text-sm font-semibold leading-normal">
+            <div className='flex items-center gap-2 justify-between'>
+              <h5 className="text-sm font-semibold leading-normal mx-auto">
                 {row.token0.symbol} / {row.token1.symbol}{' '}
               </h5>
               <div className={`border-solid bg-shark-400 rounded-lg bg-opacity-40 border-shark-300 text-xs font-normal border whitespace-nowrap !py-2 !h-[38px] w-[44.7%] text-center px-4 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}>{totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}</div>
