@@ -13,49 +13,50 @@ import { getPointsDistributionTargetTimestamps } from '@/src/library/utils/campa
 
 const PointSummary = ({ userData }: any) => {
   //  console.log(userData, 'userData')
-  const [time, setTime] = useState('')
-  let count = 0
-
-  const timeSet = () => {
-    const timestampsArray = getPointsDistributionTargetTimestamps()
-    if (timestampsArray.length > 0) {
-      if (time === '' && count === 0) {
-        setTime(timestampsArray[0].toString())
-      } else {
-        if (count < timestampsArray.length) {
-          setTime(timestampsArray[count].toString())
-          count++
-        }
-      }
-    }
-  }
 
   const { data, isLoading } = useRingsPointsLeaderboard()
+  const [nextTargetTime, setNextTargetTime] = useState<number>()
+
+  // const targetHoursUTC = [17, 1, 9]
+  const targetHoursUTC = getPointsDistributionTargetTimestamps()
+  const calculateNextTargetTime = () => {
+    const nowUTC = new Date(new Date().toISOString().substring(0, 19) + 'Z')
+
+    const nextTimes = targetHoursUTC.map((hour) => {
+      const nextTime = new Date(hour)
+      nextTime.setUTCFullYear(nowUTC.getUTCFullYear(), nowUTC.getUTCMonth(), nowUTC.getUTCDate())
+
+      if (nextTime <= nowUTC) {
+        nextTime.setUTCDate(nextTime.getUTCDate() + 1)
+      }
+
+      return nextTime.getTime()
+    })
+
+    const nextTime = Math.min(...nextTimes)
+    setNextTargetTime(nextTime)
+  }
 
   useEffect(() => {
-    const interval = setInterval(timeSet, 1000 * 60 * 60 * 8) // Update every 8 hours
+    calculateNextTargetTime()
+    const interval = setInterval(calculateNextTargetTime, 60 * 1000)
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => timeSet(), [])
-  // FIXME: STARK
   const renderer = ({
     hours,
     minutes,
     seconds,
     completed,
   }: {
-    hours: any
-    minutes: any
-    seconds: any
-    completed: any
+    hours: number
+    minutes: number
+    seconds: number
+    completed: boolean
   }) => {
     if (completed) {
-      // Render a completed state
-      // return <span>You are good to go!</span>
-      timeSet()
+      calculateNextTargetTime()
     } else {
-      // Render a countdown
       return (
         <>
           <div className="flex items-center justify-between px-4">
@@ -82,6 +83,7 @@ const PointSummary = ({ userData }: any) => {
       )
     }
   }
+
   const { account } = useActiveConnectionDetails()
   const userPoints = useMemo(() => {
     if (!data || !account) {
@@ -153,7 +155,13 @@ const PointSummary = ({ userData }: any) => {
             {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
           </p>
           <div className="w-full">
-            <Countdown key={time} date={time} daysInHours={true} autoStart={true} renderer={renderer} />
+            <Countdown
+              key={nextTargetTime}
+              date={nextTargetTime}
+              daysInHours={true}
+              autoStart={true}
+              renderer={renderer}
+            />
           </div>
 
           {/* --- */}

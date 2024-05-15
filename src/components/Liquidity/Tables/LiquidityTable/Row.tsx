@@ -77,7 +77,7 @@ const RowData = ({
 
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
-    setCampaign({ ...campaign_ })    
+    setCampaign({ ...campaign_ })
   }, [row])
 
   function getAverageApr(...aprs: number[]): string {
@@ -110,9 +110,7 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col gap-1">
-              <h5
-                className={`text-xs text-white`}
-              >
+              <h5 className={`text-xs text-white`}>
                 <div>
                   {row.token0.symbol} / {row.token1.symbol}
                 </div>{' '}
@@ -124,10 +122,12 @@ const RowData = ({
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
               </div>
-              <span className={`!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-1 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}>
-                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
-                  {/* <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p> */}
-                </span>
+              <span
+                className={`!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-1 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+              >
+                {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
+                {/* <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p> */}
+              </span>
             </div>
           </div>
         </TableCell>
@@ -190,7 +190,8 @@ const RowData = ({
                   {openTooltipGold && (
                     <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-xs">This pool is receiving 7000 Gold over 3 weeks</p>
+
+                        <p className="text-xs">The pool is receiving 7000 Gold from May 15th - 31st</p>
                       </div>
                     </div>
                   )}

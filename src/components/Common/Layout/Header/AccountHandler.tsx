@@ -18,6 +18,9 @@ import cn from '@/src/library/utils/cn'
 import { blast } from 'viem/chains'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import Countdown from 'react-countdown'
+import { useQuery } from '@tanstack/react-query'
+import { UserBlastPointsData } from '@/src/app/api/blast-points/[address]/route'
+import Loader from '@/src/components/UI/Icons/Loader'
 
 interface Points {
   userLiqPoints: number[]
@@ -52,6 +55,14 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const wrongChain = !isSupportedChain(chainId)
   const [nextTargetTime, setNextTargetTime] = useState<number>()
 
+  const { data: userBlastPoints, isLoading: isLoadingUserBlastPoints } = useQuery<UserBlastPointsData>({
+    queryKey: ['blast-points', address],
+    enabled: !!address,
+    queryFn: async () => {
+      const data = await fetch('/api/blast-points/' + address)
+      return await data.json()
+    },
+  })
   // const targetHoursUTC = [17, 1, 9]
   const targetHoursUTC = getPointsDistributionTargetTimestamps()
   const calculateNextTargetTime = () => {
@@ -134,13 +145,15 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
             <div className="absolute bg-shark-400 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex flex-col justify-center items-center">
-                  <p className="text-shark-100 text-xs mb-2">PTS Received</p>
-                  <p className="text-white text-sm">Calculating...</p>
+                  <p className="text-shark-100 text-xs mb-2">Blast Points</p>
+                  <p className="text-white text-sm">
+                    {isLoadingUserBlastPoints ? <Loader /> : userBlastPoints?.given_blast_poins}
+                  </p>
                 </div>
                 <div className="flex flex-col justify-center items-center">
-                  <p className="text-shark-100 text-xs mb-2">PTS Pending</p>
+                  <p className="text-shark-100 text-xs mb-2">Blast Gold</p>
                   <p className="text-white text-sm">
-                    {/* {(Number(availablePoints) - Number(distributed)).toFixed(2).toString()} */}0
+                    {isLoadingUserBlastPoints ? <Loader /> : userBlastPoints?.given_blast_gold_points}
                   </p>
                 </div>
               </div>

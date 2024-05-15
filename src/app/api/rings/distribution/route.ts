@@ -16,9 +16,10 @@ export async function GET(request: NextRequest) {
   if (authorizationHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
-  const campaignsId = totalCampaigns.map((campaign) => campaign.campaignId)
 
-  for (const campaignId of campaignsId) {
+  for (const campaign of totalCampaigns) {
+    const campaignId = campaign.campaignId
+    const pairAddress = campaign.pairAddress
     try {
       const response = await fetch(`https://api.merkl.xyz/v3/rewardsReport?chainId=81457&campaignId=${campaignId}`, {
         cache: 'no-cache',
@@ -26,18 +27,29 @@ export async function GET(request: NextRequest) {
       const data: Reward[] = await response.json()
       for (const reward of data) {
         const rewardAmount = BigInt(reward.amount) / 10n ** BigInt(RINGS_TOKEN_DECIMALS)
-        await prisma.users.upsert({
-          where: { id: reward.recipient.toLowerCase() },
-          update: {
-            accumulated_rings_points: {
-              increment: rewardAmount,
+        await prisma.$transaction([
+          prisma.users.upsert({
+            where: { id: reward.recipient.toLowerCase() },
+            update: {
+              accumulated_rings_points: {
+                increment: rewardAmount,
+              },
             },
-          },
-          create: {
-            id: reward.recipient.toLowerCase(),
-            accumulated_rings_points: rewardAmount,
-          },
-        })
+            create: {
+              id: reward.recipient.toLowerCase(),
+              accumulated_rings_points: rewardAmount,
+            },
+          }),
+          prisma.ring_distribution.create({
+            data: {
+              campaign_id: campaignId.toLowerCase(),
+              user_id: reward.recipient.toLowerCase(),
+              gold_points: 0,
+              ring_points: rewardAmount,
+              pool_id: pairAddress.toLowerCase(),
+            },
+          }),
+        ])
         console.log('Data introduced for wallet', reward.recipient, 'Points:', rewardAmount)
       }
     } catch (error) {
