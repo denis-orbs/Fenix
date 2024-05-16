@@ -9,13 +9,13 @@ import { useCloseBanner, useShowBanner } from '@/src/state/user/hooks'
 const BlastBanner = () => {
   const showBanner = useShowBanner()
   const setCloseBanner = useCloseBanner()
-  const [close, setClose] = useState<boolean>(showBanner)
+  const [close, setClose] = useState<boolean>(false)
 
   if (close) return null
 
   const handlerClose = () => {
-    setCloseBanner(true)
-    setClose((prevState) => !prevState)
+    // setCloseBanner(true)
+    // setClose((prevState) => !prevState)
   }
 
   return (
@@ -134,9 +134,9 @@ const BlastBanner = () => {
         width={10}
         height={10}
       />
-      <div className="text-white absolute text-sm right-3 top-2 z-20 cursor-pointer" onClick={handlerClose}>
+      {/* <div className="text-white absolute text-sm right-3 top-2 z-20 cursor-pointer" onClick={handlerClose}>
         <span className="icon-x"></span>
-      </div>
+      </div> */}
       <div className="relative z-10 max-lg:max-w-[75%] flex flex-col gap-2 max-lg:gap-1 max-lg:mt-4">
         <div className="flex flex-col items-start gap-1">
           <div className="text-white text-sm font-normal">Deposit liquidity into USDB/WETH to earn your share of</div>
