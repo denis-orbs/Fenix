@@ -144,8 +144,8 @@ const Main = () => {
              justify-center items-center px-5 mx-auto ${isTablet ? 'info-box' : 'mobile-info-box'}`}
           >
             <Box text="Total Value Locked" value={globalStatistics?.totalTVL?.toString() || '-'} />
-            <Box text="Annualized Volume" value={globalStatistics?.totalVolume?.toString() || '-'} />
-            <Box text="Annualized Fees" value={globalStatistics?.totalFees?.toString() || '-'} />
+            <Box text="Total Volume" value={globalStatistics?.totalVolume?.toString() || '-'} />
+            <Box text="Total Fees" value={globalStatistics?.totalFees?.toString() || '-'} />
             <Box text="Active Users" value="COMING SOON" />
           </div>
         </div>

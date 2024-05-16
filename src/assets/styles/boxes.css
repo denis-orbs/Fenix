@@ -97,8 +97,8 @@
 }
 
 .box {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
-
+  @apply relative bg-shark-400 bg-opacity-40  rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
+  w-full
   before:hidden
   xl:before:block
   before:absolute
@@ -111,7 +111,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#1a1d21]
+  before:border-[transparent_transparent_#1b1e21]
 
   after:hidden
   xl:after:block
@@ -125,7 +125,7 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#1a1d21];
+  after:border-[transparent_transparent_#1b1f22];
 }
 
 .address-check-box {
@@ -193,7 +193,7 @@
 }
 
 .search-box {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center h-[45px];
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3 flex items-center max-h-[45px];
 }
 
 .filter-lock-box {
@@ -520,7 +520,7 @@
   before:bg-no-repeat
   before:h-full
   before:bg-cover
-  before:w-[50%]
+  before:w-[calc(100%-400px)]
   before:top-0
   before:left-0
   before:hidden
@@ -534,7 +534,7 @@
   after:bg-right
   after:h-full
   after:bg-cover
-  after:w-[50%]
+  after:w-[400px]
   after:bottom-0
   after:right-0
   after:hidden
@@ -748,9 +748,51 @@
   xl:bg-transparent
   xl:bg-opacity-100
   py-8
-  2xl:py-12
+  2xl:py-6
   px-8
+  max-h-[270px]
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/steps/step.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
 
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/steps/step.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
+
+
+
+.steps-box-dashboard {
+  @apply relative
+  w-full
+  rounded-2xl
+  2xl:max-w-[615px]
+  flex-shrink-0
+  /* 2xl:w-[615px] */
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  py-8
+  2xl:py-6
+  px-8
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/components/box/steps/step.svg")]
@@ -825,14 +867,13 @@
   @apply relative
   w-full
   rounded-2xl
-  2xl:max-w-[1168px]
+  2xl:max-w-[1150px]
   flex-shrink-0
   bg-shark-400
   bg-opacity-40
   xl:bg-transparent
   xl:bg-opacity-100
-  py-8
-  2xl:py-12
+  py-6
   px-8
   2xl:px-12
 
@@ -1064,22 +1105,22 @@
   flex-col
   items-center
   justify-center
-  w-full
+  w-[320px]
   rounded-2xl
   
   sm:w-[480px]
   sm:min-h-[470px]
   flex-shrink-0
-  bg-shark-700
+  bg-shark-400
   bg-opacity-40
   backdrop-blur-[15px]
-  2xl:bg-transparent
-  2xl:bg-opacity-100
+  xl:bg-transparent
+  xl:bg-opacity-100
   py-5
-  2xl:py-8
+  xl:py-8
   px-5
-  2xl:px-8
-
+  xl:px-8
+  
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/modals/modal.svg")]
@@ -1090,7 +1131,7 @@
   before:top-0
   before:left-0
   before:hidden
-  before:2xl:block
+  before:xl:block
 
   after:content-[""]
   after:absolute
@@ -1105,7 +1146,7 @@
   after:hidden
   after:pointer-events-none
   after:z-[-1]
-  after:2xl:block;
+  after:xl:block;
 }
 
 .common-landing {
@@ -1548,7 +1589,7 @@ opacity-70
 }
 
 .blast-banner {
-  @apply relative flex w-full h-[100px] max-lg:h-auto max-lg:py-3 justify-between max-lg:justify-center items-center max-lg:items-start px-10 max-lg:gap-2
+  @apply relative flex w-full h-[80px] max-lg:h-auto max-lg:py-3 justify-between max-lg:justify-center items-center max-lg:items-start px-10 max-lg:gap-2
   before:bg-[url("/static/images/blast-banner.svg")]
   before:w-[50%]
   before:h-full
@@ -1609,8 +1650,7 @@ opacity-70
 }
 
 .your-provide-box {
-  @apply 
-  w-full
+  @apply w-full
   xl:h-[120px]
   p-5
   xl:py-14
@@ -1646,6 +1686,8 @@ opacity-70
   after:hidden
   after:xl:block;
 }
+
+
 
 .box-pagination {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3

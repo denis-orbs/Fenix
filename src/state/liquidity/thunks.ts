@@ -282,24 +282,8 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
       acc += Number(current.feesUSD)
       return acc
     }, 0)
-    // const web3Provider = getWeb3Provider()
-    // const dex = SupportedDex.Fenix
 
-    // const aprIchi = data.pools.map(async (pool: BasicPool) => {
-    //   const tokenVaults = ichiVaults.filter((vault) => {
-    //     return (
-    //       vault.tokenA.toLowerCase() === pool.token0.id.toLowerCase() &&
-    //       vault.tokenB.toLowerCase() === pool.token1.id.toLowerCase()
-    //     )
-    //   })
-    //  console.log(tokenVaults, 'tokenVaults')
-    // const averageDtr: (VaultApr | null)[] =
-    //   tokenVaults.length > 0 ? await getLpApr(tokenVaults[0].id, web3Provider, SupportedDex.Fenix) : []
-    // console.log(averageDtr.length > 0 ? averageDtr[1]?.apr?.toFixed(0) : 0, 'averageDtr')
-    // return averageDtr.length > 0 ? averageDtr[1]?.apr?.toFixed(0) : 0
-    // })
-
-    const pools = data.pools.map((pool: BasicPool) => ({
+    const pools = data?.pools?.map((pool: BasicPool) => ({
       id: pool.id,
       volumeUSD: pool.volumeUSD,
       feesUSD: pool.feesUSD,

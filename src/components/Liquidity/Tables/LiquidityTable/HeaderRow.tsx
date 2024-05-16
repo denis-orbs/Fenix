@@ -53,6 +53,8 @@ const HeaderRow = ({
     const end = start + itemsPerPage
     const paginatedItems = items.slice(start, end)
 
+    
+
     return paginatedItems
   }
 
@@ -61,24 +63,22 @@ const HeaderRow = ({
   const { isConnected } = useActiveConnectionDetails()
 
   useEffect(() => {
-    if (paginationStatus && paginationResult && paginationResult.length > 0) {
+    if (paginationResult && paginationResult.length > 0) {
       if (sort === 'asc') {
-        setPaginationResult(
-          paginationResult.sort((a, b) => {
-            return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
-          })
-        )
+        const sortedPaginationResult = [...paginationResult]
+        const sortArr = sortedPaginationResult.sort((a, b) => {
+          return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
+        })
+        setPaginationResult([...sortArr])
       } else {
-        setPaginationResult(
-          paginationResult.sort((a, b) => {
-            return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-          })
-        )
+        const sortedPaginationResult = [...paginationResult]
+        const sortArr = paginationResult.sort((a, b) => {
+          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+        })
+        setPaginationResult([...sortArr])
       }
-    } else {
-      setPaginationStatus(true)
     }
-  }, [sort, chainId])
+  }, [sort, chainId, paginationStatus, paginationResult])
 
   useEffect(() => {
     setPaginationResult(poolsData)
@@ -114,7 +114,7 @@ const HeaderRow = ({
               RANGE,
               { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[12%]'} text-right` },
               { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right`, sortable: true },
-              { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
+              // { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
                 className: 'w-[14%] text-right',
@@ -126,7 +126,7 @@ const HeaderRow = ({
                 className: 'w-[14%] text-right',
                 sortable: true,
               },
-              { text: 'Action', className: 'w-[10%] flex justify-end', sortable: false },
+              { text: 'Action', className: 'w-[20%] flex justify-end', sortable: false },
             ]}
             setSort={setSort}
             sort={sort}
@@ -162,8 +162,7 @@ const HeaderRow = ({
 
       {activePagination && (
         <>
-          <div className="items-center hidden xl:flex">
-            {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
+          <div className="items-center hidden lg:flex">
             <Pagination
               itemsPerPage={itemsPerPage}
               setItemPerPage={setItemPerPage}
@@ -172,36 +171,8 @@ const HeaderRow = ({
               className="mx-auto"
               numberPages={Math.ceil(poolsData.length / itemsPerPage)}
             />
-            {/* <div
-              onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
-              className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
-            >
-              {isOpenItemsPerPage && (
-                <div
-                  className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute right-55px bottom-0 -translate-y-16"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Button onClick={() => setItemPerPage(5)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    5
-                  </Button>
-                  <Button onClick={() => setItemPerPage(10)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    10
-                  </Button>
-                  <Button onClick={() => setItemPerPage(20)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    20
-                  </Button>
-                  <Button onClick={() => setItemPerPage(50)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    50
-                  </Button>
-                  <Button onClick={() => setItemPerPage(100)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    100
-                  </Button>
-                </div>
-              )}
-              <span className="text-lg icon-cog text-white cursor-pointer"></span>
-            </div> */}
           </div>
-          <div className="xl:hidden">
+          <div className="lg:hidden py-5">
             <PaginationMobile
               count={poolsData.length}
               itemsPerPage={itemsPerPage}

@@ -2,12 +2,12 @@ export const totalCampaigns = [
   {
     campaignId: '0xbb1b3804878e84101119520d2b0201728e2b049b293f91c0db881f5818ab9fc8',
     pairAddress: '0x1D74611f3EF04E7252f7651526711a937Aa1f75e',
-    multiplier: "🔥 4x Rings"
+    multiplier: '🔥 9x Rings',
   },
   {
     campaignId: '0x81deedbabbc2886bce9c483b8161503b989a1179ac2d5f3e9c3e044e1337ce79',
     pairAddress: '0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f',
-    multiplier: "🔥 1x Rings" 
+    multiplier: '🔥 1x Rings',
   },
   {
     campaignId: '0xf9672c6a04bd1d0c5d42bb8041ba2647e25ec4f4c93eb285f22da46dbf0eb2ba',

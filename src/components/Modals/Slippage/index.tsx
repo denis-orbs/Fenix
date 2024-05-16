@@ -1,11 +1,12 @@
 'use client'
-
 import { Button, Modal } from '@/src/components/UI'
 import { useSetSlippageToleranceCallback, useSlippageTolerance } from '@/src/state/user/hooks'
 import useStore from '@/src/state/zustand'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
+import { NumericalInput } from '../../UI/Input'
+
 const slippageOptions = [
   { label: 'Auto', value: 'Auto' },
   { label: '0.5%', value: 0.5 },
@@ -25,7 +26,7 @@ const Slippage = () => {
   const { setSlippageModal } = useStore()
   const setSlippage = useSetSlippageToleranceCallback()
   const slippage = useSlippageTolerance()
-  const [slippageInput, setSlippageInput] = useState<any>(slippage?.toString())
+  const [slippageInput, setSlippageInput] = useState<any>("Auto")
   const [invalidInput, setInvalidInput] = useState<boolean>(false)
   const handleClose = () => setSlippageModal(false)
 
@@ -34,11 +35,12 @@ const Slippage = () => {
     setSlippageInput(slippage?.toString())
   }, [slippage])
 
+
   // when input changes, validate schema
   useEffect(() => {
     try {
       // console.log(slippageInput)
-      const parsedInput = slippageInput === 'Auto' ? 'Auto' : parseFloat(slippageInput)
+      const parsedInput = slippageInput.toString().toLowerCase() === 'auto' ? 'Auto' : parseFloat(slippageInput)
       // console.log(parsedInput)
       slippageSchema.parse(parsedInput)
       setInvalidInput(false)
@@ -46,20 +48,22 @@ const Slippage = () => {
       setInvalidInput(true)
     }
   }, [slippageInput])
+
+
   return (
     <Modal className="mx-auto" openModal={openModal} setOpenModal={setSlippageModal}>
       <div className="common-modal">
         <span
-          className="absolute top-[2px] right-[2px] text-2xl cursor-pointer icon-x text-shark-100"
+          className="absolute top-2 right-4 xl:top-[2px] xl:right-[2px] text-2xl cursor-pointer icon-x text-shark-100"
           onClick={handleClose}
         />
         <div className="relative w-full h-full">
-          <h2 className="mt-5 text-lg font-semibold text-center text-white sm:mt-10 lg:mt-10">Slippage Tolerance</h2>
-          <p className="text-shark-100 text-sm font-normal mt-3 text-center lg:mb-6 sm:mb-6 mb-2 max-w-[300px] mx-auto">
+          <h2 className="mt-5 text-lg font-semibold text-center text-white my-10">Slippage Tolerance</h2>
+          {/* <p className="text-shark-100 text-sm font-normal mt-3 text-center lg:mb-6 sm:mb-6 mb-2 max-w-[300px] mx-auto">
             Adjust to your personal preferences.
-          </p>
+          </p> */}
           <div className="relative">
-            <input
+            {/* <input
               type="text"
               placeholder="0"
               value={slippageInput}
@@ -67,6 +71,13 @@ const Slippage = () => {
                 setSlippageInput(e.target.value)
               }}
               className="p-4 w-full h-[55px] rounded-lg outline-none bg-shark-400 text-white"
+            /> */}
+            <NumericalInput
+              value={slippageInput}
+              className="p-4 w-full h-[55px] rounded-lg outline-none bg-shark-400 text-white"
+              placeholder="0"
+              onUserInput={(input) => setSlippageInput(input)}
+              precision={2}
             />
             <button
               onClick={() => {
@@ -77,7 +88,21 @@ const Slippage = () => {
               %
             </button>
           </div>
-          <div className="flex flex-wrap justify-center gap-3 p-3 lg:flex-nowrap">
+          {Number(slippageInput) > 50 && (
+            <div className="py-2 relative z-[200]">
+              <div className="w-full bg-alizarin-crimson-600 bg-opacity-20 border-alizarin-crimson-600 border  rounded-lg h-[38px]">
+                <div className="absolute top-[50%] bottom-[50%] flex items-center w-full justify-center">
+                  <p className="text-alizarin-crimson-600 text-xs flex gap-1 items-center">
+                    <span className="icon-info text-base" />
+                    Slippage above 50% is not allowed.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          <div
+            className={`flex flex-wrap justify-center gap-3  ${Number(slippageInput) > 50 ? 'pb-2' : 'p-3'}  lg:flex-nowrap`}
+          >
             {slippageOptions.map((option) => (
               <Button
                 key={option.label}
@@ -89,9 +114,11 @@ const Slippage = () => {
               </Button>
             ))}
           </div>
+
           <p className="text-xs font-normal text-center text-shark-200">
-            Setting a high slippage tolerance can help transactions filled succesfully, but you may not get such a good
-            price. Use with caution.
+            Difference between expected and actual trade values due to asset volatility. Exceeding the user-defined
+            range reverses the transaction. Setting a higher slippage can help transactions be filled successfully, but
+            can also lead to a higher price difference. Use with caution.
           </p>
           <div className="flex justify-center">
             <Button
@@ -107,10 +134,10 @@ const Slippage = () => {
             </Button>
           </div>
           <div className="flex items-center justify-center gap-2 cursor-pointer text-shark-100 hover:text-outrageous-orange-500">
-            <span className="icon-discord"></span>
+            {/* <span className="icon-discord"></span>
             <Link href="https://discord.com/invite/fenixfi" className="text-sm">
               Need help?
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

@@ -31,10 +31,28 @@ const Pagination = ({
     )
   }
 
-  const hadlerPrev = () => setActivePage(activePage > 1 ? activePage - 1 : activePage)
-  const hadlerNext = () => setActivePage(activePage < numberPages ? activePage + 1 : activePage)
+  const clearSelection = () => {
+    if (window.getSelection) {
+      const selection = window.getSelection()
+      if (selection) {
+        selection.removeAllRanges()
+      }
+    }
+  }
 
-  const hadlerPage = (index: number) => setActivePage(index + 1)
+  const hadlerPrev = () => {
+    setActivePage(activePage > 1 ? activePage - 1 : activePage)
+    clearSelection()
+  }
+  const hadlerNext = () => {
+    setActivePage(activePage < numberPages ? activePage + 1 : activePage)
+    clearSelection()
+  }
+
+  const hadlerPage = (index: number) => {
+    setActivePage(index + 1)
+    clearSelection()
+  }
 
   return (
     <div className={mergeClassName}>
@@ -75,10 +93,7 @@ const Pagination = ({
         >
           <span className="text-lg icon-cog text-white "></span>
           {isOpenItemsPerPage && (
-            <div
-              className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute left-full bottom-0 translate-x-1"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute left-full bottom-0 translate-x-1">
               <Button onClick={() => setItemPerPage(5)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
                 5
               </Button>

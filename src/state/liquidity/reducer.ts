@@ -202,6 +202,7 @@ export const fetchNativePrice = async () => {
   try {
     const { data } = await algebra_client.query({
       query: NATIVE_PRICE,
+      fetchPolicy: 'cache-first',
     })
     // Data is available in `data.positions`
     // console.log(data.bundles[0].maticPriceUSD, 'price')
