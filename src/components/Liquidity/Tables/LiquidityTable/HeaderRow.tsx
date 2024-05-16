@@ -65,6 +65,7 @@ const HeaderRow = ({
   const { isConnected } = useActiveConnectionDetails()
 
   useEffect(() => {
+    console.log('paginationResult :>> ', paginationResult)
     const sortData = async () => {
       if (paginationResult && paginationResult.length > 0) {
         if (sort === 'asc') {
