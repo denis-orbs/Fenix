@@ -6,17 +6,16 @@ import { Button } from '@/src/components/UI'
 import Image from 'next/image'
 import { useCloseBanner, useShowBanner } from '@/src/state/user/hooks'
 
-
 const BlastBanner = () => {
   const showBanner = useShowBanner()
   const setCloseBanner = useCloseBanner()
-  const [close, setClose] = useState<boolean>(showBanner)
+  const [close, setClose] = useState<boolean>(false)
 
   if (close) return null
 
   const handlerClose = () => {
-    setCloseBanner(true)
-    setClose((prevState) => !prevState)
+    // setCloseBanner(true)
+    // setClose((prevState) => !prevState)
   }
 
   return (
@@ -46,7 +45,7 @@ const BlastBanner = () => {
         <div className='flex flex-col items-start gap-1'>
           <div className="text-white text-sm font-normal">Deposit liquidity into USDB/WETH to earn your share of</div>
           <div className="text-gradient max-xs:text-sm xs:text-base md:text-lg xl:text-2xl">
-            Blast Gold, Blast Points and Fenix Orbits
+            Blast Gold, Blast Points and Fenix Rings
           </div>
         </div>
         {/* <div className='text-white max-xs:text-sm'>
