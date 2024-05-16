@@ -153,13 +153,8 @@ const Footer = () => {
                   <span className="text-[9px] 2xl:text-xs whitespace-nowrap ">Audited by Hats Finance </span>
                 </div>
               </Link>
-            <div
-              className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl max-md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}
-            >
-              version: {commitHash}
-            </div>
           </div>
-          <div className={`flex items-end flex-col gap-2 ${pathname === '/' ? 'justify-end lg:w-1/2 text-right' : 'justify-center md:justify-end md:w-[40%]'}`}
+          <div className={`flex items-end flex-col gap-2 ${pathname === '/' ? 'justify-end lg:w-1/2 text-right' : 'justify-center md:justify-start md:w-[40%]'}`}
           >
             <div
               className={`
@@ -196,6 +191,11 @@ const Footer = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div
+          className={`flex items-center whitespace-nowrap text-xs justify-center relative -top-10 text-shark-100 px-3 py-1 rounded-xl max-md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}
+        >
+          version: {commitHash}
         </div>
       </div>
     </footer>
