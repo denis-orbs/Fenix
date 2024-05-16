@@ -47,6 +47,9 @@ const SetRange = ({
   }, [currentStrategy])
 
   const handlePercentageChange = (percent: any, s=true) => {
+    setCurrentPercentage([percent[0], percent[1]])
+
+    return
     setCurrentPercentShown(percent)
 
     if(percent[0] != -1 && percent[1] != -1) {
@@ -125,7 +128,7 @@ const SetRange = ({
           100%
         </Button>
       </div>
-      {/* <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
+      <div className="bg-shark-400 bg-opacity-40 border border-shark-950 px-5 py-2 flex justify-between items-center gap-2.5 rounded-[10px] mb-4">
         <div className="flex items-center gap-2 text-white opacity-75">
           <span>±</span>
           <span className="text-[30px] leading-normal font-light">
@@ -144,7 +147,7 @@ const SetRange = ({
             onChangeShown={(value) => { {console.log(value); if(value != 101) setCurrentPercentShown([-value, value])}}}
           />
         </div>
-      </div> */}
+      </div>
 
       <div className="flex gap-2.5 mb-4">
         <StrategyButton
@@ -187,7 +190,7 @@ const SetRange = ({
       <div className="flex gap-[21px]">
         <Input
           title={`Min Price (${token2?.symbol} per ${token1?.symbol})`}
-          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 0 : isInverse ? invertPercentage(currentPercentage[1]).toFixed(1) : currentPercentage[0].toFixed(1)}`}
+          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 0 : currentPercentage[0].toFixed(1)}`}
           value={
             isInverse ?
               price2text == price2.toString() ?
@@ -209,7 +212,7 @@ const SetRange = ({
         />
         <Input
           title={`Max Price (${token2?.symbol} per ${token1?.symbol})`}
-          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 'Infinity' : isInverse ? invertPercentage(currentPercentage[0]).toFixed(1) : currentPercentage[1].toFixed(1)}`}
+          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 'Infinity' : currentPercentage[1].toFixed(1)}`}
           value={
             isInverse ?
               price1text == price1.toString() ?
