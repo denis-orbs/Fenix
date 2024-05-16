@@ -1,3 +1,4 @@
+'use client'
 import { Button, Pagination, PaginationMobile, TableBody, TableHead, TableSkeleton } from '@/src/components/UI'
 import { BasicPool, PoolData } from '@/src/state/liquidity/types'
 import { Fragment, useEffect, useState } from 'react'
@@ -35,7 +36,7 @@ const HeaderRow = ({
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
-  const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
+  const [sort, setSort] = useState<'asc' | 'desc' | 'normal'>('normal')
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
   const [sortIndex, setSortIndex] = useState<number>(-1)
   const [isSetRingsApr, setIsSetRingsApr] = useState<boolean>(false)
@@ -55,15 +56,13 @@ const HeaderRow = ({
     const end = start + itemsPerPage
     const paginatedItems = items.slice(start, end)
 
-    
-
     return paginatedItems
   }
 
   const { chainId } = useAccount()
   const activeChain = useChains()
   const { isConnected } = useActiveConnectionDetails()
-
+  
   useEffect(() => {
     const sortData = async () => {
       if (paginationResult && paginationResult.length > 0) {
@@ -129,8 +128,33 @@ const HeaderRow = ({
   }, [sort, chainId])
 
   useEffect(() => {
-    setPaginationResult(poolsData)
+    const arrNew = [...poolsData]
+    setPaginationResult([...arrNew])
   }, [poolsData])
+  useEffect(() => {
+    if (!isSetRingsApr) {
+      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
+        const getRigns = async () => {
+          let newArr: any = [...paginationResult]
+          newArr = await Promise.all(newArr.map(async (pool:any) => {
+            if (pool?.id) {
+              return {
+                ...pool,
+                aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+              }
+            } else {
+              return {
+                ...pool,
+              }
+            }
+          }))
+          setPaginationResult([...newArr])
+          setIsSetRingsApr(true)
+        }
+        getRigns()
+      }
+    }
+  }, [paginationResult])
 
   useEffect(() => {
     if (!isSetRingsApr) {
@@ -160,6 +184,7 @@ const HeaderRow = ({
   function compareBigDecimal(a: any, b: any) {
     return a - b
   }
+
   const pagination = paginate(paginationResult, activePage, itemsPerPage)
   const { width } = useWindowSize()
   return (
@@ -170,22 +195,22 @@ const HeaderRow = ({
             items={[
               {
                 text: 'Pair',
-                className: `${activeRange ? 'w-[20%]' : 'w-[20%]'}`,
+                className: `${activeRange ? 'w-[20%]' : 'w-[30%]'}`,
                 sortable: true,
               },
               RANGE,
-              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[20%]'} text-right` },
+              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[12%]'} text-right` },
               { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right`, sortable: true },
               // { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
-                className: 'w-[15%] text-right',
+                className: 'w-[14%] text-right',
                 sortable: true,
               },
               // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
-                className: 'w-[15%] text-right',
+                className: 'w-[14%] text-right',
                 sortable: true,
               },
               { text: 'Action', className: 'w-[20%] flex justify-end', sortable: false },

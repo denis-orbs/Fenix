@@ -84,9 +84,9 @@ const RowData = ({
   return (
     <>
       <TableRow className="hidden lg:flex">
-        <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
-          <div className="flex justify-center items-center gap-2">
-            <div className="flex items-center max-2xl:hidden">
+        <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[30%]'}`}>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center">
               <Image
                 src={`/static/images/tokens/${row.token0.symbol}.svg`}
                 alt="token"
@@ -126,7 +126,7 @@ const RowData = ({
             </div>
           </div>
         </TableCell>
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[20%]'} flex justify-end items-center`}>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[12%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
             <span ref={hoverRef} className="flex gap-2">
               {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
@@ -214,7 +214,7 @@ const RowData = ({
                 {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">Ichi Strategy</p>
-                    <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>
+                    <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) < 0 ? 0 : Number(ichiApr) || 0, 2)}%</p>
                   </div>
                 )}
               </div>
@@ -237,11 +237,11 @@ const RowData = ({
           </div>
         </TableCell> */}
 
-        <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-center w-full px-3">
+        <TableCell className="w-[14%]">
+          <div className="flex flex-col items-end justify-end w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col items-end justify-end text-right gap-1">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
@@ -266,12 +266,12 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-center w-full px-3">
+        <TableCell className="w-[14%]">
+          <div className="flex flex-col items-end justify-end w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
-            <div className="flex flex-col  gap-2">
-              <p className="flex  items-center justify-end text-right gap-2 text-xs text-shark-100">
+            <div className="flex flex-col items-end gap-1 justify-end text-right">
+              <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
                   alt="token"
