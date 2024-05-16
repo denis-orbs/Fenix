@@ -124,7 +124,7 @@ const Footer = () => {
         <div
           className={`flex flex-col gap-4 text-shark-100 text-xs mt-1 ${pathname === '/' ? 'pl-28 pr-10 max-md:gap-20 max-md:mt-[-16px] lg:flex-row max-md:!pl-4 max-md:!pr-4' : 'md:flex-row items-center'}`}
         >
-          <div className={`flex justify-between ${pathname === '/' ? 'lg:w-1/2' : 'md:w-1/2'}`}>
+          <div className={`flex justify-between ${pathname === '/' ? 'lg:w-1/2' : 'md:w-[40%]'}`}>
             <div className={`flex items-center gap-5 ${pathname === '/' && 'xl:ms-10'}`}>
               <div>Copyright {currentYear} Fenix. All rights reserved.</div>
             </div>
@@ -134,12 +134,7 @@ const Footer = () => {
               version: {commitHash}
             </div>
           </div>
-          <div className='flex flex-col items-center'>
-            <div
-              className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl max-md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}
-            >
-              version: {commitHash}
-            </div>
+          <div className='flex flex-col items-center md:w-[20%]'>
             <Link
                 href={
                   'https://app.hats.finance/audit-competitions/fenix-finance-0x83dbe5aa378f3ce160ed084daf85f621289fb92f/scope'
@@ -158,9 +153,13 @@ const Footer = () => {
                   <span className="text-[9px] 2xl:text-xs whitespace-nowrap ">Audited by Hats Finance </span>
                 </div>
               </Link>
+            <div
+              className={`flex items-center whitespace-nowrap text-xs text-shark-100 px-3 py-1 rounded-xl max-md:hidden ${pathname === '/' ? 'hidden' : 'block'}`}
+            >
+              version: {commitHash}
+            </div>
           </div>
-          <div
-            className={`flex items-end flex-col gap-2 ${pathname === '/' ? 'justify-end lg:w-1/2 text-right' : 'justify-center md:justify-end md:w-1/2'}`}
+          <div className={`flex items-end flex-col gap-2 ${pathname === '/' ? 'justify-end lg:w-1/2 text-right' : 'justify-center md:justify-end md:w-[40%]'}`}
           >
             <div
               className={`
@@ -182,7 +181,7 @@ const Footer = () => {
                     height={24}
                     className="w-6 h-6 "
                   />
-                  <span className="text-[9px] 2xl:text-xs ">Audited by Hats Finance </span>
+                  <span className="text-[9px] 2xl:text-xs">Audited by Hats Finance </span>
                 </div>
               </Link>
               <div className="flex items-center gap-2">
