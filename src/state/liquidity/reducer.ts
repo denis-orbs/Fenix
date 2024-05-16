@@ -214,26 +214,6 @@ export const fetchNativePrice = async () => {
 
 export const fetchV3PoolDayData = async () => {
   try {
-    // const currentDate = new Date()
-    // const currentUTCTimestamp = Date.UTC(
-    //   currentDate.getUTCFullYear(),
-    //   currentDate.getUTCMonth(),
-    //   currentDate.getUTCDate(),
-    //   0,
-    //   0,
-    //   0,
-    //   0
-    // )
-
-    // // Calculate the beginning of today (00:00:00 GMT) timestamp
-    // const todayStart = currentUTCTimestamp
-
-    // // Calculate yesterday's 00:00:00 GMT timestamp
-    // const yesterdayStart = todayStart - 24 * 60 * 60 * 1000
-
-    // // Determine which timestamp to use based on current time
-    // const selectedDateTimestamp = currentUTCTimestamp < todayStart ? yesterdayStart : todayStart
-
     const { data } = await algebra_client.query({
       query: POOL_DAY_DATA,
       // variables: { date: selectedDateTimestamp / 1000 }, // Pass the user variable as owner
