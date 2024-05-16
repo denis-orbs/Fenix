@@ -12,7 +12,7 @@ const BlastBanner = () => {
   const setCloseBanner = useCloseBanner()
   const [close, setClose] = useState<boolean>(showBanner)
 
-  // if (close) return null
+  if (close) return null
 
   const handlerClose = () => {
     setCloseBanner(true)
