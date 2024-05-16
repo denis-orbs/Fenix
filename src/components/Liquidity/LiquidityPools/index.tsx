@@ -29,7 +29,6 @@ const LiquidityPools = () => {
   const [globalStatistics, setGlobalStatistics] = useState<Awaited<ReturnType<typeof fetchGlobalStatistics>>>()
 
   useEffect(() => {
-    console.log('entra aqui')
     const fetchAndSetStatistics = async () => {
       const statistics = await fetchv3Factories()
       setGlobalStatistics({

@@ -67,7 +67,6 @@ const Button = ({
     return children
   }
   if (href) {
-    console.log('entro', href)
     return (
       <Link href={href} onClick={handleClick} className={mergeClassName} {...props}>
         {buttonText()}
