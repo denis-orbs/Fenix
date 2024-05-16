@@ -16,6 +16,7 @@ const Liquidity = () => {
   // const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
   // console.log(filteredPools)
   const { loading, data: pools } = useAllPools()
+  console.log('pools >> ', pools)
 
   const filteredPools:BasicPool[] = useMemo(() => {
     if (!pools) return []
