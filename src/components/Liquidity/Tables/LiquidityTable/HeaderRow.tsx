@@ -7,6 +7,7 @@ import { useAccount, useChainId, useChains } from 'wagmi'
 import { useWindowSize } from 'usehooks-ts'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import { fetchRingsPoolApr } from './getAprRings'
 
 interface HeaderRowProps {
   loading: boolean
@@ -37,6 +38,7 @@ const HeaderRow = ({
   const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
   const [sortIndex, setSortIndex] = useState<number>(-1)
+  const [isSetRingsApr, setIsSetRingsApr] = useState<boolean>(false)
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
@@ -63,37 +65,97 @@ const HeaderRow = ({
   const { isConnected } = useActiveConnectionDetails()
 
   useEffect(() => {
-    if (paginationResult && paginationResult.length > 0) {
-      if (sort === 'asc') {
-        const sortedPaginationResult = [...paginationResult]
-        const sortArr = sortedPaginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
-        })
-        setPaginationResult([...sortArr])
-      } else {
-        const sortedPaginationResult = [...paginationResult]
-        const sortArr = paginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-        })
-        setPaginationResult([...sortArr])
+    const sortData = async () => {
+      if (paginationResult && paginationResult.length > 0) {
+        if (sort === 'asc') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          if (sortIndex === 0) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
+            })
+          }
+          if (sortIndex === 3) {
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.aprRings), Number(b.aprRings))
+            })
+          }
+          if (sortIndex === 4) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.volumeUSD), Number(b.volumeUSD))
+            })
+          }
+          if (sortIndex === 5) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.feesUSD), Number(b.feesUSD))
+            })
+          }
+          setPaginationResult([...sortArr])
+        } else if (sort === 'desc') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          if (sortIndex === 0) {
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+            })
+          }
+          if (sortIndex === 3) {
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.aprRings), Number(a.aprRings))
+            })
+          }
+          if (sortIndex === 4) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.volumeUSD), Number(a.volumeUSD))
+            })
+          }
+          if (sortIndex === 5) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.feesUSD), Number(a.feesUSD))
+            })
+          }
+          setPaginationResult([...sortArr])
+        } else if (sort === 'normal') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          sortArr = sortedPaginationResult.sort((a, b) => {
+            return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+          })
+          setPaginationResult([...sortArr])
+        }
       }
     }
-  }, [sort, chainId, paginationStatus, paginationResult])
+    sortData()
+  }, [sort, chainId])
 
   useEffect(() => {
     setPaginationResult(poolsData)
   }, [poolsData])
 
-  /* useEffect(() => {
-    if (paginationStatus && paginationResult && paginationResult.length > 0) {
-      // setSort('asc')
-      setPaginationResult(
-        paginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-        })
-      )
+  useEffect(() => {
+    if (!isSetRingsApr) {
+      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
+        const getRigns = async () => {
+          let newArr: any = [...paginationResult]
+          newArr = await Promise.all(newArr.map(async (pool:any) => {
+            if (pool?.id) {
+              return {
+                ...pool,
+                aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+              }
+            } else {
+              return {
+                ...pool,
+              }
+            }
+          }))
+          setPaginationResult([...newArr])
+          setIsSetRingsApr(true)
+        }
+        getRigns()
+      }
     }
-  }, [paginationStatus, paginationResult]) */
+  }, [paginationResult])
 
   function compareBigDecimal(a: any, b: any) {
     return a - b

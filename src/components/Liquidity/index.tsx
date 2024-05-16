@@ -13,12 +13,13 @@ import { OPTIONS_FILTER, STEPS } from './data'
 const Liquidity = () => {
   const [currentTab, setCurrentTab] = useState<string>('ALL POOLS')
   const [searchValue, setSearchValue] = useState<string>('')
-  // const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
+  const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
+  const [filteredPoolsData, setFilteredPoolsData] = useState<BasicPool[]>([])
   // console.log(filteredPools)
   const { loading, data: pools } = useAllPools()
   console.log('pools >> ', pools)
 
-  const filteredPools:BasicPool[] = useMemo(() => {
+  const getFilteredPools = () => {
     if (!pools) return []
     console.log('entrando a filteredPools')
     switch (currentTab) {
@@ -32,9 +33,16 @@ const Liquidity = () => {
       default:
         return pools
     }
-  }, [currentTab, pools])
+  }
+  useEffect(() => {
+    setFilteredPools(getFilteredPools())
+  },[currentTab, pools])
 
-  const filteredPoolsData = useMemo(() => {
+  useEffect(() => {
+    setFilteredPoolsData(getFilteredPoolsData())
+  },[filteredPools, searchValue])
+
+  const getFilteredPoolsData = () => {
     console.log('entrando a filteredPoolsData')
     return filteredPools
       .filter(pool =>
@@ -42,7 +50,7 @@ const Liquidity = () => {
         pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
       )
       .sort((a, b) => Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD))
-  }, [filteredPools, searchValue])
+  }
 
   return (
     <section>
