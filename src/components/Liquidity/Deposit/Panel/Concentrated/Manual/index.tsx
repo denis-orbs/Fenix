@@ -45,8 +45,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
-  const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
-  const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
+  const [allowanceFirst, setAllowanceFirst] = useState(0)
+  const [allowanceSecond, setAllowanceSecond] = useState(0)
   const { isConnected, chainId } = useActiveConnectionDetails()
 
   const [ncurrentPercentage, nsetCurrentPercentage] = useState([-5, 5])
@@ -209,19 +209,19 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     setIsInverse(BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
 
     const asyncGetAllowance = async () => {
-      const allowanceFirst: any = await getTokenAllowance(
+      const _allowanceFirst: any = await getTokenAllowance(
         firstToken.address as Address,
         account.address as Address,
         contractAddressList.cl_manager as Address
       )
-      const allowanceSecond: any = await getTokenAllowance(
+      const _allowanceSecond: any = await getTokenAllowance(
         secondToken.address as Address,
         account.address as Address,
         contractAddressList.cl_manager as Address
       )
 
-      setShouldApproveFirst(allowanceFirst == '0')
-      setShouldApproveSecond(allowanceSecond == '0')
+      setAllowanceFirst(_allowanceFirst)
+      setAllowanceSecond(_allowanceSecond)
     }
 
     asyncGetAllowance()
@@ -441,19 +441,19 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
             })
           }
 
-          const allowanceFirst: any = await getTokenAllowance(
+          const _allowanceFirst: any = await getTokenAllowance(
             firstToken.address as Address,
             account.address as Address,
             contractAddressList.cl_manager as Address
           )
-          const allowanceSecond: any = await getTokenAllowance(
+          const _allowanceSecond: any = await getTokenAllowance(
             secondToken.address as Address,
             account.address as Address,
             contractAddressList.cl_manager as Address
           )
 
-          setShouldApproveFirst(allowanceFirst == '0')
-          setShouldApproveSecond(allowanceSecond == '0')
+          setAllowanceFirst(_allowanceFirst)
+          setAllowanceSecond(_allowanceSecond)
           setIsLoading(false)
         },
         onError: (e) => {
@@ -612,8 +612,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         </Button>
       ) : (
         <ApproveButtons
-          shouldApproveFirst={shouldApproveFirst}
-          shouldApproveSecond={shouldApproveSecond}
+          shouldApproveFirst={Number(allowanceFirst)/(10**firstToken.decimals) < Number(firstValue)}
+          shouldApproveSecond={Number(allowanceSecond)/(10**secondToken.decimals) < Number(secondValue)}
           token0={firstToken}
           token1={secondToken}
           handleApprove={handleApprove}
