@@ -16,10 +16,10 @@ export async function POST(request: NextRequest) {
     }
 
     await prisma.users.upsert({
-      where: { id: account },
+      where: { id: account?.toLowerCase() },
       update: {},
       create: {
-        id: account,
+        id: account?.toLowerCase(),
       },
     })
     return NextResponse.json(

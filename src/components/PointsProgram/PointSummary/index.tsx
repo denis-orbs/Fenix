@@ -4,75 +4,59 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import Countdown from 'react-countdown'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { log } from 'console'
-import { useRingsPoints } from '@/src/library/hooks/rings/useRingsPoints'
+import { useRingsPointsLeaderboard } from '@/src/library/hooks/rings/useRingsPoints'
 import Loader from '../../UI/Icons/Loader'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import { getPointsDistributionTargetTimestamps } from '@/src/library/utils/campaigns'
 
 const PointSummary = ({ userData }: any) => {
   //  console.log(userData, 'userData')
-  const [time, setTime] = useState('')
-  let count = 0
 
-  const getCurrentEightHourTimestampArray = () => {
-    const targetDate = new Date('2024-12-31T00:00:00Z').getTime()
-    const currentDate = new Date().getTime()
+  const { data, isLoading } = useRingsPointsLeaderboard()
+  const [nextTargetTime, setNextTargetTime] = useState<number>()
 
-    const timeDifference = targetDate - currentDate
-    const remainingHours = Math.ceil(timeDifference / (8 * 60 * 60 * 1000))
+  // const targetHoursUTC = [17, 1, 9]
+  const targetHoursUTC = getPointsDistributionTargetTimestamps()
+  const calculateNextTargetTime = () => {
+    const nowUTC = new Date(new Date().toISOString().substring(0, 19) + 'Z')
 
-    const eightHourTimestamps = []
+    const nextTimes = targetHoursUTC.map((hour) => {
+      const nextTime = new Date(hour)
+      nextTime.setUTCFullYear(nowUTC.getUTCFullYear(), nowUTC.getUTCMonth(), nowUTC.getUTCDate())
 
-    for (let i = 0; i <= remainingHours; i++) {
-      const timestamp = targetDate - i * 8 * 60 * 60 * 1000
-      eightHourTimestamps.push(new Date(timestamp))
-    }
-
-    return eightHourTimestamps.reverse()
-  }
-
-  const timeSet = () => {
-    const timestampsArray = getCurrentEightHourTimestampArray()
-    if (timestampsArray.length > 0) {
-      if (time === '' && count === 0) {
-        setTime(timestampsArray[0].toString())
-      } else {
-        if (count < timestampsArray.length) {
-          setTime(timestampsArray[count].toString())
-          count++
-        }
+      if (nextTime <= nowUTC) {
+        nextTime.setUTCDate(nextTime.getUTCDate() + 1)
       }
-    }
-  }
 
-  const { points, isLoading } = useRingsPoints()
-  const timestampsArray = getCurrentEightHourTimestampArray()
+      return nextTime.getTime()
+    })
+
+    const nextTime = Math.min(...nextTimes)
+    setNextTargetTime(nextTime)
+  }
 
   useEffect(() => {
-    const interval = setInterval(timeSet, 1000 * 60 * 60 * 8) // Update every 8 hours
+    calculateNextTargetTime()
+    const interval = setInterval(calculateNextTargetTime, 60 * 1000)
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => timeSet(), [])
-  // FIXME: STARK
   const renderer = ({
     hours,
     minutes,
     seconds,
     completed,
   }: {
-    hours: any
-    minutes: any
-    seconds: any
-    completed: any
+    hours: number
+    minutes: number
+    seconds: number
+    completed: boolean
   }) => {
     if (completed) {
-      // Render a completed state
-      // return <span>You are good to go!</span>
-      timeSet()
+      calculateNextTargetTime()
     } else {
-      // Render a countdown
       return (
         <>
           <div className="flex items-center justify-between px-4">
@@ -99,6 +83,20 @@ const PointSummary = ({ userData }: any) => {
       )
     }
   }
+
+  const { account } = useActiveConnectionDetails()
+  const userPoints = useMemo(() => {
+    if (!data || !account) {
+      return 0
+    }
+    return data.find((entry) => entry.id.toLowerCase() === account.toLowerCase())?.accumulated_rings_points
+  }, [data, account])
+  const userRank = useMemo(() => {
+    if (!data || !account) {
+      return '-'
+    }
+    return data.findIndex((entry) => entry.id.toLowerCase() === account.toLowerCase()) + 1
+  }, [data, account])
   return (
     <section className="your-point-box">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center relative z-10">
@@ -123,7 +121,7 @@ const PointSummary = ({ userData }: any) => {
             </div>
             <div className="h-12 flex flex-col justify-between">
               <h3 className="text-3xl font-medium text-white">
-                {isLoading ? <Loader size={'20px'} /> : formatCurrency(points) ?? '-'}
+                {isLoading ? <Loader size={'20px'} /> : userPoints ? formatCurrency(userPoints) : '-'}
               </h3>
               <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 Your Total points
@@ -138,12 +136,9 @@ const PointSummary = ({ userData }: any) => {
               <span className="text-lg text-transparent icon-circles bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text"></span>
             </div>
             <div className="flex items-center gap-2">
-              <h3 className="text-3xl font-medium text-white">{userData?.rank ?? '-'}</h3>
+              <h3 className="text-3xl font-medium text-white"> {isLoading ? <Loader size={'20px'} /> : userRank}</h3>
               <div className="">
                 <p className="text-white text-xs">RANK</p>
-                <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
-                  {userData?.amount ? formatCurrency(userData?.amount / 10 ** 6) + ' points' : ''}
-                </p>
               </div>
             </div>
           </div>
@@ -160,7 +155,13 @@ const PointSummary = ({ userData }: any) => {
             {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
           </p>
           <div className="w-full">
-            <Countdown key={time} date={time} daysInHours={true} autoStart={true} renderer={renderer} />
+            <Countdown
+              key={nextTargetTime}
+              date={nextTargetTime}
+              daysInHours={true}
+              autoStart={true}
+              renderer={renderer}
+            />
           </div>
 
           {/* --- */}

@@ -122,7 +122,6 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
   const ichiVaultData = ichiVaults.find((e) => e.id.toLowerCase() === row?.id.toLowerCase())
   const fenixRingApr =
     ringsCampaign?.boostedPools.find((pool: BoostedPool) => {
-      console.log(pool?.id?.toLowerCase(), ichiVaultData?.pool.toLowerCase())
       return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
     })?.apr || 0
 

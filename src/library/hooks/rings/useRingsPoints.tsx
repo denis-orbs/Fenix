@@ -1,50 +1,28 @@
 import { useQuery } from '@tanstack/react-query'
-import useActiveConnectionDetails from '../web3/useActiveConnectionDetails'
-import { RING_POINTS_ADDRESS } from '../../constants/addresses'
-import { toBN } from '../../utils/numbers'
 
-export const useRingsPoints = () => {
-  const { account, chainId } = useActiveConnectionDetails()
-
-  const fetchPoints = async () => {
-    if (!account) return { points: 0, userAddress: account, error: 'No account', isLoading: false }
-    const response = await fetch(`https://api.merkl.xyz/v3/rewards?user=${account}`)
-    if (!response.ok) {
-      return {
-        points: 0,
-        userAddress: account,
-        error: 'Error fetching points',
-        isLoading: false,
-      }
-      throw new Error('Network response was not ok')
-    }
+export interface RankingEntry {
+  id: string
+  accumulated_rings_points: string
+  ranking?: number
+}
+export const useRingsPointsLeaderboard = () => {
+  try {
+  } catch (e) {}
+  const fetchPoints = async (): Promise<RankingEntry[]> => {
+    const response = await fetch('/api/rings/ranking')
     const data = await response.json()
-    return data
+    return data.ranking
   }
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ['ringsPoints', account],
+    queryKey: ['ringsPoints'],
     queryFn: fetchPoints,
-    enabled: !!account,
-    staleTime: 1000 * 60 * 20, // 20 minutes
-    select: (data) => {
-      if (!chainId || !RING_POINTS_ADDRESS[chainId]) return 0
-      const accumulatedRaw = data?.[chainId]?.tokenData?.[RING_POINTS_ADDRESS[chainId]]?.accumulated
-      const decimals = data?.[chainId]?.tokenData?.[RING_POINTS_ADDRESS[chainId]]?.decimals
-      const points =
-        accumulatedRaw && decimals
-          ? toBN(accumulatedRaw)
-              .div(10 ** decimals)
-              .toString()
-          : '0'
-      return points
-    },
+    staleTime: 1000 * 60 * 60, // 20 minutes
   })
 
   return {
-    points: data || 0,
     isLoading,
-    userAddress: account,
+    data: data || [],
     error: error?.message || '',
   }
 }

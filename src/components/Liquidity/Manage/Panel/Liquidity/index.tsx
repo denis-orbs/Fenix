@@ -197,7 +197,9 @@ const Manage = ({}: {}) => {
     )
     setFirstValue(
       formatNumber(
-        positionData.amount0 == 0
+        withdrawPercent == 100 ?
+          Number(BigInt(positionData.amount0)) / 10 ** firstToken.decimals
+        : positionData.amount0 == 0
           ? 0
           : Number(
               (BigInt(positionData.amount0) * BigInt(10 ** 10)) /
@@ -208,7 +210,9 @@ const Manage = ({}: {}) => {
     )
     setSecondValue(
       formatNumber(
-        positionData.amount1 == 0
+        withdrawPercent == 100 ?
+          Number(BigInt(positionData.amount1)) / 10 ** secondToken.decimals
+        : positionData.amount1 == 0
           ? 0
           : Number(
               (BigInt(positionData.amount1) * BigInt(10 ** 10)) /
