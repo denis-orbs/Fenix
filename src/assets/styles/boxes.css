@@ -911,6 +911,7 @@
   relative
   w-full
   rounded-2xl
+  xl:min-w-[1170px]
   xl:max-w-[1170px]
   flex-shrink-0
   bg-shark-400
