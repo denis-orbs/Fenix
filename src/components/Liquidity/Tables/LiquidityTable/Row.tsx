@@ -78,6 +78,7 @@ const RowData = ({
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
     setCampaign({ ...campaign_ })
+    console.log('campaign_ >> ', campaign_)
   }, [row])
 
   function getAverageApr(...aprs: number[]): string {
@@ -166,7 +167,7 @@ const RowData = ({
             </span> */}
             {
               <span ref={hoverRef} className="flex gap-2">
-                <span ref={hoverRef} className="flex flex-row transition-transform transform group">
+                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]': 'z-0'}`}>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                     <>
                       {campaign?.pointStack?.map((stack, index) => (
@@ -174,7 +175,7 @@ const RowData = ({
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow notification' }`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow notification'} ${openTooltipGold ? 'z-[100]': 'z-0'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
@@ -188,9 +189,8 @@ const RowData = ({
                     </>
                   )}
                   {openTooltipGold && (
-                    <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                      <div className="flex justify-between items-center gap-3">
-
+                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                      <div className='relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1'>
                         <p className="text-xs">The pool is receiving 7000 Gold from May 15th - 31st</p>
                       </div>
                     </div>
