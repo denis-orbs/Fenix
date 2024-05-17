@@ -274,7 +274,7 @@
   dependencies:
     chalk "^4.1.0"
 
-"@crocswap-libs/blast-points-client@^1.1.2":
+"@crocswap-libs/blast-points-client@1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@crocswap-libs/blast-points-client/-/blast-points-client-1.1.2.tgz#28bf9af9dd76d9866e1af1f4250ab9ecbc6380cd"
   integrity sha512-d4Po3h5TecacFlAr5JQ75ORK4piG8W1axlFLwhyJubnRtWsuRin8VrvWdWh3hUL6XMC0+N0AfxfC/By5fjThSA==
@@ -857,6 +857,14 @@
   version "2.1.1"
   resolved "https://registry.npmjs.org/@fastify/busboy/-/busboy-2.1.1.tgz"
   integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
+
+"@fuul/sdk@^4.7.1":
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/@fuul/sdk/-/sdk-4.7.1.tgz#2a3341a6db0f2c878e73040e38cdd2cd055c13a0"
+  integrity sha512-GAM4MxY83u/aY3X3IT5crG76iLmE1YKOKKdIZNukPyC9XCZl3d87OKakuLPFY8Dt84fWncgADK0vPw97+FoEsQ==
+  dependencies:
+    axios "^1.2.2"
+    nanoid "^4.0.0"
 
 "@graphql-typed-document-node/core@^3.1.1", "@graphql-typed-document-node/core@^3.2.0":
   version "3.2.0"
@@ -3417,7 +3425,7 @@ axe-core@=4.7.0:
   resolved "https://registry.npmjs.org/axe-core/-/axe-core-4.7.0.tgz"
   integrity sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==
 
-axios@*, axios@^1.6.7, axios@^1.6.8:
+axios@*, axios@^1.2.2, axios@^1.6.7, axios@^1.6.8:
   version "1.6.8"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
   integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
@@ -7822,6 +7830,11 @@ nanoid@^3.3.6, nanoid@^3.3.7:
   version "3.3.7"
   resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.7.tgz"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
+
+nanoid@^4.0.0:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-4.0.2.tgz#140b3c5003959adbebf521c170f282c5e7f9fb9e"
+  integrity sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==
 
 napi-wasm@^1.1.0:
   version "1.1.0"
