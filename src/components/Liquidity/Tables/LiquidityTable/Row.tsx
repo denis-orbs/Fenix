@@ -226,7 +226,7 @@ const RowData = ({
               )}
             </p>
             {openInfo && (
-              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[200px] top-9 px-5 py-3 transform left-1/2 -translate-x-1/2 gap-y-1">
                 <div className="flex justify-between items-center gap-3">
                   <p className="text-sm">Fees APR</p>
                   <p className="text-sm text-chilean-fire-600">{formatAmount(Number(row?.apr) || 0, 2)}%</p>
