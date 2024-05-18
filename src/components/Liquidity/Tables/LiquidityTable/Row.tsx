@@ -111,12 +111,12 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col gap-1">
-              <h5 className={`text-xs text-white`}>
+              <h5 className={`text-xs text-white h-[26px] flex items-center`}>
                 <div>
                   {row.token0.symbol} / {row.token1.symbol}
                 </div>
               </h5>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 h-[26px]">
                 <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
                   {/* FEES */}
@@ -124,7 +124,7 @@ const RowData = ({
                 </span>
               </div>
               <span
-                className={`!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+                className={`!py-1 h-[26px] px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
               >
                 {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
                 {/* <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p> */}
