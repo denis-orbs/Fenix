@@ -14,6 +14,7 @@ export interface BoostedPool {
   multiplier: number
   apr: number
   pair: string
+  distributionDays?: number
 }
 
 export interface RingCampaignData {
@@ -120,6 +121,7 @@ export async function GET(request: NextRequest) {
       points: 100_000,
       multiplier: 1,
       apr: 0,
+      distributionDays: 3,
     },
     {
       pair: 'MCLB/WETH',
@@ -133,13 +135,15 @@ export async function GET(request: NextRequest) {
     const poolData = pools.find(
       (p: { id: string; totalValueLockedUSD: string }) => p?.id?.toLowerCase() === pool?.id?.toLowerCase()
     )
+    const annualFactor = 365 / (pool?.distributionDays || 7)
+
     return {
       ...pool,
       apr: poolData?.totalValueLockedUSD
         ? toBN(pool.points)
             .multipliedBy(PRICE_PER_POINT)
             .dividedBy(poolData.totalValueLockedUSD)
-            .multipliedBy(52)
+            .multipliedBy(annualFactor)
             .multipliedBy(100)
             .toNumber()
         : 0,
