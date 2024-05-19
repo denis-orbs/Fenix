@@ -60,6 +60,12 @@ export const totalCampaigns: Campaign[] = [
     multiplier: '🔥 Rings Boost' /* '🔥 0.5x Rings' */,
     pointStack: ['fenix-ring', 'blast'],
   },
+  {
+    campaignId: '0x176eff97a59b83bda81a6991677c7b963d68ca45ae6f98e272ffd7e6db1c3c8d',
+    pairAddress: '0x886369748d1d66747b8f51ab38de00dea13f0101',
+    multiplier: '🔥 Rings Boost' /* '🔥 0.5x Rings' */,
+    pointStack: ['fenix-ring', 'blast'],
+  },
 ]
 
 export const getPointsDistributionTargetTimestamps = () => {
