@@ -94,7 +94,7 @@ const RowData = ({
       <TableRow className="hidden lg:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
           <div className="flex justify-center items-center gap-2">
-            <div className="flex items-center max-2xl:hidden">
+            <div className="flex items-center w-[40px]">
               <Image
                 src={`/static/images/tokens/${row.token0.symbol}.svg`}
                 alt="token"
