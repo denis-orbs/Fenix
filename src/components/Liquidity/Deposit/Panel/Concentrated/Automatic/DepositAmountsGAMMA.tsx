@@ -1,9 +1,12 @@
+import { config } from '@/src/app/layout'
 import { Button } from '@/src/components/UI'
-import Image from 'next/image'
-import { toBN } from '@/src/library/utils/numbers'
-import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
-import { useGammaSmartContracts, useGammaToken1Range } from '@/src/library/hooks/web3/useGamma'
+import { NumericalInput } from '@/src/components/UI/Input'
+import { gammaUniProxyABI } from '@/src/library/constants/abi/gammaUniProxyABI'
+import { INPUT_PRECISION } from '@/src/library/constants/misc'
+import useDebounce from '@/src/library/hooks/useDebounce'
+import { IToken } from '@/src/library/types'
 import {
+  useSetToken0,
   useSetToken0TypedValue,
   useSetToken1TypedValue,
   useToken0,
@@ -11,77 +14,76 @@ import {
   useToken1,
   useToken1TypedValue,
 } from '@/src/state/liquidity/hooks'
-// import { useToken0Balance, useToken1Balance } from '@/src/library/hooks/useBalance'
-import { erc20Abi, parseEther } from 'viem'
-import { useAccount, useSendTransaction, useWalletClient, useWriteContract } from 'wagmi'
-import { gammaUniProxyABI } from '@/src/library/constants/abi'
-import useERC20Allowance from '@/src/library/hooks/web3/erc20/useERC20Allowance'
-import { ethers } from 'ethers'
-import { useApproveERC20Token } from '@/src/library/hooks/web3/erc20/userERC20ApproveIfNeeded'
-import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
-import { useEffect, useState } from 'react'
-import { NumericalInput } from '@/src/components/UI/Input'
-import { INPUT_PRECISION } from '@/src/library/constants/misc'
-import { IToken } from '@/src/library/types'
+import { readContract } from '@wagmi/core'
+import { useEffect } from 'react'
 
-const DepositAmountsGAMMA = ({
-  firstToken,
-  secondToken,
-  tokenList,
-}: {
-  firstToken: { name: string; symbol: string }
-  secondToken: { name: string; symbol: string }
-  tokenList: IToken[]
-}) => {
-  const { account: userAddress } = useActiveConnectionDetails() as { account: `0x${string}` }
+import { useReadContract } from 'wagmi'
+
+const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
   const token0 = useToken0()
   const token1 = useToken1()
-  const token0TypedValue = useToken0TypedValue()
   const token1TypedValue = useToken1TypedValue()
+  const token0TypedValue = useToken0TypedValue()
+  console.log(token0)
+  console.log(token1)
   const setToken0TypedValue = useSetToken0TypedValue()
   const setToken1TypedValue = useSetToken1TypedValue()
-  // const { tokenBalance: token0Balance } = useToken0Balance()
-  // const { tokenBalance: token1Balance } = useToken1Balance()
-  const token0Balance = 10
-  const token1Balance = 10
-  const { gammaProxySmartContract, gammaHypervisorSmartContract } = useGammaSmartContracts(token0, token1)
-  const token0Amount = useToken0TypedValue()
-  const token1Range = useGammaToken1Range()
-  const result = useWalletClient()
-  const { writeContractAsync } = useWriteContract()
-  // const { approveIfNeeded: token0approveIfNeeded } = useApproveTokenIfNeeded({
-  //   tokenAddress: token0,
-  //   spenderAddress: gammaProxySmartContract,
-  //   userAddress,
-  //   amountNeeded: BigInt(token0Amount),
-  // })
-  // const { approveIfNeeded: token1approveIfNeeded } = useApproveTokenIfNeeded({
-  //   tokenAddress: token1,
-  //   spenderAddress: gammaProxySmartContract,
-  //   userAddress,
-  //   amountNeeded: BigInt(token1TypedValue),
-  // })
-  // const { approve: approveToken0 } = useApproveERC20Token({
-  //   tokenAddress: token0,
-  //   spenderAddress: gammaProxySmartContract,
-  // })
-  // console.log(token1Range)
-  const { data: hash, sendTransaction } = useSendTransaction()
-  const token0Allowance = useERC20Allowance(token0, userAddress, gammaHypervisorSmartContract)
-  const token1Allowance = useERC20Allowance(token1, userAddress, gammaHypervisorSmartContract)
-  const [isToken0AlloanceGranted, setIsToken0AlloanceGranted] = useState(false)
-  const [isToken1AlloanceGranted, setIsToken1AlloanceGranted] = useState(false)
+  console.log(tokenList)
+  const setToken0 = useSetToken0()
 
-  // console.log(ethers.parseUnits(token1TypedValue || '0', 18))
-  // console.log(ethers.parseUnits(token0TypedValue || '0', 18))
+  const pool = '0x1d74611f3ef04e7252f7651526711a937aa1f75e'
+  const hypervisor = '0x7e35e1da52d710a5b115c294be3a1221988af150'
+  const uniProxy = '0x0Fd7b24781c229A539b42010f3dBd8D236E6896B'
+  const token0Address = '0x4300000000000000000000000000000000000003' // USDB
+  const token1Address = '0x4300000000000000000000000000000000000004' // WETH
 
-  // useEffect(() => {
-  //   if (token1TypedValue > token1Range[1]) {
-  //     setToken1TypedValue(toBN(ethers.formatUnits(token1Range[1], 18)).toFixed(INPUT_PRECISION).toString())
-  //   } else if (token1TypedValue < token1Range[0]) {
-  //     setToken1TypedValue(toBN(ethers.formatUnits(token1Range[0], 18)).toFixed(INPUT_PRECISION).toString())
-  //   }
-  // }, [token1Range, setToken1TypedValue, token1TypedValue])
+  const abc = useReadContract({
+    address: uniProxy,
+    abi: gammaUniProxyABI,
+    functionName: 'getDepositAmount',
+    args: [hypervisor, token1Address, 100000000000n],
+  })
+  useEffect(() => {
+    const a = async () => {
+      if (!token0TypedValue || token0TypedValue == '0') {
+        setToken1TypedValue('')
+        return
+      }
+      const res = await readContract(config, {
+        address: uniProxy,
+        abi: gammaUniProxyABI,
+        functionName: 'getDepositAmount',
+        args: [hypervisor, token0Address, BigInt(token0TypedValue * 10 ** 18)],
+      })
+      setToken1TypedValue(res[0].toString())
+      console.log(res)
+    }
+    a()
+  }, [token0TypedValue, setToken1TypedValue])
+
+  useEffect(() => {
+    const a = async () => {
+      if (!token1TypedValue || token1TypedValue == '0') {
+        setToken0TypedValue('')
+        return
+      }
+      const res = await readContract(config, {
+        address: uniProxy,
+        abi: gammaUniProxyABI,
+        functionName: 'getDepositAmount',
+        args: [hypervisor, token1Address, BigInt(token1TypedValue * 10 ** 18)],
+      })
+      setToken0TypedValue(res[0].toString())
+      console.log(res)
+    }
+    a()
+  }, [token1TypedValue, setToken0TypedValue])
+
+  console.log(token0TypedValue)
+  console.log(abc?.data)
+  console.log(abc?.isError)
+  console.log(abc?.error)
+  console.log(abc)
   return (
     <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="text-xs leading-normal text-white mb-2">Deposit amounts</div>
@@ -97,18 +99,10 @@ const DepositAmountsGAMMA = ({
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-s"
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
-            <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              // onClick={() => setToken0TypedValue(token0Balance?.div(2).toFixed(INPUT_PRECISION).toString() || '0')}
-            >
+            <Button variant="tertiary" className="!py-1 !px-3">
               Half
             </Button>
-            <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              onClick={() => setToken0TypedValue(token0Balance?.toFixed(INPUT_PRECISION).toString() || '0')}
-            >
+            <Button variant="tertiary" className="!py-1 !px-3">
               Max
             </Button>
           </div>
@@ -117,14 +111,14 @@ const DepositAmountsGAMMA = ({
         <div className="relative xl:w-2/5 flex-shrink-0">
           <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
             <div className="flex items-center gap-2">
-              <Image
+              {/* <Image
                 src={`/static/images/tokens/${firstToken.symbol}.png`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}
                 height={20}
               />
-              <span className="text-base">{firstToken.symbol}</span>
+              <span className="text-base">{firstToken.symbol}</span> */}
             </div>
           </div>
         </div>
@@ -141,26 +135,10 @@ const DepositAmountsGAMMA = ({
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-s"
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1 max-md:hidden">
-            <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              onClick={() => {
-                // setToken1TypedValue(
-                //   toBN(ethers.utils.formatUnits(token1Range[1], 18)).div(2).toFixed(INPUT_PRECISION).toString()
-                // )
-              }}
-            >
+            <Button variant="tertiary" className="!py-1 !px-3">
               Half
             </Button>
-            <Button
-              variant="tertiary"
-              className="!py-1 !px-3"
-              onClick={() => {
-                // setToken1TypedValue(
-                //   toBN(ethers.utils.formatUnits(token1Range[1], 18)).toFixed(INPUT_PRECISION).toString()
-                // )
-              }}
-            >
+            <Button variant="tertiary" className="!py-1 !px-3">
               Max
             </Button>
           </div>
@@ -169,19 +147,18 @@ const DepositAmountsGAMMA = ({
         <div className="relative xl:w-2/5 flex-shrink-0">
           <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
             <div className="flex items-center gap-2">
-              <Image
-                src={`/static/images/tokens/${secondToken.symbol}.svg`}
+              {/* <Image
+                src={`/static/images/tokens/${secondToken.symbol}.png`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}
                 height={20}
               />
-              <span className="text-base">{secondToken.symbol}</span>
+              <span className="text-base">{secondToken.symbol}</span> */}
             </div>
           </div>
         </div>
       </div>
-      {/* <Button onClick={createPosition}>Create Position</Button> */}
     </div>
   )
 }
