@@ -442,7 +442,6 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                   onClick={() => {
                                     if (position.liquidity !== 'ichi') {
                                       handleClaim(position.id)
-                                      console.log('hellooo')
                                     }
                                   }}
                                 >

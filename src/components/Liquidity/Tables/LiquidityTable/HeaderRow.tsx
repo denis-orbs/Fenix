@@ -68,7 +68,7 @@ const HeaderRow = ({
   const { chainId } = useAccount()
   const activeChain = useChains()
   const { isConnected } = useActiveConnectionDetails()
-  
+
   useEffect(() => {
     const sortData = async () => {
       if (paginationResult && paginationResult.length > 0) {
@@ -142,18 +142,20 @@ const HeaderRow = ({
       if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
         const getRigns = async () => {
           let newArr: any = [...paginationResult]
-          newArr = await Promise.all(newArr.map(async (pool:any) => {
-            if (pool?.id) {
-              return {
-                ...pool,
-                aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+          newArr = await Promise.all(
+            newArr.map(async (pool: any) => {
+              if (pool?.id) {
+                return {
+                  ...pool,
+                  aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+                }
+              } else {
+                return {
+                  ...pool,
+                }
               }
-            } else {
-              return {
-                ...pool,
-              }
-            }
-          }))
+            })
+          )
           setPaginationResult([...newArr])
           setIsSetRingsApr(true)
         }
@@ -191,21 +193,21 @@ const HeaderRow = ({
                 sortable: true,
               },
               RANGE,
-              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[12%]'} text-right` },
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right`, sortable: true },
-              // { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
+              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right` },
+              { text: 'TVL', className: 'w-[13%] text-right', sortable: true },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[13%]'} text-right`, sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
-                className: 'w-[14%] text-right',
+                className: 'w-[13%] text-right',
                 sortable: true,
               },
               // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
-                className: 'w-[14%] text-right',
+                className: 'w-[13%] text-right',
                 sortable: true,
               },
-              { text: 'Action', className: 'w-[20%] flex justify-end', sortable: false },
+              { text: 'Action', className: 'w-[13%] flex justify-end', sortable: false },
             ]}
             setSort={setSort}
             sort={sort}

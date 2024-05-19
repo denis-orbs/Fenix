@@ -48,7 +48,6 @@ const DepositAmountsICHI = ({
   allIchiVaultsByTokenPair: modifiedIchiVault[] | undefined | null
   tokenList: IToken[]
 }) => {
-  console.log('tt', allIchiVaultsByTokenPair)
   const [isActive, setIsActive] = useState<boolean>(false)
   const [selected, setIsSelected] = useState<string>('Choose one')
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
@@ -62,10 +61,8 @@ const DepositAmountsICHI = ({
   const handlerConnectWallet = () => {
     openConnectModal && openConnectModal()
   }
-  console.log(allIchiVaultsByTokenPair)
   const token0 = useToken0()
   const { data: pools } = useAllPools()
-  console.log(pools)
   const token1 = useToken1()
 
   const currentPool = pools?.find((pool: BasicPool) => {
