@@ -32,7 +32,7 @@ const LockManage = () => {
   }, [currentTab])
 
   return (
-    <div className="w-full flex justify-center flex-col items-center relative mt-28 xl:mt-20">
+    <div className={`w-full flex justify-center flex-col items-center    mt-28 xl:mt-20`}>
       <div className="lock-box relative w-full ">
         <div className="absolute xl:-top-14 -top-24 xl:left-10 left-0 w-full ">
           {currentTab === 'SPLIT' && (
@@ -59,7 +59,7 @@ const LockManage = () => {
               />
             </div>
             {/* tab options manage */}
-            <div className="mt-5">
+            <div className="mt-5 relative">
               {currentTab === 'MERGE' && (
                 <>
                   <p className="text-xs ms-1 mb-1 text-white">Current Position</p>
@@ -71,39 +71,35 @@ const LockManage = () => {
                 </>
               )}
               <ActiveVote handlerChange={handlerChange} />
-              <SelectVote
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                activeVote={activeVote}
-                setActiveVote={setActiveVote}
-              />
+
+              {currentTab === 'MERGE' && (
+                <div className="mx-auto absolute z-50 left-1/2 right-1/2 flex items-center  h-8 w-8 rotate-90 bg-shark-400 bg-opacity-40 p-1 rounded-md  border border-shark-300">
+                  <span className="icon-swap mx-auto   text-2xl text-gradient"></span>
+                </div>
+              )}
             </div>
             {/* active vote */}
             {currentTab === 'TRANSFER' && <Transfer />}
-            {currentTab === 'MERGE' && (
-              <div className="mx-auto rotate-90 bg-shark-400 bg-opacity-40 p-1 rounded-l-lg border border-shark-300">
-                <span className="icon-swap mx-auto rotate-90 text-2xl text-gradient"></span>
-              </div>
-            )}
+
             {currentTab === 'SPLIT' && (
               <>
                 <Split />
-                <ConfirmMerge
+                {/* <ConfirmMerge
                   option={currentTab}
                   openModal={openModalMergeSplit}
                   setOpenModal={setOpenModalMergeSplit}
-                />
+                /> */}
               </>
             )}
             {currentTab === 'MERGE' && (
-              <div className="">
+              <div className="mt-2">
                 <p className="text-white text-xs ms-1 mb-1">Merge With</p>
                 <Merge activeVote={activeVote} handlerChange={handlerChange} />
-                <ConfirmMerge
+                {/* <ConfirmMerge
                   option={currentTab}
                   openModal={openModalMergeSplit}
                   setOpenModal={setOpenModalMergeSplit}
-                />
+                /> */}
                 <SelectVote
                   openModal={openModal}
                   setOpenModal={setOpenModal}
@@ -123,7 +119,7 @@ const LockManage = () => {
                         <Image src={'/static/images/vote/fenix-logo.svg'} alt="fenix-logo" height={30} width={30} />
                         <p>FNX</p>
                       </div>
-                      <span className="icon-chevron"></span>
+                      {/* <span className="icon-chevron"></span> */}
                     </div>
                   </div>
 
@@ -240,6 +236,23 @@ const LockManage = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div>
+        {currentTab === 'MERGE' && (
+          <ConfirmMerge option={currentTab} openModal={openModalMergeSplit} setOpenModal={setOpenModalMergeSplit} />
+        )}
+        {currentTab === 'SPLIT' && (
+          <>
+            <ConfirmMerge option={currentTab} openModal={openModalMergeSplit} setOpenModal={setOpenModalMergeSplit} />
+          </>
+        )}
+        <SelectVote
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          activeVote={activeVote}
+          setActiveVote={setActiveVote}
+        />
       </div>
     </div>
   )

@@ -3,6 +3,7 @@
 import { Button } from '@/src/components/UI'
 import Spinner from '../../../../Common/Spinner'
 import { useEffect } from 'react'
+import Link from 'next/link'
 
 interface DepositBoxProps {
   activeVote: boolean
@@ -23,9 +24,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
     <div className="relative">
       <div className={` h-[70px] flex gap-3 items-center p-6 mb-3 relative exchange-box-info `}>
         <div className="flex items-center justify-center  w-9 h-9 p-3 rounded-xl bg-shark-400 bg-opacity-60">
-          <span
-            className={` icon-lock inline-block text-base text-gradient`}
-          />
+          <span className={` icon-lock inline-block text-base text-gradient`} />
         </div>
         <div className="fw ">
           <div className="flex items-center gap-1">
@@ -37,12 +36,12 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
       </div>
       {!activeVote && (
         <>
-          <div className={` h-[70px] flex   gap-3 items-center justify-between xl:p-6  mb-3 relative exchange-box-info `}>
+          <div
+            className={` h-[70px] flex   gap-3 items-center justify-between xl:p-6  mb-3 relative exchange-box-info `}
+          >
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center  w-9 h-9 p-3 rounded-xl bg-shark-400 bg-opacity-60">
-                <span
-                  className={` icon-check inline-block text-base text-gradient`}
-                ></span>
+                <span className={` icon-check inline-block text-base text-gradient`}></span>
               </div>
               <div className="fw ">
                 <div className="flex items-center gap-1">
@@ -60,9 +59,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
           <div className={` h-[70px] flex gap-3 items-center justify-between p-6 mb-3 relative exchange-box-info `}>
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center  w-9 h-9 p-3 rounded-xl bg-shark-400 bg-opacity-60">
-                <span
-                  className={` icon-lock inline-block text-base text-gradient`}
-                ></span>
+                <Spinner/>
               </div>
               <div className="fw ">
                 <div className="flex items-center gap-1">
@@ -73,7 +70,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
               </div>
             </div>
             <Button variant="tertiary" className="!py-2 !text-xs">
-              Go it
+              Got it
             </Button>
           </div>
         </>
@@ -83,9 +80,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
         <>
           <div className={` h-[70px] flex gap-3 items-center p-6 mb-3 relative exchange-box-info `}>
             <div className="flex items-center justify-center  w-9 h-9 p-3 rounded-xl bg-shark-400 bg-opacity-60">
-              <span
-                className={` icon-lock-off inline-block text-base text-gradient`}
-              ></span>
+              <span className={` icon-lock-off inline-block text-base text-gradient`}></span>
             </div>
             <div className="fw ">
               <div className="flex items-center gap-1">
@@ -100,9 +95,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
           </div>
           <div className={` h-[70px] flex gap-3 items-center p-6 mb-3 relative exchange-box-info `}>
             <div className="flex items-center justify-center  w-9 h-9 p-3 rounded-xl bg-shark-400 bg-opacity-60">
-              <span
-                className={` icon-check inline-block text-base text-gradient`}
-              ></span>
+              <span className={` icon-check inline-block text-base text-gradient`}></span>
             </div>
             <div className="fw ">
               <div className="flex items-center gap-1">
@@ -121,9 +114,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
                 >
                   <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center  w-9 h-9 p-3 rounded-xl bg-shark-400 bg-opacity-60">
-                      <span
-                        className={` icon-party inline-block text-base text-gradient`}
-                      ></span>
+                      <span className={` icon-party inline-block text-base text-gradient`}></span>
                     </div>
                     <div className="fw ">
                       <div className="flex items-center gap-1">
@@ -134,10 +125,10 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
                     </div>
                   </div>
                   <div>
-                    <p className="text-shark-100 text-xs flex gap-2 items-center">
+                    <Link href={''} className="text-shark-100 text-xs flex gap-2 items-center">
                       {' '}
                       <span className="icon-link"></span> Transaction Details
-                    </p>
+                    </Link>
                   </div>
                 </div>
               ) : (
@@ -166,9 +157,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
             <div className={` h-[70px] flex gap-3 items-center justify-between p-6 mb-3 relative exchange-box-info  `}>
               <div className="flex items-center gap-3">
                 <div className="flex items-center justify-center  w-9 h-9 p-3 rounded-xl bg-shark-400 bg-opacity-60">
-                  <span
-                    className={` icon-lock inline-block text-base text-gradient`}
-                  ></span>
+                  <span className={` icon-lock inline-block text-base text-gradient`}></span>
                 </div>
                 <div className="fw ">
                   <div className="flex items-center gap-1">
@@ -181,7 +170,7 @@ const DepositBox = ({ activeVote, loader, changeState, setChangeState }: Deposit
                   </div>
                 </div>
               </div>
-             <Button variant="tertiary" className="!py-2 !text-xs w-32 ">
+              <Button variant="tertiary" className="!py-2 !text-xs w-32 ">
                 Go it
               </Button>
             </div>

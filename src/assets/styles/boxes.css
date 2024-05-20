@@ -922,6 +922,7 @@
   xl:px-20
   px-8
   py-12
+  z-10
   xl:max-h-[750px]
   before:content-[""]
   before:absolute
@@ -1191,7 +1192,7 @@
   justify-center
   w-[320px]
   rounded-2xl
-  
+  z-[100]
   sm:w-[480px]
   sm:min-h-[470px]
   flex-shrink-0
