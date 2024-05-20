@@ -58,6 +58,7 @@ const Panel = () => {
   const [forValue, setForValue] = useState<string>('')
   const { setSlippageModal } = useStore()
   const [currentButtonState, setCurrentButtonState] = useState(ButtonState.SWAP)
+  const [disableChart, setDisableChart] = useState(false)
   const [tokenSellUserBalance, setTokenSellUserBalance] = useState<string>('')
   const { writeContract, failureReason, data: hash, status } = useWriteContract()
   const slippage = useSlippageTolerance()
@@ -555,8 +556,10 @@ const Panel = () => {
   const [isChartVisible, setIsChartVisible] = useState(showChart)
 
   const handleSwitch = () => {
-    setChart(!isChartVisible)
-    setIsChartVisible((prevState) => !prevState)
+    if(!disableChart) {
+      setChart(!isChartVisible)
+      setIsChartVisible((prevState) => !prevState)
+    }
   }
   const nativeWETH_ETH =
     tokenGet?.address?.toLowerCase() === NATIVE_ETH.toLowerCase() &&
@@ -590,6 +593,36 @@ const Panel = () => {
       })
     }
   }, [tokenSell?.address, tokenGet?.address])
+
+  useEffect(() => {
+    let tokenA:string | undefined
+    let tokenB:string | undefined
+    if(tokenGet?.address !== undefined && tokenSell?.address !== undefined) {
+      tokenA = tokenGet?.address === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : tokenGet?.address.toLowerCase()
+      tokenB = tokenSell?.address === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : tokenSell?.address.toLowerCase()
+    }
+
+    const baseUrls: { [key: string]: string } = {
+      '0x4300000000000000000000000000000000000003/0x4300000000000000000000000000000000000004':
+        'https://www.defined.fi/blast/0x1d74611f3ef04e7252f7651526711a937aa1f75e', // USDB/WETH
+      '0x4300000000000000000000000000000000000004/0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692':
+        'https://www.defined.fi/blast/0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f', // WETH/WBTC
+      '0x4300000000000000000000000000000000000004/0xeb466342c4d449bc9f53a865d5cb90586f405215':
+        'https://www.defined.fi/blast/0x86d1da56fc79accc0daf76ca75668a4d98cb90a7',
+    }
+
+    const key = [tokenA, tokenB].sort().join('/')
+    if(tokenA !== undefined && tokenB !== undefined) {
+      const quoteToken = tokenA < tokenB ? 'token0' : 'token1'
+    }
+
+    if (baseUrls[key]) {
+      setDisableChart(false)
+    } else {
+      if(isChartVisible) handleSwitch()
+      setDisableChart(true)
+    }
+  }, [tokenSell?.address, tokenGet?.address])
   // console.log(hash, status)
   return (
     <>
@@ -605,11 +638,7 @@ const Panel = () => {
                 <span className="text-shark-100 text-sm">
                   {/* {swapFee && swapFee != '0' && `${formatUnits(BigInt(swapFee), 4)}% fee`} */}
                 </span>
-                <div className="flex flex-row-reverse  items-center gap-3">
-                  <Switch active={showChart} setActive={handleSwitch} />
-                  <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
-                </div> 
-                <span onClick={handleSwitch} className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}></span>
+                <span onClick={handleSwitch} className={`text-2xl ${disableChart ? 'cursor-not-allowed' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}></span>
                 <ReloadIcon
                   className="text-shark-100 !cursor-pointer"
                   onClick={() => {
