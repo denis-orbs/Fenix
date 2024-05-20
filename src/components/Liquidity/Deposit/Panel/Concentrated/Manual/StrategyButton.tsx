@@ -87,7 +87,7 @@ const StrategyButton = ({
             {/* <div className="mb-[5px]">
               <span className="icon-info text-[13px]"></span>
             </div> */}
-            <div className='text-center'>{tooltipText}</div>
+            <div className='text-center z-20'>{tooltipText}</div>
           </div>
         )}
       </Button>
