@@ -20,7 +20,7 @@ interface RowDataProps {
 
 const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: RowDataProps) => {
   const [changeValue, setChangeValue] = useState(0)
-  const dispatch = useDispatch<AppThunkDispatch>()
+  console.log(row, 'row')
   // FIXME: CHECK MOBILE, MOBILE IS COMMENTED OUT DUE TS ERROR
   return (
     <>
@@ -29,14 +29,14 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: Ro
           <div className="flex items-center gap-2">
             <div className="flex items-center">
               <Image
-                src="/static/images/tokens/FNX.svg"
+                src={`/static/images/tokens/${row.token0Symbol}.png`}
                 alt="token"
                 className="rounded-full w-7 h-7"
                 width={20}
                 height={20}
               />
               <Image
-                src={'/static/images/tokens/ETH.svg'}
+                src={`/static/images/tokens/${row.token1Symbol}.png`}
                 alt="token"
                 className="-ml-4 rounded-full w-7 h-7"
                 width={20}

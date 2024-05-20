@@ -77,7 +77,7 @@ const RowData = ({
 
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
-    setCampaign({ ...campaign_ })    
+    setCampaign({ ...campaign_ })
   }, [row])
 
   function getAverageApr(...aprs: number[]): string {
@@ -110,9 +110,7 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col gap-1">
-              <h5
-                className={`text-xs text-white`}
-              >
+              <h5 className={`text-xs text-white`}>
                 <div>
                   {row.token0.symbol} / {row.token1.symbol}
                 </div>{' '}
@@ -124,10 +122,12 @@ const RowData = ({
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
               </div>
-              <span className={`!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-1 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}>
-                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
-                  {/* <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p> */}
-                </span>
+              <span
+                className={`!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-1 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+              >
+                {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
+                {/* <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p> */}
+              </span>
             </div>
           </div>
         </TableCell>

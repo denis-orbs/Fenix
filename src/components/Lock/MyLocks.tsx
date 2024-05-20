@@ -28,13 +28,13 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
   const [nowTime, setnowTime] = useState<Number>(0)
   const { push } = useRouter()
   const router = useRouter()
-  const { address } = useAccount()
+  const { address, chainId } = useAccount()
   const dispatch = useDispatch<AppThunkDispatch>()
   const lock = useAppSelector<lockState>((state) => state.lock)
   const handlerNavigation = () => push('/lock/manage')
 
   useEffect(() => {
-    if (address) dispatch(fetchNftsAsync(address))
+    if (address && chainId) dispatch(fetchNftsAsync({ address, chainId }))
     const now = new Date().getTime() / 1000
     setnowTime(now)
   }, [address])
@@ -73,6 +73,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                 ) : (
                   <>
                     {lock.positions.map((lock, index) => {
+                      console.log(lock, 'lock')
                       return (
                         <TableRow key={index}>
                           <TableCell className="w-[30%]">
@@ -161,7 +162,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
               </TableBody>
               {activePagination && (
                 <div className="items-center hidden md:flex">
-                  <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
+                  {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
                   <Pagination
                     className="mx-auto"
                     numberPages={7}

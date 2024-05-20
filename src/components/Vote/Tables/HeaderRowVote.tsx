@@ -9,6 +9,7 @@ import { setvotes, setpercentage, fetchGaugesAsync } from '@/src/state/vote/redu
 import { useAccount } from 'wagmi'
 import { voteState } from '@/src/state/vote/types'
 import { lockState } from '@/src/state/lock/types'
+import { priceToSqrtPrice, sqrtPriceToPrice } from '@/src/library/hooks/liquidity/useCL'
 
 type filterData = {
   type: string
@@ -32,7 +33,7 @@ const HeaderRowVote = ({
 }: HeaderRowVoteProps) => {
   const [showTooltip, setShowTooltip] = useState(false)
   const [selectedRanges, setSelectedRanges] = useState<number[]>([])
-  const { address } = useAccount()
+  const { address, chainId } = useAccount()
   const dispatch = useDispatch<AppThunkDispatch>()
   const vote = useAppSelector((state) => state.vote as voteState)
   const lock = useAppSelector((state) => state.lock as lockState)
@@ -40,10 +41,9 @@ const HeaderRowVote = ({
   //   vote.voteTableElement.map((row) => row.pair.pair_address),
   //   'voteTableElement'
   // )
-
   useEffect(() => {
-    if (address) dispatch(fetchGaugesAsync(address))
-  }, [address, lock])
+    if (address && chainId) dispatch(fetchGaugesAsync({ address, chainId }))
+  }, [address, chainId, lock])
 
   // Function to handle when a subcomponent updates its range
   const handleRangeUpdate = (index: number, value: number) => {
@@ -105,15 +105,15 @@ const HeaderRowVote = ({
       {activePagination && (
         <>
           <div className="items-center hidden xl:flex">
-            <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
-            <Pagination
+            {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
+            {/* <Pagination
               className="mx-auto"
               numberPages={7}
               activePage={1}
               setActivePage={() => {}}
               itemsPerPage={10}
               setItemPerPage={() => {}}
-            />
+            /> */}
             <div
               className="flex items-center justify-center
       cursor-pointer w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"

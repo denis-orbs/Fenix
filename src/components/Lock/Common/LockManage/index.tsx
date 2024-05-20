@@ -225,7 +225,11 @@ const LockManage = () => {
             </div>
             <AboutFnx />
             <div className="justify-center xl:flex hidden mt-2 cursor-pointer">
-              <Link target="_blank" href="https://discord.com/invite/fenixfi"  className="flex gap-2 text-shark-100 mt-10">
+              <Link
+                target="_blank"
+                href="https://discord.com/invite/fenixfi"
+                className="flex gap-2 text-shark-100 mt-10"
+              >
                 <span className="icon-discord"></span> Need some help?
               </Link>
             </div>

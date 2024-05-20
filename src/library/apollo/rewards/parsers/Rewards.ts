@@ -3,15 +3,26 @@ import { Token, TokenData } from '../../../structures/common/TokenData'
 import { Address } from 'viem'
 import rewardsClient from '../RewardsClient'
 import { FETCH_CURRENT_EPOCH_BRIBES } from '../queries/BribesQueries'
+import { REWARD_CLIENT } from '@/src/library/constants/addresses'
+import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 
-export async function getCurrentEpochRewardTokens(availableTokensDictionary: {
-  [address: string]: Token
-}): Promise<{ [bribeAddr: string]: Bribes }> {
+export async function getCurrentEpochRewardTokens(
+  availableTokensDictionary: {
+    [address: string]: Token
+  },
+  chainId: number
+): Promise<{ [bribeAddr: string]: Bribes }> {
   try {
     const bribeList: any[] = []
     let page = 0
     let queryResult: any[] = []
     do {
+      const rewardsClient = new ApolloClient({
+        uri: chainId ? REWARD_CLIENT[chainId] : REWARD_CLIENT[FALLBACK_CHAIN_ID],
+        cache: new InMemoryCache(),
+        ssrMode: typeof window === 'undefined',
+      })
       const bribes = (await rewardsClient.query({
         query: FETCH_CURRENT_EPOCH_BRIBES(page),
         fetchPolicy: 'cache-first',

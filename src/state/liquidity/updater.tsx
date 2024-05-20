@@ -7,13 +7,13 @@ import { useAccount } from 'wagmi'
 
 export default function LiquidityUpdater() {
   const thunkDispatch: AppThunkDispatch = useDispatch()
-  const { address } = useAccount()
+  const { address, chainId } = useAccount()
 
   useEffect(() => {
-    if (address) thunkDispatch(getLiquidityV2Pairs(address))
-    if (address) thunkDispatch(getLiquidityTableElements(address))
+    if (address && chainId) thunkDispatch(getLiquidityV2Pairs({ address, chainId }))
+    if (address && chainId) thunkDispatch(getLiquidityTableElements({ address, chainId }))
     thunkDispatch(getConcentratedPools())
-  }, [thunkDispatch, address])
+  }, [thunkDispatch, address, chainId])
 
   useEffect(() => {
     thunkDispatch(getAllPools())

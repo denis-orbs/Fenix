@@ -1,8 +1,8 @@
-import { Address } from '@/src/library/types'
 import { ApiState } from '@/src/library/types/connection'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
+import { Address } from 'viem'
 
 export interface LiquidityState {
   // Liquidity V2 Pairs

@@ -8,7 +8,8 @@ import { blast } from 'viem/chains'
 import { ethers } from 'ethers'
 import { publicClient } from '../../constants/viemClient'
 import { NATIVE_ETH_LOWERCASE } from '../../Constants'
-
+import { wagmiConfig } from '@/src/app/layout'
+import { getPublicClient } from '@wagmi/core'
 export async function getTokenBalance(token1: Address, user: Address) {
   if (!token1 || !user) return '0'
   /**
@@ -90,4 +91,19 @@ export async function getTokensBalance(tokens: Address[], user: Address) {
 
   if (balance.length == 0 || balance[0].status === 'failure') return {}
   return balances
+}
+export async function fetchTokenBalance(token: Address, user: Address) {
+  try {
+    const publicClient = getPublicClient(wagmiConfig)
+    const balance = await publicClient?.readContract({
+      address: token,
+      abi: ERC20_ABI,
+      functionName: 'balanceOf',
+      args: [user],
+    })
+    return balance
+  } catch (e) {
+    console.log(e)
+    return '0'
+  }
 }

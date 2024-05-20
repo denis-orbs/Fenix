@@ -1,25 +1,28 @@
 //@ts-nocheck
 import { VeNFTAPIV3Address, VotingEscrowAddress } from './ContractAddresses'
-import { getPublicClient, getWalletClient, readContract, writeContract } from '@wagmi/core'
+import { getPublicClient, getWalletClient, readContract, writeContract, writeContractAsync } from '@wagmi/core'
 import { Address, Hash } from 'viem'
-
+import { VOTING_ESCROW_ADDRESS } from '../constants/addresses'
 import { LockElement } from '../structures/lock/LockElement'
 import veNFTAPIABIV3 from './abis/VeNFTAPIV3ABI'
 import votingEscrowABI from './abis/veFNX'
 import { encodeFunctionData } from 'viem'
 import { wagmiConfig } from '@/src/app/layout'
-
-export async function getUserVeFNXLockPositions(user: Address, retry = true): Promise<LockElement[]> {
+import { FALLBACK_CHAIN_ID } from '../constants/chains'
+import { VE_NFT_API_ADDRESS } from '../constants/addresses'
+export async function getUserVeFNXLockPositions(user: Address, chainId: number, retry = true): Promise<LockElement[]> {
   try {
-    const nfts = await readContract(wagmiConfig, {
+    console.log(chainId, 'chain123Id')
+    const publicClient = getPublicClient(wagmiConfig)
+    const nfts = await publicClient?.readContract({
       // name: 'VeNFTAPI',
-      address: VeNFTAPIV3Address,
+      address: chainId ? VE_NFT_API_ADDRESS[chainId] : VE_NFT_API_ADDRESS[FALLBACK_CHAIN_ID],
       abi: veNFTAPIABIV3,
       functionName: 'getNFTFromAddress',
       args: [user],
     })
     const parsedElements: LockElement[] = []
-
+    console.log(nfts, 'nfts')
     nfts.map((nft) => {
       parsedElements.push({
         veNFTInfo: {
@@ -94,9 +97,9 @@ export async function getIdVeFNXLockPositions(id: Number, retry = true): Promise
   }
 }
 
-export async function createLock(fnxAmount: bigint, lockDuration: number): Promise<Hash> {
+export async function createLock(fnxAmount: bigint, lockDuration: number, chainId: number): Promise<Hash> {
   const data = await writeContract(wagmiConfig, {
-    address: VotingEscrowAddress,
+    address: chainId ? VOTING_ESCROW_ADDRESS[chainId] : VOTING_ESCROW_ADDRESS[FALLBACK_CHAIN_ID],
     abi: votingEscrowABI,
     functionName: 'create_lock',
     args: [fnxAmount, BigInt(lockDuration)],

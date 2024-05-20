@@ -25,7 +25,7 @@ const Vote = () => {
 
   useEffect(() => {
     setnowTime(new Date().getTime() / 1000)
-    //  console.log(BigInt(nowTime.toFixed(0).toString()) < lock.veNFTInfo.lockEnd)
+    //console.log(BigInt(nowTime.toFixed(0).toString()) < lock.veNFTInfo.lockEnd)
     setTimeout(() => {
       setLoading(false)
     }, 2000)

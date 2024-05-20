@@ -6,6 +6,7 @@ import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/components/Common/InfoBox'
 import { LOCK_LIST } from '../data'
 import { useAppSelector } from '@/src/state'
+import { formatNumber } from '@/src/library/utils/numbers'
 
 interface LockTokensProps {
   changeState: boolean
@@ -26,8 +27,8 @@ const LockTokens = ({ changeState, setChangeState }: LockTokensProps) => {
     }
   }
   LOCK_LIST[0].amount = lock.positions.length.toString()
-  LOCK_LIST[1].amount = activeamount.toString() + ' veFNX'
-  LOCK_LIST[2].amount = inactiveamount.toString() + ' veFNX'
+  LOCK_LIST[1].amount = formatNumber(activeamount, 2) + ' veFNX'
+  LOCK_LIST[2].amount = formatNumber(inactiveamount, 2) + ' veFNX'
   return (
     <MainBox>
       <div className="flex flex-col items-center justify-between w-full xl:flex-row z-10 relative xl:min-h-[350px]">
@@ -47,7 +48,11 @@ const LockTokens = ({ changeState, setChangeState }: LockTokensProps) => {
               Vote
             </Button>
           </div>
-          <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex text-sm gap-2 p-2 xl:mt-8 text-[#53606A]">
+          <Link
+            target="_blank"
+            href="https://discord.com/invite/fenixfi"
+            className="flex text-sm gap-2 p-2 xl:mt-8 text-[#53606A]"
+          >
             <span className="icon-discord"></span>
             Need some help?
           </Link>

@@ -24,6 +24,9 @@ import {
   NATIVE_PRICE,
 } from '@/src/library/apollo/queries/global'
 import { POOL_DAY_DATA } from '@/src/library/apollo/queries/pools'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ALGEBRA_SUBGRAPH } from '@/src/library/constants/addresses'
+import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -110,8 +113,12 @@ export default createReducer(initialState, (builder) => {
 })
 
 // Function to fetch v3 algebra pool data
-export const fetchPoolData = async () => {
+export const fetchPoolData = async (chainId: number) => {
   try {
+    const algebra_client = new ApolloClient({
+      uri: chainId ? ALGEBRA_SUBGRAPH[chainId] : ALGEBRA_SUBGRAPH[FALLBACK_CHAIN_ID],
+      cache: new InMemoryCache(),
+    })
     const { data } = await algebra_client.query({
       query: GET_V3_ALGEBRA_DATA,
     })

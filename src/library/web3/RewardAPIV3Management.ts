@@ -3,12 +3,11 @@ import { CurrentEpochReward, RewardPairInfo, Rewards, ToClaim } from './apis/Rew
 import RewardAPIABIV3 from './abis/RewardAPIABIV3'
 import { RewardAPIV3Address } from './ContractAddresses'
 import { Address } from 'viem'
-
+import { getPublicClient, readContract } from '@wagmi/core'
 import { Token, TokenData } from '../structures/common/TokenData'
-import { readContract } from '@wagmi/core'
 import { getCurrentEpochRewardTokens } from '../apollo/rewards/parsers/Rewards'
 import { wagmiConfig } from '@/src/app/layout'
-
+import { REWARD_API_ADDRESS } from '@/src/library/constants/addresses'
 /**
  * RewardAPI: getPairBribe
  * @param pairAddress
@@ -27,18 +26,19 @@ export async function getPoolRewards(pairAddress: Address): Promise<Rewards> {
 
 export async function getAllPairRewards(
   user: Address,
-  availableTokensData: { [tokenAddr: string]: Token }
+  availableTokensData: { [tokenAddr: string]: Token },
+  chainId: number
 ): Promise<RewardPairInfo[]> {
   const l: RewardPairInfo[] = []
-
-  const rewardPairs = (await readContract(wagmiConfig, {
-    address: RewardAPIV3Address,
-    abi: RewardAPIABIV3,
+  const publicClient = getPublicClient(wagmiConfig)
+  const rewardPairs = (await publicClient?.readContract({
+    address: REWARD_API_ADDRESS[chainId],
     functionName: 'getAllPairRewards',
     args: [user, 250, 0],
+    abi: RewardAPIABIV3,
   })) as RewardPairInfo[]
 
-  const subgraphTokenRewards = await getCurrentEpochRewardTokens(availableTokensData)
+  const subgraphTokenRewards = await getCurrentEpochRewardTokens(availableTokensData, chainId)
 
   for (const r of rewardPairs) {
     const rc = {
@@ -65,17 +65,22 @@ export async function getAllPairRewards(
   return l as RewardPairInfo[]
 }
 
-export async function getAllClPairRewards(user: Address, availableTokensData: { [tokenAddr: string]: Token }) {
+export async function getAllClPairRewards(
+  user: Address,
+  availableTokensData: { [tokenAddr: string]: Token },
+  chainId: number
+) {
   const l: RewardPairInfo[] = []
+  const publicClient = getPublicClient(wagmiConfig)
 
-  const rewardPairs = (await readContract(wagmiConfig, {
-    address: RewardAPIV3Address,
+  const rewardPairs = (await publicClient?.readContract({
+    address: REWARD_API_ADDRESS[chainId],
     abi: RewardAPIABIV3,
     functionName: 'getAllCLPairRewards',
     args: [user, 250, 0],
   })) as RewardPairInfo[]
 
-  const subgraphTokenRewards = await getCurrentEpochRewardTokens(availableTokensData)
+  const subgraphTokenRewards = await getCurrentEpochRewardTokens(availableTokensData, chainId)
 
   for (const r of rewardPairs) {
     const rc = {
