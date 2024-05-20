@@ -60,10 +60,8 @@ const DepositLiquidity = () => {
     }
 
     if (baseUrls[key]) {
-      console.log('here')
       setDisableChart(false)
     } else {
-      console.log('or here')
       setDisableChart(true)
     }
   }, [token0, token1])
