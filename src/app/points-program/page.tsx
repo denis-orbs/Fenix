@@ -13,7 +13,7 @@ export const metadata = {
 
 const PointsProgramPage = () => {
   return (
-    <div className="container">
+    <div className="container pt-5">
       <BlastBanner />
       <Decorator />
       <PointsProgram />
