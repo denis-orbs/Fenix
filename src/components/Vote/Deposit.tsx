@@ -40,7 +40,7 @@ const Deposit = () => {
             </p>
           </div>
         </div>
-        <div className="relative flex flex-col w-full xl:max-h-[180px] mt-5 xl:mt-0 overflow-y-auto overflow-x-hidden xl:w-[40%]">
+        <div className="relative flex flex-col w-full  mt-5 xl:mt-0 overflow-y-auto overflow-x-hidden xl:w-[40%]">
           {EXCHANGE_LIST.map((exchange, index) => (
             <InfoBox key={index} data={exchange} hasTooltip={false} />
           ))}
