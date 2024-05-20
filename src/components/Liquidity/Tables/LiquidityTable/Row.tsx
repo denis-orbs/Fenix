@@ -111,12 +111,12 @@ const RowData = ({
               />
             </div>
             <div className="flex flex-col gap-1">
-              <h5 className={`text-xs text-white`}>
+              <h5 className={`text-xs text-white h-[26px] flex items-center`}>
                 <div>
                   {row.token0.symbol} / {row.token1.symbol}
                 </div>
               </h5>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 h-[26px]">
                 <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
                   {/* FEES */}
@@ -124,7 +124,7 @@ const RowData = ({
                 </span>
               </div>
               <span
-                className={`!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+                className={`!py-1 h-[26px] px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
               >
                 {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
                 {/* <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p> */}
@@ -273,7 +273,7 @@ const RowData = ({
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
@@ -302,7 +302,7 @@ const RowData = ({
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
-            <div className="flex flex-col  gap-2">
+            <div className="flex flex-col  gap-1">
               <p className="flex  items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
