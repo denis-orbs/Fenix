@@ -14,6 +14,8 @@ import { Address } from 'viem'
 import Spinner from '../../Common/Spinner'
 import PositionTableMobile from './PositionTableMobile'
 import { useQuery } from '@tanstack/react-query'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+// import useStore from '@/src/state/zustand'
 
 const MyPositions = () => {
   const dispatch = useDispatch()
@@ -22,6 +24,8 @@ const MyPositions = () => {
   const [tokens, setTokens] = useState<Token[]>([])
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState<number>(0)
+  // const isConnected = useStore((state) => state.isConnected)
+  const { isConnected } = useActiveConnectionDetails()
 
   const tokensprice = async () => {
     setTokens(await fetchTokens())
@@ -99,6 +103,9 @@ const MyPositions = () => {
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
             <p className="flex gap-3 text-lg ms-2">My Positions</p>
+            <Button variant="tertiary" className={`!py-3 xl:me-5 !text-xs !lg:text-sm ${isConnected === true ? '!block' : '!hidden'}`} href="/liquidity">
+              <span className="icon-logout"></span>Create position
+            </Button>
           </div>
           <div className="box-dashboard p-6 flex gap-8 items-center ">
             <p className="text-white text-sm">You have no positions.</p>
