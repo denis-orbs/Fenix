@@ -6,7 +6,7 @@ import Steps from '@/src/components/Common/Steps'
 import Deposit from '@/src/components/Liquidity/LiquidityPools'
 import { useAllPools } from '@/src/state/liquidity/hooks'
 import { BasicPool } from '@/src/state/liquidity/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import HeaderRow from './Tables/LiquidityTable/HeaderRow'
 import { OPTIONS_FILTER, STEPS } from './data'
 
@@ -14,33 +14,44 @@ const Liquidity = () => {
   const [currentTab, setCurrentTab] = useState<string>('ALL POOLS')
   const [searchValue, setSearchValue] = useState<string>('')
   const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
+  const [filteredPoolsData, setFilteredPoolsData] = useState<BasicPool[]>([])
   // console.log(filteredPools)
   const { loading, data: pools } = useAllPools()
+  console.log('pools >> ', pools)
+
+  const getFilteredPools = () => {
+    if (!pools) return []
+    console.log('entrando a filteredPools')
+    switch (currentTab) {
+      case 'VOLATILE':
+        return []  // Filtrar pools volátiles según tu lógica
+      case 'STABLE':
+        return []  // Filtrar pools estables según tu lógica
+      case 'CONCENTRATED':
+        return pools  // Filtrar pools concentrados según tu lógica
+      case 'ALL POOLS':
+      default:
+        return pools
+    }
+  }
+  useEffect(() => {
+    setFilteredPools(getFilteredPools())
+  },[currentTab, pools])
 
   useEffect(() => {
-    if (pools && pools?.length > 0) {
-      if (currentTab === 'VOLATILE') {
-        // fix filter. user the type of position pool in BasicPool interface
-        setFilteredPools([])
-      } else if (currentTab === 'STABLE') {
-        setFilteredPools([])
-      } else if (currentTab === 'CONCENTRATED') {
-        setFilteredPools(pools)
-      } else {
-        setFilteredPools(pools)
-      }
-    }
-  }, [currentTab, pools])
+    setFilteredPoolsData(getFilteredPoolsData())
+  },[filteredPools, searchValue])
 
-  const filteredPoolsData = filteredPools
-    .filter(
-      (pool) =>
+  const getFilteredPoolsData = () => {
+    console.log('entrando a filteredPoolsData')
+    return filteredPools
+      .filter(pool =>
         pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
         pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
-    )
-    .sort((a, b) => {
-      return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
-    })
+      )
+      .sort((a, b) => Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD))
+  }
+
   return (
     <section>
       <div className="flex flex-col items-center overflow-hidden gap-5 py-5 xl:flex-row">

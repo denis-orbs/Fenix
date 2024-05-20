@@ -8,13 +8,7 @@ import { useAccount, useChainId, useChains } from 'wagmi'
 import { useWindowSize } from 'usehooks-ts'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
-import { formatAmount } from '@/src/library/utils/numbers'
-
-import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
-import { useQuery } from '@tanstack/react-query'
-import { toBN } from '../../../../library/utils/numbers'
 import { fetchRingsPoolApr } from './getAprRings'
-import { number, set } from 'zod'
 
 interface HeaderRowProps {
   loading: boolean
@@ -164,16 +158,30 @@ const HeaderRow = ({
     }
   }, [paginationResult])
 
-  /* useEffect(() => {
-    if (paginationStatus && paginationResult && paginationResult.length > 0) {
-      // setSort('asc')
-      setPaginationResult(
-        paginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-        })
-      )
+  useEffect(() => {
+    if (!isSetRingsApr) {
+      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
+        const getRigns = async () => {
+          let newArr: any = [...paginationResult]
+          newArr = await Promise.all(newArr.map(async (pool:any) => {
+            if (pool?.id) {
+              return {
+                ...pool,
+                aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+              }
+            } else {
+              return {
+                ...pool,
+              }
+            }
+          }))
+          setPaginationResult([...newArr])
+          setIsSetRingsApr(true)
+        }
+        getRigns()
+      }
     }
-  }, [paginationStatus, paginationResult]) */
+  }, [paginationResult])
 
   function compareBigDecimal(a: any, b: any) {
     return a - b
