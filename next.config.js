@@ -15,7 +15,6 @@ const nextConfig = {
 }
 module.exports = nextConfig
 
-
 const { withSentryConfig } = require('@sentry/nextjs')
 
 module.exports = withSentryConfig(
@@ -28,7 +27,6 @@ module.exports = withSentryConfig(
     silent: true,
     org: 'fenix-xl',
     project: 'interface',
-
   },
   {
     // For all available options, see:
@@ -59,4 +57,3 @@ module.exports = withSentryConfig(
     automaticVercelMonitors: true,
   }
 )
-
