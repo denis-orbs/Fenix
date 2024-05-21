@@ -1,6 +1,6 @@
 'use client'
-
 import React, { useEffect } from 'react'
+import ReactDOM from 'react-dom'
 
 interface ModalProps {
   children: React.ReactNode
@@ -33,16 +33,18 @@ const Modal = ({ children, openModal, className = '', setOpenModal }: ModalProps
 
   const handleCloseModal = () => setOpenModal(false)
 
-  return (
+  return ReactDOM.createPortal(
     <div
-      className={`fixed top-0 right-0 w-full h-full bg-black bg-opacity-75 backdrop-blur-sm flex 
-      items-center justify-center mx-auto z-50 ${className}`}
+      id="modal"
+      className={`modal fixed z-[9998]  top-0 right-0 w-full h-full bg-black bg-opacity-75 backdrop-blur-sm flex 
+      items-center justify-center mx-auto  ${className}`}
       onClick={handleCloseModal}
     >
       <div onClick={(e) => e.stopPropagation()} className="flex items-center justify-center">
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
 

@@ -59,6 +59,7 @@ const Bribes = () => {
             <InfoBox
               hasDecorator={STEPS.length === index + 1 ? false : true}
               bgBox="exchange-box-info"
+              
               key={index}
               data={exchange}
               textColor={'text-shark-100'}
