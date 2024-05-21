@@ -83,7 +83,7 @@ const Manage = ({}: {}) => {
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
-  const [lpValue, setLpValue] = useState(0)
+  const [lpValue, setLpValue] = useState("0")
   const [firstAllowance, setFirstAllowance] = useState(0)
   const [secondAllowance, setSecondAllowance] = useState(0)
   const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
@@ -154,7 +154,7 @@ const Manage = ({}: {}) => {
     setPositionData(data)
     asyncGetAllowance(data.token0, data.token1)
     getList(data.token0, data.token1)
-    setLpValue(Number(BigInt(data.liquidity) / BigInt(2)))
+    setLpValue((BigInt(data.liquidity) / BigInt(2)).toString())
     // console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
   }
 
@@ -188,12 +188,14 @@ const Manage = ({}: {}) => {
     if (optionActive != 'WITHDRAW') return
 
     setLpValue(
-      positionData.liquidity == 0
-        ? 0
-        : Number(
+      withdrawPercent == 100 ?
+          BigInt(positionData.liquidity).toString()
+      : positionData.liquidity == 0
+        ? "0"
+        : (
             (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
               BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-          )
+          ).toString()
     )
     setFirstValue(
       formatNumber(
