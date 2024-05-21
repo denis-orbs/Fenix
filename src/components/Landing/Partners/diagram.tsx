@@ -69,14 +69,22 @@ const Diagram = () => {
       >
         <Lottie options={defaultOptions}  />
       </div> */}
-      <div className='flex items-center justify-center'>
+      <div className='flex items-center justify-center mt-5'>
+        <div className="relative w-screen max-w-[1000px] overflow-hidden mx-auto flex items-center justify-center max-md:min-w-[950px]">
+          <Image src={p2} alt="p2" width={1588} height={1588} className=' w-full h-full'/>
+          <Image src={bg} alt="bg" width={1588} height={1588} className=' w-[900px] h-[900px] absolute animate-spin-slow'/>
+          <Image src={p1} alt="p1" width={1588} height={1588} className=' w-[900px] h-[900px] absolute animate-spin-slow-reverse'/>
+          <Image src={p3} alt="p3" width={1588} height={1588} className=' w-[900px] h-[900px] absolute animate-spin-slow-reverse'/>
+        </div>
+      </div>
+      {/* <div className='flex items-center justify-center'>
         <div className="relative w-screen max-w-[900px] overflow-hidden mx-auto flex items-center justify-center max-md:min-w-[800px]">
           <Image src={p2} alt="p2" width={1588} height={1588} className=' w-full h-full'/>
           <Image src={bg} alt="bg" width={1588} height={1588} className=' w-full h-full absolute animate-spin-slow max-md:w-[800px]'/>
           <Image src={p1} alt="p1" width={1588} height={1588} className=' w-full h-full absolute animate-spin-slow-reverse max-md:w-[800px]'/>
           <Image src={p3} alt="p3" width={1588} height={1588} className=' w-full h-full absolute animate-spin-slow-reverse max-md:w-[800px]'/>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

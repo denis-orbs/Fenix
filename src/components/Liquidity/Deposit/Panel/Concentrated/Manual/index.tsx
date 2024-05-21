@@ -79,7 +79,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   })
 
   useEffect(() => {
-    if (rangePrice1 > rangePrice2) {
+    if (rangePrice2 != -1 && rangePrice1 > rangePrice2) {
       setButtonText("Min price can't be higher than max price")
     } else if (
       account &&

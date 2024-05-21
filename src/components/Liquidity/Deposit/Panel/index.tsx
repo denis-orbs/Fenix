@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -130,12 +131,13 @@ const Panel = () => {
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-[25px] font-semibold">
-            <h4 className="text-lg md:text-xl text-white font-medium">New Position</h4>
+            <h1 className="text-lg md:text-xl text-white font-medium">New Position</h1>
             <div className="flex items-center gap-[13px]">
-              <div className="flex items-center gap-3">
+              {/* <div className="flex items-center gap-3">
                 <Switch active={showChart} setActive={handleSwitch} />
                 <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
-              </div>
+              </div> */}
+              <span onClick={handleSwitch} className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}></span>
               {/* <div className="flex items-center gap-[9px] h-10">
                 <Switch active={activeSwitch} setActive={handlerSwitch} />
                 <span className="text-shark-100 text-xs leading-normal">Concentrated</span>

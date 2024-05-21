@@ -122,7 +122,6 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
   const ichiVaultData = ichiVaults.find((e) => e.id.toLowerCase() === row?.id.toLowerCase())
   const fenixRingApr =
     ringsCampaign?.boostedPools.find((pool: BoostedPool) => {
-      console.log(pool?.id?.toLowerCase(), ichiVaultData?.pool.toLowerCase())
       return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
     })?.apr || 0
 
@@ -220,7 +219,7 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                 >
                   <div className="flex justify-between items-center gap-3 text-white">
                     <p className="text-sm pb-1 ">Ichi strategy</p>
-                    <p className="text-sm pb-1 text-chilean-fire-600">{row?.apr}</p>
+                    <p className="text-sm pb-1 text-chilean-fire-600">{parseFloat(row?.apr) < 0 ? 0 : row?.apr}</p>
                   </div>
                   {fenixRingApr > 0 && (
                     <div className="flex justify-between items-center gap-3 text-white">

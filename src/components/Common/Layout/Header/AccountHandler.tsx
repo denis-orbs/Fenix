@@ -12,12 +12,15 @@ import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnec
 import axios from 'axios'
 import { Address } from 'viem'
 import { useAccount, useSwitchChain } from 'wagmi'
-import { totalCampaigns } from '@/src/library/utils/campaigns'
-import { wagmiConfig, configwallets } from '@/src/app/layout'
+import { getPointsDistributionTargetTimestamps, totalCampaigns } from '@/src/library/utils/campaigns'
+import { wagmiConfig, config } from '@/src/app/layout'
 import cn from '@/src/library/utils/cn'
 import { blast } from 'viem/chains'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import Countdown from 'react-countdown'
+import { useQuery } from '@tanstack/react-query'
+import { UserBlastPointsData } from '@/src/app/api/blast-points/[address]/route'
+import Loader from '@/src/components/UI/Icons/Loader'
 
 interface Points {
   userLiqPoints: number[]
@@ -50,127 +53,63 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
   const { address, chainId } = useAccount()
   const { switchChainAsync } = useSwitchChain()
   const wrongChain = !isSupportedChain(chainId)
+  const [nextTargetTime, setNextTargetTime] = useState<number>()
+
+  const { data: userBlastPoints, isLoading: isLoadingUserBlastPoints } = useQuery<UserBlastPointsData>({
+    queryKey: ['blast-points', address],
+    enabled: !!address,
+    queryFn: async () => {
+      const data = await fetch('/api/blast-points/' + address)
+      return await data.json()
+    },
+  })
+  // const targetHoursUTC = [17, 1, 9]
+  const targetHoursUTC = getPointsDistributionTargetTimestamps()
+  const calculateNextTargetTime = () => {
+    const nowUTC = new Date(new Date().toISOString().substring(0, 19) + 'Z')
+
+    const nextTimes = targetHoursUTC.map((hour) => {
+      const nextTime = new Date(hour)
+      nextTime.setUTCFullYear(nowUTC.getUTCFullYear(), nowUTC.getUTCMonth(), nowUTC.getUTCDate())
+
+      if (nextTime <= nowUTC) {
+        nextTime.setUTCDate(nextTime.getUTCDate() + 1)
+      }
+
+      return nextTime.getTime()
+    })
+
+    const nextTime = Math.min(...nextTimes)
+    setNextTargetTime(nextTime)
+  }
+
   useEffect(() => {
-    const fetchData = async (campaignId: string, pairAddress: string, address: Address) => {
-      try {
-        const response = await axios.get(`https://blast-points-merkle.vercel.app/query/${campaignId}/${pairAddress}`)
+    calculateNextTargetTime()
+    const interval = setInterval(calculateNextTargetTime, 60 * 1000)
+    return () => clearInterval(interval)
+  }, [])
 
-        const ob = response.data.data.filter((element: any) => {
-          return element.recipient.toLowerCase() === address.toLowerCase()
-        })
-        const totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
-
-        return (totalPercentage / 100) * response.data.pointsandgold.LIQUIDITY.available
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        return 0 // Return a default value in case of error
-        // Handle errors as needed
-      }
-    }
-    const fetchDistributed = async (pairAddress: string, address: Address) => {
-      try {
-        const response = await axios.get(`https://blast-points-merkle.vercel.app/query/dist/distributed/${pairAddress}`)
-
-        const ob = response.data.data.filter((element: any) => {
-          return element.recipient.toLowerCase() === address.toLowerCase()
-        })
-        const totalPercentage = ob.reduce((total: any, data: any) => total + Number(data.percentage), 0).toFixed(2)
-
-        return (totalPercentage / 100) * response.data.pointsandgold.LIQUIDITY.available
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        return 0 // Return a default value in case of error
-        // Handle errors as needed
-      }
-    }
-    if (address) {
-      // Create an array of Promises for fetching data
-      const promises = totalCampaigns.map((campaign) => fetchData(campaign.campaignId, campaign.pairAddress, address))
-      const promisesDistributed = totalCampaigns.map((campaign) => fetchDistributed(campaign.pairAddress, address))
-
-      // Wait for all Promises to resolve
-      Promise.all(promises)
-        .then((results) => {
-          //  console.log(results)
-          const sum = results.reduce((total, currentValue) => total + currentValue, 0)
-          // Set the setAvailablePoints state after all Promises have resolved
-          setAvailablePoints(sum)
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error)
-          // Handle errors if needed
-        })
-
-      Promise.all(promisesDistributed)
-        .then((results) => {
-          //   console.log(results)
-          const sum = results.reduce((total, currentValue) => total + currentValue, 0)
-          // Set the setDistributed state after all Promises have resolved
-
-          setDistributed(sum)
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error)
-          // Handle errors if needed
-        })
-    }
-
-    // Cleanup function if needed
-    return () => {
-      // Cleanup code here
-    }
-  }, [address])
-
-  const [time, setTime] = useState('')
-  let count = 0
-
-  function getCurrentEightHourTimestampArray() {
-    const targetDate = new Date('2024-12-31T00:00:00Z')
-    const currentDate = new Date()
-
-    const timeDifference = targetDate.getTime() - currentDate.getTime()
-    const remainingHours = Math.ceil(timeDifference / (8 * 60 * 60 * 1000))
-
-    const eightHourTimestamps = []
-
-    for (let i = 0; i <= remainingHours; i++) {
-      const timestamp = targetDate.getTime() - i * 8 * 60 * 60 * 1000
-      eightHourTimestamps.push(timestamp)
-    }
-
-    return eightHourTimestamps.reverse() // Reverse the array to have timestamps in ascending order
-  }
-
-  // Example usage
-  const timestampsArray = getCurrentEightHourTimestampArray()
-  // console.log(timestampsArray.map((timestamp) => new Date(timestamp).toUTCString()))
-
-  const timeSet = () => {
-    // FIXME: STARK
-    if (time === '' && count === 0 && timestampsArray.length > 0) {
-      setTime(timestampsArray[0].toString())
-      count++
-    } else {
-      // FIXME: STARK
-      setTime(timestampsArray[count].toString())
-      count++
-    }
-  }
-
-  useEffect(() => timeSet(), [])
-  // FIXME: HAZ
-  const renderer = ({ hours, completed }: { hours: any; completed: any }) => {
+  const renderer = ({
+    hours,
+    minutes,
+    seconds,
+    completed,
+  }: {
+    hours: number
+    minutes: number
+    seconds: number
+    completed: boolean
+  }) => {
     if (completed) {
-      // Render a completed state
-      // return <span>You are good to go!</span>
-      timeSet()
+      calculateNextTargetTime()
     } else {
-      // Render a countdown
       return (
         <>
           <span className="flex items-center gap-2">
             <i className="icon-time text-white text-sm"></i>
-            <p className="text-white text-xs underline">{hours} hours</p>
+            <p className="text-white text-xs">
+              {hours}h {minutes}m {seconds}s
+            </p>
           </span>
         </>
       )
@@ -206,32 +145,30 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
             <div className="absolute bg-shark-400 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex flex-col justify-center items-center">
-                  <p className="text-shark-100 text-xs mb-2">PTS Received</p>
-                  <p className="text-white text-sm">{availablePoints.toFixed(2).toString()}</p>
+                  <p className="text-shark-100 text-xs mb-2">Blast Points</p>
+                  <p className="text-white text-sm">
+                    {isLoadingUserBlastPoints ? <Loader /> : userBlastPoints?.given_blast_poins}
+                  </p>
                 </div>
                 <div className="flex flex-col justify-center items-center">
-                  <p className="text-shark-100 text-xs mb-2">PTS Pending</p>
+                  <p className="text-shark-100 text-xs mb-2">Blast Gold</p>
                   <p className="text-white text-sm">
-                    {(Number(availablePoints) - Number(distributed)).toFixed(2).toString()}
+                    {isLoadingUserBlastPoints ? <Loader /> : userBlastPoints?.given_blast_gold_points}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center justify-center flex-col">
-                <p className="text-xs text-shark-100 mb-2">Pending points will be sent in:</p>
-                <Countdown key={time} date={time} daysInHours={true} autoStart={true} renderer={renderer} />
-                {/* <span className="flex items-center gap-2">
-                  <i className="icon-time text-white text-sm"></i>
-                  <p className="text-white text-xs underline">8 Hours</p>
-                </span> */}
-              </div>
+              {/*   <div className="flex items-center justify-center flex-col">
+                <p className="text-xs text-shark-100 mb-2">Next Points Drop:</p>
+                <Countdown
+                  key={nextTargetTime}
+                  date={nextTargetTime}
+                  daysInHours={true}
+                  autoStart={true}
+                  renderer={renderer}
+                />
+              </div> */}
             </div>
           )}
-          {/* {isConnected && (
-            <div className="items-center flex-shrink-0 hidden gap-2 2xl:flex">
-              <Image src="/static/images/tokens/ETH-GRAY.svg" className="w-6 h-6 " alt="logo" width={24} height={24} />
-              <p className="text-xs text-white">1.987 ETH</p>
-            </div>
-          )} */}
         </div>
       )}
 

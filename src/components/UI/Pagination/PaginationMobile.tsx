@@ -72,7 +72,7 @@ const PaginationMobile = ({
       <div className="flex items-center gap-4 p-2">
         {numberPages > 1 && activePage > 1 && (
           <div className="flex" onClick={hadlerPrev}>
-            <span className="icon-arrow flex text-lg items-center rotate-180 text-shark-300"></span>
+            <span className="icon-arrow flex text-lg items-center rotate-180 text-white"></span>
           </div>
         )}
         {numberPages > 1 && activePage !== numberPages && (

@@ -31,42 +31,69 @@ const Pagination = ({
     )
   }
 
-  const hadlerPrev = () => setActivePage(activePage > 1 ? activePage - 1 : activePage)
-  const hadlerNext = () => setActivePage(activePage < numberPages ? activePage + 1 : activePage)
+  const clearSelection = () => {
+    if (window.getSelection) {
+      const selection = window.getSelection()
+      if (selection) {
+        selection.removeAllRanges()
+      }
+    }
+  }
 
-  const hadlerPage = (index: number) => setActivePage(index + 1)
+  const hadlerPrev = () => {
+    setActivePage(activePage > 1 ? activePage - 1 : activePage)
+    clearSelection()
+  }
+  const hadlerNext = () => {
+    setActivePage(activePage < numberPages ? activePage + 1 : activePage)
+    clearSelection()
+  }
 
+  const hadlerPage = (index: number) => {
+    setActivePage(index + 1)
+    clearSelection()
+  }
+
+  const visiblePages = 6
+  const startPage = Math.max(1, activePage - Math.floor(visiblePages / 2))
+  const endPage = Math.min(numberPages, startPage + visiblePages)
   return (
     <div className={mergeClassName}>
       <div className="w-full flex justify-center items-center">
         <div className="w-[90%] flex items-center justify-center gap-2.5 h-[62px] relative z-10">
-          {numberPages > 1 && activePage > 1 && (
-            <button
-              type="button"
-              className="flex items-center justify-center leading-normal [&:not(:hover)]:text-shark-100 gap-2.5 px-5 py-2.5 transition-colors button-secondary rounded-[10px] mr-1.5"
-              onClick={hadlerPrev}
-              disabled={activePage === 1}
-            >
-              <span className="-scale-x-100 icon-arrow"></span>
-              Previous
-            </button>
-          )}
-          {Array.from({ length: numberPages }).map((_, index) => (
-            <button key={index} type="button" className={pageClassName(index)} onClick={() => hadlerPage(index)}>
-              {index + 1}
-            </button>
-          ))}
-          {numberPages > 1 && activePage !== numberPages && (
-            <button
-              type="button"
-              className="flex items-center justify-center leading-normal [&:not(:hover)]:text-shark-100 gap-2.5 px-5 py-2.5 transition-colors button-secondary rounded-[10px] ml-1.5"
-              onClick={hadlerNext}
-              disabled={activePage === numberPages}
-            >
-              Next
-              <span className="icon-arrow"></span>
-            </button>
-          )}
+          <button
+            type="button"
+            className="flex items-center justify-center leading-normal [&:not(:hover)]:text-shark-100 gap-2.5 px-5 py-2.5 transition-colors button-secondary rounded-[10px] mr-1.5"
+            onClick={hadlerPrev}
+            disabled={activePage === 1}
+          >
+            <span className="-scale-x-100 icon-arrow"></span>
+            Previous
+          </button>
+
+          {Array.from({ length: numberPages })
+            .map((_, index) => index)
+            .slice(startPage, endPage)
+
+            .map((page, index) => (
+              <button
+                key={index}
+                type="button"
+                className={pageClassName(page - 1)}
+                onClick={() => hadlerPage(page - 1)}
+              >
+                {page}
+              </button>
+            ))}
+          <button
+            type="button"
+            className="flex items-center justify-center leading-normal [&:not(:hover)]:text-shark-100 gap-2.5 px-5 py-2.5 transition-colors button-secondary rounded-[10px] ml-1.5"
+            onClick={hadlerNext}
+            disabled={activePage === numberPages}
+          >
+            Next
+            <span className="icon-arrow"></span>
+          </button>
         </div>
         <div
           className="flex items-center justify-center cursor-default flex-shrink-0 w-12 h-12 px-4 transition-colors
@@ -75,10 +102,7 @@ const Pagination = ({
         >
           <span className="text-lg icon-cog text-white "></span>
           {isOpenItemsPerPage && (
-            <div
-              className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute left-full bottom-0 translate-x-1"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute left-full bottom-0 translate-x-1">
               <Button onClick={() => setItemPerPage(5)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
                 5
               </Button>
