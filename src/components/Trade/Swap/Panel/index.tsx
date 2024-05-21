@@ -37,6 +37,10 @@ import { NATIVE_ETH, NATIVE_ETH_LOWERCASE, WETH_ADDRESS } from '@/src/library/Co
 import { wethAbi } from '@/src/library/web3/abis/wethAbi'
 import { useNotificationAdderCallback, useReadNotificationCallback } from '@/src/state/notifications/hooks'
 import { NotificationDetails, NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { Token, computePoolAddress } from '@cryptoalgebra/integral-sdk'
+import { blast } from 'viem/chains'
+import { INIT_CODE_HASH_MANUAL_OVERRIDE } from '@/src/library/constants/algebra'
+import { useAllPools } from '@/src/state/liquidity/hooks'
 
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
@@ -556,7 +560,7 @@ const Panel = () => {
   const [isChartVisible, setIsChartVisible] = useState(showChart)
 
   const handleSwitch = () => {
-    if(!disableChart) {
+    if (!disableChart) {
       setChart(!isChartVisible)
       setIsChartVisible((prevState) => !prevState)
     }
@@ -594,35 +598,43 @@ const Panel = () => {
     }
   }, [tokenSell?.address, tokenGet?.address])
 
+  const normalizeToken = (token: string) =>
+    token.toLowerCase() === NATIVE_ETH_LOWERCASE ? WETH_ADDRESS.toLowerCase() : token.toLowerCase()
+
+  const { data } = useAllPools()
+
   useEffect(() => {
-    let tokenA:string | undefined
-    let tokenB:string | undefined
-    if(tokenGet?.address !== undefined && tokenSell?.address !== undefined) {
-      tokenA = tokenGet?.address === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : tokenGet?.address.toLowerCase()
-      tokenB = tokenSell?.address === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : tokenSell?.address.toLowerCase()
-    }
+    const tokenA =
+      tokenGet?.address && tokenSell?.address
+        ? normalizeToken(tokenGet?.address) < normalizeToken(tokenSell?.address)
+          ? tokenGet?.address
+          : tokenSell?.address
+        : zeroAddress
+    const tokenB =
+      tokenGet?.address && tokenSell?.address
+        ? normalizeToken(tokenGet?.address) < normalizeToken(tokenSell?.address)
+          ? tokenSell?.address
+          : tokenGet?.address
+        : zeroAddress
+    const poolAddress =
+      tokenA == tokenB
+        ? '0x0000000000000000000000000000000000000000'
+        : computePoolAddress({
+            tokenA: new Token(blast.id, tokenA, 18), // decimals here are arbitrary
+            tokenB: new Token(blast.id, tokenB, 18), // decimals here are arbitrary
+            poolDeployer: contractAddressList.pool_deployer,
+            initCodeHashManualOverride: INIT_CODE_HASH_MANUAL_OVERRIDE,
+          })
 
-    const baseUrls: { [key: string]: string } = {
-      '0x4300000000000000000000000000000000000003/0x4300000000000000000000000000000000000004':
-        'https://www.defined.fi/blast/0x1d74611f3ef04e7252f7651526711a937aa1f75e', // USDB/WETH
-      '0x4300000000000000000000000000000000000004/0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692':
-        'https://www.defined.fi/blast/0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f', // WETH/WBTC
-      '0x4300000000000000000000000000000000000004/0xeb466342c4d449bc9f53a865d5cb90586f405215':
-        'https://www.defined.fi/blast/0x86d1da56fc79accc0daf76ca75668a4d98cb90a7',
-    }
+    const availablePool = data?.find((pool: any) => pool?.id?.toLowerCase() === poolAddress.toLowerCase())
 
-    const key = [tokenA, tokenB].sort().join('/')
-    if(tokenA !== undefined && tokenB !== undefined) {
-      const quoteToken = tokenA < tokenB ? 'token0' : 'token1'
-    }
-
-    if (baseUrls[key]) {
-      setDisableChart(false)
-    } else {
-      if(isChartVisible) handleSwitch()
+    if (!tokenGet?.address || !tokenSell?.address || availablePool == null) {
+      if (isChartVisible) handleSwitch()
       setDisableChart(true)
+    } else {
+      setDisableChart(false)
     }
-  }, [tokenSell?.address, tokenGet?.address])
+  }, [tokenSell?.address, tokenGet?.address, data])
   // console.log(hash, status)
   return (
     <>
@@ -638,7 +650,10 @@ const Panel = () => {
                 <span className="text-shark-100 text-sm">
                   {/* {swapFee && swapFee != '0' && `${formatUnits(BigInt(swapFee), 4)}% fee`} */}
                 </span>
-                <span onClick={handleSwitch} className={`text-2xl ${disableChart ? 'cursor-not-allowed' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}></span>
+                <span
+                  onClick={handleSwitch}
+                  className={`text-2xl ${disableChart ? 'cursor-not-allowed' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
+                ></span>
                 <ReloadIcon
                   className="text-shark-100 !cursor-pointer"
                   onClick={() => {
@@ -667,7 +682,9 @@ const Panel = () => {
                 />
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
               </div>
-              <div className={`${toBN(priceImpact).abs().gt(3) ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}>
+              <div
+                className={`${toBN(priceImpact).abs().gt(3) ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}
+              >
                 <span className="icon-info text-base"></span>
                 This transaction apperars to have a price impact greater than 5%. Research risks before swapping.
               </div>

@@ -6,7 +6,14 @@ import { getPair } from '@/src/library/hooks/liquidity/useClassic'
 import { useEffect, useState } from 'react'
 import { Address } from 'viem'
 import { useSearchParams } from 'next/navigation'
-import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
+import { zeroAddress } from 'viem'
+
+import { Token, computePoolAddress } from '@cryptoalgebra/integral-sdk'
+import { blast } from 'viem/chains'
+import { INIT_CODE_HASH_MANUAL_OVERRIDE } from '@/src/library/constants/algebra'
+import { useAllPools } from '@/src/state/liquidity/hooks'
+import { contractAddressList } from '@/src/library/constants/contactAddresses'
+import { NATIVE_ETH_LOWERCASE, WETH_ADDRESS } from '@/src/library/Constants'
 
 const DepositLiquidity = () => {
   const searchParams = useSearchParams()
@@ -65,6 +72,43 @@ const DepositLiquidity = () => {
       setDisableChart(true)
     }
   }, [token0, token1])
+
+  const normalizeToken = (token: string) =>
+    token.toLowerCase() === NATIVE_ETH_LOWERCASE ? WETH_ADDRESS.toLowerCase() : token.toLowerCase()
+
+  const { data } = useAllPools()
+
+  useEffect(() => {
+    const tokenA =
+      token0 && token1
+        ? normalizeToken(token0) < normalizeToken(token1)
+          ? token0
+          : token1
+        : zeroAddress
+    const tokenB =
+      token0 && token1
+        ? normalizeToken(token0) < normalizeToken(token1)
+          ? token1
+          : token0
+        : zeroAddress
+    const poolAddress =
+      tokenA == tokenB
+        ? '0x0000000000000000000000000000000000000000'
+        : computePoolAddress({
+            tokenA: new Token(blast.id, tokenA, 18), // decimals here are arbitrary
+            tokenB: new Token(blast.id, tokenB, 18), // decimals here are arbitrary
+            poolDeployer: contractAddressList.pool_deployer,
+            initCodeHashManualOverride: INIT_CODE_HASH_MANUAL_OVERRIDE,
+          })
+
+    const availablePool = data?.find((pool: any) => pool?.id?.toLowerCase() === poolAddress.toLowerCase())
+
+    if (!token0 || !token1 || availablePool == null) {
+      setDisableChart(true)
+    } else {
+      setDisableChart(false)
+    }
+  }, [token1, token0, data])
 
   return (
     <div className="flex flex-col items-start gap-6 mb-4 xl:gap-10 xl:flex-row">
