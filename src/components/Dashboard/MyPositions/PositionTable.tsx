@@ -38,7 +38,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
   const addNotification = useNotificationAdderCallback()
-  const [itemsPerPage, setItemPerPage] = useState<any>(5)
+  const [itemsPerPage, setItemPerPage] = useState<number>(10)
   const [activePage, setActivePage] = useState<number>(1)
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
@@ -442,7 +442,6 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                   onClick={() => {
                                     if (position.liquidity !== 'ichi') {
                                       handleClaim(position.id)
-                                      console.log('hellooo')
                                     }
                                   }}
                                 >

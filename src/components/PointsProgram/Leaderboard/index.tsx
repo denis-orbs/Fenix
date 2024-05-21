@@ -5,66 +5,67 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
+import { RankingEntry, useRingsPointsLeaderboard } from '@/src/library/hooks/rings/useRingsPoints'
+import Loader from '../../UI/Icons/Loader'
+import cn from '@/src/library/utils/cn'
 
-const Leaderboard = ({ data }: any) => {
-  const [itemsPerPage, setItemPerPage] = useState<any>(20)
+const Leaderboard = () => {
+  const [itemsPerPage, setItemPerPage] = useState<number>(20)
 
   const [activePage, setActivePage] = useState<number>(1)
-  const arr = [...data]
   const [sort, setSort] = useState(false)
   const handleSort = () => setSort(!sort)
+  const { data, isLoading } = useRingsPointsLeaderboard()
+  const [leaderboardData, setLeaderboardData] = useState<RankingEntry[]>([])
+  useEffect(() => {
+    if (!data || isLoading) return
+    const orderedData = data
+      .sort((a, b) => Number(b.accumulated_rings_points) - Number(a.accumulated_rings_points))
+      .map((entry, index) => ({ ...entry, ranking: index + 1 }))
+    setLeaderboardData(orderedData)
+  }, [data, isLoading])
 
-  function paginate(items: any, currentPage: number, itemsPerPage: number) {
-    // Calculate total pages
+  function paginate(items: RankingEntry[], currentPage: number, itemsPerPage: number) {
     const totalPages = Math.ceil(items.length / itemsPerPage)
-
-    // Ensure current page isn't out of range
     currentPage = Math.max(1, Math.min(currentPage, totalPages))
-
     const start = (currentPage - 1) * itemsPerPage
     const end = start + itemsPerPage
-    const paginatedItems = items.slice(start, end)
-
-    return paginatedItems
+    return items.slice(start, end)
   }
 
-  const pagination = sort ? paginate(arr.reverse(), activePage, itemsPerPage) : paginate(data, activePage, itemsPerPage)
+  const sortedData = sort ? leaderboardData.slice().reverse() : leaderboardData
+  const paginatedData = paginate(sortedData, activePage, itemsPerPage)
+
+  if (isLoading)
+    return (
+      <div className="mb-10 w-full mx-auto flex justify-center">
+        <Loader size={'40px'} />
+      </div>
+    )
 
   return (
     <div className="mb-10 w-full">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center">
-        <h5 className="text-white text-lg mb-3 font-medium">Leaderboard</h5>
-        {/* <Button className="w-full xl:w-auto">
-          <span>
-            Refer your friends to move up
-            <i className="icon-copy ml-3"></i>
-          </span>
-        </Button> */}
+        <h2 className="text-white text-lg mb-3 font-medium">Leaderboard</h2>
       </div>
       <div className="relative">
         <div className="flex items-center w-full mb-3">
           <span className="text-white w-36 text-center text-sm">#</span>
-          <span className="text-white w-full text-sm">
-            Ranking Addresses
-            {/* <i className="icon-chevron text-xs ml-2"></i> */}
-          </span>
-          <span className="text-white w-36 text-center text-sm">
+          <span className="text-white w-full text-sm">Ranking Addresses</span>
+          <span
+            className="text-white w-36 cursor-pointer text-center text-sm flex items-center justify-end gap-x-2 mr-4"
+            onClick={() => handleSort()}
+          >
             RINGS
-            <i
-              className={`icon-chevron text-xs ml-2 cursor-pointer ${sort ? '' : 'rotate-180'}`}
-              onClick={() => handleSort()}
-            ></i>
+            <i className={cn(`icon-chevron flex text-xs `, sort ? '' : '-rotate-180')}></i>
           </span>
         </div>
-        {pagination.map((data: any, index: number) => (
+        {paginatedData.map((data, index: number) => (
           <Item key={index} data={data} />
         ))}
-        {/* {sort === false && data.map((data: any, index: number) => <Item key={index} data={data} />)}
-        {sort &&
-          arr.sort((a, b) => b.rank - a.rank).map((data: any, index: number) => <Item key={index} data={data} />)} */}
         <Pagination
           className="mx-auto"
-          numberPages={Math.ceil(data.length / itemsPerPage)}
+          numberPages={Math.ceil(leaderboardData.length / itemsPerPage)}
           activePage={activePage}
           setActivePage={setActivePage}
           itemsPerPage={itemsPerPage}
@@ -72,13 +73,13 @@ const Leaderboard = ({ data }: any) => {
         />
         <div className="lg:hidden">
           <PaginationMobile
-            count={data.length}
+            count={leaderboardData.length}
             itemsPerPage={itemsPerPage}
             setItemPerPage={setItemPerPage}
             activePage={activePage}
             setActivePage={setActivePage}
             className="mx-auto"
-            numberPages={Math.ceil(data.length / itemsPerPage)}
+            numberPages={Math.ceil(leaderboardData.length / itemsPerPage)}
           />
         </div>
       </div>

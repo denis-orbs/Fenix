@@ -598,17 +598,17 @@ const Panel = () => {
           <div className="w-full relative">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-x-4 ">
-                <h4 className="text-lg text-white font-medium">Swap</h4>
+                <h1 className="text-lg text-white font-medium">Swap</h1>
               </div>
 
               <div className="flex gap-x-3 items-center">
                 <span className="text-shark-100 text-sm">
                   {/* {swapFee && swapFee != '0' && `${formatUnits(BigInt(swapFee), 4)}% fee`} */}
                 </span>
-                <div className="flex flex-row-reverse  items-center gap-3">
+                {/* <div className="flex flex-row-reverse  items-center gap-3">
                   <Switch active={showChart} setActive={handleSwitch} />
                   <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
-                </div> 
+                </div>  */}
                 <span onClick={handleSwitch} className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}></span>
                 <ReloadIcon
                   className="text-shark-100 !cursor-pointer"
