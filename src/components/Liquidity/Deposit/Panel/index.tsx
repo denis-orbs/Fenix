@@ -139,7 +139,7 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-[25px] font-semibold">
-            <h4 className="text-lg md:text-xl text-white font-medium">New Position</h4>
+            <h1 className="text-lg md:text-xl text-white font-medium">New Position</h1>
             <div className="flex items-center gap-[13px]">
             <span onClick={handleSwitch} className={`text-2xl ${disableChart ? 'cursor-not-allowed' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}></span>
               {/* <div className="flex items-center gap-[9px] h-10">

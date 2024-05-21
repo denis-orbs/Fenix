@@ -631,7 +631,7 @@ const Panel = () => {
           <div className="w-full relative">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-x-4 ">
-                <h4 className="text-lg text-white font-medium">Swap</h4>
+                <h1 className="text-lg text-white font-medium">Swap</h1>
               </div>
 
               <div className="flex gap-x-3 items-center">

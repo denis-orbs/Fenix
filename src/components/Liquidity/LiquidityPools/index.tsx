@@ -66,7 +66,7 @@ const LiquidityPools = () => {
        w-full xl:flex-row relative z-10 "
       >
         <div className="w-full xl:w-1/2">
-          <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
+          <h1 className="mb-3 text-xl text-white">Liquidity Pools</h1>
           <p className="mb-4 text-xs text-shark-100">
             Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and stake liquidity to earn rewards.
           </p>

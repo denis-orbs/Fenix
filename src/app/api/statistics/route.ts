@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { fetchv3Factories } from '@/src/state/liquidity/reducer'
 import { toBN } from '@/src/library/utils/numbers'
-import { PrismaClient } from '@prisma/client'
 export interface GlobalStatisticsData {
   totalVolume: number
   totalTVL: number
@@ -9,7 +8,7 @@ export interface GlobalStatisticsData {
   lastUpdate: string
   totalUsers: number
 }
-const prisma = new PrismaClient()
+import prisma from '@/src/library/utils/db'
 
 export async function GET(request: NextRequest): Promise<GlobalStatisticsData | NextResponse> {
   const [factoriesResult, usersResult] = await Promise.allSettled([fetchv3Factories(), prisma.users.count()])
@@ -34,9 +33,9 @@ export async function GET(request: NextRequest): Promise<GlobalStatisticsData | 
   return NextResponse.json(data, {
     status: 200,
     headers: {
-      'Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=2000',
-      'CDN-Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=2000',
-      'Vercel-CDN-Cache-Control': 'public, s-maxage=1800, stale-while-revalidate=2000',
+      'Cache-Control': 'public, s-maxage=180, stale-while-revalidate=200',
+      'CDN-Cache-Control': 'public, s-maxage=180, stale-while-revalidate=200',
+      'Vercel-CDN-Cache-Control': 'public, s-maxage=180, stale-while-revalidate=200',
     },
   })
 }
