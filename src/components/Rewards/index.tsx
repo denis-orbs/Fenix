@@ -12,6 +12,7 @@ const Rewards = () => {
   const [activeVote, setActiveVote] = useState(true)
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
+  const [searchValue, setSearchValue] = useState<string>('')
   // const filterData = DATA_ROW.filter((row) => row.type === currentTab)
 
   useEffect(() => {
@@ -33,12 +34,10 @@ const Rewards = () => {
       <h1 className="text-xl font-medium text-white">Rewards overview</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full ">
-          <Search searchValue="" setSearchValue={() => {}} />
+          <Search searchValue={searchValue} setSearchValue={setSearchValue} />
         </div>
       </div>
-
       <HeaderRowReward activeVote={activeVote} filterData={[{ type: '', APR: '' }]} loading={loading} />
-
       <SelectVote
         activeVote={activeVote}
         setActiveVote={setActiveVote}

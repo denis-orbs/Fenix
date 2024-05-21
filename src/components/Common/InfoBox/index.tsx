@@ -28,9 +28,8 @@ const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false, bgBox
       <div className={`xl:h-[60px] flex  gap-2 items-center p-3 mb-3 relative ${bgBox === '' ? 'box' : bgBox}`}>
         <div className="">
           <span
-            className={`inline-block text-lg text-transparent
-            bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${data.icon}`}
-          ></span>
+            className={`inline-block text-lg text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text ${data.icon} w-5`}
+          />
         </div>
         <div className="flex items-center justify-between w-full">
           <div className="xl:max-w-[280px] w-full">
@@ -51,7 +50,7 @@ const InfoBox = ({ data, setShowTooltip, hasDecorator, hasTooltip = false, bgBox
       </div>
       {hasDecorator && (
         <span className="absolute bottom-0 left-[10px] z-0">
-          <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-8" width={1} height={35} />
+          <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-6" width={1} height={35} />
         </span>
       )}
     </div>

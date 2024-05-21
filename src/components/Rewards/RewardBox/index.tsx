@@ -5,7 +5,7 @@ import InfoBox from '@/src/components/Common/InfoBox'
 import { REWARD_LIST } from '../data'
 const RewardBox = () => {
   return (
-    <MainBox>
+    <MainBox className='xl:min-h-[300px]'>
       <div className="flex flex-col items-center justify-between w-full xl:flex-row relative z-10">
         <div className="w-full xl:w-1/2">
           <h4 className="mb-3 text-2xl font-semibold text-white">Rewards</h4>
@@ -18,14 +18,14 @@ const RewardBox = () => {
               Connect your Wallet
             </Button>
           </div>
-          <div className="flex gap-2 items-center text-shark-100 text-xs py-2">
+          <Link href={""} className="flex gap-2 items-center text-shark-100 text-xs py-2">
             <span className="icon-link"></span>
             <p>About Migration</p>
-          </div>
+          </Link>
         </div>
-        <div className="relative flex flex-col w-full xl:w-[40%]">
+        <div className="relative flex justify-center flex-col xl:min-h-[250px] w-full xl:w-[40%]">
           {REWARD_LIST.map((exchange, index) => (
-            <InfoBox key={index} data={exchange} hasTooltip={false} />
+            <InfoBox key={index} data={exchange} hasTooltip={false} hasDecorator={index !== REWARD_LIST.length - 1} />
           ))}
           {/* <div className='mx-auto text-sm mt-5'>
             <Link target="_blank" href="https://discord.com/invite/fenixfi" className="text-shark-100 gap-2 flex items-center">
