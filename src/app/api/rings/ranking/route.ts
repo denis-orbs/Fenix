@@ -1,7 +1,6 @@
 import { toBN } from '@/src/library/utils/numbers'
-import { PrismaClient } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
-const prisma = new PrismaClient()
+import prisma from '@/src/library/utils/db'
 BigInt.prototype.toJSON = function () {
   return this.toString()
 }

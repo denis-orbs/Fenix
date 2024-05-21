@@ -38,12 +38,14 @@ const config: Config = {
             width: '100%',
           },
         },
-        /* 'vibrate': {
-          '0%, 100%': { transform: 'translateX(0)' },
-          '25%': { transform: 'translateX(-1px)' },
-          '50%': { transform: 'translateX(1px)' },
-          '75%': { transform: 'translateX(-1px)' },
-        }, */
+        'notification': {
+          '0%': { transform: 'translateX(0)' },
+          '20%': { transform: 'translateX(-1.2px)' },
+          '40%': { transform: 'translateX(1.2px)' },
+          '60%': { transform: 'translateX(-1.2px)' },
+          '80%': { transform: 'translateX(1.2px)' },
+          '100%': { transform: 'translateX(0px)' },
+        },
       },
       animation: {
         'spin-slow': 'spin 25s linear infinite',
@@ -51,7 +53,7 @@ const config: Config = {
 
         'toast-in': 'toast-in 250ms linear',
         progress: 'progress 3s linear',
-        // 'vibrate': '0.3s vibrate infinite 2.7s'
+        'notification': 'notification 2s infinite alternate'
       },
       backgroundImage: {
         // Gradients

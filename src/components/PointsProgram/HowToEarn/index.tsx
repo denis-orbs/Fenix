@@ -3,7 +3,7 @@
 const HowToEarn = () => {
   return (
     <div className="mb-10">
-      <h5 className="text-white text-lg mb-3 font-medium">How to earn points</h5>
+      <h2 className="text-white text-lg mb-3 font-medium">How to earn points</h2>
       <div className="flex items-center justify-between gap-5 relative">
         <div className="your-provide-box py-8">
           <div className="relative flex flex-col items-center z-50">
