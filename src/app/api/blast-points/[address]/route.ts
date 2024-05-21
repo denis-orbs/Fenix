@@ -1,7 +1,6 @@
+import prisma from '@/src/library/utils/db'
 import { NextRequest, NextResponse } from 'next/server'
 import { isAddress } from 'viem'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
 export interface UserBlastPointsData {
   id: string
   given_blast_poins: number

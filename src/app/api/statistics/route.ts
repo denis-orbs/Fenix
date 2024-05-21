@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { fetchv3Factories } from '@/src/state/liquidity/reducer'
 import { toBN } from '@/src/library/utils/numbers'
-import { PrismaClient } from '@prisma/client'
 export interface GlobalStatisticsData {
   totalVolume: number
   totalTVL: number
@@ -9,7 +8,7 @@ export interface GlobalStatisticsData {
   lastUpdate: string
   totalUsers: number
 }
-const prisma = new PrismaClient()
+import prisma from '@/src/library/utils/db'
 
 export async function GET(request: NextRequest): Promise<GlobalStatisticsData | NextResponse> {
   const [factoriesResult, usersResult] = await Promise.allSettled([fetchv3Factories(), prisma.users.count()])
