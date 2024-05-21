@@ -9,7 +9,10 @@ export default function ReferralsUpdater() {
   const pathName = usePathname()
   // Initialize Fuul SDK
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_FUUL_TRACKING_API_KEY) return
+    if (!process.env.NEXT_PUBLIC_FUUL_TRACKING_API_KEY) {
+      console.error('Fuul tracking API key is not set')
+      return
+    }
     Fuul.init({ apiKey: process.env.NEXT_PUBLIC_FUUL_TRACKING_API_KEY })
   }, [])
 
