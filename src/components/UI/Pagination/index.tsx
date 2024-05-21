@@ -56,7 +56,7 @@ const Pagination = ({
         <div className="w-[90%] flex items-center justify-center gap-2.5 h-[62px] relative z-10">
           <button
             type="button"
-            className={`flex items-center justify-center leading-normal gap-2.5 px-5 py-2.5 ${activePage === 1 ? 'text-shark-100 cursor-not-allowed' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} rounded-[10px] mr-1.5`}
+            className={`flex items-center justify-center leading-normal gap-2.5 px-5 py-2.5 ${activePage === 1 ? 'text-shark-100 opacity-60' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} rounded-[10px] mr-1.5`}
             onClick={hadlerPrev}
             disabled={activePage === 1}
           >
@@ -92,7 +92,7 @@ const Pagination = ({
             ))} */}
           <button
             type="button"
-            className={`flex items-center justify-center leading-normal ${activePage === numberPages ? 'text-shark-100 cursor-not-allowed' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} gap-2.5 px-5 py-2.5 rounded-[10px] ml-1.5`}
+            className={`flex items-center justify-center leading-normal ${activePage === numberPages ? 'text-shark-100 opacity-60' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} gap-2.5 px-5 py-2.5 rounded-[10px] ml-1.5`}
             onClick={hadlerNext}
             disabled={activePage === numberPages}
           >
