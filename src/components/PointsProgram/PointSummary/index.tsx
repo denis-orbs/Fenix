@@ -100,7 +100,7 @@ const PointSummary = ({ userData }: any) => {
   return (
     <section className="your-point-box">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center relative z-10">
-        <h5 className="text-white text-lg mb-3 font-medium">Your point summary</h5>
+        <h2 className="text-white text-lg mb-3 font-medium">Your point summary</h2>
         <Button className="w-full xl:w-auto" href="/liquidity">
           Provide Liquidity
         </Button>
