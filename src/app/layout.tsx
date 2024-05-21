@@ -41,7 +41,7 @@ const poppins = Poppins({
 })
 
 const { wallets } = getDefaultWallets()
-export const configwallets = createConfig({
+export const config = createConfig({
   chains: [blast],
   transports: {
     [blast.id]: fallback([
