@@ -46,7 +46,7 @@ const Leaderboard = () => {
   return (
     <div className="mb-10 w-full">
       <div className="flex flex-col xl:flex-row items-start w-full justify-between mb-8 xl:items-center">
-        <h5 className="text-white text-lg mb-3 font-medium">Leaderboard</h5>
+        <h2 className="text-white text-lg mb-3 font-medium">Leaderboard</h2>
       </div>
       <div className="relative">
         <div className="flex items-center w-full mb-3">

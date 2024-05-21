@@ -77,7 +77,7 @@ const Migration = () => {
   return (
     <div className="flex flex-col justify-between w-full md:gap-10 md:flex-row md:items-center z-50 relative">
       <div className="w-full my-5 md:w-[50%] xl:w-[40%] md:m-0">
-        <h4 className="mb-3 text-xl text-white">Migration Claim</h4>
+        <h1 className="mb-3 text-xl text-white">Migration Claim</h1>
         <p className="mb-4 text-sm text-shark-100">
           Deposit your CHR ecosystem tokens in order to migrate to our new Fenix!
         </p>

@@ -37,7 +37,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
   const addNotification = useNotificationAdderCallback()
-  const [itemsPerPage, setItemPerPage] = useState<any>(5)
+  const [itemsPerPage, setItemPerPage] = useState<number>(10)
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')

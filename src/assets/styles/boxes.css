@@ -326,12 +326,14 @@
   @apply relative
   bg-no-repeat
   bg-cover
-  xl:w-[420px]
-  h-[80px]
+  xl:w-[480px]
+  w-[400px]
+  h-[45px]
 
   before:content-[""]
   before:absolute
-  before:bg-[url("/static/images/header/header-landing3.svg")]
+  xl:before:bg-[url("/static/images/header/header-landing3.svg")]
+  before:bg-[url("/static/images/header/header-landing2.svg")]
   before:bg-no-repeat
   before:h-full
   before:bg-cover
@@ -341,7 +343,8 @@
 
   after:content-[""]
   after:absolute
-  after:bg-[url("/static/images/header/header-landing3.svg")]
+  xl:after:bg-[url("/static/images/header/header-landing3.svg")]
+  after:bg-[url("/static/images/header/header-landing2.svg")]
   after:bg-no-repeat
   after:bg-right
   after:h-full
