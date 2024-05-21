@@ -8,7 +8,7 @@ import MobileRow from './MobileRowNew'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
-import { totalCampaigns } from '@/src/library/utils/campaigns'
+import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { useQuery } from '@tanstack/react-query'
@@ -44,6 +44,8 @@ const RowData = ({
   const isHover = useHover(hoverRef)
 
   const [openInfo, setOpenInfo] = useState<boolean>(false)
+  const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
+  const [campaign, setCampaign] = useState<Campaign>()
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
   let aprdisplayIchi
@@ -73,6 +75,12 @@ const RowData = ({
 
   const { data: ringsApr, isLoading: rignsAprLoading } = useRingsPoolApr(row)
 
+  useEffect(() => {
+    const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
+    setCampaign({ ...campaign_ })
+    console.log('campaign_ >> ', campaign_)
+  }, [row])
+
   function getAverageApr(...aprs: number[]): string {
     const values = aprs.filter((apr) => apr !== 0)
     const sum = values.reduce((acc, curr) => acc + curr, 0)
@@ -86,7 +94,7 @@ const RowData = ({
       <TableRow className="hidden lg:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
           <div className="flex justify-center items-center gap-2">
-            <div className="flex items-center max-2xl:hidden">
+            <div className="flex items-center w-[40px]">
               <Image
                 src={`/static/images/tokens/${row.token0.symbol}.svg`}
                 alt="token"
@@ -102,33 +110,31 @@ const RowData = ({
                 height={20}
               />
             </div>
-            <div className="flex flex-col">
-              <h5
-                className={`text-xs text-white ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'flex items-center justify-around' : ''}`}
-              >
+            <div className="flex flex-col gap-1">
+              <h5 className={`text-xs text-white h-[26px] flex items-center`}>
                 <div>
                   {row.token0.symbol} / {row.token1.symbol}
-                </div>{' '}
-                <div>
-                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
                 </div>
               </h5>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 h-[26px]">
                 <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
-                <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
                   {/* FEES */}
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
               </div>
-              <div className="py-2">
-                <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
-              </div>
+              <span
+                className={`!py-1 h-[26px] px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+              >
+                {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
+                {/* <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p> */}
+              </span>
             </div>
           </div>
         </TableCell>
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[20%]'} flex justify-end items-center`}>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[15%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
-            <span ref={hoverRef} className="flex gap-2">
+            {/* <span ref={hoverRef} className="flex gap-2">
               {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
                 <span ref={hoverRef} className="flex flex-row transition-transform transform group">
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
@@ -150,33 +156,59 @@ const RowData = ({
                       <Image
                         src={`/static/images/point-stack/blast-gold.svg`}
                         alt="token"
-                        className={``}
+                        className={`${row.token0.symbol === 'USDB' && row.token1.symbol === 'WETH' ? '' : 'hidden'}`}
                         width={20}
                         height={20}
                       />
                     </>
                   )}
-
-                  {/* <Image
-                src={`/static/images/tokens/${row.token0.symbol}.png`}
-                alt="token"
-                className={`-mr-4 group-hover:mr-0 transition-all duration-300 rounded-full w-7 h-7`}
-                width={20}
-                height={20}
-              />
-              <Image
-                src={`/static/images/tokens/${row.token1.symbol}.png`}
-                alt="token"
-                className={`ml-0 transition-all duration-300 rounded-full w-7 h-7`}
-                width={20}
-                height={20}
-              /> */}
                 </span>
               )}
-            </span>
+            </span> */}
+            {
+              <span ref={hoverRef} className="flex gap-2">
+                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}>
+                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
+                    <>
+                      {campaign?.pointStack?.map((stack, index) => (
+                        <Image
+                          key={index}
+                          src={`/static/images/point-stack/${stack}.svg`}
+                          alt="token"
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold ? 'z-[100]' : 'z-0'}`}
+                          width={20}
+                          height={20}
+                          onMouseEnter={() => {
+                            if (stack === 'blast-gold') {
+                              setOpenTooltipGold(true)
+                            }
+                          }}
+                          onMouseLeave={() => setOpenTooltipGold(false)}
+                        />
+                      ))}
+                    </>
+                  )}
+                  {openTooltipGold && (
+                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                        <p className="text-xs">The pool is receiving 7000 Gold from May 15th - 31st</p>
+                      </div>
+                    </div>
+                  )}
+                </span>
+              </span>
+            }
           </div>
         </TableCell>
-        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-end items-center`}>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[13%]'} flex justify-end items-center`}>
+          <div className="relative flex justify-center items-center gap-2 ">
+            <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              {/* TVL */}
+              {formatDollarAmount(Number(row.totalValueLockedUSD))}
+            </p>
+          </div>
+        </TableCell>
+        <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[13%]'} flex justify-end items-center`}>
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* APR */}
@@ -194,7 +226,7 @@ const RowData = ({
               )}
             </p>
             {openInfo && (
-              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[200px] top-9 px-5 py-3 transform left-1/2 -translate-x-1/2 gap-y-1">
                 <div className="flex justify-between items-center gap-3">
                   <p className="text-sm">Fees APR</p>
                   <p className="text-sm text-chilean-fire-600">{formatAmount(Number(row?.apr) || 0, 2)}%</p>
@@ -214,7 +246,9 @@ const RowData = ({
                 {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">Ichi Strategy</p>
-                    <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>
+                    <p className="text-sm text-chilean-fire-600">
+                      {formatAmount(Number(ichiApr) < 0 ? 0 : Number(ichiApr) || 0, 2)}%
+                    </p>
                   </div>
                 )}
               </div>
@@ -237,11 +271,11 @@ const RowData = ({
           </div>
         </TableCell> */}
 
-        <TableCell className="w-[15%]">
+        <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* VOLUME */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
@@ -266,11 +300,11 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="w-[15%]">
+        <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* FEES */}
             <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
-            <div className="flex flex-col  gap-2">
+            <div className="flex flex-col  gap-1">
               <p className="flex  items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
                   src={`/static/images/tokens/${row.token0.symbol}.png`}
@@ -295,7 +329,7 @@ const RowData = ({
           </div>
         </TableCell>
 
-        <TableCell className="flex  items-center justify-end w-[20%]">
+        <TableCell className="flex  items-center justify-end w-[13%]">
           <div className="flex gap-2 w-full justify-end">
             {titleButton === '' ? (
               <></>

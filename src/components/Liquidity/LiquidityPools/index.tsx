@@ -26,15 +26,16 @@ const LiquidityPools = () => {
     tokensData(liquidityTable)
     // fetchData()
   }, [])
-  const [globalStatistics, setGlobalStatistics] = useState<Awaited<ReturnType<typeof fetchGlobalStatistics>>>()
+  const [globalStatistics, setGlobalStatistics] =
+    useState<Omit<Awaited<ReturnType<typeof fetchGlobalStatistics>>, 'totalUsers'>>()
 
   useEffect(() => {
     const fetchAndSetStatistics = async () => {
-      const statistics = await fetchv3Factories()
+      const statistics = await fetchGlobalStatistics()
       setGlobalStatistics({
-        totalTVL: toBN(statistics[0].totalValueLockedUSD).toNumber(),
-        totalVolume: toBN(statistics[0].totalVolumeUSD).toNumber(),
-        totalFees: toBN(statistics[0].totalFeesUSD).toNumber(),
+        totalTVL: toBN(statistics?.totalTVL || 0).toNumber(),
+        totalVolume: toBN(statistics?.totalVolume || 0).toNumber(),
+        totalFees: toBN(statistics?.totalFees || 0).toNumber(),
         lastUpdate: new Date().toISOString(),
       })
       EXCHANGE_LIST[0].description = globalStatistics?.totalTVL
@@ -64,12 +65,12 @@ const LiquidityPools = () => {
         className="flex flex-col items-center justify-between
        w-full xl:flex-row relative z-10 "
       >
-        <div className="w-full xl:w-1/2">
-          <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
+        <div className="w-full xl:w-1/2 relative">
+          <h1 className="mb-3 text-xl text-white">Liquidity Pools</h1>
           <p className="mb-4 text-xs text-shark-100">
             Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and stake liquidity to earn rewards.
           </p>
-          <div className="flex flex-col gap-2 mb-8 md:flex-row">
+          <div className="flex flex-col gap-2 mb-8 md:flex-row z-[3000]">
             <Button href="liquidity/deposit?type=CONCENTRATED_MANUAL&token0=0x4300000000000000000000000000000000000003&token1=0x4300000000000000000000000000000000000004">
               <div className="flex gap-2 ">
                 <span className="icon-send"></span>

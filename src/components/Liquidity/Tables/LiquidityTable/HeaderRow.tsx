@@ -1,3 +1,4 @@
+'use client'
 import { Button, Pagination, PaginationMobile, TableBody, TableHead, TableSkeleton } from '@/src/components/UI'
 import { BasicPool, PoolData } from '@/src/state/liquidity/types'
 import { Fragment, useEffect, useState } from 'react'
@@ -7,6 +8,7 @@ import { useAccount, useChainId, useChains } from 'wagmi'
 import { useWindowSize } from 'usehooks-ts'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import { fetchRingsPoolApr } from './getAprRings'
 
 interface HeaderRowProps {
   loading: boolean
@@ -34,9 +36,10 @@ const HeaderRow = ({
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
-  const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
+  const [sort, setSort] = useState<'asc' | 'desc' | 'normal'>('normal')
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
   const [sortIndex, setSortIndex] = useState<number>(-1)
+  const [isSetRingsApr, setIsSetRingsApr] = useState<boolean>(false)
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
@@ -53,8 +56,6 @@ const HeaderRow = ({
     const end = start + itemsPerPage
     const paginatedItems = items.slice(start, end)
 
-    
-
     return paginatedItems
   }
 
@@ -63,41 +64,129 @@ const HeaderRow = ({
   const { isConnected } = useActiveConnectionDetails()
 
   useEffect(() => {
-    if (paginationResult && paginationResult.length > 0) {
-      if (sort === 'asc') {
-        const sortedPaginationResult = [...paginationResult]
-        const sortArr = sortedPaginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
-        })
-        setPaginationResult([...sortArr])
-      } else {
-        const sortedPaginationResult = [...paginationResult]
-        const sortArr = paginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-        })
-        setPaginationResult([...sortArr])
+    const sortData = async () => {
+      if (paginationResult && paginationResult.length > 0) {
+        if (sort === 'asc') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          if (sortIndex === 0) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
+            })
+          }
+          if (sortIndex === 3) {
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.aprRings), Number(b.aprRings))
+            })
+          }
+          if (sortIndex === 4) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.volumeUSD), Number(b.volumeUSD))
+            })
+          }
+          if (sortIndex === 5) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.feesUSD), Number(b.feesUSD))
+            })
+          }
+          setPaginationResult([...sortArr])
+        } else if (sort === 'desc') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          if (sortIndex === 0) {
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+            })
+          }
+          if (sortIndex === 3) {
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.aprRings), Number(a.aprRings))
+            })
+          }
+          if (sortIndex === 4) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.volumeUSD), Number(a.volumeUSD))
+            })
+          }
+          if (sortIndex === 5) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.feesUSD), Number(a.feesUSD))
+            })
+          }
+          setPaginationResult([...sortArr])
+        } else if (sort === 'normal') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          sortArr = sortedPaginationResult.sort((a, b) => {
+            return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+          })
+          setPaginationResult([...sortArr])
+        }
       }
     }
-  }, [sort, chainId, paginationStatus, paginationResult])
+    sortData()
+  }, [sort, chainId])
 
   useEffect(() => {
-    setPaginationResult(poolsData)
+    const arrNew = [...poolsData]
+    setPaginationResult([...arrNew])
   }, [poolsData])
-
-  /* useEffect(() => {
-    if (paginationStatus && paginationResult && paginationResult.length > 0) {
-      // setSort('asc')
-      setPaginationResult(
-        paginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-        })
-      )
+  useEffect(() => {
+    if (!isSetRingsApr) {
+      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
+        const getRigns = async () => {
+          let newArr: any = [...paginationResult]
+          newArr = await Promise.all(
+            newArr.map(async (pool: any) => {
+              if (pool?.id) {
+                return {
+                  ...pool,
+                  aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+                }
+              } else {
+                return {
+                  ...pool,
+                }
+              }
+            })
+          )
+          setPaginationResult([...newArr])
+          setIsSetRingsApr(true)
+        }
+        getRigns()
+      }
     }
-  }, [paginationStatus, paginationResult]) */
+  }, [paginationResult])
+
+  useEffect(() => {
+    if (!isSetRingsApr) {
+      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
+        const getRigns = async () => {
+          let newArr: any = [...paginationResult]
+          newArr = await Promise.all(newArr.map(async (pool:any) => {
+            if (pool?.id) {
+              return {
+                ...pool,
+                aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+              }
+            } else {
+              return {
+                ...pool,
+              }
+            }
+          }))
+          setPaginationResult([...newArr])
+          setIsSetRingsApr(true)
+        }
+        getRigns()
+      }
+    }
+  }, [paginationResult])
 
   function compareBigDecimal(a: any, b: any) {
     return a - b
   }
+
   const pagination = paginate(paginationResult, activePage, itemsPerPage)
   const { width } = useWindowSize()
   return (
@@ -108,25 +197,25 @@ const HeaderRow = ({
             items={[
               {
                 text: 'Pair',
-                className: `${activeRange ? 'w-[20%]' : 'w-[20%]'}`,
+                className: `${activeRange ? 'w-[20%]' : 'w-[30%]'}`,
                 sortable: true,
               },
               RANGE,
-              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[20%]'} text-right` },
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-right`, sortable: true },
-              // { text: 'TVL', className: 'w-[10%] text-right', sortable: true },
+              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right` },
+              { text: 'TVL', className: 'w-[13%] text-right', sortable: true },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[13%]'} text-right`, sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
-                className: 'w-[15%] text-right',
+                className: 'w-[13%] text-right',
                 sortable: true,
               },
               // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
-                className: 'w-[15%] text-right',
+                className: 'w-[13%] text-right',
                 sortable: true,
               },
-              { text: 'Action', className: 'w-[20%] flex justify-end', sortable: false },
+              { text: 'Action', className: 'w-[13%] flex justify-end', sortable: false },
             ]}
             setSort={setSort}
             sort={sort}
