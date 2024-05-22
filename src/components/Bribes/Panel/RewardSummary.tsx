@@ -10,14 +10,14 @@ const RewardSummary = () => {
           <div className="flex items-center gap-2.5 mb-2.5">
             <div className="flex items-center flex-shrink-0">
               <Image
-                src="/static/images/tokens/FNX.svg"
+                src="/static/images/tokens/bribes.svg"
                 alt="token"
                 className="rounded-full w-6 h-6"
                 width={30.5}
                 height={30.5}
               />
               <Image
-                src="/static/images/tokens/ETH.svg"
+                src="/static/images/tokens/bribes.svg"
                 alt="token"
                 className="-ml-2.5 md:-ml-2 rounded-full w-6 h-6"
                 width={30.5}
@@ -25,26 +25,18 @@ const RewardSummary = () => {
               />
             </div>
             <div className="flex gap-5">
-              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">FNX / ETH</h5>
-              <div className="flex items-center gap-3 max-md:flex-wrap">
-                <span className="bg-green-300 py-1 px-2 bg-opacity-20 rounded-lg text-white border border-green-500 text-xs">
-                  Volatile
-                </span>
-
-                <Button
-                  variant="tertiary"
-                  className="!px-5 !py-0 h-[28px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
-                >
-                  0.0%
-                </Button>
+              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">- / -</h5>
+              <div className="flex items-center gap-5 max-md:flex-wrap">
+                <span className=" text-shark-100  text-xs">Volatile</span>
+                <span className="text-xs text-shark-100">0.0%</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="text-xs leading-normal text-white">
+        <div className="text-xs  text-center leading-normal text-shark-100">
           <p className="md:mb-[5px]">Rewards</p>
-          <p className="md:mb-[5px]">$160.42</p>
+          <p className="md:mb-[5px]">$0.00</p>
         </div>
       </div>
     </>

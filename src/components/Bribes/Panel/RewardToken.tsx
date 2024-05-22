@@ -22,7 +22,7 @@ const RewardToken = ({ token, setToken }: RewardTokenProps) => {
         <p className="text-white text-sm">Reward Token</p>
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
-          <span>Available: 0.00 ETH</span>
+          <span className='text-xs'>Available: 0.00 ETH</span>
         </p>
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3 cursor-pointer" onClick={handlerSelectToken}>
@@ -30,7 +30,7 @@ const RewardToken = ({ token, setToken }: RewardTokenProps) => {
           <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
             <div className="flex items-center gap-2">
               <Image
-                src={`/static/images/tokens/${token.symbol}.png`}
+                src={`/static/images/tokens/${token.symbol}.svg`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}
