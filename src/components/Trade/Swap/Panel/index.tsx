@@ -6,7 +6,7 @@ import Swap from '@/src/components/Trade/Swap/Panel/Swap'
 import For from '@/src/components/Trade/Swap/Panel/For'
 import Separator from '@/src/components/Trade/Common/Separator'
 import { TransactionExecutionError, erc20Abi, formatUnits, parseUnits, zeroAddress } from 'viem'
-import { useSimulateContract } from 'wagmi'
+import { useAccount, useSimulateContract } from 'wagmi'
 import { type WriteContractErrorType } from '@wagmi/core'
 import Chart from '@/src/components/Liquidity/Deposit/Chart'
 import { useShowChart, useSetChart } from '@/src/state/user/hooks'
@@ -63,6 +63,7 @@ const Panel = () => {
   const slippage = useSlippageTolerance()
   const { openConnectModal } = useConnectModal()
   const { account, isConnected } = useActiveConnectionDetails()
+  const chainId = useAccount()
   const addNotification = useNotificationAdderCallback()
   const readNotification = useReadNotificationCallback()
   const handleTransactionSuccess = (
@@ -155,14 +156,16 @@ const Panel = () => {
   useEffect(() => {
     const fetchTokenPrices = async () => {
       try {
-        const data = await fetchTokens()
-
-        // USDB Because it's the default token sell
-        const sellPrice = updateTokenPrice(data, 'USDB')
-        if (sellPrice !== null && tokenSell?.symbol === 'USDB') setTokenSell((prev) => ({ ...prev, price: sellPrice }))
-        // WETH Because it's the default token get
-        const getPrice = updateTokenPrice(data, 'WETH')
-        if (getPrice !== null && tokenGet?.symbol === 'WETH') setTokenGet((prev) => ({ ...prev, price: getPrice }))
+        if (chainId) {
+          const data = await fetchTokens(chainId)
+          // USDB Because it's the default token sell
+          const sellPrice = updateTokenPrice(data, 'USDB')
+          if (sellPrice !== null && tokenSell?.symbol === 'USDB')
+            setTokenSell((prev) => ({ ...prev, price: sellPrice }))
+          // WETH Because it's the default token get
+          const getPrice = updateTokenPrice(data, 'WETH')
+          if (getPrice !== null && tokenGet?.symbol === 'WETH') setTokenGet((prev) => ({ ...prev, price: getPrice }))
+        }
       } catch (error) {
         console.error('Failed to fetch token prices:', error)
       }
@@ -608,8 +611,11 @@ const Panel = () => {
                 <div className="flex flex-row-reverse  items-center gap-3">
                   <Switch active={showChart} setActive={handleSwitch} />
                   <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
-                </div> 
-                <span onClick={handleSwitch} className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}></span>
+                </div>
+                <span
+                  onClick={handleSwitch}
+                  className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}
+                ></span>
                 <ReloadIcon
                   className="text-shark-100 !cursor-pointer"
                   onClick={() => {
@@ -638,7 +644,9 @@ const Panel = () => {
                 />
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
               </div>
-              <div className={`${toBN(priceImpact).abs().gt(3) ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}>
+              <div
+                className={`${toBN(priceImpact).abs().gt(3) ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}
+              >
                 <span className="icon-info text-base"></span>
                 This transaction apperars to have a price impact greater than 5%. Research risks before swapping.
               </div>

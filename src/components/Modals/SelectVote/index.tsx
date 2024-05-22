@@ -3,42 +3,54 @@
 import { Modal } from '@/src/components/UI'
 import { LockElement } from '@/src/library/structures/lock/LockElement'
 import formatDate from '@/src/library/utils/foramatDate'
-import { AppThunkDispatch, useAppDispatch, useAppSelector } from '@/src/state'
-import { fetchNftsAsync, setLock } from '@/src/state/lock/reducer'
-import { lockState } from '@/src/state/lock/types'
+import { getUserVeFNXLockPositions } from '@/src/library/web3/LockManagment'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useCallback, useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 interface SelectVoteProps {
   openModal: boolean
   setOpenModal: (openModal: boolean) => void
+  setlock: (value: LockElement) => void
   activeVote: boolean
   setActiveVote: (parameter: boolean) => void
 }
 
-const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote }: SelectVoteProps) => {
+const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote, setlock }: SelectVoteProps) => {
+  const { address, chainId } = useAccount()
+  const [loading, setLoading] = useState(true)
   const [nowTime, setnowTime] = useState<Number>(0)
-  const handlerClose = () => setOpenModal(false)
-  const handlerChange = () => (activeVote ? setActiveVote(false) : setActiveVote(true), setOpenModal(false))
-  const { address } = useAccount()
-  const locks = useAppSelector((state) => state.lock as lockState)
-  const dispatch = useDispatch<AppThunkDispatch>()
-
+  const [locks, setLocks] = useState<LockElement[]>([])
   useEffect(() => {
-    if (address) dispatch(fetchNftsAsync(address))
+    loadCurrentLocks()
     const now = new Date().getTime() / 1000
     setnowTime(now)
   }, [address])
 
+  const loadCurrentLocks = useCallback(async () => {
+    if (!address && !chainId) {
+      setLoading(() => false)
+      return
+    }
+
+    try {
+      setLoading(() => true)
+      if (address && chainId) {
+        const resp = await getUserVeFNXLockPositions(address, chainId)
+        setLocks(resp)
+      }
+    } finally {
+      setLoading(() => false)
+    }
+  }, [address])
+
+  const handlerClose = () => setOpenModal(false)
+  const handlerChange = () => (activeVote ? setActiveVote(false) : setActiveVote(true), setOpenModal(false))
+
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
       <div className="common-modal">
-        <span
-          className="absolute top-0 right-0 text-2xl cursor-pointer icon-x p-2 2xl:p-0 text-shark-100"
-          onClick={handlerClose}
-        />
+        <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
         <div className="relative z-10 w-full h-full">
           <h1 className="mb-2 text-lg font-medium text-white">Select veFNX to Vote</h1>
           <div className="mb-4">
@@ -53,22 +65,18 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote }: Sele
           </div>
           <div>
             <div className="flex text-sm text-shark-100">
-              <p className="w-[45%] text-xs">Lock ID</p>
-              <div className="flex gap-4 text-xs">
-                <p className="text-center">Position</p>
-                <p className="text-center">Voting Power</p>
-                <p className="text-right">Rewards</p>
+              <p className="w-[45%]">Lock ID</p>
+              <div className="flex gap-2">
+                <p>Position</p>
+                <p>Voting Power</p>
+                <p>Rewards</p>
               </div>
             </div>
 
             <div className="max-h-[220px] overflow-y-auto">
-              {locks.positions.map((lock: LockElement, index: number) => {
+              {locks.map((lock, index) => {
                 return (
-                  <div
-                    key={index}
-                    className="flex flex-col gap-3 cursor-pointer"
-                    onClick={() => dispatch(setLock(lock.veNFTInfo))}
-                  >
+                  <div key={index} className="flex flex-col gap-3 cursor-pointer" onClick={() => setlock(lock)}>
                     <div
                       onClick={handlerChange}
                       className="flex flex-wrap items-center justify-between p-4 mt-2 text-xs rounded-lg xl:flex-nowrap bg-shark-400 bg-opacity-40"

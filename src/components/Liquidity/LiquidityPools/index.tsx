@@ -12,14 +12,16 @@ import { v2FactoryData, v3FactoryData } from '@/src/state/liquidity/types'
 import { useAppSelector } from '@/src/state'
 import { fetchGlobalStatistics } from '@/src/state/liquidity/thunks'
 import { formatDollarAmount, toBN } from '@/src/library/utils/numbers'
+import { useAccount } from 'wagmi'
 
 const LiquidityPools = () => {
   const [tokens, setTokens] = useState<Number>(0)
   const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
+  const { chainId } = useAccount()
   // console.log(liquidityTable, 'liquidityTable')
 
   const tokensData = async (liquidityTable: any) => {
-    setTokens((await fetchTokens()).length)
+    if (chainId) setTokens((await fetchTokens(chainId)).length)
   }
 
   useEffect(() => {

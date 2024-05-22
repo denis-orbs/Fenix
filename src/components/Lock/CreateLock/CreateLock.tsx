@@ -44,7 +44,7 @@ const CreateLock = () => {
   const [changeValue, setChangeValue] = useState(7)
   const OPTIONS = ['7D', '3M', '6M']
   const { address, chainId } = useAccount()
-  const [currentButtonState, setCurrentButtonState] = useState(ButtonState.CREATE_LOCK)
+  const [currentButtonState, setCurrentButtonState] = useState(ButtonState.APPROVAL_REQUIRED)
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
   const [fnxBalance, setFnxBalance] = useState<string>('0')
   const [lockAmount, setlockAmount] = useState<string>('0')
@@ -236,7 +236,12 @@ const CreateLock = () => {
                   className="w-full bg-shark-400 p-3 rounded-lg outline-none bg-opacity-40 text-shark-100 border border-shark-300"
                   placeholder="0"
                   value={lockAmount ? formatPrice(lockAmount, 2) : '0'}
-                  onUserInput={(input) => setlockAmount(input)}
+                  onUserInput={(input) => {
+                    setlockAmount(input)
+                    Number(lockAmount) > Number(tokenAllowance)
+                      ? setCurrentButtonState(ButtonState.APPROVAL_REQUIRED)
+                      : setCurrentButtonState(ButtonState.CREATE_LOCK)
+                  }}
                 />
                 <input
                   type="button"

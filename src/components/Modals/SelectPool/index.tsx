@@ -12,7 +12,7 @@ import { useAccount } from 'wagmi'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
-interface SelectTokenProps {
+interface SelectPoolProps {
   openModal: boolean
   setOpenModal: (openModal: boolean) => void
   setToken: (token: IToken) => void
@@ -21,7 +21,7 @@ interface SelectTokenProps {
   tokenBalances?: { [key: `0x${string}`]: string }
 }
 
-const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalances, tokenList }: SelectTokenProps) => {
+const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalances, tokenList }: SelectPoolProps) => {
   const [_tokenList, setTokenList] = useState<IToken[]>(tokenList ? tokenList : [])
   const [_commonList, setCommonList] = useState<IToken[]>(commonList ? commonList : [])
   const [searchValue, setSearchValue] = useState<string>('')
@@ -227,4 +227,4 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   )
 }
 
-export default SelectToken
+export default SelectPool

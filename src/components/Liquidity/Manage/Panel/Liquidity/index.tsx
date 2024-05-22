@@ -96,7 +96,7 @@ const Manage = ({}: {}) => {
 
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
-  const account = useAccount()
+  const { address, chainId } = useAccount()
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
 
   const { writeContractAsync } = useWriteContract()
@@ -112,12 +112,12 @@ const Manage = ({}: {}) => {
   const asyncGetAllowance = async (token1: Address, token2: Address) => {
     const allowanceFirst: any = await getTokenAllowance(
       token1,
-      account.address as Address,
+      address as Address,
       contractAddressList.cl_manager as Address
     )
     const allowanceSecond: any = await getTokenAllowance(
       token2,
-      account.address as Address,
+      address as Address,
       contractAddressList.cl_manager as Address
     )
 
@@ -126,26 +126,28 @@ const Manage = ({}: {}) => {
   }
   const getList = async (token0: Address, token1: Address) => {
     try {
-      const responseData = await fetchTokens()
+      if (chainId) {
+        const responseData = await fetchTokens(chainId)
 
-      const parsedData = responseData.map((item: any) => {
-        return {
-          id: 0,
-          name: item.basetoken.name,
-          symbol: item.basetoken.symbol,
-          address: item.basetoken.address,
-          decimals: item.decimals,
-          img: item.logourl,
-          isCommon: item.common,
-          price: parseFloat(item.priceUSD),
-        }
-      })
+        const parsedData = responseData.map((item: any) => {
+          return {
+            id: 0,
+            name: item.basetoken.name,
+            symbol: item.basetoken.symbol,
+            address: item.basetoken.address,
+            decimals: item.decimals,
+            img: item.logourl,
+            isCommon: item.common,
+            price: parseFloat(item.priceUSD),
+          }
+        })
 
-      parsedData.map((item: any) => {
-        if (item.address.toLowerCase() == token0.toLowerCase()) setFirstToken(item)
-        if (item.address.toLowerCase() == token1.toLowerCase()) setSecondToken(item)
-      })
-      setIsLoading(false)
+        parsedData.map((item: any) => {
+          if (item.address.toLowerCase() == token0.toLowerCase()) setFirstToken(item)
+          if (item.address.toLowerCase() == token1.toLowerCase()) setSecondToken(item)
+        })
+        setIsLoading(false)
+      }
     } catch (error) {}
   }
   const updatePositionData = async (positionId: any) => {
@@ -177,11 +179,11 @@ const Manage = ({}: {}) => {
     } else {
       updatePositionData(positionId)
     }
-  }, [])
+  }, [chainId])
 
   useEffect(() => {
     asyncGetAllowance(firstToken.address as Address, secondToken.address as Address)
-  }, [firstToken, secondToken, account.address])
+  }, [firstToken, secondToken, address])
 
   useEffect(() => {
     if (!positionData) return
@@ -366,7 +368,7 @@ const Manage = ({}: {}) => {
         args: [
           firstToken.address,
           Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
-          account.address,
+          address,
         ],
       }),
       encodeFunctionData({
@@ -375,7 +377,7 @@ const Manage = ({}: {}) => {
         args: [
           secondToken.address,
           Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
-          account.address,
+          address,
         ],
       }),
     ]

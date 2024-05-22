@@ -9,6 +9,7 @@ import { V2PairId } from '@/src/state/liquidity/types'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useAccount } from 'wagmi'
 
 const DepositTypeValues = {
   VOLATILE: 'VOLATILE',
@@ -42,7 +43,7 @@ const Panel = () => {
   const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
   const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
   const [pair, setPair] = useState<V2PairId>()
-
+  const { chainId } = useAccount()
   useEffect(() => {
     const searchParamToken0 = searchParams.get('token0')
     const searchParamToken1 = searchParams.get('token1')
@@ -60,30 +61,32 @@ const Panel = () => {
   useEffect(() => {
     const getList = async () => {
       try {
-        const responseData = await fetchTokens()
+        if (chainId) {
+          const responseData = await fetchTokens(chainId)
 
-        const parsedData = responseData.map((item: any) => {
-          return {
-            id: 0,
-            name: item.basetoken.name,
-            symbol: item.basetoken.symbol,
-            address: item.basetoken.address,
-            decimals: item.decimals,
-            img: item.logourl,
-            isCommon: item.common,
-            price: parseFloat(item.priceUSD),
-          }
-        })
-
-        const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken]
-        if (defaultPairs.length > 0) {
-          parsedData.map((item: any) => {
-            if (item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
-            if (item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
+          const parsedData = responseData.map((item: any) => {
+            return {
+              id: 0,
+              name: item.basetoken.name,
+              symbol: item.basetoken.symbol,
+              address: item.basetoken.address,
+              decimals: item.decimals,
+              img: item.logourl,
+              isCommon: item.common,
+              price: parseFloat(item.priceUSD),
+            }
           })
-          setDefaultPairs([])
+
+          const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken]
+          if (defaultPairs.length > 0) {
+            parsedData.map((item: any) => {
+              if (item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
+              if (item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
+            })
+            setDefaultPairs([])
+          }
+          setDefaultPairsTokens(newDefaultPairsTokens)
         }
-        setDefaultPairsTokens(newDefaultPairsTokens)
       } catch (error) {}
     }
 

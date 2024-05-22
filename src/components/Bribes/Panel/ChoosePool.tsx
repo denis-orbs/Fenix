@@ -5,8 +5,8 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import SelectToken from '@/src/components/Modals/SelectToken'
 
-
 import { IToken } from '@/src/library/types'
+import SelectPool from '../../Modals/SelectPool'
 
 interface ChoosePoolProps {
   token: IToken
@@ -27,8 +27,8 @@ const ChoosePool = ({ token, setToken, setValue, value }: ChoosePoolProps) => {
       <div className="flex items-center justify-between mb-3">
         <p className="text-white text-sm">Choose a pool</p>
         <p className="text-shark-100 flex gap-3 text-sm items-center">
-          <span className="icon-wallet text-xs"></span>
-          <span>Available: 0.00 ETH</span>
+          {/* <span className="icon-wallet text-xs"></span>
+          <span>Available: 0.00 ETH</span> */}
         </p>
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3">
@@ -51,7 +51,7 @@ const ChoosePool = ({ token, setToken, setValue, value }: ChoosePoolProps) => {
           </div>
         </div>
       </div>
-      <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
+      <SelectPool openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
     </div>
   )
 }

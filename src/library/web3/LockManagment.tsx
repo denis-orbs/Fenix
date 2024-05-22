@@ -55,11 +55,11 @@ export async function getUserVeFNXLockPositions(user: Address, chainId: number, 
     }
   }
 }
-export async function getIdVeFNXLockPositions(id: Number, retry = true): Promise<LockElement> {
+export async function getIdVeFNXLockPositions(id: Number, chainId: number, retry = true): Promise<LockElement> {
   try {
     const nft = (await readContract(wagmiConfig, {
       // name: 'VeNFTAPI',
-      address: VeNFTAPIV3Address,
+      address: chainId ? VE_NFT_API_ADDRESS[chainId] : VE_NFT_API_ADDRESS[FALLBACK_CHAIN_ID],
       abi: veNFTAPIABIV3,
       functionName: 'getNFTFromId',
       args: [id],
@@ -108,9 +108,9 @@ export async function createLock(fnxAmount: bigint, lockDuration: number, chainI
   return data?.hash as Hash
 }
 
-export async function mergeLock(tokenId1: number, tokenId2: number): Promise<Hash> {
+export async function mergeLock(tokenId1: number, tokenId2: number, chainId: number): Promise<Hash> {
   const data = await writeContract(wagmiConfig, {
-    address: VotingEscrowAddress,
+    address: chainId ? VOTING_ESCROW_ADDRESS[chainId] : VOTING_ESCROW_ADDRESS[FALLBACK_CHAIN_ID],
     abi: votingEscrowABI,
     functionName: 'merge',
     args: [tokenId1, tokenId2],
@@ -119,9 +119,9 @@ export async function mergeLock(tokenId1: number, tokenId2: number): Promise<Has
   return data as Hash
 }
 
-export async function transferLock(from: Address, to: Address, tokenId: number) {
+export async function transferLock(from: Address, to: Address, tokenId: number, chainId: number) {
   const data = await writeContract(wagmiConfig, {
-    address: VotingEscrowAddress,
+    address: chainId ? VOTING_ESCROW_ADDRESS[chainId] : VOTING_ESCROW_ADDRESS[FALLBACK_CHAIN_ID],
     abi: votingEscrowABI,
     functionName: 'transferFrom',
     args: [from, to, tokenId],
@@ -130,9 +130,9 @@ export async function transferLock(from: Address, to: Address, tokenId: number) 
   return data as Hash
 }
 
-export async function splitLock(cachos: number[], tokenId: number) {
+export async function splitLock(cachos: number[], tokenId: number, chainId: number) {
   const data = await writeContract(wagmiConfig, {
-    address: VotingEscrowAddress,
+    address: chainId ? VOTING_ESCROW_ADDRESS[chainId] : VOTING_ESCROW_ADDRESS[FALLBACK_CHAIN_ID],
     abi: votingEscrowABI,
     functionName: 'split',
     args: [cachos, tokenId],
@@ -141,20 +141,21 @@ export async function splitLock(cachos: number[], tokenId: number) {
   return data as Hash
 }
 
-export async function increaseLock(tokenId: number, amount: bigint): Promise<Hash> {
+export async function increaseLock(tokenId: number, amount: bigint, chainId: number): Promise<Hash> {
+  console.log(tokenId, amount, chainId, 'inn2')
   const data = await writeContract(wagmiConfig, {
-    address: VotingEscrowAddress,
+    address: chainId ? VOTING_ESCROW_ADDRESS[chainId] : VOTING_ESCROW_ADDRESS[FALLBACK_CHAIN_ID],
     abi: votingEscrowABI,
-    functionName: 'increase_amount',
+    functionName: 'deposit_for',
     args: [tokenId, amount],
   })
 
   return data as Hash
 }
 
-export async function increaseLockUntilTime(tokenId: number, lockUntil: number): Promise<Hash> {
+export async function increaseLockUntilTime(tokenId: number, lockUntil: number, chainId: number): Promise<Hash> {
   const data = await writeContract(wagmiConfig, {
-    address: VotingEscrowAddress,
+    address: chainId ? VOTING_ESCROW_ADDRESS[chainId] : VOTING_ESCROW_ADDRESS[FALLBACK_CHAIN_ID],
     abi: votingEscrowABI,
     functionName: 'increase_unlock_time',
     args: [tokenId, lockUntil],
