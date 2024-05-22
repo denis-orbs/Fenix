@@ -604,6 +604,7 @@ const Manage = ({}: {}) => {
           setSecondValue={setSecondValue}
           onTokenValueChange={handleOnTokenValueChange}
           option={optionActive}
+          hideTokenSwap={true}
         />
       </div>
 
