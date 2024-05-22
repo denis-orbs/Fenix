@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import RowSkeleton from '@/src/components/UI/Table/TableSkeleton'
-import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/src/components/UI'
+import { TableHead, TableBody, TableCell, TableRow, Button, Pagination, PaginationMobile } from '@/src/components/UI'
 import NotFoundLock from './NotFoundLock'
 import { useRouter } from 'next/navigation'
 import { useAccount } from 'wagmi'
@@ -22,9 +22,10 @@ type LOCK = {
 interface MyLocksProps {
   activePagination?: boolean
   Locks: LOCK[]
+  tab: string
 }
 
-const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
+const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
   const [nowTime, setnowTime] = useState<Number>(0)
   const { push } = useRouter()
   const router = useRouter()
@@ -42,6 +43,51 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
   const handleManage = (id: Number) => {
     router.push(`lock/${id}`)
   }
+
+  const [itemsPerPage, setItemPerPage] = useState<number>(5)
+  const [activePage, setActivePage] = useState<number>(1)
+
+  function paginate(items: any, currentPage: number, itemsPerPage: number) {
+    // Calculate total pages
+    const totalPages = Math.ceil(items.length / itemsPerPage)
+
+    // Ensure current page isn't out of range
+    currentPage = Math.max(1, Math.min(currentPage, totalPages))
+
+    const start = (currentPage - 1) * itemsPerPage
+    const end = start + itemsPerPage
+    const paginatedItems = items.slice(start, end)
+
+    return paginatedItems
+  }
+
+  let data
+  if (tab === 'ACTIVE') {
+    data = lock.positions.filter((pos) => {
+      if (BigInt(nowTime.toFixed(0).toString()) < pos.veNFTInfo.lockEnd) {
+        return pos
+      }
+    })
+  } else if (tab === 'EXPIRED') {
+    data = lock.positions.filter((pos) => {
+      if (BigInt(nowTime.toFixed(0).toString()) >= pos.veNFTInfo.lockEnd) {
+        return pos
+      }
+    })
+  } else if (tab === 'VOTE') {
+    data = lock.positions.filter((pos) => {
+      if (pos.veNFTInfo.voted) {
+        return pos
+      }
+    })
+  } else if (tab === 'NOT VOTE') {
+    data = lock.positions.filter((pos) => {
+      if (!pos.veNFTInfo.voted) {
+        return pos
+      }
+    })
+  } else data = lock.positions
+  const pagination = paginate(data, activePage, itemsPerPage)
 
   return (
     <>
@@ -72,7 +118,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                   </>
                 ) : (
                   <>
-                    {lock.positions.map((lock, index) => {
+                    {pagination.map((lock: any, index: number) => {
                       console.log(lock, 'lock')
                       return (
                         <TableRow key={index}>
@@ -161,19 +207,17 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                 )}
               </TableBody>
               {activePagination && (
-                <div className="items-center hidden md:flex">
-                  {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
+                <div className="items-center hidden xl:flex">
                   <Pagination
                     className="mx-auto"
-                    numberPages={7}
-                    activePage={1}
-                    itemsPerPage={20}
-                    setActivePage={() => {}}
-                    setItemPerPage={() => {}}
+                    numberPages={
+                      data ? Math.ceil(data.length / itemsPerPage) : Math.ceil(lock.positions.length / itemsPerPage)
+                    }
+                    activePage={activePage}
+                    itemsPerPage={itemsPerPage}
+                    setActivePage={setActivePage}
+                    setItemPerPage={setItemPerPage}
                   />
-                  <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
-                    <span className="text-lg text-white icon-cog cursor-pointer"></span>
-                  </div>
                 </div>
               )}
             </>
