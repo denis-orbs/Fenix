@@ -68,7 +68,7 @@ const HeaderRowReward = ({
             {activePagination && (
               <>
                 <div className="items-center hidden xl:flex py-4">
-                  <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
+                  {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
                   <Pagination
                     className="mx-auto"
                     numberPages={7}

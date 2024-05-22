@@ -37,7 +37,7 @@ const Rewards = () => {
           <Search searchValue={searchValue} setSearchValue={setSearchValue} />
         </div>
       </div>
-      <HeaderRowReward activeVote={activeVote} filterData={[{ type: '', APR: '' }]} loading={loading} />
+      <HeaderRowReward activeVote={activeVote} filterData={[]} loading={loading} />
       <SelectVote
         activeVote={activeVote}
         setActiveVote={setActiveVote}
