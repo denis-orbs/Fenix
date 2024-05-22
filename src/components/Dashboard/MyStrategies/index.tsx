@@ -119,11 +119,11 @@ const MyStrategies = () => {
             {position?.length >= 3 && (
               <div className="flex gap-2 justify-center">
                 <span
-                  className={`icon-arrow rotate-180 ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
+                  className={`icon-arrow-left ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
                   onClick={slideToLeft}
                 ></span>
                 <span
-                  className={`icon-arrow text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                  className={`icon-arrow-right text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
                   onClick={slideToRight}
                 ></span>
               </div>
