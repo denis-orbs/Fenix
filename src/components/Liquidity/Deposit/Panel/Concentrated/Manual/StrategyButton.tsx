@@ -83,11 +83,11 @@ const StrategyButton = ({
         <span className="icon-info text-[16px]"></span>
 
         {showTooltip && (
-          <div className="absolute bg-shark-400 bg-opacity-80 backdrop-blur-[15px] px-2.5 py-1.5 rounded-[10px] text-xs leading-normal text-shark-100 border border-shark-950 w-[148.5px] text-left bottom-full -translate-y-2.5">
-            <div className="mb-[5px]">
+          <div className="absolute bg-shark-400 bg-opacity-80 backdrop-blur-[15px] px-2.5 py-1.5 rounded-[10px] text-xs leading-normal text-white border border-shark-950 w-[148.5px] text-left top-full translate-y-2.5">
+            {/* <div className="mb-[5px]">
               <span className="icon-info text-[13px]"></span>
-            </div>
-            <div>{tooltipText}</div>
+            </div> */}
+            <div className='text-center z-20'>{tooltipText}</div>
           </div>
         )}
       </Button>
