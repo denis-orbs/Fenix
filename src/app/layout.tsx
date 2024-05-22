@@ -84,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <Head>
-        <link rel="icon" href="/static/images/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <body
         suppressHydrationWarning={true}
