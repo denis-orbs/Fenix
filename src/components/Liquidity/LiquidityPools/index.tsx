@@ -72,7 +72,7 @@ const LiquidityPools = () => {
           </p>
           <div className="flex flex-col gap-2 mb-8 md:flex-row z-[3000]">
             <Button href="liquidity/deposit?type=CONCENTRATED_MANUAL&token0=0x4300000000000000000000000000000000000003&token1=0x4300000000000000000000000000000000000004">
-              <div className="flex gap-2 text-xs">
+              <div className="flex gap-2 ">
                 <span className="icon-send"></span>
                 Create Position
               </div>
