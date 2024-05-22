@@ -132,7 +132,7 @@ const HeaderRowVote = ({
           </>
         ) : (
           <>
-          <NotFoundLock/>
+            <NotFoundLock />
           </>
         )}
       </div>

@@ -1737,11 +1737,11 @@ opacity-70
   bg-opacity-40
   xl:bg-transparent
   xl:bg-opacity-100
-
+  2xl:min-w-[180px]
   min-h-[89px]
   xl:max-h-[89px]
   2xl:max-w-[161px]
-  xl:max-w-[120px]
+  xl:max-w-[110px]
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/components/box/vote/box-medium.svg")]
@@ -1774,17 +1774,18 @@ opacity-70
   @apply relative
   w-full
   rounded-xl
-  
   flex-shrink-0
   /* 2xl:w-[615px] */
   bg-shark-400
   bg-opacity-40
+  min-w-[120px]
   xl:bg-transparent
   xl:bg-opacity-100
-
-  min-h-[42px]
-  xl:max-h-[42px]
-  xl:max-w-[161px]
+  xl:min-h-[36px]
+  xl:max-h-[45px]
+  xl:max-w-[160px]
+  2xl:min-h-[42px]
+  2xl:max-w-[160px]
 
   before:content-[""]
   before:absolute
