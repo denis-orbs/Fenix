@@ -73,7 +73,7 @@ const LockManage = () => {
               <ActiveVote handlerChange={handlerChange} />
 
               {currentTab === 'MERGE' && (
-                <div className="mx-auto absolute z-50 left-1/2 right-1/2 flex items-center  h-8 w-8 rotate-90 bg-shark-400 bg-opacity-40 p-1 rounded-md  border border-shark-300">
+                <div className="mx-auto flex items-center rounded-sm my-1  h-8 w-8 rotate-90 bg-shark-400 bg-opacity-40    ">
                   <span className="icon-swap mx-auto   text-2xl text-gradient"></span>
                 </div>
               )}
@@ -92,7 +92,7 @@ const LockManage = () => {
               </>
             )}
             {currentTab === 'MERGE' && (
-              <div className="mt-2">
+              <div className="-mt-[20px]">
                 <p className="text-white text-xs ms-1 mb-1">Merge With</p>
                 <Merge activeVote={activeVote} handlerChange={handlerChange} />
                 {/* <ConfirmMerge
