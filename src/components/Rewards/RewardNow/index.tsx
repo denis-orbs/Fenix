@@ -22,13 +22,13 @@ const RewardNow = ({ openModal, setOpenModal, activeVote }: RewardNowProps) => {
           {activeVote ? <ActiveVote handlerChange={handlerChange} /> : <InactiveVote handlerChange={handlerChange} />}
         </div>
         <div className="flex flex-wrap xl:flex-nowrap gap-3 mt-3  items-center w-full">
-          <div className="box-reward-medium">
+          <div className="box-reward-medium xl:w-1/2">
             <div className="flex items-center flex-col p-4 relative z-50">
               <p className="text-shark-100 text-xs">Fenix Balance</p>
               <p className="text-white text-2xl">0</p>
             </div>
           </div>
-          <div className="box-reward-medium">
+          <div className="box-reward-medium xl:w-1/2">
             <div className="flex items-center flex-col p-4 relative z-50">
               <p className="text-shark-100 text-xs">Rewards</p>
               <p className="text-2xl text-white">$0</p>

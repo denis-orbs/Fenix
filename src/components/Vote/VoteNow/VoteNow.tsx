@@ -31,19 +31,19 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
             <ActiveVote handlerChange={handlerChange} />
           </div>
           <div className="flex flex-wrap xl:flex-nowrap gap-3 mt-2 items-center w-full">
-            <div className="box-vote-medium">
+            <div className="box-vote-medium xl:w-[30%] 2xl:w-[32%]">
               <div className="relative z-50 flex items-center flex-col justify-center p-4">
                 <p className="text-shark-100 text-xs text-center">Fenix Balance</p>
                 <p className="text-white text-xl">0.00</p>
               </div>
             </div>
-            <div className="box-vote-medium">
+            <div className="box-vote-medium xl:w-[30%] 2xl:w-[32%]">
               <div className="relative z-50 flex items-center flex-col justify-center p-4">
                 <p className="text-shark-100 text-xs text-center">Emissions / % of Vote</p>
                 <p className="text-xl text-white">0%</p>
               </div>
             </div>
-            <div className="flex flex-col gap-3 w-full ">
+            <div className="flex flex-col gap-3 w-full xl:w-[30%] ">
               <div className="box-vote-short">
                 <div className="flex flex-col xl:flex-row text-xs text-white p-2 justify-center items-center xl:gap-3 ">
                   <p className="text-shark-100 line-clamp-1">Vating Apr</p> <p className="line-clamp-1">0%</p>

@@ -1823,8 +1823,8 @@ opacity-70
 
   min-h-[89px]
   xl:max-h-[89px]
-  2xl:max-w-[248px]
-  xl:max-w-[180px]
+  /* 2xl:max-w-[248px]
+  xl:max-w-[180px] */
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/components/box/rewards/box-reward.svg")]
@@ -1853,7 +1853,6 @@ opacity-70
 
 
 
-
 .box-vote-medium {
   @apply relative
   w-full
@@ -1864,16 +1863,26 @@ opacity-70
   bg-opacity-40
   xl:bg-transparent
   xl:bg-opacity-100
- 2xl:min-w-[180px]
   min-h-[89px]
   xl:max-h-[89px]
-  2xl:max-w-[161px]
-  xl:max-w-[110px]
+  /* 2xl:min-w-[180px] */
+  /* 2xl:max-w-[161px]
+  xl:max-w-[110px] */
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/components/box/vote/box-medium.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
 
-after:bg-[url("/static/images/components/box/vote/box-medium.svg")]
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/vote/box-medium.svg")]
   after:bg-no-repeat
   after:bg-bottom
   after:h-[50%]
@@ -1884,6 +1893,7 @@ after:bg-[url("/static/images/components/box/vote/box-medium.svg")]
   after:hidden
   after:xl:block;
 }
+
 
 
 .box-vote-short {
@@ -1897,11 +1907,11 @@ after:bg-[url("/static/images/components/box/vote/box-medium.svg")]
   min-w-[120px]
   xl:bg-transparent
   xl:bg-opacity-100
-  xl:min-h-[36px]
+  /* xl:min-h-[36px] */
   xl:max-h-[45px]
-  xl:max-w-[160px]
+  /* xl:max-w-[160px] */
   2xl:min-h-[42px]
-  2xl:max-w-[160px]
+  /* 2xl:max-w-[160px] */
 
   before:content-[""]
   before:absolute
