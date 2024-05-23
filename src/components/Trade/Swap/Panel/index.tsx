@@ -652,7 +652,7 @@ const Panel = () => {
                 </span>
                 <span
                   onClick={handleSwitch}
-                  className={`text-2xl ${disableChart ? 'cursor-not-allowed' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
+                  className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
                 ></span>
                 <ReloadIcon
                   className="text-shark-100 !cursor-pointer"
