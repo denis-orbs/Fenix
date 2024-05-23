@@ -10,7 +10,7 @@ const Split = () => {
   }
   return (
     <div className="flex flex-col">
-      <div className="rotate-90 mx-auto bg-shark-400 p-1 rounded-lg bg-opacity-40">
+      <div className="rotate-90 mx-auto w-8 h-8 flex justify-center items-center my-1 bg-shark-400 p-1 rounded-sm bg-opacity-40">
         <span className="icon-arrow text-2xl inline-block  text-gradient"></span>
       </div>
       <div className="flex flex-col gap-3  exchange-box-x1 p-5">

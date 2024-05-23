@@ -118,7 +118,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
 
   return (
     <div
-      className={`flex items-center  gap-2 xl:gap-3 w-full md:w-max-content xl:w-auto flex-row ${pathname !== '/' && 'xl:absolute  xl:right-[90px]'}`}
+      className={`flex   items-center  gap-2 xl:gap-3 w-full md:w-max-content xl:w-auto flex-row ${pathname !== '/' && 'xl:absolute  xl:right-[90px]'}`}
     >
       {isConnected && !wrongChain && (
         <div className="relative w-full">
@@ -142,7 +142,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
             />
           </div>
           {openPoints && (
-            <div className="absolute  bg-shark-400 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
+            <div className="absolute z-50 bg-shark-400 rounded-lg border border-shark-300 w-auto xl:w-[250px] top-14 p-5 left-0 xl:-left-12">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex flex-col justify-center items-center">
                   <p className="text-shark-100 text-xs mb-2">Blast Points</p>

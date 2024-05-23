@@ -34,7 +34,7 @@ const MylocksMobile = ({ activePagination = true, Locks }: MylocksMobileProps) =
   }, [])
 
   return (
-    <div className="relative xl:hidden">
+    <div className="relative lg:hidden">
       <div className="w-full">
         {LOCKS_INFO_API.length !== 0 ? (
           <>
@@ -136,7 +136,7 @@ const MylocksMobile = ({ activePagination = true, Locks }: MylocksMobileProps) =
               )}
             </TableBody>
             {activePagination && (
-              <div className="mt-5">
+              <div className="py-5">
                 <PaginationMobile
                   activePage={1}
                   className=""

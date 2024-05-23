@@ -45,16 +45,16 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
 
   return (
     <>
-      <div className="relative hidden xl:block z-10 xl:mb-5">
+      <div className="relative hidden lg:block z-10 xl:mb-5">
         <div className="w-full">
           <TableHead
             items={[
-              { text: 'Lock ID', className: 'text-left w-[30%]', sortable: true },
-              { text: 'Lock Amount', className: 'text-left w-[10%]', sortable: true },
-              { text: 'Voting Power', className: 'text-left w-[10%]', sortable: true },
-              { text: 'Unlock Date', className: 'text-left w-[10%]', sortable: true },
-              { text: 'Vote Status', className: 'text-center w-[15%]', sortable: true },
-              { text: 'Action', className: 'text-right w-[25%]', sortable: false },
+              { text: 'Lock ID', className: 'text-left text-xs w-[20%]', sortable: true },
+              { text: 'Lock Amount', className: 'text-left text-xs w-[15%]', sortable: false },
+              { text: 'Voting Power', className: 'text-left text-xs w-[15%]', sortable: true },
+              { text: 'Unlock Date', className: 'text-left text-xs w-[15%]', sortable: true },
+              { text: 'Vote Status', className: 'text-center text-xs w-[15%]', sortable: true },
+              { text: 'Action', className: 'text-right text-xs w-[20%]', sortable: false },
             ]}
             setSort={() => {}}
             setSortIndex={() => {}}
@@ -74,8 +74,8 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                   <>
                     {lock.positions.map((lock, index) => {
                       return (
-                        <TableRow key={index}>
-                          <TableCell className="w-[30%]">
+                         <TableRow key={index}>
+                          <TableCell className="w-[20%]">
                             <div className="flex items-center gap-3">
                               <Image
                                 src={'/static/images/vote/fenix-logo.svg'}
@@ -98,7 +98,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell className="w-[10%]">
+                          <TableCell className="w-[15%]">
                             <div className="flex items-center gap-2">
                               <Image
                                 src={`/static/images/tokens/FNX.svg`}
@@ -112,7 +112,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell className="w-[10%]">
+                          <TableCell className="w-[15%]">
                             <div className="flex items-center gap-2">
                               <Image
                                 src={`/static/images/tokens/FNX.svg`}
@@ -126,7 +126,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell className="w-[10%]">
+                          <TableCell className="w-[15%]">
                             <div className="flex items-center gap-2">
                               <p className="text-xs text-white">{formatDate(Number(lock.veNFTInfo.lockEnd))}</p>
                             </div>
@@ -142,7 +142,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                               </span>
                             )}
                           </TableCell>
-                          <TableCell className="w-[25%]">
+                          <TableCell className="w-[20%]">
                             <div className="flex justify-end w-full">
                               <Button
                                 variant="tertiary"
@@ -170,9 +170,6 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                     setActivePage={() => {}}
                     setItemPerPage={() => {}}
                   />
-                  <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
-                    <span className="text-lg text-white icon-cog cursor-pointer"></span>
-                  </div>
                 </div>
               )}
             </>
