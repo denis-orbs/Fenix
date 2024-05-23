@@ -254,14 +254,14 @@ export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => 
       const totalTVL = toBN(fetchedFactoriesData[0].totalValueLockedUSD).toNumber()
       const totalFees = toBN(fetchedFactoriesData[0].totalFeesUSD).toNumber()
 
-      // const response = await fetch('/api/statistics')
-      // const responseData = await response.json()
+      const response = await fetch('/api/statistics')
+      const responseData = await response.json()
       const data: GlobalStatisticsData = {
         totalVolume,
         totalTVL,
         totalFees,
         lastUpdate: new Date().toISOString(),
-        totalUsers: 600,
+        totalUsers: responseData.totalUsers,
       }
       cachedData = data
       cache.put(cacheKey, data, 1000 * 60 * 20)
