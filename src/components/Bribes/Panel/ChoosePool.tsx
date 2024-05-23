@@ -9,7 +9,7 @@ import { IToken } from '@/src/library/types'
 import SelectPool from '../../Modals/SelectPool'
 
 interface ChoosePoolProps {
-  token: IToken
+  token: any
   value: number
   setToken: (token: IToken) => void
   setValue: (value: number) => void
@@ -37,16 +37,42 @@ const ChoosePool = ({ token, setToken, setValue, value }: ChoosePoolProps) => {
             onClick={handlerSelectToken}
             className="cursor-pointer bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]"
           >
-            <div className="flex items-center gap-2">
-              <Image
-                src={`/static/images/tokens/${token.symbol}.png`}
-                alt="token"
-                className="w-6 h-6 rounded-full"
-                width={20}
-                height={20}
-              />
-              <span className="text-base">{token.symbol}</span>
-            </div>
+            {token == 'Select a Pool' ? (
+              <>
+                <span>{token}</span>
+              </>
+            ) : (
+              <>
+                <div className="w-full flex items-center gap-5">
+                  <div className="flex items-center">
+                    <Image
+                      src={`/static/images/tokens/${token.token0Symbol}.png`}
+                      alt="token"
+                      className="rounded-full w-7 h-7"
+                      width={20}
+                      height={20}
+                    />
+                    <Image
+                      src={`/static/images/tokens/${token.token1Symbol}.png`}
+                      alt="token"
+                      className="-ml-4 rounded-full w-7 h-7"
+                      width={20}
+                      height={20}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-xs text-white">
+                      {token.token0Symbol} / {token.token1Symbol}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
+                      {!token.pair.stable ? 'Volatile Pool' : 'Stable Pool'}
+                    </span>
+                  </div>
+                </div>
+              </>
+            )}
             <span className="icon-chevron text-sm inline-block ml-2" />
           </div>
         </div>

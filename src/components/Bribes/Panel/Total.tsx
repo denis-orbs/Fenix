@@ -8,13 +8,12 @@ import SelectToken from '@/src/components/Modals/SelectToken'
 import { IToken } from '@/src/library/types'
 
 interface TotalProps {
-  token: IToken
+  bal: any
   value: number
-  setToken: (token: IToken) => void
   setValue: (value: number) => void
 }
 
-const Total = ({ token, setToken, setValue, value }: TotalProps) => {
+const Total = ({ bal, setValue, value }: TotalProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => setValue(parseFloat(e.target.value))
@@ -24,7 +23,7 @@ const Total = ({ token, setToken, setValue, value }: TotalProps) => {
   return (
     <div className="exchange-box-x1">
       <div className="flex flex-col xl:flex-row items-center gap-3">
-        <div className="relative w-full xl:w-2/6">
+        {/* <div className="relative w-full xl:w-2/6">
           <div
             onClick={handlerSelectToken}
             className="cursor-pointer bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]"
@@ -41,8 +40,8 @@ const Total = ({ token, setToken, setValue, value }: TotalProps) => {
             </div>
             <span className="icon-chevron text-sm inline-block ml-2" />
           </div>
-        </div>
-        <div className="relative w-full xl:w-4/6">
+        </div> */}
+        <div className="relative w-full">
           <input
             type="number"
             placeholder="0"
@@ -51,13 +50,13 @@ const Total = ({ token, setToken, setValue, value }: TotalProps) => {
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button variant="tertiary" className="!py-1 !px-3">
+            <Button onClick={() => setValue(bal)} variant="tertiary" className="!py-1 !px-3">
               Max
             </Button>
           </div>
         </div>
       </div>
-      <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
+      {/* <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} /> */}
     </div>
   )
 }

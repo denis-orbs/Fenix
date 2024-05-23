@@ -11,6 +11,11 @@ import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useDispatch } from 'react-redux'
+import { AppThunkDispatch, useAppSelector } from '@/src/state'
+import { voteState } from '@/src/state/vote/types'
+import { fetchGaugesAsync, setpercentage, setvotes } from '@/src/state/vote/reducer'
+import { lockState } from '@/src/state/lock/types'
 
 interface SelectPoolProps {
   openModal: boolean
@@ -22,17 +27,26 @@ interface SelectPoolProps {
 }
 
 const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalances, tokenList }: SelectPoolProps) => {
+  const { address, chainId } = useAccount()
+  const dispatch = useDispatch<AppThunkDispatch>()
+  const vote = useAppSelector((state) => state.vote as voteState)
+  const lock = useAppSelector((state) => state.lock as lockState)
+  // console.log('v', vote)
+  useEffect(() => {
+    if (address && chainId) dispatch(fetchGaugesAsync({ address, chainId }))
+  }, [address, chainId, lock])
+
   const [_tokenList, setTokenList] = useState<IToken[]>(tokenList ? tokenList : [])
   const [_commonList, setCommonList] = useState<IToken[]>(commonList ? commonList : [])
   const [searchValue, setSearchValue] = useState<string>('')
   const [_tokenBalances, setTokenBalances] = useState<{ [key: `0x${string}`]: string }>(
     tokenBalances ? tokenBalances : {}
   )
-  const { address, chainId } = useAccount()
+  // const { address, chainId } = useAccount()
 
   const handlerClose = () => setOpenModal(false)
 
-  const handlerSelectToken = (token: IToken) => {
+  const handlerSelectToken = (token: any) => {
     //console.log(token, 'inn')
     setToken(token)
     // settoken0(token0Data?.address)
@@ -84,7 +98,7 @@ const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalanc
       <div className="common-modal">
         <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
         <div className="relative z-10 w-full h-full">
-          <h1 className="text-md font-medium text-white">Select a Token</h1>
+          <h1 className="text-md font-medium text-white">Select a Pool</h1>
           {/* <p className="mb-2 text-sm text-shark-100">
             Select a token from our default list or search for a token by symbol or address.
           </p> */}
@@ -94,7 +108,7 @@ const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalanc
           </div>
 
           {/* <div className="mb-1 text-sm text-white">Common Tokens</div> */}
-          <div className="flex flex-row items-center gap-1 mb-1">
+          {/* <div className="flex flex-row items-center gap-1 mb-1">
             {_commonList ? (
               _commonList.map((token, index) => (
                 <div
@@ -109,36 +123,58 @@ const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalanc
             ) : (
               <></>
             )}
-          </div>
+          </div> */}
           <div className="flex flex-col gap-2 max-h-[400px] overflow-y-auto">
-            {_tokenList && searchValue === '' ? (
-              _tokenList.map((token, index) => (
+            {vote.voteTableElement && searchValue === '' ? (
+              vote.voteTableElement.map((elm, index) => (
                 <div
                   key={index}
-                  onClick={() => handlerSelectToken(token)}
+                  onClick={() => handlerSelectToken(elm)}
                   className="flex items-center justify-between py-1 px-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
                 >
                   <div className="flex items-center gap-2">
-                    <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-7 h-7" />
+                    <div className="flex items-center">
+                      <Image
+                        src={`/static/images/tokens/${elm.token0Symbol}.png`}
+                        alt="token"
+                        className="rounded-full w-7 h-7"
+                        width={20}
+                        height={20}
+                      />
+                      <Image
+                        src={`/static/images/tokens/${elm.token1Symbol}.png`}
+                        alt="token"
+                        className="-ml-4 rounded-full w-7 h-7"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
                     <div className="relative">
-                      <p className="text-xs text-white">{token.symbol}</p>
-                      <p className="text-xs text-shark-100">{token.name}</p>
+                      <p className="text-xs text-white">
+                        {elm.token0Symbol} / {elm.token1Symbol}
+                      </p>
+                      {/* <p className="text-xs text-shark-100">{token.name}</p> */}
                     </div>
                   </div>
-                  <div className="flex flex-col items-end justify-start">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
-                      {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
-                      {/* todo fetch balance */}
-                      <p className="text-xs text-white">
-                        Balance:{' '}
-                        {_tokenBalances
-                          ? `${(parseInt(_tokenBalances[token.address as Address]) / 10 ** Number(token.decimals)).toFixed(2).replace('NaN', '0')}`
-                          : `0`}
-                      </p>
-                    </div>
-                    <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
-                      {_tokenBalances
+                  <div>
+                    <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
+                      {!elm.pair.stable ? 'Volatile Pool' : 'Stable Pool'}
+                    </span>
+                  </div>
+                  {/* <div className="flex flex-col items-end justify-start"> */}
+                  {/* <div className="flex items-center gap-2"> */}
+                  {/* <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span> */}
+                  {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
+                  {/* todo fetch balance */}
+                  {/* <p className="text-xs text-white"> */}
+                  {/* Balance:{' '} */}
+                  {/* {_tokenBalances */}
+                  {/* ? `${(parseInt(_tokenBalances[token.address as Address]) / 10 ** Number(token.decimals)).toFixed(2).replace('NaN', '0')}` */}
+                  {/* : `0`} */}
+                  {/* </p> */}
+                  {/* </div> */}
+                  {/* <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2"> */}
+                  {/* {_tokenBalances
                         ? `$${formatCurrency(
                             (
                               (parseInt(_tokenBalances[(token.address as Address).toLowerCase() as `0x${string}`]) /
@@ -149,41 +185,65 @@ const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalanc
                               .replace('NaN', '0')
                           )}`
                         : `0`}
-                    </div>
-                  </div>
+                    </div> */}
+                  {/* </div> */}
                 </div>
               ))
             ) : searchValue !== '' ? (
-              _tokenList.filter(
-                (token) =>
-                  token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-                  token?.address?.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+              vote.voteTableElement.filter(
+                (elm) =>
+                  elm.token0Symbol.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
+                  elm?.token1Symbol?.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
+                  elm?.pair?.pair_address === searchValue
               ).length > 0 ? (
-                _tokenList
+                vote.voteTableElement
                   .filter(
-                    (token) =>
-                      token.name.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-                      token?.address?.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+                    (elm) =>
+                      elm.token0Symbol.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
+                      elm?.token1Symbol?.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
+                      elm?.pair?.pair_address === searchValue
                   )
-                  .map((token, index) => (
+                  .map((elm, index) => (
                     <div
                       key={index}
-                      onClick={() => handlerSelectToken(token)}
+                      onClick={() => handlerSelectToken(elm)}
                       className="flex items-center justify-between py-1 px-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
                     >
                       <div className="flex items-center gap-2">
-                        <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-7 h-7" />
+                        {/* <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-7 h-7" /> */}
+                        <Image
+                          src={`/static/images/tokens/${elm.token0Symbol}.png`}
+                          alt="token"
+                          className="rounded-full w-7 h-7"
+                          width={20}
+                          height={20}
+                        />
+                        <Image
+                          src={`/static/images/tokens/${elm.token1Symbol}.png`}
+                          alt="token"
+                          className="-ml-4 rounded-full w-7 h-7"
+                          width={20}
+                          height={20}
+                        />
                         <div className="relative">
-                          <p className="text-xs text-white">{token.symbol}</p>
-                          <p className="text-xs text-shark-100">{token.name}</p>
+                          <p className="text-xs text-white">
+                            {elm.token0Symbol} / {elm.token1Symbol}
+                          </p>
+                          {/* <p className="text-xs text-white">{token.symbol}</p> */}
+                          {/* <p className="text-xs text-shark-100">{token.name}</p> */}
                         </div>
                       </div>
-                      <div className="flex flex-col items-end justify-start">
+                      <div>
+                        <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
+                          {!elm.pair.stable ? 'Volatile Pool' : 'Stable Pool'}
+                        </span>
+                      </div>
+                      {/* <div className="flex flex-col items-end justify-start">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
-                          {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
-                          {/* todo fetch balance */}
-                          <p className="text-xs text-white">
+                          <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span> */}
+                      {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
+                      {/* todo fetch balance */}
+                      {/* <p className="text-xs text-white">
                             Balance:{' '}
                             {_tokenBalances
                               ? `${(parseInt(_tokenBalances[token.address as Address]) / 10 ** Number(token.decimals)).toFixed(2).replace('NaN', '0')}`
@@ -202,7 +262,7 @@ const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalanc
                               )}`
                             : `0`}
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   ))
               ) : (
