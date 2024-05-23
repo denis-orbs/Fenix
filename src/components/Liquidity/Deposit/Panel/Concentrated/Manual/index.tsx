@@ -91,11 +91,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     } else if (
       account &&
       isConnected &&
-      (firstValue > formatUnits((token1Balance?.data as bigint) || 0n, firstToken?.decimals) ||
-        secondValue > formatUnits((token2Balance?.data as bigint) || 0n, secondToken?.decimals))
+      (Number(firstValue) > Number(formatUnits((token1Balance?.data as bigint) || 0n, firstToken?.decimals)) ||
+        Number(secondValue) > Number(formatUnits((token2Balance?.data as bigint) || 0n, secondToken?.decimals)))
     ) {
       setButtonText('Insufficient balance')
-    } else {
+          } else {
       setButtonText('Create Position')
     }
   }, [
@@ -482,7 +482,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }
 
   const getFromAmount0 = (value: any, dec1: any, dec2: any) => {
-    let x = Position.fromAmount0({pool: pool[1] as unknown as Pool, tickLower: lowerTick, tickUpper: higherTick, amount0: BigInt(Number((parseFloat(value) * 10**dec1).toFixed(0))).toString() , useFullPrecision: false}).amount1.toFixed(parseInt(dec2))
+        let x = Position.fromAmount0({pool: pool[1] as unknown as Pool, tickLower: lowerTick, tickUpper: higherTick, amount0: BigInt(Number((parseFloat(value) * 10**dec1).toFixed(0))).toString() , useFullPrecision: false}).amount1.toFixed(parseInt(dec2))
     return x
   }
 
