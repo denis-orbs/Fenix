@@ -41,33 +41,36 @@ const TableHead = ({ items, setSort, setSortIndex, sortIndex, sort }: TableHeadP
   }
 
   return (
-    <div className="flex text-white text-sm mb-3.5 px-1.5 relative">
+    <div className="flex text-white text-sm mb-3.5 px-1.5 ">
       {items.map((item, index) => {
         return (
           <div
             key={index}
             className={mergeClassName(item)}
-            onMouseOver={() => {
-              if (item.text === 'Total Rewards') {
-                item.setShowTooltip && item.setShowTooltip(true)
-              }
-            }}
-            onMouseOut={() => {
-              if (item.text === 'Total Rewards') {
-                item.setShowTooltip && item.setShowTooltip(false)
-              }
-            }}
             onClick={() => {
               handleSort(index, item)
             }}
           >
-            {item.showTooltip && (
-              <div className="absolute z-50 text-left bottom-6 right-32">
-                <TotalRewardsTooltip show={item.showTooltip} setShow={() => {}} />
-              </div>
-            )}
-
-            <span className="leading-normal">{item.text}</span>
+            <span
+              onMouseOver={() => {
+                if (item.text === 'Total Rewards') {
+                  item.setShowTooltip && item.setShowTooltip(true)
+                }
+              }}
+              onMouseOut={() => {
+                if (item.text === 'Total Rewards') {
+                  item.setShowTooltip && item.setShowTooltip(false)
+                }
+              }}
+              className="leading-normal relative max-w-[20px]"
+            >
+              {item.showTooltip && (
+                <span className="w-2/5 absolute z-50 text-left bottom-6 right-36 ">
+                  <TotalRewardsTooltip show={item.showTooltip} setShow={() => {}} />
+                </span>
+              )}
+              {item.text}
+            </span>
             {item.sortable && <span className={sortClassName(item, index)}></span>}
           </div>
         )

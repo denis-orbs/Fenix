@@ -52,7 +52,7 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: Ro
                   {!row.pair.stable ? 'Volatile Pool' : 'Stable Pool'}
                 </span>
 
-                {/* {'CONCENTRATED' === row.type ? (
+                {'CONCENTRATED' === row.type ? (
                   <span
                     className="py-1 px-2  text-xs rounded-lg 
                     bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
@@ -63,7 +63,7 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: Ro
                   <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
                     Stable Pool
                   </span>
-                ) : null} */}
+                ) : null}
 
                 <span className="py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                   0.3%
@@ -91,13 +91,13 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: Ro
             </p>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                {/* <Image
+                <Image
                   src="/static/images/tokens/ETH.svg"
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                /> */}
+                />
                 {new BigDecimal(row.yourVoteWeight, 18).toString({ maxDecimalPlaces: 2 }) + ' veFnx'}
               </p>
             </div>

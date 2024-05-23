@@ -640,35 +640,34 @@
 
 /* Background forvote box */
 .vote-box {
-  @apply relative bg-shark-400 bg-opacity-40 w-auto rounded-xl px-4 xl:px-6 py-6
-
-  before:hidden
-  xl:before:block
+  @apply relative
+  rounded-2xl
+  flex-shrink-0
+  max-w-[348px]
+  max-h-[118px]
+  py-8
+  2xl:py-6
+  px-8
+  before:content-[""]
   before:absolute
-  before:w-0
-  before:h-0
-  before:top-[-15px]
-  before:left-[14px]
-  before:rotate-[89deg]
-  before:border-solid
-  before:border-t-[30px]
-  before:border-r-[30px]
-  before:border-b-[30px]
-  before:border-[transparent_transparent_#111315]
+  before:bg-[url("/static/images/components/box/vote/vote-pool.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
 
-  after:hidden
-  xl:after:block
+  after:content-[""]
   after:absolute
-  after:w-0
-  after:h-0
-  after:bottom-[-14px]
-  after:right-[12px]
-  after:rotate-[-91deg]
-  after:border-solid
-  after:border-t-[25px]
-  after:border-r-[25px]
-  after:border-b-[25px]
-  after:border-[transparent_transparent_#111315];
+  after:bg-[url("/static/images/components/box/vote/vote-pool.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
 }
 
 /* Background for exchange box of trade panel */
@@ -754,6 +753,10 @@
   px-8
   min-h-[270px]
   xl:max-h-[270px]
+<<<<<<< HEAD
+=======
+
+>>>>>>> fix/vote
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/components/box/steps/step.svg")]
@@ -1812,3 +1815,78 @@ opacity-70
 
 
 
+
+.box-vote-medium {
+  @apply relative
+  w-full
+  rounded-xl
+  flex-shrink-0
+  /* 2xl:w-[615px] */
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+ 2xl:min-w-[180px]
+  min-h-[89px]
+  xl:max-h-[89px]
+  2xl:max-w-[161px]
+  xl:max-w-[110px]
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/vote/box-medium.svg")]
+
+after:bg-[url("/static/images/components/box/vote/box-medium.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
+
+
+.box-vote-short {
+  @apply relative
+  w-full
+  rounded-xl
+  flex-shrink-0
+  /* 2xl:w-[615px] */
+  bg-shark-400
+  bg-opacity-40
+  min-w-[120px]
+  xl:bg-transparent
+  xl:bg-opacity-100
+  xl:min-h-[36px]
+  xl:max-h-[45px]
+  xl:max-w-[160px]
+  2xl:min-h-[42px]
+  2xl:max-w-[160px]
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/vote/box-short.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/vote/box-short.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}

@@ -32,31 +32,32 @@ const Vote = () => {
   }, [lock])
 
   return (
-    <section className="relative">
-      <div className="flex flex-col items-center gap-5 py-5 2xl:flex-row">
-        <div className="w-full 2xl:w-3/4">
+    <section className="relative overflow-hidden">
+      <div className="flex flex-col items-center gap-5 py-5 xl:flex-row">
+        <div className="w-full xl:w-[60%]">
           <Deposit />
         </div>
-        <VoteNow openModal={openModal} setOpenModal={setOpenModal} activeVote={activeVote} />
+        <div className="w-full xl:w-[40%] ">
+          <VoteNow openModal={openModal} setOpenModal={setOpenModal} activeVote={activeVote} />
+        </div>
       </div>
-      <h1 className="text-lg lg:text-2xl text-white">Select Liquidity Pools for Voting</h1>
+      <h1 className="text-xl font-medium text-white">Select Liquidity Pools for Voting</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full xl:w-2/3">
           <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         </div>
         <div className="w-full xl:w-1/3">
-          {/* <Search /> */}
-          Search...
+          <Search setSearchValue={() => {}} searchValue={''} placeholder="Search by symbol" />
         </div>
       </div>
       {activeVote && (
         <div className="mb-5">
-          <h2 className="text-2xl text-white">Vote Pools</h2>
+          <h2 className="text-sm font-medium text-white">Vote Pools</h2>
           <div className="flex flex-wrap gap-2 justify-center">
-            {/* <VotePools />
             <VotePools />
             <VotePools />
-            <VotePools /> */}
+            <VotePools />
+            <VotePools />
           </div>
         </div>
       )}
