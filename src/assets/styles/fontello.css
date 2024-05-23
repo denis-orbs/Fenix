@@ -43,9 +43,8 @@
 .icon-logout:before {
   content: '\e806';
 } /* '' */
-.icon-arrow:before {
-  content: '\e807';
-} /* '' */
+.icon-arrow-right:before { content: '\e807'; } /* '' */
+.icon-arrow-left:before { content: '\e818'; } /* '' */
 .icon-menu:before {
   content: '\e808';
 } /* '' */
