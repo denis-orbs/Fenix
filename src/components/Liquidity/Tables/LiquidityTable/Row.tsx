@@ -134,40 +134,9 @@ const RowData = ({
         </TableCell>
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[15%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
-            {/* <span ref={hoverRef} className="flex gap-2">
-              {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
-                <span ref={hoverRef} className="flex flex-row transition-transform transform group">
-                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
-                    <>
-                      <Image
-                        src={`/static/images/point-stack/fenix-ring.svg`}
-                        alt="token"
-                        className={''}
-                        width={20}
-                        height={20}
-                      />
-                      <Image
-                        src={`/static/images/point-stack/blast.svg`}
-                        alt="token"
-                        className={''}
-                        width={20}
-                        height={20}
-                      />
-                      <Image
-                        src={`/static/images/point-stack/blast-gold.svg`}
-                        alt="token"
-                        className={`${row.token0.symbol === 'USDB' && row.token1.symbol === 'WETH' ? '' : 'hidden'}`}
-                        width={20}
-                        height={20}
-                      />
-                    </>
-                  )}
-                </span>
-              )}
-            </span> */}
             {
               <span ref={hoverRef} className="flex gap-2">
-                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]': 'z-0'}`}>
+                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                     <>
                       {campaign?.pointStack?.map((stack, index) => (
@@ -175,7 +144,7 @@ const RowData = ({
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold ? 'z-[100]': 'z-0'}`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold ? 'z-[100]' : 'z-0'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
@@ -190,7 +159,7 @@ const RowData = ({
                   )}
                   {openTooltipGold && (
                     <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
-                      <div className='relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1'>
+                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                         <p className="text-xs">The pool is receiving 7000 Gold from May 15th - 31st</p>
                       </div>
                     </div>
@@ -253,21 +222,6 @@ const RowData = ({
             )}
           </div>
         </TableCell>
-
-        {/* <TableCell className={`w-[10%]`}>
-          <div className="flex flex-col items-end justify-center w-full px-3">
-            TVL
-            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
-            <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-
-              </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-
-              </p>
-            </div>
-          </div>
-        </TableCell> */}
 
         <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
