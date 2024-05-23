@@ -9,7 +9,7 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getAllPairsForUser } from '@/src/library/web3/apis/PairAPIV3'
 import { AddressZero } from '@/src/library/constants/misc'
 import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
-import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData } from './reducer'
+import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData, fetchv3Factories } from './reducer'
 import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
 import cache from 'memory-cache'
 import { BASIC_POOLS_LIST, POOLS_ID_LIST, POOLS_LIST, POOL_FRAGMENT } from '@/src/library/apollo/queries/pools'
@@ -19,6 +19,7 @@ import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
+import { toBN } from '@/src/library/utils/numbers'
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async (address: Address) => {
   try {
@@ -247,10 +248,23 @@ export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => 
   let cachedData = cache.get(cacheKey)
   if (!cachedData) {
     try {
-      const response = await fetch('/api/statistics')
-      const responseData = await response.json()
-      cachedData = responseData
-      cache.put(cacheKey, responseData, 1000 * 60 * 20)
+      const fetchedFactoriesData = await fetchv3Factories()
+
+      const totalVolume = toBN(fetchedFactoriesData[0].totalVolumeUSD).toNumber()
+      const totalTVL = toBN(fetchedFactoriesData[0].totalValueLockedUSD).toNumber()
+      const totalFees = toBN(fetchedFactoriesData[0].totalFeesUSD).toNumber()
+
+      // const response = await fetch('/api/statistics')
+      // const responseData = await response.json()
+      const data: GlobalStatisticsData = {
+        totalVolume,
+        totalTVL,
+        totalFees,
+        lastUpdate: new Date().toISOString(),
+        totalUsers: 600,
+      }
+      cachedData = data
+      cache.put(cacheKey, data, 1000 * 60 * 20)
     } catch (error) {
       console.error('Error fetching global statistics:', error)
       return {
