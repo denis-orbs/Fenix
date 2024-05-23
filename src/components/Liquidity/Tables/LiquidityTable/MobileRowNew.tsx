@@ -89,15 +89,21 @@ export default function MobileRowNew({
             />
           </div>
           <div className="flex flex-col gap-1 w-[85%]">
-            <div className='flex items-center gap-2 justify-between'>
+            <div className="flex items-center gap-2 justify-between">
               <h5 className="text-sm font-semibold leading-normal mx-auto">
                 {row.token0.symbol} / {row.token1.symbol}{' '}
               </h5>
-              <div className={`border-solid bg-shark-400 rounded-lg bg-opacity-40 border-shark-300 text-xs font-normal border whitespace-nowrap !py-2 !h-[38px] w-[44.7%] text-center px-4 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}>{totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}</div>
+              <div
+                className={`border-solid bg-shark-400 rounded-lg bg-opacity-40 border-shark-300 text-xs font-normal border whitespace-nowrap !py-2 !h-[38px] w-[44.7%] text-center px-4 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+              >
+                {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
+              </div>
             </div>
             <div className="flex items-center gap-2 w-[100%]">
-              <span className="text-white py-2 px-6 text-xs rounded-lg flex justify-center button-primary w-[54.7%]">Concentrated</span>
-              <div className='flex items-center gap-2 max-xs:gap-1 w-[45.3%]'>
+              <span className="text-white py-2 px-6 text-xs rounded-lg flex justify-center button-primary w-[54.7%]">
+                Concentrated
+              </span>
+              <div className="flex items-center gap-2 max-xs:gap-1 w-[45.3%]">
                 <span className="!py-2 !h-[38px] px-4 text-xs font-400 w-[59.7%] text-white text-center border border-solid bg-shark-400 rounded-lg bg-opacity-40 border-shark-300">
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
@@ -199,14 +205,14 @@ export default function MobileRowNew({
               </div>
               <div className="flex justify-center items-center gap-2 ">
                 <span className="flex flex-row justify-center gap-2">
-                {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
+                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                     <>
                       {campaign?.pointStack?.map((stack, index) => (
                         <Image
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow notification' }`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow notification'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
@@ -229,7 +235,9 @@ export default function MobileRowNew({
                 </span>
               </div>
             </div>
-            <div className={`flex flex-col items-center ${campaign?.pointStack !== undefined && campaign?.pointStack?.length > 0 ? 'w-[39%]' : 'w-[59%]'} h-[70px] justify-between border  border-shark-300 p-4 rounded-lg`}>
+            <div
+              className={`flex flex-col items-center ${campaign?.pointStack !== undefined && campaign?.pointStack?.length > 0 ? 'w-[39%]' : 'w-[59%]'} h-[70px] justify-between border  border-shark-300 p-4 rounded-lg`}
+            >
               <div className="flex items-center gap-1">
                 <span className="text-xs font-medium leading-normal">TVL</span>
               </div>
@@ -265,7 +273,7 @@ export default function MobileRowNew({
                       height={10}
                     />
                     <span className="text-xs leading-normal">
-                      {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}{' '}
+                      {formatCurrency(Number(row.volumeToken0) / 2, 2)} {row.token0.symbol}{' '}
                     </span>
                   </div>
                   <div className="flex items-center gap-[5px]">
@@ -277,7 +285,7 @@ export default function MobileRowNew({
                       height={10}
                     />
                     <span className="text-xs leading-normal">
-                      {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}{' '}
+                      {formatCurrency(Number(row.volumeToken1) / 2, 2)} {row.token1.symbol}{' '}
                     </span>
                   </div>
                 </div>

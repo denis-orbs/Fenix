@@ -236,7 +236,7 @@ const RowData = ({
                   width={20}
                   height={20}
                 /> */}
-                {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
+                {formatCurrency(Number(row.volumeToken0) / 2, 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100 font-normal ">
                 {/* <Image
@@ -246,7 +246,7 @@ const RowData = ({
                   width={20}
                   height={20}
                 /> */}
-                {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
+                {formatCurrency(Number(row.volumeToken1) / 2, 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
