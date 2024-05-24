@@ -6,4 +6,5 @@ export const contractAddressList = {
   cl_swap: '0x2df37Cb897fdffc6B4b03d8252d85BE7C6dA9d00',
   cl_quoterV2: '0x94Ca5B835186A37A99776780BF976fAB81D84ED8',
   tick_math: '0x7d6359e546ebd1a1381291248d6050b9f1431ef4',
+  gamma_uniproxy: '0x0fd7b24781c229a539b42010f3dbd8d236e6896b',
 }
