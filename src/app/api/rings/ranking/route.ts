@@ -24,11 +24,6 @@ export async function GET(request: NextRequest) {
     { ranking: users },
     {
       status: 200,
-      headers: {
-        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=180',
-        'CDN-Cache-Control': 'public, s-maxage=120, stale-while-revalidate=180',
-        'Vercel-CDN-Cache-Control': 'public, s-maxage=120, stale-while-revalidate=180',
-      },
     }
   )
 }
