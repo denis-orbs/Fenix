@@ -104,7 +104,7 @@ const MylocksMobile = ({ activePagination = true, Locks, tab }: MylocksMobilePro
   const pagination = paginate(data, activePage, itemsPerPage)
 
   return (
-    <div className="relative xl:hidden">
+    <div className="relative lg:hidden">
       <div className="w-full">
         {LOCKS_INFO_API.length !== 0 ? (
           <>
@@ -210,7 +210,7 @@ const MylocksMobile = ({ activePagination = true, Locks, tab }: MylocksMobilePro
               )}
             </TableBody>
             {activePagination && (
-              <div className="mt-5">
+              <div className="py-5">
                 <PaginationMobile
                   count={data ? data.length : lock.positions.length}
                   itemsPerPage={itemsPerPage}

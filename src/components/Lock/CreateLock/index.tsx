@@ -207,22 +207,42 @@ const CreateLock = () => {
     toBN(Number(fnxBalance)).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
   }, [fnxBalance])
   return (
-    <MainBox className="xl:min-w-[1300px]">
-      <div className="flex flex-col w-full xl:flex-row relative z-10 pb-60 xl:pb-0 xl:py-8">
+    <div className="w-full  lock-box xl:mt-20 mt-28">
+      <div className="absolute -top-24 xl:-top-16 w-full left-0 xl:left-8">
+        <div className="box-notification ">
+          <div className="relative z-10 flex py-4 justify-between px-4 ">
+            <div className="flex items-center gap-2 w-2/3 ">
+              <div className="flex items-center justify-center w-12 h-12 p-3 rounded-lg bg-shark-400 bg-opacity-60">
+                <span className="inline-block text-2xl text-gradient icon-bell"></span>
+              </div>
+              <p className="text-shark-100 text-xs">
+                Create a Lock for more than 2 years and enjoy the benefits of our APR Performance.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 items-center">
+              <p className="text-shark-100 text-xs">Current APR</p>
+              <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+                0.00%
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col w-full xl:flex-row relative z-10  ">
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex justify-between">
-            <h4 className="text-xl text-white">Create new Lock</h4>
-            <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
+            <h4 className="text-xl font-semibold text-white">Create new Lock</h4>
+            <span className="icon-refresh text-shark-100 text-2xl cursor-pointer"></span>
           </div>
-          <div className="flex flex-col xl:flex-row items-center gap-3 justify-center mt-10 exchange-box-x1 p-5">
+          <div className="flex flex-col xl:flex-row items-center gap-3 justify-center my-4 exchange-box-x1 p-5">
             <div className="xl:w-2/5 w-full flex flex-col gap-2">
               <p className="text-xs  text-white">Amount to lock</p>
               <div className="flex text-white gap-3 items-center bg-shark-400  justify-between p-3 border border-shark-300 rounded-xl bg-opacity-40 ">
                 <div className="flex gap-2 items-center">
-                  <Image src={'/static/images/tokens/FNX.png'} alt="fenix-logo" height={30} width={30} />
+                  <Image src={'/static/images/lock/Fenix-Icon.svg'} alt="fenix-logo" height={30} width={30} />
                   <p>FNX</p>
                 </div>
-                <span className="icon-chevron"></span>
+                {/* <span className="icon-chevron"></span> */}
               </div>
             </div>
 
@@ -260,7 +280,7 @@ const CreateLock = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-3  mt-5 exchange-box-x1 p-5">
+          <div className="flex flex-col   mt-5 exchange-box-x1 xl:max-h-[100px] p-6">
             <div className="text-sm flex justify-between">
               <p className="text-white text-sm text-left">Expires in</p>
               <div className="text-shark-100 flex gap-2">
@@ -287,7 +307,7 @@ const CreateLock = () => {
               </div>
             </div>
           </div>
-          <div className="exchange-box-x1 p-5 mt-5 flex justify-between items-center text-white text-sm">
+          <div className="exchange-box-x1 xl:max-h-[51px] px-8 mt-5 flex justify-between items-center text-white text-xs">
             <div>
               <p>Voting Power</p>
             </div>
@@ -346,34 +366,34 @@ const CreateLock = () => {
         <div className="flex justify-center items-center w-[10%] relative ">
           <div className="bg-shark-400 h-4/5 w-[1px]"></div>
         </div>
-        <div className="relative flex flex-col w-full xl:w-[45%] max-h-[390px]  overflow-x-none">
-          <div>
-            <h1 className="text-white text-xl mb-20">How it works</h1>
+        <div className="relative flex flex-col w-full xl:w-[45%]  overflow-x-none">
+          <div className="flex justify-between">
+            <h1 className="text-white font-normal text-xl mb-5 xl:mt-10">How it works</h1>
+            <div className="xl:absolute max-xl:mt-3  max-w-[100px] xl:-top-[70px] z-10 w-28 xl:right-[30px]">
+              <ProgressBar progress={50} />
+            </div>
           </div>
           {CREATE_LOCK_LIST.map((exchange, index) => (
             <InfoBox
               hasDecorator={CREATE_LOCK_LIST.length === index + 1 ? false : true}
               bgBox="exchange-box-info"
               key={index}
+              variant="secondary"
               data={exchange}
               textColor={'text-shark-100'}
             />
           ))}
-          <div className="mt-16 cursor-pointer">
-            <Link
-              target="_blank"
-              href="https://discord.com/invite/fenixfi"
-              className="flex gap-2 justify-center text-shark-100"
-            >
-              <span className="icon-discord"></span>Need some help?
-            </Link>
-          </div>
-          <div className="absolute top-0 z-10 w-28 right-0">
-            <ProgressBar progress={50} />
-          </div>
+
+          <Link
+            target="_blank"
+            href="https://discord.com/invite/fenixfi"
+            className="xl:absolute -bottom-10 right-32  flex gap-2 justify-center text-shark-100"
+          >
+            <span className="icon-discord"></span>Need some help?
+          </Link>
         </div>
       </div>
-    </MainBox>
+    </div>
   )
 }
 

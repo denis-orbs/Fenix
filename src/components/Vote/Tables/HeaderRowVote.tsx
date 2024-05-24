@@ -9,7 +9,7 @@ import { setvotes, setpercentage, fetchGaugesAsync } from '@/src/state/vote/redu
 import { useAccount } from 'wagmi'
 import { voteState } from '@/src/state/vote/types'
 import { lockState } from '@/src/state/lock/types'
-import { priceToSqrtPrice, sqrtPriceToPrice } from '@/src/library/hooks/liquidity/useCL'
+import NotFoundLock from '../../Lock/NotFoundLock'
 
 type filterData = {
   type: string
@@ -60,17 +60,17 @@ const HeaderRowVote = ({
         <div className="max-xl:hidden">
           <TableHead
             items={[
-              { text: 'Assets', className: 'w-[30%]', sortable: true },
-              { text: 'APR', className: 'text-center  w-[10%]', sortable: true },
-              { text: 'Your Votes', className: 'w-[10%] text-right', sortable: true },
+              { text: 'Assets', className: 'w-[30%] text-xs', sortable: true },
+              { text: 'APR', className: 'text-center  w-[10%] text-xs', sortable: true },
+              { text: 'Your Votes', className: 'w-[10%] text-right text-xs', sortable: true },
               {
                 text: 'Total Rewards',
-                className: 'w-[30%] text-right',
+                className: 'w-[30%] text-right text-xs',
                 sortable: true,
                 showTooltip: showTooltip,
                 setShowTooltip: setShowTooltip,
               },
-              { text: 'Vote', className: 'w-[20%] text-right', sortable: true },
+              { text: 'Vote', className: 'w-[20%] text-right text-xs', sortable: true },
             ]}
             setSort={() => {}}
             sort={null}
@@ -78,29 +78,62 @@ const HeaderRowVote = ({
             sortIndex={1}
           />
         </div>
-
-        <TableBody>
-          {vote.appState == 'loading' ? (
-            <>
-              {Array.from({ length: filterData.length }).map((_, index) => (
-                <TableSkeleton key={index} />
-              ))}
-            </>
-          ) : (
-            vote.voteTableElement.map((row, index) => (
-              <Fragment key={index}>
-                <RowDataVote
-                  index={index}
-                  row={row}
-                  activeVote={activeVote}
-                  activeSlider={activeSlider}
-                  onRangeUpdate={handleRangeUpdate}
-                />
-                {/* <RowDataVote row={row} activeVote={activeVote} /> */}
-              </Fragment>
-            ))
-          )}
-        </TableBody>
+        {vote.voteTableElement.length !== 0 ? (
+          <>
+            <TableBody>
+              {vote.appState == 'loading' ? (
+                <>
+                  {Array.from({ length: filterData.length }).map((_, index) => (
+                    <TableSkeleton key={index} />
+                  ))}
+                </>
+              ) : (
+                vote.voteTableElement.map((row, index) => (
+                  <Fragment key={index}>
+                    <RowDataVote
+                      index={index}
+                      row={row}
+                      activeVote={activeVote}
+                      activeSlider={activeSlider}
+                      onRangeUpdate={handleRangeUpdate}
+                    />
+                    {/* <RowDataVote row={row} activeVote={activeVote} /> */}
+                  </Fragment>
+                ))
+              )}
+            </TableBody>
+            {activePagination && (
+              <>
+                <div className="items-center hidden xl:flex py-4">
+                  <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
+                  <Pagination
+                    className="mx-auto"
+                    numberPages={7}
+                    activePage={1}
+                    setActivePage={() => {}}
+                    itemsPerPage={10}
+                    setItemPerPage={() => {}}
+                  />
+                </div>
+                <div className="block xl:hidden py-4">
+                  <PaginationMobile
+                    className=""
+                    numberPages={7}
+                    count={10}
+                    activePage={1}
+                    setActivePage={() => {}}
+                    itemsPerPage={10}
+                    setItemPerPage={() => {}}
+                  />
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <NotFoundLock />
+          </>
+        )}
       </div>
       {activePagination && (
         <>

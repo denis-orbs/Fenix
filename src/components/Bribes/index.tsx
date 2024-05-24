@@ -192,7 +192,7 @@ const Bribes = () => {
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex justify-between mb-5">
             <h4 className="text-xl font-semibold text-white">Bribes</h4>
-            <span className="icon-refresh text-shark-100 text-xl cursor-pointer"></span>
+            <span className="icon-refresh text-shark-100 text-xl cursor-pointer"/>
           </div>
 
           <div className="mb-3">
@@ -265,7 +265,7 @@ const Bribes = () => {
               <span className="icon-discord"></span>Need some help?
             </p>
           </Link>
-          <div className="absolute xl:-top-[70px]  top-2 right-0 z-10 w-28  xl:right-[3%] max-w-[100px]">
+          <div className="absolute xl:-top-[70px]  -top-6 right-0 z-10 w-28  xl:right-[3%] max-w-[100px]">
             <ProgressBar progress={50} />
           </div>
         </div>

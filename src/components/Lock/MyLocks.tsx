@@ -91,16 +91,16 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
 
   return (
     <>
-      <div className="relative hidden xl:block z-10 xl:mb-5">
+      <div className="relative hidden lg:block z-10 xl:mb-5">
         <div className="w-full">
           <TableHead
             items={[
-              { text: 'Lock ID', className: 'text-left w-[30%]', sortable: true },
-              { text: 'Lock Amount', className: 'text-left w-[10%]', sortable: true },
-              { text: 'Voting Power', className: 'text-left w-[10%]', sortable: true },
-              { text: 'Unlock Date', className: 'text-left w-[10%]', sortable: true },
-              { text: 'Vote Status', className: 'text-center w-[15%]', sortable: true },
-              { text: 'Action', className: 'text-right w-[25%]', sortable: false },
+              { text: 'Lock ID', className: 'text-left text-xs w-[20%]', sortable: true },
+              { text: 'Lock Amount', className: 'text-left text-xs w-[15%]', sortable: false },
+              { text: 'Voting Power', className: 'text-left text-xs w-[15%]', sortable: true },
+              { text: 'Unlock Date', className: 'text-left text-xs w-[15%]', sortable: true },
+              { text: 'Vote Status', className: 'text-center text-xs w-[15%]', sortable: true },
+              { text: 'Action', className: 'text-right text-xs w-[20%]', sortable: false },
             ]}
             setSort={() => {}}
             setSortIndex={() => {}}
@@ -121,8 +121,8 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
                     {pagination.map((lock: any, index: number) => {
                       console.log(lock, 'lock')
                       return (
-                        <TableRow key={index}>
-                          <TableCell className="w-[30%]">
+                         <TableRow key={index}>
+                          <TableCell className="w-[20%]">
                             <div className="flex items-center gap-3">
                               <Image
                                 src={'/static/images/vote/fenix-logo.svg'}
@@ -145,7 +145,7 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell className="w-[10%]">
+                          <TableCell className="w-[15%]">
                             <div className="flex items-center gap-2">
                               <Image
                                 src={`/static/images/tokens/FNX.svg`}
@@ -159,7 +159,7 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell className="w-[10%]">
+                          <TableCell className="w-[15%]">
                             <div className="flex items-center gap-2">
                               <Image
                                 src={`/static/images/tokens/FNX.svg`}
@@ -173,7 +173,7 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell className="w-[10%]">
+                          <TableCell className="w-[15%]">
                             <div className="flex items-center gap-2">
                               <p className="text-xs text-white">{formatDate(Number(lock.veNFTInfo.lockEnd))}</p>
                             </div>
@@ -189,7 +189,7 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
                               </span>
                             )}
                           </TableCell>
-                          <TableCell className="w-[25%]">
+                          <TableCell className="w-[20%]">
                             <div className="flex justify-end w-full">
                               <Button
                                 variant="tertiary"

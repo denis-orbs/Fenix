@@ -6,7 +6,7 @@ interface pageProps {
 }
 const ManagePage: FC<pageProps> = ({ params }) => {
   return (
-    <main className="container flex justify-center py-10 px-10 ">
+    <main className="container flex justify-center pb-20 ">
       <LockManage id={params.id} />
       <Decorator />
     </main>
