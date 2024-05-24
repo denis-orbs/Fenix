@@ -10,13 +10,13 @@ import { Address } from 'viem'
 import { fetchTokenBalance, getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { FENIX_ADDRESS } from '@/src/library/constants/addresses'
-import { fromWei } from '@/src/library/utils/numbers'
+import { formatNumber, fromWei } from '@/src/library/utils/numbers'
 
 interface RewardTokenProps {
   token: any
-  bal: any
+  bal: string
   setToken: (token: any) => void
-  setBal: (bal: any) => void
+  setBal: (bal: string) => void
 }
 
 const RewardToken = ({ token, setToken, bal, setBal }: RewardTokenProps) => {
@@ -26,7 +26,9 @@ const RewardToken = ({ token, setToken, bal, setBal }: RewardTokenProps) => {
   const getTokenBalance = async () => {
     if (address) {
       const newbal = (await fetchTokenBalance(token?.address, address)) as bigint
-      setBal(fromWei(BigInt(newbal).toString()))
+      const decimals = token?.decimals
+      const adjustedBal = Number(newbal) / 10 ** decimals
+      setBal(adjustedBal.toString())
     }
   }
   useEffect(() => {
@@ -43,7 +45,7 @@ const RewardToken = ({ token, setToken, bal, setBal }: RewardTokenProps) => {
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
           <span>
-            Available: {token ? bal : '0'} {token ? token.symbol : null}
+            Available: {token ? formatNumber(Number(bal), 2) : '0'} {token ? token.symbol : null}
           </span>
         </p>
       </div>

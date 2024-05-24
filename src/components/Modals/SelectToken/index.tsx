@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { IToken } from '@/src/library/types'
 
 import { useEffect, useState } from 'react'
-import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
+import { getTokensBalance, getTokensBalanceChainSpecific } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { formatCurrency } from '@/src/library/utils/numbers'
@@ -47,6 +47,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
           const responseData = await fetchTokens(chainId)
 
           const parsedData = responseData.map((item: any) => {
+            console.log(item.priceUSD, 'priceUSD')
             return {
               id: 0,
               name: item.basetoken.name,
@@ -61,12 +62,13 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
 
           const commonList = parsedData.filter((item: any) => item.isCommon)
 
-          const balances = await getTokensBalance(
+          const balances = await getTokensBalanceChainSpecific(
             parsedData.map((item: any) => {
               return item.address as Address
             }),
             address as Address
           )
+
           setTokenBalances(balances)
 
           setCommonList(commonList)
@@ -77,7 +79,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
     }
 
     getList()
-  }, [address])
+  }, [address, chainId])
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
@@ -140,11 +142,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                     <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
                       {_tokenBalances
                         ? `$${formatCurrency(
-                            (
-                              (parseInt(_tokenBalances[(token.address as Address).toLowerCase() as `0x${string}`]) /
-                                10 ** token.decimals) *
-                              token.price
-                            )
+                            ((parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals) * token.price)
                               .toFixed(2)
                               .replace('NaN', '0')
                           )}`

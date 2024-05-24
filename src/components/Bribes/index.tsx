@@ -30,12 +30,11 @@ import { wagmiConfig } from '@/src/app/layout'
 enum ButtonState {
   POOL_NOT_AVAILABLE = 'Pool Not Available',
   ENTER_AMOUNT = 'Enter Amount',
-  APPROVAL_REQUIRED = 'Approve FNX',
+  APPROVAL_REQUIRED = 'Approve Token',
   APPROVING = 'Approving...',
   WAITING_APPROVAL = 'Waiting Approval',
   INSUFFICIENT_BALANCE = 'Insufficient Balance',
   WAITING_CONFIRMATION = 'Waiting Confirmation',
-  PRICE_IMPACT_ALERT = 'Price Impact Too High. Swap Anyway',
   CREATE_BRIBE = 'Create Bribe',
   LOADING = 'Loading...',
 }
@@ -49,7 +48,7 @@ const Bribes = () => {
   const [tokenSell, setTokenSell] = useState<any>('Select a Pool')
   const [tokenGet, setTokenGet] = useState<any>('Select a Token')
   const [poolValue, setPoolValue] = useState<number>(0)
-  const [bal, setBal] = useState<any>(0)
+  const [bal, setBal] = useState<string>('0')
   const addNotification = useNotificationAdderCallback()
   const { writeContractAsync } = useWriteContract()
 
@@ -205,7 +204,7 @@ const Bribes = () => {
             <Total bal={bal} value={poolValue} setValue={setPoolValue} />
           </div>
           <div className="mb-3">
-            <RewardSummary />
+            <RewardSummary token={tokenSell} value={poolValue} rewardToken={tokenGet} />
           </div>
 
           <div className="mt-4">
