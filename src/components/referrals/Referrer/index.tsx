@@ -1,0 +1,45 @@
+import React from 'react'
+
+const Referrer = () => {
+  return (
+    <div className="xl:max-w-[1127px] max-sm:max-w-[372px] w-full flex gap-2 flex-col">
+      <h1 className="text-white text-sm sm:text-base font-semibold text-left ">
+        Each successful referral gives referrer{' '}
+      </h1>
+      <div className="flex flex-wrap gap-4 w-full justify-center xl:justify-between ">
+        <div className="box-referrals-minimum">
+          <div className="relative z-50 flex  sm:justify-between flex-wrap sm:flex-nowrap items-center w-full h-28 text-white">
+            <div className="w-full flex justify-evenly sm:justify-between items-center">
+              <p className="sm:text-5xl  text-4xl font-semibold ">15%</p>
+              <p className="text-sm font-normal">worth of their LP</p>
+            </div>
+            <div className="w-full sm:w-2/3  flex max-sm:justify-evenly   justify-end">
+              <p className="flex items-center gap-2  text-xs px-5 py-2 bg-green-500 bg-opacity-40 border rounded-xl border-solid border-green-500">
+                <span className="icon-check-1" />
+                For you
+              </p>
+              <span className="w-[106px] sm:hidden" />
+            </div>
+          </div>
+        </div>
+        <div className="box-referrals-minimum">
+          <div className="relative z-50 flex  sm:justify-between flex-wrap sm:flex-nowrap items-center w-full h-28 text-white">
+            <div className="w-full flex justify-evenly sm:justify-between items-center">
+              <p className="sm:text-5xl  text-4xl font-semibold ">5%</p>
+              <p className="text-sm font-normal">increase in their LP</p>
+            </div>
+            <div className="w-full sm:w-2/3  flex max-sm:justify-evenly   justify-end">
+              <p className="flex items-center gap-2  text-xs px-5 py-2 bg-green-500 bg-opacity-40 border rounded-xl border-solid border-green-500">
+                <span className="icon-check-1" />
+                For them
+              </p>
+              <span className="w-[106px] sm:hidden" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Referrer
