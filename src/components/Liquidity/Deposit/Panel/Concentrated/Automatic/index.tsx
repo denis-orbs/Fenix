@@ -158,9 +158,9 @@ const Automatic = () => {
       )}
 
       {currentProvider === '2' && optionActive === 'ADD' && <DepositAmountsGAMMA tokenList={tokenList} />}
-      {/* {currentProvider === '2' && optionActive === 'WITHDRAW' && (
+      {currentProvider === '2' && optionActive === 'WITHDRAW' && (
         <WithdrawAmountsGAMMA firstToken={token0} secondToken={token1} tokenList={tokenList} />
-      )} */}
+      )}
 
       {/* <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
         Create Position
