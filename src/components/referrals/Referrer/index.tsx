@@ -1,12 +1,16 @@
+import Image from 'next/image'
 import React from 'react'
 
 const Referrer = () => {
   return (
-    <div className="xl:max-w-[1127px] max-sm:max-w-[372px] w-full flex gap-2 flex-col">
+    <div className="xl:max-w-[1127px] max-sm:max-w-[372px] w-full flex gap-2 flex-col ">
       <h1 className="text-white text-sm sm:text-base font-semibold text-left ">
         Each successful referral gives referrer{' '}
       </h1>
-      <div className="flex flex-wrap gap-4 w-full justify-center xl:justify-between ">
+      <div className="flex flex-wrap gap-4 w-full justify-center xl:justify-between relative">
+        <div className='absolute max-xl:-left-8 top-32 max-xl:rotate-90 xl:right-[47%] xl:top-4 z-50 '>
+          <Image src={'/static/images/referrals/lines.svg'} width={97} height={1} alt="lines" />
+        </div>
         <div className="box-referrals-minimum">
           <div className="relative z-50 flex  sm:justify-between flex-wrap sm:flex-nowrap items-center w-full h-28 text-white">
             <div className="w-full flex justify-evenly sm:justify-between items-center">

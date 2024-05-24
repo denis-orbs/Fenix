@@ -9,7 +9,7 @@ const StatisticsReferral = () => {
       <div className="relative z-50 flex justify-center items-end md:h-28 gap-4 p-4 px-5">
         {/*  */}
         <div className="bg-shark-400 bg-opacity-20 rounded-xl sm:min-w-[173px] min-w-[149px] sm:max-w-[173px] min-h-[38px] sm:min-h-[58px] flex items-center gap-2 border border-solid border-shark-300">
-          <div className="rounded-xl w-9 h-9 sm:w-14 sm:h-14 flex  items-center justify-center bg-shark-400 button-tertiary ">
+          <div className="rounded-xl w-9 h-9 sm:w-14 sm:h-14 flex  items-center justify-center bg-shark-400 transition-colors hover:border-outrageous-orange-500 hover:bg-button-primary-hover hover:bg-opacity-80 ">
             <span className="icon-users-1 text-white text-lg" />
           </div>
           <div className="text-xs text-white text-center font-semibold">
@@ -18,7 +18,7 @@ const StatisticsReferral = () => {
           </div>
         </div>
         <div className="bg-shark-400 bg-opacity-20 rounded-xl sm:min-w-[173px] min-w-[149px] sm:max-w-[173px] min-h-[38px] sm:min-h-[58px] flex items-center gap-2 border border-solid border-shark-300">
-          <div className="rounded-xl w-9 h-9 sm:w-14 sm:h-14 flex  items-center justify-center bg-shark-400 button-tertiary ">
+          <div className="rounded-xl w-9 h-9 sm:w-14 sm:h-14 flex  items-center justify-center bg-shark-400 transition-colors hover:border-outrageous-orange-500 hover:bg-button-primary-hover hover:bg-opacity-80">
             <span className="icon-compass text-white text-lg" />
           </div>
           <div className="text-xs text-white text-center font-semibold">
