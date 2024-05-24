@@ -14,6 +14,7 @@ export interface BoostedPool {
   multiplier: number
   apr: number
   pair: string
+  distributionDays?: number
 }
 
 export interface RingCampaignData {
@@ -36,7 +37,7 @@ export async function GET(request: NextRequest) {
     {
       pair: 'WETH/USDB',
       id: '0x1d74611f3ef04e7252f7651526711a937aa1f75e',
-      points: 12_300_00,
+      points: 12_300_000,
       multiplier: 61.5,
       apr: 0,
     },
@@ -115,6 +116,14 @@ export async function GET(request: NextRequest) {
     //   multiplier: 0,
     // },
     {
+      pair: 'fDAO/WETH',
+      id: '0x886369748d1d66747b8f51ab38de00dea13f0101',
+      points: 100_000,
+      multiplier: 1,
+      apr: 0,
+      distributionDays: 3,
+    },
+    {
       pair: 'MCLB/WETH',
       id: '0xcf68cdfea89f9e6964d4c2bd8a42eba5da9f945d',
       points: 200_000,
@@ -123,17 +132,18 @@ export async function GET(request: NextRequest) {
     },
   ]
   const enhancedBoostedPools = boostedPools.map((pool) => {
-    console.log(pool.id)
     const poolData = pools.find(
       (p: { id: string; totalValueLockedUSD: string }) => p?.id?.toLowerCase() === pool?.id?.toLowerCase()
     )
+    const annualFactor = 365 / (pool?.distributionDays || 7)
+
     return {
       ...pool,
       apr: poolData?.totalValueLockedUSD
         ? toBN(pool.points)
             .multipliedBy(PRICE_PER_POINT)
-            .multipliedBy(4 * 12)
             .dividedBy(poolData.totalValueLockedUSD)
+            .multipliedBy(annualFactor)
             .multipliedBy(100)
             .toNumber()
         : 0,

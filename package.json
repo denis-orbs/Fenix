@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.6",
+    "@crocswap-libs/blast-points-client": "1.1.2",
     "@cryptoalgebra/integral-sdk": "^0.12.4",
+    "@fuul/sdk": "^4.7.1",
     "@ichidao/ichi-vaults-sdk": "^0.0.40",
     "@prisma/client": "^5.13.0",
     "@rainbow-me/rainbowkit": "^2.0.1",

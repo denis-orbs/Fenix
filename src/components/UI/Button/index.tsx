@@ -49,11 +49,12 @@ const Button = ({
 
       return
     }
-    if (walletConfig?.needSupportedChain && !isSupportedChain(chainId)) {
-      switchChain({ chainId: SupportedChainId.BLAST })
-
+    /* if (walletConfig?.needSupportedChain && !isSupportedChain(chainId)) {
+      if (chainId !== SupportedChainId.BLAST) {
+        switchChain({ chainId: SupportedChainId.BLAST })
+      }
       return
-    }
+    } */
     onClick && onClick()
   }
   const buttonText = () => {

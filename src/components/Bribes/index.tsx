@@ -187,12 +187,12 @@ const Bribes = () => {
   }
 
   return (
-    <MainBox className="xl:min-w-[1300px]">
-      <div className="flex flex-col w-full xl:flex-row relative z-10 pb-60 xl:pb-0 xl:py-8">
+    <div className="lock-box">
+      <div className="flex flex-col w-full xl:flex-row relative z-10   ">
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex justify-between mb-5">
-            <h4 className="text-lg text-white">Bribes</h4>
-            <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
+            <h4 className="text-xl font-semibold text-white">Bribes</h4>
+            <span className="icon-refresh text-shark-100 text-xl cursor-pointer"></span>
           </div>
 
           <div className="mb-3">
@@ -242,30 +242,35 @@ const Bribes = () => {
         <div className="flex justify-center items-center w-[10%] relative ">
           <div className="bg-shark-400 h-4/5 w-[1px]"></div>
         </div>
-        <div className="relative flex flex-col w-full xl:w-[45%] max-h-[390px]  overflow-x-none">
+        <div className=" flex flex-col w-full xl:w-[45%] max-h-[390px]  overflow-x-none">
           <div>
-            <h1 className="text-white text-lg mb-5">How it works</h1>
+            <h1 className="text-white text-xl font-medium mb-5">How it works</h1>
           </div>
           {STEPS.map((exchange, index) => (
             <InfoBox
               hasDecorator={STEPS.length === index + 1 ? false : true}
               bgBox="exchange-box-info"
+              
               key={index}
               data={exchange}
               textColor={'text-shark-100'}
             />
           ))}
-          <Link target="_blank" href="https://discord.com/invite/fenixfi" className="mt-16 cursor-pointer">
+          <Link
+            target="_blank"
+            href="https://discord.com/invite/fenixfi"
+            className="mt-6 cursor-pointer xl:absolute bottom-0 right-36  text-sm"
+          >
             <p className="flex gap-2 justify-center text-shark-100">
               <span className="icon-discord"></span>Need some help?
             </p>
           </Link>
-          <div className="absolute top-0 z-10 w-28 right-0">
+          <div className="absolute xl:-top-[70px]  top-2 right-0 z-10 w-28  xl:right-[3%] max-w-[100px]">
             <ProgressBar progress={50} />
           </div>
         </div>
       </div>
-    </MainBox>
+    </div>
   )
 }
 

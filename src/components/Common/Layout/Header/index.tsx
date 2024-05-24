@@ -51,7 +51,7 @@ const Header = () => {
         </div>
 
         <div
-          className={`flex  z-10 items-center gap-3.5  ${width < 860 ? 'px-1' : 'px-5'} 
+          className={`flex  z-50 items-center gap-3.5  ${width < 860 ? 'px-1' : 'px-5'} 
           h-[95px]
           ${pathname === '/' ? 'absolute right-0 w-full justify-end' : 'w-full justify-center'}`}
         >

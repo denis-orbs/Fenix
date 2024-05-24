@@ -44,7 +44,7 @@ const RewardToken = ({ token, setToken, bal, setBal }: RewardTokenProps) => {
         <p className="text-white text-sm">Reward Token</p>
         <p className="text-shark-100 flex gap-3 text-sm items-center">
           <span className="icon-wallet text-xs"></span>
-          <span>
+          <span className="text-xs">
             Available: {token ? formatNumber(Number(bal), 2) : '0'} {token ? token.symbol : null}
           </span>
         </p>

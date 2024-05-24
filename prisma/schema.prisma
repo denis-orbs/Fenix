@@ -8,27 +8,26 @@ datasource db {
 }
 
 model users {
-  id                        String   @id
-  created_at                DateTime @default(now())
-  accumulated_rings_points  BigInt      @default(0)
-  unclaimed_rings_points    BigInt      @default(0)
-  given_blast_poins         BigInt      @default(0)
-  pending_blast_points      BigInt      @default(0)
-  given_blast_gold_points   BigInt      @default(0)
-  pending_blast_gold_points BigInt      @default(0)
-  updated_at                DateTime @default(now()) @updatedAt
-  ring_distributions        ring_distribution[] 
+  id                        String              @id
+  created_at                DateTime            @default(now())
+  accumulated_rings_points  BigInt              @default(0)
+  unclaimed_rings_points    BigInt              @default(0)
+  given_blast_poins         Int                 @default(0)
+  pending_blast_points      Int                 @default(0)
+  given_blast_gold_points   Int                 @default(0)
+  pending_blast_gold_points Int                 @default(0)
+  updated_at                DateTime            @default(now()) @updatedAt
+  ring_distributions        ring_distribution[]
 }
 
 model ring_distribution {
   id          String   @id @default(uuid())
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
-  campaign_id     String
-  pool_id         String
+  campaign_id String
+  pool_id     String
   ring_points BigInt
   gold_points BigInt
-  user_id        String
+  user_id     String
   user        users    @relation(fields: [user_id], references: [id])
-
 }

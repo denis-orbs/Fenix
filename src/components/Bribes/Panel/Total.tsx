@@ -30,7 +30,7 @@ const Total = ({ bal, setValue, value }: TotalProps) => {
           >
             <div className="flex items-center gap-2">
               <Image
-                src={`/static/images/tokens/${token.symbol}.png`}
+                src={`/static/images/tokens/${token.symbol}.svg`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}
@@ -50,7 +50,7 @@ const Total = ({ bal, setValue, value }: TotalProps) => {
             className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
           />
           <div className="absolute right-2 top-[10px] flex items-center gap-1">
-            <Button onClick={() => setValue(bal)} variant="tertiary" className="!py-1 !px-3">
+            <Button onClick={() => setValue(bal)} variant="tertiary" className="!py-1 !px-3 !text-xs">
               Max
             </Button>
           </div>

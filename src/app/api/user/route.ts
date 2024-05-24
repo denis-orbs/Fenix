@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 import { isAddress } from 'viem'
-const prisma = new PrismaClient()
+import prisma from '@/src/library/utils/db'
 export async function POST(request: NextRequest) {
   try {
     const { account } = await request.json()

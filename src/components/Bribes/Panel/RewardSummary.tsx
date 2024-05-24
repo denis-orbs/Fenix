@@ -58,7 +58,7 @@ const RewardSummary = ({ token, value, rewardToken }: ChoosePoolProps) => {
           )}
         </div>
 
-        <div className="text-xs leading-normal text-white">
+        <div className="text-xs  text-center leading-normal text-shark-100">
           <p className="md:mb-[5px]">Reward Value</p>
           <p className="md:mb-[5px]">$ {formatCurrency((value * rewardToken?.price).toFixed(2).replace('NaN', '0'))}</p>
         </div>
