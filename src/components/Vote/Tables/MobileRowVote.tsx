@@ -50,7 +50,7 @@ const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote, activeSli
                 <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
                   Volatile Pool
                 </span>
-              )}
+               )}
               {'CONCENTRATED' === row.type && (
                 <span
                   className="py-1 px-2  text-xs rounded-lg 
@@ -58,12 +58,12 @@ const MobileRowVote = ({ row, changeValue, setChangeValue, activeVote, activeSli
                 >
                   Concentrated
                 </span>
-              )}
+             )} 
               {'STABLE' === row.type && (
                 <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
                   Stable Pool
                 </span>
-              )}
+               )} 
 
               <span className="py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                 0.3%

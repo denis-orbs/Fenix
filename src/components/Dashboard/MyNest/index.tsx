@@ -9,7 +9,8 @@ const MyNest = () => {
   return (
     <>
       {INFO_API.length !== 0 ? (
-        <div className="mb-10">
+        <div className="mb-10"> 
+        
           <div className="flex justify-between mb-4">
             <h1 className="text-white text-xl">Nest</h1>
           </div>

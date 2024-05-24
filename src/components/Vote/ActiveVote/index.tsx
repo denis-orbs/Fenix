@@ -57,7 +57,7 @@ const ActiveVote = ({ handlerChange }: ActiveVoteProps) => {
           <span className="icon-chevron text-xs"></span>
         </div>
       </div>
-      <div className="flex xl:justify-end xl:gap-4 w-full justify-center sm:justify-end  gap-5 items-center">
+      <div className="flex xl:justify-end gap-5 xl:gap-2 2xl:gap-4 w-full justify-center sm:justify-end   items-center">
         <div className="text-xs text-center  xl:w-auto">
           <p className="text-shark-100">Position</p>
           <p className="whitespace-nowrap">{(Number(locks?.veNFTInfo.amount) / 10 ** 18).toFixed(2)} FNX</p>
@@ -66,9 +66,9 @@ const ActiveVote = ({ handlerChange }: ActiveVoteProps) => {
           <p className="text-shark-100 whitespace-nowrap">Voting Power</p>
           <p>{(Number(locks?.veNFTInfo.voting_amount) / 10 ** 18).toFixed(2)} veFNX</p>
         </div>
-        <div className="text-xs text-center xl:w-auto">
-          <p className="text-shark-100">Rewards</p>
-          <p className="text-green-300">$0</p>
+        <div className="text-xs text-center xl:w-auto ">
+          <p className="text-shark-100  ">Rewards</p>
+          <p className="text-green-300 ">$0</p>
         </div>
       </div>
     </div>

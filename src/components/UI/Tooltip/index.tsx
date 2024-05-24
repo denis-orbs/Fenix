@@ -16,7 +16,7 @@ const Tooltip = ({ children, className, show, setShow }: TooltipProps) => {
   const ref = useRef(null)
 
   const mergeClassName = cn(
-    'bg-shark-400 flex justify-center flex-col bg-opacity-90 w-[250px] p-3  rounded-lg  transition-all',
+    'bg-shark-400 flex justify-center flex-col w-[250px] p-3  rounded-lg  transition-all',
     show ? 'block' : 'hidden',
     className
   )

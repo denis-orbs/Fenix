@@ -27,15 +27,15 @@ const Nest = ({ activePagination = true }: NestProps) => {
   }, [])
 
   return (
-    <div className="relative hidden xl:block z-10">
+    <div className="relative hidden lg:block z-10">
       <div className="w-full mb-5">
         <TableHead
           items={[
-            { text: 'Your Nests', className: 'text-left w-[50%] ', sortable: true },
-            { text: 'APR ', className: 'w-[10%] text-center', sortable: true },
-            { text: 'Reward', className: ' w-[10%]', sortable: true },
-            { text: 'Voting Power', className: ' text-center w-[10%] ', sortable: true },
-            { text: 'Action', className: 'text-right w-[20%]', sortable: false },
+            { text: 'Your Nests', className: 'text-left w-[30%] text-xs ', sortable: true },
+            { text: 'APR ', className: 'w-[25%] text-center text-xs', sortable: true },
+            { text: 'Reward', className: ' w-[10%] text-xs', sortable: true },
+            { text: 'Voting Power', className: ' text-center w-[15%] text-xs ', sortable: true },
+            { text: 'Action', className: 'text-right w-[20%] text-xs', sortable: false },
           ]}
           setSort={() => {}}
           sort={null}
@@ -54,10 +54,10 @@ const Nest = ({ activePagination = true }: NestProps) => {
                 </>
               ) : (
                 <>
-                  {Array.from({ length: 5 }).map((_, index) => {
+                  {Array.from({ length: 0 }).map((_, index) => {
                     return (
                       <TableRow key={index}>
-                        <TableCell className="w-[50%]">
+                        <TableCell className="w-[30%]">
                           <div className="flex gap-3 items-center">
                             <Button variant="tertiary" className="!px-3 !py-2 relative">
                               <span className="icon-lucide text-lg"></span>
@@ -77,16 +77,16 @@ const Nest = ({ activePagination = true }: NestProps) => {
                                 >
                                   Updated 2 days ago
                                 </p>
-                                <p className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 w-[111px] h-[27px] rounded-lg border border-shark-300">
-                                  0xc981...EF14f
+                                <p className="text-xs flex items-center justify-center text-shark-100 bg-shark-400 w-auto px-2 h-[27px] rounded-lg border border-shark-300">
+                                  0xc981...
                                   <span className="icon-document"></span>
                                 </p>
                               </div>
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="w-[10%] flex items-center justify-center ">
-                          <h1 className="text-sm me-4">34.58%</h1>
+                        <TableCell className="w-[25%] flex items-center justify-center ">
+                          <h1 className="text-xs me-4">34.58%</h1>
                         </TableCell>
                         <TableCell className="w-[10%] flex  ">
                           <div className="flex items-center gap-2 me-4">
@@ -97,10 +97,10 @@ const Nest = ({ activePagination = true }: NestProps) => {
                               width={20}
                               height={20}
                             />
-                            <p className="text-sm text-white">FNX</p>
+                            <p className="text-xs text-white">FNX</p>
                           </div>
                         </TableCell>
-                        <TableCell className="w-[10%] flex justify-center">
+                        <TableCell className="w-[15%] flex justify-center">
                           <div className="flex items-center gap-2">
                             <Image
                               src={`/static/images/tokens/FNX.svg`}
@@ -109,7 +109,7 @@ const Nest = ({ activePagination = true }: NestProps) => {
                               width={20}
                               height={20}
                             />
-                            <p className="text-sm text-white">744,621.46</p>
+                            <p className="text-xs text-white">744,621.46</p>
                           </div>
                         </TableCell>
                         <TableCell className="w-[20%] flex justify-end">
@@ -120,7 +120,7 @@ const Nest = ({ activePagination = true }: NestProps) => {
                               className="w-full h-[38px] !bg-opacity-40"
                             >
                               {' '}
-                              <span className="text-sm">Deposit Lock</span>
+                              <span className="text-xs">Deposit Lock</span>
                             </Button>
                             {activeAccordion[index] ? (
                               <span
@@ -141,7 +141,7 @@ const Nest = ({ activePagination = true }: NestProps) => {
                         </TableCell>
                         {activeAccordion[index] && (
                           <div className="w-[93%] text-sm mx-auto border border-shark-400 p-2 rounded-lg">
-                            <div className="text-white flex items-center justify-between  w-full">
+                            <div className="text-white text-xs flex items-center justify-between  w-full">
                               <div className="flex gap-2 items-center">
                                 <span className="icon-lock text-white"></span>
                                 <p>Lock #11462</p>
@@ -177,9 +177,6 @@ const Nest = ({ activePagination = true }: NestProps) => {
                   setActivePage={() => {}}
                   setItemPerPage={() => {}}
                 />
-                <div className="flex items-center justify-center w-12 h-12 px-4 cursor-pointer transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
-                  <span className="text-lg icon-cog text-white"></span>
-                </div>
               </div>
             )}
           </>

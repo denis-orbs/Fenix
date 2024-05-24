@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import MainBox from '@/src/components/Common/Boxes/MainBox'
 import Image from 'next/image'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
 import { Button, ProgressBar } from '@/src/components/UI'
@@ -33,23 +32,26 @@ const LockManage = () => {
   }, [currentTab])
 
   return (
-    <div>
-      {currentTab === 'SPLIT' && (
-        <NotificationLock info="Merging/splitting will cause a loss of unclaimed and pending rewards, make sure to claim everything beforehand." />
-      )}
-      {currentTab === 'TRANSFER' && (
-        <NotificationLock info="Be aware of the address direction before you complete your transfer, it is not reversible." />
-      )}
-      <MainBox className="xl:min-w-[1400px] relative w-full ">
-        <div className="flex flex-col w-full xl:flex-row relative z-10  xl:pb-0 xl:py-8">
-          <div className="w-full flex flex-col mb-5 xl:w-[40%]">
+    <div className={`w-full flex justify-center flex-col items-center    mt-28 xl:mt-20`}>
+      <div className="lock-box relative w-full ">
+        <div className="absolute xl:-top-14 -top-24 xl:left-10 left-0 w-full ">
+          {currentTab === 'SPLIT' && (
+            <NotificationLock info="Merging/splitting will cause a loss of unclaimed and pending rewards, make sure to claim everything beforehand." />
+          )}
+          {currentTab === 'TRANSFER' && (
+            <NotificationLock info="Be aware of the address direction before you complete your transfer, it is not reversible." />
+          )}
+        </div>
+        <div className="flex flex-col w-full xl:flex-row relative z-10">
+          <div className="w-full flex flex-col mb-5 xl:w-1/2">
             <div className="flex mb-5 justify-between">
-              <h4 className="text-xl text-white">Manage Lock</h4>
-              <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
+              <h4 className="text-xl font-semibold text-white">Manage Lock</h4>
+              <span className="icon-refresh text-shark-100 text-xl cursor-pointer" />
             </div>
             {/* space between manage lock and reset */}
             <div>
               <Filter
+                className="grid grid-cols-2 [&>button]:!w-full"
                 bgBox="filter-lock-box"
                 options={OPTIONS_TAB}
                 currentTab={currentTab}
@@ -57,7 +59,7 @@ const LockManage = () => {
               />
             </div>
             {/* tab options manage */}
-            <div className="mt-5">
+            <div className="mt-5 relative">
               {currentTab === 'MERGE' && (
                 <>
                   <p className="text-xs ms-1 mb-1 text-white">Current Position</p>
@@ -69,39 +71,35 @@ const LockManage = () => {
                 </>
               )}
               <ActiveVote handlerChange={handlerChange} />
-              <SelectVote
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                activeVote={activeVote}
-                setActiveVote={setActiveVote}
-              />
+
+              {currentTab === 'MERGE' && (
+                <div className="mx-auto flex items-center rounded-sm my-1  h-8 w-8 rotate-90 bg-shark-400 bg-opacity-40    ">
+                  <span className="icon-swap mx-auto   text-2xl text-gradient"></span>
+                </div>
+              )}
             </div>
             {/* active vote */}
             {currentTab === 'TRANSFER' && <Transfer />}
-            {currentTab === 'MERGE' && (
-              <div className="mx-auto rotate-90 bg-shark-400 bg-opacity-40 p-1 rounded-l-lg border border-shark-300">
-                <span className="icon-swap mx-auto rotate-90 text-2xl text-gradient"></span>
-              </div>
-            )}
+
             {currentTab === 'SPLIT' && (
               <>
                 <Split />
-                <ConfirmMerge
+                {/* <ConfirmMerge
                   option={currentTab}
                   openModal={openModalMergeSplit}
                   setOpenModal={setOpenModalMergeSplit}
-                />
+                /> */}
               </>
             )}
             {currentTab === 'MERGE' && (
-              <div className="">
+              <div className="-mt-[20px]">
                 <p className="text-white text-xs ms-1 mb-1">Merge With</p>
                 <Merge activeVote={activeVote} handlerChange={handlerChange} />
-                <ConfirmMerge
+                {/* <ConfirmMerge
                   option={currentTab}
                   openModal={openModalMergeSplit}
                   setOpenModal={setOpenModalMergeSplit}
-                />
+                /> */}
                 <SelectVote
                   openModal={openModal}
                   setOpenModal={setOpenModal}
@@ -121,7 +119,7 @@ const LockManage = () => {
                         <Image src={'/static/images/vote/fenix-logo.svg'} alt="fenix-logo" height={30} width={30} />
                         <p>FNX</p>
                       </div>
-                      <span className="icon-chevron"></span>
+                      {/* <span className="icon-chevron"></span> */}
                     </div>
                   </div>
 
@@ -151,9 +149,9 @@ const LockManage = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-3  mt-5 exchange-box-x1 p-5">
-                  <div className="text-sm flex justify-between">
-                    <p className="text-white text-sm text-left">Expires in</p>
-                    <div className="text-shark-100 flex gap-2">
+                  <div className="text-xs flex justify-between">
+                    <p className="text-white text-xs text-left">Expires in</p>
+                    <div className="text-shark-100 flex gap-2 text-xs">
                       <p>0Y</p>
                       <p>0M</p>
                       <p>7D</p>
@@ -183,7 +181,7 @@ const LockManage = () => {
 
             {/* input slider range */}
             {(currentTab === 'ADD' || currentTab === 'MERGE') && (
-              <div className="exchange-box-x1 p-5 mt-5 flex justify-between items-center text-white text-sm">
+              <div className="exchange-box-x1 xl:h-[60px] p-5 mt-5 flex justify-between items-center text-white text-xs">
                 <div>
                   <p>Voting Power</p>
                 </div>
@@ -219,22 +217,43 @@ const LockManage = () => {
             <div className="bg-shark-400 h-4/5 w-[1px]"></div>
           </div>
           {/* Line black */}
-          <div className="relative flex flex-col w-full xl:w-[35%] mx-auto overflow-x-none border-t-2 border-shark-400 xl:border-none ">
+          <div className="relative flex flex-col w-full xl:w-[40%] mx-auto overflow-x-none border-t-2 border-shark-400 xl:border-none ">
             <div>
-              <h1 className="text-white text-center text-xl mb-10 mt-5">About your veFNX</h1>
+              <h1 className="text-white text-center text-xl font-medium mb-10 mt-5">About your veFNX</h1>
             </div>
             <AboutFnx />
             <div className="justify-center xl:flex hidden mt-2 cursor-pointer">
-              <Link target="_blank" href="https://discord.com/invite/fenixfi"  className="flex gap-2 text-shark-100 mt-10">
+              <Link
+                target="_blank"
+                href="https://discord.com/invite/fenixfi"
+                className="flex gap-2 text-shark-100 mt-10"
+              >
                 <span className="icon-discord"></span> Need some help?
               </Link>
             </div>
-            <div className="absolute top-2 xl:top-0 z-10 w-28 right-0">
+            <div className="absolute top-2 xl:-top-[70px] z-10 w-28 right-0 xl:right-[30px] max-w-[100px]">
               <ProgressBar progress={50} />
             </div>
           </div>
         </div>
-      </MainBox>
+      </div>
+
+      <div>
+        {currentTab === 'MERGE' && (
+          <ConfirmMerge option={currentTab} openModal={openModalMergeSplit} setOpenModal={setOpenModalMergeSplit} />
+        )}
+        {currentTab === 'SPLIT' && (
+          <>
+            <ConfirmMerge option={currentTab} openModal={openModalMergeSplit} setOpenModal={setOpenModalMergeSplit} />
+          </>
+        )}
+        <SelectVote
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          activeVote={activeVote}
+          setActiveVote={setActiveVote}
+        />
+      </div>
     </div>
   )
 }
