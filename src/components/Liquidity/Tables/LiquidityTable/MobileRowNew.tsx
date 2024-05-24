@@ -5,7 +5,7 @@ import Loader from '@/src/components/UI/Icons/Loader'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
-import { BasicPool, PoolData } from '@/src/state/liquidity/types'
+import { BasicPool, GammaVault, PoolData } from '@/src/state/liquidity/types'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
@@ -13,6 +13,7 @@ import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVault
 import { SupportedDex, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
+import { useGammaVaults } from '@/src/state/liquidity/hooks'
 
 interface RowDataProps {
   row: BasicPool
@@ -67,6 +68,10 @@ export default function MobileRowNew({
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
     setCampaign({ ...campaign_ })
   }, [row])
+  const { loading: gammaVaultsLoading, data: gammaVaults } = useGammaVaults()
+  const gammaVaultApr =
+    gammaVaults?.find((vault: GammaVault) => vault?.poolAddress?.toLowerCase() === row?.id?.toLowerCase())?.returns
+      ?.weekly?.feeApr || null
 
   return (
     <>
@@ -183,15 +188,23 @@ export default function MobileRowNew({
                     )}
                     {ichiAprLoading && (
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-sm">Ichi Strategy</p>
+                        <p className="text-sm">Ichi</p>
                         <Loader />
                       </div>
                     )}
                     {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-sm">Ichi Strategy</p>
+                        <p className="text-sm">Ichi</p>
                         <p className="text-sm text-chilean-fire-600">
                           {formatAmount(Number(ichiApr) < 0 ? 0 : Number(ichiApr) || 0, 2)}%
+                        </p>
+                      </div>
+                    )}
+                    {gammaVaultApr && (
+                      <div className="flex justify-between items-center gap-3">
+                        <p className="text-sm">Gamma</p>
+                        <p className="text-sm text-chilean-fire-600">
+                          {formatAmount(gammaVaultApr < 0 || isNaN(gammaVaultApr) ? 0 : Number(gammaVaultApr), 2)}%
                         </p>
                       </div>
                     )}
