@@ -38,7 +38,7 @@ const LockTokens = ({ changeState, setChangeState }: LockTokensProps) => {
             Gain greater voting power and higher rewards, by locking more tokens for longer.
           </p>
           <div className="flex  gap-2 md:flex-row mb-3 ">
-            <Button className=" !px-3" href="/vote">
+            <Button className=" !px-3" href="/lock/create">
               <div className="flex gap-2 text-xs">
                 <span className="icon-lock"></span>
                 Create a Lock
