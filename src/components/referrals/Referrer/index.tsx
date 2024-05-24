@@ -7,7 +7,7 @@ const Referrer = () => {
       <h1 className="text-white text-sm sm:text-base font-semibold text-left ">
         Each successful referral gives referrer{' '}
       </h1>
-      <div className="flex flex-wrap gap-4 w-full justify-center xl:justify-between relative">
+      <div className="flex flex-wrap xl:flex-nowrap gap-4 w-full justify-center xl:justify-between relative">
         <div className='absolute max-xl:-left-8 top-32 max-xl:rotate-90 xl:right-[47%] xl:top-4 z-50 '>
           <Image src={'/static/images/referrals/lines.svg'} width={97} height={1} alt="lines" />
         </div>
