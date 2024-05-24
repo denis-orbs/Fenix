@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { toBN } from '@/src/library/utils/numbers'
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/src/library/utils/db'
