@@ -17,15 +17,15 @@ const CardsBuild = ({ title, info }: CardsBuildProps) => {
   return (
     <div className="card3  w-[302px] xl:w-[360px] h-[405px] cursor-pointer">
       <div className="inner3 p-5 w-[100%] h-[100%]">
-        <h1 className="text-gradient3 text-2xl font-normal leading-relaxed  ">{title}</h1>
+        <h4 className="text-gradient3 text-2xl font-normal leading-relaxed  ">{title}</h4>
         <ul className="flex flex-col gap-4">
           {info.map((data, index) => {
             return (
               <li className="text-white flex gap-2 justify-between items-center" key={index}>
-                <div className="flex gap-2 items-center ">
+                <p className="flex gap-2 items-center ">
                   <Image src={'/static/images/landing/Build/polygon.svg'} height={6} width={6} alt="polygon" />
                   <span className="text-xs xl:text-sm opacity-70 font-normal">{data.label}</span>
-                </div>
+                </p>
                 {data.checked && (
                   <Image src={'/static/images/landing/Build/check.svg'} height={24} width={24} alt="polygon" />
                 )}

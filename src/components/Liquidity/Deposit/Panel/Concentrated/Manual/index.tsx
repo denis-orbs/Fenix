@@ -35,7 +35,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     id: 0,
     decimals: 18,
     address: '0x4300000000000000000000000000000000000003' as Address,
-    img: 'https://fenix-dex-api.vercel.app/tokens/USDB.png',
+    img: '/static/images/tokens/USDB.svg',
   } as IToken)
   const [firstValue, setFirstValue] = useState('')
   const [secondToken, setSecondToken] = useState({
@@ -44,7 +44,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     id: 1,
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023' as Address,
-    img: '/static/images/tokens/WETH.png',
+    img: '/static/images/tokens/WETH.svg',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)

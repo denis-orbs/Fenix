@@ -79,7 +79,7 @@ const Manage = ({}: {}) => {
     id: 1,
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023' as Address,
-    img: '/static/images/tokens/WETH.png',
+    img: '/static/images/tokens/WETH.svg',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
