@@ -592,7 +592,7 @@ const Panel = () => {
   }, [tokenSell?.address, tokenGet?.address])
   // console.log(hash, status)
   return (
-    <div className='relative '>
+    <>
       <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
         <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
           <div className="w-full relative">
@@ -729,7 +729,7 @@ const Panel = () => {
         </div>
       </section>
       {showChart && <Chart token0={tokenGet?.address} token1={tokenSell?.address} />}
-    </div>
+    </>
   )
 }
 
