@@ -21,7 +21,7 @@ import {
 } from './data'
 
 const Liquidity = () => {
-  const [currentTab, setCurrentTab] = useState<string>('ALL POOLS')
+  const [currentTab, setCurrentTab] = useState<string>('ALL')
   const [searchValue, setSearchValue] = useState<string>('')
   const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
   // console.log(filteredPools)
