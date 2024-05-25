@@ -98,14 +98,14 @@ const RowData = ({
               <Image
                 src={`/static/images/tokens/${row.token0.symbol}.svg`}
                 alt="token"
-                className="rounded-full w-7 h-7"
+                className="rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
               <Image
                 src={`/static/images/tokens/${row.token1.symbol}.svg`}
                 alt="token"
-                className="-ml-4 rounded-full w-7 h-7"
+                className="-ml-4 rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
