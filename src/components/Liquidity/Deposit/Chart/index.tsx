@@ -34,13 +34,13 @@ const Chart = ({ token0, token1 }: { token0?: string | null; token1?: string | n
     <div
       className={`flex flex-col w-[100%] xl:rounded-2xl max-xl:rounded-b-2xl max-xl:pb-4 max-xl:h-[600px] xl:h-[525px] px-3 xl:border xl:border-shark-950 xl:p-[3px] max-xl:bg-shark-400 max-xl:bg-opacity-40`}
     >
-      <iframe
+      {/* <iframe
         height="100%"
         width="100%"
         src={`https://dexscreener.com/blast/${poolAddress}?embed=1&theme=dark&trades=0&info=0`}
         allow="clipboard-write"
         className="rounded-lg"
-      />
+      /> */}
     </div>
   )
 }
