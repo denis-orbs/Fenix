@@ -13,6 +13,7 @@ import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVault
 import { SupportedDex, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
+import { adjustTokenOrder } from '@/src/library/utils/tokens'
 
 interface RowDataProps {
   row: BasicPool
@@ -67,6 +68,7 @@ export default function MobileRowNew({
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
     setCampaign({ ...campaign_ })
   }, [row])
+  const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
 
   return (
     <>
@@ -74,14 +76,14 @@ export default function MobileRowNew({
         <div className="flex gap-[9px] items-center justify-around pb-2">
           <div className="relative flex items-center">
             <Image
-              src={`/static/images/tokens/${row.token0.symbol}.svg`}
+              src={`/static/images/tokens/${adjustToken0}.svg`}
               alt="token"
               className="w-10 h-10 max-xxs:w-8 max-xxs:h-8 -mr-5 rounded-full"
               width={32}
               height={32}
             />
             <Image
-              src={`/static/images/tokens/${row.token1.symbol}.svg`}
+              src={`/static/images/tokens/${adjustToken1}.svg`}
               alt="token"
               className="w-10 h-10 max-xxs:w-8 max-xxs:h-8 rounded-full"
               width={32}
@@ -91,7 +93,7 @@ export default function MobileRowNew({
           <div className="flex flex-col gap-1 w-[85%]">
             <div className="flex items-center gap-2 justify-between">
               <h5 className="text-sm font-semibold leading-normal mx-auto">
-                {row.token0.symbol} / {row.token1.symbol}{' '}
+                {adjustToken0} / {adjustToken1}{' '}
               </h5>
               <div
                 className={`border-solid bg-shark-400 rounded-lg bg-opacity-40 border-shark-300 text-xs font-normal border whitespace-nowrap !py-2 !h-[38px] w-[44.7%] text-center px-4 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}

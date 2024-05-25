@@ -18,6 +18,7 @@ import { getWeb3Provider } from '@/src/library/utils/web3'
 import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import Loader from '@/src/components/UI/Icons/Loader'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
+import { adjustTokenOrder } from '@/src/library/utils/tokens'
 
 interface RowDataProps {
   row: BasicPool
@@ -88,7 +89,7 @@ const RowData = ({
     return formatAmount(average.toString(), 2)
   }
   // console.log(data?.boostedPools?.find((pool: string) => pool?.toLowerCase() == row?.id?.toLowerCase()))
-
+  const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -96,16 +97,16 @@ const RowData = ({
           <div className="flex justify-center items-center gap-2">
             <div className="flex items-center w-[40px]">
               <Image
-                src={`/static/images/tokens/${row.token0.symbol}.svg`}
+                src={`/static/images/tokens/${adjustToken0}.svg`}
                 alt="token"
                 className="rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.token1.symbol}.svg`}
+                src={`/static/images/tokens/${adjustToken1}.svg`}
                 alt="token"
-                className="-ml-4 rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
+                className="-ml-[0.9rem] rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
@@ -113,7 +114,7 @@ const RowData = ({
             <div className="flex flex-col gap-1">
               <h5 className={`text-xs text-white h-[26px] flex items-center`}>
                 <div>
-                  {row.token0.symbol} / {row.token1.symbol}
+                  {adjustToken0} / {adjustToken1}
                 </div>
               </h5>
               <div className="flex items-center gap-1 h-[26px]">
