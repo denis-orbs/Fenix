@@ -230,7 +230,7 @@ const RowData = ({
             <div className="flex flex-col gap-1">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token0.symbol}.png`}
+                  src={`/static/images/tokens/${row.token0.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -240,7 +240,7 @@ const RowData = ({
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100 font-normal ">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token1.symbol}.png`}
+                  src={`/static/images/tokens/${row.token1.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -259,7 +259,7 @@ const RowData = ({
             <div className="flex flex-col  gap-1">
               <p className="flex  items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token0.symbol}.png`}
+                  src={`/static/images/tokens/${row.token0.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -269,7 +269,7 @@ const RowData = ({
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token1.symbol}.png`}
+                  src={`/static/images/tokens/${row.token1.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
