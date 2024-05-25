@@ -7,29 +7,29 @@ const BuildInfo = () => {
   return (
     <div className="relative flex items-center flex-col justify-center mb-[100px] xl:mb-[200px] w-full overflow-hidden">
       <div className="flex flex-col items-center justify-center mx-auto z-50 mb-10">
-        <div className="text-shark-100 text-xl max-lg:text-lg font-normal text-center">Roadmap</div>
-        <div className="text-gradient3 text-[40px] font-normal leading-relaxed max-lg:text-2xl text-center">
+        <h2 className="text-shark-100 text-xl max-lg:text-lg font-normal text-center">Roadmap</h2>
+        <h4 className="text-gradient3 text-[40px] font-normal leading-relaxed max-lg:text-2xl text-center">
           Build with FENIX
-        </div>
+        </h4>
       </div>
       <div className="flex flex-wrap w-full gap-10 xl:gap-20 justify-center relative">
         <div className="flex flex-col xl:gap-14 gap-5 ">
           <div>
-            <h1 className="text-white text-center text-xl xl:text-2xl font-light">April 2024</h1>
+            <h3 className="text-white text-center text-xl xl:text-2xl font-light">April 2024</h3>
             <p className="text-gradient3 text-sm font-normal leading-relaxed xl:text-xl text-center">Stage 01</p>
           </div>
           <CardsBuild title="Foundation" info={FOUNDATION}  />
         </div>
         <div className="flex flex-col  xl:gap-14 gap-5">
           <div>
-            <h1 className="text-white text-center xl:text-2xl text-xl font-light">APRIL/MAY 2024</h1>
+            <h3 className="text-white text-center xl:text-2xl text-xl font-light">APRIL/MAY 2024</h3>
             <p className="text-gradient3 text-sm font-normal leading-relaxed xl:text-xl text-center">Stage 02</p>
           </div>
           <CardsBuild title="Launch" info={LAUNCH} />
         </div>
         <div className="flex flex-col  xl:gap-14 gap-5">
           <div>
-            <h1 className="text-white text-center xl:text-2xl text-xl font-light">Q2-Q4 2024</h1>
+            <h3 className="text-white text-center xl:text-2xl text-xl font-light">Q2-Q4 2024</h3>
             <p className="text-gradient3 text-sm font-normal leading-relaxed xl:text-xl text-center">Stage 03</p>
           </div>
           <CardsBuild title="Growth" info={GROWTH}  />
