@@ -43,7 +43,7 @@ export interface VoteTableElement {
 }
 
 const Vote = () => {
-  const [currentTab, setCurrentTab] = useState('VOLATILE')
+  const [currentTab, setCurrentTab] = useState('ALL')
   const [activeVote, setActiveVote] = useState(false)
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)

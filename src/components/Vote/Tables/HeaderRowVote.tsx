@@ -81,6 +81,8 @@ const HeaderRowVote = ({
         setData(vote?.voteTableElement.filter((pos) => pos.pair.hasOwnProperty('stable') && !pos.pair.stable))
       } else if (tab === 'CONCENTRATED') {
         setData(vote.voteTableElement.filter((pos) => !pos.pair.hasOwnProperty('stable')))
+      } else {
+        setData(vote.voteTableElement)
       }
     } else {
       const newData = vote?.voteTableElement.filter((pos) => {
@@ -92,39 +94,39 @@ const HeaderRowVote = ({
       })
       setData(newData)
     }
-  }, [data, search, tab, vote.voteTableElement])
+  }, [search, tab, vote.voteTableElement])
 
   const pagination = paginate(data, activePage, itemsPerPage)
 
   useEffect(() => {
     if (sidx === 1) {
       if (svalue === 'asc') {
-        const sortedArr = data.sort((a, b) => a.poolAPR - b.poolAPR)
+        const sortedArr = [...data].sort((a, b) => a.poolAPR - b.poolAPR)
         setData(sortedArr)
       } else if (svalue === 'desc') {
-        const sortedArr = data.sort((a, b) => b.poolAPR - a.poolAPR)
+        const sortedArr = [...data].sort((a, b) => b.poolAPR - a.poolAPR)
         setData(sortedArr)
       } else {
-        const sortedArr = data.sort((a, b) => a.poolAPR - b.poolAPR)
+        const sortedArr = [...data].sort((a, b) => a.poolAPR - b.poolAPR)
         setData(sortedArr)
       }
     } else if (sidx === 2) {
       if (svalue === 'asc') {
-        const sortedArr = data.sort(
+        const sortedArr = [...data].sort(
           (a, b) =>
             Number(a.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
             Number(b.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
         )
         setData(sortedArr)
       } else if (svalue === 'desc') {
-        const sortedArr = data.sort(
+        const sortedArr = [...data].sort(
           (a, b) =>
             Number(b.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
             Number(a.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
         )
         setData(sortedArr)
       } else {
-        const sortedArr = data.sort(
+        const sortedArr = [...data].sort(
           (a, b) =>
             Number(a.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
             Number(b.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
@@ -133,21 +135,21 @@ const HeaderRowVote = ({
       }
     } else if (sidx === 3) {
       if (svalue === 'asc') {
-        const sortedArr = data.sort(
+        const sortedArr = [...data].sort(
           (a, b) =>
             Number(a.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
             Number(b.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
         )
         setData(sortedArr)
       } else if (svalue === 'desc') {
-        const sortedArr = data.sort(
+        const sortedArr = [...data].sort(
           (a, b) =>
             Number(b.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
             Number(a.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
         )
         setData(sortedArr)
       } else {
-        const sortedArr = data.sort(
+        const sortedArr = [...data].sort(
           (a, b) =>
             Number(a.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
             Number(b.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
@@ -156,17 +158,17 @@ const HeaderRowVote = ({
       }
     } else if (sidx === 4) {
       if (svalue === 'asc') {
-        const sortedArr = data.sort(
+        const sortedArr = [...data].sort(
           (a, b) => Number(a.dollarRewardsValue.toString()) - Number(b.dollarRewardsValue.toString())
         )
         setData(sortedArr)
       } else if (svalue === 'desc') {
-        const sortedArr = data.sort(
+        const sortedArr = [...data].sort(
           (a, b) => Number(b.dollarRewardsValue.toString()) - Number(a.dollarRewardsValue.toString())
         )
         setData(sortedArr)
       } else {
-        const sortedArr = data.sort(
+        const sortedArr = [...data].sort(
           (a, b) => Number(a.dollarRewardsValue.toString()) - Number(b.dollarRewardsValue.toString())
         )
         setData(sortedArr)

@@ -39,4 +39,4 @@ export const EXCHANGE_LIST = [
   },
 ]
 
-export const FILTER_OPTIONS = ['Stable', 'Volatile', 'Concentrated']
+export const FILTER_OPTIONS = ['All', 'Stable', 'Volatile', 'Concentrated']
