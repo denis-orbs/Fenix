@@ -25,6 +25,7 @@ import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { ichiVaults } from './ichiVaults'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { ethers } from 'ethers'
 
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
@@ -108,7 +109,7 @@ const WithdrawAmountsICHI = ({
       setTotalShareDollar(Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice))
       
 
-
+      
       setTotalUserShares(data)
     }
     getTotalUserShares()
@@ -128,7 +129,7 @@ const WithdrawAmountsICHI = ({
     if (!account) return
     if (!vaultAddress) return
     try {
-      const txnDetails = await withdraw(account, amoutToWithdraw, vaultAddress.id, web3Provider, dex)
+      const txnDetails = await withdraw(account, ethers.utils.parseEther(amoutToWithdraw), vaultAddress.id, web3Provider, dex)
       // toast.success('Withdrawal Transaction Sent')
       addNotification({
         id: crypto.randomUUID(),
@@ -167,6 +168,12 @@ const WithdrawAmountsICHI = ({
     toBN(totalUserShares).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
   }, [totalUserShares])
 
+  const handleDecString = (value: any, decimals: any) => {
+    const regex = new RegExp(`^(\\d+\\.\\d{0,${decimals}})`);
+    const match = value.match(regex);
+    return match ? match[0] : value;
+  }
+
   const handleHalf = () => {
     // console.log(!totalUserShares)
     // console.log()
@@ -177,7 +184,7 @@ const WithdrawAmountsICHI = ({
       if (!totalUserShares || totalUserShares === '') {
         setAmountToWithdraw('')
       } else {
-        setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
+        setAmountToWithdraw(handleDecString(toBN(totalUserShares).div(2).toString(), 18))
       }
     }
   }
