@@ -20,7 +20,7 @@ const SetRange = ({
   isInverse,
   swapTokens,
   price1text,
-  price2text
+  price2text,
 }: {
   setCurrentPercentage: any
   currentPercentage: any
@@ -40,26 +40,26 @@ const SetRange = ({
   const [currentPercentageShown, setCurrentPercentShown] = useState([5, 5])
 
   useEffect(() => {
-    if(currentStrategy == StrategyType.NARROW) handlePercentageChange([-2.5, 2.5], false)
-    if(currentStrategy == StrategyType.BALANCED) handlePercentageChange([-6, 6], false)
-    if(currentStrategy == StrategyType.WIDE) handlePercentageChange([-15, 15], false)
-    if(currentStrategy == StrategyType.FULL_RANGE) handlePercentageChange([-1, -1], false) //inf
+    if (currentStrategy == StrategyType.NARROW) handlePercentageChange([-2.5, 2.5], false)
+    if (currentStrategy == StrategyType.BALANCED) handlePercentageChange([-6, 6], false)
+    if (currentStrategy == StrategyType.WIDE) handlePercentageChange([-15, 15], false)
+    if (currentStrategy == StrategyType.FULL_RANGE) handlePercentageChange([-1, -1], false) //inf
   }, [currentStrategy])
 
   const handlePercentageChange = (percent: any, s=true) => {
     setCurrentPercentage([percent[0], percent[1]])
 
-    return
-    setCurrentPercentShown(percent)
+    return setCurrentPercentShown(percent)
 
-    if(percent[0] != -1 && percent[1] != -1) {
-      percent[0] = isInverse ? invertPercentage(-percent[0]) : percent[0] 
-      percent[1] = isInverse ? invertPercentage(-percent[1]) : percent[1] 
-    }
-    setCurrentPercentage([percent[0], percent[1]])
-    if (s) setCurrentStrategy(null)
+    // if(percent[0] != -1 && percent[1] != -1) {
+    //   percent[0] = isInverse ? invertPercentage(-percent[0]) : percent[0]
+    //   percent[1] = isInverse ? invertPercentage(-percent[1]) : percent[1]
+    // }
+    // setCurrentPercentage([percent[0], percent[1]])
+    // if (s) setCurrentStrategy(null)
   }
 
+ 
   function invertPercentage(percent: number) {
     const remaining = 1 + percent / 100
     return (1 / remaining - 1) * 100
@@ -143,8 +143,14 @@ const SetRange = ({
             min={1}
             max={100}
             disabled={false}
-            onChange={(value) => { console.log(value); handlePercentageChange([-value, value])}}
-            onChangeShown={(value) => { {console.log(value); if(value != 101) setCurrentPercentShown([-value, value])}}}
+            onChange={(value) => {
+              handlePercentageChange([-value, value])
+            }}
+            onChangeShown={(value) => {
+              {
+                if (value != 101) setCurrentPercentShown([-value, value])
+              }
+            }}
           />
         </div>
       </div>
@@ -190,20 +196,21 @@ const SetRange = ({
       <div className="flex gap-[21px]">
         <Input
           title={`Min Price (${token2?.symbol} per ${token1?.symbol})`}
-          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 0 : currentPercentage[0].toFixed(1)}`}
+          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 0 : currentPercentage[0]}`}
+          setCurrentPercentage={(value: any) => handlePercentageChange([-value, value])}
+          isPositive={false}
           value={
-            isInverse ?
-              price2text == price2.toString() ?
-                currentPercentage[0] == -1 && currentPercentage[1] == -1
+            isInverse
+              ? price2text == price2.toString()
+                ? currentPercentage[0] == -1 && currentPercentage[1] == -1
                   ? '0'
                   : (formatNumber(1 / (price2 * multiplier), 6) as string)
-              : price2text
-            : 
-              price1text == price1.toString() ?
-                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                : price2text
+              : price1text == price1.toString()
+                ? currentPercentage[0] == -1 && currentPercentage[1] == -1
                   ? '0'
                   : (formatNumber(price1 / multiplier, 6) as string)
-              : price1text
+                : price1text
           }
           onChange={(value: any) => {
             handleMinMaxInput(value, isInverse, multiplier)
@@ -212,20 +219,21 @@ const SetRange = ({
         />
         <Input
           title={`Max Price (${token2?.symbol} per ${token1?.symbol})`}
-          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 'Infinity' : currentPercentage[1].toFixed(1)}`}
+          percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 'Infinity' : currentPercentage[1]}`}
+          setCurrentPercentage={(value: any) => handlePercentageChange([-value, value])}
+          isPositive={true}
           value={
-            isInverse ?
-              price1text == price1.toString() ?
-                currentPercentage[0] == -1 && currentPercentage[1] == -1
+            isInverse
+              ? price1text == price1.toString()
+                ? currentPercentage[0] == -1 && currentPercentage[1] == -1
                   ? 'Infinity'
                   : (formatNumber(1 / (price1 * multiplier), 6) as string)
-              : price1text
-            : 
-              price2text == price2.toString() ?
-                currentPercentage[0] == -1 && currentPercentage[1] == -1
+                : price1text
+              : price2text == price2.toString()
+                ? currentPercentage[0] == -1 && currentPercentage[1] == -1
                   ? 'Infinity'
                   : (formatNumber(price2 / multiplier, 6) as string)
-              : price2text
+                : price2text
           }
           onChange={(value: any) => {
             handleMinMaxInput(value, !isInverse, multiplier)
