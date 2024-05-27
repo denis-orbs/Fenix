@@ -3,7 +3,7 @@ import { wagmiConfig } from '@/src/app/layout'
 import { Address, Hash } from 'viem'
 import externalbribeABI from './abis/externalBribeABI'
 
-export async function createBribe(tokenAddress: Address, amount: bigint, externalBribeAddress: Address): Promise<Hash> {
+export async function createBribe(tokenAddress: Address, amount: string, externalBribeAddress: Address): Promise<Hash> {
   const data = await writeContract(wagmiConfig, {
     address: externalBribeAddress,
     abi: externalbribeABI,

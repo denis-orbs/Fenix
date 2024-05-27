@@ -32,7 +32,7 @@ export async function getCurrentEpochRewardTokens(
       bribeList.push(...(queryResult || []))
       page++
     } while (queryResult && queryResult.length > 0)
-
+    console.log(bribeList, 'bribeList')
     const joinedBribes: any = {}
     bribeList.forEach((bribe) => {
       const addr = bribe.bribe.id.toLowerCase()

@@ -13,10 +13,12 @@ import { voteState } from '@/src/state/vote/types'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 
-const Overlay = () => {
+interface overlayProps {
+  voteValue: Number
+  lockInfo: LockElement | undefined
+}
+const Overlay = ({ voteValue, lockInfo }: overlayProps) => {
   const [loading, setloading] = useState<Boolean>(false)
-  const lock = useAppSelector((state) => state.lock as LockElement)
-  const voteValue = useAppSelector((state) => state.vote as voteState)
 
   const addNotification = useNotificationAdderCallback()
 
@@ -143,13 +145,13 @@ const Overlay = () => {
           <div className="flex flex-col w-full lg:w-auto">
             <p className="text-white text-xs text-nowrap">Voting Power Used</p>
             <p className="text-xl text-white">
-              {Number(voteValue?.percentage) <= 100
+              {Number(voteValue) <= 100
                 ? (
-                    ((Number(lock?.veNFTInfo?.voting_amount?.toString()) / 10 ** 18) * Number(voteValue?.percentage)) /
+                    ((Number(lockInfo?.veNFTInfo.voting_amount?.toString()) / 10 ** 18) * Number(voteValue)) /
                     100
                   ).toFixed(1)
-                : (Number(lock?.veNFTInfo?.voting_amount?.toString()) / 10 ** 18).toFixed(1)}{' '}
-              veFnx ({voteValue?.percentage.toString()} %)
+                : (Number(lockInfo?.veNFTInfo.voting_amount?.toString()) / 10 ** 18).toFixed(1)}{' '}
+              veFnx ({voteValue.toString()} %)
             </p>
           </div>
           <div className="flex justify-end gap-10 items-center ">
@@ -161,7 +163,7 @@ const Overlay = () => {
             <div className="flex items-center gap-4">
               <Button
                 className="!h-[38px] !text-xs w-[130px] "
-                disabled={Number(voteValue?.percentage) > 100}
+                disabled={Number(voteValue) > 100}
                 onClick={() => castVote()}
               >
                 Cast Votes
@@ -181,10 +183,11 @@ const Overlay = () => {
             <p className="text-white text-[10px] ">Voting Power Used</p>
             <p className="text-xl text-white">
               {Number(voteValue) <= 100
-                ? (((Number(lock?.veNFTInfo?.voting_amount?.toString()) / 10 ** 18) * Number(voteValue)) / 100).toFixed(
-                    1
-                  )
-                : (Number(lock?.veNFTInfo?.voting_amount?.toString()) / 10 ** 18).toFixed(1)}{' '}
+                ? (
+                    ((Number(lockInfo?.veNFTInfo?.voting_amount?.toString()) / 10 ** 18) * Number(voteValue)) /
+                    100
+                  ).toFixed(1)
+                : (Number(lockInfo?.veNFTInfo?.voting_amount?.toString()) / 10 ** 18).toFixed(1)}{' '}
               veFnx ({voteValue.toString()} %)
             </p>
           </div>

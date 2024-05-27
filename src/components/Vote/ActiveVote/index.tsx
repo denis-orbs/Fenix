@@ -1,4 +1,5 @@
 import { LockElement } from '@/src/library/structures/lock/LockElement'
+import { formatNumber, fromWei } from '@/src/library/utils/numbers'
 import { AppThunkDispatch, useAppSelector } from '@/src/state'
 import { fetchNftsAsync } from '@/src/state/lock/reducer'
 import { lockState } from '@/src/state/lock/types'
@@ -31,7 +32,7 @@ const ActiveVote = ({ handlerChange, lock }: ActiveVoteProps) => {
           <div className="flex items-center gap-2  ">
             <Image
               alt="logo-fenix"
-              src={'/static/images/vote/fenix-logo.svg'}
+              src={'/static/images/tokens/FNX.png'}
               className="h-[32px] w-[32px]"
               width={61}
               height={61}
@@ -48,7 +49,7 @@ const ActiveVote = ({ handlerChange, lock }: ActiveVoteProps) => {
                   </p>
                 ) : (
                   <p className=" text-red-400 line-clamp-1">
-                    <span>•</span> Expired
+                    <span>•</span> Expire
                   </p>
                 )}
               </div>
@@ -60,11 +61,13 @@ const ActiveVote = ({ handlerChange, lock }: ActiveVoteProps) => {
       <div className="flex xl:justify-end gap-5 xl:gap-2 2xl:gap-4 w-full justify-center sm:justify-end   items-center">
         <div className="text-xs text-center  xl:w-auto">
           <p className="text-shark-100">Position</p>
-          <p className="whitespace-nowrap">{(Number(lockInfo?.veNFTInfo.amount) / 10 ** 18).toFixed(2)} FNX</p>
+          <p className="whitespace-nowrap">
+            {formatNumber(Number(fromWei(Number(lockInfo?.veNFTInfo.amount))), 2).replace('NaN', '0')} FNX
+          </p>
         </div>
         <div className="text-xs text-center xl:w-auto">
           <p className="text-shark-100 whitespace-nowrap">Voting Power</p>
-          <p>{(Number(lockInfo?.veNFTInfo.voting_amount) / 10 ** 18).toFixed(2)} veFNX</p>
+          <p>{formatNumber(Number(fromWei(Number(lockInfo?.veNFTInfo.voting_amount))), 2).replace('NaN', '0')} veFNX</p>
         </div>
         <div className="text-xs text-center xl:w-auto ">
           <p className="text-shark-100  ">Rewards</p>

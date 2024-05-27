@@ -4,14 +4,16 @@ import useStore from '@/src/state/zustand'
 import ReadMoreModal from '@/src/components/Modals/Liquidity/ReadMore'
 import ActiveVote from '../ActiveVote'
 import InactiveVote from '../InactiveVote'
+import { LockElement } from '@/src/library/structures/lock/LockElement'
 
 interface VoteNowProps {
   openModal: boolean
   activeVote: boolean
   setOpenModal: (parameter: boolean) => void
+  lock: LockElement | undefined
 }
 
-const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
+const VoteNow = ({ openModal, setOpenModal, activeVote, lock }: VoteNowProps) => {
   const { setReadMoreModal } = useStore()
   const handlerChange = () => (openModal ? setOpenModal(false) : setOpenModal(true))
 
@@ -22,13 +24,11 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
         Vote now
       </h4>
       <StepBox className="xl:max-h-[336px] xl:min-h-[336px]">
-        <h4 className="w-full mb-3 text-sm  font-medium flex xl:hidden  text-white ">
-          Vote now
-        </h4>
+        <h4 className="w-full mb-3 text-sm  font-medium flex xl:hidden  text-white ">Vote now</h4>
 
         <div className="flex flex-col justify-center xl:min-h-[px] w-full  relative z-10 xl:py-6 2xl:py-10">
           <div className="relative  flex flex-col w-full">
-            <ActiveVote handlerChange={handlerChange} />
+            <ActiveVote lock={lock} handlerChange={handlerChange} />
           </div>
           <div className="flex flex-wrap xl:flex-nowrap gap-3 mt-2 items-center w-full">
             <div className="box-vote-medium xl:w-[30%] 2xl:w-[32%]">
@@ -59,17 +59,21 @@ const VoteNow = ({ openModal, setOpenModal, activeVote }: VoteNowProps) => {
           </div>
 
           <div className="flex justify-center gap-4 py-5">
-          <p
-            className="flex items-center gap-2 text-xs cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
-            onClick={handleReadMore}
-          >
-            <span className=" icon-link"></span>
-            Read More
-          </p>
-          <Link target="_blank" href="https://discord.com/invite/fenixfi" className="flex items-center text-xs gap-2 text-shark-100 cursor-pointer ">
-            <span className="icon-discord"></span>Need some help?
-          </Link>
-        </div>
+            <p
+              className="flex items-center gap-2 text-xs cursor-pointer text-shark-100 hover:text-outrageous-orange-500"
+              onClick={handleReadMore}
+            >
+              <span className=" icon-link"></span>
+              Read More
+            </p>
+            <Link
+              target="_blank"
+              href="https://discord.com/invite/fenixfi"
+              className="flex items-center text-xs gap-2 text-shark-100 cursor-pointer "
+            >
+              <span className="icon-discord"></span>Need some help?
+            </Link>
+          </div>
         </div>
         <ReadMoreModal />
       </StepBox>

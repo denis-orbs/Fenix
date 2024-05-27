@@ -37,7 +37,6 @@ export async function getAllPairRewards(
     args: [user, 250, 0],
     abi: RewardAPIABIV3,
   })) as RewardPairInfo[]
-
   const subgraphTokenRewards = await getCurrentEpochRewardTokens(availableTokensData, chainId)
 
   for (const r of rewardPairs) {

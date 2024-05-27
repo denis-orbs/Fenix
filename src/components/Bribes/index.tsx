@@ -133,7 +133,7 @@ const Bribes = () => {
     settokenAllowance(fromWei(allowanceFirst.toString()))
   }
 
-  const handleCreateBribe = async (tokenAddress: Address, amount: bigint, externalBribeAddress: Address) => {
+  const handleCreateBribe = async (tokenAddress: Address, amount: string, externalBribeAddress: Address) => {
     if (tokenAddress == 'Select a Token') {
       addNotification({
         id: crypto.randomUUID(),
@@ -144,6 +144,7 @@ const Bribes = () => {
         notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
+    console.log(amount, 'amount')
     try {
       setCurrentButtonState(ButtonState.LOADING)
       const hash = await createBribe(tokenAddress, amount, externalBribeAddress)
@@ -192,7 +193,7 @@ const Bribes = () => {
         <div className="w-full mb-5 xl:w-[45%]">
           <div className="flex justify-between mb-5">
             <h4 className="text-xl font-semibold text-white">Bribes</h4>
-            <span className="icon-refresh text-shark-100 text-xl cursor-pointer"/>
+            <span className="icon-refresh text-shark-100 text-xl cursor-pointer" />
           </div>
 
           <div className="mb-3">
@@ -215,13 +216,13 @@ const Bribes = () => {
                 if (Number(tokenAllowance) < Number(poolValue)) {
                   handleApprove(
                     tokenGet?.address,
-                    toWei(poolValue).toString(),
+                    (poolValue * 10 ** tokenGet?.decimals).toString(),
                     tokenSell?.rewardPair?._externalBribeAddress
                   )
                 } else {
                   handleCreateBribe(
                     tokenGet?.address,
-                    toWei(poolValue).toString(),
+                    (poolValue * 10 ** tokenGet?.decimals).toString(),
                     tokenSell?.rewardPair?._externalBribeAddress
                   )
                 }
@@ -250,7 +251,6 @@ const Bribes = () => {
             <InfoBox
               hasDecorator={STEPS.length === index + 1 ? false : true}
               bgBox="exchange-box-info"
-              
               key={index}
               data={exchange}
               textColor={'text-shark-100'}

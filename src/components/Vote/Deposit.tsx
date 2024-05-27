@@ -4,8 +4,54 @@ import { Button } from '@/src/components/UI'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '../Common/InfoBox'
 import { EXCHANGE_LIST } from './data'
+import { useAccount } from 'wagmi'
+import { useEffect, useState } from 'react'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { voteState } from '@/src/state/vote/types'
+import { useAppSelector } from '@/src/state'
+import { BigDecimal } from '@/src/library/common/BigDecimal'
 
-const Deposit = () => {
+interface DepositProps {
+  vote: voteState
+}
+
+const Deposit = ({ vote }: DepositProps) => {
+  const [tokens, setTokens] = useState<Number>(0)
+  const [rewardAmountUsd, setRewardAmountUsd] = useState<BigDecimal>(new BigDecimal(0n, 18))
+  const { chainId } = useAccount()
+
+  const tokensData = async () => {
+    console.log(vote, 'element')
+    if (chainId) {
+      const availableTokenData = await fetchTokens(chainId)
+      setTokens(availableTokenData.length)
+      let push: BigDecimal[] = []
+      let a = vote.voteTableElement.map((reward) => {
+        let usdValueExternal = reward.rewardPair.externalBribeReward.tokens
+          .map((token, index) => {
+            const tokenElement = availableTokenData.find((t) => t.tokenAddress.toLowerCase() === token.toLowerCase())
+            if (!tokenElement) return new BigDecimal(0n, 18)
+            return new BigDecimal(
+              reward.rewardPair.externalBribeReward.amounts[index],
+              Number(reward.rewardPair.externalBribeReward.decimals[index])
+            ).mulNumber(Number(tokenElement.priceUSD) ?? 0)
+          })
+          .reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
+        push.push(usdValueExternal)
+      })
+      let ab = push?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
+      EXCHANGE_LIST[0].amount = `$ 0.00`
+      EXCHANGE_LIST[1].amount = `$ ${ab.toString()}`
+      EXCHANGE_LIST[2].amount = `$ ${ab.toString()}`
+      setRewardAmountUsd(ab)
+      console.log(push, ab.toString(), parseInt(ab.toString()), 'ab')
+    }
+  }
+
+  useEffect(() => {
+    tokensData()
+    // fetchData()
+  }, [chainId, vote])
   return (
     <MainBox>
       <div className="flex flex-col items-center justify-between w-full xl:flex-row relative z-10">
@@ -21,23 +67,23 @@ const Deposit = () => {
               </div>
               <p className="text-white text-xs font-normal whitespace-nowrap">Current voting round</p>
             </div>
-            <Button variant="tertiary" className="w-full xl:w-auto">
+            <Button variant="tertiary" className="w-full xl:w-auto" href="/rewards">
               <span className="flex text-xs font-normal whitespace-nowrap">Claim Earnings</span>
             </Button>
           </div>
           <p className="flex items-center gap-3 py-2  text-xs text-shark-100">
             <span className="inline-block text-2xl text-transparent icon-circles bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
-            There are currently 54 tokens listed.
+            There are currently {tokens.toString()} tokens listed.
           </p>
           <div className="text-xs flex gap-2 text-shark-100 xl:mb-0">
-            <p className="flex gap-1 cursor-pointer">
+            {/* <p className="flex gap-1 cursor-pointer">
               <span className="icon-link"></span>
               View Tokens
             </p>
             <p className="flex gap-1 cursor-pointer">
               <span className="icon-link"></span>
               List New Token
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="relative flex flex-col w-full  mt-5 xl:mt-0 overflow-y-auto overflow-x-hidden xl:w-[40%]">

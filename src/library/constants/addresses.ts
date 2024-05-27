@@ -24,6 +24,10 @@ export const ALGEBRA_SUBGRAPH: AddressMap = {
   [SupportedChainId.BLAST]: 'https://api.studio.thegraph.com/query/67572/mainnet-algebra-fenix/version/latest',
   [SupportedChainId.BLAST_SEPOLIA]: 'https://api.studio.thegraph.com/query/67572/fenix-algeabra-v3/version/latest',
 }
+export const PROTOCOL_SUBGRAPH: AddressMap = {
+  [SupportedChainId.BLAST]: 'https://api.studio.thegraph.com/query/67572/mainnet-algebra-fenix/version/latest',
+  [SupportedChainId.BLAST_SEPOLIA]: 'https://api.studio.thegraph.com/query/67572/fenix-algeabra-v3/version/latest',
+}
 export const VE_NFT_API_ADDRESS: AddressMap = {
   [SupportedChainId.BLAST]: '0x7936BA527C9Cf7B292fe9Bba848EBacd7a7B230B',
   [SupportedChainId.BLAST_SEPOLIA]: '0x1aF3099C0316066261fD4c0703bB733f8F3a2500',

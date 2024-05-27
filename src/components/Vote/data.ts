@@ -39,4 +39,4 @@ export const EXCHANGE_LIST = [
   },
 ]
 
-export const FILTER_OPTIONS = [' Voted', 'Not Voted', 'Stable', ' Volatile', 'Concentrated', 'Single Token Deposit']
+export const FILTER_OPTIONS = ['Stable', ' Volatile', 'Concentrated']

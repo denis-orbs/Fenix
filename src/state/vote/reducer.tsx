@@ -80,7 +80,6 @@ export const fetchGaugesAsync = createAsyncThunk(
       totalVotingPower += r.totalVotesOnGauge
       userTotalVotingPower += r.totalVotesOnGaugeByUser
     })
-    console.log(validRewards, 'heyyy')
     const chrTokenPrice = 1
 
     const availablePairsV2 = await getAllPairsForUser(address, chainId)
@@ -94,10 +93,10 @@ export const fetchGaugesAsync = createAsyncThunk(
       if (!pair && !pool) {
         return
       }
-      console.log(pair, pool, 'herer')
+      console.log(reward, 'reward')
       const usdValueExternal = reward.externalBribeReward.tokens
         .map((token, index) => {
-          const tokenElement = availableTokenData!.find((t) => t.tokenAddress.toLowerCase() === token.toLowerCase())
+          const tokenElement = availableTokenData.find((t) => t.tokenAddress.toLowerCase() === token.toLowerCase())
           if (!tokenElement) return new BigDecimal(0n, 18)
           return new BigDecimal(
             reward.externalBribeReward.amounts[index],
@@ -108,7 +107,7 @@ export const fetchGaugesAsync = createAsyncThunk(
 
       const usdValueInternal = reward.internalBribeReward.tokens
         .map((token, index) => {
-          const tokenElement = availableTokenData!.find((t) => t.tokenAddress.toLowerCase() === token.toLowerCase())
+          const tokenElement = availableTokenData.find((t) => t.tokenAddress.toLowerCase() === token.toLowerCase())
           if (!tokenElement) {
             return new BigDecimal(0n, 18)
           }

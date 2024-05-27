@@ -10,6 +10,7 @@ import ActiveVote from '@/src/components/Vote/ActiveVote'
 import SelectVote from '@/src/components/Modals/SelectVote'
 import DepositBox from './DepositBox'
 import { useRouter } from 'next/navigation'
+import { LockElement } from '@/src/library/structures/lock/LockElement'
 
 const DepositLock = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -18,12 +19,13 @@ const DepositLock = () => {
   const [loader, setLoader] = useState(false)
   const [changeState, setChangeState] = useState(false)
   const { push } = useRouter()
-  const handlerGoTo = ()=> push("/lock/create")
+  const handlerGoTo = () => push('/lock/create')
   const handlerCheck = () => (checked ? setChecked(false) : setChecked(true))
   const handlerChange = () => (
     openModal ? setOpenModal(false) : setOpenModal(true), setLoader(false), setChangeState(false)
   )
   const handlerLoader = () => (loader ? setLoader(false) : setLoader(true))
+  const [lock, setlock] = useState<LockElement>()
   return (
     <div>
       <div className="w-full h-auto lock-box">
@@ -42,7 +44,7 @@ const DepositLock = () => {
               <p className="text-white text-sm mb-2">Select lock you want to deposit</p>
 
               {activeVote ? (
-                <ActiveVote handlerChange={handlerChange} />
+                <ActiveVote lock={lock} handlerChange={handlerChange} />
               ) : (
                 <InactiveVote handlerChange={handlerChange} />
               )}
@@ -138,6 +140,7 @@ const DepositLock = () => {
         setOpenModal={setOpenModal}
         activeVote={activeVote}
         setActiveVote={setActiveVote}
+        setlock={setlock}
       />
     </div>
   )

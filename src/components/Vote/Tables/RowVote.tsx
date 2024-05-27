@@ -9,17 +9,20 @@ import { useDispatch } from 'react-redux'
 import { setpercentage } from '@/src/state/vote/reducer'
 import { VoteTableElement } from '@/src/state/vote/types'
 import { BigDecimal } from '@/src/library/web3/common/BigDecimal'
+import { formatNumber } from '@/src/library/utils/numbers'
 
 interface RowDataProps {
   index: number
   row: VoteTableElement
   activeVote: boolean
   activeSlider?: boolean
+  setVoteValue: (value: Number) => void
   onRangeUpdate: (index: number, value: number) => void
 }
 
-const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: RowDataProps) => {
+const RowDataVote = ({ index, row, activeVote, activeSlider, setVoteValue, onRangeUpdate }: RowDataProps) => {
   const [changeValue, setChangeValue] = useState(0)
+  const [openInfo, setOpenInfo] = useState<boolean>(false)
   console.log(row, 'row')
   // FIXME: CHECK MOBILE, MOBILE IS COMMENTED OUT DUE TS ERROR
   return (
@@ -48,29 +51,31 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: Ro
                 {row.token0Symbol} / {row.token1Symbol}
               </h5>
               <div className="flex items-center gap-2">
-                <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
-                  {!row.pair.stable ? 'Volatile Pool' : 'Stable Pool'}
-                </span>
-
-                {'CONCENTRATED' === row.type ? (
+                {!row.hasOwnProperty('stable')}
+                {!row.pair.hasOwnProperty('stable') ? (
                   <span
                     className="py-1 px-2  text-xs rounded-lg 
-                    bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
+                        bg-green-500 border border-solid border-1 border-green-400 bg-opacity-40 "
                   >
                     Concentrated
                   </span>
-                ) : 'STABLE' === row.type ? (
+                ) : row.pair.stable ? (
                   <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
                     Stable Pool
                   </span>
-                ) : null}
+                ) : (
+                  <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400">
+                    Volatile Pool
+                  </span>
+                )}
 
                 <span className="py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                  0.3%
+                  {!row.pair.hasOwnProperty('stable') ? Number(row.pair.fee) / 10000 : Number(row.pair.feeAmount) / 100}{' '}
+                  %
                 </span>
-                <Button variant="tertiary" className="!py-1">
+                {/* <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
@@ -83,72 +88,88 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: Ro
             </p>
           </div>
         </TableCell>
-
-        <TableCell className="w-[10%]">
+        <TableCell className="w-[15%]">
+          <div className="flex flex-col items-end justify-end w-full px-3">
+            <p className="mb-1 text-xs text-white">
+              {row.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }) + '%'}
+            </p>
+            <div className="flex items-center gap-4">
+              <p className="flex items-center gap-2 text-xs text-shark-100">
+                {/* <Image
+                  src="/static/images/tokens/ETH.svg"
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                /> */}
+                {new BigDecimal(row.voteWeight, 18).toString({ maxDecimalPlaces: 2 }) + ' veFnx'}
+              </p>
+            </div>
+          </div>
+        </TableCell>
+        <TableCell className="w-[15%]">
           <div className="flex flex-col items-end justify-end w-full px-3">
             <p className="mb-1 text-xs text-white">
               {row.yourVoteWeightPercentage.mulNumber(100).toString({ maxDecimalPlaces: 2 }) + '%'}
             </p>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
+                {/* <Image
                   src="/static/images/tokens/ETH.svg"
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {new BigDecimal(row.yourVoteWeight, 18).toString({ maxDecimalPlaces: 2 }) + ' veFnx'}
               </p>
             </div>
           </div>
         </TableCell>
 
-        <TableCell className="w-[30%]">
+        <TableCell className="w-[10%]">
           <div className="flex items-center justify-end w-full gap-3">
-            <div className="flex flex-col items-end gap-3">
-              <p className="text-white text-xs">Reward</p>
-
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
-                  src="/static/images/tokens/ETH.svg"
-                  alt="token"
-                  className="w-5 h-5 rounded-full"
-                  width={20}
-                  height={20}
-                />
-                2,313,873.46
-              </p>
-            </div>
-
-            <div className="flex flex-col items-end gap-2">
-              <div className="flex">
-                <p className="mb-1 text-xs text-white">Fees</p>
-              </div>
-              <div className="flex gap-2 items-center">
-                <p className="flex items-center gap-2 text-xs text-shark-100">
-                  <Image
-                    src="/static/images/tokens/FNX.svg"
-                    alt="token"
-                    className="w-5 h-5 rounded-full"
-                    width={20}
-                    height={20}
-                  />
-                  744,621.46
-                </p>
-                <p className="flex items-center gap-2 text-xs text-shark-100">
-                  <Image
-                    src="/static/images/tokens/ETH.svg"
-                    alt="token"
-                    className="w-5 h-5 rounded-full"
-                    width={20}
-                    height={20}
-                  />
-                  132.49
-                </p>
-              </div>
-            </div>
+            {/* <div className="flex flex-col items-end gap-3"> */}
+            {row.rewardPair.externalBribeReward.amounts.length > 0 ? (
+              <>
+                {' '}
+                {openInfo && (
+                  <>
+                    <div className="absolute z-1000 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[200px] top-9 px-5 py-3 transform left-1/2 -translate-x-1/2 gap-y-1">
+                      {row.rewardPair.externalBribeReward.amounts.length > 0 ? (
+                        <p className="text-white text-xs">Bribe</p>
+                      ) : null}
+                      {row.rewardPair.externalBribeReward.amounts.map((reward, index) => {
+                        return (
+                          <p key={index} className="flex items-center gap-2 text-xs text-shark-100">
+                            {parseInt(reward.toString()) /
+                              10 ** Number(row.rewardPair.externalBribeReward.decimals[index].toString())}{' '}
+                            {row.rewardPair.externalBribeReward.symbols[index]}
+                          </p>
+                        )
+                      })}
+                    </div>
+                  </>
+                )}
+                <p className="text-white text-xs">$ {row.dollarRewardsValue.toString()}</p>
+                <span
+                  className="icon-info"
+                  onMouseEnter={() => setOpenInfo(true)}
+                  onMouseLeave={() => setOpenInfo(false)}
+                ></span>
+              </>
+            ) : null}
           </div>
+
+          <div className="flex flex-col items-end gap-2">
+            {/* <div className="flex"> */}
+            {/* <p className="mb-1 text-xs text-white">Fees</p>
+              <p className="flex items-center gap-2 text-xs text-shark-100">744,621.46 usdt</p>
+              <p className="flex items-center gap-2 text-xs text-shark-100">132.49 usdt</p> */}
+            {/* </div> */}
+            <div className="flex gap-2 items-center"></div>
+          </div>
+          {/* </div> */}
         </TableCell>
 
         <TableCell className="flex items-center justify-end w-[20%]">
@@ -163,6 +184,7 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, onRangeUpdate }: Ro
                   value={changeValue}
                   onChange={(value) => {
                     setChangeValue(value)
+                    setVoteValue(value)
                     onRangeUpdate(index, value)
                   }}
                   thumbSize={18}
