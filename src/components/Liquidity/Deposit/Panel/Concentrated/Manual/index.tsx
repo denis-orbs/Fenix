@@ -156,7 +156,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     }
 
     const price = value.target.value
-
+    
     const newTimeout = setTimeout(() => {
       let currentPrice = Number(pool[1]?.token0Price.toFixed(10))
       if(isInverse) currentPrice = Number(pool[1]?.token1Price.toFixed(10))
@@ -493,7 +493,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   const handleOnTokenValueChange = async (input: any, token: IToken) => {
     if (firstToken.address === token.address) {
-      if(oneSide == 'SECOND') return
       if (parseFloat(input) != 0) {
         if(isInverse) {
           setSecondValue(getFromAmount1(input, firstToken.decimals, secondToken.decimals))
@@ -512,7 +511,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         }, 500),
       ])
     } else {
-      if(oneSide == 'FIRST') return
       if (parseFloat(input) != 0) {
         if(!isInverse) {
           setFirstValue(getFromAmount1(input, secondToken.decimals, firstToken.decimals))
