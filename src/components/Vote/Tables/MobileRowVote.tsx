@@ -11,9 +11,11 @@ interface RowDataProps {
   activeVote: boolean
   activeSlider?: boolean
   onRangeUpdate: (index: number, value: number) => void
+  poolArr: any
+  setPoolArr: (value: any) => any
 }
 
-const MobileRowVote = ({ index, row, onRangeUpdate, activeVote, activeSlider }: RowDataProps) => {
+const MobileRowVote = ({ index, row, onRangeUpdate, activeVote, activeSlider, poolArr, setPoolArr }: RowDataProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [changeValue, setChangeValue] = useState(0)
   const [openInfo, setOpenInfo] = useState<boolean>(false)
@@ -182,6 +184,26 @@ const MobileRowVote = ({ index, row, onRangeUpdate, activeVote, activeSlider }: 
                         height={7}
                         value={changeValue}
                         onChange={(value) => {
+                          const pairString = !row.pair.hasOwnProperty('stable')
+                            ? 'Concentrated'
+                            : row.pair.stable
+                              ? 'Stable Pool'
+                              : 'Volatile Pool'
+                          const percentageObj: any = {
+                            id: index,
+                            token0: row.token0Symbol,
+                            token1: row.token1Symbol,
+                            pair: pairString,
+                            percentage: value,
+                          }
+
+                          const isPresent = poolArr.findIndex((item: { id: number }) => item.id === index)
+                          if (isPresent !== -1) {
+                            setPoolArr((prev: any) => (prev[isPresent] = percentageObj))
+                          } else {
+                            setPoolArr((prev: any) => [...prev, percentageObj])
+                          }
+
                           setChangeValue(value)
                           onRangeUpdate(index, value)
                         }}

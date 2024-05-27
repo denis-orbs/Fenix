@@ -25,6 +25,8 @@ interface HeaderRowVoteProps {
   lock: lockState
   tab: string
   search: string
+  poolArr: any
+  setPoolArr: (value: any) => void
 }
 
 const HeaderRowVote = ({
@@ -38,6 +40,8 @@ const HeaderRowVote = ({
   lock,
   tab,
   search,
+  poolArr,
+  setPoolArr,
 }: HeaderRowVoteProps) => {
   const [data, setData] = useState<VoteTableElement[]>(vote.voteTableElement)
   const [showTooltip, setShowTooltip] = useState(false)
@@ -176,8 +180,6 @@ const HeaderRowVote = ({
     }
   }, [sidx, svalue])
 
-  console.log('gg', data)
-
   return (
     <div className="relative z-10">
       <div className="w-full mb-2.5 xl:mb-5">
@@ -222,6 +224,8 @@ const HeaderRowVote = ({
                           activeSlider={activeSlider}
                           setVoteValue={setVoteValue}
                           onRangeUpdate={handleRangeUpdate}
+                          poolArr={poolArr}
+                          setPoolArr={setPoolArr}
                         />
                         {/* <RowDataVote row={row} activeVote={activeVote} /> */}
                       </Fragment>
@@ -236,6 +240,8 @@ const HeaderRowVote = ({
                           activeVote={activeVote}
                           activeSlider={activeSlider}
                           onRangeUpdate={handleRangeUpdate}
+                          poolArr={poolArr}
+                          setPoolArr={setPoolArr}
                         />
                       </Fragment>
                     ))}

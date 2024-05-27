@@ -237,6 +237,14 @@ const Vote = () => {
     }
   }, [address])
 
+  const [poolArr, setPoolArr] = useState<any>([])
+  console.log('kg', poolArr)
+
+  const removePool = (id: any) => {
+    const filterArr = poolArr.filter((pool: any) => pool.id !== id)
+    setPoolArr(filterArr)
+  }
+
   return (
     <section className="relative overflow-hidden">
       <div className="flex flex-col items-center gap-5 py-5 xl:flex-row">
@@ -260,10 +268,8 @@ const Vote = () => {
         <div className="mb-5">
           <h2 className="text-sm font-medium text-white">Vote Pools</h2>
           <div className="flex flex-wrap gap-2 justify-center">
-            {/* <VotePools />
-            <VotePools />
-            <VotePools />
-            <VotePools /> */}
+            {poolArr.length > 0 &&
+              poolArr.map((pool: any, index: number) => <VotePools key={index} data={pool} removePool={removePool} />)}
           </div>
         </div>
       )}
@@ -276,6 +282,8 @@ const Vote = () => {
         lock={locks}
         tab={currentTab}
         search={searchValue}
+        poolArr={poolArr}
+        setPoolArr={setPoolArr}
       />
       <SelectVote
         activeVote={activeVote}

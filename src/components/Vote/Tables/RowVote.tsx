@@ -2,14 +2,13 @@
 import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/src/components/UI'
 import InputRange from '../../UI/SliderRange/InputRange'
-import { useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import MobileRowVote from './MobileRowVote'
 import { AppThunkDispatch } from '@/src/state'
 import { useDispatch } from 'react-redux'
 import { setpercentage } from '@/src/state/vote/reducer'
 import { VoteTableElement } from '@/src/state/vote/types'
 import { BigDecimal } from '@/src/library/web3/common/BigDecimal'
-import { formatNumber } from '@/src/library/utils/numbers'
 
 interface RowDataProps {
   index: number
@@ -18,12 +17,23 @@ interface RowDataProps {
   activeSlider?: boolean
   setVoteValue: (value: Number) => void
   onRangeUpdate: (index: number, value: number) => void
+  poolArr: any
+  setPoolArr: (value: any) => void
 }
 
-const RowDataVote = ({ index, row, activeVote, activeSlider, setVoteValue, onRangeUpdate }: RowDataProps) => {
+const RowDataVote = ({
+  index,
+  row,
+  activeVote,
+  activeSlider,
+  setVoteValue,
+  onRangeUpdate,
+  poolArr,
+  setPoolArr,
+}: RowDataProps) => {
   const [changeValue, setChangeValue] = useState(0)
   const [openInfo, setOpenInfo] = useState<boolean>(false)
-  console.log(row, 'row')
+  // console.log(row, 'row')
   // FIXME: CHECK MOBILE, MOBILE IS COMMENTED OUT DUE TS ERROR
   return (
     <>
@@ -187,7 +197,29 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, setVoteValue, onRan
                   onChange={(value) => {
                     setChangeValue(value)
                     setVoteValue(value)
-                    onRangeUpdate(index, value)
+                    const pairString = !row.pair.hasOwnProperty('stable')
+                      ? 'Concentrated'
+                      : row.pair.stable
+                        ? 'Stable Pool'
+                        : 'Volatile Pool'
+                    const percentageObj: any = {
+                      id: index,
+                      token0: row.token0Symbol,
+                      token1: row.token1Symbol,
+                      pair: pairString,
+                      percentage: value,
+                    }
+                    const isPresent = poolArr.findIndex((item: { id: number }) => item.id === index)
+                    if (isPresent !== -1 && value > 0) {
+                      setPoolArr((prev: any) => {
+                        prev[isPresent] = percentageObj
+                        return [...prev]
+                      })
+                    } else {
+                      if (value > 0) {
+                        setPoolArr((prev: any) => [...prev, percentageObj])
+                      }
+                    }
                   }}
                   thumbSize={18}
                   disabled={!activeVote}
