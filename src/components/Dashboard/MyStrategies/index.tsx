@@ -58,6 +58,8 @@ const MyStrategies = () => {
     if (ichipositions.length > 0) {
       setposition(ichipositions)
       setLoading(false)
+    } else if (ichipositions.length === 0) {
+      setLoading(false)
     }
   }, [ichipositions])
 
