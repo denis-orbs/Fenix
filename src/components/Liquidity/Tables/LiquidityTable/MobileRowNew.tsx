@@ -14,6 +14,7 @@ import { SupportedDex, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import { adjustTokenOrder } from '@/src/library/utils/tokens'
+import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
 
 interface RowDataProps {
   row: BasicPool
@@ -69,6 +70,7 @@ export default function MobileRowNew({
     setCampaign({ ...campaign_ })
   }, [row])
   const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
+  const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)
 
   return (
     <>
@@ -156,7 +158,7 @@ export default function MobileRowNew({
                     <Loader />
                   ) : (
                     <>
-                      {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%{' '}
+                      {formatAmount((Number(row?.apr) || 0) + fDAOEmisionsAPR + (Number(ringsApr) || 0), 2)}%{' '}
                       <div
                         className="flex items-center gap-[5px] cursor-pointer
                     text-shark-100 hover:text-transparent hover:bg-gradient-to-r hover:from-outrageous-orange-500 hover:to-festival-500 hover:bg-clip-text"
@@ -193,6 +195,12 @@ export default function MobileRowNew({
                       <div className="flex justify-between items-center gap-3">
                         <p className="text-sm">Ichi Strategy</p>
                         <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>
+                      </div>
+                    )}
+                    {!!fDAOEmisionsAPR && (
+                      <div className="flex justify-between items-center gap-3">
+                        <p className="text-sm">fDAO Emissions</p>
+                        <p className="text-sm text-chilean-fire-600">{formatAmount(Number(fDAOEmisionsAPR), 2)}%</p>
                       </div>
                     )}
                   </div>

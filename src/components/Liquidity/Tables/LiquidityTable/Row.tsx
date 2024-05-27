@@ -19,6 +19,7 @@ import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVault
 import Loader from '@/src/components/UI/Icons/Loader'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import { adjustTokenOrder } from '@/src/library/utils/tokens'
+import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
 
 interface RowDataProps {
   row: BasicPool
@@ -90,6 +91,7 @@ const RowData = ({
   }
   // console.log(data?.boostedPools?.find((pool: string) => pool?.toLowerCase() == row?.id?.toLowerCase()))
   const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
+  const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -186,7 +188,7 @@ const RowData = ({
                 <Loader />
               ) : (
                 <>
-                  {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%{' '}
+                  {formatAmount((Number(row?.apr) || 0) + fDAOEmisionsAPR + (Number(ringsApr) || 0), 2)}%{' '}
                   <span
                     className="icon-info"
                     onMouseEnter={() => setOpenInfo(true)}
@@ -217,6 +219,12 @@ const RowData = ({
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">Ichi Strategy</p>
                     <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>
+                  </div>
+                )}
+                {!!fDAOEmisionsAPR && (
+                  <div className="flex justify-between items-center gap-3">
+                    <p className="text-sm">fDAO Emissions</p>
+                    <p className="text-sm text-chilean-fire-600">{formatAmount(Number(fDAOEmisionsAPR), 2)}%</p>
                   </div>
                 )}
               </div>
