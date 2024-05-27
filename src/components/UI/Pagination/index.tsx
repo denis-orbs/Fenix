@@ -71,7 +71,7 @@ const Pagination = ({
   return (
     <div className={mergeClassName}>
       <div className="w-full flex justify-center items-center">
-        <div className="w-[90%] flex items-center justify-center gap-2.5 h-[62px] relative z-10">
+        <div className="w-[85%] flex items-center justify-center gap-2.5 h-[62px] relative z-10">
           <button
             type="button"
             className={`flex items-center justify-center leading-normal gap-2.5 px-5 py-2.5 ${activePage === 1 ? 'text-shark-100 opacity-60' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} rounded-[10px] mr-1.5`}

@@ -53,14 +53,15 @@ const TableHead = ({ items, setSort, setSortIndex, sortIndex, sort }: TableHeadP
           >
             <span
               onMouseOver={() => {
-                if (item.text === 'Total Rewards') {
-                  item.setShowTooltip && item.setShowTooltip(true)
-                }
+                setSortIndex(index)
+                item.setShowTooltip && item.setShowTooltip(true)
+                // if (item.text === 'Total Rewards') {
+                // }
               }}
               onMouseOut={() => {
-                if (item.text === 'Total Rewards') {
-                  item.setShowTooltip && item.setShowTooltip(false)
-                }
+                item.setShowTooltip && item.setShowTooltip(false)
+                // if (item.text === 'Total Rewards') {
+                // }
               }}
               className="leading-normal relative max-w-[20px]"
             >

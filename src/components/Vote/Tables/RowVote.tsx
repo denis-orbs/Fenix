@@ -27,7 +27,8 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, setVoteValue, onRan
   // FIXME: CHECK MOBILE, MOBILE IS COMMENTED OUT DUE TS ERROR
   return (
     <>
-      <TableRow className="hidden xl:flex">
+      {/* <TableRow className="w-full hidden xl:flex"> */}
+      <TableRow className="w-full">
         <TableCell className="w-[30%]">
           <div className="flex items-center gap-2">
             <div className="flex items-center">
@@ -128,14 +129,15 @@ const RowDataVote = ({ index, row, activeVote, activeSlider, setVoteValue, onRan
         </TableCell>
 
         <TableCell className="w-[10%]">
-          <div className="flex items-center justify-end w-full gap-3">
+          <div className="relative flex items-center justify-end w-full gap-3">
             {/* <div className="flex flex-col items-end gap-3"> */}
             {row.rewardPair.externalBribeReward.amounts.length > 0 ? (
               <>
                 {' '}
                 {openInfo && (
                   <>
-                    <div className="absolute z-1000 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[200px] top-9 px-5 py-3 transform left-1/2 -translate-x-1/2 gap-y-1">
+                    {/* <div className="absolute z-1000 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[200px] top-9 px-5 py-3 transform left-1/2 -translate-x-1/2 gap-y-1"> */}
+                    <div className="absolute z-1000 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[200px] top-9 px-5 py-3 gap-y-1">
                       {row.rewardPair.externalBribeReward.amounts.length > 0 ? (
                         <p className="text-white text-xs">Bribe</p>
                       ) : null}

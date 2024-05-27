@@ -29,9 +29,16 @@ const Filter = ({ options, currentTab, setCurrentTab, className }: FilterProps) 
           return (
             <Button
               key={index}
-              onClick={() => {handlerChange(option.toUpperCase())}}
-              variant={currentTab.toUpperCase() === option.split('').join('').toString().toUpperCase() ? 'primary' : `${isMobile ? 'tertiary' : 'default'}`}
-              className=" w-full h-[32px] md:w-auto !text-xs !lg:text-xl ">
+              onClick={() => {
+                handlerChange(option.toUpperCase())
+              }}
+              variant={
+                currentTab.toUpperCase() === option.split('').join('').toString().toUpperCase()
+                  ? 'primary'
+                  : `${isMobile ? 'tertiary' : 'default'}`
+              }
+              className=" w-full h-[32px] md:w-auto !text-xs !lg:text-xl "
+            >
               {option}
             </Button>
           )

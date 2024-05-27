@@ -47,12 +47,13 @@ const Vote = () => {
   const [activeVote, setActiveVote] = useState(false)
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
-  const filterData = DATA_ROW.filter((row) => row.type === currentTab)
+  // const filterData = DATA_ROW.filter((row) => row.type === currentTab)
   const [nowTime, setnowTime] = useState<Number>(0)
   const [isVoteLoading, setIsVoteLoading] = useState(true)
   const [lock, setLock] = useState<LockElement>()
   const [voteTableElements, setVoteTableElements] = useState([] as VoteTableElement[])
   const [voteValue, setVoteValue] = useState<Number>(0)
+  const [searchValue, setSearchValue] = useState<string>('')
   const { address, chainId } = useAccount()
   const vote = useAppSelector((state) => state.vote as voteState)
   const locks = useAppSelector((state) => state.lock as lockState)
@@ -252,7 +253,7 @@ const Vote = () => {
           <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         </div>
         <div className="w-full xl:w-1/3">
-          <Search setSearchValue={() => {}} searchValue={''} placeholder="Search by symbol" />
+          <Search setSearchValue={setSearchValue} searchValue={searchValue} placeholder="Search by symbol" />
         </div>
       </div>
       {activeVote && (
@@ -273,6 +274,8 @@ const Vote = () => {
         setVotePercentage={setVoteValue}
         vote={vote}
         lock={locks}
+        tab={currentTab}
+        search={searchValue}
       />
       <SelectVote
         activeVote={activeVote}

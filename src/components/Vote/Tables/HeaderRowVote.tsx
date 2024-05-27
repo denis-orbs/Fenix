@@ -12,6 +12,7 @@ import { lockState } from '@/src/state/lock/types'
 import NotFoundLock from '../../Lock/NotFoundLock'
 import { VoteTableElement } from '..'
 import NotFoundGauges from '../NotFoundGauges'
+import MobileRowVote from './MobileRowVote'
 
 interface HeaderRowVoteProps {
   loading: boolean
@@ -22,6 +23,8 @@ interface HeaderRowVoteProps {
   setVotePercentage: (value: Number) => void
   vote: voteState
   lock: lockState
+  tab: string
+  search: string
 }
 
 const HeaderRowVote = ({
@@ -33,7 +36,10 @@ const HeaderRowVote = ({
   setVotePercentage,
   vote,
   lock,
+  tab,
+  search,
 }: HeaderRowVoteProps) => {
+  const [data, setData] = useState<VoteTableElement[]>(vote.voteTableElement)
   const [showTooltip, setShowTooltip] = useState(false)
   const [voteValue, setVoteValue] = useState<Number>(0)
   const [selectedRanges, setSelectedRanges] = useState<number[]>([])
@@ -47,13 +53,136 @@ const HeaderRowVote = ({
     setVotePercentage(newRanges.reduce((a, b) => a + b, 0))
   }
 
+  const [sidx, setSidx] = useState<number>(1)
+  const [svalue, setSvalue] = useState<'asc' | 'desc' | 'normal'>('normal')
+
+  const [itemsPerPage, setItemPerPage] = useState<number>(5)
+  const [activePage, setActivePage] = useState<number>(1)
+
+  function paginate(items: any, currentPage: number, itemsPerPage: number) {
+    // Calculate total pages
+    const totalPages = Math.ceil(items.length / itemsPerPage)
+
+    // Ensure current page isn't out of range
+    currentPage = Math.max(1, Math.min(currentPage, totalPages))
+
+    const start = (currentPage - 1) * itemsPerPage
+    const end = start + itemsPerPage
+    const paginatedItems = items.slice(start, end)
+
+    return paginatedItems
+  }
+
+  useEffect(() => {
+    if (search === '') {
+      if (tab === 'STABLE') {
+        setData(vote?.voteTableElement.filter((pos) => pos.pair.stable))
+      } else if (tab === 'VOLATILE') {
+        setData(vote?.voteTableElement.filter((pos) => pos.pair.hasOwnProperty('stable') && !pos.pair.stable))
+      } else if (tab === 'CONCENTRATED') {
+        setData(vote.voteTableElement.filter((pos) => !pos.pair.hasOwnProperty('stable')))
+      }
+    } else {
+      const newData = vote?.voteTableElement.filter((pos) => {
+        if (
+          pos.token0Symbol.toLowerCase().includes(search.toLowerCase()) ||
+          pos.token1Symbol.toLowerCase().includes(search.toLowerCase())
+        )
+          return pos
+      })
+      setData(newData)
+    }
+  }, [data, search, tab, vote.voteTableElement])
+
+  const pagination = paginate(data, activePage, itemsPerPage)
+
+  useEffect(() => {
+    if (sidx === 1) {
+      if (svalue === 'asc') {
+        const sortedArr = data.sort((a, b) => a.poolAPR - b.poolAPR)
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = data.sort((a, b) => b.poolAPR - a.poolAPR)
+        setData(sortedArr)
+      } else {
+        const sortedArr = data.sort((a, b) => a.poolAPR - b.poolAPR)
+        setData(sortedArr)
+      }
+    } else if (sidx === 2) {
+      if (svalue === 'asc') {
+        const sortedArr = data.sort(
+          (a, b) =>
+            Number(a.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
+            Number(b.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
+        )
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = data.sort(
+          (a, b) =>
+            Number(b.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
+            Number(a.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
+        )
+        setData(sortedArr)
+      } else {
+        const sortedArr = data.sort(
+          (a, b) =>
+            Number(a.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
+            Number(b.voteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
+        )
+        setData(sortedArr)
+      }
+    } else if (sidx === 3) {
+      if (svalue === 'asc') {
+        const sortedArr = data.sort(
+          (a, b) =>
+            Number(a.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
+            Number(b.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
+        )
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = data.sort(
+          (a, b) =>
+            Number(b.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
+            Number(a.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
+        )
+        setData(sortedArr)
+      } else {
+        const sortedArr = data.sort(
+          (a, b) =>
+            Number(a.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 })) -
+            Number(b.yourVoteWeightPercentage?.mulNumber(100).toString({ maxDecimalPlaces: 2 }))
+        )
+        setData(sortedArr)
+      }
+    } else if (sidx === 4) {
+      if (svalue === 'asc') {
+        const sortedArr = data.sort(
+          (a, b) => Number(a.dollarRewardsValue.toString()) - Number(b.dollarRewardsValue.toString())
+        )
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = data.sort(
+          (a, b) => Number(b.dollarRewardsValue.toString()) - Number(a.dollarRewardsValue.toString())
+        )
+        setData(sortedArr)
+      } else {
+        const sortedArr = data.sort(
+          (a, b) => Number(a.dollarRewardsValue.toString()) - Number(b.dollarRewardsValue.toString())
+        )
+        setData(sortedArr)
+      }
+    }
+  }, [sidx, svalue])
+
+  console.log('gg', data)
+
   return (
     <div className="relative z-10">
       <div className="w-full mb-2.5 xl:mb-5">
         <div className="max-xl:hidden">
           <TableHead
             items={[
-              { text: 'Assets', className: 'w-[30%] text-xs', sortable: true },
+              { text: 'Assets', className: 'w-[30%] text-xs', sortable: false },
               { text: 'APR', className: 'text-center  w-[10%] text-xs', sortable: true },
               { text: 'Total Votes', className: 'w-[15%] text-right text-xs', sortable: true },
               { text: 'Your Votes', className: 'w-[15%] text-right text-xs', sortable: true },
@@ -61,18 +190,16 @@ const HeaderRowVote = ({
                 text: 'Total Rewards',
                 className: 'w-[10%] text-right text-xs',
                 sortable: true,
-                showTooltip: showTooltip,
-                setShowTooltip: setShowTooltip,
               },
-              { text: 'Vote', className: 'w-[20%] text-right text-xs', sortable: true },
+              { text: 'Vote', className: 'w-[20%] text-right text-xs', sortable: false },
             ]}
-            setSort={() => {}}
-            sort={null}
-            setSortIndex={() => {}}
-            sortIndex={1}
+            setSort={setSvalue}
+            sort={svalue}
+            setSortIndex={setSidx}
+            sortIndex={sidx}
           />
         </div>
-        {vote.voteTableElement ? (
+        {pagination ? (
           <>
             <TableBody>
               {vote.appState == 'loading' ? (
@@ -82,19 +209,36 @@ const HeaderRowVote = ({
                   ))}
                 </>
               ) : (
-                vote.voteTableElement.map((row, index) => (
-                  <Fragment key={index}>
-                    <RowDataVote
-                      index={index}
-                      row={row}
-                      activeVote={activeVote}
-                      activeSlider={activeSlider}
-                      setVoteValue={setVoteValue}
-                      onRangeUpdate={handleRangeUpdate}
-                    />
-                    {/* <RowDataVote row={row} activeVote={activeVote} /> */}
-                  </Fragment>
-                ))
+                <>
+                  <div className="hidden xl:flex flex-col justify-center gap-3">
+                    {pagination.map((row: any, index: number) => (
+                      <Fragment key={index}>
+                        <RowDataVote
+                          index={index}
+                          row={row}
+                          activeVote={activeVote}
+                          activeSlider={activeSlider}
+                          setVoteValue={setVoteValue}
+                          onRangeUpdate={handleRangeUpdate}
+                        />
+                        {/* <RowDataVote row={row} activeVote={activeVote} /> */}
+                      </Fragment>
+                    ))}
+                  </div>
+                  <div className="flex flex-col justify-center gap-3 xl:hidden">
+                    {pagination.map((row: any, index: number) => (
+                      <Fragment key={index}>
+                        <MobileRowVote
+                          index={index}
+                          row={row}
+                          activeVote={activeVote}
+                          activeSlider={activeSlider}
+                          onRangeUpdate={handleRangeUpdate}
+                        />
+                      </Fragment>
+                    ))}
+                  </div>
+                </>
               )}
             </TableBody>
             {activePagination && (
@@ -103,23 +247,31 @@ const HeaderRowVote = ({
                   {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
                   <Pagination
                     className="mx-auto"
-                    numberPages={7}
-                    activePage={1}
-                    setActivePage={() => {}}
-                    itemsPerPage={10}
-                    setItemPerPage={() => {}}
+                    numberPages={
+                      data
+                        ? Math.ceil(data.length / itemsPerPage)
+                        : Math.ceil(vote.voteTableElement.length / itemsPerPage)
+                    }
+                    activePage={activePage}
+                    itemsPerPage={itemsPerPage}
+                    setActivePage={setActivePage}
+                    setItemPerPage={setItemPerPage}
                   />
                 </div>
                 <div className="block xl:hidden py-4">
-                  {/* <PaginationMobile
+                  <PaginationMobile
                     className=""
-                    numberPages={7}
-                    count={10}
-                    activePage={1}
-                    setActivePage={() => {}}
-                    itemsPerPage={10}
-                    setItemPerPage={() => {}}
-                  /> */}
+                    count={data.length}
+                    numberPages={
+                      data
+                        ? Math.ceil(data.length / itemsPerPage)
+                        : Math.ceil(vote.voteTableElement.length / itemsPerPage)
+                    }
+                    activePage={activePage}
+                    itemsPerPage={itemsPerPage}
+                    setActivePage={setActivePage}
+                    setItemPerPage={setItemPerPage}
+                  />
                 </div>
               </>
             )}
@@ -130,38 +282,6 @@ const HeaderRowVote = ({
           </>
         )}
       </div>
-      {activePagination && (
-        <>
-          <div className="items-center hidden xl:flex">
-            {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
-            {/* <Pagination
-              className="mx-auto"
-              numberPages={7}
-              activePage={1}
-              setActivePage={() => {}}
-              itemsPerPage={10}
-              setItemPerPage={() => {}}
-            /> */}
-            {/* <div
-              className="flex items-center justify-center
-      cursor-pointer w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
-            >
-              <span className="text-lg icon-cog text-white"></span>
-            </div> */}
-          </div>
-          <div className="block xl:hidden">
-            {/* <PaginationMobile
-              className=""
-              numberPages={7}
-              count={10}
-              activePage={1}
-              setActivePage={() => {}}
-              itemsPerPage={10}
-              setItemPerPage={() => {}}
-            /> */}
-          </div>
-        </>
-      )}
     </div>
   )
 }
