@@ -667,7 +667,7 @@
   after:bg-cover
   after:w-full
   after:bottom-0
-  after:left-0
+  after:left-0;
 }
 
 /* Background for exchange box of trade panel */
@@ -779,8 +779,6 @@
   after:xl:block;
 }
 
-
-
 .steps-box-dashboard {
   @apply relative
   w-full
@@ -861,9 +859,6 @@
   after:xl:block;
 }
 
-
-
-
 /* Background for main box */
 .main-box {
   @apply relative
@@ -905,11 +900,8 @@
   after:xl:block;
 }
 
-
-
 .lock-box {
-  @apply 
-  relative
+  @apply relative
   w-full
   rounded-2xl
   /* xl:max-w-[1170px] */
@@ -952,7 +944,6 @@
   after:hidden
   after:xl:block;
 }
-
 
 /* Background for veFNXIDO boxes */
 .offering-box {
@@ -1086,7 +1077,7 @@
 
 /* Background for notification */
 .box-notification {
-   @apply relative
+  @apply relative
    xl:flex
   w-full
   h-full
@@ -1775,8 +1766,6 @@ opacity-70
   after:xl:block;
 }
 
-
-
 .box-pagination {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
 
@@ -1808,7 +1797,6 @@ opacity-70
   after:border-b-[20px]
   after:border-[transparent_transparent_#111315];
 }
-
 
 .box-reward-medium {
   @apply relative
@@ -1851,8 +1839,6 @@ opacity-70
   after:xl:block;
 }
 
-
-
 .box-vote-medium {
   @apply relative
   w-full
@@ -1893,8 +1879,6 @@ opacity-70
   after:hidden
   after:xl:block;
 }
-
-
 
 .box-vote-short {
   @apply relative

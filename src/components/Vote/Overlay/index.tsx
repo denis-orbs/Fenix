@@ -188,7 +188,7 @@ const Overlay = ({ voteValue, lockInfo }: overlayProps) => {
                     100
                   ).toFixed(1)
                 : (Number(lockInfo?.veNFTInfo?.voting_amount?.toString()) / 10 ** 18).toFixed(1)}{' '}
-              veFnx ({voteValue.toString()} %)
+              veFnx ({voteValue} %)
             </p>
           </div>
           <div className="flex flex-col items-end gap-2 ">

@@ -238,12 +238,22 @@ const Vote = () => {
   }, [address])
 
   const [poolArr, setPoolArr] = useState<any>([])
-  console.log('kg', poolArr)
 
   const removePool = (id: any) => {
     const filterArr = poolArr.filter((pool: any) => pool.id !== id)
     setPoolArr(filterArr)
   }
+
+  useEffect(() => {
+    if (poolArr.length > 0) {
+      const total: number = poolArr.reduce(
+        (acc: number, current: { percentage: number }) => acc + Number(current.percentage),
+        0
+      )
+      console.log('gg', total)
+      setVoteValue(total)
+    }
+  }, [poolArr])
 
   return (
     <section className="relative overflow-hidden">
@@ -267,9 +277,13 @@ const Vote = () => {
       {activeVote && (
         <div className="mb-5">
           <h2 className="text-sm font-medium text-white">Vote Pools</h2>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {poolArr.length > 0 &&
-              poolArr.map((pool: any, index: number) => <VotePools key={index} data={pool} removePool={removePool} />)}
+          <div className="relative flex flex-row gap-2 justify-start overflow-x-auto overflow-y-hidden p-2">
+            <div className="flex gap-2 transform translate-x-2 min-w-max">
+              {poolArr.length > 0 &&
+                poolArr.map((pool: any, index: number) => (
+                  <VotePools key={index} data={pool} removePool={removePool} />
+                ))}
+            </div>
           </div>
         </div>
       )}
@@ -277,7 +291,7 @@ const Vote = () => {
         activeVote={activeVote}
         filterData={voteTableElements}
         loading={loading}
-        setVotePercentage={setVoteValue}
+        // setVotePercentage={setVoteValue}
         vote={vote}
         lock={locks}
         tab={currentTab}

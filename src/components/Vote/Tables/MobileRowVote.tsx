@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
@@ -10,15 +10,25 @@ interface RowDataProps {
   row: VoteTableElement
   activeVote: boolean
   activeSlider?: boolean
-  onRangeUpdate: (index: number, value: number) => void
+  // onRangeUpdate: (index: number, value: number) => void
   poolArr: any
   setPoolArr: (value: any) => any
 }
 
-const MobileRowVote = ({ index, row, onRangeUpdate, activeVote, activeSlider, poolArr, setPoolArr }: RowDataProps) => {
+const MobileRowVote = ({ index, row, activeVote, activeSlider, poolArr, setPoolArr }: RowDataProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [changeValue, setChangeValue] = useState(0)
   const [openInfo, setOpenInfo] = useState<boolean>(false)
+
+  useEffect(() => {
+    const isPoolPresent = poolArr.filter((pool: any) => pool.id === index)
+    console.log('poolarrpre', isPoolPresent)
+    if (isPoolPresent && isPoolPresent.length > 0) {
+      setChangeValue(isPoolPresent[0].percentage)
+    } else {
+      setChangeValue(0)
+    }
+  }, [poolArr])
 
   return (
     <>
@@ -184,6 +194,8 @@ const MobileRowVote = ({ index, row, onRangeUpdate, activeVote, activeSlider, po
                         height={7}
                         value={changeValue}
                         onChange={(value) => {
+                          setChangeValue(value)
+                          // onRangeUpdate(index, value)
                           const pairString = !row.pair.hasOwnProperty('stable')
                             ? 'Concentrated'
                             : row.pair.stable
@@ -196,16 +208,22 @@ const MobileRowVote = ({ index, row, onRangeUpdate, activeVote, activeSlider, po
                             pair: pairString,
                             percentage: value,
                           }
-
                           const isPresent = poolArr.findIndex((item: { id: number }) => item.id === index)
-                          if (isPresent !== -1) {
-                            setPoolArr((prev: any) => (prev[isPresent] = percentageObj))
+                          if (isPresent !== -1 && value > 0) {
+                            setPoolArr((prev: any) => {
+                              prev[isPresent] = percentageObj
+                              return [...prev]
+                            })
+                          } else if (isPresent !== -1 && value > 0) {
+                            setPoolArr((prev: any) => {
+                              prev[isPresent] = percentageObj
+                              return [...prev]
+                            })
                           } else {
-                            setPoolArr((prev: any) => [...prev, percentageObj])
+                            if (value > 0) {
+                              setPoolArr((prev: any) => [...prev, percentageObj])
+                            }
                           }
-
-                          setChangeValue(value)
-                          onRangeUpdate(index, value)
                         }}
                         thumbSize={18}
                         disabled={!activeVote}

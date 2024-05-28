@@ -15,8 +15,8 @@ interface RowDataProps {
   row: VoteTableElement
   activeVote: boolean
   activeSlider?: boolean
-  setVoteValue: (value: Number) => void
-  onRangeUpdate: (index: number, value: number) => void
+  // setVoteValue: (value: Number) => void
+  // onRangeUpdate: (index: number, value: number) => void
   poolArr: any
   setPoolArr: (value: any) => void
 }
@@ -26,14 +26,22 @@ const RowDataVote = ({
   row,
   activeVote,
   activeSlider,
-  setVoteValue,
-  onRangeUpdate,
+  // setVoteValue,
+  // onRangeUpdate,
   poolArr,
   setPoolArr,
 }: RowDataProps) => {
   const [changeValue, setChangeValue] = useState(0)
   const [openInfo, setOpenInfo] = useState<boolean>(false)
   // console.log(row, 'row')
+  useEffect(() => {
+    const isPoolPresent = poolArr.filter((pool: any) => pool.id === index)
+    if (isPoolPresent && isPoolPresent.length > 0) {
+      setChangeValue(isPoolPresent[0].percentage)
+    } else {
+      setChangeValue(0)
+    }
+  }, [poolArr])
   // FIXME: CHECK MOBILE, MOBILE IS COMMENTED OUT DUE TS ERROR
   return (
     <>
@@ -196,7 +204,8 @@ const RowDataVote = ({
                   value={changeValue}
                   onChange={(value) => {
                     setChangeValue(value)
-                    setVoteValue(value)
+                    // setVoteValue(value)
+                    // onRangeUpdate(index, value)
                     const pairString = !row.pair.hasOwnProperty('stable')
                       ? 'Concentrated'
                       : row.pair.stable
@@ -210,7 +219,9 @@ const RowDataVote = ({
                       percentage: value,
                     }
                     const isPresent = poolArr.findIndex((item: { id: number }) => item.id === index)
-                    if (isPresent !== -1 && value > 0) {
+                    if (isPresent !== -1 && value === 0) {
+                      setPoolArr((prev: any) => prev.filter((pool: any) => pool.id !== index))
+                    } else if (isPresent !== -1 && value > 0) {
                       setPoolArr((prev: any) => {
                         prev[isPresent] = percentageObj
                         return [...prev]

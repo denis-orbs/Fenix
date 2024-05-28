@@ -20,7 +20,7 @@ interface HeaderRowVoteProps {
   activeVote: boolean
   activePagination?: boolean
   activeSlider?: boolean
-  setVotePercentage: (value: Number) => void
+  // setVotePercentage: (value: Number) => void
   vote: voteState
   lock: lockState
   tab: string
@@ -35,7 +35,7 @@ const HeaderRowVote = ({
   loading,
   activePagination = true,
   activeSlider = true,
-  setVotePercentage,
+  // setVotePercentage,
   vote,
   lock,
   tab,
@@ -45,7 +45,7 @@ const HeaderRowVote = ({
 }: HeaderRowVoteProps) => {
   const [data, setData] = useState<VoteTableElement[]>(vote.voteTableElement)
   const [showTooltip, setShowTooltip] = useState(false)
-  const [voteValue, setVoteValue] = useState<Number>(0)
+  // const [voteValue, setVoteValue] = useState<Number>(0)
   const [selectedRanges, setSelectedRanges] = useState<number[]>([])
 
   // Function to handle when a subcomponent updates its range
@@ -53,8 +53,8 @@ const HeaderRowVote = ({
     const newRanges = [...selectedRanges]
     newRanges[index] = value
     setSelectedRanges(newRanges)
-    setVoteValue(newRanges.reduce((a, b) => a + b, 0))
-    setVotePercentage(newRanges.reduce((a, b) => a + b, 0))
+    // setVoteValue(newRanges.reduce((a, b) => a + b, 0))
+    // setVotePercentage(newRanges.reduce((a, b) => a + b, 0))
   }
 
   const [sidx, setSidx] = useState<number>(1)
@@ -222,8 +222,8 @@ const HeaderRowVote = ({
                           row={row}
                           activeVote={activeVote}
                           activeSlider={activeSlider}
-                          setVoteValue={setVoteValue}
-                          onRangeUpdate={handleRangeUpdate}
+                          // setVoteValue={setVoteValue}
+                          // onRangeUpdate={handleRangeUpdate}
                           poolArr={poolArr}
                           setPoolArr={setPoolArr}
                         />
@@ -239,7 +239,7 @@ const HeaderRowVote = ({
                           row={row}
                           activeVote={activeVote}
                           activeSlider={activeSlider}
-                          onRangeUpdate={handleRangeUpdate}
+                          // onRangeUpdate={handleRangeUpdate}
                           poolArr={poolArr}
                           setPoolArr={setPoolArr}
                         />

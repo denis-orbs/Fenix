@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const VotePools = ({ data, removePool }: any) => {
   return (
-    <div className="flex  justify-between items-end vote-box p-8 gap-10  w-full xl:w-auto ">
+    <div className="flex justify-between items-center vote-box p-5 gap-5  w-auto ">
       <div className="flex relative z-50 items-center gap-2 ">
         <div className="flex items-center w-full">
           <Image
@@ -21,7 +21,9 @@ const VotePools = ({ data, removePool }: any) => {
             height={20}
           />
         </div>
-        <div className="flex flex-col">
+      </div>
+      <div className="w-[6rem] flex relative z-50 items-center">
+        <div className="flex flex-col justify-center">
           <h5 className="text-sm text-white">
             {data.token0} / {data.token1}
           </h5>
