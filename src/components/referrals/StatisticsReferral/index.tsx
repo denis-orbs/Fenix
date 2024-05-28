@@ -22,7 +22,7 @@ const StatisticsReferral = () => {
             <span className="icon-compass text-white text-lg" />
           </div>
           <div className="text-xs text-white text-center font-semibold">
-            <p>Points earned</p>
+            <p>Rings earned</p>
             <p>____</p>
           </div>
         </div>

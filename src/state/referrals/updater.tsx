@@ -47,9 +47,15 @@ export default function ReferralsUpdater() {
   useEffect(() => {
     if (!account || !isReferralSystemInitialized) return
     const getAffiliateCode = async () => {
-      const affiliateCode = await Fuul.getAffiliateCode(account)
-      if (affiliateCode) {
-        setReferralCode(affiliateCode)
+      try {
+        const affiliateCode = await Fuul.getAffiliateCode(account)
+        if (affiliateCode) {
+          setReferralCode(affiliateCode)
+        } else {
+          setReferralCode('')
+        }
+      } catch (error) {
+        setReferralCode('')
       }
     }
     getAffiliateCode()

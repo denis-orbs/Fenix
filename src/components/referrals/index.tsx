@@ -13,7 +13,9 @@ const Referrals = () => {
         <div className="border-2 border-solid border-shark-300 bg-shark-400 bg-opacity-20 rounded-xl p-4 flex justify-center">
           <span className="icon-hyperlink text-gradient text-xl flex items-center justify-center" />
         </div>
-        <h1 className="text-sm text-center max-sm:max-w-[227px] md:text-xl font-normal text-white">Refer Fenix to your friends and boost your earnings!</h1>
+        <h1 className="text-sm text-center max-sm:max-w-[227px] md:text-xl font-normal text-white">
+          Refer Fenix to your friends and boost your earnings!
+        </h1>
       </div>
       <div className="flex flex-col w-full items-center gap-2">
         <CreateReferral />
@@ -38,7 +40,7 @@ const Referrals = () => {
             <ReferralCard
               title="Share more, Earn more"
               img="/static/images/referrals/img-3.svg"
-              description="Referees receive a 15% increase in their LP. You earn this extra 5% as well."
+              description="Referees receive a 5% increase in their LP. You earn this extra 15% as well."
             />
           </div>
         </div>
