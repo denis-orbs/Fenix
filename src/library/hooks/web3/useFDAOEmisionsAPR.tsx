@@ -22,7 +22,7 @@ export default function useFDAOEmissionsAPR(row: BasicPool) {
         setFDAOEmisionsAPR(0)
         return
       }
-      const apr = toBN(50_000)
+      const apr = toBN(12_500)
         .multipliedBy(fDAOTokenPrice)
         .dividedBy(row.totalValueLockedUSD)
         .multipliedBy(52) // weeks
