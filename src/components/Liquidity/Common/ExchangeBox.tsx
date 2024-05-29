@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import { useAccount, useBalance } from 'wagmi'
 import { IToken } from '@/src/library/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getTokenBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { ethers } from 'ethers'
@@ -22,6 +22,11 @@ interface ExchangeBoxProps {
   option?: string
 }
 
+type CancelableCall = {
+  canceled: boolean
+  cancel: () => void
+}
+
 const ExchangeBox = ({
   title,
   token,
@@ -37,6 +42,7 @@ const ExchangeBox = ({
   const account = useAccount()
   const [balance, setBalance] = useState('')
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+  const latestCallRef = useRef<CancelableCall | null>(null)
 
   useEffect(() => {
     toBN(balance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
@@ -83,12 +89,39 @@ const ExchangeBox = ({
 
   useEffect(() => {
     const asyncFn = async () => {
-      const b = await getTokenBalance(token.address as Address, account.address as Address)
+      if (latestCallRef.current) {
+        latestCallRef.current.cancel()
+      }
 
-      setBalance(b.toString())
+      const currentCall: CancelableCall = {
+        canceled: false,
+        cancel() {
+          this.canceled = true
+        },
+      }
+
+      latestCallRef.current = currentCall
+
+      try {
+        const b = await getTokenBalance(token.address as Address, account.address as Address)
+
+        if (!currentCall.canceled) {
+          setBalance(b.toString())
+        }
+      } catch (error) {
+        if (!currentCall.canceled) {
+          console.error(error)
+        }
+      }
     }
 
     asyncFn()
+
+    return () => {
+      if (latestCallRef.current) {
+        latestCallRef.current.cancel()
+      }
+    }
   }, [token, account.address])
 
   const handleOnChange = (e: any) => {
