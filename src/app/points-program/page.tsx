@@ -2,6 +2,7 @@
 import Decorator from '@/src/components/Common/Layout/Background'
 import PointsProgram from '@/src/components/PointsProgram'
 import React from 'react'
+import BlastBanner from '@/src/components/Common/BlastBanner'
 
 
 export const metadata = {
@@ -12,7 +13,8 @@ export const metadata = {
 
 const PointsProgramPage = () => {
   return (
-    <div className="container">
+    <div className="container pt-5">
+      <BlastBanner />
       <Decorator />
       <PointsProgram />
     </div>

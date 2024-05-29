@@ -51,7 +51,7 @@ const Classic = ({
     id: 1,
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023' as Address,
-    img: '/static/images/tokens/WETH.png',
+    img: '/static/images/tokens/WETH.svg',
   } as IToken)
 
   const searchParams = useSearchParams()
@@ -514,7 +514,6 @@ const Classic = ({
             <div className="mb-3">
               {
                 // TODO: handle LP tokens list
-                // FIXME: HAZ
               }
 
               <ExchangeBox
@@ -532,6 +531,7 @@ const Classic = ({
                 onOpenModal={() => setOpenSelectToken(true)}
                 variant="primary"
                 onTokenValueChange={handleOnLPTokenValueChange}
+                setValue={()=>{}}
               />
 
               <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />

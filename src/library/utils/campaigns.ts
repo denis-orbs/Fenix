@@ -1,40 +1,213 @@
-export const totalCampaigns = [
+type PointStackType = 'fenix-ring' | 'blast' | 'blast-gold' | 'fdao'
+export interface Campaign {
+  pairAddress: string
+  multiplier: string
+  pointStack?: PointStackType[]
+}
+export const totalCampaigns: Campaign[] = [
   {
-    campaignId: '0xbb1b3804878e84101119520d2b0201728e2b049b293f91c0db881f5818ab9fc8',
-    pairAddress: '0x1D74611f3EF04E7252f7651526711a937Aa1f75e',
-    multiplier: '🔥 9x Rings',
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x1d74611f3ef04e7252f7651526711a937aa1f75e',
+    pointStack: ['fenix-ring', 'blast', 'blast-gold'],
   },
   {
-    campaignId: '0x81deedbabbc2886bce9c483b8161503b989a1179ac2d5f3e9c3e044e1337ce79',
+    multiplier: '🔥 Rings Boost',
     pairAddress: '0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f',
-    multiplier: '🔥 1x Rings',
+    pointStack: ['fenix-ring', 'blast'],
   },
   {
-    campaignId: '0xf9672c6a04bd1d0c5d42bb8041ba2647e25ec4f4c93eb285f22da46dbf0eb2ba',
-    pairAddress: '0xc5910a7f3b0119ac1a3ad7A268CcE4A62d8C882D',
-  },
-  {
-    campaignId: '0xedeffb6dff361531155be42f35ac7e2e7974174824458b2a6eefa08f7fca1e05',
-    pairAddress: '0x6A1DE1841c5c3712E3Bc7C75Ce3d57DEDEC6915F',
-  },
-  {
-    campaignId: '0xb7301dd3875f4fffb03cb68ecb944675c14d26aac4d6daa6e69016006bde3e73',
+    multiplier: '🔥 Rings Boost',
     pairAddress: '0x3bafe103742da10a4fece8fc5e800df07d645439',
+    pointStack: ['fenix-ring', 'blast'],
   },
   {
-    campaignId: '0xbdbcf3809cfbb2763b0562a0f15ca76dfa76166c1a7e823dcc1d258864762fc4',
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xe53b1da56f90c9529f2db1bb8711c3f1cc6f03bd',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x635512a1333ad0822f5ba4fd6479daa1df8b77e1',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xbcf0265f4bd3cb293b709fab0bf5c83c7eeb6b74',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x1eba6f6cfdb86e965040bf9e75d3ded9a3fd22a5',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x46f2aa2aa7d31ddd237d620e52a33a8d5af2a5ab',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x9304ba542df9bc61dd1c97c073ed35f81cab6149',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xd0cd894c605a9eedacbc0fa9bd8440627a5d37b1',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
     pairAddress: '0x117106000ceb709ba3ec885027d111463204d6b6',
+    pointStack: ['fenix-ring', 'blast'],
   },
   {
-    campaignId: '0x0d32968a80f922fd5c73939abfb0f71da8c703de89de0064b0ccd3b7c96692a8',
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xcf68cdfea89f9e6964d4c2bd8a42eba5da9f945d',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x886369748d1d66747b8f51ab38de00dea13f0101',
+    pointStack: ['fenix-ring', 'blast', 'fdao'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x1fe38ea700f0b8b013be01e58b02b1da3956379a',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x86d1da56fc79accc0daf76ca75668a4d98cb90a7',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
     pairAddress: '0xce274e4ae83baadd1d3b88e1ed24886e05aca345',
+    pointStack: ['fenix-ring', 'blast'],
   },
   {
-    campaignId: '0x7277168485aab4963288b98bc4122b33e0ce9e664a9e02188687fa3a1a3c8e85',
+    multiplier: '🔥 Rings Boost',
     pairAddress: '0xf2bb3403e80adc9272c43b386c76e54d5bb604a5',
+    pointStack: ['fenix-ring', 'blast'],
   },
   {
-    campaignId: '0x287e73db592afce24ab76f5c4f0ddc46f2aa4f373dc92c7e00f6541ba090425e',
-    pairAddress: '0xCf68cdFea89f9E6964d4c2bD8a42EBA5da9F945D',
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xf63e385e854e082c78df0627b411fdb78877faa1',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x8e57e61b7524a2f56fd01bbfe5de9bb96ed186b4',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xe3fac59382987466d7f812df56c50739b99a907a',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x24b711e1d32e28a143e1a9cfdfe03a39d1acc771',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x4a28f50f15efedf44af0d376fdc2e319fa8ccef8',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x5083e43b015296c75de0af519917c035309e80e4',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x90f2eaf2db0d8400c9f565aa3c139ddffbe857d0',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x3acde0b7f51703c2fbf0a382f831123560b742b9',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x28abbaadfacd46196217c23bc6402a0a458973a5',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x7113c00b5275b0b9c16686e5ac1164978b505c5d',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xbad7a5de96b7df589252ced73426d4b59f90b466',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x3a8fa7bdbb3bd2a523796b145e5dd23b45019dbe',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x21d5d5998c3d0feea70b5980fdac9dd6b8a12761',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xb50a80bba0ff07f4bc3434c593e86663fe05abe2',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x54bb102e85ee68a234fa06ece299346941d68d07',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x9508122abdd654b68c7dbf5bdba329b852e4a512',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x047d5d8911d18aa5e64e666e53af2b47b46ab363',
+    pointStack: ['fenix-ring', 'blast'],
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xc1fd5e0b3388c66dfad458ded01dcddae68cb03e',
+    pointStack: ['fenix-ring', 'blast'],
   },
 ]
+
+export const getPointsDistributionTargetTimestamps = () => {
+  const now = new Date()
+  const year = now.getUTCFullYear()
+  const month = now.getUTCMonth()
+  const day = now.getUTCDate()
+  // This is the hours where the cron that updates the points runs
+  const times = [
+    '17:00:00', // 05:00 PM UTC
+    '01:00:00', // 01:00 AM UTC
+    '09:00:00', // 09:00 AM UTC
+  ]
+
+  return times.map((time) => new Date(Date.UTC(year, month, day, ...time.split(':').map(Number))))
+}

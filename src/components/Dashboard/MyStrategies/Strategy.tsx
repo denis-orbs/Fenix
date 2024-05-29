@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { Button, Switch } from '@/src/components/UI'
+import { Button, Switch, Tooltip } from '@/src/components/UI'
 import Graph from './Graph'
 import ComponentVisible from '@/src/library/hooks/useVisible'
 import { formatAmount, formatCurrency, formatDollarAmount, fromWei, toBN } from '@/src/library/utils/numbers'
@@ -19,6 +19,9 @@ import { MAX_INT } from '@/src/library/constants/misc'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { useDispatch } from 'react-redux'
+import { useQuery } from '@tanstack/react-query'
+import { ichiVaults } from '../../Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
+import { BoostedPool } from '@/src/app/api/rings/campaign/route'
 import { setApr } from '@/src/state/apr/reducer'
 
 type options = {
@@ -173,7 +176,20 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
       }
     )
   }
+  const { data: ringsCampaign, isLoading: isLoadingRingsCampaign } = useQuery({
+    queryKey: ['ringsPointsCampaign'],
+    staleTime: 1000 * 60 * 5,
+    queryFn: async () => {
+      const response = await fetch('/api/rings/campaign')
+      return response.json()
+    },
+  })
 
+  const ichiVaultData = ichiVaults.find((e) => e.id.toLowerCase() === row?.id.toLowerCase())
+  const fenixRingApr =
+    ringsCampaign?.boostedPools.find((pool: BoostedPool) => {
+      return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
+    })?.apr || 0
   return (
     <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
       <div className="relative z-10">
@@ -217,13 +233,31 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           </div>
           <div className="flex gap-2 my-2">
             <div className="flex flex-col gap-2 w-1/2 h-full items-center bg-shark-400 bg-opacity-40 p-4  rounded-lg">
-              <p className="text-white">
+              <p className="text-white flex items-center gap-x-1 relative">
                 APR
-                {/* <span className="icon-info text-xs"></span> */}
+                <span
+                  className="icon-info text-xs"
+                  onMouseEnter={() => setIsVisible(true)}
+                  onMouseLeave={() => setIsVisible(false)}
+                ></span>
+                <Tooltip
+                  className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-7 px-5 py-3 left-0 xl:-left-12"
+                  show={isVisible}
+                  setShow={setIsVisible}
+                >
+                  <div className="flex justify-between items-center gap-3">
+                    <p className="text-sm pb-1">Ichi strategy</p>
+                    <p className="text-sm pb-1 text-chilean-fire-600">{parseFloat(row?.apr) < 0 ? 0 : row?.apr}</p>
+                  </div>
+                  {fenixRingApr > 0 && (
+                    <div className="flex justify-between items-center gap-3">
+                      <p className="text-sm pb-1">Rings APR</p>
+                      <p className="text-sm pb-1 text-chilean-fire-600">{formatAmount(fenixRingApr, 2)}%</p>
+                    </div>
+                  )}
+                </Tooltip>
               </p>
-              <h2 className={`text-green-400 ${row?.apr.length > 10 ? 'text-base' : 'text-2xl'} flex justify-center`}>
-                {row?.apr}
-              </h2>
+              <h2 className="text-green-400 text-2xl">{formatAmount(parseFloat(row?.apr) + fenixRingApr, 2)}%</h2>
             </div>
             <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
               <p className="text-white">
@@ -236,7 +270,6 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
             </div>
           </div>
         </div>
-
         <div className="bg-shark-400 bg-opacity-40 rounded-lg">
           <div className="relative text-white flex items-center justify-center border-b border-shark-400">
             <div className="flex items-start flex-col p-4 w-1/2">

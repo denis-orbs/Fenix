@@ -20,7 +20,7 @@ const Panel = () => {
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023',
     price: 0,
-    img: '/static/images/tokens/WETH.png',
+    img: '/static/images/tokens/WETH.svg',
   })
   const [tokenGet, setTokenGet] = useState<IToken>({
     name: 'Fenix',

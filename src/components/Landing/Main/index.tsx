@@ -10,7 +10,7 @@ import Blast from '@/src/components/UI/Icons/Blast'
 import { useState, useEffect } from 'react'
 import { useAppSelector } from '@/src/state'
 import { fetchGlobalStatistics } from '@/src/state/liquidity/thunks'
-import { formatDollarAmount, toBN } from '@/src/library/utils/numbers'
+import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { fetchv3Factories } from '@/src/state/liquidity/reducer'
 
 const michroma = Michroma({
@@ -44,7 +44,7 @@ const Box = ({ text, value }: { text: string; value: string }) => {
   return (
     <div className="flex w-[100%] flex-col items-center justify-center mt-[120px]">
       <div className="text-gradient2 text-lg max-sm:text-base leading-normal tracking-[4.86px] font-semibold mb-[5px] mt-[-120px]">
-        {isNaN(Number(value)) ? value : formatDollarAmount(toBN(value))}
+        {value}
       </div>
       <div className="text-base font-light text-shark-100 max-sm:text-sm">{text}</div>
     </div>
@@ -65,13 +65,24 @@ const Main = () => {
   const [globalStatistics, setGlobalStatistics] = useState<Awaited<ReturnType<typeof fetchGlobalStatistics>>>()
   useEffect(() => {
     const fetchAndSetStatistics = async () => {
-      const statistics = await fetchv3Factories()
-      setGlobalStatistics({
-        totalTVL: toBN(statistics[0].totalValueLockedUSD).toNumber(),
-        totalVolume: toBN(statistics[0].totalVolumeUSD).toNumber(),
-        totalFees: toBN(statistics[0].totalFeesUSD).toNumber(),
-        lastUpdate: new Date().toISOString(),
-      })
+      try {
+        const statistics = await fetchGlobalStatistics()
+        setGlobalStatistics({
+          totalTVL: toBN(statistics?.totalTVL).toNumber(),
+          totalVolume: toBN(statistics?.totalVolume).toNumber(),
+          totalFees: toBN(statistics?.totalFees).toNumber(),
+          lastUpdate: new Date().toISOString(),
+          totalUsers: statistics?.totalUsers,
+        })
+      } catch (error) {
+        setGlobalStatistics({
+          totalTVL: 0,
+          totalVolume: 0,
+          totalFees: 0,
+          lastUpdate: new Date().toISOString(),
+          totalUsers: 0,
+        })
+      }
     }
     fetchAndSetStatistics()
   }, [])
@@ -106,8 +117,8 @@ const Main = () => {
                 alt="Fenix"
                 className="mx-auto mb-3"
               />
-              <div className="text-base md:text-xl text-shark-100 leading-normal mb-2">Welcome to Fenix Finance</div>
-              <div className={`text-white  md:text-[32px] leading-[139%] mb-[21px] w-full  ${michroma.className}`}>
+              <h1 className="text-base md:text-xl text-shark-100 leading-normal mb-2">Welcome to Fenix Finance</h1>
+              <h3 className={`text-white  md:text-[32px] leading-[139%] mb-[21px] w-full  ${michroma.className}`}>
                 THE UNIFIED TRADING AND <span className="text-gradient2">LIQUIDITY MARKETPLACE </span>
                 <span className="flex items-center justify-center xl:items-center gap-3">
                   FOR
@@ -119,7 +130,7 @@ const Main = () => {
                     <Blast isHover={isHover} />
                   </span>
                 </span>
-              </div>
+              </h3>
 
               {!isConnected && (
                 <Button
@@ -143,10 +154,10 @@ const Main = () => {
             className={`grid 2xl:grid-cols-4 max-2xl:grid-cols-2 max-md:grid-cols-1
              justify-center items-center px-5 mx-auto ${isTablet ? 'info-box' : 'mobile-info-box'}`}
           >
-            <Box text="Total Value Locked" value={globalStatistics?.totalTVL?.toString() || '-'} />
-            <Box text="Annualized Volume" value={globalStatistics?.totalVolume?.toString() || '-'} />
-            <Box text="Annualized Fees" value={globalStatistics?.totalFees?.toString() || '-'} />
-            <Box text="Active Users" value="COMING SOON" />
+            <Box text="Total Value Locked" value={formatDollarAmount(globalStatistics?.totalTVL?.toString()) || '-'} />
+            <Box text="Total Volume" value={formatDollarAmount(globalStatistics?.totalVolume?.toString()) || '-'} />
+            <Box text="Total Fees" value={formatDollarAmount(globalStatistics?.totalFees?.toString()) || '-'} />
+            <Box text="Active Users" value={formatAmount(globalStatistics?.totalUsers?.toString()) || '-'} />
           </div>
         </div>
       </div>

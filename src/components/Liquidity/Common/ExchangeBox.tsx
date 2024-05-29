@@ -16,10 +16,7 @@ interface ExchangeBoxProps {
   token: IToken
   onOpenModal?: () => void
   variant?: 'primary' | 'secondary'
-  // FIXME: HAZ
-  onTokenValueChange?: (arg0: any, token: any) => void
-  // FIXME: HAZ
-
+  onTokenValueChange?: (arg0: string, token: IToken) => void
   value?: any
   setValue: (value: string) => void
   option?: string
@@ -109,7 +106,7 @@ const ExchangeBox = ({
         const b = await getTokenBalance(token.address as Address, account.address as Address)
 
         if (!currentCall.canceled) {
-          setBalance(b.toString());
+          setBalance(b.toString())
         }
       } catch (error) {
         if (!currentCall.canceled) {

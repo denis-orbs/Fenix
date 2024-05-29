@@ -183,7 +183,6 @@ export const fetchv2PoolData = async () => {
 // Function to fetch v2 algebra pool data
 export const fetchv2PairId = async (token0Id: any, token1Id: any, isStable: Boolean) => {
   try {
-    console.log(token0Id, token1Id, isStable)
     const { data } = await blastClient.query({
       query: GET_V2_PAIR_ID,
       variables: { token0Id, token1Id, isStable }, // Pass the user variable as owner
@@ -202,6 +201,7 @@ export const fetchNativePrice = async () => {
   try {
     const { data } = await algebra_client.query({
       query: NATIVE_PRICE,
+      fetchPolicy: 'cache-first',
     })
     // Data is available in `data.positions`
     // console.log(data.bundles[0].maticPriceUSD, 'price')
@@ -214,31 +214,10 @@ export const fetchNativePrice = async () => {
 
 export const fetchV3PoolDayData = async () => {
   try {
-    // const currentDate = new Date()
-    // const currentUTCTimestamp = Date.UTC(
-    //   currentDate.getUTCFullYear(),
-    //   currentDate.getUTCMonth(),
-    //   currentDate.getUTCDate(),
-    //   0,
-    //   0,
-    //   0,
-    //   0
-    // )
-
-    // // Calculate the beginning of today (00:00:00 GMT) timestamp
-    // const todayStart = currentUTCTimestamp
-
-    // // Calculate yesterday's 00:00:00 GMT timestamp
-    // const yesterdayStart = todayStart - 24 * 60 * 60 * 1000
-
-    // // Determine which timestamp to use based on current time
-    // const selectedDateTimestamp = currentUTCTimestamp < todayStart ? yesterdayStart : todayStart
-
     const { data } = await algebra_client.query({
       query: POOL_DAY_DATA,
       // variables: { date: selectedDateTimestamp / 1000 }, // Pass the user variable as owner
     })
-    console.log(data, 'data')
     // Data is available in `data.positions`
     return data
   } catch (error) {

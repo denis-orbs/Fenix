@@ -37,7 +37,7 @@ const MyStrategies = () => {
   useEffect(() => {
     tokensprice()
   }, [])
-  
+
   const slideToLeft = () => {
     if (swiperRef.current && progress > 0) {
       swiperRef.current.slidePrev()
@@ -79,7 +79,7 @@ const MyStrategies = () => {
         apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
       }
     })
-    const finalSorted = final.sort((a, b) => (Number(a.id) < Number(b.id) ? 1 : -1));
+    const finalSorted = final.sort((a, b) => (Number(a.id) < Number(b.id) ? 1 : -1))
     setposition((prevPositions) => [...prevPositions, ...finalSorted])
     setpositionAmounts(amounts)
     setLoading(false)
@@ -93,8 +93,7 @@ const MyStrategies = () => {
   useEffect(() => {
     setLoading(true)
     if (ichipositions.length > 0) {
-      // console.log('ichipos', ichipositions)
-      setposition((prevPositions) => [...prevPositions, ...ichipositions])
+      setposition(ichipositions)
       setLoading(false)
     }
   }, [ichipositions])
@@ -110,9 +109,11 @@ const MyStrategies = () => {
       {position.length !== 0 && loading === false && address ? (
         <div className="relative">
           <div className="flex items-center w-[100%] mb-4 justify-between">
-            <h4 className="text-lg text-white">My Positions</h4>
+            <h2 id="strategies" className="text-lg text-white">
+              My Strategies
+            </h2>
             <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
-              <span className="icon-logout"></span>New deposit
+              <span className="icon-logout"></span>New strategy
             </Button>
           </div>
           <div className="dashboard-box mb-10 hidden xl:block">
@@ -152,16 +153,18 @@ const MyStrategies = () => {
                 )
               })}
             </Swiper>
-            <div className="flex gap-2 justify-center">
-              <span
-                className={`icon-arrow rotate-180 ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
-                onClick={slideToLeft}
-              ></span>
-              <span
-                className={`icon-arrow text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
-                onClick={slideToRight}
-              ></span>
-            </div>
+            {position?.length >= 3 && (
+              <div className="flex gap-2 justify-center">
+                <span
+                  className={`icon-arrow-left ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
+                  onClick={slideToLeft}
+                ></span>
+                <span
+                  className={`icon-arrow-right text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                  onClick={slideToRight}
+                ></span>
+              </div>
+            )}
           </div>
           <div className="dashboard-box mb-10 block xl:hidden">
             <div className="">

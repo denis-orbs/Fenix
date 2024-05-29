@@ -11,7 +11,16 @@ import Header from '@/src/components/Common/Layout/Header'
 import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
 
 import { getDefaultConfig, getDefaultWallets, midnightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import { argentWallet, ledgerWallet, trustWallet } from '@rainbow-me/rainbowkit/wallets'
+import {
+  argentWallet,
+  coinbaseWallet,
+  ledgerWallet,
+  metaMaskWallet,
+  rabbyWallet,
+  rainbowWallet,
+  trustWallet,
+  walletConnectWallet,
+} from '@rainbow-me/rainbowkit/wallets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
 import { Provider as ReduxProvider } from 'react-redux'
@@ -32,8 +41,7 @@ const poppins = Poppins({
 })
 
 const { wallets } = getDefaultWallets()
-
-export const configwallets = createConfig({
+export const config = createConfig({
   chains: [blast],
   transports: {
     [blast.id]: fallback([
@@ -55,10 +63,13 @@ export const wagmiConfig = getDefaultConfig({
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [blastSepolia] : []),
   ],
   wallets: [
-    ...wallets,
+    {
+      groupName: 'Popular',
+      wallets: [metaMaskWallet, rabbyWallet, walletConnectWallet, coinbaseWallet],
+    },
     {
       groupName: 'Other',
-      wallets: [argentWallet, trustWallet, ledgerWallet],
+      wallets: [trustWallet, ledgerWallet, argentWallet, rainbowWallet],
     },
   ],
   ssr: true,

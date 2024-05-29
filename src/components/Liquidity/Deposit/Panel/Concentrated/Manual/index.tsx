@@ -21,7 +21,19 @@ import { NotificationDuration, NotificationType } from '@/src/state/notification
 import { useSetToken0, useSetToken1 } from '@/src/state/liquidity/hooks'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
-import { Token, computePoolAddress, tickToPrice, priceToClosestTick, Price, getTickToPrice, Position, Pool, CurrencyAmount, encodeSqrtRatioX96, TickMath } from '@cryptoalgebra/integral-sdk'
+import {
+  Token,
+  computePoolAddress,
+  tickToPrice,
+  priceToClosestTick,
+  Price,
+  getTickToPrice,
+  Position,
+  Pool,
+  CurrencyAmount,
+  encodeSqrtRatioX96,
+  TickMath,
+} from '@cryptoalgebra/integral-sdk'
 import { usePool } from '@/src/components/Trade/Swap/Panel/usePool'
 import { blast } from 'viem/chains'
 import BigNumber from 'bignumber.js'
@@ -33,7 +45,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     id: 0,
     decimals: 18,
     address: '0x4300000000000000000000000000000000000003' as Address,
-    img: 'https://fenix-dex-api.vercel.app/tokens/USDB.png',
+    img: '/static/images/tokens/USDB.svg',
   } as IToken)
   const [firstValue, setFirstValue] = useState('')
   const [secondToken, setSecondToken] = useState({
@@ -75,14 +87,15 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     args: [useAccount().address],
   })
 
-  const poolAddress = firstToken.address == secondToken.address ? 
-    "0x0000000000000000000000000000000000000000"
-  : computePoolAddress({
-    tokenA: new Token(blast.id, firstToken.address as string, 8),
-    tokenB: new Token(blast.id, secondToken.address as string, 18),
-    poolDeployer: "0x5aCCAc55f692Ae2F065CEdDF5924C8f6B53cDaa8",
-    initCodeHashManualOverride: "0xf45e886a0794c1d80aeae5ab5befecd4f0f2b77c0cf627f7c46ec92dc1fa00e4"
-  }) as Address
+  const poolAddress =
+    firstToken.address == secondToken.address
+      ? '0x0000000000000000000000000000000000000000'
+      : (computePoolAddress({
+          tokenA: new Token(blast.id, firstToken.address as string, 8),
+          tokenB: new Token(blast.id, secondToken.address as string, 18),
+          poolDeployer: '0x5aCCAc55f692Ae2F065CEdDF5924C8f6B53cDaa8',
+          initCodeHashManualOverride: '0xf45e886a0794c1d80aeae5ab5befecd4f0f2b77c0cf627f7c46ec92dc1fa00e4',
+        }) as Address)
   const pool = usePool(poolAddress)
 
   useEffect(() => {
@@ -95,7 +108,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         Number(secondValue) > Number(formatUnits((token2Balance?.data as bigint) || 0n, secondToken?.decimals)))
     ) {
       setButtonText('Insufficient balance')
-          } else {
+    } else {
       setButtonText('Create Position')
     }
   }, [
@@ -129,7 +142,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   // const account = useAccount()
   // const { isConnected, chainId } = useActiveConnectionDetails()
 
-
   const { writeContractAsync } = useWriteContract()
 
   useEffect(() => {
@@ -156,25 +168,24 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     }
 
     const price = value.target.value
-    
+
     const newTimeout = setTimeout(() => {
       let currentPrice = Number(pool[1]?.token0Price.toFixed(10))
-      if(isInverse) currentPrice = Number(pool[1]?.token1Price.toFixed(10))
+      if (isInverse) currentPrice = Number(pool[1]?.token1Price.toFixed(10))
 
       const pricePercentage = ((price - currentPrice) / currentPrice) * 100
 
-      if (isFirst) 
-        if(!isInverse) {
-          nsetCurrentPercentage([ncurrentPercentage[0], pricePercentage]) 
+      if (isFirst)
+        if (!isInverse) {
+          nsetCurrentPercentage([ncurrentPercentage[0], pricePercentage])
         } else {
           nsetCurrentPercentage([pricePercentage, ncurrentPercentage[1]])
         }
-      else 
-        if(!isInverse) { 
-          nsetCurrentPercentage([pricePercentage, ncurrentPercentage[1]]) 
-        } else {
-          nsetCurrentPercentage([ncurrentPercentage[0], pricePercentage])
-        }
+      else if (!isInverse) {
+        nsetCurrentPercentage([pricePercentage, ncurrentPercentage[1]])
+      } else {
+        nsetCurrentPercentage([ncurrentPercentage[0], pricePercentage])
+      }
     }, 500)
 
     setTimeoutID([newTimeout, timeout[1]])
@@ -187,20 +198,32 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }, [firstToken, secondToken])
 
   useEffect(() => {
-    if(pool[0] != 'EXISTS' || !pool[1]) return
-    if(firstValue == '') return
+    if (pool[0] != 'EXISTS' || !pool[1]) return
+    if (firstValue == '') return
 
-    if(lowerTick < pool[1]?.tickCurrent && higherTick < pool[1]?.tickCurrent) {
+    if (lowerTick < pool[1]?.tickCurrent && higherTick < pool[1]?.tickCurrent) {
       setOneSide('SECOND')
       setFirstValue('0')
       setSecondValue('0')
-    } else if(lowerTick > pool[1]?.tickCurrent && higherTick > pool[1]?.tickCurrent) {
+    } else if (lowerTick > pool[1]?.tickCurrent && higherTick > pool[1]?.tickCurrent) {
       setOneSide('FIRST')
       setFirstValue('0')
       setSecondValue('0')
     } else {
       setOneSide('BOTH')
-      setSecondValue(isInverse ? getFromAmount1(firstValue, isInverse ? firstToken.decimals : secondToken.decimals, isInverse ? secondToken.decimals : firstToken.decimals) : getFromAmount0(firstValue, isInverse ? firstToken.decimals : secondToken.decimals, isInverse ? secondToken.decimals : firstToken.decimals))
+      setSecondValue(
+        isInverse
+          ? getFromAmount1(
+              firstValue,
+              isInverse ? firstToken.decimals : secondToken.decimals,
+              isInverse ? secondToken.decimals : firstToken.decimals
+            )
+          : getFromAmount0(
+              firstValue,
+              isInverse ? firstToken.decimals : secondToken.decimals,
+              isInverse ? secondToken.decimals : firstToken.decimals
+            )
+      )
     }
   }, [firstToken, secondToken, lowerTick, higherTick, pool[0]])
 
@@ -247,12 +270,12 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
       }
     }
 
-    if(pool[0] == 'EXISTS') asyncFn()
+    if (pool[0] == 'EXISTS') asyncFn()
   }, [pool])
 
   useEffect(() => {
     const asyncFn = async () => {
-      if(!pool[1]) return
+      if (!pool[1]) return
       if (ncurrentPercentage[0] == -1 && ncurrentPercentage[1] == -1) {
         setLowerTick(-887220)
         setHigherTick(887220)
@@ -261,56 +284,68 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setShownPercentage(['', ''])
       } else {
         {
-
           let lowerPrice0l, lowerPrice0h, lowerPrice1, newPriceL, newPriceH
 
-          if(isInverse) { //20
-            lowerPrice0l = BigInt(Number(((Number(pool[1].token1Price.toFixed(10))) * (1 + ncurrentPercentage[0] / 100) * (10 ** secondToken.decimals)).toFixed(0))).toString()
-            lowerPrice0h = BigInt(Number(((Number(pool[1].token1Price.toFixed(10))) * (1 + ncurrentPercentage[1] / 100) * (10 ** secondToken.decimals)).toFixed(0))).toString()
+          if (isInverse) {
+            //20
+            lowerPrice0l = BigInt(
+              Number(
+                (
+                  Number(pool[1].token1Price.toFixed(10)) *
+                  (1 + ncurrentPercentage[0] / 100) *
+                  10 ** secondToken.decimals
+                ).toFixed(0)
+              )
+            ).toString()
+            lowerPrice0h = BigInt(
+              Number(
+                (
+                  Number(pool[1].token1Price.toFixed(10)) *
+                  (1 + ncurrentPercentage[1] / 100) *
+                  10 ** secondToken.decimals
+                ).toFixed(0)
+              )
+            ).toString()
             lowerPrice1 = 10 ** firstToken.decimals
 
-            newPriceH = new Price(
-              pool[1].token0, 
-              pool[1].token1,
-              lowerPrice0l,
-              lowerPrice1
-            )
+            newPriceH = new Price(pool[1].token0, pool[1].token1, lowerPrice0l, lowerPrice1)
 
-            newPriceL = new Price(
-              pool[1].token0, 
-              pool[1].token1,
-              lowerPrice0h,
-              lowerPrice1
-            )
+            newPriceL = new Price(pool[1].token0, pool[1].token1, lowerPrice0h, lowerPrice1)
           } else {
-            lowerPrice0l = BigInt(Number(((Number(pool[1].token0Price.toFixed(18))) * (1 + ncurrentPercentage[0] / 100) * (10 ** secondToken.decimals)).toFixed(0))).toString()
-            lowerPrice0h = BigInt(Number(((Number(pool[1].token0Price.toFixed(18))) * (1 + ncurrentPercentage[1] / 100) * (10 ** secondToken.decimals)).toFixed(0))).toString()
+            lowerPrice0l = BigInt(
+              Number(
+                (
+                  Number(pool[1].token0Price.toFixed(18)) *
+                  (1 + ncurrentPercentage[0] / 100) *
+                  10 ** secondToken.decimals
+                ).toFixed(0)
+              )
+            ).toString()
+            lowerPrice0h = BigInt(
+              Number(
+                (
+                  Number(pool[1].token0Price.toFixed(18)) *
+                  (1 + ncurrentPercentage[1] / 100) *
+                  10 ** secondToken.decimals
+                ).toFixed(0)
+              )
+            ).toString()
             lowerPrice1 = 10 ** firstToken.decimals
 
-            newPriceL = new Price(
-              pool[1].token1,
-              pool[1].token0,
-              lowerPrice0l,
-              lowerPrice1
-            )
+            newPriceL = new Price(pool[1].token1, pool[1].token0, lowerPrice0l, lowerPrice1)
 
-            newPriceH = new Price(
-              pool[1].token1, 
-              pool[1].token0,
-              lowerPrice0h,
-              lowerPrice1
-            )
+            newPriceH = new Price(pool[1].token1, pool[1].token0, lowerPrice0h, lowerPrice1)
 
             newPriceL = newPriceL.invert()
             newPriceH = newPriceH.invert()
           }
 
           const lTick = Number(newPriceL.toFixed(18)) == 0 ? -887220 : priceToClosestTick(newPriceL)
-          const lTickRounded = parseInt((lTick/60).toString()) * 60
+          const lTickRounded = parseInt((lTick / 60).toString()) * 60
 
           const hTick = Number(newPriceL.toFixed(18)) == 0 ? -887220 : priceToClosestTick(newPriceH)
-          const hTickRounded = parseInt((hTick/60).toString()) * 60
-       
+          const hTickRounded = parseInt((hTick / 60).toString()) * 60
+
           setLowerTick(lTickRounded)
           setHigherTick(hTickRounded)
           setRangePrice1(Number(newPriceL.toFixed(18)))
@@ -319,7 +354,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
       }
     }
 
-    if(pool[0] != 'EXISTS') return
+    if (pool[0] != 'EXISTS') return
     asyncFn()
   }, [ncurrentPercentage, pool[0]])
 
@@ -482,19 +517,30 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }
 
   const getFromAmount0 = (value: any, dec1: any, dec2: any) => {
-        let x = Position.fromAmount0({pool: pool[1] as unknown as Pool, tickLower: lowerTick, tickUpper: higherTick, amount0: BigInt(Number((parseFloat(value) * 10**dec1).toFixed(0))).toString() , useFullPrecision: false}).amount1.toFixed(parseInt(dec2))
+    let x = Position.fromAmount0({
+      pool: pool[1] as unknown as Pool,
+      tickLower: lowerTick,
+      tickUpper: higherTick,
+      amount0: BigInt(Number((parseFloat(value) * 10 ** dec1).toFixed(0))).toString(),
+      useFullPrecision: false,
+    }).amount1.toFixed(parseInt(dec2))
     return x
   }
 
   const getFromAmount1 = (value: any, dec1: any, dec2: any) => {
-    let x = Position.fromAmount1({pool: pool[1] as unknown as Pool, tickLower: lowerTick, tickUpper: higherTick, amount1: BigInt(Number((parseFloat(value) * 10**dec1).toFixed(0))).toString() })
+    let x = Position.fromAmount1({
+      pool: pool[1] as unknown as Pool,
+      tickLower: lowerTick,
+      tickUpper: higherTick,
+      amount1: BigInt(Number((parseFloat(value) * 10 ** dec1).toFixed(0))).toString(),
+    })
     return x.amount0.toFixed(parseInt(dec2))
   }
 
   const handleOnTokenValueChange = async (input: any, token: IToken) => {
     if (firstToken.address === token.address) {
       if (parseFloat(input) != 0) {
-        if(isInverse) {
+        if (isInverse) {
           setSecondValue(getFromAmount1(input, firstToken.decimals, secondToken.decimals))
         } else {
           setSecondValue(getFromAmount0(input, firstToken.decimals, secondToken.decimals))
@@ -512,7 +558,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
       ])
     } else {
       if (parseFloat(input) != 0) {
-        if(!isInverse) {
+        if (!isInverse) {
           setFirstValue(getFromAmount1(input, secondToken.decimals, firstToken.decimals))
         } else {
           setFirstValue(getFromAmount0(input, secondToken.decimals, firstToken.decimals))
@@ -582,13 +628,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 {/* <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} /> */}
                 <span>
-                  {isInverse
-                    ? Number(pool[1]?.token1Price.toFixed(6))
-                    : Number(pool[1]?.token0Price.toFixed(6))}{' '}
+                  {isInverse ? Number(pool[1]?.token1Price.toFixed(6)) : Number(pool[1]?.token0Price.toFixed(6))}{' '}
                   {`${secondToken.symbol} per ${firstToken.symbol} ≈ `}
-                  {!isInverse
-                    ? Number(pool[1]?.token1Price.toFixed(6))
-                    : Number(pool[1]?.token0Price.toFixed(6))}{' '}
+                  {!isInverse ? Number(pool[1]?.token1Price.toFixed(6)) : Number(pool[1]?.token0Price.toFixed(6))}{' '}
                   {`${firstToken.symbol} per ${secondToken.symbol}`}
                 </span>
               </p>
@@ -621,8 +663,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         </Button>
       ) : (
         <ApproveButtons
-          shouldApproveFirst={Number(allowanceFirst)/(10**firstToken.decimals) < Number(firstValue)}
-          shouldApproveSecond={Number(allowanceSecond)/(10**secondToken.decimals) < Number(secondValue)}
+          shouldApproveFirst={Number(allowanceFirst) / 10 ** firstToken.decimals < Number(firstValue)}
+          shouldApproveSecond={Number(allowanceSecond) / 10 ** secondToken.decimals < Number(secondValue)}
           token0={firstToken}
           token1={secondToken}
           handleApprove={handleApprove}

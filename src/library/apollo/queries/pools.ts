@@ -109,14 +109,12 @@ export const POOLS_LIST = gql`
 `
 
 export const POOL_DAY_DATA = gql`
-  query PoolDayDatas {
-    poolDayDatas(first: 7, orderDirection: desc, orderBy: date) {
-      volumeUSD
-      date
+  query PoolsList {
+    pools {
       id
       feesUSD
-      pool {
-        id
+      poolDayData(first: 7, orderDirection: desc, orderBy: date) {
+        feesUSD
       }
     }
   }
@@ -158,6 +156,15 @@ export const POOL_FEE_DATA = gql`
   query PoolFeeData($poolId: String) {
     poolDayDatas(where: { pool: $poolId }, orderBy: date, orderDirection: desc) {
       ...PoolDayDataFields
+    }
+  }
+`
+
+export const POOLS_TVL = gql`
+  query PoolsTVL {
+    pools {
+      id
+      totalValueLockedUSD
     }
   }
 `

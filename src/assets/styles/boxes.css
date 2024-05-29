@@ -326,12 +326,14 @@
   @apply relative
   bg-no-repeat
   bg-cover
-  xl:w-[420px]
-  h-[80px]
+  xl:w-[480px]
+  w-[400px]
+  h-[45px]
 
   before:content-[""]
   before:absolute
-  before:bg-[url("/static/images/header/header-landing3.svg")]
+  xl:before:bg-[url("/static/images/header/header-landing3.svg")]
+  before:bg-[url("/static/images/header/header-landing2.svg")]
   before:bg-no-repeat
   before:h-full
   before:bg-cover
@@ -341,7 +343,8 @@
 
   after:content-[""]
   after:absolute
-  after:bg-[url("/static/images/header/header-landing3.svg")]
+  xl:after:bg-[url("/static/images/header/header-landing3.svg")]
+  after:bg-[url("/static/images/header/header-landing2.svg")]
   after:bg-no-repeat
   after:bg-right
   after:h-full
@@ -520,7 +523,7 @@
   before:bg-no-repeat
   before:h-full
   before:bg-cover
-  before:w-[50%]
+  before:w-[calc(100%-400px)]
   before:top-0
   before:left-0
   before:hidden
@@ -534,7 +537,7 @@
   after:bg-right
   after:h-full
   after:bg-cover
-  after:w-[50%]
+  after:w-[400px]
   after:bottom-0
   after:right-0
   after:hidden
@@ -671,7 +674,7 @@
 
 /* Background for exchange box of trade panel */
 .exchange-box-x2 {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-8 pr-4 xl:pr-6 py-6
+  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
 
   before:hidden
   xl:before:block
