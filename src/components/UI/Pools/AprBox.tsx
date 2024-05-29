@@ -25,7 +25,7 @@ export default function AprBox({ apr, tooltip, tooltipClassName }: AprBox) {
           {!!tooltip && (
             <Tooltip
               className={cn(
-                'absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-8 px-5 py-3 left-0 xl:-left-12',
+                'absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto top-8 px-5 py-3 left-0 xl:left-1/2 xl:-translate-x-1/2 transform',
                 tooltipClassName
               )}
               show={openInfo}
