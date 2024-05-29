@@ -52,6 +52,43 @@ const MyStrategies = () => {
   }
   const { address } = useAccount()
 
+  const fetchpositions = async (address: Address) => {
+    const positions = await fetchV3Positions(address)
+    const nativePrice = await fetchNativePrice()
+    const positionsPoolAddresses = await positions.map((position: positions) => {
+      return {
+        id: position.pool.id,
+        liq: position.liquidity,
+        lower: position.tickLower.tickIdx,
+        higher: position.tickUpper.tickIdx,
+      }
+    })
+    const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
+    // TODO: Fetch APR for each position
+    const aprs = await Promise.all(
+      positions.map((position: positions, index: number) => {
+        return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
+      })
+    )
+    const final = positions.map((position: positions, index: number) => {
+      // console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
+      return {
+        ...position,
+        depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
+        depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
+        apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
+      }
+    })
+    const finalSorted = final.sort((a, b) => (Number(a.id) < Number(b.id) ? 1 : -1))
+    setposition((prevPositions) => [...prevPositions, ...finalSorted])
+    setpositionAmounts(amounts)
+    setLoading(false)
+  }
+  useEffect(() => {
+    if (address) fetchpositions(address)
+    setLoading(true)
+  }, [address])
+
   const ichipositions = useIchiPositions()
   useEffect(() => {
     setLoading(true)
@@ -119,11 +156,11 @@ const MyStrategies = () => {
             {position?.length >= 3 && (
               <div className="flex gap-2 justify-center">
                 <span
-                  className={`icon-arrow rotate-180 ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
+                  className={`icon-arrow-left ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
                   onClick={slideToLeft}
                 ></span>
                 <span
-                  className={`icon-arrow text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                  className={`icon-arrow-right text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
                   onClick={slideToRight}
                 ></span>
               </div>

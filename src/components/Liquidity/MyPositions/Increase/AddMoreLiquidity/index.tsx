@@ -22,7 +22,7 @@ const AddMoreLiquidity = () => {
             >
               <div className="flex items-center gap-2">
                 <Image
-                  src={`/static/images/tokens/FNX.png`}
+                  src={`/static/images/tokens/FNX.svg`}
                   alt="token"
                   className="w-6 h-6 rounded-full"
                   width={20}
@@ -61,7 +61,7 @@ const AddMoreLiquidity = () => {
             >
               <div className="flex items-center gap-2">
                 <Image
-                  src={`/static/images/tokens/USDC.png`}
+                  src={`/static/images/tokens/USDC.svg`}
                   alt="token"
                   className="w-6 h-6 rounded-full"
                   width={20}

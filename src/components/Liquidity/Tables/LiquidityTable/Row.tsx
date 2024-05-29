@@ -18,6 +18,8 @@ import { getWeb3Provider } from '@/src/library/utils/web3'
 import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import Loader from '@/src/components/UI/Icons/Loader'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
+import { adjustTokenOrder } from '@/src/library/utils/tokens'
+import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
 
 interface RowDataProps {
   row: BasicPool
@@ -88,7 +90,8 @@ const RowData = ({
     return formatAmount(average.toString(), 2)
   }
   // console.log(data?.boostedPools?.find((pool: string) => pool?.toLowerCase() == row?.id?.toLowerCase()))
-
+  const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
+  const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -96,16 +99,16 @@ const RowData = ({
           <div className="flex justify-center items-center gap-2">
             <div className="flex items-center w-[40px]">
               <Image
-                src={`/static/images/tokens/${row.token0.symbol}.svg`}
+                src={`/static/images/tokens/${adjustToken0}.svg`}
                 alt="token"
-                className="rounded-full w-7 h-7"
+                className="rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.token1.symbol}.svg`}
+                src={`/static/images/tokens/${adjustToken1}.svg`}
                 alt="token"
-                className="-ml-4 rounded-full w-7 h-7"
+                className="-ml-[0.9rem] rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
@@ -113,7 +116,7 @@ const RowData = ({
             <div className="flex flex-col gap-1">
               <h5 className={`text-xs text-white h-[26px] flex items-center`}>
                 <div>
-                  {row.token0.symbol} / {row.token1.symbol}
+                  {adjustToken0} / {adjustToken1}
                 </div>
               </h5>
               <div className="flex items-center gap-1 h-[26px]">
@@ -134,37 +137,6 @@ const RowData = ({
         </TableCell>
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[15%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
-            {/* <span ref={hoverRef} className="flex gap-2">
-              {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
-                <span ref={hoverRef} className="flex flex-row transition-transform transform group">
-                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
-                    <>
-                      <Image
-                        src={`/static/images/point-stack/fenix-ring.svg`}
-                        alt="token"
-                        className={''}
-                        width={20}
-                        height={20}
-                      />
-                      <Image
-                        src={`/static/images/point-stack/blast.svg`}
-                        alt="token"
-                        className={''}
-                        width={20}
-                        height={20}
-                      />
-                      <Image
-                        src={`/static/images/point-stack/blast-gold.svg`}
-                        alt="token"
-                        className={`${row.token0.symbol === 'USDB' && row.token1.symbol === 'WETH' ? '' : 'hidden'}`}
-                        width={20}
-                        height={20}
-                      />
-                    </>
-                  )}
-                </span>
-              )}
-            </span> */}
             {
               <span ref={hoverRef} className="flex gap-2">
                 <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}>
@@ -191,7 +163,7 @@ const RowData = ({
                   {openTooltipGold && (
                     <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
                       <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                        <p className="text-xs">The pool is receiving 7000 Gold from May 15th - 31st</p>
+                        <p className="text-xs">The pool is receiving receive 3500 Gold from May 28th to June 5th</p>
                       </div>
                     </div>
                   )}
@@ -216,7 +188,7 @@ const RowData = ({
                 <Loader />
               ) : (
                 <>
-                  {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%{' '}
+                  {formatAmount((Number(row?.apr) || 0) + fDAOEmisionsAPR + (Number(ringsApr) || 0), 2)}%{' '}
                   <span
                     className="icon-info"
                     onMouseEnter={() => setOpenInfo(true)}
@@ -246,30 +218,19 @@ const RowData = ({
                 {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">Ichi Strategy</p>
-                    <p className="text-sm text-chilean-fire-600">
-                      {formatAmount(Number(ichiApr) < 0 ? 0 : Number(ichiApr) || 0, 2)}%
-                    </p>
+                    <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>
+                  </div>
+                )}
+                {!!fDAOEmisionsAPR && (
+                  <div className="flex justify-between items-center gap-3">
+                    <p className="text-sm">fDAO Emissions</p>
+                    <p className="text-sm text-chilean-fire-600">{formatAmount(Number(fDAOEmisionsAPR), 2)}%</p>
                   </div>
                 )}
               </div>
             )}
           </div>
         </TableCell>
-
-        {/* <TableCell className={`w-[10%]`}>
-          <div className="flex flex-col items-end justify-center w-full px-3">
-            TVL
-            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
-            <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-
-              </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-
-              </p>
-            </div>
-          </div>
-        </TableCell> */}
 
         <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
@@ -278,23 +239,23 @@ const RowData = ({
             <div className="flex flex-col gap-1">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token0.symbol}.png`}
+                  src={`/static/images/tokens/${row.token0.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 /> */}
-                {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
+                {formatCurrency(Number(row.volumeToken0) / 2, 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100 font-normal ">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token1.symbol}.png`}
+                  src={`/static/images/tokens/${row.token1.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 /> */}
-                {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
+                {formatCurrency(Number(row.volumeToken1) / 2, 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
@@ -307,7 +268,7 @@ const RowData = ({
             <div className="flex flex-col  gap-1">
               <p className="flex  items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token0.symbol}.png`}
+                  src={`/static/images/tokens/${row.token0.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -317,7 +278,7 @@ const RowData = ({
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token1.symbol}.png`}
+                  src={`/static/images/tokens/${row.token1.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
