@@ -9,14 +9,12 @@ import { BasicPool } from '@/src/state/liquidity/types'
 import { useEffect, useState } from 'react'
 import HeaderRow from './Tables/LiquidityTable/HeaderRow'
 import {
-  BLAST_ECOSYSTEM_POOLS,
+  BLAST_NATIVE_POOLS,
   BLUE_CHIPS_POOLS,
-  GAMEFI_POOLS,
-  LIQUIDITY_MANAGER_POOLS,
+  LRTS_POOLS,
   MEMES_POOLS,
   OPTIONS_FILTER,
-  STABLECOINS_POOLS,
-  STAKED_RESTAKED_ETH_POOLS,
+  STABLES_POOLS,
   STEPS,
 } from './data'
 
@@ -26,31 +24,22 @@ const Liquidity = () => {
   const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
   // console.log(filteredPools)
   const { loading, data: pools } = useAllPools()
-
   useEffect(() => {
     if (pools && pools?.length > 0) {
-      if (currentTab === 'LIQUIDITY MANAGER') {
-        const combinedPools = pools.filter((pool: BasicPool) => LIQUIDITY_MANAGER_POOLS.includes(pool.id.toLowerCase()))
+      if (currentTab === 'BLUE CHIPS') {
+        const combinedPools = pools.filter((pool: BasicPool) => BLUE_CHIPS_POOLS.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
+      } else if (currentTab === 'LRTS') {
+        const combinedPools = pools.filter((pool: BasicPool) => LRTS_POOLS.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
+      } else if (currentTab === 'STABLES') {
+        const combinedPools = pools.filter((pool: BasicPool) => STABLES_POOLS.includes(pool.id.toLowerCase()))
         setFilteredPools(combinedPools)
       } else if (currentTab === 'MEMES') {
         const combinedPools = pools.filter((pool: BasicPool) => MEMES_POOLS.includes(pool.id.toLowerCase()))
         setFilteredPools(combinedPools)
-      } else if (currentTab === 'GAMEFI') {
-        const combinedPools = pools.filter((pool: BasicPool) => GAMEFI_POOLS.includes(pool.id.toLowerCase()))
-        setFilteredPools(combinedPools)
-      } else if (currentTab === 'STAKED & RESTAKED ETH') {
-        const combinedPools = pools.filter((pool: BasicPool) =>
-          STAKED_RESTAKED_ETH_POOLS.includes(pool.id.toLowerCase())
-        )
-        setFilteredPools(combinedPools)
-      } else if (currentTab === 'BLUE CHIPS') {
-        const combinedPools = pools.filter((pool: BasicPool) => BLUE_CHIPS_POOLS.includes(pool.id.toLowerCase()))
-        setFilteredPools(combinedPools)
-      } else if (currentTab === 'STABLECOINS') {
-        const combinedPools = pools.filter((pool: BasicPool) => STABLECOINS_POOLS.includes(pool.id.toLowerCase()))
-        setFilteredPools(combinedPools)
-      } else if (currentTab === 'BLAST ECOSYSTEM') {
-        const combinedPools = pools.filter((pool: BasicPool) => BLAST_ECOSYSTEM_POOLS.includes(pool.id.toLowerCase()))
+      } else if (currentTab === 'BLAST NATIVE') {
+        const combinedPools = pools.filter((pool: BasicPool) => BLAST_NATIVE_POOLS.includes(pool.id.toLowerCase()))
         setFilteredPools(combinedPools)
       } else {
         setFilteredPools(pools)

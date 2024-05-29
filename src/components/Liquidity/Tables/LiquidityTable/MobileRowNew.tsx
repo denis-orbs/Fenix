@@ -238,7 +238,7 @@ export default function MobileRowNew({
                   {openTooltipGold && (
                     <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-xs">The pool is receiving 7000 Gold from May 15th - 31st</p>
+                        <p className="text-xs">The pool is receiving receive 3500 Gold from May 28th to June 5th</p>
                       </div>
                     </div>
                   )}
