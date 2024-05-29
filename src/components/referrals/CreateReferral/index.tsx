@@ -9,10 +9,30 @@ import { useReferralCode, useSetReferralCodeCallback } from '@/src/state/referra
 import { NumericalInput } from '../../UI/Input'
 import toast from 'react-hot-toast'
 import useDebounce from '@/src/library/hooks/useDebounce'
+import Clipboard from 'clipboard';
 
 const CreateReferral = () => {
-  const [changeState, setChangeState] = useState(false)
-  const handleChangeState = () => (changeState ? setChangeState(false) : setChangeState(true))
+  const [isCopied, setIsCopied] = useState(false)
+  const handleCopyReferralLink = () => {
+    const textToCopy = 'https://www.fenixfinance.io/?referrer=' +referralCode
+    
+    navigator.clipboard.writeText(textToCopy)
+    .then(() => {
+        toast.success('Referral code copied successfully!')
+        setIsCopied(true)
+        setTimeout(() => {
+          setIsCopied(false)
+        }, 2000)
+      })
+      .catch(err => {
+        console.error('Error al copiar al portapapeles: ', err)
+        if (err instanceof Error) {
+          toast.error(err.message)
+        } else {
+          toast.error('An unexpected error occurred')
+        }
+      })
+  }
   const { signMessageAsync } = useSignMessage()
   const { account } = useActiveConnectionDetails()
   const referralCode = useReferralCode()
@@ -51,6 +71,7 @@ const CreateReferral = () => {
   }
   const debouncedCodeValue = useDebounce(createAffiliateCodeValue, 500)
   const createAffiliateCode = async () => {
+    console.log('aca')
     if (!account) return
 
     const message = `I confirm that I am creating the ${createAffiliateCodeValue} code on Fuul`
@@ -62,7 +83,7 @@ const CreateReferral = () => {
     try {
       const createdCode = await Fuul.createAffiliateCode(account as string, createAffiliateCodeValue, signature)
       setReferralCode(createAffiliateCodeValue)
-      toast.success('Referral code created successfully')
+      toast.success('Referral code created successfully!')
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
@@ -114,11 +135,11 @@ const CreateReferral = () => {
               <p className="text-xs font-normal px-2  line-clamp-1">
                 https://www.fenixfinance.io/?referrer={referralCode}
               </p>
-              <div className="bg-shark-400 rounded-lg p-2 px-3 cursor-pointer">
-                <span className="text-lg icon-icons" />
+              <div className="bg-shark-400 rounded-lg p-2 px-3 cursor-pointer" onClick={handleCopyReferralLink}>
+                <span className={`text-lg ${isCopied ? 'icon-check' : 'icon-icons'}`} />
               </div>
             </div>
-            <Button onClick={handleChangeState} variant="tertiary" className="!text-xs">
+            <Button onClick={handleCopyReferralLink} variant="tertiary" className="!text-xs">
               Share on X
             </Button>
           </>
