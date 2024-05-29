@@ -33,9 +33,9 @@ export async function GET(request: NextRequest): Promise<GlobalStatisticsData | 
   return NextResponse.json(data, {
     status: 200,
     headers: {
-      'Cache-Control': 'public, s-maxage=180, stale-while-revalidate=200',
-      'CDN-Cache-Control': 'public, s-maxage=180, stale-while-revalidate=200',
-      'Vercel-CDN-Cache-Control': 'public, s-maxage=180, stale-while-revalidate=200',
+      'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
+      'CDN-Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
+      'Vercel-CDN-Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
     },
   })
 }

@@ -33,14 +33,14 @@ export default function MobileRow({
         <div className="flex gap-[9px] items-center">
           <div className="relative flex items-center">
             <Image
-              src={`/static/images/tokens/${row.token0.symbol}.png`}
+              src={`/static/images/tokens/${row.token0.symbol}.svg`}
               alt="token"
               className="w-8 h-8 rounded-full"
               width={32}
               height={32}
             />
             <Image
-              src={`/static/images/tokens/${row.token1.symbol}.png`}
+              src={`/static/images/tokens/${row.token1.symbol}.svg`}
               alt="token"
               className="w-8 h-8 -ml-5 rounded-full"
               width={32}
@@ -161,26 +161,26 @@ export default function MobileRow({
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src={`/static/images/tokens/${row.token0.symbol}.png`}
+                        src={`/static/images/tokens/${row.token0.symbol}.svg`}
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
                         height={10}
                       />
                       <span className="text-xs leading-normal">
-                        {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
+                        {formatCurrency(Number(row.volumeToken0) / 2, 2)} {row.token0.symbol}
                       </span>
                     </div>
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src={`/static/images/tokens/${row.token1.symbol}.png`}
+                        src={`/static/images/tokens/${row.token1.symbol}.svg`}
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
                         height={10}
                       />
                       <span className="text-xs leading-normal">
-                        {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
+                        {formatCurrency(Number(row.volumeToken1) / 2, 2)} {row.token1.symbol}
                       </span>
                     </div>
                   </div>
@@ -198,7 +198,7 @@ export default function MobileRow({
                   <div className="flex gap-2.5 text-shark-100">
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src={`/static/images/tokens/${row.token0.symbol}.png`}
+                        src={`/static/images/tokens/${row.token0.symbol}.svg`}
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}
@@ -210,7 +210,7 @@ export default function MobileRow({
                     </div>
                     <div className="flex items-center gap-[5px]">
                       <Image
-                        src={`/static/images/tokens/${row.token1.symbol}.png`}
+                        src={`/static/images/tokens/${row.token1.symbol}.svg`}
                         alt="token"
                         className="w-2.5 h-2.5 rounded-full"
                         width={10}

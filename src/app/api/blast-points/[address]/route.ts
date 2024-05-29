@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import prisma from '@/src/library/utils/db'
 import { NextRequest, NextResponse } from 'next/server'
 import { isAddress } from 'viem'

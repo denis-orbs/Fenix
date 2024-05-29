@@ -22,9 +22,9 @@ const Community = () => {
           alt="fenix"
         />
       </div>
-      <div className="text-gradient3 text-[32px] font-normal leading-relaxed max-lg:text-2xl text-center">
+      <h2 className="text-gradient3 text-[32px] font-normal leading-relaxed max-lg:text-2xl text-center">
         Join the community
-      </div>
+      </h2>
       <Link href={'https://discord.com/invite/fenixfi'} target="_blank">
         <Button className="!max-w-[252px] !font-normal " variant="primary">
           <span>Join Discord</span>
