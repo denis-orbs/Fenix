@@ -79,7 +79,8 @@ const MyStrategies = () => {
         apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
       }
     })
-    setposition((prevPositions) => [...prevPositions, ...final])
+    const finalSorted = final.sort((a, b) => (Number(a.id) < Number(b.id) ? 1 : -1));
+    setposition((prevPositions) => [...prevPositions, ...finalSorted])
     setpositionAmounts(amounts)
     setLoading(false)
   }
