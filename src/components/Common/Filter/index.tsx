@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 'use client'
 
 import { Button } from '@/src/components/UI'
@@ -18,9 +19,7 @@ const Filter = ({ options, currentTab, setCurrentTab }: FilterProps) => {
 
   return (
     <>
-      <div className="max-h-[45px] flex items-center w-full gap-2 px-2 py-2 
-     
-      rounded-xl xl:flex-row 2xl:gap-3 xl:w-full bg-opacity-40 bg-shark-400">
+      <div className="max-h-[45px] overflow-hidden overflow-x-auto flex items-center scroll w-full gap-2 px-2 py-2 rounded-xl xl:flex-row 2xl:gap-3 xl:w-full bg-opacity-40 bg-shark-400">
         {options.map((option, index) => {
           return (
             <Button
@@ -34,7 +33,7 @@ const Filter = ({ options, currentTab, setCurrentTab }: FilterProps) => {
                   : `${isMobile ? 'tertiary' : 'default'}`
               }
               className=" w-full h-[32px] md:w-auto
-              !text-xs !lg:text-xl
+              !text-xs !lg:text-xl whitespace-nowrap
               "
             >
               {option}
