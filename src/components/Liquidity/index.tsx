@@ -6,7 +6,7 @@ import Steps from '@/src/components/Common/Steps'
 import Deposit from '@/src/components/Liquidity/LiquidityPools'
 import { useAllPools } from '@/src/state/liquidity/hooks'
 import { BasicPool } from '@/src/state/liquidity/types'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import HeaderRow from './Tables/LiquidityTable/HeaderRow'
 import {
   BLAST_NATIVE_POOLS,
@@ -22,7 +22,6 @@ const Liquidity = () => {
   const [currentTab, setCurrentTab] = useState<string>('ALL')
   const [searchValue, setSearchValue] = useState<string>('')
   const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
-  const [filteredPoolsData, setFilteredPoolsData] = useState<BasicPool[]>([])
   // console.log(filteredPools)
   const { loading, data: pools } = useAllPools()
   useEffect(() => {
@@ -53,10 +52,10 @@ const Liquidity = () => {
       (pool) =>
         pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
         pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
-      )
-      .sort((a, b) => Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD))
-  }
-
+    )
+    .sort((a, b) => {
+      return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
+    })
   return (
     <section>
       <div className="flex flex-col items-center overflow-hidden gap-5 py-5 xl:flex-row">
