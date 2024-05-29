@@ -197,8 +197,9 @@ const SetRange = ({
         <Input
           title={`Min Price (${token2?.symbol} per ${token1?.symbol})`}
           percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 0 : currentPercentage[0]}`}
-          setCurrentPercentage={(value: any) => handlePercentageChange([-value, value])}
-          isPositive={false}
+          setCurrentPercentage={(value: any) => {
+            handlePercentageChange([value, currentPercentage[1]])
+          }}
           value={
             isInverse
               ? price2text == price2.toString()
@@ -220,8 +221,9 @@ const SetRange = ({
         <Input
           title={`Max Price (${token2?.symbol} per ${token1?.symbol})`}
           percent={`${currentPercentage[0] == -1 && currentPercentage[1] == -1 ? 'Infinity' : currentPercentage[1]}`}
-          setCurrentPercentage={(value: any) => handlePercentageChange([-value, value])}
-          isPositive={true}
+          setCurrentPercentage={(value: any) => {
+            handlePercentageChange([currentPercentage[0], value])
+          }}
           value={
             isInverse
               ? price1text == price1.toString()

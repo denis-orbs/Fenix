@@ -7,7 +7,6 @@ const Input = ({
   onChange,
   onTitleClick,
   setCurrentPercentage,
-  isPositive,
 }: {
   title: string
   percent: string
@@ -15,11 +14,15 @@ const Input = ({
   onChange?: any
   onTitleClick?: any
   setCurrentPercentage: any
-  isPositive: any
 }) => {
 
   const [styleObj, setStyleObj] = useState({})
+  const [shownPercent, setShownPercent] = useState(percent)
+  const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
+  useEffect(() => {
+    setShownPercent(percent)
+  }, [percent])
 
   useEffect(() => {
     if (onTitleClick) setStyleObj({ cursor: 'pointer' })
@@ -42,19 +45,25 @@ const Input = ({
         <div className="absolute right-2 top-1/2 -translate-y-1/2">
           <input
             type="number"
-            max={100}
             min={-100}
-            value={percent}
+            value={shownPercent}
             className={`bg-transparent outline-none  
-            ${Number(percent) < 0 && Number(percent.length) === 3 && 'max-w-[25px]'}
-            ${Number(percent) === 0 && Number(percent.length) === 1 && 'max-w-[10px]'}
-            ${Number(percent) < 0 && Number(percent.length) === 2 && 'max-w-[18px]'}
-            ${Number(percent) > 0 && Number(percent.length) === 1 && 'max-w-[10px]'}
-            ${Number(percent) > 0 && Number(percent.length) === 2 && 'max-w-[18px]'}
-            ${Number(percent) < 0 ? 'max-w-[1.9rem]' : 'max-w-[1.4rem]'}`}
+            ${Number(shownPercent.length) === 3 && 'max-w-[25px]'}
+            ${Number(shownPercent) === 0 && Number(shownPercent.length) === 1 && 'max-w-[10px]'}
+            ${Number(shownPercent) < 0 && Number(shownPercent.length) === 2 && 'max-w-[18px]'}
+            ${Number(shownPercent) > 0 && Number(shownPercent.length) === 1 && 'max-w-[10px]'}
+            ${Number(shownPercent) > 0 && Number(shownPercent.length) === 2 && 'max-w-[18px]'}
+            ${Number(shownPercent) < 0 ? 'max-w-[1.9rem]' : 'max-w-[1.4rem]'}`}
             onChange={(event) => {
-              const value = Math.abs(Number(event.target.value))
-              setCurrentPercentage(value > 100 ? 100 : value)
+              if (timeout) clearTimeout(timeout)
+              setShownPercent(event.target.value)
+
+              const newTimeout = setTimeout(() => {
+                const value = (Number(event.target.value))
+                setCurrentPercentage(value < -100 ? -100 : value)
+              }, 1000)
+          
+              setTimeoutID(newTimeout)
             }}
           />
           <span>%</span>
