@@ -30,6 +30,7 @@
     "autoprefixer": "10.4.16",
     "axios": "^1.6.8",
     "bignumber.js": "^9.1.2",
+    "clipboard": "^2.0.11",
     "dotenv": "^16.4.5",
     "encoding": "^0.1.13",
     "ethers": "5.7.2",
