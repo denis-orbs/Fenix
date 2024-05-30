@@ -96,8 +96,8 @@ const RowData = ({
     <>
       <TableRow className="hidden lg:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
-          <div className="flex justify-center items-center gap-2">
-            <div className="flex items-center w-[40px]">
+          <div className={`flex justify-center items-center gap-2 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? '' : 'mb-[28px]'}`}>
+            <div className={`flex items-center w-[40px] ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? '' : 'mt-[28px]'}`}>
               <Image
                 src={`/static/images/tokens/${adjustToken0}.svg`}
                 alt="token"
