@@ -27,6 +27,8 @@ import { getPublicClient } from '@wagmi/core'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { wagmiConfig } from '@/src/app/layout'
+import externalbribeABI from '@/src/library/web3/abis/externalBribeABI'
+
 enum ButtonState {
   POOL_NOT_AVAILABLE = 'Pool Not Available',
   ENTER_AMOUNT = 'Enter Amount',
@@ -54,25 +56,24 @@ const Bribes = () => {
 
   // console.log('tt', tokenAllowance)
 
-  const fetchBalanceFnx = async () => {
+  const fetTokenAllowance = async () => {
     if (address && chainId) {
-      // const bal = (await fetchTokenBalance(FENIX_ADDRESS[chainId] as Address, address)) as bigint
-      // setFnxBalance(fromWei(BigInt(bal).toString()))
+     
       if (tokenGet !== 'Select a Token' && tokenSell !== 'Select a Pool') {
         const tokenAllow = await getTokenAllowance(
           address,
           tokenGet?.address,
           tokenSell?.rewardPair?._externalBribeAddress
         )
-        console.log(fromWei(BigInt(tokenAllow).toString()))
-        settokenAllowance(fromWei(BigInt(tokenAllow).toString()))
+        console.log(parseFloat((tokenAllow/10 ** tokenGet?.decimals)))
+        settokenAllowance(parseFloat((tokenAllow/10 ** tokenGet?.decimals)))
       }
     }
   }
 
   useEffect(() => {
-    fetchBalanceFnx()
-  }, [address, chainId, currentButtonState, poolValue])
+    fetTokenAllowance()
+  }, [address, chainId, currentButtonState, poolValue,tokenGet,tokenSell])
 
   useEffect(() => {
     Number(poolValue) > Number(tokenAllowance)
@@ -104,9 +105,10 @@ const Bribes = () => {
             txHash: transaction?.transactionHash,
             notificationDuration: NotificationDuration.DURATION_5000,
           })
+          asyncGetAllowance()
           setCurrentButtonState(ButtonState.CREATE_BRIBE)
 
-          asyncGetAllowance()
+          
         },
         onError: (e) => {
           setCurrentButtonState(ButtonState.APPROVAL_REQUIRED)
@@ -124,13 +126,13 @@ const Bribes = () => {
   }
   const asyncGetAllowance = async () => {
     console.log('inn1')
-    const allowanceFirst: any = await getTokenAllowance(
+    const allowance: any = await getTokenAllowance(
       address as Address,
       tokenGet?.address,
       tokenSell?.rewardPair?._externalBribeAddress
     )
-    console.log(allowanceFirst, 'inn2')
-    settokenAllowance(fromWei(allowanceFirst.toString()))
+    console.log(parseFloat(allowance/10 ** tokenGet?.decimals), 'inn2')
+    settokenAllowance(parseFloat(allowance/10 ** tokenGet?.decimals))
   }
 
   const handleCreateBribe = async (tokenAddress: Address, amount: string, externalBribeAddress: Address) => {
@@ -144,41 +146,65 @@ const Bribes = () => {
         notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
-    console.log(amount, 'amount')
+    console.log(tokenAddress, amount, externalBribeAddress, 'amount')
     try {
       setCurrentButtonState(ButtonState.LOADING)
-      const hash = await createBribe(tokenAddress, amount, externalBribeAddress)
-      const transactionReceipt = await waitForTransactionReceipt(wagmiConfig, { hash: hash, confirmations: 1 })
-      // wait for 2 secs for transaction to get processed
-      console.log('transactionReceipt', hash, transactionReceipt)
-      await new Promise((resolve) => setTimeout(resolve, 10000))
-      if (transactionReceipt.status === 'success') {
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `Created Lock Successfully`,
-          notificationType: NotificationType.SUCCESS,
-          txHash: transactionReceipt?.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-      } else {
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `Transaction failed`,
-          notificationType: NotificationType.ERROR,
-          txHash: transactionReceipt?.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-      }
-      setCurrentButtonState(ButtonState.CREATE_BRIBE)
+      writeContractAsync(
+        {
+          abi: externalbribeABI,
+          address: externalBribeAddress,
+          functionName: 'notifyRewardAmount',
+          args: [tokenAddress, amount],
+        },
+        {
+          onSuccess: async (x) => {
+            setCurrentButtonState(ButtonState.LOADING)
+            const publicClient = getPublicClient(wagmiConfig)
+            const transaction = await publicClient?.waitForTransactionReceipt({ hash: x })
+  
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Created Bribe successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction?.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
+            asyncGetAllowance()
+            setCurrentButtonState(ButtonState.CREATE_BRIBE)
+  
+            
+          },
+          onError: (e) => {
+            setCurrentButtonState(ButtonState.CREATE_BRIBE)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Create Bribe failed. ${e}`,
+              notificationType: NotificationType.ERROR,
+              txHash: '',
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
+          },
+        }
+      )
     } catch (error: any) {
-      console.log('ee', error)
+      console.log('ee', error?.message)
       if (error?.message?.includes('ERC20: insufficient allowance'))
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
           message: `ERC20: insufficient allowance`,
+          notificationType: NotificationType.ERROR,
+          txHash: '',
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
+
+        if(error?.message?.includes('reward token not verified'))
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `Reward token not verified for this pool`,
           notificationType: NotificationType.ERROR,
           txHash: '',
           notificationDuration: NotificationDuration.DURATION_5000,

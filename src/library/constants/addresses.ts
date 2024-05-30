@@ -40,3 +40,7 @@ export const VOTING_ESCROW_ADDRESS: AddressMap = {
   [SupportedChainId.BLAST]: '0x8fD4fEeC9fB3d3fFb7c5e3f6Cf3A1c3A1c0f3A1c',
   [SupportedChainId.BLAST_SEPOLIA]: '0x4dD9e7dd344a309030B22d36A567f0d99C6a5403',
 }
+export const MINTER_ADDRESS: AddressMap = {
+  [SupportedChainId.BLAST]: '0x8fD4fEeC9fB3d3fFb7c5e3f6Cf3A1c3A1c0f3A1c',
+  [SupportedChainId.BLAST_SEPOLIA]: '0xDA283872Fc205f56cE5b0268D719373dc33e35dA',
+}

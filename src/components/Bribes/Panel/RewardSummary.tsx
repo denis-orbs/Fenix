@@ -42,7 +42,7 @@ const RewardSummary = ({ token, value, rewardToken }: ChoosePoolProps) => {
                   </h5>
                   <div className="flex items-center gap-3 max-md:flex-wrap">
                     <span className="bg-green-300 py-1 px-2 bg-opacity-20 rounded-lg text-white border border-green-500 text-xs">
-                      {!token.pair.stable ? 'Volatile Pool' : 'Stable Pool'}
+                    {!token.pair.hasOwnProperty('stable')? 'Concentrated Pool' : token.pair.stable?'Stable Pool':"Volatile Pool"}
                     </span>
 
                     {/* <Button

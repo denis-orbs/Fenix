@@ -19,22 +19,22 @@ export const STEPS = [
 export const EXCHANGE_LIST = [
   {
     label: 'Total Fees',
-    amount: '$76,739.86',
+    amount: '$ 0.00',
     icon: 'icon-pig',
   },
   {
     label: 'Total Incentives',
-    amount: '$25,172.06',
+    amount: '$ 0.00',
     icon: 'icon-coins',
   },
   {
     label: 'Total Rewards',
-    amount: '$101,912.22',
+    amount: '$ 0.00',
     icon: 'icon-trophy',
   },
   {
     label: 'New Emissions',
-    amount: '13,957,341.43',
+    amount: '0.00',
     icon: 'icon-rocket',
   },
 ]

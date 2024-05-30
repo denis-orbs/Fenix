@@ -10,6 +10,12 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { voteState } from '@/src/state/vote/types'
 import { useAppSelector } from '@/src/state'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
+import { Abi, Address } from 'viem'
+import { MINTER_ADDRESS } from '@/src/library/constants/addresses'
+import MINTER_ABI from '@/src/library/constants/abi/Minter'
+import { wagmiConfig } from '@/src/app/layout'
+import { multicall } from '@wagmi/core'
+import { formatAmount, fromWei } from '@/src/library/utils/numbers'
 
 interface DepositProps {
   vote: voteState
@@ -17,6 +23,7 @@ interface DepositProps {
 
 const Deposit = ({ vote }: DepositProps) => {
   const [tokens, setTokens] = useState<Number>(0)
+  const [weeklyEmission, setweeklyEmission] = useState<string>('0')
   const [rewardAmountUsd, setRewardAmountUsd] = useState<BigDecimal>(new BigDecimal(0n, 18))
   const { chainId } = useAccount()
 
@@ -25,7 +32,21 @@ const Deposit = ({ vote }: DepositProps) => {
     if (chainId) {
       const availableTokenData = await fetchTokens(chainId)
       setTokens(availableTokenData.length)
-      let push: BigDecimal[] = []
+
+      let weekly_emission = await multicall(wagmiConfig, {
+        contracts: [{
+          address: MINTER_ADDRESS[chainId] as Address,
+          abi: MINTER_ABI as Abi,
+          functionName: 'weekly_emission'
+        }],
+      })
+      EXCHANGE_LIST[3].amount = `${formatAmount(fromWei((weekly_emission[0].result as BigInt).toString()),2,true)} FNX`
+      setweeklyEmission(fromWei((weekly_emission[0].result as BigInt).toString()))
+      
+      console.log(fromWei((weekly_emission[0].result as BigInt).toString()),"weekly_emission")
+
+      let pushExternal: BigDecimal[] = []
+      let pushInternal: BigDecimal[] = []
       let a = vote.voteTableElement.map((reward) => {
         let usdValueExternal = reward.rewardPair.externalBribeReward.tokens
           .map((token, index) => {
@@ -37,12 +58,27 @@ const Deposit = ({ vote }: DepositProps) => {
             ).mulNumber(Number(tokenElement.priceUSD) ?? 0)
           })
           .reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
-        push.push(usdValueExternal)
+          pushExternal.push(usdValueExternal)
       })
-      let ab = push?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
-      EXCHANGE_LIST[0].amount = `$ 0.00`
-      EXCHANGE_LIST[1].amount = `$ ${ab.toString()}`
-      EXCHANGE_LIST[2].amount = `$ ${ab.toString()}`
+      let b = vote.voteTableElement.map((reward) => {
+        let usdValueExternal = reward.rewardPair.internalBribeReward.tokens
+          .map((token, index) => {
+            const tokenElement = availableTokenData.find((t) => t.tokenAddress.toLowerCase() === token.toLowerCase())
+            if (!tokenElement) return new BigDecimal(0n, 18)
+            return new BigDecimal(
+              reward.rewardPair.internalBribeReward.amounts[index],
+              Number(reward.rewardPair.internalBribeReward.decimals[index])
+            ).mulNumber(Number(tokenElement.priceUSD) ?? 0)
+          })
+          .reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
+          pushInternal.push(usdValueExternal)
+      })
+      let totalExternal = pushExternal?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
+      let totalInternal = pushInternal?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
+      EXCHANGE_LIST[0].amount = `$ ${totalInternal.toString()}`
+      EXCHANGE_LIST[1].amount = `$ ${totalExternal.toString()}`
+      EXCHANGE_LIST[2].amount = `$ ${(totalInternal.add(totalExternal)).toString()}`
+      
       setRewardAmountUsd(ab)
       console.log(push, ab.toString(), parseInt(ab.toString()), 'ab')
     }

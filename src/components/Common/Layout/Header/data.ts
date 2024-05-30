@@ -16,15 +16,18 @@ export const MENU_LINKS = [
     href: '/liquidity',
     new: false,
   },
-
-  // {
-  //   name: 'Vote',
-  //   href: '/vote',
-  // },
-  // {
-  //   name: 'Lock',
-  //   href: '/lock',
-  // },
+  {
+    name: 'Vote',
+    href: '/vote',
+  },
+  {
+    name: 'Lock',
+    href: '/lock',
+  },
+  {
+    name: 'Bribes',
+    href: '/bribes',
+  },
   // {
   //   name: 'Migration',
   //   href: '/migration',
@@ -34,10 +37,7 @@ export const MENU_LINKS = [
     href: '/points-program',
     new: true,
   },
-  // {
-  //   name: 'Bribes',
-  //   href: '/bribes',
-  // },
+  
 ]
 
 export const SOCIAL_LINKS = [
