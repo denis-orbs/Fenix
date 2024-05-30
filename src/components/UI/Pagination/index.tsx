@@ -38,8 +38,8 @@ const Pagination = ({
 
   const hadlerPage = (index: number) => setActivePage(index + 1)
 
-  const visiblePages = 6
-  const startPage = Math.max(1, activePage - Math.floor(visiblePages / 2))
+  const visiblePages = 4
+  const startPage = (activePage <= 3) || numberPages <= 5 ? 1 : activePage === (numberPages - 1) ? activePage - 3 : activePage === numberPages ? activePage - 4 : activePage - 2 
   const endPage = Math.min(numberPages, startPage + visiblePages)
 
   useEffect(() => {
