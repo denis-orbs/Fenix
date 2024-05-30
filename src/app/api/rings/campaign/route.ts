@@ -1,3 +1,4 @@
+export const revalidate = 60
 import { getAlgebraClient } from '@/src/library/apollo/client/protocolCoreClient'
 import { POOLS_LIST, POOLS_TVL } from '@/src/library/apollo/queries/pools'
 import { toBN } from '@/src/library/utils/numbers'
@@ -269,6 +270,7 @@ export async function GET(request: NextRequest) {
     const poolData = pools.find(
       (p: { id: string; totalValueLockedUSD: string }) => p?.id?.toLowerCase() === pool?.id?.toLowerCase()
     )
+
     const annualFactor = 365 / (pool?.distributionDays || 7)
 
     return {
