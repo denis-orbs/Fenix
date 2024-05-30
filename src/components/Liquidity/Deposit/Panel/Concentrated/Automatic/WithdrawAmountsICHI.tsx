@@ -20,7 +20,7 @@ import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numb
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
-import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
+
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { ichiVaults } from './ichiVaults'
@@ -204,6 +204,10 @@ const WithdrawAmountsICHI = ({
       }
     }
   }
+  const firstTokenSymbol =
+    tokenList.find((token) => {
+      return token.address?.toLowerCase() === selected.toLowerCase()
+    })?.symbol || 'WETH'
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -268,13 +272,13 @@ const WithdrawAmountsICHI = ({
                       {/* {selected !== 'Choose one' ? ( */}
                       <>
                         <Image
-                          src={`/static/images/tokens/${tokenAddressToSymbol[selected]}.svg`}
+                          src={`/static/images/tokens/${firstTokenSymbol}.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
                           width={20}
                           height={20}
                         />
-                        <span className="text-base">{tokenAddressToSymbol[selected]}</span>
+                        <span className="text-base">{firstTokenSymbol}</span>
                       </>
                     </div>
                     <span
@@ -298,9 +302,11 @@ const WithdrawAmountsICHI = ({
                       >
                         <Image
                           src={`/static/images/tokens/${
-                            tokenAddressToSymbol[
-                              vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase()
-                            ]
+                            tokenList.find(
+                              (t) =>
+                                t?.address?.toLowerCase() ===
+                                (vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
+                            )?.symbol
                           }.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
@@ -310,9 +316,11 @@ const WithdrawAmountsICHI = ({
                         <div className="flex flex-col">
                           <span className="text-base">
                             {
-                              tokenAddressToSymbol[
-                                vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
-                              ]
+                              tokenList.find(
+                                (t) =>
+                                  t?.address?.toLowerCase() ===
+                                  (vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
+                              )?.symbol
                             }
                           </span>
                           {rignsAprLoading && <Loader />}

@@ -124,7 +124,7 @@ const ExchangeBox = ({
           >
             <div className="flex items-center gap-2">
               <Image
-                src={`${token.img ? token.img : '/static/images/tokens/FNX.svg'}`}
+                src={`${token.symbol ? `/static/images/tokens/${token.symbol}.svg` : '/static/images/tokens/FNX.svg'}`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}

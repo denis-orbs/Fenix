@@ -7,7 +7,6 @@ import SelectToken from '@/src/components/Modals/SelectToken'
 import { IToken } from '@/src/library/types'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { Address } from 'viem'
-import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 
 interface PairSelectorProps {
   firstToken: string
@@ -24,6 +23,15 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
   const token1 = useToken1()
   // console.log(firstToken)
 
+  const firstTokenSymbol =
+    tokenList.find((token) => {
+      return token.address?.toLowerCase() === firstToken.toLowerCase()
+    })?.symbol || 'WETH'
+  const secondTokenSymbol =
+    tokenList.find((token) => {
+      return token.address?.toLowerCase() === secondToken.toLowerCase()
+    })?.symbol || 'WETH'
+
   return (
     <div className="bg-shark-400 bg-opacity-40 py-[29px] px-[15px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
       <div className="mb-2 text-xs leading-normal text-white">Select a Pair</div>
@@ -35,13 +43,13 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
         >
           <div className="flex items-center gap-2.5 md:gap-2">
             <Image
-              src={`/static/images/tokens/${tokenAddressToSymbol[firstToken.toLowerCase()]}.svg`}
+              src={`/static/images/tokens/${firstTokenSymbol}.svg`}
               alt="token"
               className="w-5 h-5 rounded-full md:w-6 md:h-6"
               width={24}
               height={24}
             />
-            <span className="text-xs md:text-base">{tokenAddressToSymbol[firstToken.toLowerCase()]}</span>
+            <span className="text-xs md:text-base">{firstTokenSymbol}</span>
           </div>
           <span className="inline-block ml-2 text-xs icon-chevron md:text-sm" />
         </div>
@@ -64,13 +72,13 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
         >
           <div className="flex items-center gap-2.5 md:gap-2">
             <Image
-              src={`/static/images/tokens/${tokenAddressToSymbol[secondToken.toLowerCase()]}.svg`}
+              src={`/static/images/tokens/${secondTokenSymbol}.svg`}
               alt="token"
               className="w-5 h-5 rounded-full md:w-6 md:h-6"
               width={24}
               height={24}
             />
-            <span className="text-xs md:text-base">{tokenAddressToSymbol[secondToken.toLowerCase()]}</span>
+            <span className="text-xs md:text-base">{secondTokenSymbol}</span>
           </div>
           <span className="inline-block ml-2 text-xs icon-chevron md:text-sm" />
         </div>
