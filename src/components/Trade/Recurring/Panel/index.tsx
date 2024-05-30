@@ -28,7 +28,7 @@ const Panel = () => {
     decimals: 18,
     address: '0x4200000000000000000000000000000000000023',
     price: 0,
-    img: '/static/images/tokens/WETH.png',
+    img: '/static/images/tokens/WETH.svg',
   })
   const [allocateValue, setAllocateValue] = useState<number>(0)
   const [withValue, setWithValue] = useState<number>(0)

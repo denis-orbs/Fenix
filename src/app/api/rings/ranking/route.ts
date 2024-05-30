@@ -1,7 +1,8 @@
+export const dynamic = 'force-dynamic'
+
 import { toBN } from '@/src/library/utils/numbers'
-import { PrismaClient } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
-const prisma = new PrismaClient()
+import prisma from '@/src/library/utils/db'
 BigInt.prototype.toJSON = function () {
   return this.toString()
 }
@@ -25,11 +26,6 @@ export async function GET(request: NextRequest) {
     { ranking: users },
     {
       status: 200,
-      headers: {
-        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=180',
-        'CDN-Cache-Control': 'public, s-maxage=120, stale-while-revalidate=180',
-        'Vercel-CDN-Cache-Control': 'public, s-maxage=120, stale-while-revalidate=180',
-      },
     }
   )
 }

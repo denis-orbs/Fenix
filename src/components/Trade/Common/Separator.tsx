@@ -6,7 +6,7 @@ interface SeparatorProps {
 }
 
 const Separator = ({ single, onClick }: SeparatorProps) => {
-  const singleClass = single ? 'icon-arrow text-xl' : 'icon-swap text-3xl'
+  const singleClass = single ? 'icon-arrow-right text-xl' : 'icon-swap text-3xl'
 
   return (
     <div className="h-1 w-full flex items-center justify-center relative z-10">

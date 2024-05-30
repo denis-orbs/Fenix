@@ -46,6 +46,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
         const responseData = await fetchTokens()
 
         const parsedData = responseData.map((item: any) => {
+          console.log('item >> ', item)
           return {
             id: 0,
             name: item.basetoken.name,
@@ -57,6 +58,8 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
             price: parseFloat(item.priceUSD),
           }
         })
+
+        console.log('parsedData >> ', parsedData)
 
         const commonList = parsedData.filter((item: any) => item.isCommon)
 
@@ -76,6 +79,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
 
     getList()
   }, [account.address])
+
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
@@ -100,7 +104,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                   onClick={() => handlerSelectToken(token)}
                   className="flex items-center w-full gap-2 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-1 xl:w-auto"
                 >
-                  <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-5 h-5" />
+                  <Image src={`/static/images/tokens/${token.symbol}.svg`} alt="token" width={30} height={30} className="w-5 h-5" />
                   <p className="text-xs text-white">{token.symbol}</p>
                 </div>
               ))
@@ -117,7 +121,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                   className="flex items-center justify-between py-1 px-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
                 >
                   <div className="flex items-center gap-2">
-                    <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-7 h-7" />
+                    <Image src={`/static/images/tokens/${token.symbol}.svg`} alt="token" width={30} height={30} className="w-7 h-7" />
                     <div className="relative">
                       <p className="text-xs text-white">{token.symbol}</p>
                       <p className="text-xs text-shark-100">{token.name}</p>
@@ -170,7 +174,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                       className="flex items-center justify-between py-1 px-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
                     >
                       <div className="flex items-center gap-2">
-                        <Image src={`${token.img}`} alt="token" width={30} height={30} className="w-7 h-7" />
+                        <Image src={`/static/images/tokens/${token.symbol}.svg`} alt="token" width={30} height={30} className="w-7 h-7" />
                         <div className="relative">
                           <p className="text-xs text-white">{token.symbol}</p>
                           <p className="text-xs text-shark-100">{token.name}</p>

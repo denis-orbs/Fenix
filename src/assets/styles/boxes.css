@@ -326,12 +326,14 @@
   @apply relative
   bg-no-repeat
   bg-cover
-  xl:w-[420px]
-  h-[80px]
+  xl:w-[480px]
+  w-[400px]
+  h-[45px]
 
   before:content-[""]
   before:absolute
-  before:bg-[url("/static/images/header/header-landing3.svg")]
+  xl:before:bg-[url("/static/images/header/header-landing3.svg")]
+  before:bg-[url("/static/images/header/header-landing2.svg")]
   before:bg-no-repeat
   before:h-full
   before:bg-cover
@@ -341,7 +343,8 @@
 
   after:content-[""]
   after:absolute
-  after:bg-[url("/static/images/header/header-landing3.svg")]
+  xl:after:bg-[url("/static/images/header/header-landing3.svg")]
+  after:bg-[url("/static/images/header/header-landing2.svg")]
   after:bg-no-repeat
   after:bg-right
   after:h-full
@@ -1720,3 +1723,180 @@ opacity-70
   after:border-b-[20px]
   after:border-[transparent_transparent_#111315];
 }
+
+.box-referrals-short {
+  @apply relative
+  w-full
+  rounded-xl
+  flex-shrink-0
+  /* 2xl:w-[615px] */
+bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  xl:max-h-[75px]
+  min-h-[75px]
+  max-w-[1127px]
+  py-4
+  px-6
+  md:px-8
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/referrals/box-referrals-short.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/referrals/box-referrals-short.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
+
+.box-referrals-short-invert{
+
+ @apply relative
+  w-full
+  rounded-xl
+  flex-shrink-0
+  /* 2xl:w-[615px] */
+bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  max-h-[75px]
+  min-h-[75px]
+  max-w-[1127px]
+  py-4
+  px-6
+  md:px-8
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/referrals/box-referrals-short-invert.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/referrals/box-referrals-short-invert.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+
+}
+
+
+
+.box-referrals-medium {
+  @apply relative
+  w-full
+  rounded-xl
+  flex-shrink-0
+  /* 2xl:w-[615px] */
+bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  xl:max-h-[75px]
+  xl:min-h-[201px]
+  h-full
+  max-w-[1127px]
+  py-3
+  px-8
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/referrals/box-referrals-medium.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/referrals/box-referrals-medium.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
+
+.box-referrals-minimum {
+
+   @apply relative
+  w-full
+  rounded-xl
+  flex-shrink-0
+  /* 2xl:w-[615px] */
+bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  max-h-[139px]
+  min-h-[139px]
+  xl:max-w-[529px]
+  py-3
+  md:px-8
+  px-4
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/referrals/box-referrals-minimum.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/referrals/box-referrals-minimum.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+} 

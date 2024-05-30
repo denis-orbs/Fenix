@@ -37,7 +37,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
   const addNotification = useNotificationAdderCallback()
-  const [itemsPerPage, setItemPerPage] = useState<any>(5)
+  const [itemsPerPage, setItemPerPage] = useState<number>(10)
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
@@ -289,14 +289,14 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                   <div className="flex gap-[9px] items-center">
                     <div className="relative flex items-center">
                       <Image
-                        src={`/static/images/tokens/${position.token0.symbol}.png`}
+                        src={`/static/images/tokens/${position.token0.symbol}.svg`}
                         alt="token"
                         className="w-8 h-8 rounded-full"
                         width={32}
                         height={32}
                       />
                       <Image
-                        src={`/static/images/tokens/${position.token1.symbol}.png`}
+                        src={`/static/images/tokens/${position.token1.symbol}.svg`}
                         alt="token"
                         className="w-8 h-8 -ml-5 rounded-full"
                         width={32}
