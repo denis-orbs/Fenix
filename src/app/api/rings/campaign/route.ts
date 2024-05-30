@@ -288,10 +288,10 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json(
     {
-      boostedPools: enhancedBoostedPools,
       totalPoints: POINTS_SUPLY,
       pricePerPoint: PRICE_PER_POINT,
       pointsTotalValue: POINTS_TOTAL_VALUE,
+      boostedPools: enhancedBoostedPools,
     },
     {
       status: 200,
