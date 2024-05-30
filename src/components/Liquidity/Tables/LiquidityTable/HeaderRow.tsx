@@ -197,7 +197,7 @@ const HeaderRow = ({
             items={[
               {
                 text: 'Pair',
-                className: `${activeRange ? 'w-[20%]' : 'w-[30%]'}`,
+                className: `${activeRange ? 'w-[20%]' : 'w-[20%]'}`,
                 sortable: true,
               },
               RANGE,
