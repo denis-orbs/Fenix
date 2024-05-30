@@ -2,7 +2,7 @@
 'use client'
 
 import { Button, TableCell, TableRow } from '@/src/components/UI'
-import { BasicPool, PoolData, v3PoolData } from '@/src/state/liquidity/types'
+import { BasicPool, GammaVault, PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRowNew'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
@@ -20,6 +20,7 @@ import Loader from '@/src/components/UI/Icons/Loader'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import { adjustTokenOrder } from '@/src/library/utils/tokens'
 import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
+import { useGammaVaults } from '@/src/state/liquidity/hooks'
 
 interface RowDataProps {
   row: BasicPool
@@ -92,6 +93,11 @@ const RowData = ({
   // console.log(data?.boostedPools?.find((pool: string) => pool?.toLowerCase() == row?.id?.toLowerCase()))
   const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
   const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)
+  const { loading: gammaVaultsLoading, data: gammaVaults } = useGammaVaults()
+  const gammaVaultApr =
+    gammaVaults?.find((vault: GammaVault) => vault?.poolAddress?.toLowerCase() === row?.id?.toLowerCase())?.returns
+      ?.weekly?.feeApr || null
+
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -211,10 +217,11 @@ const RowData = ({
                 )}
                 {ichiAprLoading && (
                   <div className="flex justify-between items-center gap-3">
-                    <p className="text-sm">Ichi Strategy</p>
+                    <p className="text-sm">Ichi</p>
                     <Loader />
                   </div>
                 )}
+
                 {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">Ichi Strategy</p>
@@ -225,6 +232,14 @@ const RowData = ({
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">fDAO Emissions</p>
                     <p className="text-sm text-chilean-fire-600">{formatAmount(Number(fDAOEmisionsAPR), 2)}%</p>
+                  </div>
+                )}
+                {gammaVaultApr && (
+                  <div className="flex justify-between items-center gap-3">
+                    <p className="text-sm">Gamma</p>
+                    <p className="text-sm text-chilean-fire-600">
+                      {formatAmount(gammaVaultApr < 0 || isNaN(gammaVaultApr) ? 0 : Number(gammaVaultApr), 2)}%
+                    </p>
                   </div>
                 )}
               </div>

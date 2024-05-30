@@ -2,7 +2,7 @@ import getProtocolCoreClient, { getAlgebraClient } from '@/src/library/apollo/cl
 import { GET_V2_PAIRS } from '@/src/library/apollo/queries/LIQUIDITY'
 import { queryAllForClient } from '@/src/library/apollo/utils'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { BasicPool, LiquidityTableElement, LiquidityV2PairDetails } from './types'
+import { BasicPool, GammaVault, LiquidityTableElement, LiquidityV2PairDetails } from './types'
 import { Address } from 'viem'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
@@ -20,6 +20,7 @@ import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrate
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { toBN } from '@/src/library/utils/numbers'
+import axios from 'axios'
 
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async (address: Address) => {
   try {
@@ -334,4 +335,14 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
     console.error(error)
     throw new Error(`Unable to query data from Client`)
   }
+})
+
+export const getGammaVaults = createAsyncThunk('liquidity/getGammaVaults', async () => {
+  const response = await axios.get('https://wire2.gamma.xyz/fenix/blast/hypervisors/allData')
+  const data = response.data
+  const gammaVaults: GammaVault[] = Object.entries(data).map(([id, vaultData]) => ({
+    id,
+    ...(vaultData as any),
+  }))
+  return gammaVaults
 })

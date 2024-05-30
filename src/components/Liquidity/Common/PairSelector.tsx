@@ -5,7 +5,16 @@ import { useState } from 'react'
 import SelectToken from '@/src/components/Modals/SelectToken'
 
 import { IToken } from '@/src/library/types'
-import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
+import {
+  useSetToken0,
+  useSetToken0TypedValue,
+  useSetToken1,
+  useSetToken1TypedValue,
+  useToken0,
+  useToken0TypedValue,
+  useToken1,
+  useToken1TypedValue,
+} from '@/src/state/liquidity/hooks'
 import { Address } from 'viem'
 import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
 
@@ -20,6 +29,11 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
   const [openSelectSecondToken, setOpenSelectSecondToken] = useState<boolean>(false)
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
+  const setToken0TypedValue = useSetToken0TypedValue()
+  const setToken1TypedValue = useSetToken1TypedValue()
+  const token0TypedValue = useToken0TypedValue()
+  const token1TypedValue = useToken1TypedValue()
+
   const token0 = useToken0()
   const token1 = useToken1()
   // console.log(firstToken)
@@ -53,6 +67,9 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
               const temp = firstToken
               setToken0(secondToken as Address)
               setToken1(temp as Address)
+              const tempTypedValue = token0TypedValue
+              setToken0TypedValue(token1TypedValue)
+              setToken1TypedValue(tempTypedValue)
             }}
           >
             <span className="text-2xl text-transparent icon-swap bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
