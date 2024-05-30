@@ -175,22 +175,9 @@ const Bribes = () => {
   
             
           },
-          onError: (e) => {
+          onError: (error) => {
             setCurrentButtonState(ButtonState.CREATE_BRIBE)
-            addNotification({
-              id: crypto.randomUUID(),
-              createTime: new Date().toISOString(),
-              message: `Create Bribe failed. ${e}`,
-              notificationType: NotificationType.ERROR,
-              txHash: '',
-              notificationDuration: NotificationDuration.DURATION_5000,
-            })
-          },
-        }
-      )
-    } catch (error: any) {
-      console.log('ee', error?.message)
-      if (error?.message?.includes('ERC20: insufficient allowance'))
+            if (error?.message?.includes('ERC20: insufficient allowance'))
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
@@ -209,6 +196,12 @@ const Bribes = () => {
           txHash: '',
           notificationDuration: NotificationDuration.DURATION_5000,
         })
+          },
+        }
+      )
+    } catch (error: any) {
+      console.log('ee', error?.message)
+      
       setCurrentButtonState(ButtonState.CREATE_BRIBE)
     }
   }

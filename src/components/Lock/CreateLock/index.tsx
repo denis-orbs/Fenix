@@ -26,6 +26,8 @@ import { approveToken } from '../../Trade/Swap/Panel/utilsChange'
 import { ERC20_ABI } from '@/src/library/constants/abi'
 import Loader from '../../UI/Icons/Loader'
 import { getPublicClient } from '@wagmi/core'
+import votingEscrowABI from '@/src/library/web3/abis/veFNX'
+
 enum ButtonState {
   POOL_NOT_AVAILABLE = 'Pool Not Available',
   ENTER_AMOUNT = 'Enter Amount',
@@ -108,33 +110,35 @@ const CreateLock = () => {
   const handleCreateLock = async (amount: bigint, duration: number, chainId: number) => {
     try {
       setCurrentButtonState(ButtonState.LOADING)
-      const hash = await createLock(amount, duration, chainId)
-      const transactionReceipt = await waitForTransactionReceipt(wagmiConfig, { hash: hash, confirmations: 1 })
-      // wait for 2 secs for transaction to get processed
-      console.log('transactionReceipt', hash, transactionReceipt)
-      await new Promise((resolve) => setTimeout(resolve, 10000))
-      if (transactionReceipt.status === 'success') {
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `Created Lock Successfully`,
-          notificationType: NotificationType.SUCCESS,
-          txHash: transactionReceipt?.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-      } else {
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `Transaction failed`,
-          notificationType: NotificationType.ERROR,
-          txHash: transactionReceipt?.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-      }
-      setCurrentButtonState(ButtonState.CREATE_LOCK)
-    } catch (error: any) {
-      if (error?.message?.includes('ERC20: insufficient allowance'))
+      writeContractAsync(
+        {
+          abi: votingEscrowABI,
+          address: VOTING_ESCROW_ADDRESS[chainId] as Address,
+          functionName: 'create_lock',
+          args: [amount, BigInt(duration)],
+        },
+        {
+          onSuccess: async (x) => {
+            setCurrentButtonState(ButtonState.LOADING)
+            const publicClient = getPublicClient(wagmiConfig)
+            const transaction = await publicClient?.waitForTransactionReceipt({ hash: x })
+  
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Created Lock successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction?.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
+            asyncGetAllowance()
+            setCurrentButtonState(ButtonState.CREATE_LOCK)
+  
+            
+          },
+          onError: (error) => {
+            setCurrentButtonState(ButtonState.CREATE_LOCK)
+            if (error?.message?.includes('ERC20: insufficient allowance'))
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
@@ -143,6 +147,21 @@ const CreateLock = () => {
           txHash: '',
           notificationDuration: NotificationDuration.DURATION_5000,
         })
+
+        
+          },
+        }
+      )
+    } catch (error: any) {
+      // if (error?.message?.includes('ERC20: insufficient allowance'))
+      //   addNotification({
+      //     id: crypto.randomUUID(),
+      //     createTime: new Date().toISOString(),
+      //     message: `ERC20: insufficient allowance`,
+      //     notificationType: NotificationType.ERROR,
+      //     txHash: '',
+      //     notificationDuration: NotificationDuration.DURATION_5000,
+      //   })
       setCurrentButtonState(ButtonState.CREATE_LOCK)
     }
   }
@@ -222,7 +241,7 @@ const CreateLock = () => {
             <div className="flex flex-col gap-2 items-center">
               <p className="text-shark-100 text-xs">Current APR</p>
               <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-                0.00%
+                340.00%
               </p>
             </div>
           </div>

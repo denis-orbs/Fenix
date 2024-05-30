@@ -79,8 +79,8 @@ const Deposit = ({ vote }: DepositProps) => {
       EXCHANGE_LIST[1].amount = `$ ${totalExternal.toString()}`
       EXCHANGE_LIST[2].amount = `$ ${(totalInternal.add(totalExternal)).toString()}`
       
-      setRewardAmountUsd(ab)
-      console.log(push, ab.toString(), parseInt(ab.toString()), 'ab')
+      setRewardAmountUsd(totalExternal)
+      // console.log(push, ab.toString(), parseInt(ab.toString()), 'ab')
     }
   }
 
