@@ -92,7 +92,8 @@ const RowData = ({
   }
   // console.log(data?.boostedPools?.find((pool: string) => pool?.toLowerCase() == row?.id?.toLowerCase()))
   const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
-  const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)  const { loading: gammaVaultsLoading, data: gammaVaults } = useGammaVaults()
+  const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)
+  const { loading: gammaVaultsLoading, data: gammaVaults } = useGammaVaults()
   const gammaVaultApr =
     gammaVaults?.find((vault: GammaVault) => vault?.poolAddress?.toLowerCase() === row?.id?.toLowerCase())?.returns
       ?.weekly?.feeApr || null
