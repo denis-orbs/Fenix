@@ -21,14 +21,13 @@ const MobileRowVote = ({ index, row, activeVote, activeSlider, poolArr, setPoolA
   const [openInfo, setOpenInfo] = useState<boolean>(false)
 
   useEffect(() => {
-    const isPoolPresent = poolArr.filter((pool: any) => pool.id === index)
-    console.log('poolarrpre', isPoolPresent)
+    const isPoolPresent = poolArr.filter((pool: any) => pool.id === row.pair.pair_address)
     if (isPoolPresent && isPoolPresent.length > 0) {
       setChangeValue(isPoolPresent[0].percentage)
     } else {
       setChangeValue(0)
     }
-  }, [poolArr])
+  }, [poolArr, row])
 
   return (
     <>
@@ -202,18 +201,17 @@ const MobileRowVote = ({ index, row, activeVote, activeSlider, poolArr, setPoolA
                               ? 'Stable Pool'
                               : 'Volatile Pool'
                           const percentageObj: any = {
-                            id: index,
+                            id: row.pair.pair_address,
                             token0: row.token0Symbol,
                             token1: row.token1Symbol,
                             pair: pairString,
                             percentage: value,
                           }
-                          const isPresent = poolArr.findIndex((item: { id: number }) => item.id === index)
-                          if (isPresent !== -1 && value > 0) {
-                            setPoolArr((prev: any) => {
-                              prev[isPresent] = percentageObj
-                              return [...prev]
-                            })
+                          const isPresent = poolArr.findIndex(
+                            (item: { id: string }) => item.id === row.pair.pair_address
+                          )
+                          if (isPresent !== -1 && value === 0) {
+                            setPoolArr((prev: any) => prev.filter((pool: any) => pool.id !== row.pair.pair_address))
                           } else if (isPresent !== -1 && value > 0) {
                             setPoolArr((prev: any) => {
                               prev[isPresent] = percentageObj

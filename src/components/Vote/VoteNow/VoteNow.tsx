@@ -26,29 +26,30 @@ const VoteNow = ({ openModal, setOpenModal, activeVote, lock }: VoteNowProps) =>
   const [currentEpoch, setCurrentEpoch] = useState<number>(0)
   const [timeParsed, settimeParsed] = useState<string>('0D 0H 0M')
   const handlerChange = () => (openModal ? setOpenModal(false) : setOpenModal(true))
-  const {chainId} = useAccount()
+  const { chainId } = useAccount()
 
   const timeLeft = async () => {
-    if(chainId){
-      console.log(MINTER_ADDRESS[chainId],"MINTER_ADDRESS[chainId]")
+    if (chainId) {
+      console.log(MINTER_ADDRESS[chainId], 'MINTER_ADDRESS[chainId]')
       let balance = await multicall(wagmiConfig, {
-        contracts: [{
-          address: MINTER_ADDRESS[chainId] as Address,
-          abi: MINTER_ABI as Abi,
-          functionName: 'active_period'
-        }],
+        contracts: [
+          {
+            address: MINTER_ADDRESS[chainId] as Address,
+            abi: MINTER_ABI as Abi,
+            functionName: 'active_period',
+          },
+        ],
       })
       settimeParsed(getParsedTimeLeft(Number((balance[0].result as BigInt).toString())))
-     console.log(getParsedTimeLeft(Number((balance[0].result as BigInt).toString())),"getCurrentEpoch") 
+      console.log(getParsedTimeLeft(Number((balance[0].result as BigInt).toString())), 'getCurrentEpoch')
     }
-    
   }
 
   const handleReadMore = () => setReadMoreModal(true)
-  useEffect(()=>{
+  useEffect(() => {
     timeLeft()
-   setCurrentEpoch(getCurrentEpoch())
-  },[chainId])
+    setCurrentEpoch(getCurrentEpoch())
+  }, [chainId])
   return (
     <div className="relative">
       <h4 className="w-full mb-3 text-sm xl:absolute font-medium top-1 right-0 z-50 xl:left-[51px] 2xl:left-[70px] text-white  hidden xl:flex">
@@ -74,14 +75,14 @@ const VoteNow = ({ openModal, setOpenModal, activeVote, lock }: VoteNowProps) =>
                 <p className="text-xl text-white">0%</p>
               </div>
             </div>
-            <div className="flex flex-col gap-3 w-full xl:w-[30%] ">
+            <div className="flex flex-col gap-1 w-full xl:w-[30%] ">
               <div className="box-vote-short">
-                <div className="flex flex-col xl:flex-row text-xs text-white p-2 justify-center items-center xl:gap-3 ">
+                <div className="flex flex-col text-xs text-white p-2 justify-center items-center ">
                   <p className="text-shark-100 line-clamp-1">Voting Apr</p> <p className="line-clamp-1">340%</p>
                 </div>
               </div>
               <div className="box-vote-short">
-                <div className="flex flex-col xl:flex-row text-xs text-white p-2 justify-center items-center xl:gap-3 ">
+                <div className="flex flex-col text-xs text-white p-2 justify-center items-center ">
                   <p className="text-shark-100 line-clamp-1">Epoch {currentEpoch}</p>{' '}
                   <p className="text-white xl:text-[10px]  line-clamp-1">{timeParsed}</p>
                 </div>

@@ -29,7 +29,7 @@ const Menu = () => {
           <Link
             href={link.href}
             className={`${isActive(link.href) ? activeButtonClass : inactiveButtonClass} 
-            rounded-[8px] relative z-50 py-2.5 px-3 md:px-1 flex items-center justify-center ${pathname === '/' ? '' : 'min-w-[80px]'} gap-2.5 text-white text-xs leading-normal group transition-all`}
+            rounded-[8px] relative z-50 py-2.5 px-3 md:px-1 flex items-center justify-center ${pathname === '/' ? '' : 'min-w-[70px]'} gap-2.5 text-white text-xs leading-normal group transition-all`}
           >
             <span className={`${isActive(link.href) ? activeButtonTextClass : inactiveButtonTextClass} `}>
               {link.name}
@@ -41,7 +41,11 @@ const Menu = () => {
             </span>
           )}
           {pathname === '/' && (
-            <>{index !== MENU_LINKS.length - 1 && <div className=" border-r solid border-white h-[22px] z-[100] relative mx-3 max-xl:mx-2 right-[-7px] max-xl:right-[-3px]"></div>}</>
+            <>
+              {index !== MENU_LINKS.length - 1 && (
+                <div className=" border-r solid border-white h-[22px] z-[100] relative mx-3 max-xl:mx-2 right-[-7px] max-xl:right-[-3px]"></div>
+              )}
+            </>
           )}
         </span>
       ))}

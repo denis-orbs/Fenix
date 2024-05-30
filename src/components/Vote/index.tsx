@@ -250,7 +250,6 @@ const Vote = () => {
         (acc: number, current: { percentage: number }) => acc + Number(current.percentage),
         0
       )
-      console.log('gg', total)
       setVoteValue(total)
     }
   }, [poolArr])

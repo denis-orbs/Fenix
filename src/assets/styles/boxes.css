@@ -326,8 +326,9 @@
   @apply relative
   bg-no-repeat
   bg-cover
-  xl:w-[480px]
-  w-[400px]
+  /* xl:w-[600px] */
+  /* w-[500px] */
+  min-w-fit
   h-[45px]
 
   before:content-[""]
