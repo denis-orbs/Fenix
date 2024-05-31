@@ -76,22 +76,7 @@ const LockManage: FC<pageProps> = ({ id }) => {
   }
 
   const OPTIONS_TAB = ['Add', 'Extend', 'Merge', 'Split', 'Transfer']
-  const loadCurrentLocks = async () => {
-    try {
-      console.log('tokenbalance', '')
-      if (chainId && address) {
-        const resp = await getIdVeFNXLockPositions(id, chainId)
-        console.log('tokenbalance', 'tokenbalance')
-        const tokenbalance = (await fetchTokenBalance(
-          chainId ? (FENIX_ADDRESS[chainId] as Address) : (FENIX_ADDRESS[FALLBACK_CHAIN_ID] as Address),
-          address
-        )) as bigint
-        console.log(tokenbalance, 'tokenbalance')
-        settokenBalance(fromWei(BigInt(tokenbalance).toString()))
-        setLock(resp)
-      }
-    } catch {}
-  }
+
   const handleNFTTX = async (currentTab: string, inputAmount: string, currentId: number, tokenAllowance: string) => {
     try {
       console.log(currentTab, 'inn')
@@ -202,10 +187,31 @@ const LockManage: FC<pageProps> = ({ id }) => {
       }
     )
   }
+
   useEffect(() => {
+    const loadCurrentLocks = async () => {
+      // alert('started')
+      try {
+        if (chainId && address) {
+          const resp = await getIdVeFNXLockPositions(id, chainId)
+          console.log('hittt', resp)
+          const tokenbalance = (await fetchTokenBalance(
+            chainId ? (FENIX_ADDRESS[chainId] as Address) : (FENIX_ADDRESS[FALLBACK_CHAIN_ID] as Address),
+            address
+          )) as bigint
+          console.log(tokenbalance, 'tokenbalance')
+          settokenBalance(fromWei(BigInt(tokenbalance).toString()))
+          setLock(resp)
+        }
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
     loadCurrentLocks()
     if (currentTab === 'MERGE' || currentTab === 'SPLIT') setOpenModalMergeSplit(true)
-  }, [currentTab, id])
+  }, [address, chainId, currentTab, id])
+
+  console.log('lockk', lock)
 
   return (
     <div className={`w-full flex justify-center flex-col items-center    mt-28 xl:mt-20`}>
@@ -462,7 +468,7 @@ const LockManage: FC<pageProps> = ({ id }) => {
               <Button
                 className="w-full"
                 variant="tertiary"
-                onClick={() => handleNFTTX(currentTab, inputAmount, Number(lock?.veNFTInfo.id))}
+                onClick={() => handleNFTTX(currentTab, inputAmount, Number(lock?.veNFTInfo.id), tokenAllowance)}
               >
                 {currentTab === 'EXTEND' && <>Increment Position</>}
                 {(currentTab === 'ADD' || currentTab === 'MERGE') && <>Increment Position</>}
@@ -511,6 +517,7 @@ const LockManage: FC<pageProps> = ({ id }) => {
           setOpenModal={setOpenModal}
           activeVote={activeVote}
           setActiveVote={setActiveVote}
+          setlock={setLock}
         />
       </div>
     </div>
