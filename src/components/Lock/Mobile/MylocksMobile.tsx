@@ -106,7 +106,7 @@ const MylocksMobile = ({ activePagination = true, Locks, tab }: MylocksMobilePro
   return (
     <div className="relative lg:hidden">
       <div className="w-full">
-        {LOCKS_INFO_API.length !== 0 ? (
+        {pagination.length !== 0 ? (
           <>
             <TableBody>
               {loading ? (

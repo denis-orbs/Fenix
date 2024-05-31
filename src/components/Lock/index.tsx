@@ -31,20 +31,21 @@ const Lock = () => {
         <h5 className="lg:text-2xl text-lg text-white">Locks</h5>
       </div>
       <div className="flex flex-col justify-between gap-5 mb-10 md:items-center xl:flex-row">
-        <div className="w-full xl:w-2/3">
+        {/* <div className="w-full xl:w-2/3"> */}
+        <div className="w-full">
           <Filter options={FILTER_OPTIONS} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         </div>
-        <div className="w-full xl:w-1/3">
+        {/* <div className="w-full xl:w-1/3">
           <Search searchValue="" setSearchValue={() => {}} />
-        </div>
+        </div> */}
       </div>
       <MyLocks Locks={LOCKS_FILTER} tab={currentTab} />
       <MylocksMobile Locks={LOCKS_FILTER} tab={currentTab} />
-      <div>
+      {/* <div>
         <h5 className="lg:text-2xl text-lg text-white py-5">Nest</h5>
         <Nest />
         <NestMobile />
-      </div>
+      </div> */}
     </section>
   )
 }

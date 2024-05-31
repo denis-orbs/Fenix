@@ -245,13 +245,11 @@ const Vote = () => {
   }
 
   useEffect(() => {
-    if (poolArr.length > 0) {
-      const total: number = poolArr.reduce(
-        (acc: number, current: { percentage: number }) => acc + Number(current.percentage),
-        0
-      )
-      setVoteValue(total)
-    }
+    const total: number = poolArr.reduce(
+      (acc: number, current: { percentage: number }) => acc + Number(current.percentage),
+      0
+    )
+    setVoteValue(total)
   }, [poolArr])
 
   return (
