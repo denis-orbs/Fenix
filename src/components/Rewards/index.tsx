@@ -7,12 +7,14 @@ import SelectVote from '../Modals/SelectVote'
 import RewardBox from './RewardBox'
 import RewardNow from './RewardNow'
 import HeaderRowReward from './Tables/HeaderRowReward'
+import { LockElement } from '@/src/library/structures/lock/LockElement'
 
 const Rewards = () => {
   const [activeVote, setActiveVote] = useState(true)
   const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
   const [searchValue, setSearchValue] = useState<string>('')
+  const [lock, setLock] = useState<LockElement>()
   // const filterData = DATA_ROW.filter((row) => row.type === currentTab)
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const Rewards = () => {
           <RewardBox />
         </div>
         <div className="w-full xl:w-[40%]">
-          <RewardNow openModal={openModal} setOpenModal={setOpenModal} activeVote={activeVote} />
+          <RewardNow lock={lock} openModal={openModal} setOpenModal={setOpenModal} activeVote={activeVote} />
         </div>
       </div>
       <h1 className="text-xl font-medium text-white">Rewards overview</h1>
@@ -43,6 +45,7 @@ const Rewards = () => {
         setActiveVote={setActiveVote}
         openModal={openModal}
         setOpenModal={setOpenModal}
+        setlock={setLock}
       />
 
       <div className="p-5 mx-auto fixed bottom-4 z-50 left-0 xl:w-1/2 right-0 md:block"></div>

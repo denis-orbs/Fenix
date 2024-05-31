@@ -31,7 +31,7 @@ const VoteNow = ({ openModal, setOpenModal, activeVote, lock }: VoteNowProps) =>
   const timeLeft = async () => {
     if (chainId) {
       console.log(MINTER_ADDRESS[chainId], 'MINTER_ADDRESS[chainId]')
-      let balance = await multicall(wagmiConfig, {
+      const balance = await multicall(wagmiConfig, {
         contracts: [
           {
             address: MINTER_ADDRESS[chainId] as Address,

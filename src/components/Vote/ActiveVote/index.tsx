@@ -69,10 +69,10 @@ const ActiveVote = ({ handlerChange, lock }: ActiveVoteProps) => {
           <p className="text-shark-100 whitespace-nowrap">Voting Power</p>
           <p>{formatNumber(Number(fromWei(Number(lockInfo?.veNFTInfo.voting_amount))), 2).replace('NaN', '0')} veFNX</p>
         </div>
-        <div className="text-xs text-center xl:w-auto ">
+        {/* <div className="text-xs text-center xl:w-auto ">
           <p className="text-shark-100  ">Rewards</p>
           <p className="text-green-300 ">$0</p>
-        </div>
+        </div> */}
       </div>
     </div>
   )

@@ -66,10 +66,10 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote, setloc
           <div>
             <div className="flex text-sm text-shark-100">
               <p className="w-[45%]">Lock ID</p>
-              <div className="flex gap-2">
-                <p>Position</p>
-                <p>Voting Power</p>
-                <p>Rewards</p>
+              <div className="w-full flex gap-2">
+                <p className="ml-auto pl-6">Position</p>
+                <p className="ml-auto">Voting Power</p>
+                {/* <p>Rewards</p> */}
               </div>
             </div>
 
@@ -111,9 +111,9 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote, setloc
                         <p className="text-white">{(Number(lock.veNFTInfo.voting_amount) / 10 ** 18).toFixed(2)} FNX</p>
                       </div>
                       {/* third */}
-                      <div>
+                      {/* <div>
                         <p className="text-green-400">0.00</p>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 )

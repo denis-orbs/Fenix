@@ -48,28 +48,29 @@ const TableHead = ({ items, setSort, setSortIndex, sortIndex, sort }: TableHeadP
             key={index}
             className={mergeClassName(item)}
             onClick={() => {
+              setSortIndex(index)
               handleSort(index, item)
             }}
           >
             <span
-              onMouseOver={() => {
-                setSortIndex(index)
-                item.setShowTooltip && item.setShowTooltip(true)
-                // if (item.text === 'Total Rewards') {
-                // }
-              }}
-              onMouseOut={() => {
-                item.setShowTooltip && item.setShowTooltip(false)
-                // if (item.text === 'Total Rewards') {
-                // }
-              }}
+              // onMouseOver={() => {
+              //   setSortIndex(index)
+              //   item.setShowTooltip && item.setShowTooltip(true)
+              //   // if (item.text === 'Total Rewards') {
+              //   // }
+              // }}
+              // onMouseOut={() => {
+              //   item.setShowTooltip && item.setShowTooltip(false)
+              //   // if (item.text === 'Total Rewards') {
+              //   // }
+              // }}
               className="leading-normal relative max-w-[20px]"
             >
-              {item.showTooltip && (
+              {/* {item.showTooltip && (
                 <span className="w-2/5 absolute z-50 text-left bottom-6 right-36 ">
                   <TotalRewardsTooltip show={item.showTooltip} setShow={() => {}} />
                 </span>
-              )}
+              )} */}
               {item.text}
             </span>
             {item.sortable && <span className={sortClassName(item, index)}></span>}
