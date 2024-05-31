@@ -122,7 +122,7 @@ const CreateLock = () => {
             setCurrentButtonState(ButtonState.LOADING)
             const publicClient = getPublicClient(wagmiConfig)
             const transaction = await publicClient?.waitForTransactionReceipt({ hash: x })
-  
+
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
@@ -133,22 +133,18 @@ const CreateLock = () => {
             })
             asyncGetAllowance()
             setCurrentButtonState(ButtonState.CREATE_LOCK)
-  
-            
           },
           onError: (error) => {
             setCurrentButtonState(ButtonState.CREATE_LOCK)
             if (error?.message?.includes('ERC20: insufficient allowance'))
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `ERC20: insufficient allowance`,
-          notificationType: NotificationType.ERROR,
-          txHash: '',
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-
-        
+              addNotification({
+                id: crypto.randomUUID(),
+                createTime: new Date().toISOString(),
+                message: `ERC20: insufficient allowance`,
+                notificationType: NotificationType.ERROR,
+                txHash: '',
+                notificationDuration: NotificationDuration.DURATION_5000,
+              })
           },
         }
       )
@@ -270,13 +266,13 @@ const CreateLock = () => {
                 <span className="icon-wallet"></span> Available: {formatNumber(Number(fnxBalance), 2)}
               </p>
               <div>
-                <NumericalInput
+                <input
                   type="number"
                   className="w-full bg-shark-400 p-3 rounded-lg outline-none bg-opacity-40 text-shark-100 border border-shark-300"
                   placeholder="0"
-                  value={lockAmount ? formatPrice(lockAmount, 2) : '0'}
-                  onUserInput={(input) => {
-                    setlockAmount(input)
+                  value={lockAmount ? lockAmount : '0'}
+                  onChange={(e) => {
+                    setlockAmount(e.target.value)
                     Number(lockAmount) > Number(tokenAllowance)
                       ? setCurrentButtonState(ButtonState.APPROVAL_REQUIRED)
                       : setCurrentButtonState(ButtonState.CREATE_LOCK)
