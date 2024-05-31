@@ -45,7 +45,12 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote, setloc
   }, [address])
 
   const handlerClose = () => setOpenModal(false)
-  const handlerChange = () => (activeVote ? setActiveVote(false) : setActiveVote(true), setOpenModal(false))
+  const handlerChange = (lock: any) => (
+    activeVote === false && lock && BigInt(nowTime.toFixed(0).toString()) < lock.veNFTInfo.lockEnd
+      ? setActiveVote(true)
+      : setActiveVote(false),
+    setOpenModal(false)
+  )
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
@@ -78,7 +83,7 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote, setloc
                 return (
                   <div key={index} className="flex flex-col gap-3 cursor-pointer" onClick={() => setlock(lock)}>
                     <div
-                      onClick={handlerChange}
+                      onClick={() => handlerChange(lock)}
                       className="flex flex-wrap items-center justify-between p-4 mt-2 text-xs rounded-lg xl:flex-nowrap bg-shark-400 bg-opacity-40"
                     >
                       <div className="flex items-center gap-2">

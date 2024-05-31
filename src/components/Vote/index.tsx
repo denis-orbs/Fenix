@@ -58,6 +58,7 @@ const Vote = () => {
   const vote = useAppSelector((state) => state.vote as voteState)
   const locks = useAppSelector((state) => state.lock as lockState)
   const dispatch = useDispatch<AppThunkDispatch>()
+
   useEffect(() => {
     if (address && chainId) dispatch(fetchGaugesAsync({ address, chainId }))
   }, [address, chainId, locks])
