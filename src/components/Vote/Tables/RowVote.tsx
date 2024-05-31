@@ -171,15 +171,15 @@ const RowDataVote = ({
                           })}
                         </div>
                         <div className="flex flex-col justify-center items-start">
-                          {row.rewardPair.externalBribeReward.amounts.length > 0 ? (
+                          {row.rewardPair.internalBribeReward.amounts.length > 0 ? (
                             <p className="text-white text-xs">Fees</p>
                           ) : null}
-                          {row.rewardPair.externalBribeReward.amounts.map((reward, index) => {
+                          {row.rewardPair.internalBribeReward.amounts.map((reward, index) => {
                             return (
                               <p key={index} className="flex items-center gap-2 text-xs text-shark-100">
                                 {parseInt(reward.toString()) /
-                                  10 ** Number(row.rewardPair.externalBribeReward.decimals[index].toString())}{' '}
-                                {row.rewardPair.externalBribeReward.symbols[index]}
+                                  10 ** Number(row.rewardPair.internalBribeReward.decimals[index].toString())}{' '}
+                                {row.rewardPair.internalBribeReward.symbols[index]}
                               </p>
                             )
                           })}
