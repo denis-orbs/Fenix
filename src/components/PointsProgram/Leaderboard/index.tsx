@@ -63,7 +63,7 @@ const Leaderboard = () => {
           </span>
         </div>
         {paginatedData.map((data, index: number) => (
-          <Item key={index} data={data} isUser={account?.toLocaleLowerCase() === data.id.toLocaleLowerCase() ? true : false}/>
+          <Item key={index} data={data} isUser={account?.toLowerCase() === data.id.toLowerCase() ? true : false}/>
         ))}
         <Pagination
           className="mx-auto"
