@@ -16,6 +16,7 @@ import voterAbi from '@/src/library/web3/abis/VoterV3ABI'
 import { useAccount, useWriteContract } from 'wagmi'
 import { VOTER_ADDRESS } from '@/src/library/constants/addresses'
 import { getPublicClient } from '@wagmi/core'
+import Loader from '../../UI/Icons/Loader'
 
 enum ButtonState {
   POOL_NOT_AVAILABLE = 'Pool Not Available',
@@ -27,6 +28,7 @@ enum ButtonState {
   WAITING_CONFIRMATION = 'Waiting Confirmation',
   PRICE_IMPACT_ALERT = 'Price Impact Too High. Swap Anyway',
   VOTE = 'Cast Votes',
+  RESET = 'Reset Votes',
   LOADING = 'Loading...',
 }
 
@@ -38,6 +40,7 @@ interface overlayProps {
 const Overlay = ({ voteValue, lockInfo, poolArr }: overlayProps) => {
   const [loading, setloading] = useState<Boolean>(false)
   const [currentButtonState, setCurrentButtonState] = useState(ButtonState.VOTE)
+  const [resetButtonState, setResetButtonState] = useState(ButtonState.RESET)
   const { writeContractAsync } = useWriteContract()
   const { chainId } = useAccount()
 
@@ -47,7 +50,6 @@ const Overlay = ({ voteValue, lockInfo, poolArr }: overlayProps) => {
     try {
       const addresses = poolArr.map((pool) => pool.id)
       const weights = poolArr.map((pool) => pool.percentage)
-      console.log(Number(lockInfo.veNFTInfo.id), addresses, weights)
       setCurrentButtonState(ButtonState.LOADING)
       writeContractAsync(
         {
@@ -92,47 +94,46 @@ const Overlay = ({ voteValue, lockInfo, poolArr }: overlayProps) => {
 
   const resetVote = async () => {
     try {
-      // Filter both arrays based on undefinedIndices
+      if (chainId) {
+        setResetButtonState(ButtonState.LOADING)
+        writeContractAsync(
+          {
+            abi: voterAbi,
+            address: VOTER_ADDRESS[chainId] as Address,
+            functionName: 'reset',
+            args: [Number(lockInfo.veNFTInfo.id)],
+          },
+          {
+            onSuccess: async (x) => {
+              const publicClient = getPublicClient(wagmiConfig)
+              const transaction = await publicClient?.waitForTransactionReceipt({ hash: x })
 
-      setloading(true)
-      const hash = await resetVotes(Number(lock?.veNFTInfo.id))
-      const transactionReceipt = await waitForTransactionReceipt(wagmiConfig, { hash: hash, confirmations: 1 })
-      // wait for 2 secs for transaction to get processed
-      await new Promise((resolve) => setTimeout(resolve, 10000))
-      if (transactionReceipt.status === 'success') {
-        // toast('Reset Vote Successfully')
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `Reset Vote Successfully`,
-          notificationType: NotificationType.SUCCESS,
-          txHash: transactionReceipt.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-        setloading(false)
-      } else {
-        // toast('Transaction failed')
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `Transaction failed`,
-          notificationType: NotificationType.ERROR,
-          txHash: transaction.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
+              addNotification({
+                id: crypto.randomUUID(),
+                createTime: new Date().toISOString(),
+                message: `Reset Votes successfully.`,
+                notificationType: NotificationType.SUCCESS,
+                txHash: transaction?.transactionHash,
+                notificationDuration: NotificationDuration.DURATION_5000,
+              })
+              setResetButtonState(ButtonState.RESET)
+            },
+            onError: (error) => {
+              setResetButtonState(ButtonState.RESET)
+              addNotification({
+                id: crypto.randomUUID(),
+                createTime: new Date().toISOString(),
+                message: `Transaction failed`,
+                notificationType: NotificationType.ERROR,
+                txHash: '',
+                notificationDuration: NotificationDuration.DURATION_5000,
+              })
+            },
+          }
+        )
       }
     } catch (err: any) {
-      setloading(false)
-      // console.log(err)
-      // toast('Transaction failed')
-      addNotification({
-        id: crypto.randomUUID(),
-        createTime: new Date().toISOString(),
-        message: `Transaction failed`,
-        notificationType: NotificationType.ERROR,
-        txHash: '',
-        notificationDuration: NotificationDuration.DURATION_5000,
-      })
+      console.log(err)
     }
   }
 
@@ -154,21 +155,38 @@ const Overlay = ({ voteValue, lockInfo, poolArr }: overlayProps) => {
           </div>
           <div className="flex justify-end gap-10 items-center ">
             <div className="">
-              <span className="py-1 border border-green-400 bg-none bg-green-500 bg-opacity-20 text-white rounded-lg px-5 text-xs">
+              {/* <span className="py-1 border border-green-400 bg-none bg-green-500 bg-opacity-20 text-white rounded-lg px-5 text-xs">
                 Voting
-              </span>
+              </span> */}
             </div>
             <div className="flex items-center gap-4">
-              <Button
-                className="!h-[38px] !text-xs w-[130px] "
-                disabled={Number(voteValue) > 100}
-                onClick={() => castVote()}
-              >
-                {currentButtonState}
-              </Button>
-              <Button className="!py-2 !text-xs" variant="secondary" onClick={resetVote}>
-                Reset
-              </Button>
+              {currentButtonState === ButtonState.LOADING ? (
+                <Button
+                  className="!h-[38px] !text-xs w-[130px] "
+                  disabled={Number(voteValue) > 100}
+                  onClick={() => castVote()}
+                >
+                  <Loader color="white" size={20} />
+                </Button>
+              ) : (
+                <Button
+                  className="!h-[38px] !text-xs w-[130px] "
+                  disabled={Number(voteValue) > 100}
+                  onClick={() => castVote()}
+                >
+                  {currentButtonState}
+                </Button>
+              )}
+              {resetButtonState === ButtonState.LOADING ? (
+                <Button className="!py-2 !text-xs w-[80px]" variant="secondary" onClick={resetVote}>
+                  <Loader color="white" size={20} />
+                </Button>
+              ) : (
+                <Button className="!py-2 !text-xs w-[80px]" variant="secondary" onClick={resetVote}>
+                  {resetButtonState}
+                </Button>
+              )}
+
               <Toaster />
             </div>
           </div>
@@ -182,11 +200,11 @@ const Overlay = ({ voteValue, lockInfo, poolArr }: overlayProps) => {
             <p className="text-xl text-white">
               {Number(voteValue) <= 100
                 ? (
-                    ((Number(lockInfo?.veNFTInfo?.voting_amount?.toString()) / 10 ** 18) * Number(voteValue)) /
+                    ((Number(lockInfo?.veNFTInfo.voting_amount?.toString()) / 10 ** 18) * Number(voteValue)) /
                     100
                   ).toFixed(1)
-                : (Number(lockInfo?.veNFTInfo?.voting_amount?.toString()) / 10 ** 18).toFixed(1)}{' '}
-              veFnx ({voteValue} %)
+                : (Number(lockInfo?.veNFTInfo.voting_amount?.toString()) / 10 ** 18).toFixed(1)}{' '}
+              veFnx ({voteValue.toString()} %)
             </p>
           </div>
           <div className="flex flex-col items-end gap-2 ">
@@ -197,10 +215,10 @@ const Overlay = ({ voteValue, lockInfo, poolArr }: overlayProps) => {
             </div>
             <div className="flex items-center gap-1">
               <Button className="!h-[28px] !text-[10px] w-[100px]" disabled={Number(voteValue?.percentage) > 100}>
-                Cast Votes
+                {currentButtonState}
               </Button>
               <Button className="!py-2 !text-[10px] w-[80px]" variant="secondary">
-                Reset
+                {resetButtonState}
               </Button>
             </div>
           </div>
