@@ -12,83 +12,81 @@ import { wagmiConfig } from '@/src/app/layout'
 import { voteState } from '@/src/state/vote/types'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import voterAbi from '@/src/library/web3/abis/VoterV3ABI'
+import { useAccount, useWriteContract } from 'wagmi'
+import { VOTER_ADDRESS } from '@/src/library/constants/addresses'
+import { getPublicClient } from '@wagmi/core'
+
+enum ButtonState {
+  POOL_NOT_AVAILABLE = 'Pool Not Available',
+  ENTER_AMOUNT = 'Enter Amount',
+  APPROVAL_REQUIRED = 'Approve FNX',
+  APPROVING = 'Approving...',
+  WAITING_APPROVAL = 'Waiting Approval',
+  INSUFFICIENT_BALANCE = 'Insufficient Balance',
+  WAITING_CONFIRMATION = 'Waiting Confirmation',
+  PRICE_IMPACT_ALERT = 'Price Impact Too High. Swap Anyway',
+  VOTE = 'Cast Votes',
+  LOADING = 'Loading...',
+}
 
 interface overlayProps {
   voteValue: Number
   lockInfo: LockElement | undefined
+  poolArr: any
 }
-const Overlay = ({ voteValue, lockInfo }: overlayProps) => {
+const Overlay = ({ voteValue, lockInfo, poolArr }: overlayProps) => {
   const [loading, setloading] = useState<Boolean>(false)
+  const [currentButtonState, setCurrentButtonState] = useState(ButtonState.VOTE)
+  const { writeContractAsync } = useWriteContract()
+  const { chainId } = useAccount()
 
   const addNotification = useNotificationAdderCallback()
 
   const castVote = async () => {
     try {
-      const poolAddresses = voteValue.voteTableElement.map((element) => {
-        return element.pair.pair_address
-      })
+      const addresses = poolArr.map((pool) => pool.id)
+      const weights = poolArr.map((pool) => pool.percentage)
+      console.log(Number(lockInfo.veNFTInfo.id), addresses, weights)
+      setCurrentButtonState(ButtonState.LOADING)
+      writeContractAsync(
+        {
+          abi: voterAbi,
+          address: VOTER_ADDRESS[chainId] as Address,
+          functionName: 'vote',
+          args: [Number(lockInfo.veNFTInfo.id), addresses, weights],
+        },
+        {
+          onSuccess: async (x) => {
+            setCurrentButtonState(ButtonState.LOADING)
+            const publicClient = getPublicClient(wagmiConfig)
+            const transaction = await publicClient?.waitForTransactionReceipt({ hash: x })
 
-      // Find indices where poolAddresses has undefined or null
-      const undefinedIndices: number[] = poolAddresses.reduce((indices: number[], _, index) => {
-        const voteValueAtIndex = voteValue.votes[index]
-        if (voteValueAtIndex === undefined || voteValueAtIndex === null || voteValueAtIndex === 0) {
-          indices.push(index)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Voted on pools successfully.`,
+              notificationType: NotificationType.SUCCESS,
+              txHash: transaction?.transactionHash,
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
+            setCurrentButtonState(ButtonState.VOTE)
+          },
+          onError: (error) => {
+            setCurrentButtonState(ButtonState.VOTE)
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Transaction failed`,
+              notificationType: NotificationType.ERROR,
+              txHash: '',
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
+          },
         }
-        return indices
-      }, [])
-
-      // Filter poolAddresses based on undefinedIndices
-      const filteredPoolAddresses = poolAddresses.filter((_, index) => !undefinedIndices.includes(index))
-
-      // console.log(undefinedIndices, filteredPoolAddresses)
-
-      // Filter both arrays based on undefinedIndices
-      const weights = voteValue.votes
-        .filter((_, index) => !undefinedIndices.includes(index))
-        .map((weight) => BigInt(weight))
-
-      const addresses = poolAddresses.filter((_, index) => !undefinedIndices.includes(index))
-
-      setloading(true)
-      // console.log(Number(lock?.veNFTInfo.id), weights, addresses, 'cast vote')
-      const hash = await castVotes(Number(lock?.veNFTInfo.id), addresses, weights)
-      const transactionReceipt = await waitForTransactionReceipt(wagmiConfig, { hash: hash, confirmations: 1 })
-      // wait for 2 secs for transaction to get processed
-      await new Promise((resolve) => setTimeout(resolve, 10000))
-      if (transactionReceipt.status === 'success') {
-        // toast('Voted Successfully')
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `Voted Successfully`,
-          notificationType: NotificationType.SUCCESS,
-          txHash: transactionReceipt.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-        setloading(false)
-      } else {
-        // toast('Transaction failed')
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `Transaction failed`,
-          notificationType: NotificationType.ERROR,
-          txHash: transaction.transactionHash,
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-      }
+      )
     } catch (err: any) {
-      setloading(false)
-      // console.log(err)
-      // toast('Transaction failed')
-      addNotification({
-        id: crypto.randomUUID(),
-        createTime: new Date().toISOString(),
-        message: `Transaction failed`,
-        notificationType: NotificationType.ERROR,
-        txHash: '',
-        notificationDuration: NotificationDuration.DURATION_5000,
-      })
+      console.log(err)
     }
   }
 
@@ -166,7 +164,7 @@ const Overlay = ({ voteValue, lockInfo }: overlayProps) => {
                 disabled={Number(voteValue) > 100}
                 onClick={() => castVote()}
               >
-                Cast Votes
+                {currentButtonState}
               </Button>
               <Button className="!py-2 !text-xs" variant="secondary" onClick={resetVote}>
                 Reset

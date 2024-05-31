@@ -307,7 +307,7 @@ const Vote = () => {
       />
 
       <div className="p-5 mx-auto fixed bottom-4 z-50 left-0 xl:w-1/2 right-0 md:block">
-        {activeVote && <Overlay voteValue={voteValue} lockInfo={lock} />}
+        {activeVote && <Overlay voteValue={voteValue} lockInfo={lock} poolArr={poolArr} />}
       </div>
     </section>
   )
