@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 import { TableSkeleton, TableBody, TableHead, PaginationMobile } from '@/src/components/UI'
 import { Pagination } from '@/src/components/UI'
 import RowReward from './RowReward'
-import NotFoundLock from '../../Lock/NotFoundLock'
+import NotFoundLock from '../../../Lock/NotFoundLock'
 
 type filterData = {
   type: string
@@ -45,7 +45,7 @@ const HeaderRowReward = ({
 
         {filterData.length !== 0 ? (
           <>
-            <TableBody>
+            <TableBody className="h-[350px] overflow-y-scroll">
               {loading ? (
                 <>
                   {Array.from({ length: filterData.length }).map((_, index) => (

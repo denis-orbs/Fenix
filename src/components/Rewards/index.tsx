@@ -6,8 +6,12 @@ import VotePools from '@/src/components/Vote/VoteNow/VotePools'
 import SelectVote from '../Modals/SelectVote'
 import RewardBox from './RewardBox'
 import RewardNow from './RewardNow'
-import HeaderRowReward from './Tables/HeaderRowReward'
+import FeesHeaderRowReward from './Tables/fees/HeaderRowReward'
+import BribeHeaderRowReward from './Tables/bribe/HeaderRowReward'
+import VEFnxHeaderRowReward from './Tables/lock/HeaderRowReward'
 import { LockElement } from '@/src/library/structures/lock/LockElement'
+import { useAppSelector } from '@/src/state'
+import { lockState } from '@/src/state/lock/types'
 
 const Rewards = () => {
   const [activeVote, setActiveVote] = useState(true)
@@ -16,6 +20,7 @@ const Rewards = () => {
   const [searchValue, setSearchValue] = useState<string>('')
   const [lock, setLock] = useState<LockElement>()
   // const filterData = DATA_ROW.filter((row) => row.type === currentTab)
+  const locks = useAppSelector<lockState>((state) => state.lock)
 
   useEffect(() => {
     setTimeout(() => {
@@ -39,7 +44,42 @@ const Rewards = () => {
           <Search searchValue={searchValue} setSearchValue={setSearchValue} />
         </div>
       </div>
-      <HeaderRowReward activeVote={activeVote} filterData={[]} loading={loading} />
+      <div className="flex flex-col justify-center items-center gap-2 mx-2 mt-2 mb-4">
+        <div className="w-full">
+          <h1 className="text-xl font-medium text-white mb-6">Fees Rewards</h1>
+          <div className="p-2">
+            <FeesHeaderRowReward
+              activeVote={activeVote}
+              filterData={[1, 2, 3, 4]}
+              loading={loading}
+              activePagination={false}
+            />
+          </div>
+        </div>
+        <div className="w-full">
+          <h1 className="text-xl font-medium text-white mb-6">Bribe Rewards</h1>
+          <div className="p-2">
+            <BribeHeaderRowReward
+              activeVote={activeVote}
+              filterData={[1, 2, 3, 4]}
+              loading={loading}
+              activePagination={false}
+            />
+          </div>
+        </div>
+        <div className="w-full">
+          <h1 className="text-xl font-medium text-white mb-6">veFnx Rewards</h1>
+          <div className="p-2">
+            <VEFnxHeaderRowReward
+              activeVote={activeVote}
+              filterData={locks.positions}
+              loading={loading}
+              activePagination={false}
+            />
+          </div>
+        </div>
+      </div>
+      {/* <HeaderRowReward activeVote={activeVote} filterData={[1, 2, 3, 4]} loading={loading} /> */}
       <SelectVote
         activeVote={activeVote}
         setActiveVote={setActiveVote}

@@ -121,11 +121,12 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
                     {pagination.map((lock: any, index: number) => {
                       console.log(lock, 'lock')
                       return (
-                         <TableRow key={index}>
+                        <TableRow key={index}>
                           <TableCell className="w-[20%]">
                             <div className="flex items-center gap-3">
                               <Image
-                                src={'/static/images/vote/fenix-logo.svg'}
+                                // src={'/static/images/vote/fenix-logo.svg'}
+                                src={'/static/images/tokens/FNX.svg'}
                                 className="h-[40px] w-[40px]"
                                 alt="alternative fenix"
                                 width={40}
