@@ -194,7 +194,7 @@ export default function MobileRowNew({
                     {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                       <div className="flex justify-between items-center gap-3">
                         <p className="text-sm">Ichi Strategy</p>
-                        <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>
+                        <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) < 0 ? 0 : Number(ichiApr) || 0, 2)}%</p>
                       </div>
                     )}
                     {!!fDAOEmisionsAPR && (
