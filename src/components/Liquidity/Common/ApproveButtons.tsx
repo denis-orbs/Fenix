@@ -13,6 +13,8 @@ interface ApproveButtonsProps {
   mainFn: any
   mainText: string
   isLoading: boolean
+  isFirstLoading?: boolean
+  isSecondLoading?: boolean
 }
 
 const ApproveButtons = ({
@@ -24,6 +26,8 @@ const ApproveButtons = ({
   mainFn,
   mainText,
   isLoading,
+  isFirstLoading,
+  isSecondLoading
 }: ApproveButtonsProps) => {
   return shouldApproveFirst || shouldApproveSecond ? (
     <div className="flex">
@@ -34,7 +38,11 @@ const ApproveButtons = ({
         className="button button-tertiary w-1/2 !text-xs !h-[49px] mr-[10px]"
         disabled={!shouldApproveFirst}
       >
-        {shouldApproveFirst ? (
+        {isFirstLoading ? (
+          <>
+            <Loader color="white" size={20} /> {' Approving'}
+          </>
+        ) : shouldApproveFirst ? (
           <> Approve {token0.symbol}</>
         ) : (
           <div className="flex items-center">
@@ -50,7 +58,11 @@ const ApproveButtons = ({
         disabled={!shouldApproveSecond}
         className="button button-tertiary w-1/2 !text-xs !h-[49px]"
       >
-        {shouldApproveSecond ? (
+        {isSecondLoading ? (
+          <>
+            <Loader color="white" size={20} /> {' Approving'}
+          </>
+        ) : shouldApproveSecond ? (
           <> Approve {token1.symbol}</>
         ) : (
           <div className="flex items-center">

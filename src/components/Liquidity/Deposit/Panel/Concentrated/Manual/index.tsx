@@ -91,15 +91,21 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     firstToken.address == secondToken.address
       ? '0x0000000000000000000000000000000000000000'
       : (computePoolAddress({
-          tokenA: new Token(blast.id, firstToken.address as string, 8),
-          tokenB: new Token(blast.id, secondToken.address as string, 18),
+          tokenA: new Token(blast.id, firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : firstToken.address as string, 18),
+          tokenB: new Token(blast.id, secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : secondToken.address as string, 18),
           poolDeployer: '0x5aCCAc55f692Ae2F065CEdDF5924C8f6B53cDaa8',
           initCodeHashManualOverride: '0xf45e886a0794c1d80aeae5ab5befecd4f0f2b77c0cf627f7c46ec92dc1fa00e4',
         }) as Address)
   const pool = usePool(poolAddress)
 
   useEffect(() => {
-    if (rangePrice2 != -1 && rangePrice1 > rangePrice2) {
+    if(pool[0] == 'LOADING') {
+      setButtonText('Loading')
+    } else if(pool[0] == 'NOT_EXISTS') {
+      setButtonText('Pool Doesn\'t Exist')
+      setFirstValue("0")
+      setSecondValue("0")
+    } else if (rangePrice2 != -1 && rangePrice1 > rangePrice2) {
       setButtonText("Min price can't be higher than max price")
     } else if (
       account &&
@@ -122,12 +128,15 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     token2Balance,
     firstToken,
     secondToken,
+    pool
   ])
 
   const [isInverse, setIsInverse] = useState(
     parseInt(firstToken.address as string) > parseInt(secondToken.address as string)
   )
 
+  const [isFirstLoading, setIsFirstLoading] = useState(false)
+  const [isSecondLoading, setIsSecondLoading] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [slippage, setSlippage] = useState(0.05)
 
@@ -362,6 +371,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     const temp = firstToken
     setFirstToken(secondToken)
     setSecondToken(firstToken)
+    setFirstValue("0")
+    setSecondValue("0")
   }
 
   const handleCLAdd = async () => {
@@ -421,6 +432,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
               txHash: transaction.transactionHash,
               notificationDuration: NotificationDuration.DURATION_5000,
             })
+
+            setFirstValue("0")
+            setSecondValue("0")
           } else {
             toast(`Added LP TX failed, hash: ${transaction.transactionHash}`)
             addNotification({
@@ -453,6 +467,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   const handleApprove = async (token: Address) => {
     setIsLoading(true)
+    if(token == firstToken.address) setIsFirstLoading(true)
+    if(token == secondToken.address) setIsSecondLoading(true)
+
     writeContractAsync(
       {
         abi: ERC20_ABI,
@@ -499,6 +516,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           setAllowanceFirst(_allowanceFirst)
           setAllowanceSecond(_allowanceSecond)
           setIsLoading(false)
+          setIsFirstLoading(false)
+          setIsSecondLoading(false)
         },
         onError: (e) => {
           // toast(`Approve failed.`)
@@ -511,6 +530,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
             notificationDuration: NotificationDuration.DURATION_5000,
           })
           setIsLoading(false)
+          setIsFirstLoading(false)
+          setIsSecondLoading(false)
         },
       }
     )
@@ -538,6 +559,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }
 
   const handleOnTokenValueChange = async (input: any, token: IToken) => {
+    if (pool[0] != 'EXISTS') return;
     if (firstToken.address === token.address) {
       if (parseFloat(input) != 0) {
         if (isInverse) {
@@ -668,9 +690,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           token0={firstToken}
           token1={secondToken}
           handleApprove={handleApprove}
-          mainFn={handleCLAdd}
+          mainFn={buttonText == "Create Position" ? handleCLAdd : ()=>{}}
           mainText={buttonText}
-          isLoading={isLoading}
+          isLoading={buttonText == "Loading" || isLoading}
+          isFirstLoading={isFirstLoading}
+          isSecondLoading={isSecondLoading}
         />
       )}
     </>
