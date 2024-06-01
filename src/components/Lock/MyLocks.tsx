@@ -34,6 +34,10 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
   const lock = useAppSelector<lockState>((state) => state.lock)
   const handlerNavigation = () => push('/lock/manage')
 
+  const [data, setData] = useState<any>(lock.positions)
+  const [sidx, setSidx] = useState<number>(1)
+  const [svalue, setSvalue] = useState<'asc' | 'desc' | 'normal'>('normal')
+
   useEffect(() => {
     if (address && chainId) dispatch(fetchNftsAsync({ address, chainId }))
     const now = new Date().getTime() / 1000
@@ -61,32 +65,87 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
     return paginatedItems
   }
 
-  let data
-  if (tab === 'ACTIVE') {
-    data = lock.positions.filter((pos) => {
-      if (BigInt(nowTime.toFixed(0).toString()) < pos.veNFTInfo.lockEnd) {
-        return pos
+  useEffect(() => {
+    if (tab === 'ACTIVE') {
+      const newdata = lock.positions.filter((pos) => {
+        if (BigInt(nowTime.toFixed(0).toString()) < pos.veNFTInfo.lockEnd) {
+          return pos
+        }
+      })
+      setData(newdata)
+    } else if (tab === 'EXPIRED') {
+      const newdata = lock.positions.filter((pos) => {
+        if (BigInt(nowTime.toFixed(0).toString()) >= pos.veNFTInfo.lockEnd) {
+          return pos
+        }
+      })
+      setData(newdata)
+    } else if (tab === 'VOTE') {
+      const newdata = lock.positions.filter((pos) => {
+        if (pos.veNFTInfo.voted) {
+          return pos
+        }
+      })
+      setData(newdata)
+    } else if (tab === 'NOT VOTE') {
+      const newdata = lock.positions.filter((pos) => {
+        if (!pos.veNFTInfo.voted) {
+          return pos
+        }
+      })
+      setData(newdata)
+    } else setData(lock.positions)
+  }, [lock.positions, tab])
+
+  useEffect(() => {
+    if (sidx === 1) {
+      if (svalue === 'asc') {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(a.veNFTInfo.amount) / 10 ** 18 - Number(b.veNFTInfo.amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(b.veNFTInfo.amount) / 10 ** 18 - Number(a.veNFTInfo.amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      } else {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(a.veNFTInfo.amount) / 10 ** 18 - Number(b.veNFTInfo.amount) / 10 ** 18
+        )
+        setData(sortedArr)
       }
-    })
-  } else if (tab === 'EXPIRED') {
-    data = lock.positions.filter((pos) => {
-      if (BigInt(nowTime.toFixed(0).toString()) >= pos.veNFTInfo.lockEnd) {
-        return pos
+    } else if (sidx === 2) {
+      if (svalue === 'asc') {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(a.veNFTInfo.voting_amount) / 10 ** 18 - Number(b.veNFTInfo.voting_amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(b.veNFTInfo.voting_amount) / 10 ** 18 - Number(a.veNFTInfo.voting_amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      } else {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(a.veNFTInfo.voting_amount) / 10 ** 18 - Number(b.veNFTInfo.voting_amount) / 10 ** 18
+        )
+        setData(sortedArr)
       }
-    })
-  } else if (tab === 'VOTE') {
-    data = lock.positions.filter((pos) => {
-      if (pos.veNFTInfo.voted) {
-        return pos
+    } else if (sidx === 3) {
+      if (svalue === 'asc') {
+        const sortedArr = [...data].sort((a, b) => Number(a.veNFTInfo.lockEnd) - Number(b.veNFTInfo.lockEnd))
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = [...data].sort((a, b) => Number(b.veNFTInfo.lockEnd) - Number(a.veNFTInfo.lockEnd))
+        setData(sortedArr)
+      } else {
+        const sortedArr = [...data].sort((a, b) => Number(a.veNFTInfo.lockEnd) - Number(b.veNFTInfo.lockEnd))
+        setData(sortedArr)
       }
-    })
-  } else if (tab === 'NOT VOTE') {
-    data = lock.positions.filter((pos) => {
-      if (!pos.veNFTInfo.voted) {
-        return pos
-      }
-    })
-  } else data = lock.positions
+    }
+  }, [sidx, svalue])
+
   const pagination = paginate(data, activePage, itemsPerPage)
 
   return (
@@ -95,17 +154,17 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
         <div className="w-full">
           <TableHead
             items={[
-              { text: 'Lock ID', className: 'text-left text-xs w-[20%]', sortable: true },
-              { text: 'Lock Amount', className: 'text-left text-xs w-[15%]', sortable: false },
+              { text: 'Lock ID', className: 'text-left text-xs w-[20%]', sortable: false },
+              { text: 'Lock Amount', className: 'text-left text-xs w-[15%]', sortable: true },
               { text: 'Voting Power', className: 'text-left text-xs w-[15%]', sortable: true },
               { text: 'Unlock Date', className: 'text-left text-xs w-[15%]', sortable: true },
-              { text: 'Vote Status', className: 'text-center text-xs w-[15%]', sortable: true },
+              { text: 'Vote Status', className: 'text-center text-xs w-[15%]', sortable: false },
               { text: 'Action', className: 'text-right text-xs w-[20%]', sortable: false },
             ]}
-            setSort={() => {}}
-            setSortIndex={() => {}}
-            sort={null}
-            sortIndex={1}
+            setSort={setSvalue}
+            sort={svalue}
+            setSortIndex={setSidx}
+            sortIndex={sidx}
           />
           {lock.positions.length !== 0 ? (
             <>
@@ -119,7 +178,7 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
                 ) : (
                   <>
                     {pagination.map((lock: any, index: number) => {
-                      console.log(lock, 'lock')
+                      // console.log(lock, 'lock')
                       return (
                         <TableRow key={index}>
                           <TableCell className="w-[20%]">

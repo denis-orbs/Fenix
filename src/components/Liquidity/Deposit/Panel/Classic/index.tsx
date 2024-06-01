@@ -68,7 +68,7 @@ const Classic = ({
   const [secondValue, setSecondValue] = useState('')
   const [firstReserve, setFirstReserve] = useState(0)
   const [secondReserve, setSecondReserve] = useState(0)
-  const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
+  const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW' | 'STAKE' | 'UNSTAKE'>('ADD')
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
   const [lpValue, setLpValue] = useState(0)
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
@@ -83,7 +83,7 @@ const Classic = ({
 
   const addNotification = useNotificationAdderCallback()
 
-  const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
+  const handlerOption = (option: 'ADD' | 'WITHDRAW' | 'STAKE' | 'UNSTAKE') => {
     setOptionActive(option)
     setFirstValue('')
     setSecondValue('')
@@ -506,6 +506,20 @@ const Classic = ({
         >
           Withdraw
         </Button>
+        <Button
+          onClick={() => handlerOption('STAKE')}
+          className="w-full h-[38px] mx-auto !text-xs"
+          variant={optionActive === 'STAKE' ? 'primary' : 'secondary'}
+        >
+          STAKE
+        </Button>
+        <Button
+          onClick={() => handlerOption('UNSTAKE')}
+          className="w-full h-[38px] mx-auto !text-xs"
+          variant={optionActive === 'UNSTAKE' ? 'primary' : 'secondary'}
+        >
+          UNSTAKE
+        </Button>
       </div>
 
       <div className="flex flex-col gap-1 relative">
@@ -531,7 +545,7 @@ const Classic = ({
                 onOpenModal={() => setOpenSelectToken(true)}
                 variant="primary"
                 onTokenValueChange={handleOnLPTokenValueChange}
-                setValue={()=>{}}
+                setValue={() => {}}
               />
 
               <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
@@ -539,17 +553,77 @@ const Classic = ({
             <Separator single />
           </>
         )}
-        <TokensSelector
-          firstToken={firstToken}
-          setFirstToken={setFirstToken}
-          firstValue={firstValue}
-          setFirstValue={setFirstValue}
-          secondToken={secondToken}
-          setSecondToken={setSecondToken}
-          secondValue={secondValue}
-          setSecondValue={setSecondValue}
-          onTokenValueChange={handleOnTokenValueChange}
-        />
+        {optionActive === 'STAKE' && (
+          <>
+            <div className="mb-3">
+              {
+                // TODO: handle LP tokens list
+              }
+
+              <ExchangeBox
+                value={lpValue}
+                token={
+                  {
+                    name: 'Fenix/Ether LP',
+                    symbol: `${firstToken.symbol}/${secondToken.symbol} LP`,
+                    id: 0,
+                    decimals: 18,
+                    address: pairAddress as Address,
+                    img: '/static/images/tokens/FNX.svg',
+                  } as IToken
+                }
+                onOpenModal={() => setOpenSelectToken(true)}
+                variant="primary"
+                onTokenValueChange={handleOnLPTokenValueChange}
+                setValue={() => {}}
+              />
+
+              <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
+            </div>
+          </>
+        )}
+        {optionActive === 'UNSTAKE' && (
+          <>
+            <div className="mb-3">
+              {
+                // TODO: handle LP tokens list
+              }
+
+              <ExchangeBox
+                value={lpValue}
+                token={
+                  {
+                    name: 'Fenix/Ether LP',
+                    symbol: `${firstToken.symbol}/${secondToken.symbol} LP`,
+                    id: 0,
+                    decimals: 18,
+                    address: pairAddress as Address,
+                    img: '/static/images/tokens/FNX.svg',
+                  } as IToken
+                }
+                onOpenModal={() => setOpenSelectToken(true)}
+                variant="primary"
+                onTokenValueChange={handleOnLPTokenValueChange}
+                setValue={() => {}}
+              />
+
+              <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
+            </div>
+          </>
+        )}
+        {optionActive == 'ADD' || optionActive == 'WITHDRAW' ? (
+          <TokensSelector
+            firstToken={firstToken}
+            setFirstToken={setFirstToken}
+            firstValue={firstValue}
+            setFirstValue={setFirstValue}
+            secondToken={secondToken}
+            setSecondToken={setSecondToken}
+            secondValue={secondValue}
+            setSecondValue={setSecondValue}
+            onTokenValueChange={handleOnTokenValueChange}
+          />
+        ) : null}
       </div>
 
       <Button
@@ -567,15 +641,19 @@ const Classic = ({
               : handleRemoveLiquidity()
         }}
       >
-        {optionActive == 'ADD'
-          ? shouldApproveFirst
-            ? `Approve ${firstToken.symbol}`
-            : shouldApproveSecond
-              ? `Approve ${secondToken.symbol}`
-              : `Add Liquidity`
-          : shouldApprovePair
-            ? `Approve LP`
-            : `Remove Liquidity`}
+        {optionActive == 'STAKE'
+          ? 'STAKE'
+          : optionActive == 'UNSTAKE'
+            ? 'UNSTAKE'
+            : optionActive == 'ADD'
+              ? shouldApproveFirst
+                ? `Approve ${firstToken.symbol}`
+                : shouldApproveSecond
+                  ? `Approve ${secondToken.symbol}`
+                  : `Add Liquidity`
+              : shouldApprovePair
+                ? `Approve LP`
+                : `Remove Liquidity`}
       </Button>
     </>
   )
