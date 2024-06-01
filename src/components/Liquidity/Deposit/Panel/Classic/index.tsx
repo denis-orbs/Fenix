@@ -23,9 +23,10 @@ import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { LiquidityTableElement } from '@/src/state/liquidity/types'
 import { useAppSelector } from '@/src/state'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { formatNumber } from '@/src/library/utils/numbers'
+import { formatDollarAmount, formatNumber, toBN } from '@/src/library/utils/numbers'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { NumericalInput } from '@/src/components/UI/Input'
 
 const Classic = ({
   depositType,
@@ -401,7 +402,7 @@ const Classic = ({
       <div>
         <Toaster position="top-center" reverseOrder={false} />
       </div>
-      <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
+      <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[10px] sm:px-[19px] flex items-center justify-between gap-1.5 sm:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
         <div>
           <div className="flex items-center gap-2.5 mb-2.5">
             <div className="flex items-center flex-shrink-0">
@@ -426,13 +427,13 @@ const Classic = ({
               </h5>
               <div className="flex items-center gap-[5px] max-md:flex-wrap">
                 {'VOLATILE' === depositType ? (
-                  <Button variant="tertiary" className="!py-1 h-[28px] max-md:!text-xs flex-shrink-0">
+                  <Button variant="tertiary" className="!py-1 !px-1 h-[28px] max-md:!text-xs flex-shrink-0">
                     Volatile Pool
                   </Button>
                 ) : 'CONCENTRATED_AUTOMATIC' === depositType || 'CONCENTRATED_MANUAL' === depositType ? (
                   <Button
                     variant="tertiary"
-                    className="!py-1 hover:!border-none !bg-green-500 !border !border-solid !border-1 !border-green-400 !bg-opacity-40 h-[28px] max-md:!text-xs flex-shrink-0"
+                    className="!py-1  hover:!border-none !bg-green-500 !border !border-solid !border-1 !border-green-400 !bg-opacity-40 h-[28px] max-md:!text-xs flex-shrink-0"
                   >
                     Concentrated
                   </Button>
@@ -462,7 +463,8 @@ const Classic = ({
               </div>
             </div>
           </div>
-          <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]">
+          <div className="flex items-center text-xs leading-normal gap-[5px]">
+            {/* <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]"> */}
             <div className="text-white">Liquidity</div>
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
@@ -491,31 +493,31 @@ const Classic = ({
         </div>
       </div>
 
-      <div className="bg-shark-400 bg-opacity-40 p-[13px] md:py-[11px] md:px-[19px] flex gap-1.5 md:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5">
+      <div className="flex flex-wrap bg-shark-400 bg-opacity-40 p-[13px] md:py-[11px] md:px-[19px] gap-1.5 md:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5">
         <Button
           onClick={() => handlerOption('ADD')}
-          className="w-full h-[38px] mx-auto !text-xs"
+          className="flex-1 h-[38px] mx-auto !text-xs"
           variant={optionActive === 'ADD' ? 'primary' : 'secondary'}
         >
           Add
         </Button>
         <Button
           onClick={() => handlerOption('WITHDRAW')}
-          className="w-full h-[38px] mx-auto !text-xs"
+          className="flex-1 h-[38px] mx-auto !text-xs"
           variant={optionActive === 'WITHDRAW' ? 'primary' : 'secondary'}
         >
           Withdraw
         </Button>
         <Button
           onClick={() => handlerOption('STAKE')}
-          className="w-full h-[38px] mx-auto !text-xs"
+          className="flex-1 h-[38px] mx-auto !text-xs"
           variant={optionActive === 'STAKE' ? 'primary' : 'secondary'}
         >
           STAKE
         </Button>
         <Button
           onClick={() => handlerOption('UNSTAKE')}
-          className="w-full h-[38px] mx-auto !text-xs"
+          className="flex-1 h-[38px] mx-auto !text-xs"
           variant={optionActive === 'UNSTAKE' ? 'primary' : 'secondary'}
         >
           UNSTAKE
@@ -556,58 +558,118 @@ const Classic = ({
         {optionActive === 'STAKE' && (
           <>
             <div className="mb-3">
-              {
-                // TODO: handle LP tokens list
-              }
-
-              <ExchangeBox
-                value={lpValue}
-                token={
-                  {
-                    name: 'Fenix/Ether LP',
-                    symbol: `${firstToken.symbol}/${secondToken.symbol} LP`,
-                    id: 0,
-                    decimals: 18,
-                    address: pairAddress as Address,
-                    img: '/static/images/tokens/FNX.svg',
-                  } as IToken
-                }
-                onOpenModal={() => setOpenSelectToken(true)}
-                variant="primary"
-                onTokenValueChange={handleOnLPTokenValueChange}
-                setValue={() => {}}
-              />
-
-              <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
+              <div className="exchange-box-x1">
+                <div className="flex items-center mb-3 justify-between">
+                  <p className="text-white font-medium">Stake LP</p>
+                  <p className="text-shark-100 flex text-sm justify-end gap-6 xl:gap-0 w-full xl:w-3/5 items-cente xl:justify-between">
+                    <span className=" ml-3">
+                      {firstToken?.price && formatDollarAmount(toBN(lpValue).multipliedBy(firstToken?.price))}
+                    </span>
+                    <div>
+                      <span className="icon-wallet text-xs mr-2"></span>
+                      <span>
+                        {/* Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol} */}
+                        Available: 0 {firstToken.symbol}/{secondToken.symbol}
+                      </span>
+                    </div>
+                  </p>
+                </div>
+                <div className="flex flex-col xl:flex-row items-center gap-3">
+                  <div className="relative w-full xl:w-2/5">
+                    <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center">
+                          <Image
+                            src={`/static/images/tokens/FNX.png`}
+                            alt="token"
+                            className="rounded-full w-7 h-7"
+                            width={20}
+                            height={20}
+                          />
+                          <Image
+                            src={`/static/images/tokens/WETH.png`}
+                            alt="token"
+                            className="-ml-4 rounded-full w-7 h-7"
+                            width={20}
+                            height={20}
+                          />
+                        </div>
+                        <span className="text-base">
+                          {firstToken.symbol}/{secondToken.symbol}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="relative w-full xl:w-3/5">
+                    <NumericalInput
+                      value={0}
+                      className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+                      placeholder="0.0"
+                      onUserInput={(input) => console.log(input)}
+                      precision={firstToken.decimals}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </>
         )}
         {optionActive === 'UNSTAKE' && (
           <>
             <div className="mb-3">
-              {
-                // TODO: handle LP tokens list
-              }
-
-              <ExchangeBox
-                value={lpValue}
-                token={
-                  {
-                    name: 'Fenix/Ether LP',
-                    symbol: `${firstToken.symbol}/${secondToken.symbol} LP`,
-                    id: 0,
-                    decimals: 18,
-                    address: pairAddress as Address,
-                    img: '/static/images/tokens/FNX.svg',
-                  } as IToken
-                }
-                onOpenModal={() => setOpenSelectToken(true)}
-                variant="primary"
-                onTokenValueChange={handleOnLPTokenValueChange}
-                setValue={() => {}}
-              />
-
-              <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
+              <div className="exchange-box-x1">
+                <div className="flex items-center mb-3 justify-between">
+                  <p className="text-white font-medium">Unstake LP</p>
+                  <p className="text-shark-100 flex text-sm justify-end gap-6 xl:gap-0 w-full xl:w-3/5 items-cente xl:justify-between">
+                    <span className=" ml-3">
+                      {firstToken?.price && formatDollarAmount(toBN(lpValue).multipliedBy(firstToken?.price))}
+                    </span>
+                    <div>
+                      <span className="icon-wallet text-xs mr-2"></span>
+                      <span>
+                        {/* Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol} */}
+                        Available: 0 {firstToken.symbol}/{secondToken.symbol}
+                      </span>
+                    </div>
+                  </p>
+                </div>
+                <div className="flex flex-col xl:flex-row items-center gap-3">
+                  <div className="relative w-full xl:w-2/5">
+                    <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center">
+                          <Image
+                            src={`/static/images/tokens/FNX.png`}
+                            alt="token"
+                            className="rounded-full w-7 h-7"
+                            width={20}
+                            height={20}
+                          />
+                          <Image
+                            src={`/static/images/tokens/WETH.png`}
+                            alt="token"
+                            className="-ml-4 rounded-full w-7 h-7"
+                            width={20}
+                            height={20}
+                          />
+                        </div>
+                        <span className="text-base">
+                          {firstToken.symbol}/{secondToken.symbol}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="relative w-full xl:w-3/5">
+                    <NumericalInput
+                      value={0}
+                      className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+                      placeholder="0.0"
+                      onUserInput={(input) => console.log(input)}
+                      precision={firstToken.decimals}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </>
         )}
