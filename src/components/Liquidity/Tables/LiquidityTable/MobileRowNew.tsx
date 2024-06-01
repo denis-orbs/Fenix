@@ -194,7 +194,9 @@ export default function MobileRowNew({
                     {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                       <div className="flex justify-between items-center gap-3">
                         <p className="text-sm">Ichi Strategy</p>
-                        <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) < 0 ? 0 : Number(ichiApr) || 0, 2)}%</p>
+                        <p className="text-sm text-chilean-fire-600">
+                          {formatAmount(Number(ichiApr) < 0 ? 0 : Number(ichiApr) || 0, 2)}%
+                        </p>
                       </div>
                     )}
                     {!!fDAOEmisionsAPR && (
@@ -238,7 +240,7 @@ export default function MobileRowNew({
                   {openTooltipGold && (
                     <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-xs">The pool is receiving receive 3500 Gold from May 28th to June 5th</p>
+                        <p className="text-xs">This pool will receive 10,000 Blast Gold from 1st - 21st of June</p>
                       </div>
                     </div>
                   )}
