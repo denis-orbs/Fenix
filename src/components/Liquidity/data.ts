@@ -103,7 +103,6 @@ export const BLUE_CHIPS_POOLS = [
 
 export const STABLES_POOLS = [
   '0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d',
-  '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
   '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
   '0xd0cd894c605a9eedacbc0fa9bd8440627a5d37b1',
 ]
