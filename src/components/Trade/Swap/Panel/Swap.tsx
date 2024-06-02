@@ -44,7 +44,8 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
     if (btnDisabled) {
       setValue('')
     } else {
-      if (tokenBalance && isConnected) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
+      if (tokenBalance && isConnected && toBN(tokenBalance).gt(0))
+        setValue(toBN(formatPrice(tokenBalance, 14)).div(2).toString())
       else setValue('')
     }
   }
@@ -53,8 +54,8 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
     if (btnDisabled) {
       setValue('')
     } else {
-      if (tokenBalance && isConnected) {
-        setValue(toBN(formatPrice(tokenBalance, 12)).toString())
+      if (tokenBalance && isConnected && toBN(tokenBalance).gt(0)) {
+        setValue(toBN(formatPrice(tokenBalance, 14)).toString())
       } else {
         setValue('')
       }
