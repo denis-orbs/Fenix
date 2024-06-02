@@ -8,9 +8,11 @@ import { Button } from '@/src/components/UI'
 import { useSearchParams } from 'next/navigation'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IToken } from '@/src/library/types'
-import { useIchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
-import { IchiVault } from '@ichidao/ichi-vaults-sdk'
+import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import WithdrawAmountsICHI from './WithdrawAmountsICHI'
+
+import WithdrawAmountsGAMMA from './WithdrawAmountsGAMMA'
+import DepositAmountsGAMMA from './DepositAmountsGAMMA'
 
 const providers = [
   {
@@ -20,6 +22,17 @@ const providers = [
     src: 'https://ichi.org/',
     logo: {
       src: '/static/images/providers/ichi.svg',
+      width: 63.75,
+      height: 21,
+    },
+  },
+  {
+    label: 'Gamma',
+    value: '2',
+    apr: -1,
+    src: 'https://app.gamma.xyz',
+    logo: {
+      src: '/static/images/providers/gamma.svg',
       width: 63.75,
       height: 21,
     },
@@ -102,7 +115,12 @@ const Automatic = () => {
   return (
     <>
       <PairSelector firstToken={token0} secondToken={token1} tokenList={tokenList} />
-      {allIchiVaultsByTokenPair && allIchiVaultsByTokenPair.length ? (
+      <CLMProviderSelector
+        providers={providers}
+        currentProvider={currentProvider}
+        setCurrentProvider={setCurrentProvider}
+      />
+      {/* {allIchiVaultsByTokenPair && allIchiVaultsByTokenPair.length ? (
         <>
           <CLMProviderSelector
             providers={providers}
@@ -112,7 +130,7 @@ const Automatic = () => {
         </>
       ) : (
         <></>
-      )}
+      )} */}
 
       <div className="bg-shark-400 bg-opacity-40 p-[13px] md:py-[11px] md:px-[19px] flex gap-1.5 md:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5">
         <Button
@@ -138,12 +156,10 @@ const Automatic = () => {
         <WithdrawAmountsICHI allIchiVaultsByTokenPair={allIchiVaultsByTokenPair} token={token0} tokenList={tokenList} />
       )}
 
-      {/* {currentProvider === '2' && optionActive === 'ADD' && (
-        <DepositAmountsGAMMA firstToken={token0} secondToken={token1} tokenList={tokenList} />
-      )}
+      {currentProvider === '2' && optionActive === 'ADD' && <DepositAmountsGAMMA tokenList={tokenList} />}
       {currentProvider === '2' && optionActive === 'WITHDRAW' && (
         <WithdrawAmountsGAMMA firstToken={token0} secondToken={token1} tokenList={tokenList} />
-      )} */}
+      )}
 
       {/* <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary">
         Create Position

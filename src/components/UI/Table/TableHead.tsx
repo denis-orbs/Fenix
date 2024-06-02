@@ -13,15 +13,15 @@ interface IItems {
 }
 interface TableHeadProps {
   items: IItems[]
-  setSort: (sort: 'asc' | 'desc' | null) => void
+  setSort: (sort: 'asc' | 'desc' | 'normal') => void
   setSortIndex: (sortIndex: number) => void
   sortIndex: number
-  sort: 'asc' | 'desc' | null
+  sort: 'asc' | 'desc' | 'normal'
 }
 
 const TableHead = ({ items, setSort, setSortIndex, sortIndex, sort }: TableHeadProps) => {
   const handleSort = (index: number, items: IItems) => {
-    const newSort = sort === 'asc' ? 'desc' : 'asc'
+    const newSort = sort === 'asc' ? 'desc' : sort === 'desc' ? 'normal' : 'asc'
     if (items.sortable) {
       setSort(newSort)
       setSortIndex(index)
@@ -35,8 +35,8 @@ const TableHead = ({ items, setSort, setSortIndex, sortIndex, sort }: TableHeadP
   const sortClassName = (item: IItems, index: number) => {
     return cn(
       'icon-chevron text-[11px] inline-block ml-2',
-      sort === 'asc' ? '-scale-y-100' : '',
-      sortIndex === index ? '' : 'opacity-0'
+      sort === 'asc' ? '-scale-y-100' : sort === 'desc' ? '' : '',
+      sortIndex === index && sort !== 'normal' ? '' : 'opacity-0'
     )
   }
 

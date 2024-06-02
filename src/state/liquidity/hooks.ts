@@ -113,3 +113,11 @@ export function useAllPools() {
     data: pools?.data || [],
   }
 }
+
+export function useGammaVaults() {
+  const gammaVaults = useAppSelector((state) => state.liquidity.gammaVaults)
+  return {
+    loading: gammaVaults?.state === ApiState.LOADING,
+    data: gammaVaults?.data || [],
+  }
+}

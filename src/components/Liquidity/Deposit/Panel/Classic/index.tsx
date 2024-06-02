@@ -526,7 +526,6 @@ const Classic = ({
             <div className="mb-3">
               {
                 // TODO: handle LP tokens list
-                // FIXME: HAZ
               }
 
               <ExchangeBox
@@ -544,6 +543,7 @@ const Classic = ({
                 onOpenModal={() => setOpenSelectToken(true)}
                 variant="primary"
                 onTokenValueChange={handleOnLPTokenValueChange}
+                setValue={()=>{}}
               />
 
               <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />

@@ -21,6 +21,10 @@ export interface LiquidityState {
     state: ApiState
     data: LiquidityTableElement[]
   }
+  gammaVaults: {
+    state: ApiState
+    data: GammaVault[]
+  }
   concentratedPools: { state: ApiState; data: any }
 }
 
@@ -195,6 +199,7 @@ export interface BasicPool {
   token0: BasicToken
   token1: BasicToken
   apr?: string
+  aprRings?: string
 }
 export interface BasicToken {
   id: string
@@ -214,4 +219,56 @@ export interface ConcentratedPool extends BasicPool {
   tick: string
   tickSpacing: string
   untrackedFeesUSD: string
+}
+
+export interface GammaVault {
+  id: string // ID único para el objeto GammaVault
+  createDate: string
+  poolAddress: string
+  name: string
+  token0: string
+  token1: string
+  decimals0: number
+  decimals1: number
+  depositCap0: number
+  depositCap1: number
+  grossFeesClaimed0: number
+  grossFeesClaimed1: number
+  grossFeesClaimedUSD: string
+  feesReinvested0: number
+  feesReinvested1: number
+  feesReinvestedUSD: string
+  tvl0: number
+  tvl1: number
+  tvlUSD: string
+  totalSupply: number
+  maxTotalSupply: number
+  capacityUsed: string
+  sqrtPrice: string
+  tick: number
+  baseLower: number
+  baseUpper: number
+  inRange: boolean
+  observationIndex: string
+  poolTvlUSD: string
+  poolFeesUSD: string
+  returns: {
+    daily: {
+      feeApr: number
+      feeApy: number
+    }
+    weekly: {
+      feeApr: number
+      feeApy: number
+    }
+    monthly: {
+      feeApr: number
+      feeApy: number
+    }
+    allTime: {
+      feeApr: number
+      feeApy: number
+    }
+    status: string
+  }
 }
