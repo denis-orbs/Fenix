@@ -37,6 +37,10 @@ import { NATIVE_ETH, NATIVE_ETH_LOWERCASE, WETH_ADDRESS } from '@/src/library/Co
 import { wethAbi } from '@/src/library/web3/abis/wethAbi'
 import { useNotificationAdderCallback, useReadNotificationCallback } from '@/src/state/notifications/hooks'
 import { NotificationDetails, NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import { Token, computePoolAddress } from '@cryptoalgebra/integral-sdk'
+import { blast } from 'viem/chains'
+import { INIT_CODE_HASH_MANUAL_OVERRIDE } from '@/src/library/constants/algebra'
+import { useAllPools } from '@/src/state/liquidity/hooks'
 
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
@@ -58,6 +62,7 @@ const Panel = () => {
   const [forValue, setForValue] = useState<string>('')
   const { setSlippageModal } = useStore()
   const [currentButtonState, setCurrentButtonState] = useState(ButtonState.SWAP)
+  const [disableChart, setDisableChart] = useState(false)
   const [tokenSellUserBalance, setTokenSellUserBalance] = useState<string>('')
   const { writeContract, failureReason, data: hash, status } = useWriteContract()
   const slippage = useSlippageTolerance()
@@ -555,8 +560,10 @@ const Panel = () => {
   const [isChartVisible, setIsChartVisible] = useState(showChart)
 
   const handleSwitch = () => {
-    setChart(!isChartVisible)
-    setIsChartVisible((prevState) => !prevState)
+    if (!disableChart) {
+      setChart(!isChartVisible)
+      setIsChartVisible((prevState) => !prevState)
+    }
   }
   const nativeWETH_ETH =
     tokenGet?.address?.toLowerCase() === NATIVE_ETH.toLowerCase() &&
@@ -590,6 +597,44 @@ const Panel = () => {
       })
     }
   }, [tokenSell?.address, tokenGet?.address])
+
+  const normalizeToken = (token: string) =>
+    token.toLowerCase() === NATIVE_ETH_LOWERCASE ? WETH_ADDRESS.toLowerCase() : token.toLowerCase()
+
+  const { data } = useAllPools()
+
+  useEffect(() => {
+    const tokenA =
+      tokenGet?.address && tokenSell?.address
+        ? normalizeToken(tokenGet?.address) < normalizeToken(tokenSell?.address)
+          ? tokenGet?.address
+          : tokenSell?.address
+        : zeroAddress
+    const tokenB =
+      tokenGet?.address && tokenSell?.address
+        ? normalizeToken(tokenGet?.address) < normalizeToken(tokenSell?.address)
+          ? tokenSell?.address
+          : tokenGet?.address
+        : zeroAddress
+    const poolAddress =
+      tokenA == tokenB
+        ? '0x0000000000000000000000000000000000000000'
+        : computePoolAddress({
+            tokenA: new Token(blast.id, tokenA, 18), // decimals here are arbitrary
+            tokenB: new Token(blast.id, tokenB, 18), // decimals here are arbitrary
+            poolDeployer: contractAddressList.pool_deployer,
+            initCodeHashManualOverride: INIT_CODE_HASH_MANUAL_OVERRIDE,
+          })
+
+    const availablePool = data?.find((pool: any) => pool?.id?.toLowerCase() === poolAddress.toLowerCase())
+
+    if (!tokenGet?.address || !tokenSell?.address || availablePool == null) {
+      if (isChartVisible) handleSwitch()
+      setDisableChart(true)
+    } else {
+      setDisableChart(false)
+    }
+  }, [tokenSell?.address, tokenGet?.address, data])
   // console.log(hash, status)
   return (
     <>
@@ -605,11 +650,10 @@ const Panel = () => {
                 <span className="text-shark-100 text-sm">
                   {/* {swapFee && swapFee != '0' && `${formatUnits(BigInt(swapFee), 4)}% fee`} */}
                 </span>
-                <div className="flex flex-row-reverse  items-center gap-3">
-                  <Switch active={showChart} setActive={handleSwitch} />
-                  <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
-                </div> 
-                <span onClick={handleSwitch} className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}></span>
+                <span
+                  onClick={handleSwitch}
+                  className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
+                ></span>
                 <ReloadIcon
                   className="text-shark-100 !cursor-pointer"
                   onClick={() => {
@@ -638,7 +682,9 @@ const Panel = () => {
                 />
                 <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
               </div>
-              <div className={`${toBN(priceImpact).abs().gt(3) ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}>
+              <div
+                className={`${toBN(priceImpact).abs().gt(3) ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}
+              >
                 <span className="icon-info text-base"></span>
                 This transaction apperars to have a price impact greater than 5%. Research risks before swapping.
               </div>
