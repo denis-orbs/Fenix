@@ -53,7 +53,7 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
     params.set('type', depositType)
     params.set('token0', token0)
     params.set('token1', token1)
-    router.push(pathname + '?' + params.toString())
+    router.push(pathname + '?' + params.toString(), { scroll:false })
   }, [token0, token1, depositType])
 
   const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
