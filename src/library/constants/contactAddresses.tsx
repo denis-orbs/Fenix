@@ -8,4 +8,5 @@ export const contractAddressList = {
   tick_math: '0x7d6359e546ebd1a1381291248d6050b9f1431ef4',
   pool_deployer: '0x5aCCAc55f692Ae2F065CEdDF5924C8f6B53cDaa8',
   gamma_uniproxy: '0x0fd7b24781c229a539b42010f3dbd8d236e6896b',
+  open_ocean: '0x6352a56caadC4F1E25CD6c75970Fa768A3304e64',
 }

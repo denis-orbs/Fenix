@@ -1,3 +1,5 @@
+const path = require('path')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -11,6 +13,22 @@ const nextConfig = {
 
   images: {
     domains: ['fenix-dex-api.vercel.app', 'fenix-api-testnet.vercel.app', 'cdn-images-1.medium.com', 'miro.medium.com'],
+  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/api/aggregator/:path*',
+  //       destination: 'https://open-api.openocean.finance/v4/:path*',
+  //     },
+  //   ]
+  // },
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      jsbi: path.resolve(__dirname, 'node_modules', 'jsbi', 'dist', 'jsbi-cjs.js'),
+    }
+
+    return config
   },
 }
 module.exports = nextConfig

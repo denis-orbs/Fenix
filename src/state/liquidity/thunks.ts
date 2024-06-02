@@ -1,8 +1,6 @@
 import getProtocolCoreClient, { getAlgebraClient } from '@/src/library/apollo/client/protocolCoreClient'
-import { GET_V2_PAIRS } from '@/src/library/apollo/queries/LIQUIDITY'
-import { queryAllForClient } from '@/src/library/apollo/utils'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { BasicPool, GammaVault, LiquidityTableElement, LiquidityV2PairDetails } from './types'
+import { BasicPool, GammaVault, LiquidityTableElement } from './types'
 import { Address } from 'viem'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
@@ -12,16 +10,20 @@ import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
 import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData, fetchv3Factories } from './reducer'
 import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
 import cache from 'memory-cache'
-import { BASIC_POOLS_LIST, POOLS_ID_LIST, POOLS_LIST, POOL_FRAGMENT } from '@/src/library/apollo/queries/pools'
-import { algebra_client } from '@/src/library/apollo/client'
-import { gql } from '@apollo/client'
-import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
-import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
-import { getWeb3Provider } from '@/src/library/utils/web3'
-import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
+import { POOLS_ID_LIST, POOLS_LIST } from '@/src/library/apollo/queries/pools'
 import { toBN } from '@/src/library/utils/numbers'
 import axios from 'axios'
+export const getV3PoolsIds = async () => {
+  const client = getAlgebraClient()
 
+  const data = await client.query({
+    query: POOLS_ID_LIST,
+    fetchPolicy: 'cache-first',
+  })
+  const poolsIds = data.data.pools.map((pool: any) => pool.id)
+  console.log(poolsIds)
+  return poolsIds
+}
 export const getLiquidityV2Pairs = createAsyncThunk('liquidity/getV2Pairs', async (address: Address) => {
   try {
     const client = getProtocolCoreClient()
