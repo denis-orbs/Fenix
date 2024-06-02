@@ -8,7 +8,7 @@ import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/li
 import { Token } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, zeroAddress } from 'viem'
 import { useAccount, useWriteContract } from 'wagmi'
 import { publicClient } from '@/src/library/constants/viemClient'
 import { CL_MANAGER_ABI } from '@/src/library/constants/abi'
@@ -188,10 +188,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   }
 
   const TvlTotal = ({ data }: any) => {
-    let ichitokens: IchiVault
-    if (data.liquidity === 'ichi') {
-      ichitokens = useIchiVaultsData(data?.id)
-    }
+    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
     return (
       <>
         <p className="text-xs text-white mb-1">

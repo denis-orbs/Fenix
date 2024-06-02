@@ -13,7 +13,7 @@ import toast from 'react-hot-toast'
 import { publicClient } from '@/src/library/constants/viemClient'
 import { CL_MANAGER_ABI } from '@/src/library/constants/abi'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, zeroAddress } from 'viem'
 import { useAccount, useWriteContract } from 'wagmi'
 import { MAX_INT } from '@/src/library/constants/misc'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
@@ -115,10 +115,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
   const handlerSwitch = () => {
     setshowtoken0(!showtoken0)
   }
-  let ichitokens: IchiVault
-  if (row.liquidity === 'ichi') {
-    ichitokens = useIchiVaultsData(row?.id)
-  }
+  const ichitokens = useIchiVaultsData(row.liquidity === 'ichi' ? row?.id : zeroAddress)
 
   const handleClaim = (id: string) => {
     const multi = [
