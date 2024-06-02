@@ -29,7 +29,7 @@ const Liquidity = () => {
       if (currentTab === 'BLUE CHIPS') {
         const combinedPools = pools.filter((pool: BasicPool) => BLUE_CHIPS_POOLS.includes(pool.id.toLowerCase()))
         setFilteredPools(combinedPools)
-      } else if (currentTab === 'LRTS') {
+      } else if (currentTab === 'LST/LRT') {
         const combinedPools = pools.filter((pool: BasicPool) => LRTS_POOLS.includes(pool.id.toLowerCase()))
         setFilteredPools(combinedPools)
       } else if (currentTab === 'STABLES') {
