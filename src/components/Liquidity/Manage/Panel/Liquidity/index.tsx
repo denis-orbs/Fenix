@@ -83,9 +83,9 @@ const Manage = ({}: {}) => {
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
-  const [lpValue, setLpValue] = useState(0)
-  const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
-  const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
+  const [lpValue, setLpValue] = useState("0")
+  const [firstAllowance, setFirstAllowance] = useState(0)
+  const [secondAllowance, setSecondAllowance] = useState(0)
   const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
 
   const [withdrawPercent, setWithdrawPercent] = useState(50)
@@ -110,19 +110,19 @@ const Manage = ({}: {}) => {
   }
 
   const asyncGetAllowance = async (token1: Address, token2: Address) => {
-    const allowanceFirst: any = await getTokenAllowance(
+    const _allowanceFirst: any = await getTokenAllowance(
       token1,
       account.address as Address,
       contractAddressList.cl_manager as Address
     )
-    const allowanceSecond: any = await getTokenAllowance(
+    const _allowanceSecond: any = await getTokenAllowance(
       token2,
       account.address as Address,
       contractAddressList.cl_manager as Address
     )
 
-    setShouldApproveFirst(allowanceFirst == '0')
-    setShouldApproveSecond(allowanceSecond == '0')
+    setFirstAllowance(_allowanceFirst)
+    setSecondAllowance(_allowanceSecond)
   }
   const getList = async (token0: Address, token1: Address) => {
     try {
@@ -154,7 +154,7 @@ const Manage = ({}: {}) => {
     setPositionData(data)
     asyncGetAllowance(data.token0, data.token1)
     getList(data.token0, data.token1)
-    setLpValue(Number(BigInt(data.liquidity) / BigInt(2)))
+    setLpValue((BigInt(data.liquidity) / BigInt(2)).toString())
     // console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
   }
 
@@ -188,12 +188,14 @@ const Manage = ({}: {}) => {
     if (optionActive != 'WITHDRAW') return
 
     setLpValue(
-      positionData.liquidity == 0
-        ? 0
-        : Number(
+      withdrawPercent == 100 ?
+          BigInt(positionData.liquidity).toString()
+      : positionData.liquidity == 0
+        ? "0"
+        : (
             (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
               BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-          )
+          ).toString()
     )
     setFirstValue(
       formatNumber(
@@ -614,12 +616,13 @@ const Manage = ({}: {}) => {
           setSecondValue={setSecondValue}
           onTokenValueChange={handleOnTokenValueChange}
           option={optionActive}
+          hideTokenSwap={true}
         />
       </div>
 
       <ApproveButtons
-        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : shouldApproveFirst}
-        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : shouldApproveSecond}
+        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : Number(firstValue)*(10**firstToken.decimals) >= Number(firstAllowance)}
+        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : Number(secondValue)*(10**secondToken.decimals) >= Number(secondAllowance)}
         token0={firstToken}
         token1={secondToken}
         handleApprove={handleApprove}

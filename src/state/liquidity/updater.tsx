@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppThunkDispatch } from '..'
-import { getAllPools, getConcentratedPools } from './thunks'
+import { getAllPools, getConcentratedPools, getGammaVaults } from './thunks'
 import { getLiquidityTableElements, getLiquidityV2Pairs } from './thunks'
 import { useAccount } from 'wagmi'
 
@@ -17,6 +17,7 @@ export default function LiquidityUpdater() {
 
   useEffect(() => {
     thunkDispatch(getAllPools())
+    thunkDispatch(getGammaVaults())
   }, [thunkDispatch])
 
   return null

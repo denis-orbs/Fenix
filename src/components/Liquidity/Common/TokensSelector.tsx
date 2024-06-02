@@ -58,6 +58,7 @@ const TokensSelector = ({
   setSecondValue,
   onTokenValueChange,
   option,
+  hideTokenSwap = false
 }: {
   firstToken: IToken
   secondToken: IToken
@@ -69,6 +70,7 @@ const TokensSelector = ({
   setSecondValue: (value: string) => void
   onTokenValueChange: (arg0: any, token: IToken) => void
   option?: string
+  hideTokenSwap?: boolean
 }) => {
   return (
     <div className="flex flex-col gap-1 mb-2 relative">
@@ -81,11 +83,15 @@ const TokensSelector = ({
         onTokenValueChange={onTokenValueChange}
         option={option}
       />
-      <Separator
-        onClick={() => {
-          switchTokensValues(firstToken, secondToken, setFirstToken, setSecondToken)
-        }}
-      />
+      {
+        hideTokenSwap ? (<></>) : (
+          <Separator
+            onClick={() => {
+              switchTokensValues(firstToken, secondToken, setFirstToken, setSecondToken)
+            }}
+          />
+        )
+      }
       <TokenSelector
         token={secondToken}
         value={secondValue}

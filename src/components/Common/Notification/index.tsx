@@ -110,7 +110,7 @@ const Notification = ({
                     href={`https://blastscan.io/tx/${txHash}`}
                     target="_blank"
                   >
-                    View In Explorer
+                    View in block explorer
                   </Link>
                 </>
               )}

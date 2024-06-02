@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+/* eslint-disable max-len */
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -53,7 +54,7 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
     params.set('type', depositType)
     params.set('token0', token0)
     params.set('token1', token1)
-    router.push(pathname + '?' + params.toString(), { scroll:false })
+    router.push(pathname + '?' + params.toString(), { scroll: false })
   }, [token0, token1, depositType])
 
   const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
@@ -90,7 +91,7 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
     setDefaultPairs([searchParamToken0, searchParamToken1])
   }, [])
   useEffect(() => {
-    if(disableChart) {
+    if (disableChart) {
       setChart(false)
       setIsChartVisible(false)
     }
@@ -141,7 +142,10 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
           <div className="flex items-center justify-between mb-[25px] font-semibold">
             <h1 className="text-lg md:text-xl text-white font-medium">New Position</h1>
             <div className="flex items-center gap-[13px]">
-            <span onClick={handleSwitch} className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}></span>
+              <span
+                onClick={handleSwitch}
+                className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
+              ></span>
               {/* <div className="flex items-center gap-[9px] h-10">
                 <Switch active={activeSwitch} setActive={handlerSwitch} />
                 <span className="text-shark-100 text-xs leading-normal">Concentrated</span>

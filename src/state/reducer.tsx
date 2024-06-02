@@ -6,6 +6,7 @@ import vote from './vote/reducer'
 import user from './user/reducer'
 import notifications from './notifications/reducer'
 import apr from './apr/reducer'
+import referrals from './referrals/reducer'
 
 const reducer = combineReducers({
   user,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   vote,
   notifications,
   apr,
+  referrals,
 })
 
 export default reducer
