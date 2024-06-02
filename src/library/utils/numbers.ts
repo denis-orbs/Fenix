@@ -138,3 +138,10 @@ export const parseCurrency = (formattedValue: string): BigNumber => {
     return new BigNumber(formattedValue.replace(',', ''))
   }
 }
+export function daysFromNow(epochTime: number) {
+  const secondsInADay = 86400
+  const currentEpochTime = Math.floor(Date.now() / 1000) // Current time in epoch seconds
+  const differenceInSeconds = epochTime - currentEpochTime
+  const differenceInDays = differenceInSeconds / secondsInADay
+  return differenceInDays // Using Math.floor to round down to the nearest whole number of days
+}

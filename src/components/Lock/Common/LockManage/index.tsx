@@ -18,11 +18,11 @@ import { LockElement } from '@/src/library/structures/lock/LockElement'
 import { useAccount, useWriteContract } from 'wagmi'
 import { createLock, getIdVeFNXLockPositions, increaseLock } from '@/src/library/web3/LockManagment'
 import { fetchTokenBalance, getTokenBalance } from '@/src/library/hooks/web3/useTokenBalance'
-import { FNX_ADDRESS } from '@/src/library/Constants'
+import votingEscrowABI from '@/src/library/web3/abis/veFNX'
 import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 import { Address } from 'viem'
 import { FENIX_ADDRESS, VOTING_ESCROW_ADDRESS } from '@/src/library/constants/addresses'
-import { formatNumber, fromWei, toWei } from '@/src/library/utils/numbers'
+import { daysFromNow, formatAmount, formatNumber, fromWei, toWei } from '@/src/library/utils/numbers'
 import { waitForTransactionReceipt } from '@wagmi/core'
 import { wagmiConfig } from '@/src/app/layout'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
@@ -34,13 +34,9 @@ import { getTokenAllowance } from '@/src/library/web3/common/TokenManagement'
 interface pageProps {
   id: Number
 }
-const OPTIONS = [
-  { label: '7D', value: 7 },
-  { label: '3M', value: 90 },
-  { label: '6M', value: 180 },
-]
+const OPTIONS = ['7D', '3M', '6M']
 enum ButtonState {
-  POOL_NOT_AVAILABLE = 'Pool Not Available',
+  TRANSFER = 'Transfer Position',
   ENTER_AMOUNT = 'Enter Amount',
   APPROVAL_REQUIRED = 'Approve FNX',
   APPROVING = 'Approving...',
@@ -48,11 +44,12 @@ enum ButtonState {
   INSUFFICIENT_BALANCE = 'Insufficient Balance',
   WAITING_CONFIRMATION = 'Waiting Confirmation',
   PRICE_IMPACT_ALERT = 'Price Impact Too High. Swap Anyway',
-  CREATE_LOCK = 'Create Lock',
+  INCREMENT_AMOUNT = 'Increase Amount',
+  INCREMENT_TIME = 'Increase Time',
   LOADING = 'Loading...',
 }
 const LockManage: FC<pageProps> = ({ id }) => {
-  const [changeValue, setChangeValue] = useState<number>(0)
+  const [changeValue, setChangeValue] = useState<number>(7)
   const [currentTab, setCurrentTab] = useState('ADD')
   const [openModal, setOpenModal] = useState(false)
   const [tokenBalance, settokenBalance] = useState<string>('0')
@@ -61,8 +58,12 @@ const LockManage: FC<pageProps> = ({ id }) => {
   const [activeVote, setActiveVote] = useState(false)
   const [lock, setLock] = useState<LockElement>()
   const [selectedOption, setSelectedOption] = useState<number>(0)
-  const [currentButtonState, setCurrentButtonState] = useState(ButtonState.APPROVAL_REQUIRED)
+  const [currentButtonState, setCurrentButtonState] = useState(ButtonState.ENTER_AMOUNT)
+  const [extendCurrentButtonState, setextendCurrentButtonState] = useState(ButtonState.ENTER_AMOUNT)
+  const [transferCurrentButtonState, settransferCurrentButtonState] = useState(ButtonState.ENTER_AMOUNT)
   const [tokenAllowance, settokenAllowance] = useState<string>('0')
+
+  const [inputAddress, setinputAddress] = useState('')
   const addNotification = useNotificationAdderCallback()
   const { writeContractAsync } = useWriteContract()
 
@@ -75,12 +76,26 @@ const LockManage: FC<pageProps> = ({ id }) => {
     openModal ? setOpenModal(false) : setOpenModal(true)
   }
 
-  const OPTIONS_TAB = ['Add', 'Extend', 'Merge', 'Split', 'Transfer']
+  const OPTIONS_TAB = ['Add', 'Extend', 'Transfer']
 
-  const handleNFTTX = async (currentTab: string, inputAmount: string, currentId: number, tokenAllowance: string) => {
+  const handleNFTTX = async (
+    currentTab: string,
+    inputAmount: string,
+    currentId: number,
+    tokenAllowance: string,
+    changeValue: number,
+    toAddress: string
+  ) => {
     try {
-      console.log(currentTab, 'inn')
-      if (chainId) {
+      console.log(
+        (Number(lock?.veNFTInfo.lockEnd) - Math.floor(Date.now() / 1000)) / 86400,
+        changeValue,
+        inputAmount,
+        currentId,
+        currentTab,
+        'inn'
+      )
+      if (chainId && address) {
         if (currentTab === 'ADD') {
           setCurrentButtonState(ButtonState.LOADING)
           if (Number(tokenAllowance) < Number(inputAmount)) {
@@ -89,60 +104,148 @@ const LockManage: FC<pageProps> = ({ id }) => {
               toWei(inputAmount).toString()
             )
           } else {
-            const hash = await increaseLock(currentId, BigInt(inputAmount), chainId)
-            const transactionReceipt = await waitForTransactionReceipt(wagmiConfig, { hash: hash, confirmations: 1 })
-            console.log('inn')
+            writeContractAsync(
+              {
+                abi: votingEscrowABI,
+                address: VOTING_ESCROW_ADDRESS[chainId] as Address,
+                functionName: 'deposit_for',
+                args: [currentId, toWei(inputAmount).toString()],
+              },
+              {
+                onSuccess: async (x) => {
+                  setCurrentButtonState(ButtonState.LOADING)
+                  const publicClient = getPublicClient(wagmiConfig)
+                  const transaction = await publicClient?.waitForTransactionReceipt({ hash: x })
+
+                  addNotification({
+                    id: crypto.randomUUID(),
+                    createTime: new Date().toISOString(),
+                    message: `Increased Lock Amount successfully.`,
+                    notificationType: NotificationType.SUCCESS,
+                    txHash: transaction?.transactionHash,
+                    notificationDuration: NotificationDuration.DURATION_5000,
+                  })
+                  asyncGetAllowance()
+                  setCurrentButtonState(ButtonState.INCREMENT_AMOUNT)
+                },
+                onError: (error) => {
+                  setCurrentButtonState(ButtonState.INCREMENT_AMOUNT)
+                  if (error?.message?.includes('ERC20: insufficient allowance')) {
+                    addNotification({
+                      id: crypto.randomUUID(),
+                      createTime: new Date().toISOString(),
+                      message: `ERC20: insufficient allowance`,
+                      notificationType: NotificationType.ERROR,
+                      txHash: '',
+                      notificationDuration: NotificationDuration.DURATION_5000,
+                    })
+                  } else {
+                    addNotification({
+                      id: crypto.randomUUID(),
+                      createTime: new Date().toISOString(),
+                      message: `Transaction Failed.`,
+                      notificationType: NotificationType.ERROR,
+                      txHash: '',
+                      notificationDuration: NotificationDuration.DURATION_5000,
+                    })
+                  }
+                },
+              }
+            )
           }
         }
-      }
+        if (currentTab == 'EXTEND') {
+          writeContractAsync(
+            {
+              abi: votingEscrowABI,
+              address: VOTING_ESCROW_ADDRESS[chainId] as Address,
+              functionName: 'increase_unlock_time',
+              args: [currentId, (changeValue * 86400).toString()],
+            },
+            {
+              onSuccess: async (x) => {
+                setextendCurrentButtonState(ButtonState.LOADING)
+                const publicClient = getPublicClient(wagmiConfig)
+                const transaction = await publicClient?.waitForTransactionReceipt({ hash: x })
 
-      // setCurrentButtonState(ButtonState.LOADING)
-      // const hash = await increaseLock(amount, duration, chainId)
-      // const transactionReceipt = await waitForTransactionReceipt(wagmiConfig, { hash: hash, confirmations: 1 })
-      // // wait for 2 secs for transaction to get processed
-      // console.log('transactionReceipt', hash, transactionReceipt)
-      // await new Promise((resolve) => setTimeout(resolve, 10000))
-      // if (transactionReceipt.status === 'success') {
-      //   addNotification({
-      //     id: crypto.randomUUID(),
-      //     createTime: new Date().toISOString(),
-      //     message: `Created Lock Successfully`,
-      //     notificationType: NotificationType.SUCCESS,
-      //     txHash: transactionReceipt?.transactionHash,
-      //     notificationDuration: NotificationDuration.DURATION_5000,
-      //   })
-      // } else {
-      //   addNotification({
-      //     id: crypto.randomUUID(),
-      //     createTime: new Date().toISOString(),
-      //     message: `Transaction failed`,
-      //     notificationType: NotificationType.ERROR,
-      //     txHash: transactionReceipt?.transactionHash,
-      //     notificationDuration: NotificationDuration.DURATION_5000,
-      //   })
-      // }
-      // setCurrentButtonState(ButtonState.CREATE_LOCK)
+                addNotification({
+                  id: crypto.randomUUID(),
+                  createTime: new Date().toISOString(),
+                  message: `Increased Lock Time successfully.`,
+                  notificationType: NotificationType.SUCCESS,
+                  txHash: transaction?.transactionHash,
+                  notificationDuration: NotificationDuration.DURATION_5000,
+                })
+                asyncGetAllowance()
+                setextendCurrentButtonState(ButtonState.INCREMENT_TIME)
+              },
+              onError: (error) => {
+                setextendCurrentButtonState(ButtonState.INCREMENT_TIME)
+
+                if (error?.message?.includes('182 days max'))
+                  addNotification({
+                    id: crypto.randomUUID(),
+                    createTime: new Date().toISOString(),
+                    message: `New unlock time cannot be more than 182 days`,
+                    notificationType: NotificationType.ERROR,
+                    txHash: '',
+                    notificationDuration: NotificationDuration.DURATION_5000,
+                  })
+              },
+            }
+          )
+        }
+        if (currentTab == 'TRANSFER') {
+          settransferCurrentButtonState(ButtonState.LOADING)
+          writeContractAsync(
+            {
+              abi: votingEscrowABI,
+              address: VOTING_ESCROW_ADDRESS[chainId] as Address,
+              functionName: 'transferFrom',
+              args: [address, toAddress, currentId],
+            },
+            {
+              onSuccess: async (x) => {
+                settransferCurrentButtonState(ButtonState.LOADING)
+                const publicClient = getPublicClient(wagmiConfig)
+                const transaction = await publicClient?.waitForTransactionReceipt({ hash: x })
+
+                addNotification({
+                  id: crypto.randomUUID(),
+                  createTime: new Date().toISOString(),
+                  message: `Transfered successfully.`,
+                  notificationType: NotificationType.SUCCESS,
+                  txHash: transaction?.transactionHash,
+                  notificationDuration: NotificationDuration.DURATION_5000,
+                })
+                asyncGetAllowance()
+                settransferCurrentButtonState(ButtonState.TRANSFER)
+              },
+              onError: (error) => {
+                settransferCurrentButtonState(ButtonState.TRANSFER)
+                addNotification({
+                  id: crypto.randomUUID(),
+                  createTime: new Date().toISOString(),
+                  message: `Transaction Failed`,
+                  notificationType: NotificationType.ERROR,
+                  txHash: '',
+                  notificationDuration: NotificationDuration.DURATION_5000,
+                })
+              },
+            }
+          )
+        }
+      }
     } catch (error: any) {
-      if (error?.message?.includes('ERC20: insufficient allowance'))
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `ERC20: insufficient allowance`,
-          notificationType: NotificationType.ERROR,
-          txHash: '',
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-      setCurrentButtonState(ButtonState.CREATE_LOCK)
+      setCurrentButtonState(ButtonState.INCREMENT_TIME)
     }
   }
   const asyncGetAllowance = async () => {
-    console.log('inn1')
     const allowanceFirst: any = await getTokenAllowance(
       address as Address,
       chainId ? (FENIX_ADDRESS[chainId] as Address) : (FENIX_ADDRESS[FALLBACK_CHAIN_ID] as Address),
       chainId ? (VOTING_ESCROW_ADDRESS[chainId] as Address) : (VOTING_ESCROW_ADDRESS[FALLBACK_CHAIN_ID] as Address)
     )
-    console.log(allowanceFirst, 'inn2')
     settokenAllowance(fromWei(allowanceFirst.toString()))
   }
   const handleApprove = async (token: Address, amount: string) => {
@@ -169,7 +272,7 @@ const LockManage: FC<pageProps> = ({ id }) => {
             txHash: transaction?.transactionHash,
             notificationDuration: NotificationDuration.DURATION_5000,
           })
-          setCurrentButtonState(ButtonState.CREATE_LOCK)
+          setCurrentButtonState(ButtonState.INCREMENT_AMOUNT)
 
           asyncGetAllowance()
         },
@@ -187,19 +290,36 @@ const LockManage: FC<pageProps> = ({ id }) => {
       }
     )
   }
+  const convertDaysToMonthsAndDays = (days: number) => {
+    const daysInMonth = 30
+    const months = Math.floor(days / daysInMonth)
+    const remainingDays = days % daysInMonth
+
+    return { month: months, day: remainingDays }
+  }
+  const calculateFutureDate = (expiryEpoch: number, daysFromNow: number) => {
+    const W = 60 * 60 * 24 * 7 * 1000
+    const expiryDate = new Date(expiryEpoch * 1000) // Convert from seconds to milliseconds
+    const futureDate = new Date(expiryDate)
+    futureDate.setDate(expiryDate.getDate() + daysFromNow)
+
+    const day = String(futureDate.getDate()).padStart(2, '0')
+    const month = String(futureDate.getMonth() + 1).padStart(2, '0') // Months are zero-based
+    const year = futureDate.getFullYear()
+
+    return `${day}/${month}/${year}`
+  }
 
   useEffect(() => {
     const loadCurrentLocks = async () => {
-      // alert('started')
       try {
         if (chainId && address) {
           const resp = await getIdVeFNXLockPositions(id, chainId)
-          console.log('hittt', resp)
           const tokenbalance = (await fetchTokenBalance(
             chainId ? (FENIX_ADDRESS[chainId] as Address) : (FENIX_ADDRESS[FALLBACK_CHAIN_ID] as Address),
             address
           )) as bigint
-          console.log(tokenbalance, 'tokenbalance')
+          console.log(resp, fromWei(BigInt(tokenbalance).toString()), 'tokenbalance')
           settokenBalance(fromWei(BigInt(tokenbalance).toString()))
           setLock(resp)
         }
@@ -208,10 +328,9 @@ const LockManage: FC<pageProps> = ({ id }) => {
       }
     }
     loadCurrentLocks()
+    asyncGetAllowance()
     if (currentTab === 'MERGE' || currentTab === 'SPLIT') setOpenModalMergeSplit(true)
   }, [address, chainId, currentTab, id])
-
-  console.log('lockk', lock)
 
   return (
     <div className={`w-full flex justify-center flex-col items-center    mt-28 xl:mt-20`}>
@@ -253,16 +372,35 @@ const LockManage: FC<pageProps> = ({ id }) => {
                 </>
               )}
               <ActiveVote handlerChange={handlerChange} lock={lock} />
-              <SelectVote
+              {/* <SelectVote
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 activeVote={activeVote}
                 setActiveVote={setActiveVote}
                 setlock={setLock}
-              />
+              /> */}
             </div>
             {/* active vote */}
-            {currentTab === 'TRANSFER' && <Transfer />}
+            {currentTab === 'TRANSFER' && (
+              <>
+                {' '}
+                <div className="flex flex-col relative">
+                  <div className="rotate-90 mx-auto bg-shark-400 p-1 w-8 h-8 rounded-sm bg-opacity-40 my-1">
+                    <span className="icon-arrow text-2xl   flex justify-center items-center   text-gradient"></span>
+                  </div>
+                  <div className="p-8 exchange-box-x1">
+                    <p className="text-sm text-white  mb-2">Transfer to</p>
+                    <input
+                      type="text"
+                      placeholder="0x"
+                      className="w-full bg-shark-400 p-3 rounded-lg outline-none bg-opacity-40 text-shark-100 border border-shark-300"
+                      value={inputAddress}
+                      onChange={(e) => setinputAddress(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
             {currentTab === 'MERGE' && (
               <div className="mx-auto rotate-90 bg-shark-400 bg-opacity-40 p-1 rounded-l-lg border border-shark-300">
                 <span className="icon-swap mx-auto rotate-90 text-2xl text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
@@ -312,11 +450,8 @@ const LockManage: FC<pageProps> = ({ id }) => {
                   </div>
 
                   <div className="xl:w-3/5 w-full flex flex-col gap-2">
-                    <p
-                      className="text-xs text-shark-100 text-right"
-                      onClick={() => setinputAmount(Number(tokenBalance).toFixed(2).toString())}
-                    >
-                      <span className="icon-wallet"></span> Available: {formatNumber(Number(tokenBalance), 2)} FNX
+                    <p className="text-xs text-shark-100 text-right" onClick={() => setinputAmount(tokenBalance)}>
+                      <span className="icon-wallet"></span> Available: {parseFloat(tokenBalance).toFixed(2)} FNX
                     </p>
                     <div>
                       <input
@@ -324,7 +459,14 @@ const LockManage: FC<pageProps> = ({ id }) => {
                         className="w-full bg-shark-400 p-3 rounded-lg outline-none bg-opacity-40 text-shark-100 border border-shark-300"
                         placeholder="0"
                         value={inputAmount}
-                        onChange={(e) => setinputAmount(e.target.value)}
+                        onChange={(e) => {
+                          setinputAmount(e.target.value)
+                          Number(e.target.value) > 0
+                            ? Number(tokenAllowance) < Number(e.target.value)
+                              ? setCurrentButtonState(ButtonState.APPROVAL_REQUIRED)
+                              : setCurrentButtonState(ButtonState.INCREMENT_AMOUNT)
+                            : setCurrentButtonState(ButtonState.ENTER_AMOUNT)
+                        }}
                       />
                       <input
                         type="button"
@@ -338,7 +480,7 @@ const LockManage: FC<pageProps> = ({ id }) => {
                         className="absolute right-5 button-tertiary w-[41px] border border-shark-300 rounded-full text-white text-xs p-1 mt-3 me-4"
                         value={'Max'}
                         placeholder="max"
-                        onClick={() => setinputAmount(Number(tokenBalance).toString())}
+                        onClick={() => setinputAmount(tokenBalance)}
                       />
                     </div>
                   </div>
@@ -370,7 +512,7 @@ const LockManage: FC<pageProps> = ({ id }) => {
             {currentTab === 'EXTEND' && (
               <>
                 {' '}
-                <div className="flex flex-col xl:flex-row items-center gap-3 justify-center mt-5 exchange-box-x1 p-5">
+                {/* <div className="flex flex-col xl:flex-row items-center gap-3 justify-center mt-5 exchange-box-x1 p-5">
                   <div className="xl:w-2/5 w-full flex flex-col gap-2">
                     <p className="text-xs  text-white">Amount to lock</p>
                     <div className="flex text-white gap-3 items-center bg-shark-400  justify-between p-3 border border-shark-300 rounded-xl bg-opacity-40 ">
@@ -409,28 +551,31 @@ const LockManage: FC<pageProps> = ({ id }) => {
                         className="absolute right-5 button-tertiary w-[41px] border border-shark-300 rounded-full text-white text-xs p-1 mt-3 me-4"
                         value={'Max'}
                         placeholder="max"
-                        onClick={() => setinputAmount(Number(tokenBalance).toFixed(2).toString())}
+                        onClick={() => setinputAmount(tokenBalance)}
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="flex flex-col gap-3  mt-5 exchange-box-x1 p-5">
                   <div className="text-sm flex justify-between">
                     <p className="text-white text-sm text-left">Expires in</p>
-                    <div className="text-shark-100 flex gap-2 text-xs">{OPTIONS[selectedOption].label}</div>
+                    <div className="text-shark-100 flex gap-2">{`${convertDaysToMonthsAndDays(changeValue).month}M ${convertDaysToMonthsAndDays(changeValue).day}D`}</div>
+                    {/* <p>{`${convertDaysToMonthsAndDays(changeValue).month}M`}</p>
+                    <p>{`${convertDaysToMonthsAndDays(changeValue).day}D`}</p> */}
                   </div>
                   <div>
                     <InputRange
-                      step={1}
-                      max={OPTIONS.length - 1}
-                      min={0}
-                      value={selectedOption}
-                      onChange={(value) => handleOptionChange(value as number)}
+                      step={7}
+                      max={182}
+                      min={7}
+                      height={7}
+                      value={changeValue}
+                      onChange={setChangeValue}
                       disabled={false}
                     />
                     <div className="text-shark-100 flex  text-sm justify-between ">
                       {OPTIONS.map((option, index) => {
-                        return <div key={index}>{option.label}</div>
+                        return <div key={index}>{option}</div>
                       })}
                     </div>
                   </div>
@@ -443,11 +588,45 @@ const LockManage: FC<pageProps> = ({ id }) => {
             {(currentTab === 'ADD' || currentTab === 'MERGE') && (
               <div className="exchange-box-x1 xl:h-[60px] p-5 mt-5 flex justify-between items-center text-white text-xs">
                 <div>
-                  <p>Voting Power</p>
+                  <p>New Voting Power</p>
                 </div>
                 <div>
                   <p className="p-2  border flex items-center bg-shark-400 border-shark-300 rounded-lg bg-opacity-40">
-                    0.00 veFNX
+                    {Math.floor(Date.now() / 1000) < Number(lock?.veNFTInfo.lockEnd.toString())
+                      ? (
+                          ((Number(inputAmount) + Number(fromWei(lock?.veNFTInfo.amount.toString()))) *
+                            daysFromNow(Number(lock?.veNFTInfo.lockEnd.toString()))) /
+                          182
+                        ).toFixed(2)
+                      : '0.00'}{' '}
+                    veFNX
+                  </p>
+                </div>
+              </div>
+            )}
+            {currentTab === 'EXTEND' && (
+              <div className="exchange-box-x1 xl:h-[60px] p-5 mt-5 flex justify-between items-center text-white text-xs">
+                <div>
+                  <p>New Voting Power</p>
+                </div>
+                <div>
+                  <p className="p-2  border flex items-center bg-shark-400 border-shark-300 rounded-lg bg-opacity-40">
+                    {Math.floor(Date.now() / 1000) < Number(lock?.veNFTInfo.lockEnd.toString())
+                      ? (
+                          (Number(fromWei(lock?.veNFTInfo.amount.toString())) *
+                            (daysFromNow(Number(lock?.veNFTInfo.lockEnd.toString())) + changeValue)) /
+                          182
+                        ).toFixed(2)
+                      : '0.00'}{' '}
+                    veFNX
+                  </p>
+                </div>
+                <div>
+                  <p>New Expiry Data</p>
+                </div>
+                <div>
+                  <p className="p-2  border flex items-center bg-shark-400 border-shark-300 rounded-lg bg-opacity-40">
+                    {calculateFutureDate(Number(lock?.veNFTInfo.lockEnd.toString()), changeValue)}
                   </p>
                 </div>
               </div>
@@ -468,12 +647,22 @@ const LockManage: FC<pageProps> = ({ id }) => {
               <Button
                 className="w-full"
                 variant="tertiary"
-                onClick={() => handleNFTTX(currentTab, inputAmount, Number(lock?.veNFTInfo.id), tokenAllowance)}
+                disabled={currentTab === 'ADD' && Number(inputAmount) <= 0}
+                onClick={() =>
+                  handleNFTTX(
+                    currentTab,
+                    inputAmount,
+                    Number(lock?.veNFTInfo.id),
+                    tokenAllowance,
+                    changeValue + (Number(lock?.veNFTInfo.lockEnd) - Math.floor(Date.now() / 1000)) / 86400,
+                    inputAddress
+                  )
+                }
               >
-                {currentTab === 'EXTEND' && <>Increment Position</>}
-                {(currentTab === 'ADD' || currentTab === 'MERGE') && <>Increment Position</>}
-                {currentTab === 'SPLIT' && <>Split Position</>}
-                {currentTab === 'TRANSFER' && <>Transfer Position</>}
+                {currentTab === 'EXTEND' && <>{extendCurrentButtonState}</>}
+                {(currentTab === 'ADD' || currentTab === 'MERGE') && <>{currentButtonState}</>}
+                {/* {currentTab === 'SPLIT' && <>Split Position</>} */}
+                {currentTab === 'TRANSFER' && <>{transferCurrentButtonState}</>}
               </Button>
             </div>
           </div>
