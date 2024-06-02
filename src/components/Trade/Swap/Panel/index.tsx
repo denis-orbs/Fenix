@@ -197,7 +197,12 @@ const Panel = () => {
 
   // function to make the swap
   const slippageValue = slippage == 'Auto' || !slippage ? 100 - 0.5 : 100 - slippage
-
+  const nativeWETH_ETH =
+    tokenGet?.address?.toLowerCase() === NATIVE_ETH.toLowerCase() &&
+    tokenSell?.address?.toLowerCase() == WETH_ADDRESS.toLowerCase()
+  const nativeETH_WETH =
+    tokenSell?.address?.toLowerCase() === NATIVE_ETH.toLowerCase() &&
+    tokenGet?.address?.toLowerCase() == WETH_ADDRESS.toLowerCase()
   // const amountOutMinimum = toBN(Number(parseUnits(forValue, tokenGet.decimals)))
   //   .multipliedBy(slippageValue)
   //   .dividedBy(100)
@@ -234,6 +239,8 @@ const Panel = () => {
         handleTransactionError(error.message)
       }
       handleTransactionError(error)
+    } finally {
+      setLoadingSwap(false)
     }
   }
 
@@ -303,6 +310,8 @@ const Panel = () => {
 
   useEffect(() => {
     if ((approvalData.isLoading && !tokenSellIsNative) || swapQuoteLoading || loadingSwap) {
+      console.log(swapQuoteLoading)
+      console.log(loadingSwap)
       setCurrentButtonState(ButtonState.LOADING)
     } else if (!swapAvailable) {
       setCurrentButtonState(ButtonState.POOL_NOT_AVAILABLE)
@@ -330,6 +339,8 @@ const Panel = () => {
     tokenSell.decimals,
     tokenSellUserBalance,
     swapQuoteLoading,
+    loadingSwap,
+    tokenSellIsNative,
     priceImpact,
     swapAvailable,
     approvalData.isLoading,
@@ -364,12 +375,6 @@ const Panel = () => {
       setIsChartVisible((prevState) => !prevState)
     }
   }
-  const nativeWETH_ETH =
-    tokenGet?.address?.toLowerCase() === NATIVE_ETH.toLowerCase() &&
-    tokenSell?.address?.toLowerCase() == WETH_ADDRESS.toLowerCase()
-  const nativeETH_WETH =
-    tokenSell?.address?.toLowerCase() === NATIVE_ETH.toLowerCase() &&
-    tokenGet?.address?.toLowerCase() == WETH_ADDRESS.toLowerCase()
 
   useEffect(() => {
     if (nativeETH_WETH) {
@@ -395,7 +400,7 @@ const Panel = () => {
         price: price,
       })
     }
-  }, [tokenSell?.address, tokenGet?.address])
+  }, [tokenSell?.address, tokenGet?.address, tokenGet?.price, nativeETH_WETH, nativeWETH_ETH])
 
   const normalizeToken = (token: string) =>
     token.toLowerCase() === NATIVE_ETH_LOWERCASE ? WETH_ADDRESS.toLowerCase() : token.toLowerCase()
@@ -479,12 +484,15 @@ const Panel = () => {
         }, 50)
       } catch (error) {
       } finally {
+        setTimeout(() => {
+          setSwapQuoteLoading(false)
+        }, 50)
       }
     }
     fetchData()
     // controller.abort()
-    // const interval = setInterval(fetchData, 10000)
-    // return () => clearInterval(interval)
+    const interval = setInterval(fetchData, 10000)
+    return () => clearInterval(interval)
     return () => {
       controller.abort()
       setSwapQuoteLoading(false)
