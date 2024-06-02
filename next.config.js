@@ -14,14 +14,14 @@ const nextConfig = {
   images: {
     domains: ['fenix-dex-api.vercel.app', 'fenix-api-testnet.vercel.app', 'cdn-images-1.medium.com', 'miro.medium.com'],
   },
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/api/aggregator/:path*',
-  //       destination: 'https://open-api.openocean.finance/v4/:path*',
-  //     },
-  //   ]
-  // },
+  async rewrites() {
+    return [
+      {
+        source: '/api/tokens',
+        destination: 'https://fenix-dex-api.vercel.app/token-prices',
+      },
+    ]
+  },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
