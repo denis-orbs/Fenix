@@ -75,7 +75,7 @@ export const DATA_ROW = [
 ]
 // export const OPTIONS_FILTER = ['All Pools', 'Stable', 'Volatile', 'Concentrated']
 
-export const OPTIONS_FILTER = ['All', 'Blue Chips', 'LRTs', 'Stables', 'Memes', 'Blast Native']
+export const OPTIONS_FILTER = ['All', 'Blue Chips', 'LST/LRT', 'Stables', 'Memes', 'Blast Native']
 
 export const MEMES_POOLS = [
   '0x8e57e61b7524a2f56fd01bbfe5de9bb96ed186b4',
