@@ -1,5 +1,5 @@
 'use client'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { TableSkeleton, TableBody, TableHead, PaginationMobile } from '@/src/components/UI'
 import { Pagination } from '@/src/components/UI'
 import RowReward from './RowReward'
@@ -16,6 +16,7 @@ interface HeaderRowRewardProps {
   activeVote: boolean
   activePagination?: boolean
   activeSlider?: boolean
+  search: string
 }
 
 const HeaderRowReward = ({
@@ -24,8 +25,22 @@ const HeaderRowReward = ({
   loading,
   activePagination = true,
   activeSlider = true,
+  search,
 }: HeaderRowRewardProps) => {
   const [showTooltip, setShowTooltip] = useState(false)
+  // const [data, setData] = useState<filterData[]>(filterData)
+  // useEffect(() => {
+  //   if(search.length > 0) {
+  //     const filterArr = filterData.filter(item => {
+  //       if(item.token.includes(search)){
+  //         return item
+  //       }
+  //     })
+  //     if(filterArr.length) {
+  //       setData(filterArr)
+  //     }
+  //   }
+  // },[search])
   return (
     <div className="relative z-10">
       <div className="w-full mb-2.5 xl:mb-5">

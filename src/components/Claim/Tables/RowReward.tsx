@@ -10,11 +10,10 @@ type IRow = {
 
 interface RowRewardProps {
   row: IRow
-  activeVote: boolean
   activeSlider?: boolean
 }
 
-const RowReward = ({ row, activeVote, activeSlider }: RowRewardProps) => {
+const RowReward = ({ row, activeSlider }: RowRewardProps) => {
   const [changeValue, setChangeValue] = useState(0)
   const [openInfo, setOpenInfo] = useState<boolean>(false)
   return (
@@ -88,7 +87,6 @@ const RowReward = ({ row, activeVote, activeSlider }: RowRewardProps) => {
       </TableRow>
       <MobileRowReward
         changeValue={changeValue}
-        activeVote={activeVote}
         activeSlider={activeSlider}
         setChangeValue={setChangeValue}
         row={row}

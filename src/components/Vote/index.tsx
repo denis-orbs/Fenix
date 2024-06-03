@@ -253,6 +253,12 @@ const Vote = () => {
     setVoteValue(total)
   }, [poolArr])
 
+  useEffect(() => {
+    if (activeVote && poolArr.length > 0) {
+      setPoolArr([])
+    }
+  }, [lock])
+
   return (
     <section className="relative overflow-hidden">
       <div className="flex flex-col items-center gap-5 py-5 xl:flex-row">

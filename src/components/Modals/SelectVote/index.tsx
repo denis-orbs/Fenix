@@ -42,13 +42,11 @@ const SelectVote = ({ setOpenModal, openModal, setActiveVote, activeVote, setloc
     } finally {
       setLoading(() => false)
     }
-  }, [address])
+  }, [address, chainId])
 
   const handlerClose = () => setOpenModal(false)
   const handlerChange = (lock: any) => (
-    activeVote === false && lock && BigInt(nowTime.toFixed(0).toString()) < lock.veNFTInfo.lockEnd
-      ? setActiveVote(true)
-      : setActiveVote(false),
+    lock && BigInt(nowTime.toFixed(0).toString()) < lock.veNFTInfo.lockEnd ? setActiveVote(true) : setActiveVote(false),
     setOpenModal(false)
   )
 

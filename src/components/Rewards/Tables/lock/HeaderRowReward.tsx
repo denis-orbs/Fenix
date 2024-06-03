@@ -24,6 +24,7 @@ interface HeaderRowRewardProps {
   activeVote: boolean
   activePagination?: boolean
   activeSlider?: boolean
+  search: string
 }
 
 const HeaderRowReward = ({
@@ -32,11 +33,15 @@ const HeaderRowReward = ({
   loading,
   activePagination = true,
   activeSlider = true,
+  search,
 }: HeaderRowRewardProps) => {
   const { push } = useRouter()
   const router = useRouter()
   const [showTooltip, setShowTooltip] = useState(false)
+  const [openInfo, setOpenInfo] = useState<boolean>(false)
+  const [infoId, setInfoId] = useState<number | null>(null)
   const [nowTime, setnowTime] = useState<Number>(0)
+  const [data, setData] = useState<filterData[]>(filterData)
   const { address, chainId } = useAccount()
   const dispatch = useDispatch<AppThunkDispatch>()
 
@@ -48,6 +53,25 @@ const HeaderRowReward = ({
   const handleManage = (id: Number) => {
     router.push(`lock/${id}`)
   }
+
+  useEffect(() => {
+    console.log('search', search)
+    if (search.length > 0) {
+      const filterArr = filterData.filter((item: any) => {
+        if (
+          item.veNFTInfo.tokenSymbol.toLowerCase().includes(search.toLowerCase()) ||
+          item.veNFTInfo.token.toLowerCase().includes(search.toLowerCase()) ||
+          item.veNFTInfo.account.toLowerCase().includes(search.toLowerCase())
+        ) {
+          return item
+        }
+      })
+      setData(filterArr)
+    } else {
+      setData(filterData)
+    }
+  }, [filterData, search])
+
   return (
     <div className="relative z-10">
       <div className="w-full mb-2.5 xl:mb-5">
@@ -65,7 +89,7 @@ const HeaderRowReward = ({
           />
         </div>
 
-        {filterData.length !== 0 ? (
+        {data.length !== 0 ? (
           <>
             <TableBody className="h-[350px] overflow-y-scroll">
               {loading ? (
@@ -77,8 +101,8 @@ const HeaderRowReward = ({
               ) : (
                 <>
                   {activeVote &&
-                    filterData.map((lock: any, index: number) => {
-                      console.log(lock, 'lock')
+                    data.map((lock: any, index: number) => {
+                      console.log('lock', lock)
                       return (
                         <TableRow key={index}>
                           <TableCell className="w-[50%]">
@@ -105,10 +129,41 @@ const HeaderRowReward = ({
                             </div>
                           </TableCell>
                           <TableCell className="w-[20%] flex justify-center">
-                            <div className="flex items-center gap-2">
+                            <div className="relative flex items-center gap-2">
+                              {openInfo && infoId == index && (
+                                <>
+                                  <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[230px] top-9 px-5 py-3 gap-y-1">
+                                    <div className="flex justify-between items-center gap-2">
+                                      <div className="w-fit flex flex-col justify-center items-start">
+                                        <p className="text-white text-xs">Bribe</p>
+                                        <p className="flex items-center gap-2 text-xs text-shark-100">21 FNX</p>
+                                        <p className="w-full flex items-center gap-2 text-xs text-shark-100">
+                                          200.2 fnUSDT
+                                        </p>
+                                      </div>
+                                      <div className="flex flex-col justify-center items-start">
+                                        <p className="text-white text-xs">Fees</p>
+                                        <p className="flex items-center gap-2 text-xs text-shark-100">21 FNX</p>
+                                        <p className="flex items-center gap-2 text-xs text-shark-100">200.2 fnUSDT</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </>
+                              )}
                               <p className="text-xs text-white">
                                 ${(Number(lock.veNFTInfo.amount) / 10 ** 18).toFixed(2)}
                               </p>
+                              <span
+                                className="icon-info"
+                                onMouseEnter={() => {
+                                  setOpenInfo(true)
+                                  setInfoId(index)
+                                }}
+                                onMouseLeave={() => {
+                                  setOpenInfo(false)
+                                  setInfoId(null)
+                                }}
+                              ></span>
                             </div>
                           </TableCell>
                           <TableCell className="w-[30%]">

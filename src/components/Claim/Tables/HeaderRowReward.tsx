@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { TableSkeleton, TableBody, TableHead, PaginationMobile } from '@/src/components/UI'
 import { Pagination } from '@/src/components/UI'
 import RowReward from './RowReward'
-import NotFoundLock from '../../../Lock/NotFoundLock'
+import NotFoundLock from '../../Lock/NotFoundLock'
 
 type filterData = {
   type: string
@@ -13,14 +13,12 @@ type filterData = {
 interface HeaderRowRewardProps {
   loading: boolean
   filterData: filterData[]
-  activeVote: boolean
   activePagination?: boolean
   activeSlider?: boolean
   search: string
 }
 
 const HeaderRowReward = ({
-  activeVote,
   filterData,
   loading,
   activePagination = true,
@@ -71,14 +69,13 @@ const HeaderRowReward = ({
                 </>
               ) : (
                 <>
-                  {activeVote &&
-                    filterData.map((row, index) => (
-                      <Fragment key={index}>
-                        <RowReward row={row} activeVote={activeVote} activeSlider={activeSlider} />
-                      </Fragment>
-                    ))}
+                  {filterData.map((row, index) => (
+                    <Fragment key={index}>
+                      <RowReward row={row} activeSlider={activeSlider} />
+                    </Fragment>
+                  ))}
 
-                  {!activeVote && <NotFoundLock info={'You have not selected any veFNX yet.'} />}
+                  {/* { <NotFoundLock info={'You have not selected any veFNX yet.'} />} */}
                 </>
               )}
             </TableBody>

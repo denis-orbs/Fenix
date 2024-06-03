@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/src/components/UI'
-import InputRange from '../../UI/SliderRange/InputRange'
 import { useState } from 'react'
 import MobileRowReward from './MobileRowReward'
 type IRow = {
@@ -51,9 +50,7 @@ const RowReward = ({ row, activeVote, activeSlider }: RowRewardProps) => {
 
         <TableCell className="w-[20%] flex justify-center">
           <div className="flex items-center">
-            <p className="py-2 px-3  text-xs text-shark-100">
-              $123.32
-            </p>
+            <p className="py-2 px-3  text-xs text-shark-100">$123.32</p>
           </div>
         </TableCell>
 

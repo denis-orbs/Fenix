@@ -15,8 +15,8 @@ import { lockState } from '@/src/state/lock/types'
 
 const Rewards = () => {
   const [activeVote, setActiveVote] = useState(true)
-  const [loading, setLoading] = useState(true)
   const [openModal, setOpenModal] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [searchValue, setSearchValue] = useState<string>('')
   const [lock, setLock] = useState<LockElement>()
   // const filterData = DATA_ROW.filter((row) => row.type === currentTab)
@@ -53,6 +53,7 @@ const Rewards = () => {
               filterData={[1, 2, 3, 4]}
               loading={loading}
               activePagination={false}
+              search={searchValue}
             />
           </div>
         </div>
@@ -64,6 +65,7 @@ const Rewards = () => {
               filterData={[1, 2, 3, 4]}
               loading={loading}
               activePagination={false}
+              search={searchValue}
             />
           </div>
         </div>
@@ -75,6 +77,7 @@ const Rewards = () => {
               filterData={locks.positions}
               loading={loading}
               activePagination={false}
+              search={searchValue}
             />
           </div>
         </div>
