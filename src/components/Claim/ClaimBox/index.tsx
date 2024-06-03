@@ -7,7 +7,7 @@ const ClaimBox = () => {
     <MainBox className="xl:min-h-[300px]">
       <div className="flex flex-col items-center justify-between w-full xl:flex-row relative z-10">
         <div className="w-full xl:w-1/2">
-          <h4 className="mb-3 text-2xl font-semibold text-white">Rewards</h4>
+          <h4 className="mb-3 text-2xl font-semibold text-white">Claims</h4>
           <p className="mb-4 text-xs text-shark-100 font-normal">
             Select your veFNX and use 100% of your votes for one or more pools to earn bribes and trading fees.
           </p>

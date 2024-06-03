@@ -27,7 +27,7 @@ const Claim = () => {
           <ClaimBox />
         </div>
       </div>
-      <h1 className="text-xl font-medium text-white">Rewards overview</h1>
+      <h1 className="text-xl font-medium text-white">Claim overview</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full ">
           <Search searchValue={searchValue} setSearchValue={setSearchValue} />
@@ -35,7 +35,7 @@ const Claim = () => {
       </div>
       <div className="flex flex-col justify-center items-center gap-2 mx-2 mt-2 mb-4">
         <div className="w-full">
-          <h1 className="text-xl font-medium text-white mb-6">Fees Rewards</h1>
+          <h1 className="text-xl font-medium text-white mb-6">Claim</h1>
           <div className="p-2">
             <HeaderRowReward
               filterData={[1, 2, 3, 4]}

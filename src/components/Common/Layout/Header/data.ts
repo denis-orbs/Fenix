@@ -5,7 +5,7 @@ export const MENU_LINKS = [
     href: '/trade/swap',
     new: false,
   },
-  
+
   {
     name: 'Dashboard',
     href: '/dashboard',
@@ -28,6 +28,10 @@ export const MENU_LINKS = [
     name: 'Bribes',
     href: '/bribes',
   },
+  {
+    name: 'Claims',
+    href: '/claim',
+  },
   // {
   //   name: 'Migration',
   //   href: '/migration',
@@ -37,7 +41,6 @@ export const MENU_LINKS = [
     href: '/points-program',
     new: true,
   },
-  
 ]
 
 export const SOCIAL_LINKS = [
