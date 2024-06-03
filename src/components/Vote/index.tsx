@@ -254,9 +254,7 @@ const Vote = () => {
   }, [poolArr])
 
   useEffect(() => {
-    if (activeVote && poolArr.length > 0) {
-      setPoolArr([])
-    }
+    setPoolArr([])
   }, [lock])
 
   return (

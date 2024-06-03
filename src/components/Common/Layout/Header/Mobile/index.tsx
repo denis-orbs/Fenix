@@ -35,7 +35,7 @@ const MobileHeader = () => {
             <AccountHandler isMenuMobile={false} />
             <Toggle onClick={handleShowMenu} />
           </div>
-            <Menu showMenu={showMenu} setShowMenu={setShowMenu} />
+          <Menu showMenu={showMenu} setShowMenu={setShowMenu} />
         </div>
       </header>
       <WalletSelection />
