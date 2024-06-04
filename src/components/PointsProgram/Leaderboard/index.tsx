@@ -7,9 +7,11 @@ import axios from 'axios'
 import { RankingEntry, useRingsPointsLeaderboard } from '@/src/library/hooks/rings/useRingsPoints'
 import Loader from '../../UI/Icons/Loader'
 import cn from '@/src/library/utils/cn'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 
 const Leaderboard = () => {
   const [itemsPerPage, setItemPerPage] = useState<number>(20)
+  const { account, isConnected } = useActiveConnectionDetails()
 
   const [activePage, setActivePage] = useState<number>(1)
   const [sort, setSort] = useState(false)
@@ -34,6 +36,7 @@ const Leaderboard = () => {
 
   const sortedData = sort ? leaderboardData.slice().reverse() : leaderboardData
   const paginatedData = paginate(sortedData, activePage, itemsPerPage)
+  // paginatedData.push({ id: '0xb279Cb42Ab3d598Eb3A864399C11a52a5f506bA4', accumulated_rings_points: '28348', ranking: 154 })
 
   if (isLoading)
     return (
@@ -60,7 +63,7 @@ const Leaderboard = () => {
           </span>
         </div>
         {paginatedData.map((data, index: number) => (
-          <Item key={index} data={data} />
+          <Item key={index} data={data} isUser={account?.toLowerCase() === data.id.toLowerCase() ? true : false}/>
         ))}
         <Pagination
           className="mx-auto"
