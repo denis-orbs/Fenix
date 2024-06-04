@@ -10,10 +10,10 @@ import {
   getTokenAllowance,
   getTokenReserve,
 } from '@/src/library/hooks/liquidity/useClassic'
-import { Address, isAddress } from 'viem'
+import { Address, formatUnits, isAddress } from 'viem'
 import { IToken } from '@/src/library/types'
 import Separator from '@/src/components/Trade/Common/Separator'
-import { useAccount, useWriteContract } from 'wagmi'
+import { useAccount, useReadContract, useWriteContract } from 'wagmi'
 import { ERC20_ABI, ROUTERV2_ABI } from '@/src/library/constants/abi'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { ethers } from 'ethers'
@@ -21,12 +21,18 @@ import { publicClient } from '@/src/library/constants/viemClient'
 import { Toaster, toast } from 'react-hot-toast'
 import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { LiquidityTableElement } from '@/src/state/liquidity/types'
-import { useAppSelector } from '@/src/state'
+import { AppThunkDispatch, useAppSelector } from '@/src/state'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { formatDollarAmount, formatNumber, toBN } from '@/src/library/utils/numbers'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { NumericalInput } from '@/src/components/UI/Input'
+import ApproveButtons from '../../../Common/ApproveButtons'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import ApproveButtonClassic from '../../../Common/ApproveButtonsClassic'
+import { BigDecimal } from '@/src/library/common/BigDecimal'
+import { getLiquidityTableElements } from '@/src/state/liquidity/thunks'
+import { useDispatch } from 'react-redux'
 
 const Classic = ({
   depositType,
@@ -38,34 +44,22 @@ const Classic = ({
   const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934'
 
   const [firstToken, setFirstToken] = useState({
-    name: 'Fenix',
-    symbol: 'FNX',
+    name: 'USDB',
+    symbol: 'USDB',
     id: 0,
     decimals: 18,
-    address: '0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9' as Address,
-    img: '/static/images/tokens/FNX.svg',
+    address: '0x4300000000000000000000000000000000000003' as Address,
+    img: '/static/images/tokens/USDB.png',
   } as IToken)
   const [firstValue, setFirstValue] = useState('')
   const [secondToken, setSecondToken] = useState({
-    name: 'Ethereum',
-    symbol: 'ETH',
+    name: 'Wrapped Ether',
+    symbol: 'WETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023' as Address,
+    address: '0x4200000000000000000000000000000000000004' as Address,
     img: '/static/images/tokens/WETH.png',
   } as IToken)
-
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const pathname = usePathname()
-
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('token0', firstToken.address as string)
-    params.set('token1', secondToken.address as string)
-    router.push(pathname + '?' + params.toString(), { scroll: false })
-  }, [firstToken.address, secondToken.address])
-
   const [secondValue, setSecondValue] = useState('')
   const [firstReserve, setFirstReserve] = useState(0)
   const [secondReserve, setSecondReserve] = useState(0)
@@ -76,13 +70,39 @@ const Classic = ({
   const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
   const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
   const [shouldApprovePair, setShouldApprovePair] = useState(true)
+  const [buttonText, setButtonText] = useState('Add Liquidity')
+  const [isLoading, setIsLoading] = useState(true)
 
+  const dispatch = useDispatch<AppThunkDispatch>()
   const account = useAccount()
+  const { address } = useAccount()
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
-
   const { writeContractAsync } = useWriteContract()
-
   const addNotification = useNotificationAdderCallback()
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  const { isConnected, chainId } = useActiveConnectionDetails()
+  const token1Balance = useReadContract({
+    abi: ERC20_ABI,
+    address: firstToken.address,
+    functionName: 'balanceOf',
+    args: [useAccount().address],
+  })
+  const token2Balance = useReadContract({
+    abi: ERC20_ABI,
+    address: secondToken.address,
+    functionName: 'balanceOf',
+    args: [useAccount().address],
+  })
+
+  useEffect(() => {
+    if (chainId && address) dispatch(getLiquidityTableElements({ address, chainId }))
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('token0', firstToken.address as string)
+    params.set('token1', secondToken.address as string)
+    router.push(pathname + '?' + params.toString(), { scroll: false })
+  }, [firstToken.address, secondToken.address])
 
   const handlerOption = (option: 'ADD' | 'WITHDRAW' | 'STAKE' | 'UNSTAKE') => {
     setOptionActive(option)
@@ -94,6 +114,16 @@ const Classic = ({
     if (defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
+    }
+    if (
+      account &&
+      isConnected &&
+      (Number(firstValue) > Number(formatUnits((token1Balance?.data as bigint) || 0n, firstToken?.decimals)) ||
+        Number(secondValue) > Number(formatUnits((token2Balance?.data as bigint) || 0n, secondToken?.decimals)))
+    ) {
+      setButtonText('Insufficient balance')
+    } else {
+      setButtonText('Create Position')
     }
   }, [defaultPairs])
 
@@ -216,8 +246,8 @@ const Classic = ({
           firstToken.address as Address,
           secondToken.address as Address,
           depositType === 'STABLE',
-          ethers.utils.parseUnits(firstValue.toString(), 'ether'),
-          ethers.utils.parseUnits(secondValue.toString(), 'ether'),
+          BigDecimal.fromString(firstValue, firstToken?.decimals)._value,
+          BigDecimal.fromString(secondValue, secondToken?.decimals)._value,
           0,
           0,
           account.address as Address,
@@ -326,13 +356,13 @@ const Classic = ({
     )
   }
 
-  const handleApprove = async (token: Address) => {
+  const handleApprove = async (token: Address, amount: string) => {
     writeContractAsync(
       {
         abi: ERC20_ABI,
         address: token,
         functionName: 'approve',
-        args: [contractAddressList.v2router, maxUint256],
+        args: [contractAddressList.v2router, amount],
       },
       {
         onSuccess: async (x) => {
@@ -448,7 +478,7 @@ const Classic = ({
                   className="!px-5 !py-0 h-[28px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
                 >
                   {
-                    pairs.find(
+                    pairs?.find(
                       (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
                     )?.fee
                   }{' '}
@@ -484,7 +514,7 @@ const Classic = ({
 
           <p className="py-[5px] px-5 border border-solid bg-shark-400 rounded-[10px] bg-opacity-40 border-1 border-shark-300">
             {
-              pairs.find(
+              pairs?.find(
                 (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
               )?.apr
             }{' '}
@@ -492,7 +522,6 @@ const Classic = ({
           </p>
         </div>
       </div>
-
       <div className="flex flex-wrap bg-shark-400 bg-opacity-40 p-[13px] md:py-[11px] md:px-[19px] gap-1.5 md:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5">
         <Button
           onClick={() => handlerOption('ADD')}
@@ -523,7 +552,6 @@ const Classic = ({
           UNSTAKE
         </Button>
       </div>
-
       <div className="flex flex-col gap-1 relative">
         {optionActive === 'WITHDRAW' && (
           <>
@@ -601,12 +629,11 @@ const Classic = ({
                     </div>
                   </div>
                   <div className="relative w-full xl:w-3/5">
-                    <NumericalInput
+                    <input
                       value={0}
                       className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
                       placeholder="0.0"
-                      onUserInput={(input) => console.log(input)}
-                      precision={firstToken.decimals}
+                      onChange={(input) => console.log(input)}
                     />
                   </div>
                 </div>
@@ -660,12 +687,11 @@ const Classic = ({
                     </div>
                   </div>
                   <div className="relative w-full xl:w-3/5">
-                    <NumericalInput
+                    <input
                       value={0}
                       className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
                       placeholder="0.0"
-                      onUserInput={(input) => console.log(input)}
-                      precision={firstToken.decimals}
+                      onChange={(input) => console.log(input)}
                     />
                   </div>
                 </div>
@@ -688,7 +714,38 @@ const Classic = ({
         ) : null}
       </div>
 
-      <Button
+      {optionActive == 'ADD' ? (
+        <>
+          {' '}
+          <ApproveButtonClassic
+            shouldApproveFirst={shouldApproveFirst}
+            shouldApproveSecond={shouldApproveSecond}
+            token0={firstToken}
+            token1={secondToken}
+            firstValue={BigDecimal.fromString(firstValue, firstToken?.decimals)}
+            secondValue={BigDecimal.fromString(secondValue, secondToken?.decimals)}
+            handleApprove={handleApprove}
+            mainFn={handleAddLiquidity}
+            mainText={buttonText}
+            isLoading={isLoading}
+          />
+        </>
+      ) : null}
+      {optionActive == 'WITHDRAW' ? (
+        <>
+          {' '}
+          <Button
+            className="w-full mx-auto !text-xs !h-[49px]"
+            variant="tertiary"
+            onClick={() => {
+              handleRemoveLiquidity()
+            }}
+          >
+            {'Remove liquidity'}
+          </Button>
+        </>
+      ) : null}
+      {/* <Button
         className="w-full mx-auto !text-xs !h-[49px]"
         variant="tertiary"
         onClick={() => {
@@ -716,7 +773,7 @@ const Classic = ({
               : shouldApprovePair
                 ? `Approve LP`
                 : `Remove Liquidity`}
-      </Button>
+      </Button> */}
     </>
   )
 }

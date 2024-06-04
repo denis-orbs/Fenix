@@ -141,11 +141,14 @@ const Panel = () => {
                 <Switch active={showChart} setActive={handleSwitch} />
                 <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
               </div> */}
-              <span onClick={handleSwitch} className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}></span>
-              {/* <div className="flex items-center gap-[9px] h-10">
+              <span
+                onClick={handleSwitch}
+                className={`text-2xl cursor-pointer ${!showChart ? 'transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text' : 'text-gradient'} icon-chart-fenix`}
+              ></span>
+              <div className="flex items-center gap-[9px] h-10">
                 <Switch active={activeSwitch} setActive={handlerSwitch} />
-                <span className="text-shark-100 text-xs leading-normal">Concentrated</span>
-              </div> */}
+                <span className="text-shark-100 text-xs leading-normal">{depositType}</span>
+              </div>
               {/* <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
                 <span className="icon-cog text-white"></span>
               </div> */}
