@@ -481,11 +481,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            // toast(`Approved successfully`)
+            // toast(`Approved Successfully`)
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
-              message: `Approved successfully.`,
+              message: `Approved Successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
               notificationDuration: NotificationDuration.DURATION_5000,
