@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-multi-comp */
 import Image from 'next/image'
 import { Button, Pagination, PaginationMobile, TableBody, TableCell, TableHead, TableRow, Tooltip } from '../../UI'
@@ -22,6 +23,7 @@ import { getAlgebraPoolPrice } from '@/src/library/hooks/liquidity/useCL'
 import Loader from '../../UI/Icons/Loader'
 import { useQuery } from '@tanstack/react-query'
 import AprBox from '../../UI/Pools/AprBox'
+// import cn from '@/src/library/utils/cn'
 
 import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
 
@@ -40,6 +42,8 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   const addNotification = useNotificationAdderCallback()
   const [itemsPerPage, setItemPerPage] = useState<number>(10)
   const [activePage, setActivePage] = useState<number>(1)
+  const [isMinHover, setIsMinHover] = useState<boolean>(false)
+  const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -98,11 +102,39 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
           </div>
         ) : (
           <>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+            <div className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300" onMouseEnter={() => setIsMinHover(true)}
+              onMouseLeave={() => setIsMinHover(false)}>
               Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
+              {/* {isMinHover && (
+                <Tooltip
+                  className={cn(
+                    'absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto top-1/2 -translate-y-1/2 px-5 py-3 xl:left-0',
+                  )}
+                  show={isMinHover}
+                  setShow={() => {}}
+                >
+                  {<div className='text-xs text-white text-opacity-75'>
+                    Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
+                  </div>}
+                </Tooltip>
+              )} */}
             </div>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+            <div className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300" onMouseEnter={() => setIsMaxHover(true)}
+              onMouseLeave={() => setIsMaxHover(false)}>
               Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
+              {/* {isMaxHover && (
+                <Tooltip
+                  className={cn(
+                    'absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto top-1/2 -translate-y-1/2 px-5 py-3 xl:left-0',
+                  )}
+                  show={isMaxHover}
+                  setShow={() => {}}
+                >
+                  {<div className='text-xs text-white text-opacity-75'>
+                    Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
+                  </div>}
+                </Tooltip>
+              )} */}
             </div>
           </>
         )}
@@ -301,25 +333,25 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                   return (
                     <>
                       <TableRow key={position.id}>
-                        <TableCell className="w-[40%]">
-                          <div className="flex items-center gap-2">
-                            <div className="flex items-center">
+                        <TableCell className="flex w-[40%]">
+                          <div className="flex items-center w-full gap-2">
+                            <div className="flex items-center w-[60px] max-2xl:w-[50px]">
                               <Image
                                 src={`/static/images/tokens/${position.token0.symbol}.svg`}
                                 alt="token"
-                                className="rounded-full w-10 h-10"
+                                className="rounded-full w-10 h-10 max-2xl:w-8 max-2xl:h-8"
                                 width={30}
                                 height={30}
                               />
                               <Image
                                 src={`/static/images/tokens/${position.token1.symbol}.svg`}
                                 alt="token"
-                                className="-ml-4 rounded-full w-10 h-10"
+                                className="-ml-4 rounded-full w-10 h-10 max-2xl:w-8 max-2xl:h-8"
                                 width={30}
                                 height={30}
                               />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col max-2xl:max-w-[85%] 2xl:max-w-full">
                               <h5 className="text-sm text-white">
                                 {position.token0.symbol} / {position.token1.symbol}
                               </h5>
