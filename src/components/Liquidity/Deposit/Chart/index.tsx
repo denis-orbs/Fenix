@@ -33,7 +33,7 @@ const Chart = ({ token0, token1 }: { token0?: string | null; token1?: string | n
   return (
     <div  className='w-[100%] relative'>
       <div
-        className={`sticky top-5 left-0 flex flex-col w-[100%] xl:rounded-2xl max-xl:rounded-b-2xl max-xl:pb-4 max-xl:h-[600px] xl:h-[525px] px-3 xl:border xl:border-shark-950 xl:p-[3px] max-xl:bg-shark-400 max-xl:bg-opacity-40`}
+        className={`sticky top-5 mt-[22px] left-0 flex flex-col w-[100%] xl:rounded-2xl max-xl:rounded-b-2xl max-xl:pb-4 max-xl:h-[600px] xl:h-[525px] px-3 xl:border xl:border-shark-950 xl:p-[3px] max-xl:bg-shark-400 max-xl:bg-opacity-40`}
       >
         <iframe
           height="100%"
