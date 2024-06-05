@@ -71,7 +71,7 @@ body {
  xl:px-[40px]
 }
 
-.svgcontainer {
+/* .svgcontainer {
   position: relative;
   line-height: 0;
 }
@@ -91,7 +91,7 @@ body {
 
 .svgcontainer:hover::after {
   opacity: 0;
-}
+} */
 
 /************* Text Gradient ***********/
 

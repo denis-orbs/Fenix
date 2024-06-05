@@ -57,8 +57,8 @@ const Main = () => {
   const { setWalletSelectionModal } = useStore()
   const [isHover, setIsHover] = useState(false)
 
-  const handleIsHoverActive = () => setIsHover(true)
-  const handleIsHoverInactive = () => setIsHover(false)
+  // const handleIsHoverActive = () => setIsHover(true)
+  // const handleIsHoverInactive = () => setIsHover(false)
 
   const handlerConnectWallet = () => setWalletSelectionModal(true)
 
@@ -124,10 +124,8 @@ const Main = () => {
                   FOR
                   <span
                     className="svgcontainer pt-2 "
-                    onMouseOut={handleIsHoverInactive}
-                    onMouseOver={handleIsHoverActive}
                   >
-                    <Blast isHover={isHover} />
+                    <Blast />
                   </span>
                 </span>
               </h3>
