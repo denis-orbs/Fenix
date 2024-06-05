@@ -62,7 +62,7 @@ const MyPositions = () => {
         apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
       }
     })
-    setposition((prevPositions) => [...prevPositions, ...final])
+    setposition([...final])
     setpositionAmounts(amounts)
     setLoading(false)
   }
