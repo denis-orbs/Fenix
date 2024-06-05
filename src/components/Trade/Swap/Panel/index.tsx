@@ -654,14 +654,22 @@ const Panel = () => {
                   onClick={handleSwitch}
                   className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
                 ></span>
-                <ReloadIcon
-                  className="text-shark-100 !cursor-pointer"
+                <span
+                  className="text-2xl transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text !cursor-pointer icon-reload"
                   onClick={() => {
                     setSwapValue('')
                     setForValue('')
                   }}
-                />
-                <SettingsIcon onClick={() => setSlippageModal(true)} className="text-shark-100 !cursor-pointer " />
+                ></span>
+                <span
+                  className="text-2xl transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text !cursor-pointer icon-settings"
+                  onClick={() => setSlippageModal(true)}
+                ></span>
+                {/* <ReloadIcon
+                  className="transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text !cursor-pointer"
+                  
+                /> */}
+                {/* <SettingsIcon onClick={() => setSlippageModal(true)} className="!cursor-pointer " /> */}
               </div>
             </div>
             <div className="flex flex-col gap-1 mb-5 relative">

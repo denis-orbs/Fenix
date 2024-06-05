@@ -340,3 +340,4 @@
 .icon-users:before {
   content: '\e894';
 } /* '' */
+.icon-reload:before { content: '\e89e'; } /* '' */
