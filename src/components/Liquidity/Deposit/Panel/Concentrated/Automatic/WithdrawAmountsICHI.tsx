@@ -28,6 +28,7 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import Loader from '@/src/components/UI/Icons/Loader'
+import { ethers } from 'ethers'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 interface modifiedIchiVault extends IchiVault {

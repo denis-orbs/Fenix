@@ -152,11 +152,13 @@ const DepositAmountsICHI = ({
         await txApproveDepositDetails.wait()
         setIsToken0ApprovalRequired(false)
         setWaitingApproval(false)
+        setLoading(false)
 
         return
       } catch (error) {
         // console.log(error)
         setWaitingApproval(false)
+        setLoading(false)
 
         return
       }
@@ -238,7 +240,7 @@ const DepositAmountsICHI = ({
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
-          message: `${error}`,
+          message: `${(error as Error).message}`,
           notificationType: NotificationType.ERROR,
           txHash: '',
           notificationDuration: NotificationDuration.DURATION_5000,
