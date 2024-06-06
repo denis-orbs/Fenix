@@ -471,10 +471,10 @@ const DepositAmountsICHI = ({
                           {!rignsAprLoading && vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
+                              {(vault?.apr as any[1])[0]?.apr === null || (vault?.apr as any[1])[0]?.apr < 0
                                 ? '0'
                                 : formatAmount(
-                                    toBN(vault?.apr[1]?.apr?.toFixed(0))
+                                    toBN((vault?.apr as any[1])[0]?.apr?.toFixed(0))
                                       .plus(ringsApr || 0)
                                       .toString(),
                                     2
