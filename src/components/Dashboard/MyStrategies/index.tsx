@@ -55,7 +55,7 @@ const MyStrategies = () => {
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
     const nativePrice = await fetchNativePrice()
-    const positionsPoolAddresses = await positions.map((position: positions) => {
+    const positionsPoolAddresses = positions.map((position: positions) => {
       return {
         id: position.pool.id,
         liq: position.liquidity,

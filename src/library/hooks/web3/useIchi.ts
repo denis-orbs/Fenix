@@ -242,6 +242,6 @@ export const useIchiVaultsData = (vaultAddress: string) => {
       if (vaultInfo) setvaultData(vaultInfo)
     }
     fetchVault()
-  }, [])
+  }, [vaultAddress])
   return vaultData
 }
