@@ -13,8 +13,16 @@ import Clipboard from 'clipboard';
 
 const CreateReferral = () => {
   const [isCopied, setIsCopied] = useState(false)
+
+  const shareOnX = () => {
+    handleCopyReferralLink()
+    setTimeout(() => {
+      const textToTweet = encodeURIComponent('Check out this cool referral link: ' + 'https://www.fenixfinance.io/?referrer=' + referralCode)
+      window.open('https://twitter.com/intent/tweet?text=' + textToTweet, '_blank')
+    }, 600)  
+  }
   const handleCopyReferralLink = () => {
-    const textToCopy = 'https://www.fenixfinance.io/?referrer=' +referralCode
+    const textToCopy = 'https://www.fenixfinance.io/?referrer=' + referralCode
     
     navigator.clipboard.writeText(textToCopy)
     .then(() => {
@@ -139,7 +147,7 @@ const CreateReferral = () => {
                 <span className={`text-lg ${isCopied ? 'icon-check' : 'icon-icons'}`} />
               </div>
             </div>
-            <Button onClick={handleCopyReferralLink} variant="tertiary" className="!text-xs">
+            <Button onClick={shareOnX} variant="tertiary" className="!text-xs">
               Share on X
             </Button>
           </>
