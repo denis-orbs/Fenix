@@ -86,12 +86,12 @@ export const boostedPools: BoostedPool[] = [
     id: '0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d',
     apr: 0,
   },
-  // {
-  //   pair: 'USD+/USDB',
-  //   points: 600000,
-  //   id: '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
-  //   apr: 0,
-  // },
+  {
+    pair: 'USD+/USDB',
+    points: 2_000_000,
+    id: '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
+    apr: 0,
+  },
   // {
   //   pair: 'USDB/sFRAX',
   //   points: 30000,
