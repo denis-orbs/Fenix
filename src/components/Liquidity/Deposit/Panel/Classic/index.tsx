@@ -76,6 +76,8 @@ const Classic = ({
   const [buttonText, setButtonText] = useState('Add Liquidity')
   const [isLoading, setIsLoading] = useState(false)
 
+  const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
+
   const dispatch = useDispatch<AppThunkDispatch>()
   const account = useAccount()
   const { address, chainId } = useAccount()
@@ -230,15 +232,21 @@ const Classic = ({
     if (optionActive == 'ADD') {
       // TODO: handle if pair is not created
       if (firstToken.address === token.address) {
-        if (parseFloat(input) != 0)
+        if (parseFloat(input) != 0) {
           setSecondValue(
             (
               (parseFloat(input) * Number(secondReserve === 0 ? 1 : secondReserve)) /
               Number(firstReserve === 0 ? 1 : firstReserve)
             ).toString()
           )
+        }
         if (parseFloat(input) == 0) setSecondValue('')
-        setFirstValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
+        setFirstValue(input == '' ? 0 : input)
+
+        if(timeout != undefined) clearTimeout(timeout)
+        setTimeoutID(setTimeout(() => {
+          setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
+        }, 500))
       } else {
         if (parseFloat(input) != 0)
           setFirstValue(
@@ -248,7 +256,12 @@ const Classic = ({
             ).toString()
           )
         if (parseFloat(input) == 0) setFirstValue('')
-        setSecondValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
+        setSecondValue(input == '' ? 0 : input)
+
+        if(timeout != undefined) clearTimeout(timeout)
+        setTimeoutID(setTimeout(() => {
+          setSecondValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
+        }, 500)) 
       }
     }
   }
