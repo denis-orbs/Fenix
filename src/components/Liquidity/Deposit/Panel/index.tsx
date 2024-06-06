@@ -28,7 +28,9 @@ const DepositTypeValues = {
 type DepositType = (typeof DepositTypeValues)[keyof typeof DepositTypeValues]
 
 const Panel = () => {
-  const [depositType, setDepositType] = useState<DepositType>('VOLATILE')
+  const [depositType, setDepositType] = useState<
+    'VOLATILE' | 'STABLE' | 'CONCENTRATED_AUTOMATIC' | 'CONCENTRATED_MANUAL'
+  >('VOLATILE')
   const searchParams = useSearchParams()
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
@@ -47,6 +49,17 @@ const Panel = () => {
     }
   }, [])
 
+  const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
+  const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
+  const [pair, setPair] = useState<V2PairId>()
+  const handlerSwitch = () => {
+    console.log('CONCENTRATED_MANUAL :>> ', depositType)
+    setDepositType(
+      'CONCENTRATED_MANUAL' === depositType || 'CONCENTRATED_AUTOMATIC' === depositType
+        ? 'VOLATILE'
+        : 'CONCENTRATED_MANUAL'
+    )
+  }
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString())
     params.set('type', depositType)
@@ -54,18 +67,6 @@ const Panel = () => {
     params.set('token1', token1)
     router.push(pathname + '?' + params.toString())
   }, [token0, token1, depositType])
-
-  const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
-  const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
-  const [pair, setPair] = useState<V2PairId>()
-
-  const handlerSwitch = (active: boolean) => {
-    if (!active) {
-      setDepositType('VOLATILE')
-    } else {
-      setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'CONCENTRATED_AUTOMATIC' : 'CONCENTRATED_MANUAL')
-    }
-  }
 
   const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
   const { createPosition: createGammaPosition } = useGammaCreatePosition()

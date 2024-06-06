@@ -34,12 +34,6 @@ const ApproveButtonClassic = ({
   mainText,
   isLoading,
 }: ApproveButtonsProps) => {
-  console.log(
-    Number(formatUnits(BigInt(allowanceFirst), token0?.decimals)) > Number(firstValue.toString()),
-    Number(formatUnits(BigInt(allowanceFirst), token0?.decimals)),
-    Number(firstValue.toString()),
-    'allowanceFirst'
-  )
   return shouldApproveFirst ||
     shouldApproveSecond ||
     Number(formatUnits(BigInt(allowanceFirst), token0?.decimals)) < Number(firstValue.toString()) ||
@@ -87,6 +81,7 @@ const ApproveButtonClassic = ({
       onClick={() => {
         mainFn()
       }}
+      disabled={mainText === 'Insufficient balance'}
     >
       {isLoading ? <Loader color="white" size={20} /> : `${mainText}`}
     </Button>

@@ -34,6 +34,7 @@ import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { getLiquidityTableElements } from '@/src/state/liquidity/thunks'
 import { useDispatch } from 'react-redux'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import Loader from '@/src/components/UI/Icons/Loader'
 
 const Classic = ({
   depositType,
@@ -66,11 +67,13 @@ const Classic = ({
   const [secondReserve, setSecondReserve] = useState(0)
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW' | 'STAKE' | 'UNSTAKE'>('ADD')
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
-  const [lpValue, setLpValue] = useState(0)
+  const [lpValue, setLpValue] = useState('')
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
   const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
   const [allowanceFirst, setallowanceFirst] = useState('')
   const [allowanceSecond, setallowanceSecond] = useState('')
+  const [allowanceLp, setallowanceLp] = useState('')
+  const [lpBalance, setlpBalance] = useState(0n)
   const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
   const [shouldApprovePair, setShouldApprovePair] = useState(true)
   const [buttonText, setButtonText] = useState('Add Liquidity')
@@ -97,6 +100,12 @@ const Classic = ({
   const token2Balance = useReadContract({
     abi: ERC20_ABI,
     address: secondToken.address,
+    functionName: 'balanceOf',
+    args: [useAccount().address],
+  })
+  const lpTokenBalance = useReadContract({
+    abi: ERC20_ABI,
+    address: pairAddress as Address,
     functionName: 'balanceOf',
     args: [useAccount().address],
   })
@@ -147,6 +156,8 @@ const Classic = ({
       setSecondToken(defaultPairs[1])
       setIsLoading(false)
     }
+    console.log(lpTokenBalance?.data as bigint, 'lpTokenBalance')
+    setlpBalance((lpTokenBalance?.data as bigint) || 0n)
     if (
       account &&
       isConnected &&
@@ -157,7 +168,7 @@ const Classic = ({
     } else {
       setButtonText('Create Position')
     }
-  }, [defaultPairs])
+  }, [firstValue, secondValue, defaultPairs])
 
   useEffect(() => {
     const asyncGetReserve = async () => {
@@ -216,10 +227,11 @@ const Classic = ({
               account.address as Address,
               contractAddressList.v2router as Address
             )
-          : {}
+          : '0'
       console.log(allowanceFirst, allowanceSecond, allowanceLp, 'allowance')
       setallowanceFirst(allowanceFirst.toString())
       setallowanceSecond(allowanceSecond.toString())
+      setallowanceLp(allowanceLp.toString())
       setShouldApproveFirst(allowanceFirst == '0')
       setShouldApproveSecond(allowanceSecond == '0')
       setShouldApprovePair(allowanceLp == '0')
@@ -229,6 +241,7 @@ const Classic = ({
   }, [firstToken, secondToken, account.address, pairAddress])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
+    console.log('inn1', optionActive)
     if (optionActive == 'ADD') {
       // TODO: handle if pair is not created
       if (firstToken.address === token.address) {
@@ -243,10 +256,12 @@ const Classic = ({
         if (parseFloat(input) == 0) setSecondValue('')
         setFirstValue(input == '' ? 0 : input)
 
-        if(timeout != undefined) clearTimeout(timeout)
-        setTimeoutID(setTimeout(() => {
-          setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
-        }, 500))
+        if (timeout != undefined) clearTimeout(timeout)
+        setTimeoutID(
+          setTimeout(() => {
+            setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
+          }, 500)
+        )
       } else {
         if (parseFloat(input) != 0)
           setFirstValue(
@@ -258,16 +273,19 @@ const Classic = ({
         if (parseFloat(input) == 0) setFirstValue('')
         setSecondValue(input == '' ? 0 : input)
 
-        if(timeout != undefined) clearTimeout(timeout)
-        setTimeoutID(setTimeout(() => {
-          setSecondValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
-        }, 500)) 
+        if (timeout != undefined) clearTimeout(timeout)
+        setTimeoutID(
+          setTimeout(() => {
+            setSecondValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
+          }, 500)
+        )
       }
     }
   }
 
   const handleOnLPTokenValueChange = (input: any, token: IToken) => {
-    setLpValue(parseFloat(input) != 0 ? parseFloat(input).toString() : input)
+    // console.log('inn2', input, parseFloat(input) != 0 ? parseFloat(input).toString() : input, parseUnits(input, 18))
+    setLpValue(input)
 
     if (optionActive == 'WITHDRAW') {
       const asyncGetWithdrawTokens = async () => {
@@ -277,7 +295,7 @@ const Classic = ({
           secondToken.address as Address,
           depositType === 'STABLE'
         )
-        setFirstValue((Number(tokens[0]) / 1e18).toString())
+        setFirstValue((Number(tokens[0]) / 1e18).toFixed(18).toString())
         setSecondValue((Number(tokens[1]) / 1e18).toString())
       }
 
@@ -286,17 +304,6 @@ const Classic = ({
   }
 
   const handleAddLiquidity = async () => {
-    console.log(
-      firstToken.address as Address,
-      secondToken.address as Address,
-      depositType === 'STABLE',
-      parseUnits(firstValue, firstToken?.decimals),
-      parseUnits(firstValue, firstToken?.decimals),
-      0,
-      0,
-      account.address as Address,
-      parseInt((+new Date() / 1000).toString()) + 60 * 60
-    )
     setIsLoading(true)
     await writeContractAsync(
       {
@@ -350,18 +357,18 @@ const Classic = ({
   }
 
   const handleRemoveLiquidity = async () => {
-    // TODO values check
+    setIsLoading(true)
+
     writeContractAsync(
       {
         abi: ROUTERV2_ABI,
         address: contractAddressList.v2router as Address,
         functionName: 'removeLiquidity',
-        // TODO: handle deadline and slippage
         args: [
           firstToken.address as Address,
           secondToken.address as Address,
           depositType === 'STABLE',
-          ethers.utils.parseUnits(lpValue.toString(), 'ether'),
+          parseUnits(lpValue.toString(), 18),
           0,
           0,
           account.address as Address,
@@ -371,31 +378,21 @@ const Classic = ({
 
       {
         onSuccess: async (x) => {
+          setIsLoading(true)
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
-          if (transaction.status == 'success') {
-            // toast(`Removed successfully.`)
-            addNotification({
-              id: crypto.randomUUID(),
-              createTime: new Date().toISOString(),
-              message: `Added successfully.`,
-              notificationType: NotificationType.SUCCESS,
-              txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_5000,
-            })
-          } else {
-            // toast(`Remove LP TX failed, hash: ${transaction.transactionHash}`)
-            addNotification({
-              id: crypto.randomUUID(),
-              createTime: new Date().toISOString(),
-              message: `Remove LP TX failed, hash: ${transaction.transactionHash}`,
-              notificationType: NotificationType.ERROR,
-              txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_5000,
-            })
-          }
+
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Added successfully.`,
+            notificationType: NotificationType.SUCCESS,
+            txHash: transaction.transactionHash,
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
+          setIsLoading(false)
         },
         onError: (e) => {
-          // toast(`Remove LP failed. ${e}`)
+          setIsLoading(false)
           addNotification({
             id: crypto.randomUUID(),
             createTime: new Date().toISOString(),
@@ -464,6 +461,7 @@ const Classic = ({
               : {}
           setallowanceFirst(allowanceFirst.toString())
           setallowanceSecond(allowanceSecond.toString())
+          setallowanceLp(allowanceLp.toString())
           setShouldApproveFirst(allowanceFirst == '0')
           setShouldApproveSecond(allowanceSecond == '0')
           setShouldApprovePair(allowanceLp == '0')
@@ -595,7 +593,7 @@ const Classic = ({
         >
           Withdraw
         </Button>
-        <Button
+        {/* <Button
           onClick={() => handlerOption('STAKE')}
           className="flex-1 h-[38px] mx-auto !text-xs"
           variant={optionActive === 'STAKE' ? 'primary' : 'secondary'}
@@ -608,7 +606,7 @@ const Classic = ({
           variant={optionActive === 'UNSTAKE' ? 'primary' : 'secondary'}
         >
           UNSTAKE
-        </Button>
+        </Button> */}
       </div>
       <div className="flex flex-col gap-1 relative">
         {optionActive === 'WITHDRAW' && (
@@ -634,9 +632,10 @@ const Classic = ({
                 variant="primary"
                 onTokenValueChange={handleOnLPTokenValueChange}
                 setValue={() => {}}
+                option={optionActive}
               />
 
-              <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} />
+              {/* <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setFirstToken} /> */}
             </div>
             <Separator single />
           </>
@@ -757,7 +756,7 @@ const Classic = ({
             </div>
           </>
         )}
-        {optionActive == 'ADD' || optionActive == 'WITHDRAW' ? (
+        {optionActive == 'ADD' ? (
           <TokensSelector
             firstToken={firstToken}
             setFirstToken={setFirstToken}
@@ -768,6 +767,20 @@ const Classic = ({
             secondValue={secondValue}
             setSecondValue={setSecondValue}
             onTokenValueChange={handleOnTokenValueChange}
+            option={'ADD'}
+          />
+        ) : optionActive == 'WITHDRAW' ? (
+          <TokensSelector
+            firstToken={firstToken}
+            setFirstToken={setFirstToken}
+            firstValue={firstValue}
+            setFirstValue={setFirstValue}
+            secondToken={secondToken}
+            setSecondToken={setSecondToken}
+            secondValue={secondValue}
+            setSecondValue={setSecondValue}
+            onTokenValueChange={handleOnTokenValueChange}
+            option={'WITHDRAWINN'}
           />
         ) : null}
       </div>
@@ -775,20 +788,30 @@ const Classic = ({
       {optionActive == 'ADD' ? (
         <>
           {' '}
-          <ApproveButtonClassic
-            shouldApproveFirst={shouldApproveFirst}
-            shouldApproveSecond={shouldApproveSecond}
-            allowanceFirst={allowanceFirst}
-            allowanceSecond={allowanceSecond}
-            token0={firstToken}
-            token1={secondToken}
-            firstValue={firstValue}
-            secondValue={secondValue}
-            handleApprove={handleApprove}
-            mainFn={handleAddLiquidity}
-            mainText={buttonText}
-            isLoading={isLoading}
-          />
+          {pairAddress != '0x0000000000000000000000000000000000000000' ? (
+            <ApproveButtonClassic
+              shouldApproveFirst={shouldApproveFirst}
+              shouldApproveSecond={shouldApproveSecond}
+              allowanceFirst={allowanceFirst}
+              allowanceSecond={allowanceSecond}
+              token0={firstToken}
+              token1={secondToken}
+              firstValue={firstValue}
+              secondValue={secondValue}
+              handleApprove={handleApprove}
+              mainFn={handleAddLiquidity}
+              mainText={buttonText}
+              isLoading={isLoading}
+            />
+          ) : (
+            <Button
+              className="w-full mx-auto !text-xs !h-[49px]"
+              variant="tertiary"
+              disabled={pairAddress == '0x0000000000000000000000000000000000000000'}
+            >
+              Pair not created yet
+            </Button>
+          )}
         </>
       ) : null}
       {optionActive == 'WITHDRAW' ? (
@@ -797,11 +820,27 @@ const Classic = ({
           <Button
             className="w-full mx-auto !text-xs !h-[49px]"
             variant="tertiary"
+            disabled={
+              pairAddress == '0x0000000000000000000000000000000000000000' ||
+              Number(lpBalance) / 10 ** 18 < Number(lpValue)
+            }
             onClick={() => {
-              handleRemoveLiquidity()
+              Number(formatUnits(BigInt(allowanceLp), 18)) < Number(lpValue.toString())
+                ? handleApprove(pairAddress as Address, parseUnits(lpValue.toString(), 18).toString())
+                : handleRemoveLiquidity()
             }}
           >
-            {'Remove liquidity'}
+            {pairAddress == '0x0000000000000000000000000000000000000000' ? (
+              'Pair not created yet'
+            ) : isLoading ? (
+              <Loader color="white" size={20} />
+            ) : Number(lpBalance) / 10 ** 18 < Number(lpValue) ? (
+              'Insufficient LP'
+            ) : Number(formatUnits(BigInt(allowanceLp), 18)) < Number(lpValue.toString()) ? (
+              'Approve LP'
+            ) : (
+              'Remove Liquidity'
+            )}
           </Button>
         </>
       ) : null}
