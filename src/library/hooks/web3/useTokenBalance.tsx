@@ -41,7 +41,7 @@ export async function getTokenBalance(token1: Address, user: Address) {
       ],
     }
   )
-
+  console.log(balance[0].status, token1, 'tokenAB')
   if (balance[0].status === 'failure') return '0'
 
   const b: string = balance[0].result as string
@@ -114,7 +114,7 @@ export async function getTokensBalanceChainSpecific(tokens: Address[], user: Add
   const balance = await multicall(wagmiConfig, {
     contracts: contractsList,
   })
-  console.log(balance, 'balance')
+  // console.log(balance, 'balance')
   const balances: any = {}
   balances['0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'] = await publicClient.getBalance({ address: user })
 

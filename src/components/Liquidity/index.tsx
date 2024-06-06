@@ -17,18 +17,18 @@ const Liquidity = () => {
   const [filteredPoolsData, setFilteredPoolsData] = useState<BasicPool[]>([])
   // console.log(filteredPools)
   const { loading, data: pools } = useAllPools()
-  console.log('pools >> ', pools)
+  // console.log('pools >> ', pools)
 
   const getFilteredPools = () => {
     if (!pools) return []
-    console.log('entrando a filteredPools')
+    // console.log('entrando a filteredPools')
     switch (currentTab) {
       case 'VOLATILE':
-        return []  // Filtrar pools volátiles según tu lógica
+        return [] // Filtrar pools volátiles según tu lógica
       case 'STABLE':
-        return []  // Filtrar pools estables según tu lógica
+        return [] // Filtrar pools estables según tu lógica
       case 'CONCENTRATED':
-        return pools  // Filtrar pools concentrados según tu lógica
+        return pools // Filtrar pools concentrados según tu lógica
       case 'ALL POOLS':
       default:
         return pools
@@ -36,18 +36,19 @@ const Liquidity = () => {
   }
   useEffect(() => {
     setFilteredPools(getFilteredPools())
-  },[currentTab, pools])
+  }, [currentTab, pools])
 
   useEffect(() => {
     setFilteredPoolsData(getFilteredPoolsData())
-  },[filteredPools, searchValue])
+  }, [filteredPools, searchValue])
 
   const getFilteredPoolsData = () => {
-    console.log('entrando a filteredPoolsData')
+    // console.log('entrando a filteredPoolsData')
     return filteredPools
-      .filter(pool =>
-        pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
-        pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
+      .filter(
+        (pool) =>
+          pool?.token0.symbol.toLowerCase().includes(searchValue.toLowerCase()) ||
+          pool?.token1.symbol.toLowerCase().includes(searchValue.toLowerCase())
       )
       .sort((a, b) => Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD))
   }
@@ -65,7 +66,7 @@ const Liquidity = () => {
 
       <div className="flex flex-col justify-between gap-5 mb-4 md:items-center xl:flex-row overflow-hidden">
         <h5 className="text-lg mb-1 text-white max-xl:w-full lg:flex-shrink-0">Liquidity Pools</h5>
-        <div className='w-full'>
+        <div className="w-full">
           <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         </div>
         <div className="w-full xl:w-1/3">

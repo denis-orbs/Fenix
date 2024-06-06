@@ -43,7 +43,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     symbol: 'ETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023' as Address,
+    address: '0x4300000000000000000000000000000000000004' as Address,
     img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
@@ -123,7 +123,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   // const account = useAccount()
   // const { isConnected, chainId } = useActiveConnectionDetails()
-
 
   const { writeContractAsync } = useWriteContract()
 

@@ -63,7 +63,7 @@ const Panel = () => {
   const slippage = useSlippageTolerance()
   const { openConnectModal } = useConnectModal()
   const { account, isConnected } = useActiveConnectionDetails()
-  const chainId = useAccount()
+  const { chainId } = useAccount()
   const addNotification = useNotificationAdderCallback()
   const readNotification = useReadNotificationCallback()
   const handleTransactionSuccess = (

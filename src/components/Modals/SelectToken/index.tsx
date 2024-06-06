@@ -47,7 +47,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
           const responseData = await fetchTokens(chainId)
 
           const parsedData = responseData.map((item: any) => {
-            console.log(item.priceUSD, 'priceUSD')
+            // console.log(item.priceUSD, 'priceUSD')
             return {
               id: 0,
               name: item.basetoken.name,

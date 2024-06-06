@@ -7,7 +7,7 @@ interface ChoosePoolProps {
   rewardToken: any
 }
 const RewardSummary = ({ token, value, rewardToken }: ChoosePoolProps) => {
-  console.log('token', rewardToken)
+  // console.log('token', rewardToken)
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
@@ -42,7 +42,11 @@ const RewardSummary = ({ token, value, rewardToken }: ChoosePoolProps) => {
                   </h5>
                   <div className="flex items-center gap-3 max-md:flex-wrap">
                     <span className="bg-green-300 py-1 px-2 bg-opacity-20 rounded-lg text-white border border-green-500 text-xs">
-                    {!token.pair.hasOwnProperty('stable')? 'Concentrated Pool' : token.pair.stable?'Stable Pool':"Volatile Pool"}
+                      {!token.pair.hasOwnProperty('stable')
+                        ? 'Concentrated Pool'
+                        : token.pair.stable
+                          ? 'Stable Pool'
+                          : 'Volatile Pool'}
                     </span>
 
                     {/* <Button

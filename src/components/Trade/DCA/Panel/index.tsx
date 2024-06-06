@@ -18,7 +18,7 @@ const Panel = () => {
     symbol: 'ETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023',
+    address: '0x4300000000000000000000000000000000000004',
     price: 0,
     img: '/static/images/tokens/WETH.png',
   })

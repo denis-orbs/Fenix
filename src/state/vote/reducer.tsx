@@ -193,7 +193,7 @@ export const fetchGaugesAsync = createAsyncThunk(
         token1Symbol,
       } as VoteTableElement)
     })
-    console.log(voteElements, 'voteElements')
+    // console.log(voteElements, 'voteElements')
     voteElements.sort((a, b) => {
       if (a.voteWeight! > b.voteWeight!) {
         return -1

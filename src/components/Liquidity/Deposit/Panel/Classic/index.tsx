@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import ExchangeBox from '@/src/components/Liquidity/Common/ExchangeBox'
 import SelectToken from '@/src/components/Modals/SelectToken'
@@ -10,7 +10,7 @@ import {
   getTokenAllowance,
   getTokenReserve,
 } from '@/src/library/hooks/liquidity/useClassic'
-import { Address, formatUnits, isAddress } from 'viem'
+import { Address, formatUnits, isAddress, parseUnits } from 'viem'
 import { IToken } from '@/src/library/types'
 import Separator from '@/src/components/Trade/Common/Separator'
 import { useAccount, useReadContract, useWriteContract } from 'wagmi'
@@ -33,6 +33,7 @@ import ApproveButtonClassic from '../../../Common/ApproveButtonsClassic'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { getLiquidityTableElements } from '@/src/state/liquidity/thunks'
 import { useDispatch } from 'react-redux'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 const Classic = ({
   depositType,
@@ -57,7 +58,7 @@ const Classic = ({
     symbol: 'WETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000004' as Address,
+    address: '0x4300000000000000000000000000000000000004' as Address,
     img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
@@ -68,21 +69,23 @@ const Classic = ({
   const [lpValue, setLpValue] = useState(0)
   const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
   const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
+  const [allowanceFirst, setallowanceFirst] = useState('')
+  const [allowanceSecond, setallowanceSecond] = useState('')
   const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
   const [shouldApprovePair, setShouldApprovePair] = useState(true)
   const [buttonText, setButtonText] = useState('Add Liquidity')
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch<AppThunkDispatch>()
   const account = useAccount()
-  const { address } = useAccount()
+  const { address, chainId } = useAccount()
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
   const { writeContractAsync } = useWriteContract()
   const addNotification = useNotificationAdderCallback()
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
-  const { isConnected, chainId } = useActiveConnectionDetails()
+  const { isConnected } = useActiveConnectionDetails()
   const token1Balance = useReadContract({
     abi: ERC20_ABI,
     address: firstToken.address,
@@ -95,7 +98,33 @@ const Classic = ({
     functionName: 'balanceOf',
     args: [useAccount().address],
   })
+  const updateTokenPrice = useCallback((data: any[], symbol: string) => {
+    const foundToken = data.find((token) => token.basetoken.symbol === symbol)
+    return foundToken ? foundToken.priceUSD : null
+  }, [])
+  useEffect(() => {
+    const fetchTokenPrices = async () => {
+      console.log(chainId, 'inn3')
+      try {
+        console.log(chainId, 'inn2')
+        if (chainId) {
+          const data = await fetchTokens(chainId)
+          console.log('inn1')
+          const token0price = updateTokenPrice(data, 'USDB')
+          if (token0price !== null && firstToken?.symbol === 'USDB')
+            setFirstToken((prev) => ({ ...prev, price: token0price }))
 
+          const token1price = updateTokenPrice(data, 'WETH')
+          if (token1price !== null && secondToken?.symbol === 'WETH')
+            setSecondToken((prev) => ({ ...prev, price: token1price }))
+        }
+      } catch (error) {
+        console.error('Failed to fetch token prices:', error)
+      }
+    }
+
+    fetchTokenPrices()
+  }, [updateTokenPrice, chainId])
   useEffect(() => {
     if (chainId && address) dispatch(getLiquidityTableElements({ address, chainId }))
     const params = new URLSearchParams(searchParams.toString())
@@ -114,6 +143,7 @@ const Classic = ({
     if (defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
+      setIsLoading(false)
     }
     if (
       account &&
@@ -150,7 +180,13 @@ const Classic = ({
         secondToken.address as Address,
         depositType === 'STABLE'
       )
-
+      console.log(
+        firstToken.address as Address,
+        secondToken.address as Address,
+        depositType === 'STABLE',
+        pair,
+        'depositType'
+      )
       if (pair != '0x0') setPairAddress(pair)
       else setPairAddress('0x0000000000000000000000000000000000000000')
     }
@@ -179,7 +215,9 @@ const Classic = ({
               contractAddressList.v2router as Address
             )
           : {}
-      // console.log(allowanceFirst, allowanceSecond, allowanceLp, 'allowance')
+      console.log(allowanceFirst, allowanceSecond, allowanceLp, 'allowance')
+      setallowanceFirst(allowanceFirst.toString())
+      setallowanceSecond(allowanceSecond.toString())
       setShouldApproveFirst(allowanceFirst == '0')
       setShouldApproveSecond(allowanceSecond == '0')
       setShouldApprovePair(allowanceLp == '0')
@@ -235,7 +273,18 @@ const Classic = ({
   }
 
   const handleAddLiquidity = async () => {
-    // TODO values check
+    console.log(
+      firstToken.address as Address,
+      secondToken.address as Address,
+      depositType === 'STABLE',
+      parseUnits(firstValue, firstToken?.decimals),
+      parseUnits(firstValue, firstToken?.decimals),
+      0,
+      0,
+      account.address as Address,
+      parseInt((+new Date() / 1000).toString()) + 60 * 60
+    )
+    setIsLoading(true)
     await writeContractAsync(
       {
         abi: ROUTERV2_ABI,
@@ -246,8 +295,8 @@ const Classic = ({
           firstToken.address as Address,
           secondToken.address as Address,
           depositType === 'STABLE',
-          BigDecimal.fromString(firstValue, firstToken?.decimals)._value,
-          BigDecimal.fromString(secondValue, secondToken?.decimals)._value,
+          parseUnits(firstValue, firstToken?.decimals),
+          parseUnits(firstValue, firstToken?.decimals),
           0,
           0,
           account.address as Address,
@@ -257,29 +306,19 @@ const Classic = ({
 
       {
         onSuccess: async (x) => {
-          // console.log('success', x, +new Date())
+          setIsLoading(true)
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
-          if (transaction.status == 'success') {
-            // toast(`Added successfully.`)
-            addNotification({
-              id: crypto.randomUUID(),
-              createTime: new Date().toISOString(),
-              message: `Added successfully.`,
-              notificationType: NotificationType.SUCCESS,
-              txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_5000,
-            })
-          } else {
-            // toast(`Add LP TX failed, hash: ${transaction.transactionHash}`)
-            addNotification({
-              id: crypto.randomUUID(),
-              createTime: new Date().toISOString(),
-              message: `Add LP TX failed, hash`,
-              notificationType: NotificationType.ERROR,
-              txHash: transaction.transactionHash,
-              notificationDuration: NotificationDuration.DURATION_5000,
-            })
-          }
+
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `Added LP successfully.`,
+            notificationType: NotificationType.SUCCESS,
+            txHash: transaction.transactionHash,
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
+
+          setIsLoading(false)
         },
         onError: (e) => {
           // toast(`Add LP failed. ${e}`)
@@ -291,6 +330,7 @@ const Classic = ({
             txHash: '',
             notificationDuration: NotificationDuration.DURATION_5000,
           })
+          setIsLoading(false)
         },
       }
     )
@@ -357,6 +397,7 @@ const Classic = ({
   }
 
   const handleApprove = async (token: Address, amount: string) => {
+    setIsLoading(true)
     writeContractAsync(
       {
         abi: ERC20_ABI,
@@ -366,6 +407,7 @@ const Classic = ({
       },
       {
         onSuccess: async (x) => {
+          setIsLoading(true)
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
             // toast(`Approved successfully`)
@@ -407,10 +449,12 @@ const Classic = ({
                   contractAddressList.v2router as Address
                 )
               : {}
-
+          setallowanceFirst(allowanceFirst.toString())
+          setallowanceSecond(allowanceSecond.toString())
           setShouldApproveFirst(allowanceFirst == '0')
           setShouldApproveSecond(allowanceSecond == '0')
           setShouldApprovePair(allowanceLp == '0')
+          setIsLoading(false)
         },
         onError: (e) => {
           // toast(`Approve failed. ${e}`)
@@ -422,6 +466,7 @@ const Classic = ({
             txHash: '',
             notificationDuration: NotificationDuration.DURATION_5000,
           })
+          setIsLoading(false)
         },
       }
     )
@@ -484,12 +529,12 @@ const Classic = ({
                   }{' '}
                   %
                 </Button>
-                <Button
+                {/* <Button
                   variant="tertiary"
                   className="!p-0 h-[28px] w-[33px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
                 >
                   <span className="icon-info"></span>
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
@@ -720,10 +765,12 @@ const Classic = ({
           <ApproveButtonClassic
             shouldApproveFirst={shouldApproveFirst}
             shouldApproveSecond={shouldApproveSecond}
+            allowanceFirst={allowanceFirst}
+            allowanceSecond={allowanceSecond}
             token0={firstToken}
             token1={secondToken}
-            firstValue={BigDecimal.fromString(firstValue, firstToken?.decimals)}
-            secondValue={BigDecimal.fromString(secondValue, secondToken?.decimals)}
+            firstValue={firstValue}
+            secondValue={secondValue}
             handleApprove={handleApprove}
             mainFn={handleAddLiquidity}
             mainText={buttonText}

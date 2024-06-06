@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
             },
           }),
         ])
-        console.log('Data introduced for wallet', reward.recipient, 'Points:', rewardAmount)
+        // console.log('Data introduced for wallet', reward.recipient, 'Points:', rewardAmount)
       }
     } catch (error) {
       await notificationService.sendNotification(

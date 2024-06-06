@@ -1,18 +1,20 @@
 'use client'
 
 import { Button } from '@/src/components/UI'
-import { Address } from 'viem'
+import { Address, formatUnits, parseUnits } from 'viem'
 import Loader from '../../UI/Icons/Loader'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 
 interface ApproveButtonsProps {
   shouldApproveFirst: boolean
   shouldApproveSecond: boolean
+  allowanceFirst: string
+  allowanceSecond: string
   token0: any
   token1: any
   handleApprove: any
-  firstValue: BigDecimal
-  secondValue: BigDecimal
+  firstValue: string
+  secondValue: string
   mainFn: any
   mainText: string
   isLoading: boolean
@@ -23,6 +25,8 @@ const ApproveButtonClassic = ({
   token1,
   firstValue,
   secondValue,
+  allowanceFirst,
+  allowanceSecond,
   shouldApproveFirst,
   shouldApproveSecond,
   handleApprove,
@@ -30,16 +34,26 @@ const ApproveButtonClassic = ({
   mainText,
   isLoading,
 }: ApproveButtonsProps) => {
-  return shouldApproveFirst || shouldApproveSecond ? (
+  console.log(
+    Number(formatUnits(BigInt(allowanceFirst), token0?.decimals)) > Number(firstValue.toString()),
+    Number(formatUnits(BigInt(allowanceFirst), token0?.decimals)),
+    Number(firstValue.toString()),
+    'allowanceFirst'
+  )
+  return shouldApproveFirst ||
+    shouldApproveSecond ||
+    Number(formatUnits(BigInt(allowanceFirst), token0?.decimals)) < Number(firstValue.toString()) ||
+    Number(formatUnits(BigInt(allowanceSecond), token1?.decimals)) < Number(secondValue.toString()) ? (
     <div className="flex">
       <Button
         onClick={() => {
-          if (shouldApproveFirst) handleApprove(token0.address as Address, firstValue._value)
+          handleApprove(token0.address as Address, parseUnits(firstValue, token0?.decimals))
         }}
         className="button button-tertiary w-1/2 !text-xs !h-[49px] mr-[10px]"
-        disabled={!shouldApproveFirst}
+        disabled={Number(formatUnits(BigInt(allowanceFirst), token0?.decimals)) >= Number(firstValue.toString())}
       >
-        {shouldApproveFirst ? (
+        {Number(formatUnits(BigInt(allowanceFirst), token0?.decimals)) < Number(firstValue.toString()) ||
+        shouldApproveFirst ? (
           <> Approve {token0.symbol}</>
         ) : (
           <div className="flex items-center">
@@ -50,12 +64,13 @@ const ApproveButtonClassic = ({
       </Button>
       <Button
         onClick={() => {
-          if (shouldApproveSecond) handleApprove(token1.address as Address, secondValue._value)
+          handleApprove(token1.address as Address, parseUnits(secondValue, token1?.decimals))
         }}
-        disabled={!shouldApproveSecond}
+        disabled={Number(formatUnits(BigInt(allowanceSecond), token1?.decimals)) >= Number(secondValue.toString())}
         className="button button-tertiary w-1/2 !text-xs !h-[49px]"
       >
-        {shouldApproveSecond ? (
+        {Number(formatUnits(BigInt(allowanceSecond), token1?.decimals)) < Number(secondValue.toString()) ||
+        shouldApproveSecond ? (
           <> Approve {token1.symbol}</>
         ) : (
           <div className="flex items-center">

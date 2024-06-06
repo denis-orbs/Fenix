@@ -77,9 +77,9 @@ const Vote = () => {
     }
     if (chainId) {
       const availableTokenData = await fetchTokens(chainId)
-      console.log(!availableTokenData, 'inn')
+      // console.log(!availableTokenData, 'inn')
       if (!availableTokenData) {
-        console.log('inn')
+        // console.log('inn')
         setIsVoteLoading(false)
         return
       }
@@ -94,11 +94,11 @@ const Vote = () => {
           decimals: token.decimals,
         }
       })
-      console.log(typeof availableTokenData[0].decimals, 'Fetching rewards for v3')
+      // console.log(typeof availableTokenData[0].decimals, 'Fetching rewards for v3')
       const r = await getAllPairRewards(address, tokensObject, chainId)
       const rCL = await getAllClPairRewards(address, tokensObject, chainId)
 
-      console.log(rCL, 'Fetched pair rewards ffor v3')
+      // console.log(rCL, 'Fetched pair rewards ffor v3')
 
       const validRewards = [
         ...r.filter((r) => {
@@ -108,7 +108,7 @@ const Vote = () => {
           return r._pool !== NULL_ADDRESS && r._gauge !== NULL_ADDRESS
         }),
       ]
-      console.log(validRewards, 'Fetched pair rewards for v3')
+      // console.log(validRewards, 'Fetched pair rewards for v3')
       let totalVotingPower = 0n
       let userTotalVotingPower = 0n
       validRewards.forEach((r) => {
@@ -229,7 +229,7 @@ const Vote = () => {
         }
         return 0
       })
-      console.log(voteElements, 'heyy')
+      // console.log(voteElements, 'heyy')
       // sentryTx.endTimestamp = parseInt((Date.now() / 1000).toFixed(0));
       // sentryTx.finish();
       // Sentry.flush(2000).then(() => console.log('Reported vote table!'));

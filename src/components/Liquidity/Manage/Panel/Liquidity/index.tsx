@@ -75,10 +75,10 @@ const Manage = ({}: {}) => {
   const [firstValue, setFirstValue] = useState('')
   const [secondToken, setSecondToken] = useState({
     name: 'Ethereum',
-    symbol: 'ETH',
+    symbol: 'WETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023' as Address,
+    address: '0x4300000000000000000000000000000000000004' as Address,
     img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')

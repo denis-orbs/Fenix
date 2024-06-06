@@ -99,7 +99,7 @@ const MylocksMobile = ({ activePagination = true, Locks, tab }: MylocksMobilePro
     })
   } else data = lock.positions
 
-  console.log('gg', Locks)
+  // console.log('gg', Locks)
 
   const pagination = paginate(data, activePage, itemsPerPage)
 

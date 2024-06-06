@@ -84,7 +84,7 @@ const ExchangeBox = ({
   useEffect(() => {
     const asyncFn = async () => {
       const b = await getTokenBalance(token.address as Address, account.address as Address)
-
+      console.log(b.toString(), token.symbol, token.address, account.address, 'tokenAB')
       setBalance(b.toString())
     }
 
@@ -94,6 +94,7 @@ const ExchangeBox = ({
   const handleOnChange = (e: any) => {
     if (onTokenValueChange) onTokenValueChange(e < 0 || e == '' ? 0 : e, token)
   }
+
   return (
     <div className={boxVariant}>
       <div className={`flex items-center mb-3 ${availableAlign}`}>

@@ -28,22 +28,24 @@ const Deposit = ({ vote }: DepositProps) => {
   const { chainId } = useAccount()
 
   const tokensData = async () => {
-    console.log(vote, 'element')
+    // console.log(vote, 'element')
     if (chainId) {
       const availableTokenData = await fetchTokens(chainId)
       setTokens(availableTokenData.length)
 
       let weekly_emission = await multicall(wagmiConfig, {
-        contracts: [{
-          address: MINTER_ADDRESS[chainId] as Address,
-          abi: MINTER_ABI as Abi,
-          functionName: 'weekly_emission'
-        }],
+        contracts: [
+          {
+            address: MINTER_ADDRESS[chainId] as Address,
+            abi: MINTER_ABI as Abi,
+            functionName: 'weekly_emission',
+          },
+        ],
       })
-      EXCHANGE_LIST[3].amount = `${formatAmount(fromWei((weekly_emission[0].result as BigInt).toString()),2,true)} FNX`
+      EXCHANGE_LIST[3].amount = `${formatAmount(fromWei((weekly_emission[0].result as BigInt).toString()), 2, true)} FNX`
       setweeklyEmission(fromWei((weekly_emission[0].result as BigInt).toString()))
-      
-      console.log(fromWei((weekly_emission[0].result as BigInt).toString()),"weekly_emission")
+
+      // console.log(fromWei((weekly_emission[0].result as BigInt).toString()), 'weekly_emission')
 
       let pushExternal: BigDecimal[] = []
       let pushInternal: BigDecimal[] = []
@@ -58,7 +60,7 @@ const Deposit = ({ vote }: DepositProps) => {
             ).mulNumber(Number(tokenElement.priceUSD) ?? 0)
           })
           .reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
-          pushExternal.push(usdValueExternal)
+        pushExternal.push(usdValueExternal)
       })
       let b = vote.voteTableElement.map((reward) => {
         let usdValueExternal = reward.rewardPair.internalBribeReward.tokens
@@ -71,14 +73,14 @@ const Deposit = ({ vote }: DepositProps) => {
             ).mulNumber(Number(tokenElement.priceUSD) ?? 0)
           })
           .reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
-          pushInternal.push(usdValueExternal)
+        pushInternal.push(usdValueExternal)
       })
       let totalExternal = pushExternal?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
       let totalInternal = pushInternal?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
       EXCHANGE_LIST[0].amount = `$ ${totalInternal.toString()}`
       EXCHANGE_LIST[1].amount = `$ ${totalExternal.toString()}`
-      EXCHANGE_LIST[2].amount = `$ ${(totalInternal.add(totalExternal)).toString()}`
-      
+      EXCHANGE_LIST[2].amount = `$ ${totalInternal.add(totalExternal).toString()}`
+
       setRewardAmountUsd(totalExternal)
       // console.log(push, ab.toString(), parseInt(ab.toString()), 'ab')
     }

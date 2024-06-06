@@ -63,7 +63,7 @@ const CreateLock = () => {
         FENIX_ADDRESS[chainId] as Address,
         VOTING_ESCROW_ADDRESS[chainId] as Address
       )
-      console.log(fromWei(BigInt(tokenAllow).toString()))
+      // console.log(fromWei(BigInt(tokenAllow).toString()))
       settokenAllowance(fromWei(BigInt(tokenAllow).toString()))
     }
   }
@@ -204,13 +204,13 @@ const CreateLock = () => {
     )
   }
   const asyncGetAllowance = async () => {
-    console.log('inn1')
+    // console.log('inn1')
     const allowanceFirst: any = await getTokenAllowance(
       address as Address,
       chainId ? (FENIX_ADDRESS[chainId] as Address) : (FENIX_ADDRESS[FALLBACK_CHAIN_ID] as Address),
       chainId ? (VOTING_ESCROW_ADDRESS[chainId] as Address) : (VOTING_ESCROW_ADDRESS[FALLBACK_CHAIN_ID] as Address)
     )
-    console.log(allowanceFirst, 'inn2')
+    // console.log(allowanceFirst, 'inn2')
     settokenAllowance(fromWei(allowanceFirst.toString()))
   }
 

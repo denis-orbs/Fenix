@@ -87,14 +87,14 @@ const LockManage: FC<pageProps> = ({ id }) => {
     toAddress: string
   ) => {
     try {
-      console.log(
-        (Number(lock?.veNFTInfo.lockEnd) - Math.floor(Date.now() / 1000)) / 86400,
-        changeValue,
-        inputAmount,
-        currentId,
-        currentTab,
-        'inn'
-      )
+      // console.log(
+      //   (Number(lock?.veNFTInfo.lockEnd) - Math.floor(Date.now() / 1000)) / 86400,
+      //   changeValue,
+      //   inputAmount,
+      //   currentId,
+      //   currentTab,
+      //   'inn'
+      // )
       if (chainId && address) {
         if (currentTab === 'ADD') {
           setCurrentButtonState(ButtonState.LOADING)
@@ -319,7 +319,7 @@ const LockManage: FC<pageProps> = ({ id }) => {
             chainId ? (FENIX_ADDRESS[chainId] as Address) : (FENIX_ADDRESS[FALLBACK_CHAIN_ID] as Address),
             address
           )) as bigint
-          console.log(resp, fromWei(BigInt(tokenbalance).toString()), 'tokenbalance')
+          // console.log(resp, fromWei(BigInt(tokenbalance).toString()), 'tokenbalance')
           settokenBalance(fromWei(BigInt(tokenbalance).toString()))
           setLock(resp)
         }
