@@ -20,10 +20,14 @@ const Input = ({
   const [shownPercent, setShownPercent] = useState(percent)
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
+  console.log('shownPercent.length >> ', shownPercent.length)
+  console.log(':>> ', 'max-w-['+ shownPercent.length * 4 +'px]')
+
   useEffect(() => {
     setShownPercent(percent)
   }, [percent])
-
+  const w = 'max-w-['+ shownPercent.length * 4 +'px]'
+  console.log('w >> ', w)
   useEffect(() => {
     if (onTitleClick) setStyleObj({ cursor: 'pointer' })
     else setStyleObj({})
@@ -47,13 +51,8 @@ const Input = ({
             type="number"
             min={-100}
             value={shownPercent}
-            className={`bg-transparent outline-none  
-            ${Number(shownPercent.length) === 3 && 'max-w-[25px]'}
-            ${Number(shownPercent) === 0 && Number(shownPercent.length) === 1 && 'max-w-[10px]'}
-            ${Number(shownPercent) < 0 && Number(shownPercent.length) === 2 && 'max-w-[18px]'}
-            ${Number(shownPercent) > 0 && Number(shownPercent.length) === 1 && 'max-w-[10px]'}
-            ${Number(shownPercent) > 0 && Number(shownPercent.length) === 2 && 'max-w-[18px]'}
-            ${Number(shownPercent) < 0 ? 'max-w-[1.9rem]' : 'max-w-[1.4rem]'}`}
+            className={`bg-transparent outline-none text-right max-w-[4rem]
+            `}
             onChange={(event) => {
               if (timeout) clearTimeout(timeout)
               setShownPercent(event.target.value)
@@ -66,7 +65,7 @@ const Input = ({
               setTimeoutID(newTimeout)
             }}
           />
-          <span>%</span>
+          <span className='ml-1'>%</span>
         </div>
       </div>
     </div>
