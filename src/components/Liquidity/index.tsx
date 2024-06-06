@@ -8,6 +8,7 @@ import { useAllPools } from '@/src/state/liquidity/hooks'
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useEffect, useState } from 'react'
 import HeaderRow from './Tables/LiquidityTable/HeaderRow'
+import BlastBanner from '@/src/components/Common/BlastBanner'
 import {
   BLAST_NATIVE_POOLS,
   BLUE_CHIPS_POOLS,
@@ -57,7 +58,8 @@ const Liquidity = () => {
       return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
     })
   return (
-    <section>
+    <section className='pt-5'>
+      <BlastBanner/>
       <div className="flex flex-col items-center overflow-hidden gap-5 py-5 xl:flex-row">
         <div className="w-full xl:w-2/3 ">
           <Deposit />
