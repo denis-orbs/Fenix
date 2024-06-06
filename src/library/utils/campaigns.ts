@@ -1,4 +1,4 @@
-type PointStackType = 'fenix-ring' | 'blast' | 'blast-gold' | 'fdao'
+type PointStackType = 'fenix-ring' | 'blast' | 'blast-gold' | 'fdao' | 'KeepMiles' | 'EigenLayer'
 export interface Campaign {
   pairAddress: string
   multiplier: string
@@ -23,7 +23,7 @@ export const totalCampaigns: Campaign[] = [
   {
     multiplier: '🔥 Rings Boost',
     pairAddress: '0xe53b1da56f90c9529f2db1bb8711c3f1cc6f03bd',
-    pointStack: ['fenix-ring', 'blast'],
+    pointStack: ['fenix-ring', 'blast', 'KeepMiles', 'EigenLayer'],
   },
   {
     multiplier: '🔥 Rings Boost',
