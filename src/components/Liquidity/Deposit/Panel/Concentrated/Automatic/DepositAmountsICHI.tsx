@@ -192,14 +192,14 @@ const DepositAmountsICHI = ({
         dex,
         1
       )
-      await txDepositDetails.wait()
+      const tx = await txDepositDetails.wait()
       // toast.success('Deposited successfully')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
         message: `Deposited successfully.`,
         notificationType: NotificationType.SUCCESS,
-        txHash: '',
+        txHash: tx.transactionHash,
         notificationDuration: NotificationDuration.DURATION_5000,
       })
       setLoading(false)

@@ -156,14 +156,14 @@ const WithdrawAmountsICHI = ({
         txHash: '',
         notificationDuration: NotificationDuration.DURATION_5000,
       })
-      txnDetails.wait()
+      const tx = await txnDetails.wait()
       // toast.success('Withdrawal Successful')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
         message: `Withdrawal Successful.`,
         notificationType: NotificationType.SUCCESS,
-        txHash: '',
+        txHash: tx.transactionHash,
         notificationDuration: NotificationDuration.DURATION_5000,
       })
       setAmountToWithdraw('')
