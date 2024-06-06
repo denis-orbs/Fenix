@@ -114,6 +114,11 @@ export function useAllPools() {
   }
 }
 
+export function usePoolById(poolId: string) {
+  const pools = useAllPools()
+  return pools.data.find((pool: LiquidityTableElement) => pool.pairAddress === poolId)
+}
+
 export function useGammaVaults() {
   const gammaVaults = useAppSelector((state) => state.liquidity.gammaVaults)
   return {

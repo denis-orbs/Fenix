@@ -36,6 +36,8 @@ interface MyPositionssProps {
 
 const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionssProps) => {
   const router = useRouter()
+  const [isInRange, setIsInRange] = useState(false)
+
   const dispatch = useDispatch()
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
@@ -102,8 +104,11 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
           </div>
         ) : (
           <>
-            <div className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300" onMouseEnter={() => setIsMinHover(true)}
-              onMouseLeave={() => setIsMinHover(false)}>
+            <div
+              className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300"
+              onMouseEnter={() => setIsMinHover(true)}
+              onMouseLeave={() => setIsMinHover(false)}
+            >
               Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
               {/* {isMinHover && (
                 <Tooltip
@@ -119,8 +124,11 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                 </Tooltip>
               )} */}
             </div>
-            <div className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300" onMouseEnter={() => setIsMaxHover(true)}
-              onMouseLeave={() => setIsMaxHover(false)}>
+            <div
+              className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300"
+              onMouseEnter={() => setIsMaxHover(true)}
+              onMouseLeave={() => setIsMaxHover(false)}
+            >
               Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
               {/* {isMaxHover && (
                 <Tooltip
@@ -164,8 +172,10 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       price1: string
     }
     liquidity: string
+    setIsInRange: (inRange: boolean) => void
+    isInRange: boolean
   }
-  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity }: setStatusprops) => {
+  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, isInRange }: setStatusprops) => {
     const minPrice = useMemo(() => {
       return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     }, [tickLower, token0?.decimals, token1?.decimals])
@@ -186,9 +196,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       ? Number(poolPriceData?.price / 10 ** Number(token1.decimals)).toFixed(6)
       : '0'
 
-    const isInRange = useMemo(() => {
+    const isInRangeAux = useMemo(() => {
       return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
     }, [minPrice, maxPrice, currentPoolPrice, liquidity])
+
+    useEffect(() => {
+      setIsInRange(isInRangeAux)
+    }, [isInRangeAux, , setIsInRange])
     if (isPoolPriceDataLoading) {
       return <Loader />
     }
@@ -303,7 +317,6 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       }
     )
   }
-
   return (
     <>
       <div className="relative hidden xl:block z-10 xl:mb-5 w-full">
@@ -321,6 +334,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
             sort={null}
             sortIndex={1}
           />
+
           {data && data?.length > 0 ? (
             <>
               <TableBody>
@@ -330,6 +344,10 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                       return pool.id.toLowerCase() === position.pool.id.toLowerCase()
                     })?.apr || 0
 
+                  if (position.token0.symbol == 'fDAO') {
+                    console.log('position', position)
+                    console.log(fenixRingApr)
+                  }
                   return (
                     <>
                       <TableRow key={position.id}>
@@ -389,18 +407,20 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                             tickLower={position.tickLower}
                             tickUpper={position.tickUpper}
                             liquidity={position.liquidity}
+                            setIsInRange={setIsInRange}
+                            isInRange={isInRange}
                           />
                         </TableCell>
                         <TableCell className="w-[10%] flex justify-end">
                           <AprBox
-                            apr={parseFloat(position?.apr) > 0 ? parseFloat(position?.apr) + fenixRingApr : 0}
+                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr : 0}
                             tooltip={
                               <div>
                                 <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Fees APR</p>
                                   <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
                                 </div>
-                                {fenixRingApr > 0 && parseFloat(position?.apr) > 0 && (
+                                {fenixRingApr > 0 && isInRange && (
                                   <div className="flex justify-between items-center gap-3">
                                     <p className="text-sm pb-1">Rings APR</p>
                                     <p className="text-sm pb-1 text-chilean-fire-600">

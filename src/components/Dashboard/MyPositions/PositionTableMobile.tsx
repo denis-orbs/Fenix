@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Button, Pagination, PaginationMobile, TableBody, TableCell, TableHead, TableRow } from '../../UI'
 import { positions } from '../MyStrategies/Strategy'
 import NoPositionFound from './NoPositionFound'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { Token } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
@@ -41,6 +41,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
+  const [isInRange, setIsInRange] = useState<boolean>(true)
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -133,8 +134,10 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
       price1: string
     }
     liquidity: string
+    setIsInRange: (value: boolean) => void
+    isInRange: boolean
   }
-  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity }: setStatusprops) => {
+  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, isInRange, setIsInRange }: setStatusprops) => {
     const minPrice = parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     const maxPrice = parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
 
@@ -150,8 +153,16 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     const currentPoolPrice = poolPriceData
       ? Number(poolPriceData?.price / 10 ** Number(token1.decimals)).toFixed(6)
       : '0'
-    const isInRange =
-      (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
+    const isInRangeAux = useMemo(() => {
+      return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
+    }, [minPrice, maxPrice, currentPoolPrice, liquidity])
+
+    useEffect(() => {
+      setIsInRange(isInRangeAux)
+    }, [isInRangeAux, , setIsInRange])
+    if (isPoolPriceDataLoading) {
+      return <Loader />
+    }
     if (isPoolPriceDataLoading) {
       return <Loader />
     }
@@ -352,18 +363,20 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                             tickLower={position.tickLower}
                             tickUpper={position.tickUpper}
                             liquidity={position.liquidity}
+                            isInRange={isInRange}
+                            setIsInRange={setIsInRange}
                           />
                         </div>
                         <div className="flex justify-between items-center">
                           <AprBox
-                            apr={parseFloat(position?.apr) > 0 ? parseFloat(position?.apr) + fenixRingApr : 0}
+                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr : 0}
                             tooltip={
                               <div>
                                 <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Fees APR</p>
                                   <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
                                 </div>
-                                {fenixRingApr > 0 && parseFloat(position?.apr) > 0 && (
+                                {fenixRingApr > 0 && isInRange && (
                                   <div className="flex justify-between items-center gap-3">
                                     <p className="text-sm pb-1">Rings APR</p>
                                     <p className="text-sm pb-1 text-chilean-fire-600">
