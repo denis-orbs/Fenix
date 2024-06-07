@@ -28,6 +28,7 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import Loader from '@/src/components/UI/Icons/Loader'
+import { useAccount } from 'wagmi'
 import { ethers } from 'ethers'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
@@ -54,6 +55,7 @@ const WithdrawAmountsICHI = ({
 
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
+  const { chainId } = useAccount()
 
   const vaultAddress =
     allIchiVaultsByTokenPair?.find((vault) => {
@@ -116,10 +118,14 @@ const WithdrawAmountsICHI = ({
           return v
         }
       })?.tokenB
-      const tokenList = await fetchTokens()
-      const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
-      const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
-      setTotalShareDollar(Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice))
+      if (chainId) {
+        const tokenList = await fetchTokens(chainId)
+        const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
+        const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
+        setTotalShareDollar(
+          Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice)
+        )
+      }
 
       setTotalUserShares(data)
     }

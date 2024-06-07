@@ -18,7 +18,7 @@ const Panel = () => {
     symbol: 'ETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023',
+    address: '0x4300000000000000000000000000000000000004',
     price: 0,
     img: '/static/images/tokens/WETH.svg',
   })
@@ -51,7 +51,7 @@ const Panel = () => {
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-5">
             <h4 className="mb-3 text-lg text-white font-medium">DCA</h4>
-            <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
+            <span className="icon-refresh text-shark-100 text-xl cursor-pointer"></span>
           </div>
           <div className="flex flex-col gap-1 mb-5 relative">
             <div className="mb-3">

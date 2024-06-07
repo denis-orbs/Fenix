@@ -6,6 +6,7 @@ import { Address } from '@/src/library/types'
 
 import { LiquidityTableElement, LiquidityV2PairDetails, V3PairInfo } from './types'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
+import { BoostedPool } from '@/src/app/api/rings/campaign/route'
 
 export function useV2PairsData() {
   const v2Pairs: {
@@ -126,3 +127,15 @@ export function useGammaVaults() {
     data: gammaVaults?.data || [],
   }
 }
+
+export function useRingsCampaigns() {
+  const ringsCampaigns = useAppSelector((state) => state.liquidity.ringsCampaigns)
+  return {
+    loading: ringsCampaigns?.state === ApiState.LOADING,
+    data: ringsCampaigns.data || [],
+  }
+}
+// export function useRingCampaignById(id: string) {
+//   const ringsCampaigns = useRingsCampaigns()
+//   return ringsCampaigns.data.find((campaign: BoostedPool) => campaign.id === id)
+// }

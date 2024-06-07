@@ -75,15 +75,15 @@ const Manage = ({}: {}) => {
   const [firstValue, setFirstValue] = useState('')
   const [secondToken, setSecondToken] = useState({
     name: 'Ethereum',
-    symbol: 'ETH',
+    symbol: 'WETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023' as Address,
-    img: '/static/images/tokens/WETH.svg',
+    address: '0x4300000000000000000000000000000000000004' as Address,
+    img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
-  const [lpValue, setLpValue] = useState("0")
+  const [lpValue, setLpValue] = useState('0')
   const [firstAllowance, setFirstAllowance] = useState(0)
   const [secondAllowance, setSecondAllowance] = useState(0)
   const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
@@ -96,7 +96,7 @@ const Manage = ({}: {}) => {
 
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
-  const account = useAccount()
+  const { address, chainId } = useAccount()
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
 
   const { writeContractAsync } = useWriteContract()
@@ -112,12 +112,12 @@ const Manage = ({}: {}) => {
   const asyncGetAllowance = async (token1: Address, token2: Address) => {
     const _allowanceFirst: any = await getTokenAllowance(
       token1,
-      account.address as Address,
+      address as Address,
       contractAddressList.cl_manager as Address
     )
     const _allowanceSecond: any = await getTokenAllowance(
       token2,
-      account.address as Address,
+      address as Address,
       contractAddressList.cl_manager as Address
     )
 
@@ -126,26 +126,28 @@ const Manage = ({}: {}) => {
   }
   const getList = async (token0: Address, token1: Address) => {
     try {
-      const responseData = await fetchTokens()
+      if (chainId) {
+        const responseData = await fetchTokens(chainId)
 
-      const parsedData = responseData.map((item: any) => {
-        return {
-          id: 0,
-          name: item.basetoken.name,
-          symbol: item.basetoken.symbol,
-          address: item.basetoken.address,
-          decimals: item.decimals,
-          img: item.logourl,
-          isCommon: item.common,
-          price: parseFloat(item.priceUSD),
-        }
-      })
+        const parsedData = responseData.map((item: any) => {
+          return {
+            id: 0,
+            name: item.basetoken.name,
+            symbol: item.basetoken.symbol,
+            address: item.basetoken.address,
+            decimals: item.decimals,
+            img: item.logourl,
+            isCommon: item.common,
+            price: parseFloat(item.priceUSD),
+          }
+        })
 
-      parsedData.map((item: any) => {
-        if (item.address.toLowerCase() == token0.toLowerCase()) setFirstToken(item)
-        if (item.address.toLowerCase() == token1.toLowerCase()) setSecondToken(item)
-      })
-      setIsLoading(false)
+        parsedData.map((item: any) => {
+          if (item.address.toLowerCase() == token0.toLowerCase()) setFirstToken(item)
+          if (item.address.toLowerCase() == token1.toLowerCase()) setSecondToken(item)
+        })
+        setIsLoading(false)
+      }
     } catch (error) {}
   }
   const updatePositionData = async (positionId: any) => {
@@ -177,25 +179,25 @@ const Manage = ({}: {}) => {
     } else {
       updatePositionData(positionId)
     }
-  }, [])
+  }, [chainId])
 
   useEffect(() => {
     asyncGetAllowance(firstToken.address as Address, secondToken.address as Address)
-  }, [firstToken, secondToken, account.address])
+  }, [firstToken, secondToken, address])
 
   useEffect(() => {
     if (!positionData) return
     if (optionActive != 'WITHDRAW') return
 
     setLpValue(
-      withdrawPercent == 100 ?
-          BigInt(positionData.liquidity).toString()
-      : positionData.liquidity == 0
-        ? "0"
-        : (
-            (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
+      withdrawPercent == 100
+        ? BigInt(positionData.liquidity).toString()
+        : positionData.liquidity == 0
+          ? '0'
+          : (
+              (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
               BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-          ).toString()
+            ).toString()
     )
     setFirstValue(
       formatNumber(
@@ -368,7 +370,7 @@ const Manage = ({}: {}) => {
         args: [
           firstToken.address,
           Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
-          account.address,
+          address,
         ],
       }),
       encodeFunctionData({
@@ -377,7 +379,7 @@ const Manage = ({}: {}) => {
         args: [
           secondToken.address,
           Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
-          account.address,
+          address,
         ],
       }),
     ]
@@ -621,8 +623,14 @@ const Manage = ({}: {}) => {
       </div>
 
       <ApproveButtons
-        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : Number(firstValue)*(10**firstToken.decimals) >= Number(firstAllowance)}
-        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : Number(secondValue)*(10**secondToken.decimals) >= Number(secondAllowance)}
+        shouldApproveFirst={
+          optionActive === 'WITHDRAW' ? false : Number(firstValue) * 10 ** firstToken.decimals >= Number(firstAllowance)
+        }
+        shouldApproveSecond={
+          optionActive === 'WITHDRAW'
+            ? false
+            : Number(secondValue) * 10 ** secondToken.decimals >= Number(secondAllowance)
+        }
         token0={firstToken}
         token1={secondToken}
         handleApprove={handleApprove}

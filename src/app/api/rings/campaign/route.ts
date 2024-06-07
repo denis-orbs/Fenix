@@ -1,6 +1,7 @@
 export const revalidate = 60
 import { getAlgebraClient } from '@/src/library/apollo/client/protocolCoreClient'
 import { POOLS_LIST, POOLS_TVL } from '@/src/library/apollo/queries/pools'
+import { TokenDataProvider } from '@/src/library/providers/TokenDataProvider'
 import { toBN } from '@/src/library/utils/numbers'
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -8,7 +9,12 @@ import { NextRequest, NextResponse } from 'next/server'
 const POINTS_SUPLY = 30000000
 const POINTS_TOTAL_VALUE = 49224
 const PRICE_PER_POINT = POINTS_TOTAL_VALUE / POINTS_SUPLY
-
+export interface extraPoints {
+  tokenAddress: string
+  name: string
+  points: number
+  apr: number
+}
 export interface BoostedPool {
   id: string
   points: number
@@ -16,6 +22,7 @@ export interface BoostedPool {
   apr: number
   pair?: string
   distributionDays?: number
+  extraPoints?: extraPoints[]
 }
 
 export interface RingCampaignData {
@@ -119,6 +126,14 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'fDAO/WETH',
     points: 375_000,
+    extraPoints: [
+      {
+        tokenAddress: '0x3b0cffda9a5ab64135c227638e777ceec0c243a8',
+        name: 'fDAO Emissions',
+        points: 12_500,
+        apr: 0,
+      },
+    ],
     id: '0x886369748d1d66747b8f51ab38de00dea13f0101',
     apr: 0,
   },
@@ -266,6 +281,8 @@ export async function GET(request: NextRequest) {
     fetchPolicy: 'cache-first',
   })
 
+  const tokenData = await TokenDataProvider.getTokenPrices()
+
   const enhancedBoostedPools = boostedPools.map((pool) => {
     const poolData = pools.find(
       (p: { id: string; totalValueLockedUSD: string }) => p?.id?.toLowerCase() === pool?.id?.toLowerCase()
@@ -273,7 +290,7 @@ export async function GET(request: NextRequest) {
 
     const annualFactor = 365 / (pool?.distributionDays || 7)
 
-    return {
+    const updatedPool = {
       ...pool,
       apr: poolData?.totalValueLockedUSD
         ? toBN(pool.points)
@@ -284,6 +301,24 @@ export async function GET(request: NextRequest) {
             .toNumber()
         : 0,
     }
+
+    if (pool.extraPoints && pool.extraPoints.length > 0) {
+      updatedPool.extraPoints = pool.extraPoints.map((extra) => {
+        const tokenPrice = tokenData.find((t) => t.tokenAddress.toLowerCase() === extra.tokenAddress.toLowerCase())
+        return {
+          ...extra,
+          apr: poolData?.totalValueLockedUSD
+            ? toBN(extra.points)
+                .multipliedBy(tokenPrice?.priceUSD || 0)
+                .dividedBy(poolData.totalValueLockedUSD)
+                .multipliedBy(annualFactor)
+                .multipliedBy(100)
+                .toNumber()
+            : 0,
+        }
+      })
+    }
+    return updatedPool
   })
 
   return NextResponse.json(
@@ -295,11 +330,6 @@ export async function GET(request: NextRequest) {
     },
     {
       status: 200,
-      headers: {
-        'Cache-Control': 'public, s-maxage=600',
-        'CDN-Cache-Control': 'public, s-maxage=600',
-        'Vercel-CDN-Cache-Control': 'public, s-maxage=600',
-      },
     }
   )
 }

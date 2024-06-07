@@ -130,7 +130,14 @@ const RowData = ({
                 </div>
               </h5>
               <div className="flex items-center gap-1 h-[26px]">
-                <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
+                {row.poolType === 'concentrated' && (
+                  <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
+                )}
+                {row.poolType === 'volatile' ? (
+                  <span className="py-1 px-2  text-xs button-tertiary rounded-lg">Volatile</span>
+                ) : row.poolType === 'stable' ? (
+                  <span className="py-1 px-2  text-xs button-tertiary rounded-lg">Stable</span>
+                ) : null}
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
                   {/* FEES */}
                   {formatAmount(toBN(row.fee).div(10000), 3)}%

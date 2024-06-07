@@ -1,6 +1,6 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
-import { getAllPools, getConcentratedPools, getGammaVaults, getLiquidityV2Pairs } from './thunks'
+import { getAllPools, getConcentratedPools, getGammaVaults, getLiquidityV2Pairs, getRingsCampaigns } from './thunks'
 import { LiquidityState, V2PairId, v2FactoryData, v3FactoryData } from './types'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import {
@@ -24,6 +24,9 @@ import {
   NATIVE_PRICE,
 } from '@/src/library/apollo/queries/global'
 import { POOL_DAY_DATA } from '@/src/library/apollo/queries/pools'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ALGEBRA_SUBGRAPH } from '@/src/library/constants/addresses'
+import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -45,9 +48,14 @@ export const initialState: LiquidityState = {
   token1: process.env.NEXT_PUBLIC_DEFAULT_TOKEN_1_ADDRESS as Address,
   token1TypedValue: '',
   clmProvider: ClmProvider.ICHI,
+
   gammaVaults: {
     data: [],
     state: ApiState.LOADING,
+  },
+  ringsCampaigns: {
+    state: ApiState.LOADING,
+    data: [],
   },
 }
 
@@ -120,11 +128,24 @@ export default createReducer(initialState, (builder) => {
     .addCase(getGammaVaults.rejected, (state) => {
       state.gammaVaults = { data: [], state: ApiState.ERROR }
     })
+    .addCase(getRingsCampaigns.pending, (state) => {
+      state.ringsCampaigns = { data: [], state: ApiState.LOADING }
+    })
+    .addCase(getRingsCampaigns.fulfilled, (state, action) => {
+      state.ringsCampaigns = { data: action.payload, state: ApiState.SUCCESS }
+    })
+    .addCase(getRingsCampaigns.rejected, (state) => {
+      state.ringsCampaigns = { data: [], state: ApiState.ERROR }
+    })
 })
 
 // Function to fetch v3 algebra pool data
-export const fetchPoolData = async () => {
+export const fetchPoolData = async (chainId: number) => {
   try {
+    const algebra_client = new ApolloClient({
+      uri: chainId ? ALGEBRA_SUBGRAPH[chainId] : ALGEBRA_SUBGRAPH[FALLBACK_CHAIN_ID],
+      cache: new InMemoryCache(),
+    })
     const { data } = await algebra_client.query({
       query: GET_V3_ALGEBRA_DATA,
     })

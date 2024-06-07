@@ -25,7 +25,9 @@ import { useQuery } from '@tanstack/react-query'
 import AprBox from '../../UI/Pools/AprBox'
 // import cn from '@/src/library/utils/cn'
 
-import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import { BoostedPool, RingCampaignData, extraPoints } from '@/src/app/api/rings/campaign/route'
+import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
+import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 
 interface MyPositionssProps {
   activePagination?: boolean
@@ -46,7 +48,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   const [activePage, setActivePage] = useState<number>(1)
   const [isMinHover, setIsMinHover] = useState<boolean>(false)
   const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
-
+  const { data: ringsCampaignsData } = useRingsCampaigns()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
     const totalPages = Math.ceil(items.length / itemsPerPage)
@@ -343,11 +345,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                     ringsCampaign.boostedPools.find((pool) => {
                       return pool.id.toLowerCase() === position.pool.id.toLowerCase()
                     })?.apr || 0
-
-                  if (position.token0.symbol == 'fDAO') {
-                    console.log('position', position)
-                    console.log(fenixRingApr)
-                  }
+                  const extraAprs =
+                    ringsCampaignsData.find((pool: BoostedPool) => {
+                      return pool.id.toLowerCase() === position.pool.id.toLowerCase()
+                    })?.extraPoints || []
+                  const extraAprNumber = extraAprs.reduce((acc: number, curr: extraPoints) => {
+                    return acc + curr.apr
+                  }, 0)
                   return (
                     <>
                       <TableRow key={position.id}>
@@ -413,7 +417,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                         </TableCell>
                         <TableCell className="w-[10%] flex justify-end">
                           <AprBox
-                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr : 0}
+                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0}
                             tooltip={
                               <div>
                                 <div className="flex justify-between items-center gap-3">
@@ -428,6 +432,18 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                     </p>
                                   </div>
                                 )}
+                                {extraAprs &&
+                                  extraAprs.length > 0 &&
+                                  extraAprs.map((extraApr: extraPoints) => {
+                                    return (
+                                      <div key={extraApr.name} className="flex justify-between items-center gap-3">
+                                        <p className="text-sm pb-1">{extraApr.name}</p>
+                                        <p className="text-sm pb-1 text-chilean-fire-600">
+                                          {formatAmount(extraApr.apr, 2)}%
+                                        </p>
+                                      </div>
+                                    )
+                                  })}
                               </div>
                             }
                           />

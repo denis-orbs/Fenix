@@ -17,7 +17,7 @@ interface MenuProps {
 const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
   const pathname = usePathname()
   const className = cn(
-    'absolute transition-all py-4 px-10 bg-shark-500 backdrop-blur-3xl bg-opacity-80 top-full rounded-2xl border border-shark-400',
+    'absolute transition-all z-[150]  py-4 px-10 bg-shark-500 backdrop-blur-3xl bg-opacity-80 top-full rounded-2xl border border-shark-400',
     showMenu ? 'right-5 opacity-100 visible' : 'right-0 opacity-50 invisible'
   )
 
@@ -36,7 +36,7 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
               <span>{link.name}</span>
             </Link>
             {link.new && (
-              <span className="absolute left-20 text-[9px] top-1 bg-alizarin-crimson-600 rounded-md w-7 h-5 flex items-center justify-center z-[100] text-white">
+              <span className="absolute left-20 text-[9px] top-1 bg-alizarin-crimson-600 rounded-md w-7 h-5 flex items-center justify-center  text-white">
                 New
               </span>
             )}
