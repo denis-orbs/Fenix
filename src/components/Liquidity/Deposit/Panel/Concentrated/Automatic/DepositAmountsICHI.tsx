@@ -337,7 +337,9 @@ const DepositAmountsICHI = ({
       setToken0TypedValue('')
     } else {
       if (token0Balance) {
-        return setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
+        return setToken0TypedValue(toBN(token0Balance.toString())
+        .div(10 ** (token0Decimals || 18))
+        .toString())
       } else {
         setToken0TypedValue('')
       }
@@ -478,7 +480,7 @@ const DepositAmountsICHI = ({
                                       .plus(ringsApr || 0)
                                       .toString(),
                                     2
-                                  )}
+                                  ).replace('NaN', '0')}
                               %
                             </span>
                           )}

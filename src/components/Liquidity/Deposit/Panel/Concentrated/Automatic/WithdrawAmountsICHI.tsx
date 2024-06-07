@@ -72,7 +72,7 @@ const WithdrawAmountsICHI = ({
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
     if (!amoutToWithdraw || amoutToWithdraw == '0') return 'Enter an amount'
-    if (amoutToWithdraw > totalUserShares) return 'Insufficient balance'
+    if (parseFloat(amoutToWithdraw) > parseFloat(totalUserShares)) return 'Insufficient balance'
     return BUTTON_TEXT_WITHDRAW
   }
   const token0 = useToken0()
@@ -213,7 +213,7 @@ const WithdrawAmountsICHI = ({
       if (!totalUserShares || totalUserShares === '') {
         setAmountToWithdraw('')
       } else {
-        setAmountToWithdraw(toBN(totalUserShares).toString())
+        setAmountToWithdraw(toBN(totalUserShares.toString()).toString())
       }
     }
   }
