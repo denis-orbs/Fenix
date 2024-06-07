@@ -15,40 +15,42 @@ const Claim = () => {
   const [loading, setLoading] = useState(true)
   const [searchValue, setSearchValue] = useState<string>('')
   const [rewardData, setRewardData] = useState<any>([])
+  const [claimedData, setClaimedData] = useState<any>([])
 
   const { address } = useAccount()
 
   const getRewardsData = async (address: Address) => {
     try {
+      setLoading(true)
       const res = await multicall(wagmiConfig, {
         contracts: [
           {
             abi: rewardAbi,
-            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
             functionName: 'chrClaimAmount',
             args: [address],
           },
           {
             abi: rewardAbi,
-            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
             functionName: 'spchrClaimAmount',
             args: [address],
           },
           {
             abi: rewardAbi,
-            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
             functionName: 'elchrClaimAmount',
             args: [address],
           },
           {
             abi: rewardAbi,
-            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
             functionName: 'vechrClaimAmount',
             args: [address],
           },
           {
             abi: rewardAbi,
-            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
             functionName: 'chrnftClaimAmount',
             args: [address],
           },
@@ -56,13 +58,68 @@ const Claim = () => {
       })
       if (res.length > 0) {
         setRewardData(res)
+        setLoading(false)
       } else {
         setRewardData([])
+        setLoading(false)
       }
-      console.log('data', res)
+      console.log('dataR', res)
     } catch (error) {
       console.log('err', error)
       setRewardData([])
+      setLoading(false)
+    }
+  }
+
+  const getClaimedData = async (address: Address) => {
+    try {
+      setLoading(true)
+      const res = await multicall(wagmiConfig, {
+        contracts: [
+          {
+            abi: rewardAbi,
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
+            functionName: 'chrClaimedAmount',
+            args: [address],
+          },
+          {
+            abi: rewardAbi,
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
+            functionName: 'spchrClaimedAmount',
+            args: [address],
+          },
+          {
+            abi: rewardAbi,
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
+            functionName: 'elchrClaimedAmount',
+            args: [address],
+          },
+          {
+            abi: rewardAbi,
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
+            functionName: 'vechrClaimedAmount',
+            args: [address],
+          },
+          {
+            abi: rewardAbi,
+            address: '0xfda5afc7Dd1BD194509E62f463547C3BCd93c09b',
+            functionName: 'chrnftClaimedAmount',
+            args: [address],
+          },
+        ],
+      })
+      if (res.length > 0) {
+        setClaimedData(res)
+        setLoading(false)
+      } else {
+        setClaimedData([])
+        setLoading(false)
+      }
+      console.log('dataC', res)
+    } catch (error) {
+      console.log('err', error)
+      setClaimedData([])
+      setLoading(false)
     }
   }
 
@@ -73,7 +130,10 @@ const Claim = () => {
   }, [])
 
   useEffect(() => {
-    if (address) getRewardsData(address)
+    if (address) {
+      getRewardsData(address)
+      getClaimedData(address)
+    }
   }, [address])
 
   return (
@@ -86,14 +146,20 @@ const Claim = () => {
       <h1 className="text-xl font-medium text-white">Claim overview</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
         <div className="w-full ">
-          <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+          <Search placeholder="Search by Name" searchValue={searchValue} setSearchValue={setSearchValue} />
         </div>
       </div>
       <div className="flex flex-col justify-center items-center gap-2 mx-2 mt-2 mb-4">
         <div className="w-full">
           <h1 className="text-xl font-medium text-white mb-6">Claim</h1>
           <div className="p-2">
-            <HeaderRowReward filterData={rewardData} loading={loading} activePagination={false} search={searchValue} />
+            <HeaderRowReward
+              filterData={rewardData}
+              claim={claimedData}
+              loading={loading}
+              activePagination={false}
+              search={searchValue}
+            />
           </div>
         </div>
       </div>

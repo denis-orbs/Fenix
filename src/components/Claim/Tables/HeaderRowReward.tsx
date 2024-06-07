@@ -8,6 +8,7 @@ import NotFoundLock from '../../Lock/NotFoundLock'
 interface HeaderRowRewardProps {
   loading: boolean
   filterData: any[]
+  claim: any[]
   activePagination?: boolean
   activeSlider?: boolean
   search: string
@@ -15,27 +16,38 @@ interface HeaderRowRewardProps {
 
 const HeaderRowReward = ({
   filterData,
+  claim,
   loading,
   activePagination = true,
   activeSlider = true,
   search,
 }: HeaderRowRewardProps) => {
   const [showTooltip, setShowTooltip] = useState(false)
-  // const [data, setData] = useState<any[]>(filterData)
+  const [data, setData] = useState<any[]>(filterData)
 
   // useEffect(() => {
-  //   if(search.length > 0) {
-  //     const filterArr = filterData.filter(item => {
-  //       if(item.token.includes(search)){
-  //         return item
-  //       }
-  //     })
-  //     if(filterArr.length) {
-  //       setData(filterArr)
+  //   if (search.length > 0) {
+  //     if ('chrClaim'.includes(search)) {
+  //       setData([filterData[0]])
+  //     } else if ('spchrClaim'.includes(search)) {
+  //       setData([filterData[1]])
+  //     } else if ('elchrClaim'.includes(search)) {
+  //       setData([filterData[2]])
+  //     } else if ('vechrClaim'.includes(search)) {
+  //       setData([filterData[3]])
+  //     } else if ('chrnftClaim'.includes(search)) {
+  //       setData([filterData[4]])
+  //     } else {
+  //       setData(filterData)
   //     }
+  //   } else {
+  //     setData(filterData)
   //   }
-  // },[search])
+  // }, [filterData, search])
 
+  {
+    console.log('actual', data)
+  }
   return (
     <div className="relative z-10">
       <div className="w-full mb-2.5 xl:mb-5">
@@ -48,12 +60,11 @@ const HeaderRowReward = ({
               { text: 'Action', className: 'w-[30%] text-right text-xs', sortable: true },
             ]}
             setSort={() => {}}
-            sort={null}
+            sort={'normal'}
             setSortIndex={() => {}}
             sortIndex={1}
           />
         </div>
-
         {filterData.length !== 0 ? (
           <>
             <TableBody className="h-[350px] overflow-y-scroll">
@@ -67,7 +78,7 @@ const HeaderRowReward = ({
                 <>
                   {filterData.map((row, index) => (
                     <Fragment key={index}>
-                      <RowReward index={index} row={row} activeSlider={activeSlider} />
+                      <RowReward index={index} row={row} claimData={claim} activeSlider={activeSlider} />
                     </Fragment>
                   ))}
 
