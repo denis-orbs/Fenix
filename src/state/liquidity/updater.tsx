@@ -16,7 +16,7 @@ export default function LiquidityUpdater() {
   }, [thunkDispatch, address, chainId])
 
   useEffect(() => {
-    thunkDispatch(getAllPools())
+    if (chainId) thunkDispatch(getAllPools(chainId))
   }, [thunkDispatch])
 
   return null

@@ -25,6 +25,7 @@ import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
+import { ChainId } from '@cryptoalgebra/integral-sdk'
 
 export const getLiquidityV2Pairs = createAsyncThunk(
   'liquidity/getV2Pairs',
@@ -283,7 +284,7 @@ export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => 
   return cachedData
 }
 
-export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () => {
+export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chainId: number) => {
   const client = getAlgebraClient()
   const protocolClient = getProtocolCoreClient()
   try {
@@ -297,81 +298,96 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
     })
     console.log('datav2', datav2.data.pairs)
     const data2 = await fetchV3PoolDayData()
+    if (chainId) {
+      let tokens = await fetchTokens(chainId)
+      console.log('tokensfetch', tokens)
 
-    // const weekFeesUsd = data2.pools.forEach((pool: any) => {
-    //   console.log(pool, 'pool')
-    // })
-    // const feesUsd = 1000
+      // const weekFeesUsd = data2.pools.forEach((pool: any) => {
+      //   console.log(pool, 'pool')
+      // })
+      // const feesUsd = 1000
 
-    const pools = data?.pools?.map((pool: BasicPool) => {
-      const weekFeesUsd = data2.pools
-        .find((p: any) => p.id === pool.id)
-        .poolDayData.reduce((sum: any, current: any) => sum + parseFloat(current.feesUSD), 0)
+      const pools = data?.pools?.map((pool: BasicPool) => {
+        const weekFeesUsd = data2.pools
+          .find((p: any) => p.id === pool.id)
+          .poolDayData.reduce((sum: any, current: any) => sum + parseFloat(current.feesUSD), 0)
 
-      // const dailyFeesUsd = data2.pools.find((p: any) => p.id === pool.id).poolDayData[0].feesUSD
-      return {
-        id: pool.id,
-        volumeUSD: pool.volumeUSD,
-        feesUSD: pool.feesUSD,
-        liquidity: pool.liquidity,
-        totalValueLockedUSD: pool.totalValueLockedUSD,
-        poolType: 'concentrated', // CHANGE
-        token0Price: pool.token0Price,
-        token1Price: pool.token1Price,
-        feesToken0: pool.feesToken0,
-        feesToken1: pool.feesToken1,
-        volumeToken0: pool.volumeToken0,
-        volumeToken1: pool.volumeToken1,
-        fee: pool.fee,
-        token0: {
-          id: pool.token0.id,
-          decimals: pool.token0.decimals,
-          symbol: pool.token0.symbol,
-          name: pool.token0.name,
-        },
-        token1: {
-          id: pool.token1.id,
-          decimals: pool.token1.decimals,
-          symbol: pool.token1.symbol,
-          name: pool.token1.name,
-        },
-        apr: ((weekFeesUsd * 52) / Number(pool.totalValueLockedUSD)) * 100,
-      }
-    })
-    const poolsv2 = datav2?.data?.pairs?.map((pool: BasicPool) => {
-      const feePercentage = pool.isStable ? 0.04 : 0.18
-      return {
-        id: pool.id,
-        volumeUSD: pool.volumeUSD,
-        // feesUSD: pool.feesUSD,
-        // liquidity: pool.liquidity,
-        // totalValueLockedUSD: pool.totalValueLockedUSD,
-        poolType: pool.isStable ? 'stable' : 'volatile', // CHANGE
-        token0Price: pool.token0Price,
-        token1Price: pool.token1Price,
-        feesToken0: (Number(pool.volumeToken0) * feePercentage) / 100,
-        feesToken1: (Number(pool.volumeToken1) * feePercentage) / 100,
-        volumeToken0: pool.volumeToken0,
-        volumeToken1: pool.volumeToken1,
-        fee: pool.isStable ? '400' : '1800',
-        token0: {
-          id: pool.token0.id,
-          decimals: pool.token0.decimals,
-          symbol: pool.token0.symbol,
-          name: pool.token0.name,
-        },
-        token1: {
-          id: pool.token1.id,
-          decimals: pool.token1.decimals,
-          symbol: pool.token1.symbol,
-          name: pool.token1.name,
-        },
-        // apr: ((weekFeesUsd * 52) / Number(pool.totalValueLockedUSD)) * 100,
-      }
-    })
-    const array = poolsv2.concat(pools)
-    console.log('pools', poolsv2, pools, typeof pools)
-    return array
+        // const dailyFeesUsd = data2.pools.find((p: any) => p.id === pool.id).poolDayData[0].feesUSD
+        return {
+          id: pool.id,
+          volumeUSD: pool.volumeUSD,
+          feesUSD: pool.feesUSD,
+          liquidity: pool.liquidity,
+          totalValueLockedUSD: pool.totalValueLockedUSD,
+          poolType: 'concentrated', // CHANGE
+          token0Price: pool.token0Price,
+          token1Price: pool.token1Price,
+          feesToken0: pool.feesToken0,
+          feesToken1: pool.feesToken1,
+          volumeToken0: pool.volumeToken0,
+          volumeToken1: pool.volumeToken1,
+          fee: pool.fee,
+          token0: {
+            id: pool.token0.id,
+            decimals: pool.token0.decimals,
+            symbol: pool.token0.symbol,
+            name: pool.token0.name,
+          },
+          token1: {
+            id: pool.token1.id,
+            decimals: pool.token1.decimals,
+            symbol: pool.token1.symbol,
+            name: pool.token1.name,
+          },
+          apr: ((weekFeesUsd * 52) / Number(pool.totalValueLockedUSD)) * 100,
+        }
+      })
+      const poolsv2 = datav2?.data?.pairs?.map((pool: BasicPool) => {
+        const feePercentage = pool.isStable ? 0.04 : 0.18
+        const feesToken0 = (Number(pool.volumeToken0) * feePercentage) / 100
+        const feesToken1 = (Number(pool.volumeToken1) * feePercentage) / 100
+
+        const feeUsd =
+          feesToken0 * Number(tokens.find((t) => t.tokenAddress === pool.token0.id)?.priceUSD) +
+          feesToken1 * Number(tokens.find((t) => t.tokenAddress === pool.token1.id)?.priceUSD)
+
+        const tvl =
+          Number(pool.reserve0) * Number(tokens.find((t) => t.tokenAddress === pool.token0.id)?.priceUSD) +
+          Number(pool.reserve1) * Number(tokens.find((t) => t.tokenAddress === pool.token1.id)?.priceUSD)
+        return {
+          id: pool.id,
+          volumeUSD: pool.volumeUSD,
+          feesUSD: feeUsd,
+          liquidity: pool.totalSupply,
+          totalValueLockedUSD: tvl,
+          poolType: pool.isStable ? 'stable' : 'volatile', // CHANGE
+          token0Price: pool.token0Price,
+          token1Price: pool.token1Price,
+          feesToken0: feesToken0,
+          feesToken1: feesToken1,
+          volumeToken0: pool.volumeToken0,
+          volumeToken1: pool.volumeToken1,
+          fee: pool.isStable ? '400' : '1800',
+          token0: {
+            id: pool.token0.id,
+            decimals: pool.token0.decimals,
+            symbol: pool.token0.symbol,
+            name: pool.token0.name,
+          },
+          token1: {
+            id: pool.token1.id,
+            decimals: pool.token1.decimals,
+            symbol: pool.token1.symbol,
+            name: pool.token1.name,
+          },
+          apr: (feeUsd / tvl) * 100,
+        }
+      })
+      const array = poolsv2.concat(pools)
+      console.log('pools', poolsv2, pools, typeof pools)
+
+      return array
+    }
   } catch (error) {
     console.error(error)
     throw new Error(`Unable to query data from Client`)

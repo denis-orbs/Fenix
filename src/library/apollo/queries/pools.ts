@@ -130,6 +130,8 @@ export const POOLSV2_LIST = gql`
       volumeToken0
 
       volumeUSD
+      reserve0
+      reserve1
 
       token0Price
       token1Price
