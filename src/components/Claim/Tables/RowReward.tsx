@@ -26,6 +26,7 @@ const RowReward = ({ index, row, claimData, activeSlider }: RowRewardProps) => {
   const addNotification = useNotificationAdderCallback()
   const [changeValue, setChangeValue] = useState(0)
   const [openInfo, setOpenInfo] = useState<boolean>(false)
+  const [openInfoClaim, setOpenInfoClaim] = useState<boolean>(false)
   const [amount, setAmount] = useState<string | number>('')
   const [claimed, setClaimed] = useState<string | number>('')
   const { address } = useAccount()
@@ -364,8 +365,28 @@ const RowReward = ({ index, row, claimData, activeSlider }: RowRewardProps) => {
           </TableCell>
 
           <TableCell className="w-[15%] flex justify-center">
-            <div className="flex justify-center items-center">
-              <p>{claimed}</p>
+            <div className="relative flex justify-center items-center">
+              {openInfoClaim && (
+                <>
+                  <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-fit top-9 px-5 py-3 gap-y-1">
+                    <div className="flex justify-between items-center gap-2">
+                      <div className="w-fit flex flex-col justify-center items-start">
+                        <p className="text-white text-xs">{claimed?.toString()} FNX</p>
+                        {/* <p className="text-white text-xs">Bribe</p> */}
+                        {/* <p className="flex items-center gap-2 text-xs text-shark-100">
+                        {new BigDecimal(row.result, 18) + ' veFnx'}
+                      </p> */}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+              <p className="py-2 px-3  text-xs text-shark-100">{formatDollarAmount(fromWei(claimed?.toString()))}</p>
+              <span
+                className="icon-info"
+                onMouseEnter={() => setOpenInfoClaim(true)}
+                onMouseLeave={() => setOpenInfoClaim(false)}
+              ></span>
             </div>
           </TableCell>
 

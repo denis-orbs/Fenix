@@ -349,7 +349,7 @@ const MobileRowReward = ({ index, row, claimData, changeValue, setChangeValue, a
                 </div>
                 <div className="flex flex-col text-center text-sm">
                   <p className="text-shark-100">Claimed</p>
-                  <p>{claimed}</p>
+                  <p>{formatDollarAmount(fromWei(claimed.toString()))}</p>
                 </div>
                 <Button variant="primary" className="!text-xs !py-1" onClick={handleClaim}>
                   Claim rewards
