@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/src/components/UI'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MobileRowReward from './MobileRowReward'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { formatDollarAmount, fromWei } from '@/src/library/utils/numbers'
@@ -12,6 +12,7 @@ import { NotificationDuration, NotificationType } from '@/src/state/notification
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { publicClient } from '@/src/library/constants/viemClient'
 import rewardAbi from '../ABI/abi'
+import { parseUnits } from 'viem'
 
 interface RowRewardProps {
   index: number
@@ -24,7 +25,8 @@ const RowReward = ({ index, row, activeSlider }: RowRewardProps) => {
   const addNotification = useNotificationAdderCallback()
   const [changeValue, setChangeValue] = useState(0)
   const [openInfo, setOpenInfo] = useState<boolean>(false)
-
+  const [amount, setAmount] = useState('')
+  const { address } = useAccount()
   const handleClaim = async () => {
     if (index == 0) {
       // try {
@@ -287,10 +289,16 @@ const RowReward = ({ index, row, activeSlider }: RowRewardProps) => {
               ? 'chrnftClaim'
               : 'No Claim'
 
-  const amount = new BigDecimal(row?.result, 18)
-  if (Number(amount.toString()) <= 0) {
-    return null
-  }
+  useEffect(() => {
+    if (row?.result) {
+      console.log(row, 'rowwwww')
+      let amount = Number(row.result) / 10 ** 18
+      setAmount(amount.toString())
+      // if (Number(amount.toString()) <= 0) {
+      //   return () => {} // Add an empty destructor function to satisfy the type requirement
+      // }
+    }
+  }, [address])
 
   return (
     <>
@@ -331,7 +339,7 @@ const RowReward = ({ index, row, activeSlider }: RowRewardProps) => {
                 <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[230px] top-9 px-5 py-3 gap-y-1">
                   <div className="flex justify-between items-center gap-2">
                     <div className="w-fit flex flex-col justify-center items-start">
-                      <p className="text-white text-xs">{amount.toString()} FNX</p>
+                      <p className="text-white text-xs">{amount?.toString()} FNX</p>
                       {/* <p className="text-white text-xs">Bribe</p> */}
                       {/* <p className="flex items-center gap-2 text-xs text-shark-100">
                         {new BigDecimal(row.result, 18) + ' veFnx'}
@@ -341,7 +349,7 @@ const RowReward = ({ index, row, activeSlider }: RowRewardProps) => {
                 </div>
               </>
             )}
-            <p className="py-2 px-3  text-xs text-shark-100">{formatDollarAmount(fromWei(amount.toString()))}</p>
+            <p className="py-2 px-3  text-xs text-shark-100">{formatDollarAmount(fromWei(amount?.toString()))}</p>
             <span
               className="icon-info"
               onMouseEnter={() => setOpenInfo(true)}

@@ -9,6 +9,7 @@ import { multicall, createConfig, http } from '@wagmi/core'
 import rewardAbi from './ABI/abi'
 import { blastSepolia } from 'viem/chains'
 import { wagmiConfig } from '@/src/app/layout'
+import { Address } from 'viem'
 
 const Claim = () => {
   const [loading, setLoading] = useState(true)
@@ -17,7 +18,7 @@ const Claim = () => {
 
   const { address } = useAccount()
 
-  const getRewardsData = async () => {
+  const getRewardsData = async (address: Address) => {
     try {
       const res = await multicall(wagmiConfig, {
         contracts: [
@@ -55,10 +56,13 @@ const Claim = () => {
       })
       if (res.length > 0) {
         setRewardData(res)
+      } else {
+        setRewardData([])
       }
       console.log('data', res)
     } catch (error) {
       console.log('err', error)
+      setRewardData([])
     }
   }
 
@@ -69,7 +73,7 @@ const Claim = () => {
   }, [])
 
   useEffect(() => {
-    getRewardsData()
+    if (address) getRewardsData(address)
   }, [address])
 
   return (

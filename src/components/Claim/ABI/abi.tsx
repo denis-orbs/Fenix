@@ -1,3 +1,5 @@
+import { Abi } from 'viem'
+
 const abi = [
   {
     inputs: [
@@ -333,4 +335,4 @@ const abi = [
   },
 ]
 
-export default abi
+export default abi as Abi

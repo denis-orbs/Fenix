@@ -12,7 +12,13 @@ import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
 import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData } from './reducer'
 import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
 import cache from 'memory-cache'
-import { BASIC_POOLS_LIST, POOLS_ID_LIST, POOLS_LIST, POOL_FRAGMENT } from '@/src/library/apollo/queries/pools'
+import {
+  BASIC_POOLS_LIST,
+  POOLSV2_LIST,
+  POOLS_ID_LIST,
+  POOLS_LIST,
+  POOL_FRAGMENT,
+} from '@/src/library/apollo/queries/pools'
 import { algebra_client } from '@/src/library/apollo/client'
 import { gql } from '@apollo/client'
 import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
@@ -279,11 +285,17 @@ export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => 
 
 export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () => {
   const client = getAlgebraClient()
+  const protocolClient = getProtocolCoreClient()
   try {
     const { data } = await client.query({
       query: POOLS_LIST,
       fetchPolicy: 'cache-first',
     })
+    const datav2 = await protocolClient.query({
+      query: POOLSV2_LIST,
+      fetchPolicy: 'cache-first',
+    })
+    console.log('datav2', datav2.data.pairs)
     const data2 = await fetchV3PoolDayData()
 
     // const weekFeesUsd = data2.pools.forEach((pool: any) => {
@@ -326,8 +338,40 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async () =>
         apr: ((weekFeesUsd * 52) / Number(pool.totalValueLockedUSD)) * 100,
       }
     })
-
-    return pools
+    const poolsv2 = datav2?.data?.pairs?.map((pool: BasicPool) => {
+      const feePercentage = pool.isStable ? 0.04 : 0.18
+      return {
+        id: pool.id,
+        volumeUSD: pool.volumeUSD,
+        // feesUSD: pool.feesUSD,
+        // liquidity: pool.liquidity,
+        // totalValueLockedUSD: pool.totalValueLockedUSD,
+        poolType: pool.isStable ? 'stable' : 'volatile', // CHANGE
+        token0Price: pool.token0Price,
+        token1Price: pool.token1Price,
+        feesToken0: (Number(pool.volumeToken0) * feePercentage) / 100,
+        feesToken1: (Number(pool.volumeToken1) * feePercentage) / 100,
+        volumeToken0: pool.volumeToken0,
+        volumeToken1: pool.volumeToken1,
+        fee: pool.isStable ? '400' : '1800',
+        token0: {
+          id: pool.token0.id,
+          decimals: pool.token0.decimals,
+          symbol: pool.token0.symbol,
+          name: pool.token0.name,
+        },
+        token1: {
+          id: pool.token1.id,
+          decimals: pool.token1.decimals,
+          symbol: pool.token1.symbol,
+          name: pool.token1.name,
+        },
+        // apr: ((weekFeesUsd * 52) / Number(pool.totalValueLockedUSD)) * 100,
+      }
+    })
+    const array = poolsv2.concat(pools)
+    console.log('pools', poolsv2, pools, typeof pools)
+    return array
   } catch (error) {
     console.error(error)
     throw new Error(`Unable to query data from Client`)
