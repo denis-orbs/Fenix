@@ -163,18 +163,20 @@ const HeaderRow = ({
       if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
         const getRigns = async () => {
           let newArr: any = [...paginationResult]
-          newArr = await Promise.all(newArr.map(async (pool:any) => {
-            if (pool?.id) {
-              return {
-                ...pool,
-                aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+          newArr = await Promise.all(
+            newArr.map(async (pool: any) => {
+              if (pool?.id) {
+                return {
+                  ...pool,
+                  aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+                }
+              } else {
+                return {
+                  ...pool,
+                }
               }
-            } else {
-              return {
-                ...pool,
-              }
-            }
-          }))
+            })
+          )
           setPaginationResult([...newArr])
           setIsSetRingsApr(true)
         }

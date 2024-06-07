@@ -196,6 +196,9 @@ export interface BasicPool {
   token1: BasicToken
   apr?: string
   isStable?: boolean
+  reserve0?: string
+  reserve1?: string
+  totalSupply?: string
   aprRings?: string
 }
 export interface BasicToken {
