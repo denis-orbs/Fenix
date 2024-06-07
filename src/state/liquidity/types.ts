@@ -3,6 +3,7 @@ import { ApiState } from '@/src/library/types/connection'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
+import { BoostedPool, RingCampaignData } from '@/src/app/api/rings/campaign/route'
 
 export interface LiquidityState {
   // Liquidity V2 Pairs
@@ -26,6 +27,10 @@ export interface LiquidityState {
     data: GammaVault[]
   }
   concentratedPools: { state: ApiState; data: any }
+  ringsCampaigns: {
+    state: ApiState
+    data: RingCampaignData
+  }
 }
 
 // TODO: Move this type to types/liquidity.ts

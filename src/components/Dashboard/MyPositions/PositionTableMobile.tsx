@@ -21,8 +21,9 @@ import { setApr } from '@/src/state/apr/reducer'
 import { getAlgebraPoolPrice } from '@/src/library/hooks/liquidity/useCL'
 import { useQuery } from '@tanstack/react-query'
 import Loader from '../../UI/Icons/Loader'
-import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import { BoostedPool, RingCampaignData, extraPoints } from '@/src/app/api/rings/campaign/route'
 import AprBox from '../../UI/Pools/AprBox'
+import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 
 interface MyPositionsMobileProps {
   activePagination?: boolean
@@ -42,6 +43,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
   const [isInRange, setIsInRange] = useState<boolean>(true)
+  const { data: ringsCampaignsData } = useRingsCampaigns()
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -287,6 +289,14 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
               ringsCampaign.boostedPools.find((pool) => {
                 return pool.id.toLowerCase() === position.pool.id.toLowerCase()
               })?.apr || 0
+
+            const extraAprs =
+              ringsCampaignsData.find((pool: BoostedPool) => {
+                return pool.id.toLowerCase() === position.pool.id.toLowerCase()
+              })?.extraPoints || []
+            const extraAprNumber = extraAprs.reduce((acc: number, curr: extraPoints) => {
+              return acc + curr.apr
+            }, 0)
             return (
               <>
                 <div
@@ -369,7 +379,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                         </div>
                         <div className="flex justify-between items-center">
                           <AprBox
-                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr : 0}
+                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0}
                             tooltip={
                               <div>
                                 <div className="flex justify-between items-center gap-3">
@@ -384,6 +394,18 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                                     </p>
                                   </div>
                                 )}
+                                {extraAprs &&
+                                  extraAprs.length > 0 &&
+                                  extraAprs.map((extraApr: extraPoints) => {
+                                    return (
+                                      <div key={extraApr.name} className="flex justify-between items-center gap-3">
+                                        <p className="text-sm pb-1">{extraApr.name}</p>
+                                        <p className="text-sm pb-1 text-chilean-fire-600">
+                                          {formatAmount(extraApr.apr, 2)}%
+                                        </p>
+                                      </div>
+                                    )
+                                  })}
                               </div>
                             }
                           />
