@@ -24,6 +24,7 @@ const HeaderRowReward = ({
 }: HeaderRowRewardProps) => {
   const [showTooltip, setShowTooltip] = useState(false)
   const [data, setData] = useState<any[]>(filterData)
+  const [dataBool, setdataBool] = useState<boolean>(false)
 
   // useEffect(() => {
   //   if (search.length > 0) {
@@ -65,7 +66,14 @@ const HeaderRowReward = ({
             sortIndex={1}
           />
         </div>
-        {filterData.length !== 0 ? (
+        {!(
+          filterData.every((item) => {
+            return item.result === 0n
+          }) &&
+          claim.every((item) => {
+            return item.result === 0n
+          })
+        ) ? (
           <>
             <TableBody className="h-[350px] overflow-y-scroll">
               {loading ? (
@@ -115,7 +123,7 @@ const HeaderRowReward = ({
           </>
         ) : (
           <>
-            <NotFoundLock />
+            <NotFoundLock info={'No Claim Found.'} />
           </>
         )}
       </div>

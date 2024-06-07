@@ -145,13 +145,13 @@ const Claim = () => {
       </div>
       <h1 className="text-xl font-medium text-white">Claim overview</h1>
       <div className="flex flex-col items-center justify-between gap-5 mt-5 mb-10 xl:flex xl:flex-row">
-        <div className="w-full ">
+        {/* <div className="w-full ">
           <Search placeholder="Search by Name" searchValue={searchValue} setSearchValue={setSearchValue} />
-        </div>
+        </div> */}
       </div>
       <div className="flex flex-col justify-center items-center gap-2 mx-2 mt-2 mb-4">
         <div className="w-full">
-          <h1 className="text-xl font-medium text-white mb-6">Claim</h1>
+          {/* <h1 className="text-xl font-medium text-white mb-6">Claim</h1> */}
           <div className="p-2">
             <HeaderRowReward
               filterData={rewardData}
