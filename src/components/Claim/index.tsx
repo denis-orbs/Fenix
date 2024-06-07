@@ -1,24 +1,76 @@
 'use client'
 
-import Migration from '@/src/components/Claim/Migration'
-import Steps from '@/src/components/Common/StepsClaim'
-import Overview from '@/src/components/Claim/Overview'
-import MainBox from '@/src/components/Common/Boxes/MainBox'
-import { STEPS } from './data'
 import ClaimBox from './ClaimBox'
 import { useEffect, useState } from 'react'
 import Search from '@/src/components/Common/Search'
 import HeaderRowReward from './Tables/HeaderRowReward'
+import { useAccount } from 'wagmi'
+import { multicall, createConfig, http } from '@wagmi/core'
+import rewardAbi from './ABI/abi'
+import { blastSepolia } from 'viem/chains'
+import { wagmiConfig } from '@/src/app/layout'
 
 const Claim = () => {
   const [loading, setLoading] = useState(true)
   const [searchValue, setSearchValue] = useState<string>('')
+  const [rewardData, setRewardData] = useState<any>([])
+
+  const { address } = useAccount()
+
+  const getRewardsData = async () => {
+    try {
+      const res = await multicall(wagmiConfig, {
+        contracts: [
+          {
+            abi: rewardAbi,
+            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            functionName: 'chrClaimAmount',
+            args: [address],
+          },
+          {
+            abi: rewardAbi,
+            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            functionName: 'spchrClaimAmount',
+            args: [address],
+          },
+          {
+            abi: rewardAbi,
+            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            functionName: 'elchrClaimAmount',
+            args: [address],
+          },
+          {
+            abi: rewardAbi,
+            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            functionName: 'vechrClaimAmount',
+            args: [address],
+          },
+          {
+            abi: rewardAbi,
+            address: '0x71f6e2e4c404Df800fCf4611592b0d3a276bdaEe',
+            functionName: 'chrnftClaimAmount',
+            args: [address],
+          },
+        ],
+      })
+      if (res.length > 0) {
+        setRewardData(res)
+      }
+      console.log('data', res)
+    } catch (error) {
+      console.log('err', error)
+    }
+  }
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
     }, 2000)
   }, [])
+
+  useEffect(() => {
+    getRewardsData()
+  }, [address])
 
   return (
     <section className="relative">
@@ -37,12 +89,7 @@ const Claim = () => {
         <div className="w-full">
           <h1 className="text-xl font-medium text-white mb-6">Claim</h1>
           <div className="p-2">
-            <HeaderRowReward
-              filterData={[1, 2, 3, 4]}
-              loading={loading}
-              activePagination={false}
-              search={searchValue}
-            />
+            <HeaderRowReward filterData={rewardData} loading={loading} activePagination={false} search={searchValue} />
           </div>
         </div>
       </div>

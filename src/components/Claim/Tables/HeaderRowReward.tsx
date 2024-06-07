@@ -5,14 +5,9 @@ import { Pagination } from '@/src/components/UI'
 import RowReward from './RowReward'
 import NotFoundLock from '../../Lock/NotFoundLock'
 
-type filterData = {
-  type: string
-  APR: string
-}
-
 interface HeaderRowRewardProps {
   loading: boolean
-  filterData: filterData[]
+  filterData: any[]
   activePagination?: boolean
   activeSlider?: boolean
   search: string
@@ -26,7 +21,7 @@ const HeaderRowReward = ({
   search,
 }: HeaderRowRewardProps) => {
   const [showTooltip, setShowTooltip] = useState(false)
-  // const [data, setData] = useState<filterData[]>(filterData)
+  // const [data, setData] = useState<any[]>(filterData)
 
   // useEffect(() => {
   //   if(search.length > 0) {
@@ -47,8 +42,9 @@ const HeaderRowReward = ({
         <div className="max-xl:hidden">
           <TableHead
             items={[
-              { text: 'Pairs', className: 'w-[50%] text-xs', sortable: true },
-              { text: 'Rewards', className: 'text-center  w-[20%] text-xs', sortable: true },
+              { text: 'Pairs', className: 'w-[40%] text-xs', sortable: true },
+              { text: 'Rewards', className: 'text-center  w-[15%] text-xs', sortable: true },
+              { text: 'Claimed', className: 'text-center  w-[15%] text-xs', sortable: true },
               { text: 'Action', className: 'w-[30%] text-right text-xs', sortable: true },
             ]}
             setSort={() => {}}
@@ -71,7 +67,7 @@ const HeaderRowReward = ({
                 <>
                   {filterData.map((row, index) => (
                     <Fragment key={index}>
-                      <RowReward row={row} activeSlider={activeSlider} />
+                      <RowReward index={index} row={row} activeSlider={activeSlider} />
                     </Fragment>
                   ))}
 
