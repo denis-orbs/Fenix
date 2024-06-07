@@ -1,32 +1,30 @@
 import getProtocolCoreClient, { getAlgebraClient } from '@/src/library/apollo/client/protocolCoreClient'
-import { GET_V2_PAIRS } from '@/src/library/apollo/queries/LIQUIDITY'
-import { queryAllForClient } from '@/src/library/apollo/utils'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { BasicPool, LiquidityTableElement, LiquidityV2PairDetails } from './types'
+import { BasicPool, GammaVault, LiquidityTableElement } from './types'
 import { Address } from 'viem'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getAllPairsForUser } from '@/src/library/web3/apis/PairAPIV3'
 import { AddressZero } from '@/src/library/constants/misc'
 import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
-import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData } from './reducer'
+import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData, fetchv3Factories } from './reducer'
 import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
 import cache from 'memory-cache'
-import {
-  BASIC_POOLS_LIST,
-  POOLSV2_LIST,
-  POOLS_ID_LIST,
-  POOLS_LIST,
-  POOL_FRAGMENT,
-} from '@/src/library/apollo/queries/pools'
-import { algebra_client } from '@/src/library/apollo/client'
-import { gql } from '@apollo/client'
-import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
-import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
-import { getWeb3Provider } from '@/src/library/utils/web3'
-import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
-import { ChainId } from '@cryptoalgebra/integral-sdk'
+import { POOLSV2_LIST, POOLS_ID_LIST, POOLS_LIST } from '@/src/library/apollo/queries/pools'
+import { toBN } from '@/src/library/utils/numbers'
+import axios from 'axios'
+import { BoostedPool } from '@/src/app/api/rings/campaign/route'
+export const getV3PoolsIds = async () => {
+  const client = getAlgebraClient()
 
+  const data = await client.query({
+    query: POOLS_ID_LIST,
+    fetchPolicy: 'cache-first',
+  })
+  const poolsIds = data.data.pools.map((pool: any) => pool.id)
+  console.log(poolsIds)
+  return poolsIds
+}
 export const getLiquidityV2Pairs = createAsyncThunk(
   'liquidity/getV2Pairs',
   async ({ address, chainId }: { address: Address; chainId: number }) => {
@@ -266,10 +264,23 @@ export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => 
   let cachedData = cache.get(cacheKey)
   if (!cachedData) {
     try {
+      const fetchedFactoriesData = await fetchv3Factories()
+
+      const totalVolume = toBN(fetchedFactoriesData[0].totalVolumeUSD).toNumber()
+      const totalTVL = toBN(fetchedFactoriesData[0].totalValueLockedUSD).toNumber()
+      const totalFees = toBN(fetchedFactoriesData[0].totalFeesUSD).toNumber()
+
       const response = await fetch('/api/statistics')
       const responseData = await response.json()
-      cachedData = responseData
-      cache.put(cacheKey, responseData, 1000 * 60 * 20)
+      const data: GlobalStatisticsData = {
+        totalVolume,
+        totalTVL,
+        totalFees,
+        lastUpdate: new Date().toISOString(),
+        totalUsers: responseData.totalUsers,
+      }
+      cachedData = data
+      cache.put(cacheKey, data, 1000 * 60 * 20)
     } catch (error) {
       console.error('Error fetching global statistics:', error)
       return {
@@ -392,4 +403,19 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
     console.error(error)
     throw new Error(`Unable to query data from Client`)
   }
+})
+
+export const getGammaVaults = createAsyncThunk('liquidity/getGammaVaults', async () => {
+  const response = await axios.get('https://wire2.gamma.xyz/fenix/blast/hypervisors/allData')
+  const data = response.data
+  const gammaVaults: GammaVault[] = Object.entries(data).map(([id, vaultData]) => ({
+    id,
+    ...(vaultData as any),
+  }))
+  return gammaVaults
+})
+
+export const getRingsCampaigns = createAsyncThunk('liquidity/getRingsCampaigns', async (): Promise<BoostedPool> => {
+  const response = await axios.get('/api/rings/campaign')
+  return response.data.boostedPools
 })

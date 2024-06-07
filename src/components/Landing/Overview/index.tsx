@@ -86,10 +86,10 @@ const Overview = () => {
         </div>
       </div>
       <div className="container flex flex-col items-center justify-center mx-auto">
-        <div className="text-shark-100 text-xl max-lg:text-lg font-normal text-center">Overview</div>
-        <div className="text-gradient3 text-[40px] font-normal leading-relaxed max-lg:text-2xl text-center">
+        <h2 className="text-shark-100 text-xl max-lg:text-lg font-normal text-center">Overview</h2>
+        <h4 className="text-gradient3 text-[40px] font-normal leading-relaxed max-lg:text-2xl text-center">
           Fenix will RISE
-        </div>
+        </h4>
       </div>
       <div className="relative mx-auto mt-10 flex justify-center  z-50 w-[80%] sm:w-[70%]  xl:w-[60%]  video-landing p-4 max-lg:p-2 rounded-3xl border backdrop-blur-[74px] border-[#262C33] max-w-[1870px] cursor-pointer ">
         <video ref={videoRef} className="w-[100%] rounded-3xl" onClick={handlePlayPause}>

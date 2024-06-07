@@ -83,9 +83,9 @@ const Manage = ({}: {}) => {
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
-  const [lpValue, setLpValue] = useState(0)
-  const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
-  const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
+  const [lpValue, setLpValue] = useState('0')
+  const [firstAllowance, setFirstAllowance] = useState(0)
+  const [secondAllowance, setSecondAllowance] = useState(0)
   const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
 
   const [withdrawPercent, setWithdrawPercent] = useState(50)
@@ -110,19 +110,19 @@ const Manage = ({}: {}) => {
   }
 
   const asyncGetAllowance = async (token1: Address, token2: Address) => {
-    const allowanceFirst: any = await getTokenAllowance(
+    const _allowanceFirst: any = await getTokenAllowance(
       token1,
       address as Address,
       contractAddressList.cl_manager as Address
     )
-    const allowanceSecond: any = await getTokenAllowance(
+    const _allowanceSecond: any = await getTokenAllowance(
       token2,
       address as Address,
       contractAddressList.cl_manager as Address
     )
 
-    setShouldApproveFirst(allowanceFirst == '0')
-    setShouldApproveSecond(allowanceSecond == '0')
+    setFirstAllowance(_allowanceFirst)
+    setSecondAllowance(_allowanceSecond)
   }
   const getList = async (token0: Address, token1: Address) => {
     try {
@@ -156,7 +156,7 @@ const Manage = ({}: {}) => {
     setPositionData(data)
     asyncGetAllowance(data.token0, data.token1)
     getList(data.token0, data.token1)
-    setLpValue(Number(BigInt(data.liquidity) / BigInt(2)))
+    setLpValue((BigInt(data.liquidity) / BigInt(2)).toString())
     // console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
   }
 
@@ -190,12 +190,14 @@ const Manage = ({}: {}) => {
     if (optionActive != 'WITHDRAW') return
 
     setLpValue(
-      positionData.liquidity == 0
-        ? 0
-        : Number(
-            (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
+      withdrawPercent == 100
+        ? BigInt(positionData.liquidity).toString()
+        : positionData.liquidity == 0
+          ? '0'
+          : (
+              (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
               BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-          )
+            ).toString()
     )
     setFirstValue(
       formatNumber(
@@ -447,11 +449,11 @@ const Manage = ({}: {}) => {
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            // toast(`Approved successfully`)
+            // toast(`Approved Successfully`)
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
-              message: `Approved successfully.`,
+              message: `Approved Successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
               notificationDuration: NotificationDuration.DURATION_5000,
@@ -497,14 +499,14 @@ const Manage = ({}: {}) => {
           <div className="flex items-center gap-2.5 mb-2.5">
             <div className="flex items-center flex-shrink-0">
               <Image
-                src={firstToken.img}
+                src={`/static/images/tokens/${firstToken.symbol}.svg`}
                 alt="token"
                 className="rounded-full max-md:w-5 max-md:h-5"
                 width={30.5}
                 height={30.5}
               />
               <Image
-                src={secondToken.img}
+                src={`/static/images/tokens/${secondToken.symbol}.svg`}
                 alt="token"
                 className="-ml-2.5 md:-ml-4 rounded-full max-md:w-5 max-md:h-5"
                 width={30.5}
@@ -521,11 +523,23 @@ const Manage = ({}: {}) => {
             <div className="text-white">Position Liquidity</div>
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
-                <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
+                <Image
+                  src={`/static/images/tokens/${firstToken.symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
                 <span>{formatNumber(Number(positionData?.amount0) / 10 ** firstToken.decimals, 8)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
-                <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
+                <Image
+                  src={`/static/images/tokens/${secondToken.symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
                 <span>{formatNumber(Number(positionData?.amount1) / 10 ** secondToken.decimals, 8)}</span>
               </p>
             </div>
@@ -604,12 +618,19 @@ const Manage = ({}: {}) => {
           setSecondValue={setSecondValue}
           onTokenValueChange={handleOnTokenValueChange}
           option={optionActive}
+          hideTokenSwap={true}
         />
       </div>
 
       <ApproveButtons
-        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : shouldApproveFirst}
-        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : shouldApproveSecond}
+        shouldApproveFirst={
+          optionActive === 'WITHDRAW' ? false : Number(firstValue) * 10 ** firstToken.decimals >= Number(firstAllowance)
+        }
+        shouldApproveSecond={
+          optionActive === 'WITHDRAW'
+            ? false
+            : Number(secondValue) * 10 ** secondToken.decimals >= Number(secondAllowance)
+        }
         token0={firstToken}
         token1={secondToken}
         handleApprove={handleApprove}

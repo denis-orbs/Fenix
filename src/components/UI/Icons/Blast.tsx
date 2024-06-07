@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 
 interface BlastProps {
-  isHover: boolean
+  isHover?: boolean
 }
 
-const Blast = ({ isHover }: BlastProps) => {
+const Blast = ({ isHover = true }: BlastProps) => {
   return (
 
       <svg width="163" height="39" viewBox="0 0 163 39" fill="none" xmlns="http://www.w3.org/2000/svg">

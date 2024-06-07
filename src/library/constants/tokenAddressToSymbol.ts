@@ -1,7 +1,0 @@
-export const tokenAddressToSymbol: {
-  [key: string]: string
-} = {
-  '0x4300000000000000000000000000000000000004': 'WETH',
-  '0x4300000000000000000000000000000000000003': 'USDB',
-  '0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692': 'WBTC',
-}

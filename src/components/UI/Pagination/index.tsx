@@ -56,8 +56,15 @@ const Pagination = ({
     clearSelection()
   }
 
-  const visiblePages = 6
-  const startPage = Math.max(1, activePage - Math.floor(visiblePages / 2))
+  const visiblePages = 4
+  const startPage =
+    activePage <= 3 || numberPages <= 5
+      ? 1
+      : activePage === numberPages - 1
+        ? activePage - 3
+        : activePage === numberPages
+          ? activePage - 4
+          : activePage - 2
   const endPage = Math.min(numberPages, startPage + visiblePages)
 
   useEffect(() => {
@@ -103,8 +110,7 @@ const Pagination = ({
             ))} */}
           <button
             type="button"
-            // className={`flex items-center justify-center leading-normal ${activePage === numberPages ? 'text-shark-100 opacity-60' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} gap-2.5 px-5 py-2.5 rounded-[10px] ml-1.5`}
-            className="flex items-center justify-center leading-normal [&:not(:hover)]:text-shark-100 gap-2.5 px-5 py-2.5 transition-colors button-secondary rounded-[10px] ml-1.5"
+            className={`flex items-center justify-center leading-normal ${activePage === numberPages ? 'text-shark-100 opacity-60' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} gap-2.5 px-5 py-2.5 rounded-[10px] ml-1.5`}
             onClick={hadlerNext}
             disabled={activePage === numberPages}
           >

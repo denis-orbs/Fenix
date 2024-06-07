@@ -157,7 +157,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                   </p>
                 </div>
               </div>
-              {/*   <div className="flex items-center justify-center flex-col">
+              <div className="flex items-center justify-center flex-col">
                 <p className="text-xs text-shark-100 mb-2">Next Points Drop:</p>
                 <Countdown
                   key={nextTargetTime}
@@ -166,7 +166,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                   autoStart={true}
                   renderer={renderer}
                 />
-              </div> */}
+              </div>
             </div>
           )}
         </div>

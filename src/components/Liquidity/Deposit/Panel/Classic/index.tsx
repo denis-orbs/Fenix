@@ -420,11 +420,11 @@ const Classic = ({
           setIsLoading(true)
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            // toast(`Approved successfully`)
+            // toast(`Approved Successfully`)
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
-              message: `Approved successfully`,
+              message: `Approved Successfully`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
               notificationDuration: NotificationDuration.DURATION_5000,
@@ -493,14 +493,14 @@ const Classic = ({
           <div className="flex items-center gap-2.5 mb-2.5">
             <div className="flex items-center flex-shrink-0">
               <Image
-                src={firstToken.img}
+                src={`/static/images/tokens/${firstToken.symbol}.svg`}
                 alt="token"
                 className="rounded-full max-md:w-5 max-md:h-5"
                 width={30.5}
                 height={30.5}
               />
               <Image
-                src={secondToken.img}
+                src={`/static/images/tokens/${secondToken.symbol}.svg`}
                 alt="token"
                 className="-ml-2.5 md:-ml-4 rounded-full max-md:w-5 max-md:h-5"
                 width={30.5}
@@ -554,11 +554,23 @@ const Classic = ({
             <div className="text-white">Liquidity</div>
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
-                <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
+                <Image
+                  src={`/static/images/tokens/${firstToken.symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
                 <span>{formatNumber(Number(firstReserve) / 1e18, 8)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
-                <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
+                <Image
+                  src={`/static/images/tokens/${secondToken.symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
                 <span>{formatNumber(Number(secondReserve) / 1e18, 8)}</span>
               </p>
             </div>

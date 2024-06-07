@@ -1,6 +1,6 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
-import { getAllPools, getConcentratedPools, getLiquidityV2Pairs } from './thunks'
+import { getAllPools, getConcentratedPools, getGammaVaults, getLiquidityV2Pairs, getRingsCampaigns } from './thunks'
 import { LiquidityState, V2PairId, v2FactoryData, v3FactoryData } from './types'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import {
@@ -48,6 +48,15 @@ export const initialState: LiquidityState = {
   token1: process.env.NEXT_PUBLIC_DEFAULT_TOKEN_1_ADDRESS as Address,
   token1TypedValue: '',
   clmProvider: ClmProvider.ICHI,
+
+  gammaVaults: {
+    data: [],
+    state: ApiState.LOADING,
+  },
+  ringsCampaigns: {
+    state: ApiState.LOADING,
+    data: [],
+  },
 }
 
 export default createReducer(initialState, (builder) => {
@@ -109,6 +118,24 @@ export default createReducer(initialState, (builder) => {
     })
     .addCase(getLiquidityTableElements.rejected, (state) => {
       state.v2Pairs.tablestate = ApiState.ERROR
+    })
+    .addCase(getGammaVaults.pending, (state) => {
+      state.gammaVaults = { data: [], state: ApiState.LOADING }
+    })
+    .addCase(getGammaVaults.fulfilled, (state, action) => {
+      state.gammaVaults = { data: action.payload, state: ApiState.SUCCESS }
+    })
+    .addCase(getGammaVaults.rejected, (state) => {
+      state.gammaVaults = { data: [], state: ApiState.ERROR }
+    })
+    .addCase(getRingsCampaigns.pending, (state) => {
+      state.ringsCampaigns = { data: [], state: ApiState.LOADING }
+    })
+    .addCase(getRingsCampaigns.fulfilled, (state, action) => {
+      state.ringsCampaigns = { data: action.payload, state: ApiState.SUCCESS }
+    })
+    .addCase(getRingsCampaigns.rejected, (state) => {
+      state.ringsCampaigns = { data: [], state: ApiState.ERROR }
     })
 })
 

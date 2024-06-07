@@ -92,9 +92,9 @@ const Security = () => {
   return (
     <div>
       <div className="container mx-auto w-[100%]">
-        <div className="text-gradient3 text-[40px] max-md:text-2xl font-normal leading-relaxed text-center">
+        <h2 className="text-gradient3 text-[40px] max-md:text-2xl font-normal leading-relaxed text-center">
           Security
-        </div>
+        </h2>
         <div className="w-[100%] flex items-center flex-col mx-auto justify-center">
           <div className="text-xl max-lg:text-lg text-shark-100 font-normal max-md:text-center">Assured by</div>
           <Link

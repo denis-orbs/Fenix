@@ -5,7 +5,7 @@ import Loader from '@/src/components/UI/Icons/Loader'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
-import { BasicPool, PoolData } from '@/src/state/liquidity/types'
+import { BasicPool, GammaVault, PoolData } from '@/src/state/liquidity/types'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
@@ -13,6 +13,9 @@ import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVault
 import { SupportedDex, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
+import { adjustTokenOrder } from '@/src/library/utils/tokens'
+import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
+import { useGammaVaults } from '@/src/state/liquidity/hooks'
 
 interface RowDataProps {
   row: BasicPool
@@ -67,6 +70,12 @@ export default function MobileRowNew({
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
     setCampaign({ ...campaign_ })
   }, [row])
+  const { loading: gammaVaultsLoading, data: gammaVaults } = useGammaVaults()
+  const gammaVaultApr =
+    gammaVaults?.find((vault: GammaVault) => vault?.poolAddress?.toLowerCase() === row?.id?.toLowerCase())?.returns
+      ?.weekly?.feeApr || null
+  const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
+  const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)
 
   return (
     <>
@@ -74,14 +83,14 @@ export default function MobileRowNew({
         <div className="flex gap-[9px] items-center justify-around pb-2">
           <div className="relative flex items-center">
             <Image
-              src={`/static/images/tokens/${row.token0.symbol}.svg`}
+              src={`/static/images/tokens/${adjustToken0}.svg`}
               alt="token"
               className="w-10 h-10 max-xxs:w-8 max-xxs:h-8 -mr-5 rounded-full"
               width={32}
               height={32}
             />
             <Image
-              src={`/static/images/tokens/${row.token1.symbol}.svg`}
+              src={`/static/images/tokens/${adjustToken1}.svg`}
               alt="token"
               className="w-10 h-10 max-xxs:w-8 max-xxs:h-8 rounded-full"
               width={32}
@@ -91,7 +100,7 @@ export default function MobileRowNew({
           <div className="flex flex-col gap-1 w-[85%]">
             <div className="flex items-center gap-2 justify-between">
               <h5 className="text-sm font-semibold leading-normal mx-auto">
-                {row.token0.symbol} / {row.token1.symbol}{' '}
+                {adjustToken0} / {adjustToken1}{' '}
               </h5>
               <div
                 className={`border-solid bg-shark-400 rounded-lg bg-opacity-40 border-shark-300 text-xs font-normal border whitespace-nowrap !py-2 !h-[38px] w-[44.7%] text-center px-4 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
@@ -154,7 +163,7 @@ export default function MobileRowNew({
                     <Loader />
                   ) : (
                     <>
-                      {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%{' '}
+                      {formatAmount((Number(row?.apr) || 0) + fDAOEmisionsAPR + (Number(ringsApr) || 0), 2)}%{' '}
                       <div
                         className="flex items-center gap-[5px] cursor-pointer
                     text-shark-100 hover:text-transparent hover:bg-gradient-to-r hover:from-outrageous-orange-500 hover:to-festival-500 hover:bg-clip-text"
@@ -183,16 +192,30 @@ export default function MobileRowNew({
                     )}
                     {ichiAprLoading && (
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-sm">Ichi Strategy</p>
+                        <p className="text-sm">Ichi</p>
                         <Loader />
                       </div>
                     )}
                     {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-sm">Ichi Strategy</p>
+                        <p className="text-sm">Ichi</p>
                         <p className="text-sm text-chilean-fire-600">
                           {formatAmount(Number(ichiApr) < 0 ? 0 : Number(ichiApr) || 0, 2)}%
                         </p>
+                      </div>
+                    )}
+                    {gammaVaultApr && (
+                      <div className="flex justify-between items-center gap-3">
+                        <p className="text-sm">Gamma</p>
+                        <p className="text-sm text-chilean-fire-600">
+                          {formatAmount(gammaVaultApr < 0 || isNaN(gammaVaultApr) ? 0 : Number(gammaVaultApr), 2)}%
+                        </p>
+                      </div>
+                    )}
+                    {!!fDAOEmisionsAPR && (
+                      <div className="flex justify-between items-center gap-3">
+                        <p className="text-sm">fDAO Emissions</p>
+                        <p className="text-sm text-chilean-fire-600">{formatAmount(Number(fDAOEmisionsAPR), 2)}%</p>
                       </div>
                     )}
                   </div>
@@ -232,7 +255,7 @@ export default function MobileRowNew({
                   {openTooltipGold && (
                     <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                       <div className="flex justify-between items-center gap-3">
-                        <p className="text-xs">The pool is receiving 7000 Gold from May 15th - 31st</p>
+                        <p className="text-xs">This pool will receive 10,000 Blast Gold from 1st - 21st of June</p>
                       </div>
                     </div>
                   )}
@@ -277,7 +300,7 @@ export default function MobileRowNew({
                       height={10}
                     />
                     <span className="text-xs leading-normal">
-                      {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}{' '}
+                      {formatCurrency(Number(row.volumeToken0) / 2, 2)} {row.token0.symbol}{' '}
                     </span>
                   </div>
                   <div className="flex items-center gap-[5px]">
@@ -289,7 +312,7 @@ export default function MobileRowNew({
                       height={10}
                     />
                     <span className="text-xs leading-normal">
-                      {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}{' '}
+                      {formatCurrency(Number(row.volumeToken1) / 2, 2)} {row.token1.symbol}{' '}
                     </span>
                   </div>
                 </div>

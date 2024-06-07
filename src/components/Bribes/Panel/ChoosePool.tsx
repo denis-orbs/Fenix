@@ -67,7 +67,11 @@ const ChoosePool = ({ token, setToken, setValue, value }: ChoosePoolProps) => {
                   </div>
                   <div>
                     <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
-                      {!token.pair.hasOwnProperty('stable')? 'Concentrated Pool' : token.pair.stable?'Stable Pool':"Volatile Pool"}
+                      {!token.pair.hasOwnProperty('stable')
+                        ? 'Concentrated Pool'
+                        : token.pair.stable
+                          ? 'Stable Pool'
+                          : 'Volatile Pool'}
                     </span>
                   </div>
                 </div>

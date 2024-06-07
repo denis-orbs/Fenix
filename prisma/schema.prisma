@@ -31,3 +31,13 @@ model ring_distribution {
   user_id     String
   user        users    @relation(fields: [user_id], references: [id])
 }
+
+model ring_batch_distribution {
+  id         String   @id @default(uuid())
+  batch_id   String?
+  pool_id    String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  batch_data Json
+  is_sent    Boolean  @default(false)
+}

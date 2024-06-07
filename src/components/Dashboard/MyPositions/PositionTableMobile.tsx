@@ -3,12 +3,12 @@ import Image from 'next/image'
 import { Button, Pagination, PaginationMobile, TableBody, TableCell, TableHead, TableRow } from '../../UI'
 import { positions } from '../MyStrategies/Strategy'
 import NoPositionFound from './NoPositionFound'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { Token } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, zeroAddress } from 'viem'
 import { useAccount, useWriteContract } from 'wagmi'
 import { publicClient } from '@/src/library/constants/viemClient'
 import { CL_MANAGER_ABI } from '@/src/library/constants/abi'
@@ -21,8 +21,9 @@ import { setApr } from '@/src/state/apr/reducer'
 import { getAlgebraPoolPrice } from '@/src/library/hooks/liquidity/useCL'
 import { useQuery } from '@tanstack/react-query'
 import Loader from '../../UI/Icons/Loader'
-import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import { BoostedPool, RingCampaignData, extraPoints } from '@/src/app/api/rings/campaign/route'
 import AprBox from '../../UI/Pools/AprBox'
+import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 
 interface MyPositionsMobileProps {
   activePagination?: boolean
@@ -41,6 +42,8 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
+  const [isInRange, setIsInRange] = useState<boolean>(true)
+  const { data: ringsCampaignsData } = useRingsCampaigns()
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -133,8 +136,10 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
       price1: string
     }
     liquidity: string
+    setIsInRange: (value: boolean) => void
+    isInRange: boolean
   }
-  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity }: setStatusprops) => {
+  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, isInRange, setIsInRange }: setStatusprops) => {
     const minPrice = parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     const maxPrice = parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
 
@@ -150,8 +155,16 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     const currentPoolPrice = poolPriceData
       ? Number(poolPriceData?.price / 10 ** Number(token1.decimals)).toFixed(6)
       : '0'
-    const isInRange =
-      (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
+    const isInRangeAux = useMemo(() => {
+      return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
+    }, [minPrice, maxPrice, currentPoolPrice, liquidity])
+
+    useEffect(() => {
+      setIsInRange(isInRangeAux)
+    }, [isInRangeAux, , setIsInRange])
+    if (isPoolPriceDataLoading) {
+      return <Loader />
+    }
     if (isPoolPriceDataLoading) {
       return <Loader />
     }
@@ -183,10 +196,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   }
 
   const TvlTotal = ({ data }: any) => {
-    let ichitokens: IchiVault
-    if (data.liquidity === 'ichi') {
-      ichitokens = useIchiVaultsData(data?.id)
-    }
+    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
     return (
       <>
         <p className="text-xs text-white mb-1">
@@ -279,6 +289,14 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
               ringsCampaign.boostedPools.find((pool) => {
                 return pool.id.toLowerCase() === position.pool.id.toLowerCase()
               })?.apr || 0
+
+            const extraAprs =
+              ringsCampaignsData.find((pool: BoostedPool) => {
+                return pool.id.toLowerCase() === position.pool.id.toLowerCase()
+              })?.extraPoints || []
+            const extraAprNumber = extraAprs.reduce((acc: number, curr: extraPoints) => {
+              return acc + curr.apr
+            }, 0)
             return (
               <>
                 <div
@@ -289,14 +307,14 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                   <div className="flex gap-[9px] items-center">
                     <div className="relative flex items-center">
                       <Image
-                        src={`/static/images/tokens/${position.token0.symbol}.png`}
+                        src={`/static/images/tokens/${position.token0.symbol}.svg`}
                         alt="token"
                         className="w-8 h-8 rounded-full"
                         width={32}
                         height={32}
                       />
                       <Image
-                        src={`/static/images/tokens/${position.token1.symbol}.png`}
+                        src={`/static/images/tokens/${position.token1.symbol}.svg`}
                         alt="token"
                         className="w-8 h-8 -ml-5 rounded-full"
                         width={32}
@@ -355,18 +373,20 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                             tickLower={position.tickLower}
                             tickUpper={position.tickUpper}
                             liquidity={position.liquidity}
+                            isInRange={isInRange}
+                            setIsInRange={setIsInRange}
                           />
                         </div>
                         <div className="flex justify-between items-center">
                           <AprBox
-                            apr={parseFloat(position?.apr) > 0 ? parseFloat(position?.apr) + fenixRingApr : 0}
+                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0}
                             tooltip={
                               <div>
                                 <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Fees APR</p>
                                   <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
                                 </div>
-                                {fenixRingApr > 0 && parseFloat(position?.apr) > 0 && (
+                                {fenixRingApr > 0 && isInRange && (
                                   <div className="flex justify-between items-center gap-3">
                                     <p className="text-sm pb-1">Rings APR</p>
                                     <p className="text-sm pb-1 text-chilean-fire-600">
@@ -374,6 +394,18 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                                     </p>
                                   </div>
                                 )}
+                                {extraAprs &&
+                                  extraAprs.length > 0 &&
+                                  extraAprs.map((extraApr: extraPoints) => {
+                                    return (
+                                      <div key={extraApr.name} className="flex justify-between items-center gap-3">
+                                        <p className="text-sm pb-1">{extraApr.name}</p>
+                                        <p className="text-sm pb-1 text-chilean-fire-600">
+                                          {formatAmount(extraApr.apr, 2)}%
+                                        </p>
+                                      </div>
+                                    )
+                                  })}
                               </div>
                             }
                           />

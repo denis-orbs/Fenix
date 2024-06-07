@@ -1,6 +1,12 @@
+export const revalidate = 60
 import { NextRequest, NextResponse } from 'next/server'
-import { isAddress } from 'viem'
+import { createPublicClient, http, isAddress } from 'viem'
 import prisma from '@/src/library/utils/db'
+import { IchiProvider } from '@/src/library/providers/liquidity-provider/IchiProvider'
+import { PoolProvider } from '@/src/library/providers/PoolProvider'
+import { ManualLiquidityProvider } from '@/src/library/providers/liquidity-provider/ManualLiquidityProvider'
+import { BN_ZERO } from '@/src/library/utils/numbers'
+
 export async function POST(request: NextRequest) {
   try {
     const { account } = await request.json()
@@ -37,4 +43,76 @@ export async function POST(request: NextRequest) {
       }
     )
   }
+}
+BigInt.prototype.toJSON = function () {
+  return this.toString()
+}
+
+// poner que no se caché
+export async function GET(request: NextRequest) {
+  const url = new URL(request.url)
+  const searchParams = new URLSearchParams(url.searchParams)
+  const account = searchParams.get('account')
+  if (!account || !isAddress(account?.toLowerCase())) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Invalid address',
+      },
+      { status: 400 }
+    )
+  }
+  const user = await prisma.users.findUnique({
+    where: { id: account?.toLowerCase() },
+    select: {
+      id: true,
+      accumulated_rings_points: true,
+    },
+  })
+  // si no es not found, simplemente devolver 0
+  if (!user) {
+    return NextResponse.json(
+      {
+        success: true,
+        user: {
+          id: account,
+          accumulated_rings_points: '0',
+        },
+        totalTVL: '0',
+        totalBoostedTVL: '0',
+      },
+      { status: 200 }
+    )
+  }
+
+  // si no existe, devolver 0
+
+  const ichiProvider = new IchiProvider()
+  const manualProvider = new ManualLiquidityProvider()
+
+  const [ichi, manualV3] = await Promise.all([
+    ichiProvider.getUserLiquidity(account),
+    manualProvider.getUserLiquidity(account),
+  ])
+  let totalTVL = BN_ZERO
+  let boostedTVL = BN_ZERO
+
+  totalTVL = totalTVL.plus(ichi.TVL).plus(manualV3.TVL)
+  boostedTVL = boostedTVL.plus(ichi.boostedTVL).plus(manualV3.boostedTVL)
+
+  return NextResponse.json(
+    {
+      success: true,
+      user,
+      totalTVL: totalTVL.decimalPlaces(2).toString(),
+      totalBoostedTVL: boostedTVL.decimalPlaces(2).toString(),
+      liquidity: {
+        manualV3,
+        clm: {
+          ichi,
+        },
+      },
+    },
+    { status: 200 }
+  )
 }

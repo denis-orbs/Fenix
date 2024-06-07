@@ -1,8 +1,34 @@
 export const gammaUniProxyABI = [
   {
-    inputs: [{ internalType: 'address', name: '_clearance', type: 'address' }],
+    inputs: [
+      { internalType: 'address', name: '_clearance', type: 'address' },
+      { internalType: 'address', name: '_owner', type: 'address' },
+      { internalType: 'address', name: '_pointsOperator', type: 'address' },
+    ],
     stateMutability: 'nonpayable',
     type: 'constructor',
+  },
+  {
+    inputs: [],
+    name: 'BLAST',
+    outputs: [{ internalType: 'contract IBlast', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_recipient', type: 'address' },
+      { internalType: 'uint256', name: '_amountWETH', type: 'uint256' },
+      { internalType: 'uint256', name: '_amountUSDB', type: 'uint256' },
+    ],
+    name: 'claimYieldAll',
+    outputs: [
+      { internalType: 'uint256', name: 'amountWETH', type: 'uint256' },
+      { internalType: 'uint256', name: 'amountUSDB', type: 'uint256' },
+      { internalType: 'uint256', name: 'amountGas', type: 'uint256' },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [],

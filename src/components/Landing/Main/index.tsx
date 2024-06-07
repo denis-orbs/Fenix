@@ -57,8 +57,8 @@ const Main = () => {
   const { setWalletSelectionModal } = useStore()
   const [isHover, setIsHover] = useState(false)
 
-  const handleIsHoverActive = () => setIsHover(true)
-  const handleIsHoverInactive = () => setIsHover(false)
+  // const handleIsHoverActive = () => setIsHover(true)
+  // const handleIsHoverInactive = () => setIsHover(false)
 
   const handlerConnectWallet = () => setWalletSelectionModal(true)
 
@@ -117,20 +117,18 @@ const Main = () => {
                 alt="Fenix"
                 className="mx-auto mb-3"
               />
-              <div className="text-base md:text-xl text-shark-100 leading-normal mb-2">Welcome to Fenix Finance</div>
-              <div className={`text-white  md:text-[32px] leading-[139%] mb-[21px] w-full  ${michroma.className}`}>
+              <h1 className="text-base md:text-xl text-shark-100 leading-normal mb-2">Welcome to Fenix Finance</h1>
+              <h3 className={`text-white  md:text-[32px] leading-[139%] mb-[21px] w-full  ${michroma.className}`}>
                 THE UNIFIED TRADING AND <span className="text-gradient2">LIQUIDITY MARKETPLACE </span>
                 <span className="flex items-center justify-center xl:items-center gap-3">
                   FOR
                   <span
                     className="svgcontainer pt-2 "
-                    onMouseOut={handleIsHoverInactive}
-                    onMouseOver={handleIsHoverActive}
                   >
-                    <Blast isHover={isHover} />
+                    <Blast />
                   </span>
                 </span>
-              </div>
+              </h3>
 
               {!isConnected && (
                 <Button
