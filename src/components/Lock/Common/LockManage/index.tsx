@@ -408,7 +408,7 @@ const LockManage: FC<pageProps> = ({ id }) => {
             )}
             {currentTab === 'SPLIT' && (
               <>
-                <Split />
+                {/* <Split /> */}
                 {/* <ConfirmMerge
                   option={currentTab}
                   openModal={openModalMergeSplit}
