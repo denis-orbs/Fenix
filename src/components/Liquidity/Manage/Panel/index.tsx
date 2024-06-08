@@ -91,7 +91,7 @@ const Panel = () => {
     }
 
     defaultPairs.length > 0 ? getList() : {}
-  }, [defaultPairs])
+  }, [defaultPairs, chainId])
 
   return (
     <section className="box-panel-trade">

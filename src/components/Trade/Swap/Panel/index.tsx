@@ -195,7 +195,7 @@ const Panel = () => {
     }
 
     fetchTokenPrices()
-  }, [updateTokenPrice])
+  }, [updateTokenPrice, chainId])
   const { connector } = useAccount()
 
   // function to make the swap

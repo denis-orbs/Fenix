@@ -106,7 +106,7 @@ const Automatic = () => {
       }
     }
     getData()
-  }, [])
+  }, [chainId])
   const token0 = useToken0()
   const token1 = useToken1()
 

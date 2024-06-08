@@ -269,7 +269,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
               </div>
             </div>
             <div className="px-2.5 pb-[3px] flex gap-2">
-              {titleButton === '' ? (
+              {/* {titleButton === '' ? (
                 <Button variant="tertiary" className="flex items-center gap-2 w-full">
                   <span className="icon-info"></span>
                   Info
@@ -279,7 +279,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                   <span className="icon-coin"></span>
                   Claim
                 </Button>
-              )}
+              )} */}
 
               {titleButton2 === '' ? (
                 <Button variant="tertiary" className="flex items-center gap-2 w-full" href="/liquidity">
@@ -290,7 +290,11 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                 <Button
                   variant="tertiary"
                   className="flex items-center gap-2 w-full"
-                  href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'volatile' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'stable' : 'manual'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
+                  href={
+                    !row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
+                      ? `/liquidity/deposit?type=VOLATILE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                      : `/liquidity/deposit?type=STABLE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                  }
                 >
                   <span className="icon-logout"></span>
                   Manage

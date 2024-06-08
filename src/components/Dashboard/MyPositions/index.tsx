@@ -33,7 +33,7 @@ const MyPositions = () => {
   }
   useEffect(() => {
     tokensprice()
-  }, [])
+  }, [chainId])
 
   const { address } = useAccount()
 
