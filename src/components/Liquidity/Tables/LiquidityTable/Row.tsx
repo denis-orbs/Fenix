@@ -193,7 +193,7 @@ const RowData = ({
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* TVL */}
-              {formatDollarAmount(Number(row.totalValueLockedUSD))}
+              {formatDollarAmount(Number(row.totalValueLockedUSD)).replace('NaN', '0')}
             </p>
           </div>
         </TableCell>
@@ -263,7 +263,7 @@ const RowData = ({
         <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* VOLUME */}
-            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD)).replace('NaN', '0')}</p>
             <div className="flex flex-col gap-1">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 {/* <Image
@@ -292,7 +292,7 @@ const RowData = ({
         <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* FEES */}
-            <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD).replace('NaN', '0')}</p>
             <div className="flex flex-col  gap-1">
               <p className="flex  items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
@@ -333,7 +333,13 @@ const RowData = ({
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href={`/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`}
+                href={
+                  row.poolType === 'concentrated'
+                    ? `/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`
+                    : row.poolType === 'volatile'
+                      ? `/liquidity/deposit?type=VOLATILE&token0=${row.token0.id}&token1=${row.token1.id}`
+                      : `/liquidity/deposit?type=STABLE&token0=${row.token0.id}&token1=${row.token1.id}`
+                }
               >
                 <span className="icon-circles"></span>
                 Deposit
