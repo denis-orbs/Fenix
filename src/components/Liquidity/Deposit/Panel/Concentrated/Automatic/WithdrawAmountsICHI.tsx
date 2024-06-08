@@ -130,7 +130,7 @@ const WithdrawAmountsICHI = ({
       setTotalUserShares(data)
     }
     getTotalUserShares()
-  }, [account, vaultAddress, web3Provider])
+  }, [account, vaultAddress, web3Provider, chainId])
   useEffect(() => {
     if (allIchiVaultsByTokenPair && allIchiVaultsByTokenPair?.length > 0) {
       const firstToken = allIchiVaultsByTokenPair[0]

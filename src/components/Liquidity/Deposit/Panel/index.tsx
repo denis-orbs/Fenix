@@ -121,10 +121,11 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
               price: parseFloat(item.priceUSD),
             }
           })
-
+          console.log(parsedData, defaultPairs, 'defaultPairs')
           const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken]
           if (defaultPairs.length > 0) {
             parsedData.map((item: any) => {
+              console.log('item :>> ', item)
               if (item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
               if (item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
             })
@@ -136,7 +137,7 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
     }
 
     defaultPairs.length > 0 ? getList() : {}
-  }, [defaultPairs])
+  }, [defaultPairs, chainId])
 
   return (
     <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
@@ -149,13 +150,13 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
                 onClick={handleSwitch}
                 className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
               ></span>
-              {/* <div className="flex items-center gap-[9px] h-10">
+              <div className="flex items-center gap-[9px] h-10">
                 <Switch active={activeSwitch} setActive={handlerSwitch} />
                 <span className="text-shark-100 text-xs leading-normal">{depositType}</span>
               </div>
               {/* <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
                 <span className="icon-cog text-white"></span>
-              </div> */}
+  </div> */}
             </div>
           </div>
 

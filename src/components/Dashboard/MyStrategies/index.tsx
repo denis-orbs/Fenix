@@ -37,7 +37,7 @@ const MyStrategies = () => {
   }
   useEffect(() => {
     tokensprice()
-  }, [])
+  }, [chainId])
 
   const slideToLeft = () => {
     if (swiperRef.current && progress > 0) {

@@ -236,7 +236,7 @@ const Vote = () => {
       setVoteTableElements(voteElements)
       setIsVoteLoading(false)
     }
-  }, [address])
+  }, [address, chainId])
 
   const [poolArr, setPoolArr] = useState<any>([])
 

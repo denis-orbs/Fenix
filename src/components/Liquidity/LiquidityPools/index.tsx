@@ -27,7 +27,7 @@ const LiquidityPools = () => {
   useEffect(() => {
     tokensData(liquidityTable)
     // fetchData()
-  }, [])
+  }, [chainId])
   const [globalStatistics, setGlobalStatistics] =
     useState<Omit<Awaited<ReturnType<typeof fetchGlobalStatistics>>, 'totalUsers'>>()
 

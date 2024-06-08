@@ -115,12 +115,10 @@ const Classic = ({
   }, [])
   useEffect(() => {
     const fetchTokenPrices = async () => {
-      console.log(chainId, 'inn3')
       try {
-        console.log(chainId, 'inn2')
         if (chainId) {
           const data = await fetchTokens(chainId)
-          console.log('inn1')
+
           const token0price = updateTokenPrice(data, 'USDB')
           if (token0price !== null && firstToken?.symbol === 'USDB')
             setFirstToken((prev) => ({ ...prev, price: token0price }))
@@ -151,6 +149,7 @@ const Classic = ({
   }
 
   useEffect(() => {
+    console.log('defaultPairs', defaultPairs)
     if (defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
@@ -632,7 +631,7 @@ const Classic = ({
                 value={lpValue}
                 token={
                   {
-                    name: 'Fenix/Ether LP',
+                    name: `${firstToken.symbol}/${secondToken.symbol} LP`,
                     symbol: `${firstToken.symbol}/${secondToken.symbol} LP`,
                     id: 0,
                     decimals: 18,

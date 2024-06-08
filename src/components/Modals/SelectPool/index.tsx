@@ -91,7 +91,7 @@ const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalanc
     }
 
     getList()
-  }, [address])
+  }, [address, chainId])
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
@@ -158,7 +158,11 @@ const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalanc
                   </div>
                   <div>
                     <span className="text-white py-1 px-3 text-xs rounded-lg border bg-shark-400 border-shark-400 ">
-                    {!elm.pair.hasOwnProperty('stable')? 'Concentrated Pool' : elm.pair.stable?'Stable Pool':"Volatile Pool"}
+                      {!elm.pair.hasOwnProperty('stable')
+                        ? 'Concentrated Pool'
+                        : elm.pair.stable
+                          ? 'Stable Pool'
+                          : 'Volatile Pool'}
                     </span>
                   </div>
                   {/* <div className="flex flex-col items-end justify-start"> */}

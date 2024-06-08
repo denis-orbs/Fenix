@@ -154,16 +154,20 @@ const ExchangeBox = ({
             onClick={onOpenModal ? () => onOpenModal() : undefined}
           >
             <div className="flex items-center gap-2">
-              <Image
-                src={`${token.symbol ? `/static/images/tokens/${token.symbol}.svg` : '/static/images/tokens/FNX.svg'}`}
-                alt="token"
-                className="w-6 h-6 rounded-full"
-                width={20}
-                height={20}
-              />
+              {option !== 'WITHDRAW' ? (
+                <>
+                  <Image
+                    src={`${token.symbol ? `/static/images/tokens/${token.symbol}.png` : '/static/images/tokens/FNX.svg'}`}
+                    alt="token"
+                    className="w-6 h-6 rounded-full"
+                    width={20}
+                    height={20}
+                  />
+                </>
+              ) : null}
               <span className="text-base">{token.symbol}</span>
             </div>
-            <span className="icon-chevron text-sm inline-block ml-2" />
+            {option !== 'WITHDRAW' ? <span className="icon-chevron text-sm inline-block ml-2" /> : null}
           </div>
         </div>
         <div className="relative w-full xl:w-3/5">

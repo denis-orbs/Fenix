@@ -363,8 +363,11 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
           feesToken1 * Number(tokens.find((t) => t.tokenAddress === pool.token1.id)?.priceUSD)
 
         const tvl =
-          Number(pool.reserve0) * Number(tokens.find((t) => t.tokenAddress === pool.token0.id)?.priceUSD) +
-          Number(pool.reserve1) * Number(tokens.find((t) => t.tokenAddress === pool.token1.id)?.priceUSD)
+          Number(pool.reserve0) *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token0.id.toLowerCase())?.priceUSD) +
+          Number(pool.reserve1) *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token1.id.toLowerCase())?.priceUSD)
+
         return {
           id: pool.id,
           volumeUSD: pool.volumeUSD,
