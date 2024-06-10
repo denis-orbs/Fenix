@@ -195,6 +195,7 @@ const HeaderRow = ({
 
   
   const pagination = paginate(paginationResult, activePage, itemsPerPage)
+  console.log("pagination",pagination)
   const { width } = useWindowSize()
   return (
     <div className="relative">
@@ -240,8 +241,13 @@ const HeaderRow = ({
             </>
           ) : (
             pagination.map((row, index) => (
-              <Fragment key={index}>
-                <Row
+             <>
+             { console.log(row.id)}
+                {
+                  (row.id !== "0x8c22d23ec102c9e098c8e0b9ed4ea01aa0b4be35" && row.id !== "0x3c7fd63cab763a10b2754b1464e09d37a9fc79e7") ?
+                  <>
+                  <Fragment key={index}>
+                   <Row
                   row={row}
                   tokensData={null}
                   activeRange={activeRange}
@@ -250,7 +256,14 @@ const HeaderRow = ({
                   titleButton={titleButton}
                   titleButton2={titleButton2}
                 />
-              </Fragment>
+                </Fragment>
+                </>:null
+                }
+               
+                 
+             </>
+               
+             
             ))
           )}
         </TableBody>
