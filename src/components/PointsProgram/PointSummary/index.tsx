@@ -127,7 +127,7 @@ const PointSummary = ({ userData }: any) => {
               <span className="icon-info ml-1"></span>
             </span>
             <div
-              className={`box-fenix-goldies absolute left-[-70px] max-lg:left-1/2 max-lg:-translate-x-1/2 top-8 px-4 py-2
+              className={`box-fenix-goldies cursor-default absolute left-[-70px] max-lg:left-1/2 max-lg:-translate-x-1/2 top-8 px-4 py-2
                text-white text-xs w-[360px] flex flex-col items-center ${showNTFBoostInfo ? 'block' : 'hidden'}`}
             >
               <div className='flex items-center flex-col mx-auto gap-2 mt-4 justify-center z-[500]'>
