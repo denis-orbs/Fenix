@@ -70,6 +70,7 @@ const Panel = () => {
   const slippage = useSlippageTolerance()
   const { openConnectModal } = useConnectModal()
   const { account, isConnected } = useActiveConnectionDetails()
+  const { chainId } = useAccount()
   const addNotification = useNotificationAdderCallback()
   const readNotification = useReadNotificationCallback()
   const [swapQuoteLoading, setSwapQuoteLoading] = useState<boolean>(false)
@@ -178,21 +179,23 @@ const Panel = () => {
   useEffect(() => {
     const fetchTokenPrices = async () => {
       try {
-        const data = await fetchTokens()
-
-        // USDB Because it's the default token sell
-        const sellPrice = updateTokenPrice(data, 'USDB')
-        if (sellPrice !== null && tokenSell?.symbol === 'USDB') setTokenSell((prev) => ({ ...prev, price: sellPrice }))
-        // WETH Because it's the default token get
-        const getPrice = updateTokenPrice(data, 'WETH')
-        if (getPrice !== null && tokenGet?.symbol === 'WETH') setTokenGet((prev) => ({ ...prev, price: getPrice }))
+        if (chainId) {
+          const data = await fetchTokens(chainId)
+          // USDB Because it's the default token sell
+          const sellPrice = updateTokenPrice(data, 'USDB')
+          if (sellPrice !== null && tokenSell?.symbol === 'USDB')
+            setTokenSell((prev) => ({ ...prev, price: sellPrice }))
+          // WETH Because it's the default token get
+          const getPrice = updateTokenPrice(data, 'WETH')
+          if (getPrice !== null && tokenGet?.symbol === 'WETH') setTokenGet((prev) => ({ ...prev, price: getPrice }))
+        }
       } catch (error) {
         console.error('Failed to fetch token prices:', error)
       }
     }
 
     fetchTokenPrices()
-  }, [updateTokenPrice])
+  }, [updateTokenPrice, chainId])
   const { connector } = useAccount()
 
   // function to make the swap

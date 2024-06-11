@@ -30,13 +30,14 @@ const MyStrategies = () => {
   const [tokens, setTokens] = useState<Token[]>([])
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState<number>(0)
+  const { chainId } = useAccount()
 
   const tokensprice = async () => {
-    setTokens(await fetchTokens())
+    if (chainId) setTokens(await fetchTokens(chainId))
   }
   useEffect(() => {
     tokensprice()
-  }, [])
+  }, [chainId])
 
   const slideToLeft = () => {
     if (swiperRef.current && progress > 0) {

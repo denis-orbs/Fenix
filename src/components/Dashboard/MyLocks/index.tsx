@@ -1,10 +1,10 @@
 'use client'
-
 import { Button } from '@/src/components/UI'
 import Locks from '@/src/components/Lock/MyLocks'
 import MylocksMobile from '@/src/components/Lock/Mobile/MylocksMobile'
 import { LOCKS } from '@/src/components/Lock/data'
 import INFO_API from '../data'
+
 const MyLocks = () => {
   return (
     <>

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { IToken } from '@/src/library/types'
 
 import { useEffect, useState } from 'react'
-import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
+import { getTokensBalance, getTokensBalanceChainSpecific } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { formatCurrency } from '@/src/library/utils/numbers'
@@ -28,7 +28,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   const [_tokenBalances, setTokenBalances] = useState<{ [key: `0x${string}`]: string }>(
     tokenBalances ? tokenBalances : {}
   )
-  const account = useAccount()
+  const { address, chainId } = useAccount()
 
   const handlerClose = () => setOpenModal(false)
 
@@ -43,49 +43,54 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   useEffect(() => {
     const getList = async () => {
       try {
-        const responseData = await fetchTokens()
 
-        const parsedData = responseData.map((item: any) => {
-          // console.log('item >> ', item)
-          return {
-            id: 0,
-            name: item.basetoken.name,
-            symbol: item.basetoken.symbol,
-            address: item.basetoken.address,
-            decimals: item.decimals,
-            img: item.logourl,
-            isCommon: item.common,
-            price: parseFloat(item.priceUSD),
-          }
-        })
+        if (chainId) {
+          const responseData = await fetchTokens(chainId)
 
-        // console.log('parsedData >> ', parsedData)
+          const parsedData = responseData.map((item: any) => {
+            // console.log(item.priceUSD, 'priceUSD')
+            return {
+              id: 0,
+              name: item.basetoken.name,
+              symbol: item.basetoken.symbol,
+              address: item.basetoken.address,
+              decimals: item.decimals,
+              img: item.logourl,
+              isCommon: item.common,
+              price: parseFloat(item.priceUSD),
+            }
+          })
 
-        const commonList = parsedData.filter((item: any) => item.isCommon)
+          const commonList = parsedData.filter((item: any) => item.isCommon)
 
-        const balances = await getTokensBalance(
-          parsedData.map((item: any) => {
-            return item.address as Address
-          }),
-          account.address as Address
-        )
-        setTokenBalances(balances)
+          const balances = await getTokensBalanceChainSpecific(
+            parsedData.map((item: any) => {
+              return item.address as Address
+            }),
+            address as Address
+          )
 
-        setCommonList(commonList)
-        parsedData.filter((token: any) => token?.symbol.toLowerCase().includes(searchValue.toLowerCase()))
-        setTokenList(parsedData)
+          setTokenBalances(balances)
+
+          setCommonList(commonList)
+          parsedData.filter((token: any) => token?.symbol.toLowerCase().includes(searchValue.toLowerCase()))
+          setTokenList(parsedData)
+        }
       } catch (error) {}
     }
 
     getList()
-  }, [account.address])
+  }, [address, chainId])
 
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
-      <div className="common-modal">
-        <span className="absolute top-0 right-0 text-2xl cursor-pointer icon-x text-shark-100" onClick={handlerClose} />
-        <div className="relative z-10 w-full h-full">
-          <h1 className="text-md font-medium text-white">Select a Token</h1>
+      <div className="common-modal w-full">
+        <span
+          className="absolute z-50 top-5 right-5 xl:right-0 xl:top-0 text-2xl cursor-pointer icon-x text-shark-100"
+          onClick={handlerClose}
+        />
+        <div className="relative xl:min-h-[420px] xl:max-h-[450px] z-10 w-full h-full">
+          <h1 className="text-lg font-medium text-white py-2">Select a Token</h1>
           {/* <p className="mb-2 text-sm text-shark-100">
             Select a token from our default list or search for a token by symbol or address.
           </p> */}
@@ -95,13 +100,13 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
           </div>
 
           {/* <div className="mb-1 text-sm text-white">Common Tokens</div> */}
-          <div className="flex flex-row items-center gap-1 mb-1">
+          <div className=" grid grid-cols-3 sm:flex  flex-row items-center gap-1 my-1">
             {_commonList ? (
               _commonList.map((token, index) => (
                 <div
                   key={index}
                   onClick={() => handlerSelectToken(token)}
-                  className="flex items-center w-full gap-2 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-1 xl:w-auto"
+                  className="flex  items-center w-full gap-1 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-2 xl:w-auto"
                 >
                   <Image
                     src={`/static/images/tokens/${token.symbol}.svg`}
@@ -117,13 +122,13 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
               <></>
             )}
           </div>
-          <div className="flex flex-col gap-2 max-h-[400px] overflow-y-auto">
+          <div className="flex flex-col gap-2 max-h-[277px] py-2 overflow-y-auto">
             {_tokenList && searchValue === '' ? (
               _tokenList.map((token, index) => (
                 <div
                   key={index}
                   onClick={() => handlerSelectToken(token)}
-                  className="flex items-center justify-between py-1 px-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
+                  className="flex  items-center justify-between py-3 px-4 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
                 >
                   <div className="flex items-center gap-2">
                     <Image
@@ -139,8 +144,8 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                     </div>
                   </div>
                   <div className="flex flex-col items-end justify-start">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-sm text-transparent icon-wallet w-5 bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
                       {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
                       {/* todo fetch balance */}
                       <p className="text-xs text-white">
@@ -153,11 +158,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                     <div className="text-white bg-button-primary text-[10px] leading-none py-1 rounded-md text-center px-2">
                       {_tokenBalances
                         ? `$${formatCurrency(
-                            (
-                              (parseInt(_tokenBalances[(token.address as Address).toLowerCase() as `0x${string}`]) /
-                                10 ** token.decimals) *
-                              token.price
-                            )
+                            ((parseInt(_tokenBalances[token.address as Address]) / 10 ** token.decimals) * token.price)
                               .toFixed(2)
                               .replace('NaN', '0')
                           )}`
@@ -201,7 +202,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                       </div>
                       <div className="flex flex-col items-end justify-start">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-transparent icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+                          <span className="text-sm text-transparent icon-wallet w-5 bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
                           {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
                           {/* todo fetch balance */}
                           <p className="text-xs text-white">

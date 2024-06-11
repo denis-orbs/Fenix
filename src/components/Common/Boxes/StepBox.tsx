@@ -2,10 +2,11 @@
 
 interface StepBoxProps {
   children: React.ReactNode
+  className?: string
 }
 
-const StepBox = ({ children }: StepBoxProps) => {
-  return <div className="steps-box">{children}</div>
+const StepBox = ({ children, className }: StepBoxProps) => {
+  return <div className={`${className} steps-box`}>{children}</div>
 }
 
 export default StepBox

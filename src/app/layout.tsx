@@ -41,12 +41,16 @@ const poppins = Poppins({
 })
 
 const { wallets } = getDefaultWallets()
-export const config = createConfig({
-  chains: [blast],
+export const configwallets = createConfig({
+  chains: [blast, blastSepolia],
   transports: {
     [blast.id]: fallback([
-      http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+      http('https://ancient-powerful-emerald.blast-sepolia.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
       http('https://rpc.blast.io'),
+    ]),
+    [blastSepolia.id]: fallback([
+      http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+      http('https://sepolia.blast.io'),
     ]),
   },
 })
@@ -60,7 +64,11 @@ export const wagmiConfig = getDefaultConfig({
       ...blast,
       iconUrl: '/static/chains/blast.png',
     },
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [blastSepolia] : []),
+    {
+      ...blastSepolia,
+      iconUrl: '/static/chains/blast.png',
+    },
+    // ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [blastSepolia] : []),
   ],
   wallets: [
     {

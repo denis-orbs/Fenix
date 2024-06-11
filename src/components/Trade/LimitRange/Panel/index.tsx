@@ -26,7 +26,7 @@ const Panel = () => {
     symbol: 'ETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023',
+    address: '0x4300000000000000000000000000000000000004',
     price: 0,
     img: '/static/images/tokens/WETH.svg',
   })
@@ -43,7 +43,7 @@ const Panel = () => {
               <h4 className="text-white font-medium text-lg">Limit & Range Orders</h4>
               <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"></span>
             </div>
-            <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
+            <span className="icon-refresh text-shark-100 text-xl cursor-pointer"></span>
           </div>
 
           <div className="flex flex-col items-center justify-start w-full gap-2 px-3 py-2 rounded-lg xl:flex-row bg-shark-400 bg-opacity-40 md:gap-5 mb-4">

@@ -18,9 +18,9 @@ const MobileHeader = () => {
   return (
     <div className={`block ${pathname === '/' ? 'lg:hidden' : 'lg:hidden'} px-5 container`}>
       <header
-        className={`${pathname === '/' ? '' : 'header-mobile-box'} flex justify-between gap-5 p-0 mx-auto relative z-50`}
+        className={`${pathname === '/' ? '' : 'header-mobile-box'} flex  justify-between gap-5 p-0 mx-auto relative `}
       >
-        <div className="flex items-center justify-between w-full relative z-10 h-[87px] p-4 gap-3">
+        <div className="flex items-center justify-between w-full relative z-50 h-[87px] p-4 gap-3 ">
           <Link href="/">
             <Image
               src="/static/images/isotipe.svg"

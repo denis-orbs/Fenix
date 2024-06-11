@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image'
 import { TableCell, TableRow, Button } from '@/src/components/UI'
-import InputRange from '../../UI/SliderRange/InputRange'
 import { useState } from 'react'
 import MobileRowReward from './MobileRowReward'
 type IRow = {
@@ -17,6 +16,7 @@ interface RowRewardProps {
 
 const RowReward = ({ row, activeVote, activeSlider }: RowRewardProps) => {
   const [changeValue, setChangeValue] = useState(0)
+  const [openInfo, setOpenInfo] = useState<boolean>(false)
   return (
     <>
       <TableRow className="hidden xl:flex">
@@ -50,10 +50,31 @@ const RowReward = ({ row, activeVote, activeSlider }: RowRewardProps) => {
         </TableCell>
 
         <TableCell className="w-[20%] flex justify-center">
-          <div className="flex items-center">
-            <p className="py-2 px-3  text-xs text-shark-100">
-              $123.32
-            </p>
+          <div className="relative flex items-center">
+            {openInfo && (
+              <>
+                <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[230px] top-9 px-5 py-3 gap-y-1">
+                  <div className="flex justify-between items-center gap-2">
+                    <div className="w-fit flex flex-col justify-center items-start">
+                      <p className="text-white text-xs">Bribe</p>
+                      <p className="flex items-center gap-2 text-xs text-shark-100">21 FNX</p>
+                      <p className="w-full flex items-center gap-2 text-xs text-shark-100">200.2 fnUSDT</p>
+                    </div>
+                    <div className="flex flex-col justify-center items-start">
+                      <p className="text-white text-xs">Fees</p>
+                      <p className="flex items-center gap-2 text-xs text-shark-100">21 FNX</p>
+                      <p className="flex items-center gap-2 text-xs text-shark-100">200.2 fnUSDT</p>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+            <p className="py-2 px-3  text-xs text-shark-100">$123.32</p>
+            <span
+              className="icon-info"
+              onMouseEnter={() => setOpenInfo(true)}
+              onMouseLeave={() => setOpenInfo(false)}
+            ></span>
           </div>
         </TableCell>
 

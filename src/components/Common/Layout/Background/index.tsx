@@ -1,13 +1,13 @@
-'use client'
+"use client"
 /* eslint-disable max-len */
 
 import Image from 'next/image'
 import cellImg from '@/public/static/images/cell.png'
 import { usePathname } from 'next/navigation'
 
+
 const Decorator = () => {
   const pathname = usePathname()
-
   if (pathname === '/') {
     return null
   }
@@ -145,7 +145,7 @@ const Decorator = () => {
       <Image
         src={cellImg}
         alt="cell"
-        className="absolute -z-10 h-auto w-full bottom-0 max-w-[1920px] -translate-x-1/2 left-1/2 mix-blend-lighten"
+        className={`absolute -z-10 h-auto w-full ${pathname === "/bribes" ? "bottom-56": 'bottom-0'}  max-w-[1920px] -translate-x-1/2 left-1/2 mix-blend-lighten`}
       />
     </div>
   )

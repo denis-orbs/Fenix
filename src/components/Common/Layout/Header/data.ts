@@ -5,7 +5,7 @@ export const MENU_LINKS = [
     href: '/trade/swap',
     new: false,
   },
-  
+
   {
     name: 'Dashboard',
     href: '/dashboard',
@@ -16,7 +16,6 @@ export const MENU_LINKS = [
     href: '/liquidity',
     new: false,
   },
-
   // {
   //   name: 'Vote',
   //   href: '/vote',
@@ -24,6 +23,14 @@ export const MENU_LINKS = [
   // {
   //   name: 'Lock',
   //   href: '/lock',
+  // },
+  // {
+  //   name: 'Bribes',
+  //   href: '/bribes',
+  // },
+  // {
+  //   name: 'Claims',
+  //   href: '/claim',
   // },
   // {
   //   name: 'Migration',
@@ -34,10 +41,6 @@ export const MENU_LINKS = [
     href: '/points-program',
     new: true,
   },
-  // {
-  //   name: 'Bribes',
-  //   href: '/bribes',
-  // },
 ]
 
 export const SOCIAL_LINKS = [

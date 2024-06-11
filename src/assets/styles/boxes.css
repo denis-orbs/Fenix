@@ -326,8 +326,9 @@
   @apply relative
   bg-no-repeat
   bg-cover
-  xl:w-[480px]
-  w-[400px]
+  /* xl:w-[600px] */
+  /* w-[500px] */
+  min-w-fit
   h-[45px]
 
   before:content-[""]
@@ -548,7 +549,6 @@
 /* Background for exchange box of trade panel */
 .exchange-box-x1 {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
-
   before:hidden
   xl:before:block
   before:absolute
@@ -641,35 +641,34 @@
 
 /* Background forvote box */
 .vote-box {
-  @apply relative bg-shark-400 bg-opacity-40 w-auto rounded-xl px-4 xl:px-6 py-6
-
-  before:hidden
-  xl:before:block
+  @apply relative
+  rounded-2xl
+  flex-shrink-0
+  max-w-[348px]
+  max-h-[118px]
+  py-8
+  2xl:py-6
+  px-8
+  before:content-[""]
   before:absolute
-  before:w-0
-  before:h-0
-  before:top-[-15px]
-  before:left-[14px]
-  before:rotate-[89deg]
-  before:border-solid
-  before:border-t-[30px]
-  before:border-r-[30px]
-  before:border-b-[30px]
-  before:border-[transparent_transparent_#111315]
+  before:bg-[url("/static/images/components/box/vote/vote-pool.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
 
-  after:hidden
-  xl:after:block
+  after:content-[""]
   after:absolute
-  after:w-0
-  after:h-0
-  after:bottom-[-14px]
-  after:right-[12px]
-  after:rotate-[-91deg]
-  after:border-solid
-  after:border-t-[25px]
-  after:border-r-[25px]
-  after:border-b-[25px]
-  after:border-[transparent_transparent_#111315];
+  after:bg-[url("/static/images/components/box/vote/vote-pool.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0;
 }
 
 /* Background for exchange box of trade panel */
@@ -753,7 +752,8 @@
   py-8
   2xl:py-6
   px-8
-  max-h-[270px]
+  min-h-[270px]
+  xl:max-h-[270px]
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/components/box/steps/step.svg")]
@@ -779,8 +779,6 @@
   after:hidden
   after:xl:block;
 }
-
-
 
 .steps-box-dashboard {
   @apply relative
@@ -862,9 +860,6 @@
   after:xl:block;
 }
 
-
-
-
 /* Background for main box */
 .main-box {
   @apply relative
@@ -895,6 +890,51 @@
   after:content-[""]
   after:absolute
   after:bg-[url("/static/images/components/box/main/main.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
+
+.lock-box {
+  @apply relative
+  w-full
+  rounded-2xl
+  /* xl:max-w-[1170px] */
+  xl:min-w-[1170px]
+  /* xl:min-w-[1170px] */
+  xl:max-w-[1170px]
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  xl:py-20
+  xl:px-20
+  px-8
+  py-12
+  z-10
+  xl:max-h-[750px]
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/lock/lock.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/lock/lock.svg")]
   after:bg-no-repeat
   after:bg-bottom
   after:h-[50%]
@@ -1038,7 +1078,44 @@
 
 /* Background for notification */
 .box-notification {
-  @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
+  @apply relative
+   xl:flex
+  w-full
+  h-full
+  rounded-2xl
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  xl:max-w-[661px]
+  max-h-[88px]
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/notification-lock/box-notification.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/notification-lock/box-notification.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+  /* @apply relative 
+  bg-shark-400 bg-opacity-40 w-full rounded-xl px-4 xl:px-6 py-6
 
   before:hidden
   xl:before:block
@@ -1066,7 +1143,7 @@
   after:border-t-[25px]
   after:border-r-[25px]
   after:border-b-[25px]
-  after:border-[transparent_transparent_#131517];
+  after:border-[transparent_transparent_#131517]; */
 }
 
 .exchange-box-info {
@@ -1110,7 +1187,7 @@
   justify-center
   w-[320px]
   rounded-2xl
-  
+  z-[100]
   sm:w-[480px]
   sm:min-h-[470px]
   flex-shrink-0
@@ -1690,8 +1767,6 @@ opacity-70
   after:xl:block;
 }
 
-
-
 .box-pagination {
   @apply relative bg-shark-400 bg-opacity-40 w-full rounded-xl pl-4 xl:pl-5 pr-4 xl:pr-3 py-3
 
@@ -1724,6 +1799,45 @@ opacity-70
   after:border-[transparent_transparent_#111315];
 }
 
+.box-reward-medium {
+  @apply relative
+  w-full
+  rounded-xl
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+
+  min-h-[89px]
+  xl:max-h-[89px]
+  /* 2xl:max-w-[248px]
+  xl:max-w-[180px] */
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/rewards/box-reward.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/rewards/box-reward.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
 .box-referrals-short {
   @apply relative
   w-full
@@ -1767,6 +1881,46 @@ bg-shark-400
   after:xl:block;
 }
 
+.box-vote-medium {
+  @apply relative
+  w-full
+  rounded-xl
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  xl:bg-transparent
+  xl:bg-opacity-100
+  min-h-[89px]
+  xl:max-h-[89px]
+  /* 2xl:min-w-[180px] */
+  /* 2xl:max-w-[161px]
+  xl:max-w-[110px] */
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/vote/box-medium.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+
+  after:bg-[url("/static/images/components/box/vote/box-medium.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+}
 .box-referrals-short-invert{
 
  @apply relative
@@ -1809,7 +1963,48 @@ bg-shark-400
   after:left-0
   after:hidden
   after:xl:block;
+}
 
+.box-vote-short {
+  @apply relative
+  w-full
+  rounded-xl
+  flex-shrink-0
+  bg-shark-400
+  bg-opacity-40
+  min-w-[120px]
+  xl:bg-transparent
+  xl:bg-opacity-100
+  /* xl:min-h-[36px] */
+  xl:max-h-[45px]
+  /* xl:max-w-[160px] */
+  2xl:min-h-[42px]
+  /* 2xl:max-w-[160px] */
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/components/box/vote/box-short.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/components/box/vote/box-short.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
 }
 
 

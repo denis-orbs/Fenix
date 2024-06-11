@@ -131,7 +131,7 @@ const Voted = () => {
         </TableBody>
       </div>
       <div className="items-center hidden md:flex">
-        <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
+        {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
         <Pagination
           className="mx-auto"
           numberPages={7}

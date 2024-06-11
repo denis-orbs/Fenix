@@ -10,6 +10,7 @@ import { PoolData } from '@/src/state/liquidity/types'
 import { useAccount } from 'wagmi'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { fromWei } from '@/src/library/utils/numbers'
 
 const LiquidityPositions = () => {
   const router = useRouter()
@@ -41,7 +42,11 @@ const LiquidityPositions = () => {
     })
   }, [loading, v2PairsData, address])
 
-  const poolsDataClassic = poolsData.filter((pool) => pool.pairDetails.pairSymbol !== 'Concentrated pool')
+  const poolsDataClassic = poolsData
+    .filter((pool) => pool.pairDetails.pairSymbol !== 'Concentrated pool')
+    .filter((row) => Number(fromWei(row.pairDetails.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
+
+  // poolsdata filter if Number(fromWei(row.pairDetails.pairInformationV2?.account_lp_balance.toString(), 18)) is === 0
 
   return (
     <>
