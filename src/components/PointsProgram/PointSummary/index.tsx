@@ -136,7 +136,7 @@ const PointSummary = ({ userData }: any) => {
                 <h3 className="text-base">Fenix Goldies NFT Boost up to 20%!</h3>
                 <Image src={'/static/images/tokens/FNX.svg'} alt='FNX' className='w-5' width={10} height={10}></Image>
               </div>
-              <div className='text-white text-xs font-normal text-justify'>
+              <div className='text-white text-xs font-normal'>
                 For every NFT you have you get a 1% Boost, up to a maximum of 20 NFTs (20%)
                 1 NFT = 1% Boost, 2 NFTs = 2% Boost ... 20 NFTs = 20% Boost
                 Fenix Goldies NFTs, <span className='text-gradient cursor-pointer' onClick={() => {window.open('https://blastr.xyz/fenix-goldies', '_blank')}}>Fenix Goldies</span> (Fully Refundable)
