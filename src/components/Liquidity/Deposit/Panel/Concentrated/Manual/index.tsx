@@ -40,21 +40,21 @@ import BigNumber from 'bignumber.js'
 
 const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IToken[] }) => {
   const [firstToken, setFirstToken] = useState({
-    name: 'USDB',
-    symbol: 'USDB',
-    id: 0,
-    decimals: 18,
-    address: '0x4300000000000000000000000000000000000003' as Address,
-    img: '/static/images/tokens/USDB.svg',
-  } as IToken)
-  const [firstValue, setFirstValue] = useState('')
-  const [secondToken, setSecondToken] = useState({
     name: 'Wrapped Ether',
     symbol: 'ETH',
     id: 1,
     decimals: 18,
     address: '0x4300000000000000000000000000000000000004' as Address,
     img: '/static/images/tokens/WETH.png',
+  } as IToken)
+  const [firstValue, setFirstValue] = useState('')
+  const [secondToken, setSecondToken] = useState({
+    name: 'USDB',
+    symbol: 'USDB',
+    id: 0,
+    decimals: 18,
+    address: '0x4300000000000000000000000000000000000003' as Address,
+    img: '/static/images/tokens/USDB.svg',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [allowanceFirst, setAllowanceFirst] = useState(0)
@@ -90,6 +90,10 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   const poolAddress =
     firstToken.address == secondToken.address
       ? '0x0000000000000000000000000000000000000000'
+      : (firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE && secondToken.address?.toLowerCase() == "0x4300000000000000000000000000000000000004")
+      ? '0x0000000000000000000000000000000000000000'
+      : (secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE && firstToken.address?.toLowerCase() == "0x4300000000000000000000000000000000000004")
+      ? '0x0000000000000000000000000000000000000000'
       : (computePoolAddress({
           tokenA: new Token(blast.id, firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : firstToken.address as string, 18),
           tokenB: new Token(blast.id, secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : secondToken.address as string, 18),
@@ -97,6 +101,16 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           initCodeHashManualOverride: '0xf45e886a0794c1d80aeae5ab5befecd4f0f2b77c0cf627f7c46ec92dc1fa00e4',
         }) as Address)
   const pool = usePool(poolAddress)
+
+  useEffect(() => {
+    if(poolAddress.toLowerCase() == "0x1d74611f3ef04e7252f7651526711a937aa1f75e" && firstToken.symbol == "USDB" ||
+      poolAddress.toLowerCase() == "0x86d1da56fc79accc0daf76ca75668a4d98cb90a7" && firstToken.symbol == "axlUSDC" ||
+      poolAddress.toLowerCase() == "0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d" && firstToken.symbol == "USD+" 
+    ) {
+      swapTokens()
+    }
+
+  }, [poolAddress])
 
   useEffect(() => {
     if(pool[0] == 'LOADING') {
@@ -229,8 +243,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
             )
           : getFromAmount0(
               firstValue,
-              isInverse ? firstToken.decimals : secondToken.decimals,
-              isInverse ? secondToken.decimals : firstToken.decimals
+              isInverse ? secondToken.decimals : firstToken.decimals,
+              isInverse ? firstToken.decimals : secondToken.decimals
             )
       )
     }
