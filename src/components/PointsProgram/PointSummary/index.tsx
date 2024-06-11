@@ -130,19 +130,24 @@ const PointSummary = ({ userData }: any) => {
             </span>
             <Tooltip
               className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 right-12 top-8 px-4 py-2
-               text-white text-xs w-[260px] opacity-90 backdrop-blur-[10px] max-xl:left-0"
+               text-white text-xs w-[340px] opacity-90 backdrop-blur-[10px] max-xl:left-0"
               show={showNTFBoostInfo}
               setShow={setShowNTFBoostInfo}
             >
-              <h3 className="text-lg mb-1">Fenix Goldies NFT</h3>
-              <ul className="list-disc  pl-4 space-y-1">
+              <h3 className="text-lg mb-1">1-20% Fenix Goldies NFT Boost! 🔥</h3>
+              <div className='text-white text-xs font-normal text-justify'>
+                For every NFT you have you get a 1% Boost, up to a maximum of 20 NFTs (20%)
+                1 NFT = 1% Boost, 2 NFTs = 2% Boost ... 20 NFTs = 20% Boost
+                Fenix Goldies NFTs, https://blastr.xyz/fenix-goldies (Fully Refundable)
+              </div>
+              {/* <ul className="list-disc  pl-4 space-y-1">
                 <li className="list-item">100% of Blast Gold will be distributed to holders.</li>
                 <li className="list-item">Fully refundable after 21 days</li>
                 <li className="list-item">Early Access to our District One Sprint Launch</li>
                 <li className="list-item">
                   For every NFT you own, you get a 1% boost, up to a maximum of 20 NFTs (20%)
                 </li>
-              </ul>
+              </ul> */}
             </Tooltip>
           </p>
           <div className="flex items-center gap-4 w-full">
