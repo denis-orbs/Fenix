@@ -193,16 +193,16 @@ const MyStrategies = () => {
       ) : (position.length === 0 && loading === false) || address === undefined ? (
         <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
           <div className="flex items-center justify-between text-white">
-            <p className="ms-2 flex gap-3 text-lg">My Positions</p>
+            <p className="ms-2 flex gap-3 text-lg">My Strategies</p>
           </div>
           <div className="box-dashboard flex items-center gap-8 p-6">
-            <p className="text-sm text-white">You have no positions.</p>
+            <p className="text-sm text-white">You have no strategies.</p>
           </div>
         </div>
       ) : (
         <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
           <div className="flex items-center justify-between text-white">
-            <p className="ms-2 flex gap-3 text-lg">My Positions</p>
+            <p className="ms-2 flex gap-3 text-lg">My Strategies</p>
           </div>
           <div className="box-dashboard flex items-center justify-center gap-8 p-6">
             <p className="flex items-center gap-3 text-sm text-white">
