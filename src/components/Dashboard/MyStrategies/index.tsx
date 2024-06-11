@@ -85,21 +85,22 @@ const MyStrategies = () => {
     setpositionAmounts(amounts)
     setLoading(false)
   }
-  useEffect(() => {
-    if (address) fetchpositions(address)
-    setLoading(true)
-  }, [address])
+  // useEffect(() => {
+  //   if (address) fetchpositions(address)
+  //   setLoading(true)
+  // }, [address])
 
   const ichipositions = useIchiPositions()
-  useEffect(() => {
-    setLoading(true)
-    if (ichipositions.length > 0) {
-      setposition(ichipositions)
-      setLoading(false)
-    } else if (ichipositions.length === 0) {
-      setLoading(false)
-    }
-  }, [ichipositions])
+   useEffect(() => {
+     setLoading(true)
+     if (ichipositions.length > 0) {
+       setposition(ichipositions)
+      //  setposition((prevPositions) => [...prevPositions, ...ichipositions])
+       setLoading(false)
+     } else if (ichipositions.length === 0) {
+       setLoading(false)
+     }
+   }, [ichipositions])
 
   useEffect(() => {
     // FIXME: STARK
