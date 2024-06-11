@@ -51,7 +51,6 @@ const RowData = ({
   const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
   const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
   const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
-  const [openTooltipKalax, setOpenTooltipKalax] = useState<boolean>(false)
   const [campaign, setCampaign] = useState<Campaign>()
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
@@ -184,9 +183,6 @@ const RowData = ({
                             if (stack === 'turtle-club') {
                               setOpenTooltipTurtleClub(true)
                             }
-                            if (stack === 'kalax') {
-                              setOpenTooltipKalax(true)
-                            }
                           }}
                           onMouseLeave={() => {
                             if (openTooltipGold) {
@@ -200,9 +196,6 @@ const RowData = ({
                             }
                             if (openTooltipTurtleClub) {
                               setOpenTooltipTurtleClub(false)
-                            }
-                            if (openTooltipKalax) {
-                              setOpenTooltipKalax(false)
                             }
                           }} 
                         />
