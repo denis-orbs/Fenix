@@ -13,6 +13,7 @@ import Clipboard from 'clipboard'
 
 const CreateReferral = () => {
   const [isCopied, setIsCopied] = useState(false)
+  let referralCode = useReferralCode()
 
   const shareOnX = () => {
     handleCopyReferralLink()
@@ -46,7 +47,6 @@ const CreateReferral = () => {
   }
   const { signMessageAsync } = useSignMessage()
   const { account } = useActiveConnectionDetails()
-  const referralCode = useReferralCode()
   const setReferralCode = useSetReferralCodeCallback()
   const [errorMessage, setErrorMessage] = useState('')
   const [createAffiliateCodeValue, setCreateAffiliateCodeValue] = useState('')
@@ -54,6 +54,10 @@ const CreateReferral = () => {
   useEffect(() => {
     setCreateAffiliateCodeValue('')
   }, [account])
+
+  useEffect(() => {
+    ;(document.querySelector('#ReferralInput') as HTMLInputElement)?.focus()
+  }, [])
 
   const validateCode = async (code: string) => {
     if (!code) {
@@ -102,7 +106,9 @@ const CreateReferral = () => {
       }
     }
   }
-
+  if (!account) {
+    referralCode = ''
+  }
   return (
     <div className="box-referrals-short max-sm:max-w-[372px]">
       <div className="relative z-50 flex items-center justify-between flex-wrap xl:flex-nowrap  gap-2">
@@ -118,8 +124,9 @@ const CreateReferral = () => {
                   setCreateAffiliateCodeValue(e.target.value)
                   validateCode(e.target.value)
                 }}
-                placeholder="your-referral-code"
-              ></input>
+                placeholder="Write your custom referral code here"
+                id="ReferralInput"
+              />
 
               {errorMessage && (
                 <p className="text-xs absolute italic left-1 text-red-500 mt-[0.2rem]">{errorMessage}</p>
@@ -129,6 +136,7 @@ const CreateReferral = () => {
               onClick={createAffiliateCode}
               disabled={errorMessage.length > 0 || !createAffiliateCodeValue}
               variant="primary"
+              labelWallet="Get Link"
               className="!text-xs max-sm:!p-2"
               walletConfig={{
                 needSupportedChain: false,

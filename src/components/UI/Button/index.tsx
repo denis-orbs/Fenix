@@ -15,6 +15,7 @@ interface ButtonProps {
   children: React.ReactNode
   disabled?: boolean
   href?: string
+  labelWallet?: string
   walletConfig?: {
     needWalletConnected: boolean
     needSupportedChain: boolean
@@ -26,6 +27,7 @@ const Button = ({
   children,
   onClick,
   href,
+  labelWallet,
   disabled,
   className,
   variant = 'primary',
@@ -59,7 +61,7 @@ const Button = ({
   }
   const buttonText = () => {
     if (walletConfig?.needWalletConnected && !isConnected) {
-      return 'Connect Wallet'
+      return labelWallet ? labelWallet : 'Connect Wallet'
     }
     if (walletConfig?.needSupportedChain && !isSupportedChain(chainId)) {
       return 'Change to Blast Network'
