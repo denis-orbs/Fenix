@@ -6,7 +6,6 @@ import { toBN } from '@/src/library/utils/numbers'
 
 import { NextRequest, NextResponse } from 'next/server'
 
-
 const POINTS_SUPLY = 30000000
 const POINTS_TOTAL_VALUE = 49224
 const PRICE_PER_POINT = POINTS_TOTAL_VALUE / POINTS_SUPLY
@@ -285,7 +284,7 @@ export async function GET(request: NextRequest) {
   const tokenData = await TokenDataProvider.getTokenPrices()
 
   const enhancedBoostedPools = boostedPools.map((pool) => {
-    const poolData = pools.find(
+    const poolData = pools?.find(
       (p: { id: string; totalValueLockedUSD: string }) => p?.id?.toLowerCase() === pool?.id?.toLowerCase()
     )
 
@@ -305,7 +304,7 @@ export async function GET(request: NextRequest) {
 
     if (pool.extraPoints && pool.extraPoints.length > 0) {
       updatedPool.extraPoints = pool.extraPoints.map((extra) => {
-        const tokenPrice = tokenData.find((t) => t.tokenAddress.toLowerCase() === extra.tokenAddress.toLowerCase())
+        const tokenPrice = tokenData?.find((t) => t.tokenAddress.toLowerCase() === extra.tokenAddress.toLowerCase())
         return {
           ...extra,
           apr: poolData?.totalValueLockedUSD
