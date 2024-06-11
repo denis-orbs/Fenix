@@ -81,7 +81,7 @@ const RowData = ({
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
     setCampaign({ ...campaign_ })
-    // console.log('campaign_ >> ', campaign_)
+    //
   }, [row])
 
   function getAverageApr(...aprs: number[]): string {
@@ -90,7 +90,7 @@ const RowData = ({
     const average = sum / values.length
     return formatAmount(average.toString(), 2)
   }
-  // console.log(data?.boostedPools?.find((pool: string) => pool?.toLowerCase() == row?.id?.toLowerCase()))
+  //
   const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
   const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)
   const { loading: gammaVaultsLoading, data: gammaVaults } = useGammaVaults()

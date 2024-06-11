@@ -24,8 +24,8 @@ const LiquidityPositions = () => {
   }, [])
 
   useEffect(() => {
-    // console.log('Loading ', loading)
-    // console.log('v2PairsData ', v2PairsData)
+    //
+    //
   }, [v2PairsData, loading, address])
 
   const poolsData = useMemo<PoolData[]>(() => {

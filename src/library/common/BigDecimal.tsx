@@ -690,7 +690,7 @@ export class BigDecimal {
    * @example
    * let a = new BigDecimal('1.123456789123456789');
    * let b = a.withDecimalPrecision(2);
-   * console.log(b.toString()); // 1.12
+   *
    */
   withDecimalPrecision(decimalPrecision: number): BigDecimal {
     // Check if the decimal precision is valid

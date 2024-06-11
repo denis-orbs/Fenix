@@ -35,7 +35,7 @@ const PairSelector = ({ firstToken, secondToken, tokenList }: PairSelectorProps)
 
   const token0 = useToken0()
   const token1 = useToken1()
-  // console.log(firstToken)
+  //
 
   const firstTokenSymbol =
     tokenList.find((token) => {

@@ -22,7 +22,7 @@ export const getV3PoolsIds = async () => {
     fetchPolicy: 'cache-first',
   })
   const poolsIds = data.data.pools.map((pool: any) => pool.id)
-  console.log(poolsIds)
+
   return poolsIds
 }
 export const getLiquidityV2Pairs = createAsyncThunk(
@@ -77,7 +77,7 @@ export const getLiquidityTableElements = createAsyncThunk(
       if (!availablePairsV2 && !availableTokenData) return []
       const pairs: { [pair: Address]: LiquidityTableElement } = {}
       availablePairsV2.forEach((pair) => {
-        // console.log(pair)
+        //
         const tokenA = pair.token0
         const tokenB = pair.token1
         const tokenAprice = Number(
@@ -254,7 +254,7 @@ export const getLiquidityTableElements = createAsyncThunk(
 
       return liqElements
     } catch (e) {
-      // console.log(e, 'error')
+      //
     }
   }
 )
@@ -307,14 +307,13 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
       query: POOLSV2_LIST,
       fetchPolicy: 'cache-first',
     })
-    console.log('datav2', datav2.data.pairs)
+
     const data2 = await fetchV3PoolDayData()
     if (chainId) {
       let tokens = await fetchTokens(chainId)
-      console.log('tokensfetch', tokens)
 
       // const weekFeesUsd = data2.pools.forEach((pool: any) => {
-      //   console.log(pool, 'pool')
+      //
       // })
       // const feesUsd = 1000
 
@@ -398,7 +397,6 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
         }
       })
       const array = poolsv2.concat(pools)
-      console.log('pools', poolsv2, pools, typeof pools)
 
       return array
     }

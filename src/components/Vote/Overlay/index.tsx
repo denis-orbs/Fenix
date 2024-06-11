@@ -87,9 +87,7 @@ const Overlay = ({ voteValue, lockInfo, poolArr }: overlayProps) => {
           },
         }
       )
-    } catch (err: any) {
-      console.log(err)
-    }
+    } catch (err: any) {}
   }
 
   const resetVote = async () => {
@@ -132,9 +130,7 @@ const Overlay = ({ voteValue, lockInfo, poolArr }: overlayProps) => {
           }
         )
       }
-    } catch (err: any) {
-      console.log(err)
-    }
+    } catch (err: any) {}
   }
 
   return (

@@ -39,9 +39,9 @@ const RowReward = ({ index, row, claimData, activeSlider }: RowRewardProps) => {
       //     functionName: 'claimWithCHR',
       //     args: [],
       //   })
-      //   console.log('onclick0', data)
+      //
       // } catch (error) {
-      //   console.log('error', error)
+      //
       //   addNotification({
       //     id: crypto.randomUUID(),
       //     createTime: new Date().toISOString(),
@@ -88,9 +88,9 @@ const RowReward = ({ index, row, claimData, activeSlider }: RowRewardProps) => {
       //     functionName: 'claimWithSPCHR',
       //     args: [],
       //   })
-      //   console.log('onclick1', data)
+      //
       // } catch (error) {
-      //   console.log('error', error)
+      //
       //   addNotification({
       //     id: crypto.randomUUID(),
       //     createTime: new Date().toISOString(),
@@ -137,9 +137,9 @@ const RowReward = ({ index, row, claimData, activeSlider }: RowRewardProps) => {
       //     functionName: 'claimWithELCHR',
       //     args: [],
       //   })
-      //   console.log('onclick2', data)
+      //
       // } catch (error) {
-      //   console.log('error', error)
+      //
       //   addNotification({
       //     id: crypto.randomUUID(),
       //     createTime: new Date().toISOString(),
@@ -186,9 +186,9 @@ const RowReward = ({ index, row, claimData, activeSlider }: RowRewardProps) => {
       //     functionName: 'claimWithVECHR',
       //     args: [],
       //   })
-      //   console.log('onclick3', data)
+      //
       // } catch (error) {
-      //   console.log('error', error)
+      //
       //   addNotification({
       //     id: crypto.randomUUID(),
       //     createTime: new Date().toISOString(),
@@ -235,9 +235,9 @@ const RowReward = ({ index, row, claimData, activeSlider }: RowRewardProps) => {
       //     functionName: 'claimWithCHRNFT',
       //     args: [],
       //   })
-      //   console.log('onclick4', data)
+      //
       // } catch (error) {
-      //   console.log('error', error)
+      //
       //   addNotification({
       //     id: crypto.randomUUID(),
       //     createTime: new Date().toISOString(),
@@ -292,7 +292,6 @@ const RowReward = ({ index, row, claimData, activeSlider }: RowRewardProps) => {
               ? 'chrnftClaim'
               : 'No Claim'
 
-  console.log(claimData, 'rowwwww')
   useEffect(() => {
     if (row?.result) {
       const amt = Number(row.result) / 10 ** 18

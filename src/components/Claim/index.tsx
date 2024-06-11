@@ -63,9 +63,7 @@ const Claim = () => {
         setRewardData([])
         setLoading(false)
       }
-      console.log('dataR', res)
     } catch (error) {
-      console.log('err', error)
       setRewardData([])
       setLoading(false)
     }
@@ -115,9 +113,7 @@ const Claim = () => {
         setClaimedData([])
         setLoading(false)
       }
-      console.log('dataC', res)
     } catch (error) {
-      console.log('err', error)
       setClaimedData([])
       setLoading(false)
     }

@@ -12,7 +12,6 @@ import { FALLBACK_CHAIN_ID } from '../constants/chains'
 import { VE_NFT_API_ADDRESS } from '../constants/addresses'
 export async function getUserVeFNXLockPositions(user: Address, chainId: number, retry = true): Promise<LockElement[]> {
   try {
-    console.log(chainId, 'chain123Id')
     const publicClient = getPublicClient(wagmiConfig)
     const nfts = await publicClient?.readContract({
       // name: 'VeNFTAPI',
@@ -22,7 +21,7 @@ export async function getUserVeFNXLockPositions(user: Address, chainId: number, 
       args: [user],
     })
     const parsedElements: LockElement[] = []
-    console.log(nfts, 'nfts')
+
     nfts.map((nft) => {
       parsedElements.push({
         veNFTInfo: {
@@ -47,7 +46,7 @@ export async function getUserVeFNXLockPositions(user: Address, chainId: number, 
     })
     return parsedElements
   } catch (e) {
-    // console.log(e, 'error')
+    //
     if (retry) {
       return getUserVeFNXLockPositions(user, false)
     } else {
@@ -142,7 +141,6 @@ export async function splitLock(cachos: number[], tokenId: number, chainId: numb
 }
 
 export async function increaseLock(tokenId: number, amount: bigint, chainId: number): Promise<Hash> {
-  console.log(tokenId, amount, chainId, 'inn2')
   const data = await writeContract(wagmiConfig, {
     address: chainId ? VOTING_ESCROW_ADDRESS[chainId] : VOTING_ESCROW_ADDRESS[FALLBACK_CHAIN_ID],
     abi: votingEscrowABI,
@@ -177,7 +175,7 @@ export async function withdraw(tokenId: BigInt): Promise<Hash> {
     to: VotingEscrowAddress,
     account: signer.account,
   })
-  // console.log('gas', gas?.toString())
+  //
   const data = await writeContract(wagmiConfig, {
     address: VotingEscrowAddress,
     abi: votingEscrowABI,

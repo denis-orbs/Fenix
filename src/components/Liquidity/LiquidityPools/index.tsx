@@ -18,7 +18,7 @@ const LiquidityPools = () => {
   const [tokens, setTokens] = useState<Number>(0)
   const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
   const { chainId } = useAccount()
-  // console.log(liquidityTable, 'liquidityTable')
+  //
 
   const tokensData = async (liquidityTable: any) => {
     if (chainId) setTokens((await fetchTokens(chainId)).length)

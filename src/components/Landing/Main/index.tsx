@@ -87,8 +87,8 @@ const Main = () => {
     fetchAndSetStatistics()
   }, [])
   // const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
-  // console.log(liquidityTable, 'liquidityTable')
-  // console.log(liquidityTable)
+  //
+  //
   // const tvl = '$ ' + liquidityTable.reduce((total: any, pair: any) => total + Number(pair.tvl), 0).toFixed(0)
   // const fee =
   //   '$ ' +
@@ -122,9 +122,7 @@ const Main = () => {
                 THE UNIFIED TRADING AND <span className="text-gradient2">LIQUIDITY MARKETPLACE </span>
                 <span className="flex items-center justify-center xl:items-center gap-3">
                   FOR
-                  <span
-                    className="svgcontainer pt-2 "
-                  >
+                  <span className="svgcontainer pt-2 ">
                     <Blast />
                   </span>
                 </span>

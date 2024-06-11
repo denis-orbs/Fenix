@@ -37,7 +37,7 @@ const RewardToken = ({ token, setToken, bal, setBal }: RewardTokenProps) => {
 
   const handlerSelectToken = () => setOpenSelectToken(true)
 
-  // console.log('tok', token)
+  //
   return (
     <div className="exchange-box-x2">
       <div className="flex items-center justify-between mb-3">

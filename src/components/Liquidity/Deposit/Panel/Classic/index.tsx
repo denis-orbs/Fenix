@@ -149,13 +149,13 @@ const Classic = ({
   }
 
   useEffect(() => {
-    console.log('defaultPairs', defaultPairs)
+    
     if (defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
       setIsLoading(false)
     }
-    console.log(lpTokenBalance?.data as bigint, 'lpTokenBalance')
+    
     setlpBalance((lpTokenBalance?.data as bigint) || 0n)
     if (
       account &&
@@ -192,7 +192,7 @@ const Classic = ({
         secondToken.address as Address,
         depositType === 'STABLE'
       )
-      console.log(
+      
         firstToken.address as Address,
         secondToken.address as Address,
         depositType === 'STABLE',
@@ -227,7 +227,7 @@ const Classic = ({
               contractAddressList.v2router as Address
             )
           : '0'
-      console.log(allowanceFirst, allowanceSecond, allowanceLp, 'allowance')
+      
       setallowanceFirst(allowanceFirst.toString())
       setallowanceSecond(allowanceSecond.toString())
       setallowanceLp(allowanceLp.toString())
@@ -240,7 +240,7 @@ const Classic = ({
   }, [firstToken, secondToken, account.address, pairAddress])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
-    console.log('inn1', optionActive)
+    
     if (optionActive == 'ADD') {
       // TODO: handle if pair is not created
       if (firstToken.address === token.address) {
@@ -283,7 +283,7 @@ const Classic = ({
   }
 
   const handleOnLPTokenValueChange = (input: any, token: IToken) => {
-    // console.log('inn2', input, parseFloat(input) != 0 ? parseFloat(input).toString() : input, parseUnits(input, 18))
+    // 
     setLpValue(input)
 
     if (optionActive == 'WITHDRAW') {
@@ -701,7 +701,7 @@ const Classic = ({
                       value={0}
                       className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
                       placeholder="0.0"
-                      onChange={(input) => console.log(input)}
+                      onChange={(input) => 
                     />
                   </div>
                 </div>
@@ -759,7 +759,7 @@ const Classic = ({
                       value={0}
                       className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
                       placeholder="0.0"
-                      onChange={(input) => console.log(input)}
+                      onChange={(input) => 
                     />
                   </div>
                 </div>

@@ -87,7 +87,7 @@ const LockManage: FC<pageProps> = ({ id }) => {
     toAddress: string
   ) => {
     try {
-      // console.log(
+      //
       //   (Number(lock?.veNFTInfo.lockEnd) - Math.floor(Date.now() / 1000)) / 86400,
       //   changeValue,
       //   inputAmount,
@@ -319,13 +319,11 @@ const LockManage: FC<pageProps> = ({ id }) => {
             chainId ? (FENIX_ADDRESS[chainId] as Address) : (FENIX_ADDRESS[FALLBACK_CHAIN_ID] as Address),
             address
           )) as bigint
-          // console.log(resp, fromWei(BigInt(tokenbalance).toString()), 'tokenbalance')
+          //
           settokenBalance(fromWei(BigInt(tokenbalance).toString()))
           setLock(resp)
         }
-      } catch (error) {
-        console.log('error', error)
-      }
+      } catch (error) {}
     }
     loadCurrentLocks()
     asyncGetAllowance()

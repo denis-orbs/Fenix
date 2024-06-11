@@ -14,7 +14,7 @@ import { useReadContract } from 'wagmi'
 import { erc20Abi, zeroAddress } from 'viem'
 
 const PointSummary = ({ userData }: any) => {
-  //  console.log(userData, 'userData')
+  //
 
   const { data, isLoading } = useRingsPointsLeaderboard()
   const [nextTargetTime, setNextTargetTime] = useState<number>()

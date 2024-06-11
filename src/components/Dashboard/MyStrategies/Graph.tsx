@@ -29,7 +29,7 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
 
   const sqrtPrice = Math.pow(1.0001, 887220 / 2)
   // return Math.pow(sqrtPrice, 2)
-  // console.log(Math.pow(sqrtPrice, 2))
+  //
 
   /* price0 / 1e(token1.decimals - token0.decimals) */
 

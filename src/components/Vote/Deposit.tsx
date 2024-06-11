@@ -28,7 +28,7 @@ const Deposit = ({ vote }: DepositProps) => {
   const { chainId } = useAccount()
 
   const tokensData = async () => {
-    // console.log(vote, 'element')
+    //
     if (chainId) {
       const availableTokenData = await fetchTokens(chainId)
       setTokens(availableTokenData.length)
@@ -45,7 +45,7 @@ const Deposit = ({ vote }: DepositProps) => {
       EXCHANGE_LIST[3].amount = `${formatAmount(fromWei((weekly_emission[0].result as BigInt).toString()), 2, true)} FNX`
       setweeklyEmission(fromWei((weekly_emission[0].result as BigInt).toString()))
 
-      // console.log(fromWei((weekly_emission[0].result as BigInt).toString()), 'weekly_emission')
+      //
 
       let pushExternal: BigDecimal[] = []
       let pushInternal: BigDecimal[] = []
@@ -82,7 +82,7 @@ const Deposit = ({ vote }: DepositProps) => {
       EXCHANGE_LIST[2].amount = `$ ${totalInternal.add(totalExternal).toString()}`
 
       setRewardAmountUsd(totalExternal)
-      // console.log(push, ab.toString(), parseInt(ab.toString()), 'ab')
+      //
     }
   }
 

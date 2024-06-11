@@ -28,7 +28,7 @@ const HeaderRow = ({
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
     : { text: '', className: 'w-[0%]', sortable: true }
 
-  // console.log(poolData, 'polldata')
+  //
   return (
     <div className="relative">
       <div className="w-full mb-2.5 xl:mb-5">

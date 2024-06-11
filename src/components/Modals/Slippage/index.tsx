@@ -26,7 +26,7 @@ const Slippage = () => {
   const { setSlippageModal } = useStore()
   const setSlippage = useSetSlippageToleranceCallback()
   const slippage = useSlippageTolerance()
-  const [slippageInput, setSlippageInput] = useState<any>("Auto")
+  const [slippageInput, setSlippageInput] = useState<any>('Auto')
   const [invalidInput, setInvalidInput] = useState<boolean>(false)
   const handleClose = () => setSlippageModal(false)
 
@@ -35,20 +35,18 @@ const Slippage = () => {
     setSlippageInput(slippage?.toString())
   }, [slippage])
 
-
   // when input changes, validate schema
   useEffect(() => {
     try {
-      // console.log(slippageInput)
+      //
       const parsedInput = slippageInput.toString().toLowerCase() === 'auto' ? 'Auto' : parseFloat(slippageInput)
-      // console.log(parsedInput)
+      //
       slippageSchema.parse(parsedInput)
       setInvalidInput(false)
     } catch (error) {
       setInvalidInput(true)
     }
   }, [slippageInput])
-
 
   return (
     <Modal className="mx-auto" openModal={openModal} setOpenModal={setSlippageModal}>

@@ -198,9 +198,9 @@ const WithdrawAmountsICHI = ({
   }
 
   const handleHalf = () => {
-    // console.log(!totalUserShares)
-    // console.log()
-    // console.log(totalUserShares)
+    //
+    //
+    //
     if (btnDisabled) {
       setAmountToWithdraw('')
     } else {

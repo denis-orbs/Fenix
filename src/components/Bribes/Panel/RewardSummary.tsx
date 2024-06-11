@@ -7,7 +7,7 @@ interface ChoosePoolProps {
   rewardToken: any
 }
 const RewardSummary = ({ token, value, rewardToken }: ChoosePoolProps) => {
-  // console.log('token', rewardToken)
+  //
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[19px] flex items-center justify-between gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">

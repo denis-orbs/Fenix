@@ -153,7 +153,7 @@ export async function getTokenAllowance(
       functionName: 'allowance',
       args: [address, allowanceAddress],
     })) as any
-    // console.log('allowance', allowance.toString())
+    //
     return parseInt(allowance.toString())
   } catch (e) {
     return 0

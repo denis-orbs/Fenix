@@ -77,9 +77,9 @@ const Vote = () => {
     }
     if (chainId) {
       const availableTokenData = await fetchTokens(chainId)
-      // console.log(!availableTokenData, 'inn')
+      //
       if (!availableTokenData) {
-        // console.log('inn')
+        //
         setIsVoteLoading(false)
         return
       }
@@ -94,11 +94,11 @@ const Vote = () => {
           decimals: token.decimals,
         }
       })
-      // console.log(typeof availableTokenData[0].decimals, 'Fetching rewards for v3')
+      //
       const r = await getAllPairRewards(address, tokensObject, chainId)
       const rCL = await getAllClPairRewards(address, tokensObject, chainId)
 
-      // console.log(rCL, 'Fetched pair rewards ffor v3')
+      //
 
       const validRewards = [
         ...r.filter((r) => {
@@ -108,7 +108,7 @@ const Vote = () => {
           return r._pool !== NULL_ADDRESS && r._gauge !== NULL_ADDRESS
         }),
       ]
-      // console.log(validRewards, 'Fetched pair rewards for v3')
+      //
       let totalVotingPower = 0n
       let userTotalVotingPower = 0n
       validRewards.forEach((r) => {
@@ -176,8 +176,8 @@ const Vote = () => {
           // TODO: FUSDC APR BUG
           // if (token0Symbol === 'FUSDC') {
           //   debugger;
-          //   console.log('Calculating APR for FUSDC');
-          //   console.log('Total votes on gauge: ', reward.totalVotesOnGauge);
+          //
+          //
           // }
           if (reward.totalVotesOnGauge > 0n) {
             let totalVotesOnGaugeBigDecimal = new BigDecimal(reward.totalVotesOnGauge, 18)
@@ -185,13 +185,13 @@ const Vote = () => {
               .toRoundedFloat()
 
             // if (token0Symbol === 'FUSDC') {
-            //   console.log('Rewards');
-            //   console.log(usdValueExternal);
-            //   console.log(usdValueInternal);
-            //   console.log(usdValueExternal.add(usdValueInternal).mulNumber(100 * 52.1));
-            //   console.log(totalVotesOnGaugeBigDecimal);
-            //   console.log("paco");
-            //   console.log(new BigDecimal(10n, 6).div(new BigDecimal(1000n, 18)));
+            //
+            //
+            //
+            //
+            //
+            //
+            //
             // }
 
             return (usdValueExternal.add(usdValueInternal).toRoundedFloat() * 100 * 52.1) / totalVotesOnGaugeBigDecimal
@@ -229,10 +229,10 @@ const Vote = () => {
         }
         return 0
       })
-      // console.log(voteElements, 'heyy')
+      //
       // sentryTx.endTimestamp = parseInt((Date.now() / 1000).toFixed(0));
       // sentryTx.finish();
-      // Sentry.flush(2000).then(() => console.log('Reported vote table!'));
+      // Sentry.flush(2000).then(() =>
       setVoteTableElements(voteElements)
       setIsVoteLoading(false)
     }

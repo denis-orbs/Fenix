@@ -178,7 +178,7 @@ const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
                 ) : (
                   <>
                     {pagination.map((lock: any, index: number) => {
-                      // console.log(lock, 'lock')
+                      //
                       return (
                         <TableRow key={index}>
                           <TableCell className="w-[20%]">

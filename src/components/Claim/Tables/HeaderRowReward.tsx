@@ -47,7 +47,6 @@ const HeaderRowReward = ({
   // }, [filterData, search])
 
   {
-    console.log('actual', data)
   }
   return (
     <div className="relative z-10">

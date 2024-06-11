@@ -72,7 +72,7 @@ const MyStrategies = () => {
       })
     )
     const final = positions.map((position: positions, index: number) => {
-      // console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
+      // 
       return {
         ...position,
         depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
@@ -108,7 +108,7 @@ const MyStrategies = () => {
 
   return (
     <>
-      {/* {console.log('finalp', position)} */}
+      {/* {
       {position.length !== 0 && loading === false && address ? (
         <div className="relative">
           <div className="flex items-center w-[100%] mb-4 justify-between">

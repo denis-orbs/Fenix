@@ -55,7 +55,7 @@ const MyPositions = () => {
       })
     )
     const final = positions.map((position: positions, index: number) => {
-      // console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
+      //
       return {
         ...position,
         depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0

@@ -30,7 +30,7 @@ export async function getPositionAPR(
       pool &&
       Number(pool.token0.derivedMatic) * Number(nativePrice) * Number(amount0) +
         Number(pool.token1.derivedMatic) * Number(nativePrice) * Number(amount1)
-    // console.log(liquidityRelation, yearFee, tvl, ((yearFee * liquidityRelation) / tvl) * 100, 'huhuhuh')
+    //
     return liquidityRelation && yearFee && tvl && ((yearFee * liquidityRelation) / tvl) * 100
   } catch {
     return 0
@@ -46,7 +46,7 @@ export async function getPositionFees(
   if (!pool || !poolFeeData || !nativePrice) return
 
   try {
-    //     console.log(liquidity, pool, poolFeeData, nativePrice, 'huhuhu')
+    //
 
     // Today fees
     const poolDayFees = poolFeeData && Boolean(poolFeeData.length) && Number(poolFeeData[0].feesUSD)
@@ -64,7 +64,7 @@ export async function getPositionFees(
       pool &&
       Number(pool.token0.derivedMatic) * Number(nativePrice) * Number(amount0) +
         Number(pool.token1.derivedMatic) * Number(nativePrice) * Number(amount1)
-    // console.log(liquidityRelation, yearFee, tvl, ((yearFee * liquidityRelation) / tvl) * 100, 'huhuhuh')
+    //
     return liquidityRelation && yearFee && tvl && ((yearFee * liquidityRelation) / tvl) * 100
   } catch {
     return 0

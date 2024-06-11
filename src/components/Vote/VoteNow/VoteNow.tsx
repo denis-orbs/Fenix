@@ -30,7 +30,7 @@ const VoteNow = ({ openModal, setOpenModal, activeVote, lock }: VoteNowProps) =>
 
   const timeLeft = async () => {
     if (chainId) {
-      // console.log(MINTER_ADDRESS[chainId], 'MINTER_ADDRESS[chainId]')
+      //
       const balance = await multicall(wagmiConfig, {
         contracts: [
           {
@@ -41,7 +41,7 @@ const VoteNow = ({ openModal, setOpenModal, activeVote, lock }: VoteNowProps) =>
         ],
       })
       settimeParsed(getParsedTimeLeft(Number((balance[0].result as BigInt).toString())))
-      // console.log(getParsedTimeLeft(Number((balance[0].result as BigInt).toString())), 'getCurrentEpoch')
+      //
     }
   }
 

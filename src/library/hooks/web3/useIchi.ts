@@ -56,17 +56,17 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
       const kapr = await getLp(v.id)
       // FIXME: STARK
       v.apr = kapr
-      // console.log(v)
+      //
       return v
     })
 
     // const tokenVaultsWithApr = tokenVaults.map(async (token) => {
     //   const apr = await getLp(token.id)
-    //   console.log('apr', apr)
+    //
     //   token.apr = apr
     //   return token
     // })
-    // console.log('mod', tokenVaultsWithApr)
+    //
     // FIXME: STARK
     setVault(tokenVaults)
   }, [token0, token1, tokenA, tokenB])
@@ -129,7 +129,7 @@ export const useIchiPositions = () => {
             const tokenAid = vaultInfo.tokenA
             const tokenBid = vaultInfo.tokenB
             //const vaultInfo = useIchiVaultsData(item.vaultAddress)
-            //   console.log(tokenA)
+            //
 
             const getLp = async (vadd: string) => {
               const web3Provider = getWeb3Provider()
@@ -212,7 +212,7 @@ export const useIchiPositions = () => {
         )
         // FIXME: STARK
         //DEV FIX
-        //  console.log(pos, 'pos')
+        //
         setpositions(pos)
       }
     }

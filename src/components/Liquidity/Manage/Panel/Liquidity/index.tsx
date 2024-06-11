@@ -62,7 +62,7 @@ const Manage = ({}: {}) => {
       if (actualApr) setAprId(actualApr?.apr)
     }
   }, [apr])
-  // console.log('gg', apr)
+  //
 
   const [firstToken, setFirstToken] = useState({
     name: 'Fenix',
@@ -157,7 +157,7 @@ const Manage = ({}: {}) => {
     asyncGetAllowance(data.token0, data.token1)
     getList(data.token0, data.token1)
     setLpValue((BigInt(data.liquidity) / BigInt(2)).toString())
-    // console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
+    //
   }
 
   useEffect(() => {
@@ -293,7 +293,7 @@ const Manage = ({}: {}) => {
 
       {
         onSuccess: async (x) => {
-          // console.log('success', x, +new Date())
+          //
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
             // toast(`Added successfully.`)

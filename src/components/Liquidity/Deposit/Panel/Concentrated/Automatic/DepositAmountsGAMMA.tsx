@@ -185,7 +185,7 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
           },
           {
             onSuccess: async (txHash) => {
-              //  console.log(txHash)
+              //
               const provider = getWeb3Provider()
               await provider.waitForTransaction(txHash)
               setLoadingWaitingApproval(false)
@@ -208,7 +208,7 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
           },
           {
             onSuccess: async (txHash) => {
-              //       console.log(txHash)
+              //
               const provider = getWeb3Provider()
               await provider.waitForTransaction(txHash)
               refetchToken1Data()

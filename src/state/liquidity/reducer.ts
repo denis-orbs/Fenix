@@ -221,9 +221,9 @@ export const fetchv2PairId = async (token0Id: any, token1Id: any, isStable: Bool
       query: GET_V2_PAIR_ID,
       variables: { token0Id, token1Id, isStable }, // Pass the user variable as owner
     })
-    // console.log(data)
+    //
     // // Data is available in `data.pools`
-    // console.log(data.pairs)
+    //
     return data.pairs as V2PairId[]
   } catch (error) {
     console.error('Error fetching pool data:', error)
@@ -238,7 +238,7 @@ export const fetchNativePrice = async () => {
       fetchPolicy: 'cache-first',
     })
     // Data is available in `data.positions`
-    // console.log(data.bundles[0].maticPriceUSD, 'price')
+    //
     return data.bundles[0].maticPriceUSD as string
   } catch (error) {
     console.error('Error fetching positions:', error)

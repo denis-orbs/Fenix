@@ -20,7 +20,6 @@ export interface Token {
 export const fetchTokens = async (chainId: number): Promise<Token[]> => {
   // const cacheKey = 'token-prices'
   // let cachedData = cache.get(cacheKey)
-  console.log(TOKEN_API[chainId], 'heyyy')
   // if (!cachedData) {
   try {
     if (chainId) {

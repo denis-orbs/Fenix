@@ -30,7 +30,11 @@ const DepositLiquidity = () => {
       const pairString = hashValue.split('-')
       if (pairString.length < 1) return
 
-      const pair: Address = await getPair(pairString[1] as Address, pairString[2] as Address, pairString[0] === 'STABLE')
+      const pair: Address = await getPair(
+        pairString[1] as Address,
+        pairString[2] as Address,
+        pairString[0] === 'STABLE'
+      )
       if (pair != '0x0') setPairAddress(pair)
       else setPairAddress('0x0000000000000000000000000000000000000000')
     }
@@ -41,13 +45,13 @@ const DepositLiquidity = () => {
   useEffect(() => {
     setToken0(searchParams.get('token0'))
     setToken1(searchParams.get('token1'))
-    // console.log('token1 :>> ', token1)
+    //
   }, [searchParams])
 
   useEffect(() => {
-    let tokenA:string | undefined
-    let tokenB:string | undefined
-    if(token0 !== null && token1 !== null) {
+    let tokenA: string | undefined
+    let tokenB: string | undefined
+    if (token0 !== null && token1 !== null) {
       tokenA = token0 === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : token0.toLowerCase()
       tokenB = token1 === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : token1.toLowerCase()
     }
@@ -62,7 +66,7 @@ const DepositLiquidity = () => {
     }
 
     const key = [tokenA, tokenB].sort().join('/')
-    if(tokenA !== undefined && tokenB !== undefined) {
+    if (tokenA !== undefined && tokenB !== undefined) {
       const quoteToken = tokenA < tokenB ? 'token0' : 'token1'
     }
 
@@ -79,18 +83,8 @@ const DepositLiquidity = () => {
   const { data } = useAllPools()
 
   useEffect(() => {
-    const tokenA =
-      token0 && token1
-        ? normalizeToken(token0) < normalizeToken(token1)
-          ? token0
-          : token1
-        : zeroAddress
-    const tokenB =
-      token0 && token1
-        ? normalizeToken(token0) < normalizeToken(token1)
-          ? token1
-          : token0
-        : zeroAddress
+    const tokenA = token0 && token1 ? (normalizeToken(token0) < normalizeToken(token1) ? token0 : token1) : zeroAddress
+    const tokenB = token0 && token1 ? (normalizeToken(token0) < normalizeToken(token1) ? token1 : token0) : zeroAddress
     const poolAddress =
       tokenA == tokenB
         ? '0x0000000000000000000000000000000000000000'
@@ -114,7 +108,7 @@ const DepositLiquidity = () => {
     <div className="flex flex-col items-start gap-6 mb-4 xl:gap-10 xl:flex-row">
       <div className="flex flex-col w-full h-[100%]">
         <div className="flex flex-wrap justify-center w-full h-[100%] xl:gap-5 mb-10 xl:flex-nowrap">
-          <Panel disableChart={disableChart}/>
+          <Panel disableChart={disableChart} />
           {showChart && <Chart token0={token0} token1={token1} />}
         </div>
       </div>

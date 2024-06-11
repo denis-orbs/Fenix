@@ -19,14 +19,14 @@ const Input = ({
   const [shownPercent, setShownPercent] = useState(percent)
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
-  // console.log('shownPercent.length >> ', shownPercent.length)
-  // console.log(':>> ', 'max-w-['+ shownPercent.length * 4 +'px]')
+  //
+  //
 
   useEffect(() => {
     setShownPercent(percent)
   }, [percent])
   const w = 'max-w-[' + shownPercent.length * 4 + 'px]'
-  // console.log('w >> ', w)
+  //
   useEffect(() => {
     if (onTitleClick) setStyleObj({ cursor: 'pointer' })
     else setStyleObj({})

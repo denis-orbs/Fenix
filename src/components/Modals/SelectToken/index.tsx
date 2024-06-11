@@ -33,7 +33,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   const handlerClose = () => setOpenModal(false)
 
   const handlerSelectToken = (token: IToken) => {
-    //console.log(token, 'inn')
+    //
     setToken(token)
     // settoken0(token0Data?.address)
     // settoken1(token1Data?.address)
@@ -43,12 +43,11 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   useEffect(() => {
     const getList = async () => {
       try {
-
         if (chainId) {
           const responseData = await fetchTokens(chainId)
 
           const parsedData = responseData.map((item: any) => {
-            // console.log(item.priceUSD, 'priceUSD')
+            //
             return {
               id: 0,
               name: item.basetoken.name,

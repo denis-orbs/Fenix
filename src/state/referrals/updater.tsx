@@ -23,7 +23,6 @@ export default function ReferralsUpdater() {
   useEffect(() => {
     const initializeFuul = async (attempts = 0) => {
       if (!process.env.NEXT_PUBLIC_FUUL_TRACKING_API_KEY) {
-        console.log('Fuul tracking API key is not set')
         return
       }
       try {

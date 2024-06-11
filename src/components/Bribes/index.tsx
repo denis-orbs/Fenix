@@ -54,8 +54,6 @@ const Bribes = () => {
   const addNotification = useNotificationAdderCallback()
   const { writeContractAsync } = useWriteContract()
 
-  // console.log('tt', tokenAllowance)
-
   const fetTokenAllowance = async () => {
     if (address && chainId) {
       if (tokenGet !== 'Select a Token' && tokenSell !== 'Select a Pool') {
@@ -64,7 +62,7 @@ const Bribes = () => {
           tokenGet?.address,
           tokenSell?.rewardPair?._externalBribeAddress
         )
-        // console.log(parseFloat((tokenAllow/10 ** tokenGet?.decimals)))
+        //
         settokenAllowance(parseFloat(tokenAllow / 10 ** tokenGet?.decimals))
       }
     }
@@ -122,13 +120,13 @@ const Bribes = () => {
     )
   }
   const asyncGetAllowance = async () => {
-    // console.log('inn1')
+    //
     const allowance: any = await getTokenAllowance(
       address as Address,
       tokenGet?.address,
       tokenSell?.rewardPair?._externalBribeAddress
     )
-    // console.log(parseFloat(allowance / 10 ** tokenGet?.decimals), 'inn2')
+    //
     settokenAllowance(parseFloat(allowance / 10 ** tokenGet?.decimals))
   }
 
@@ -143,7 +141,7 @@ const Bribes = () => {
         notificationDuration: NotificationDuration.DURATION_5000,
       })
     }
-    // console.log(tokenAddress, amount, externalBribeAddress, 'amount')
+    //
     try {
       setCurrentButtonState(ButtonState.LOADING)
       writeContractAsync(
@@ -195,7 +193,7 @@ const Bribes = () => {
         }
       )
     } catch (error: any) {
-      // console.log('ee', error?.message)
+      //
 
       setCurrentButtonState(ButtonState.CREATE_BRIBE)
     }

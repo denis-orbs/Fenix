@@ -54,7 +54,6 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
   const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
   const [pair, setPair] = useState<V2PairId>()
   const handlerSwitch = () => {
-    console.log('CONCENTRATED_MANUAL :>> ', depositType)
     setDepositType(
       'CONCENTRATED_MANUAL' === depositType || 'CONCENTRATED_AUTOMATIC' === depositType
         ? 'VOLATILE'
@@ -80,7 +79,7 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
     const searchParamToken0 = searchParams.get('token0')
     const searchParamToken1 = searchParams.get('token1')
     const typeSearch = searchParams.get('type')
-    // console.log(searchParams, searchParamToken0, searchParamToken1, 'searchParams')
+    //
 
     if (typeSearch == 'CONCENTRATED_AUTOMATIC') setDepositType('CONCENTRATED_AUTOMATIC')
     if (typeSearch == 'CONCENTRATED_MANUAL') setDepositType('CONCENTRATED_MANUAL')
@@ -121,11 +120,10 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
               price: parseFloat(item.priceUSD),
             }
           })
-          console.log(parsedData, defaultPairs, 'defaultPairs')
+
           const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken]
           if (defaultPairs.length > 0) {
             parsedData.map((item: any) => {
-              console.log('item :>> ', item)
               if (item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
               if (item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
             })

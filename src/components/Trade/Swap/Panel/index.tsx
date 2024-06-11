@@ -86,7 +86,7 @@ const Panel = () => {
     const provider = getWeb3Provider()
     const notificationMessage = `${tokenSell?.symbol} for ${tokenGet?.symbol}`
 
-    // console.log(notificationMessage)
+    //
     addNotification({
       id: id,
       createTime: new Date().toISOString(),
@@ -120,8 +120,7 @@ const Panel = () => {
   }
 
   const handleTransactionError = (e: any) => {
-    console.log(e)
-    // console.log('si o no', e instanceof Error)
+    //
     if (e instanceof TransactionExecutionError) {
       addNotification({
         id: crypto.randomUUID(),
@@ -313,8 +312,8 @@ const Panel = () => {
 
   useEffect(() => {
     if ((approvalData.isLoading && !tokenSellIsNative) || swapQuoteLoading || loadingSwap) {
-      // console.log(swapQuoteLoading)
-      // console.log(loadingSwap)
+      //
+      //
       setCurrentButtonState(ButtonState.LOADING)
     } else if (!swapAvailable) {
       setCurrentButtonState(ButtonState.POOL_NOT_AVAILABLE)
@@ -391,7 +390,7 @@ const Panel = () => {
   }, [swapValue, nativeWETH_ETH])
 
   useEffect(() => {
-    // console.log(tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE)
+    //
     if (tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE && !(nativeETH_WETH || nativeWETH_ETH)) {
       const price = tokenGet?.price
       setTokenGet({
@@ -442,7 +441,7 @@ const Panel = () => {
       setDisableChart(false)
     }
   }, [tokenSell?.address, tokenGet?.address, data])
-  // console.log(hash, status)
+  //
   // si es ether, tengo que enviar el 0xeeee
   useEffect(() => {
     const controller = new AbortController()

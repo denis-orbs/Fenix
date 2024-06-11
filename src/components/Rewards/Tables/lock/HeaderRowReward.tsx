@@ -55,7 +55,7 @@ const HeaderRowReward = ({
   }
 
   useEffect(() => {
-    // console.log('search', search)
+    //
     if (search.length > 0) {
       const filterArr = filterData.filter((item: any) => {
         if (
@@ -102,7 +102,7 @@ const HeaderRowReward = ({
                 <>
                   {activeVote &&
                     data.map((lock: any, index: number) => {
-                      // console.log('lock', lock)
+                      //
                       return (
                         <TableRow key={index}>
                           <TableCell className="w-[50%]">

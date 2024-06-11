@@ -23,7 +23,7 @@ const Liquidity = () => {
   const [currentTab, setCurrentTab] = useState<string>('ALL')
   const [searchValue, setSearchValue] = useState<string>('')
   const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
-  // console.log(filteredPools)
+  //
   const { loading, data: pools } = useAllPools()
   useEffect(() => {
     if (pools && pools?.length > 0) {

@@ -141,7 +141,7 @@ const DepositAmountsICHI = ({
     if (isToken0ApprovalRequired) {
       setWaitingApproval(true)
       try {
-        // console.log('vault', vaultAddress)
+        //
         const txApproveDepositDetails = await approveDepositToken(
           account,
           vaultAddress.tokenA.toLowerCase() === selected.toLowerCase() && vaultAddress.allowTokenA ? 0 : 1,
@@ -156,7 +156,7 @@ const DepositAmountsICHI = ({
 
         return
       } catch (error) {
-        // console.log(error)
+        //
         setWaitingApproval(false)
         setLoading(false)
 
@@ -204,11 +204,10 @@ const DepositAmountsICHI = ({
       })
       setLoading(false)
     } catch (error) {
-      // console.log('gg', error.reason)
-      // console.log('gg', error)
+      //
+      //
       if (error instanceof Error && 'code' in error) {
         if (error.code == 'ACTION_REJECTED') {
-          console.log(error)
           // toast.error('Action rejected')
           // toast.error(error.message.split('(')[0].trim().toUpperCase())
           addNotification({
@@ -233,7 +232,7 @@ const DepositAmountsICHI = ({
           setLoading(false)
         }
       } else {
-        // console.log(error.reason)
+        //
         // toast.error('Transaction failed')
         // toast.error(error.message.split('(')[0].trim().toUpperCase())
         // FIXME: STARK

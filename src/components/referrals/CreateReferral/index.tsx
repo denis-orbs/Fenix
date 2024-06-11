@@ -74,7 +74,6 @@ const CreateReferral = () => {
         return
       }
     } catch (error) {
-      console.log(error)
       setErrorMessage('This code is already taken')
     }
 
@@ -82,7 +81,7 @@ const CreateReferral = () => {
   }
   const debouncedCodeValue = useDebounce(createAffiliateCodeValue, 500)
   const createAffiliateCode = async () => {
-    // console.log('aca')
+    //
     if (!account) return
 
     const message = `I confirm that I am creating the ${createAffiliateCodeValue} code on Fuul`

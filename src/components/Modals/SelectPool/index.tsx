@@ -31,7 +31,7 @@ const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalanc
   const dispatch = useDispatch<AppThunkDispatch>()
   const vote = useAppSelector((state) => state.vote as voteState)
   const lock = useAppSelector((state) => state.lock as lockState)
-  // console.log('v', vote)
+  //
   useEffect(() => {
     if (address && chainId) dispatch(fetchGaugesAsync({ address, chainId }))
   }, [address, chainId, lock])
@@ -47,7 +47,7 @@ const SelectPool = ({ setOpenModal, openModal, setToken, commonList, tokenBalanc
   const handlerClose = () => setOpenModal(false)
 
   const handlerSelectToken = (token: any) => {
-    //console.log(token, 'inn')
+    //
     setToken(token)
     // settoken0(token0Data?.address)
     // settoken1(token1Data?.address)

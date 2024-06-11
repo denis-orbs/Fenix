@@ -87,13 +87,12 @@ export const fetchGaugesAsync = createAsyncThunk(
 
     const voteElements: VoteTableElement[] = []
     validRewards.forEach((reward) => {
-      console.log(availablePairsV2, availablePairsV3, 'here12')
       const pair = availablePairsV2.find((pair) => pair.gauge.toLowerCase() === reward._gauge.toLowerCase())!
       const pool = availablePairsV3.find((pair) => pair.id.toLowerCase() === reward._pool.toLowerCase())
       if (!pair && !pool) {
         return
       }
-      console.log(reward, 'reward')
+
       const usdValueExternal = reward.externalBribeReward.tokens
         .map((token, index) => {
           const tokenElement = availableTokenData.find((t) => t.tokenAddress.toLowerCase() === token.toLowerCase())
@@ -150,8 +149,8 @@ export const fetchGaugesAsync = createAsyncThunk(
         // TODO: FUSDC APR BUG
         // if (token0Symbol === 'FUSDC') {
         //   debugger;
-        //   console.log('Calculating APR for FUSDC');
-        //   console.log('Total votes on gauge: ', reward.totalVotesOnGauge);
+        //
+        //
         // }
         if (reward.totalVotesOnGauge > 0n) {
           const totalVotesOnGaugeBigDecimal = new BigDecimal(reward.totalVotesOnGauge, 18)
@@ -159,13 +158,13 @@ export const fetchGaugesAsync = createAsyncThunk(
             .toRoundedFloat()
 
           // if (token0Symbol === 'FUSDC') {
-          //   console.log('Rewards');
-          //   console.log(usdValueExternal);
-          //   console.log(usdValueInternal);
-          //   console.log(usdValueExternal.add(usdValueInternal).mulNumber(100 * 52.1));
-          //   console.log(totalVotesOnGaugeBigDecimal);
-          //   console.log("paco");
-          //   console.log(new BigDecimal(10n, 6).div(new BigDecimal(1000n, 18)));
+          //
+          //
+          //
+          //
+          //
+          //
+          //
           // }
 
           return (usdValueExternal.add(usdValueInternal).toRoundedFloat() * 100 * 52.1) / totalVotesOnGaugeBigDecimal
@@ -193,7 +192,7 @@ export const fetchGaugesAsync = createAsyncThunk(
         token1Symbol,
       } as VoteTableElement)
     })
-    // console.log(voteElements, 'voteElements')
+    //
     voteElements.sort((a, b) => {
       if (a.voteWeight! > b.voteWeight!) {
         return -1

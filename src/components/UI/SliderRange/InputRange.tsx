@@ -33,9 +33,8 @@ const InputRange = ({
   useEffect(() => {
     if (onChangeShown) {
       onChangeShown(currentValue)
-      console.log(currentValue)
     }
-    // console.log("ddd", currentValue)
+    //
   }, [])
 
   const isDisabledClass = disabled
