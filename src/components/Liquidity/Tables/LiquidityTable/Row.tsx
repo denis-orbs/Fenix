@@ -48,6 +48,9 @@ const RowData = ({
 
   const [openInfo, setOpenInfo] = useState<boolean>(false)
   const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
+  const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
+  const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
+  const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
   const [campaign, setCampaign] = useState<Campaign>()
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
@@ -157,15 +160,37 @@ const RowData = ({
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold ? 'z-[100]' : 'z-0'}`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub ? 'z-[100]' : 'z-0'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
                             if (stack === 'blast-gold') {
                               setOpenTooltipGold(true)
                             }
+                            if (stack === 'eigen-layer') {
+                              setOpenTooltipEigenLayer(true)
+                            }
+                            if (stack === 'kelp-miles') {
+                              setOpenTooltipKelpMiles(true)
+                            }
+                            if (stack === 'turtle-club') {
+                              setOpenTooltipTurtleClub(true)
+                            }
                           }}
-                          onMouseLeave={() => setOpenTooltipGold(false)}
+                          onMouseLeave={() => {
+                            if (openTooltipGold) {
+                              setOpenTooltipGold(false)
+                            }
+                            if (openTooltipEigenLayer) {
+                              setOpenTooltipEigenLayer(false)
+                            }
+                            if (openTooltipKelpMiles) {
+                              setOpenTooltipKelpMiles(false)
+                            }
+                            if (openTooltipTurtleClub) {
+                              setOpenTooltipTurtleClub(false)
+                            }
+                          }} 
                         />
                       ))}
                     </>
@@ -174,6 +199,27 @@ const RowData = ({
                     <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
                       <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                         <p className="text-xs">This pool will receive 10,000 Blast Gold from 1st - 21st of June</p>
+                      </div>
+                    </div>
+                  )}
+                  {openTooltipEigenLayer && (
+                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                        <p className="text-xs">Eigenlayer points will be distributed to liquidity providers in this pool</p>
+                      </div>
+                    </div>
+                  )}
+                  {openTooltipKelpMiles && (
+                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                        <p className="text-xs">wrsETH liquidity providers will earn 1x Kelp Miles from this pool</p>
+                      </div>
+                    </div>
+                  )}
+                  {openTooltipTurtleClub && (
+                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                        <p className="text-xs">Deposit liquidity to receive a 25% Turtle Points boost from Fenix Rings earned</p>
                       </div>
                     </div>
                   )}
