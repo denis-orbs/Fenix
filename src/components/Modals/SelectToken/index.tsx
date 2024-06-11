@@ -46,7 +46,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
         const responseData = await fetchTokens()
 
         const parsedData = responseData.map((item: any) => {
-          console.log('item >> ', item)
+          // console.log('item >> ', item)
           return {
             id: 0,
             name: item.basetoken.name,
@@ -59,7 +59,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
           }
         })
 
-        console.log('parsedData >> ', parsedData)
+        // console.log('parsedData >> ', parsedData)
 
         const commonList = parsedData.filter((item: any) => item.isCommon)
 

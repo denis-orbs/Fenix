@@ -15,19 +15,18 @@ const Input = ({
   onTitleClick?: any
   setCurrentPercentage: any
 }) => {
-
   const [styleObj, setStyleObj] = useState({})
   const [shownPercent, setShownPercent] = useState(percent)
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
-  console.log('shownPercent.length >> ', shownPercent.length)
-  console.log(':>> ', 'max-w-['+ shownPercent.length * 4 +'px]')
+  // console.log('shownPercent.length >> ', shownPercent.length)
+  // console.log(':>> ', 'max-w-['+ shownPercent.length * 4 +'px]')
 
   useEffect(() => {
     setShownPercent(percent)
   }, [percent])
-  const w = 'max-w-['+ shownPercent.length * 4 +'px]'
-  console.log('w >> ', w)
+  const w = 'max-w-[' + shownPercent.length * 4 + 'px]'
+  // console.log('w >> ', w)
   useEffect(() => {
     if (onTitleClick) setStyleObj({ cursor: 'pointer' })
     else setStyleObj({})
@@ -58,14 +57,14 @@ const Input = ({
               setShownPercent(event.target.value)
 
               const newTimeout = setTimeout(() => {
-                const value = (Number(event.target.value))
+                const value = Number(event.target.value)
                 setCurrentPercentage(value < -100 ? -100 : value)
               }, 1000)
-          
+
               setTimeoutID(newTimeout)
             }}
           />
-          <span className='ml-1'>%</span>
+          <span className="ml-1">%</span>
         </div>
       </div>
     </div>
