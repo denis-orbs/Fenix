@@ -10,6 +10,7 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IToken } from '@/src/library/types'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import WithdrawAmountsICHI from './WithdrawAmountsICHI'
+import { useAccount } from 'wagmi'
 
 import WithdrawAmountsGAMMA from './WithdrawAmountsGAMMA'
 import DepositAmountsGAMMA from './DepositAmountsGAMMA'
@@ -52,10 +53,10 @@ const Automatic = () => {
   })
   const [secondToken, setSecondToken] = useState<IToken>({
     name: 'Wrapped Ether',
-    symbol: 'ETH',
+    symbol: 'WETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023',
+    address: '0x4300000000000000000000000000000000000004',
     price: 0,
     img: '/static/images/tokens/WETH.svg',
   } as IToken)
@@ -66,43 +67,46 @@ const Automatic = () => {
   const searchParams = useSearchParams()
   const searchParamToken0 = searchParams.get('token0')
   const searchParamToken1 = searchParams.get('token1')
+  const { chainId } = useAccount()
   useEffect(() => {
     const getData = async () => {
-      const tokens = await fetchTokens()
-      const parsedTokens = tokens.map((item: any, index) => {
-        return {
-          id: index,
-          name: item.basetoken.name,
-          symbol: item.basetoken.symbol,
-          address: item.basetoken.address,
-          decimals: item.decimals,
-          img: item.logourl,
-          isCommon: item.common,
-          price: parseFloat(item.priceUSD),
+      if (chainId) {
+        const tokens = await fetchTokens(chainId)
+        const parsedTokens = tokens.map((item: any, index) => {
+          return {
+            id: index,
+            name: item.basetoken.name,
+            symbol: item.basetoken.symbol,
+            address: item.basetoken.address,
+            decimals: item.decimals,
+            img: item.logourl,
+            isCommon: item.common,
+            price: parseFloat(item.priceUSD),
+          }
+        })
+        setTokenList(parsedTokens)
+        const token0Data = parsedTokens.find(
+          (token: IToken) => token?.address?.toLowerCase() === searchParamToken0?.toLowerCase()
+        )
+        const token1Data = parsedTokens.find(
+          (token: IToken) => token?.address?.toLowerCase() === searchParamToken1?.toLowerCase()
+        )
+        if (token0.toLowerCase() !== firstToken?.address?.toLowerCase() && token0Data) {
+          setToken0(token0Data?.address.toLowerCase())
+          setFirstToken(token0Data)
         }
-      })
-      setTokenList(parsedTokens)
-      const token0Data = parsedTokens.find(
-        (token: IToken) => token?.address?.toLowerCase() === searchParamToken0?.toLowerCase()
-      )
-      const token1Data = parsedTokens.find(
-        (token: IToken) => token?.address?.toLowerCase() === searchParamToken1?.toLowerCase()
-      )
-      if (token0.toLowerCase() !== firstToken?.address?.toLowerCase() && token0Data) {
-        setToken0(token0Data?.address.toLowerCase())
-        setFirstToken(token0Data)
-      }
 
-      if (token1.toLowerCase() !== secondToken?.address?.toLowerCase() && token1Data) {
-        setToken1(token1Data?.address.toLowerCase())
-        setSecondToken(token1Data)
+        if (token1.toLowerCase() !== secondToken?.address?.toLowerCase() && token1Data) {
+          setToken1(token1Data?.address.toLowerCase())
+          setSecondToken(token1Data)
+        }
+        // set token1
+        // setToken0(firstToken?.address.toLowerCase())
+        // setToken1(secondToken?.address.toLowerCase())
       }
-      // set token1
-      // setToken0(firstToken?.address.toLowerCase())
-      // setToken1(secondToken?.address.toLowerCase())
     }
     getData()
-  }, [])
+  }, [chainId])
   const token0 = useToken0()
   const token1 = useToken1()
 

@@ -58,7 +58,7 @@ const Liquidity = () => {
       return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
     })
   return (
-    <section className='pt-5'>
+    <section className="pt-5">
       <div className="flex flex-col items-center overflow-hidden gap-5 py-5 xl:flex-row">
         <div className="w-full xl:w-2/3 ">
           <Deposit />
@@ -67,7 +67,7 @@ const Liquidity = () => {
           <Steps steps={STEPS} title="Start Now" />
         </div>
       </div>
-      <LiquidityBanner/>
+      <LiquidityBanner />
       <div className="flex flex-col justify-between gap-5 mb-4 md:items-center xl:flex-row overflow-hidden mt-5">
         <h5 className="text-lg mb-1 text-white max-xl:w-full lg:flex-shrink-0">Liquidity Pools</h5>
         <div className="2xl:max-w-[70%] xl:max-w-[65%]  w-full">

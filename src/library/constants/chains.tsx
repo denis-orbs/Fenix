@@ -1,5 +1,6 @@
 export enum SupportedChainId {
   BLAST = 81457,
+  BLAST_SEPOLIA = 168587773,
 }
 
 export const SUPPORTED_CHAIN_IDS: SupportedChainId[] = Object.values(SupportedChainId).filter(

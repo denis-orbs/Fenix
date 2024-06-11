@@ -28,7 +28,7 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
   }, [])
 
   return (
-    <div className="relative mt-5  xl:hidden">
+    <div className="relative mt-5 lg:hidden">
       <div className="w-full">
         {LOCKS_INFO_API.length !== 0 ? (
           <>
@@ -129,7 +129,7 @@ const NestMobile = ({ activePagination = true }: NestMobileProps) => {
               )}
             </TableBody>
             {activePagination && (
-              <div className="mt-5">
+              <div className="py-5">
                 <PaginationMobile
                   activePage={1}
                   className=""

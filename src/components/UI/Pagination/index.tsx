@@ -57,7 +57,14 @@ const Pagination = ({
   }
 
   const visiblePages = 4
-  const startPage = (activePage <= 3) || numberPages <= 5 ? 1 : activePage === (numberPages - 1) ? activePage - 3 : activePage === numberPages ? activePage - 4 : activePage - 2 
+  const startPage =
+    activePage <= 3 || numberPages <= 5
+      ? 1
+      : activePage === numberPages - 1
+        ? activePage - 3
+        : activePage === numberPages
+          ? activePage - 4
+          : activePage - 2
   const endPage = Math.min(numberPages, startPage + visiblePages)
 
   useEffect(() => {
@@ -65,13 +72,13 @@ const Pagination = ({
     for (let i = 0; i < numberPages; i++) {
       arr.push(i + 1)
     }
-    setPaginationArr([...arr.slice(startPage -1, endPage)])
+    setPaginationArr([...arr.slice(startPage - 1, endPage)])
   }, [activePage, itemsPerPage, startPage, numberPages, endPage])
 
   return (
     <div className={mergeClassName}>
       <div className="w-full flex justify-center items-center">
-        <div className="w-[90%] flex items-center justify-center gap-2.5 h-[62px] relative z-10">
+        <div className="w-[85%] flex items-center justify-center gap-2.5 h-[62px] relative z-10">
           <button
             type="button"
             className={`flex items-center justify-center leading-normal gap-2.5 px-5 py-2.5 ${activePage === 1 ? 'text-shark-100 opacity-60' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} rounded-[10px] mr-1.5`}
@@ -82,18 +89,11 @@ const Pagination = ({
             Previous
           </button>
 
-          {
-            paginationArr.map((page:number, index:number) => ( 
-              <button
-                key={index}
-                type="button"
-                className={pageClassName(page - 1)}
-                onClick={() => hadlerPage(page - 1)}
-              >
-                {page}
-              </button>
-            ))
-          }
+          {paginationArr.map((page: number, index: number) => (
+            <button key={index} type="button" className={pageClassName(page - 1)} onClick={() => hadlerPage(page - 1)}>
+              {page}
+            </button>
+          ))}
 
           {/* {Array.from({ length: numberPages })
             .map((_, index) => index)

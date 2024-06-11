@@ -107,6 +107,39 @@ export const POOLS_LIST = gql`
     }
   }
 `
+export const POOLSV2_LIST = gql`
+  query PoolsList {
+    pairs {
+      id
+      token0 {
+        id
+        symbol
+        name
+        decimals
+        derivedETH
+      }
+      token1 {
+        id
+        symbol
+        name
+        decimals
+        derivedETH
+      }
+
+      volumeToken1
+      volumeToken0
+
+      volumeUSD
+      reserve0
+      reserve1
+
+      token0Price
+      token1Price
+      totalSupply
+      isStable
+    }
+  }
+`
 
 export const POOL_DAY_DATA = gql`
   query PoolsList {

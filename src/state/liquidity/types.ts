@@ -1,8 +1,8 @@
-import { Address } from '@/src/library/types'
 import { ApiState } from '@/src/library/types/connection'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
+import { Address } from 'viem'
 import { BoostedPool, RingCampaignData } from '@/src/app/api/rings/campaign/route'
 
 export interface LiquidityState {
@@ -204,6 +204,10 @@ export interface BasicPool {
   token0: BasicToken
   token1: BasicToken
   apr?: string
+  isStable?: boolean
+  reserve0?: string
+  reserve1?: string
+  totalSupply?: string
   aprRings?: string
 }
 export interface BasicToken {
