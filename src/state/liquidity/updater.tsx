@@ -6,6 +6,7 @@ import { getLiquidityTableElements, getLiquidityV2Pairs } from './thunks'
 import { useAccount } from 'wagmi'
 import { autoRefresh } from '@/src/library/utils/retry'
 import { blast } from 'viem/chains'
+import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 
 export default function LiquidityUpdater() {
   const thunkDispatch: AppThunkDispatch = useDispatch()
@@ -19,8 +20,9 @@ export default function LiquidityUpdater() {
 
   useEffect(() => {
     if (chainId) {
-      // change
-      thunkDispatch(getAllPools(blast.id))
+      thunkDispatch(getAllPools(chainId))
+    } else {
+      thunkDispatch(getAllPools(FALLBACK_CHAIN_ID))
     }
     thunkDispatch(getGammaVaults())
   }, [thunkDispatch, chainId])
