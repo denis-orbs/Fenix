@@ -65,7 +65,7 @@ const HeaderRow = ({
 
   useEffect(() => {
     const sortData = async () => {
-      // 
+      // console.log('sortIndex >> ', sortIndex)
       if (paginationResult && paginationResult.length > 0) {
         if (sort === 'asc') {
           const sortedPaginationResult = [...paginationResult]
@@ -76,7 +76,7 @@ const HeaderRow = ({
             })
           }
           if (sortIndex === 4) {
-            // 
+            // console.log('4')
             sortArr = paginationResult.sort((a, b) => {
               return compareBigDecimal(Number(a.aprRings), Number(b.aprRings))
             })
@@ -101,8 +101,8 @@ const HeaderRow = ({
             })
           }
           if (sortIndex === 4) {
-            // 
-            // 
+            // console.log('4')
+            // console.log('paginationResult :>> ', paginationResult)
             sortArr = paginationResult.sort((a, b) => {
               return compareBigDecimal(Number(b.aprRings), Number(a.aprRings))
             })
@@ -194,11 +194,10 @@ const HeaderRow = ({
   }
 
   const pagination = paginate(paginationResult, activePage, itemsPerPage)
-  
   const { width } = useWindowSize()
   return (
     <div className="relative">
-      <div className="w-full mb-2.5 xl:mb-5">
+      <div className="mb-2.5 w-full xl:mb-5">
         <div className="hidden lg:block">
           <TableHead
             items={[
@@ -240,29 +239,24 @@ const HeaderRow = ({
             </>
           ) : (
             pagination.map((row, index) => (
-             <>
-             { 
-                {
-                  (row.id !== "0x8c22d23ec102c9e098c8e0b9ed4ea01aa0b4be35" && row.id !== "0x3c7fd63cab763a10b2754b1464e09d37a9fc79e7") ?
+              <>
+                {row.id !== '0x8c22d23ec102c9e098c8e0b9ed4ea01aa0b4be35' &&
+                row.id !== '0x3c7fd63cab763a10b2754b1464e09d37a9fc79e7' ? (
                   <>
-                  <Fragment key={index}>
-                   <Row
-                  row={row}
-                  tokensData={null}
-                  activeRange={activeRange}
-                  titleHeader={titleHeader}
-                  titleHeader2={titleHeader2}
-                  titleButton={titleButton}
-                  titleButton2={titleButton2}
-                />
-                </Fragment>
-                </>:null
-                }
-               
-                 
-             </>
-               
-             
+                    <Fragment key={index}>
+                      <Row
+                        row={row}
+                        tokensData={null}
+                        activeRange={activeRange}
+                        titleHeader={titleHeader}
+                        titleHeader2={titleHeader2}
+                        titleButton={titleButton}
+                        titleButton2={titleButton2}
+                      />
+                    </Fragment>
+                  </>
+                ) : null}
+              </>
             ))
           )}
         </TableBody>
@@ -270,7 +264,7 @@ const HeaderRow = ({
 
       {activePagination && (
         <>
-          <div className="items-center hidden lg:flex">
+          <div className="hidden items-center lg:flex">
             <Pagination
               itemsPerPage={itemsPerPage}
               setItemPerPage={setItemPerPage}
@@ -280,7 +274,7 @@ const HeaderRow = ({
               numberPages={Math.ceil(poolsData.length / itemsPerPage)}
             />
           </div>
-          <div className="lg:hidden py-5">
+          <div className="py-5 lg:hidden">
             <PaginationMobile
               count={poolsData.length}
               itemsPerPage={itemsPerPage}

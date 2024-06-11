@@ -72,7 +72,7 @@ const MyStrategies = () => {
       })
     )
     const final = positions.map((position: positions, index: number) => {
-      // 
+      // console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
       return {
         ...position,
         depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
@@ -108,14 +108,14 @@ const MyStrategies = () => {
 
   return (
     <>
-      {/* {
+      {/* {console.log('finalp', position)} */}
       {position.length !== 0 && loading === false && address ? (
         <div className="relative">
-          <div className="flex items-center w-[100%] mb-4 justify-between">
+          <div className="mb-4 flex w-[100%] items-center justify-between">
             <h2 id="strategies" className="text-lg text-white">
               My Strategies
             </h2>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
+            <Button variant="tertiary" className="!lg:text-sm !py-3 !text-xs xl:me-5" href="/liquidity">
               <span className="icon-logout"></span>New strategy
             </Button>
           </div>
@@ -157,13 +157,13 @@ const MyStrategies = () => {
               })}
             </Swiper>
             {position?.length >= 3 && (
-              <div className="flex gap-2 justify-center">
+              <div className="flex justify-center gap-2">
                 <span
-                  className={`icon-arrow-left ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
+                  className={`icon-arrow-left ${progress <= 0 ? 'cursor-not-allowed text-shark-400' : 'cursor-pointer text-white'} text-2xl`}
                   onClick={slideToLeft}
                 ></span>
                 <span
-                  className={`icon-arrow-right text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                  className={`icon-arrow-right text-2xl ${progress >= 1 ? 'cursor-not-allowed text-shark-400' : 'cursor-pointer text-white'}`}
                   onClick={slideToRight}
                 ></span>
               </div>
@@ -191,21 +191,21 @@ const MyStrategies = () => {
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
       ) : (position.length === 0 && loading === false) || address === undefined ? (
-        <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
-          <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">My Positions</p>
+        <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
+          <div className="flex items-center justify-between text-white">
+            <p className="ms-2 flex gap-3 text-lg">My Positions</p>
           </div>
-          <div className="box-dashboard p-6 flex gap-8 items-center ">
-            <p className="text-white text-sm">You have no positions.</p>
+          <div className="box-dashboard flex items-center gap-8 p-6">
+            <p className="text-sm text-white">You have no positions.</p>
           </div>
         </div>
       ) : (
-        <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
-          <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">My Positions</p>
+        <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
+          <div className="flex items-center justify-between text-white">
+            <p className="ms-2 flex gap-3 text-lg">My Positions</p>
           </div>
-          <div className="box-dashboard p-6 flex gap-8 justify-center items-center ">
-            <p className="text-white text-sm flex items-center gap-3">
+          <div className="box-dashboard flex items-center justify-center gap-8 p-6">
+            <p className="flex items-center gap-3 text-sm text-white">
               <Spinner /> Loading
             </p>
           </div>

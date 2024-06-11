@@ -149,13 +149,12 @@ const Classic = ({
   }
 
   useEffect(() => {
-    
     if (defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
       setIsLoading(false)
     }
-    
+
     setlpBalance((lpTokenBalance?.data as bigint) || 0n)
     if (
       account &&
@@ -192,13 +191,7 @@ const Classic = ({
         secondToken.address as Address,
         depositType === 'STABLE'
       )
-      
-        firstToken.address as Address,
-        secondToken.address as Address,
-        depositType === 'STABLE',
-        pair,
-        'depositType'
-      )
+
       if (pair != '0x0') setPairAddress(pair)
       else setPairAddress('0x0000000000000000000000000000000000000000')
     }
@@ -227,7 +220,7 @@ const Classic = ({
               contractAddressList.v2router as Address
             )
           : '0'
-      
+
       setallowanceFirst(allowanceFirst.toString())
       setallowanceSecond(allowanceSecond.toString())
       setallowanceLp(allowanceLp.toString())
@@ -240,7 +233,7 @@ const Classic = ({
   }, [firstToken, secondToken, account.address, pairAddress])
 
   const handleOnTokenValueChange = (input: any, token: IToken) => {
-    
+    console.log('inn1', optionActive)
     if (optionActive == 'ADD') {
       // TODO: handle if pair is not created
       if (firstToken.address === token.address) {
@@ -283,7 +276,7 @@ const Classic = ({
   }
 
   const handleOnLPTokenValueChange = (input: any, token: IToken) => {
-    // 
+    // console.log('inn2', input, parseFloat(input) != 0 ? parseFloat(input).toString() : input, parseUnits(input, 18))
     setLpValue(input)
 
     if (optionActive == 'WITHDRAW') {
@@ -487,50 +480,50 @@ const Classic = ({
       <div>
         <Toaster position="top-center" reverseOrder={false} />
       </div>
-      <div className="bg-shark-400 bg-opacity-40 py-[11px] px-[10px] sm:px-[19px] flex items-center justify-between gap-1.5 sm:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5 max-md:items-start">
+      <div className="mb-2.5 flex items-center justify-between gap-1.5 rounded-[10px] border border-shark-950 bg-shark-400 bg-opacity-40 px-[10px] py-[11px] max-md:items-start sm:gap-2.5 sm:px-[19px]">
         <div>
-          <div className="flex items-center gap-2.5 mb-2.5">
-            <div className="flex items-center flex-shrink-0">
+          <div className="mb-2.5 flex items-center gap-2.5">
+            <div className="flex flex-shrink-0 items-center">
               <Image
                 src={`/static/images/tokens/${firstToken.symbol}.svg`}
                 alt="token"
-                className="rounded-full max-md:w-5 max-md:h-5"
+                className="rounded-full max-md:h-5 max-md:w-5"
                 width={30.5}
                 height={30.5}
               />
               <Image
                 src={`/static/images/tokens/${secondToken.symbol}.svg`}
                 alt="token"
-                className="-ml-2.5 md:-ml-4 rounded-full max-md:w-5 max-md:h-5"
+                className="-ml-2.5 rounded-full max-md:h-5 max-md:w-5 md:-ml-4"
                 width={30.5}
                 height={30.5}
               />
             </div>
             <div className="flex flex-col gap-px">
-              <h5 className="text-xs md:text-sm text-white leading-normal font-medium">
+              <h5 className="text-xs font-medium leading-normal text-white md:text-sm">
                 {firstToken.symbol} / {secondToken.symbol}
               </h5>
               <div className="flex items-center gap-[5px] max-md:flex-wrap">
                 {'VOLATILE' === depositType ? (
-                  <Button variant="tertiary" className="!py-1 !px-1 h-[28px] max-md:!text-xs flex-shrink-0">
+                  <Button variant="tertiary" className="h-[28px] flex-shrink-0 !px-1 !py-1 max-md:!text-xs">
                     Volatile Pool
                   </Button>
                 ) : 'CONCENTRATED_AUTOMATIC' === depositType || 'CONCENTRATED_MANUAL' === depositType ? (
                   <Button
                     variant="tertiary"
-                    className="!py-1  hover:!border-none !bg-green-500 !border !border-solid !border-1 !border-green-400 !bg-opacity-40 h-[28px] max-md:!text-xs flex-shrink-0"
+                    className="!border-1 h-[28px] flex-shrink-0 !border !border-solid !border-green-400 !bg-green-500 !bg-opacity-40 !py-1 hover:!border-none max-md:!text-xs"
                   >
                     Concentrated
                   </Button>
                 ) : 'STABLE' === depositType ? (
-                  <Button variant="tertiary" className="!px-5 !py-0 h-[28px] max-md:!text-xs flex-shrink-0">
+                  <Button variant="tertiary" className="h-[28px] flex-shrink-0 !px-5 !py-0 max-md:!text-xs">
                     Stable Pool
                   </Button>
                 ) : null}
 
                 <Button
                   variant="tertiary"
-                  className="!px-5 !py-0 h-[28px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
+                  className="h-[28px] flex-shrink-0 !border-opacity-100 !bg-shark-300 !bg-opacity-40 !px-5 !py-0 max-md:!text-xs [&:not(:hover)]:border-shark-200"
                 >
                   {
                     pairs?.find(
@@ -548,25 +541,25 @@ const Classic = ({
               </div>
             </div>
           </div>
-          <div className="flex items-center text-xs leading-normal gap-[5px]">
+          <div className="flex items-center gap-[5px] text-xs leading-normal">
             {/* <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]"> */}
             <div className="text-white">Liquidity</div>
             <div className="flex items-center gap-2.5">
-              <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
+              <p className="flex flex-shrink-0 items-center gap-[5px] text-shark-100">
                 <Image
                   src={`/static/images/tokens/${firstToken.symbol}.svg`}
                   alt="token"
-                  className="w-5 h-5 rounded-full"
+                  className="h-5 w-5 rounded-full"
                   width={20}
                   height={20}
                 />
                 <span>{formatNumber(Number(firstReserve) / 1e18, 8)}</span>
               </p>
-              <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
+              <p className="flex flex-shrink-0 items-center gap-[5px] text-shark-100">
                 <Image
                   src={`/static/images/tokens/${secondToken.symbol}.svg`}
                   alt="token"
-                  className="w-5 h-5 rounded-full"
+                  className="h-5 w-5 rounded-full"
                   width={20}
                   height={20}
                 />
@@ -577,9 +570,9 @@ const Classic = ({
         </div>
 
         <div className="text-xs leading-normal text-white">
-          <div className="md:mb-[5px] text-right">APR</div>
+          <div className="text-right md:mb-[5px]">APR</div>
 
-          <p className="py-[5px] px-5 border border-solid bg-shark-400 rounded-[10px] bg-opacity-40 border-1 border-shark-300">
+          <p className="border-1 rounded-[10px] border border-solid border-shark-300 bg-shark-400 bg-opacity-40 px-5 py-[5px]">
             {
               pairs?.find(
                 (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
@@ -589,17 +582,17 @@ const Classic = ({
           </p>
         </div>
       </div>
-      <div className="flex flex-wrap bg-shark-400 bg-opacity-40 p-[13px] md:py-[11px] md:px-[19px] gap-1.5 md:gap-2.5 border border-shark-950 rounded-[10px] mb-2.5">
+      <div className="mb-2.5 flex flex-wrap gap-1.5 rounded-[10px] border border-shark-950 bg-shark-400 bg-opacity-40 p-[13px] md:gap-2.5 md:px-[19px] md:py-[11px]">
         <Button
           onClick={() => handlerOption('ADD')}
-          className="flex-1 h-[38px] mx-auto !text-xs"
+          className="mx-auto h-[38px] flex-1 !text-xs"
           variant={optionActive === 'ADD' ? 'primary' : 'secondary'}
         >
           Add
         </Button>
         <Button
           onClick={() => handlerOption('WITHDRAW')}
-          className="flex-1 h-[38px] mx-auto !text-xs"
+          className="mx-auto h-[38px] flex-1 !text-xs"
           variant={optionActive === 'WITHDRAW' ? 'primary' : 'secondary'}
         >
           Withdraw
@@ -619,7 +612,7 @@ const Classic = ({
           UNSTAKE
         </Button> */}
       </div>
-      <div className="flex flex-col gap-1 relative">
+      <div className="relative flex flex-col gap-1">
         {optionActive === 'WITHDRAW' && (
           <>
             <div className="mb-3">
@@ -655,14 +648,14 @@ const Classic = ({
           <>
             <div className="mb-3">
               <div className="exchange-box-x1">
-                <div className="flex items-center mb-3 justify-between">
-                  <p className="text-white font-medium">Stake LP</p>
-                  <p className="text-shark-100 flex text-sm justify-end gap-6 xl:gap-0 w-full xl:w-3/5 items-cente xl:justify-between">
-                    <span className=" ml-3">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="font-medium text-white">Stake LP</p>
+                  <p className="items-cente flex w-full justify-end gap-6 text-sm text-shark-100 xl:w-3/5 xl:justify-between xl:gap-0">
+                    <span className="ml-3">
                       {firstToken?.price && formatDollarAmount(toBN(lpValue).multipliedBy(firstToken?.price))}
                     </span>
                     <div>
-                      <span className="icon-wallet text-xs mr-2"></span>
+                      <span className="icon-wallet mr-2 text-xs"></span>
                       <span>
                         {/* Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol} */}
                         Available: 0 {firstToken.symbol}/{secondToken.symbol}
@@ -670,22 +663,22 @@ const Classic = ({
                     </div>
                   </p>
                 </div>
-                <div className="flex flex-col xl:flex-row items-center gap-3">
+                <div className="flex flex-col items-center gap-3 xl:flex-row">
                   <div className="relative w-full xl:w-2/5">
-                    <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
+                    <div className="flex h-[50px] items-center justify-between rounded-lg bg-shark-400 bg-opacity-40 px-4 text-white">
                       <div className="flex items-center gap-2">
                         <div className="flex items-center">
                           <Image
                             src={`/static/images/tokens/FNX.png`}
                             alt="token"
-                            className="rounded-full w-7 h-7"
+                            className="h-7 w-7 rounded-full"
                             width={20}
                             height={20}
                           />
                           <Image
                             src={`/static/images/tokens/WETH.png`}
                             alt="token"
-                            className="-ml-4 rounded-full w-7 h-7"
+                            className="-ml-4 h-7 w-7 rounded-full"
                             width={20}
                             height={20}
                           />
@@ -699,9 +692,9 @@ const Classic = ({
                   <div className="relative w-full xl:w-3/5">
                     <input
                       value={0}
-                      className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+                      className="h-[50px] w-full rounded-lg border border-shark-400 bg-shark-400 bg-opacity-40 px-3 text-sm text-white outline-none"
                       placeholder="0.0"
-                      onChange={(input) => 
+                      onChange={(input) => console.log(input)}
                     />
                   </div>
                 </div>
@@ -713,14 +706,14 @@ const Classic = ({
           <>
             <div className="mb-3">
               <div className="exchange-box-x1">
-                <div className="flex items-center mb-3 justify-between">
-                  <p className="text-white font-medium">Unstake LP</p>
-                  <p className="text-shark-100 flex text-sm justify-end gap-6 xl:gap-0 w-full xl:w-3/5 items-cente xl:justify-between">
-                    <span className=" ml-3">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="font-medium text-white">Unstake LP</p>
+                  <p className="items-cente flex w-full justify-end gap-6 text-sm text-shark-100 xl:w-3/5 xl:justify-between xl:gap-0">
+                    <span className="ml-3">
                       {firstToken?.price && formatDollarAmount(toBN(lpValue).multipliedBy(firstToken?.price))}
                     </span>
                     <div>
-                      <span className="icon-wallet text-xs mr-2"></span>
+                      <span className="icon-wallet mr-2 text-xs"></span>
                       <span>
                         {/* Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol} */}
                         Available: 0 {firstToken.symbol}/{secondToken.symbol}
@@ -728,22 +721,22 @@ const Classic = ({
                     </div>
                   </p>
                 </div>
-                <div className="flex flex-col xl:flex-row items-center gap-3">
+                <div className="flex flex-col items-center gap-3 xl:flex-row">
                   <div className="relative w-full xl:w-2/5">
-                    <div className="bg-shark-400 bg-opacity-40 rounded-lg text-white px-4 flex items-center justify-between h-[50px]">
+                    <div className="flex h-[50px] items-center justify-between rounded-lg bg-shark-400 bg-opacity-40 px-4 text-white">
                       <div className="flex items-center gap-2">
                         <div className="flex items-center">
                           <Image
                             src={`/static/images/tokens/FNX.png`}
                             alt="token"
-                            className="rounded-full w-7 h-7"
+                            className="h-7 w-7 rounded-full"
                             width={20}
                             height={20}
                           />
                           <Image
                             src={`/static/images/tokens/WETH.png`}
                             alt="token"
-                            className="-ml-4 rounded-full w-7 h-7"
+                            className="-ml-4 h-7 w-7 rounded-full"
                             width={20}
                             height={20}
                           />
@@ -757,9 +750,9 @@ const Classic = ({
                   <div className="relative w-full xl:w-3/5">
                     <input
                       value={0}
-                      className="bg-shark-400 bg-opacity-40 border border-shark-400 h-[50px] w-full rounded-lg outline-none px-3 text-white text-sm"
+                      className="h-[50px] w-full rounded-lg border border-shark-400 bg-shark-400 bg-opacity-40 px-3 text-sm text-white outline-none"
                       placeholder="0.0"
-                      onChange={(input) => 
+                      // onChange={(input) => console.log(input)}
                     />
                   </div>
                 </div>
@@ -816,7 +809,7 @@ const Classic = ({
             />
           ) : (
             <Button
-              className="w-full mx-auto !text-xs !h-[49px]"
+              className="mx-auto !h-[49px] w-full !text-xs"
               variant="tertiary"
               disabled={pairAddress == '0x0000000000000000000000000000000000000000'}
             >
@@ -829,7 +822,7 @@ const Classic = ({
         <>
           {' '}
           <Button
-            className="w-full mx-auto !text-xs !h-[49px]"
+            className="mx-auto !h-[49px] w-full !text-xs"
             variant="tertiary"
             disabled={
               pairAddress == '0x0000000000000000000000000000000000000000' ||
