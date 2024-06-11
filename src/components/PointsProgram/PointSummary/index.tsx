@@ -116,12 +116,10 @@ const PointSummary = ({ userData }: any) => {
         </Button>
       </div>
       <div className="flex flex-col xl:flex-row items-center justify-between gap-5 xl:gap-20 relative z-20">
-        <div className="point-summary-box">
-          <p className="text-base mb-2 text-white w-full text-left relative">
+        <div className="point-summary-box" onMouseLeave={() => setShowNTFBoostInfo(false)}>
+          <p className="text-base mb-2 text-white w-full text-left relative" onMouseEnter={() => setShowNTFBoostInfo(true)}>
             Rings{' '}
             <span
-              onMouseEnter={() => setShowNTFBoostInfo(true)}
-              onMouseLeave={() => setShowNTFBoostInfo(false)}
               className="ml-1 text-xs bg-orange-800 text-orange-100 px-1 py-px rounded-md"
             >
               {nftBoost && nftBoost > 0 ? '🔥' : '🥶'}{' '}
@@ -130,15 +128,18 @@ const PointSummary = ({ userData }: any) => {
             </span>
             <Tooltip
               className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 right-12 top-8 px-4 py-2
-               text-white text-xs w-[340px] opacity-90 backdrop-blur-[10px] max-xl:left-0"
+               text-white text-xs w-[360px] backdrop-blur-[10px] max-xl:left-0"
               show={showNTFBoostInfo}
               setShow={setShowNTFBoostInfo}
             >
-              <h3 className="text-lg mb-1">1-20% Fenix Goldies NFT Boost! 🔥</h3>
+              <div className='flex items-center gap-2 mb-2'>
+                <h3 className="text-base">Fenix Goldies NFT Boost up to 20%!</h3>
+                <Image src={'/static/images/tokens/FNX.svg'} alt='FNX' className='w-5' width={10} height={10}></Image>
+              </div>
               <div className='text-white text-xs font-normal text-justify'>
                 For every NFT you have you get a 1% Boost, up to a maximum of 20 NFTs (20%)
                 1 NFT = 1% Boost, 2 NFTs = 2% Boost ... 20 NFTs = 20% Boost
-                Fenix Goldies NFTs, https://blastr.xyz/fenix-goldies (Fully Refundable)
+                Fenix Goldies NFTs, <span className='text-gradient cursor-pointer' onClick={() => {window.open('https://blastr.xyz/fenix-goldies', '_blank')}}>Fenix Goldies</span> (Fully Refundable)
               </div>
               {/* <ul className="list-disc  pl-4 space-y-1">
                 <li className="list-item">100% of Blast Gold will be distributed to holders.</li>
