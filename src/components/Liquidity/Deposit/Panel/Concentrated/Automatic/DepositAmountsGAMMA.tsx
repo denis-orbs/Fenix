@@ -1,4 +1,4 @@
-import { config } from '@/src/app/layout'
+import { wagmiConfig } from '@/src/app/layout'
 import { Button } from '@/src/components/UI'
 import { NumericalInput } from '@/src/components/UI/Input'
 import { gammaUniProxyABI } from '@/src/library/constants/abi/gammaUniProxyABI'
@@ -120,7 +120,7 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
     const fetchToken1Equivalent = async () => {
       if (lastUserUpdate === 'token0' && token0TypedValue !== '0' && token0TypedValue !== '') {
         try {
-          const res = await readContract(config, {
+          const res = await readContract(wagmiConfig, {
             address: contractAddressList.gamma_uniproxy as `0x${string}`,
             abi: gammaUniProxyABI,
             functionName: 'getDepositAmount',
@@ -138,7 +138,7 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
     const fetchToken0Equivalent = async () => {
       if (lastUserUpdate === 'token1' && token1TypedValue !== '0' && token1TypedValue !== '') {
         try {
-          const res = await readContract(config, {
+          const res = await readContract(wagmiConfig, {
             address: contractAddressList.gamma_uniproxy as `0x${string}`,
             abi: gammaUniProxyABI,
             functionName: 'getDepositAmount',
