@@ -5,6 +5,7 @@ import { getAllPools, getConcentratedPools, getGammaVaults, getRingsCampaigns } 
 import { getLiquidityTableElements, getLiquidityV2Pairs } from './thunks'
 import { useAccount } from 'wagmi'
 import { autoRefresh } from '@/src/library/utils/retry'
+import { blast } from 'viem/chains'
 
 export default function LiquidityUpdater() {
   const thunkDispatch: AppThunkDispatch = useDispatch()
@@ -18,7 +19,8 @@ export default function LiquidityUpdater() {
 
   useEffect(() => {
     if (chainId) {
-      thunkDispatch(getAllPools(chainId))
+      // change
+      thunkDispatch(getAllPools(blast.id))
     }
     thunkDispatch(getGammaVaults())
   }, [thunkDispatch, chainId])
