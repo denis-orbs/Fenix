@@ -17,10 +17,11 @@ export default function LiquidityUpdater() {
   }, [thunkDispatch, address, chainId])
 
   useEffect(() => {
-    if (chainId) thunkDispatch(getAllPools(chainId))
-
+    if (chainId) {
+      thunkDispatch(getAllPools(chainId))
+    }
     thunkDispatch(getGammaVaults())
-  }, [thunkDispatch])
+  }, [thunkDispatch, chainId])
   useEffect(() => {
     const fetchCampaigns = () => {
       thunkDispatch(getRingsCampaigns())
