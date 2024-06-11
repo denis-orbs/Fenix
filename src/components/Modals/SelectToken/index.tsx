@@ -43,6 +43,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   useEffect(() => {
     const getList = async () => {
       try {
+
         if (chainId) {
           const responseData = await fetchTokens(chainId)
 

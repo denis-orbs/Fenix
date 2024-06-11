@@ -65,7 +65,7 @@ const HeaderRow = ({
 
   useEffect(() => {
     const sortData = async () => {
-      console.log('sortIndex >> ', sortIndex)
+      // console.log('sortIndex >> ', sortIndex)
       if (paginationResult && paginationResult.length > 0) {
         if (sort === 'asc') {
           const sortedPaginationResult = [...paginationResult]
@@ -76,7 +76,7 @@ const HeaderRow = ({
             })
           }
           if (sortIndex === 4) {
-            console.log('4')
+            // console.log('4')
             sortArr = paginationResult.sort((a, b) => {
               return compareBigDecimal(Number(a.aprRings), Number(b.aprRings))
             })
@@ -101,8 +101,8 @@ const HeaderRow = ({
             })
           }
           if (sortIndex === 4) {
-            console.log('4')
-            console.log('paginationResult :>> ', paginationResult);
+            // console.log('4')
+            // console.log('paginationResult :>> ', paginationResult)
             sortArr = paginationResult.sort((a, b) => {
               return compareBigDecimal(Number(b.aprRings), Number(a.aprRings))
             })
@@ -193,7 +193,6 @@ const HeaderRow = ({
     return a - b
   }
 
-  
   const pagination = paginate(paginationResult, activePage, itemsPerPage)
   console.log("pagination",pagination)
   const { width } = useWindowSize()

@@ -81,7 +81,7 @@ const RowData = ({
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
     setCampaign({ ...campaign_ })
-    console.log('campaign_ >> ', campaign_)
+    // console.log('campaign_ >> ', campaign_)
   }, [row])
 
   function getAverageApr(...aprs: number[]): string {

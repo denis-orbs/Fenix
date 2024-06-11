@@ -121,7 +121,7 @@ const Panel = () => {
 
   const handleTransactionError = (e: any) => {
     console.log(e)
-    console.log('si o no', e instanceof Error)
+    // console.log('si o no', e instanceof Error)
     if (e instanceof TransactionExecutionError) {
       addNotification({
         id: crypto.randomUUID(),
@@ -313,8 +313,8 @@ const Panel = () => {
 
   useEffect(() => {
     if ((approvalData.isLoading && !tokenSellIsNative) || swapQuoteLoading || loadingSwap) {
-      console.log(swapQuoteLoading)
-      console.log(loadingSwap)
+      // console.log(swapQuoteLoading)
+      // console.log(loadingSwap)
       setCurrentButtonState(ButtonState.LOADING)
     } else if (!swapAvailable) {
       setCurrentButtonState(ButtonState.POOL_NOT_AVAILABLE)
