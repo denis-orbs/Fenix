@@ -85,6 +85,11 @@ export const totalCampaigns: Campaign[] = [
     pairAddress: '0x886369748d1d66747b8f51ab38de00dea13f0101',
     pointStack: ['fenix-ring', 'blast', 'fdao'],
   },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xd49ad1dd6c5eae53abdafeaed1866330c42ccae4',
+    pointStack: ['fenix-ring', 'blast'],
+  },
   // {
   //   multiplier: '🔥 Rings Boost',
   //   pairAddress: '0x1fe38ea700f0b8b013be01e58b02b1da3956379a',
