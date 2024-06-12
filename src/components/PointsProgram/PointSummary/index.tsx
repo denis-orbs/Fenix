@@ -116,34 +116,52 @@ const PointSummary = ({ userData }: any) => {
         </Button>
       </div>
       <div className="flex flex-col xl:flex-row items-center justify-between gap-5 xl:gap-20 relative z-20">
-        <div className="point-summary-box">
-          <p className="text-base mb-2 text-white w-full text-left relative">
+        <div className="point-summary-box" onMouseLeave={() => setShowNTFBoostInfo(false)}>
+          <p className="text-base mb-2 text-white w-full text-left relative cursor-pointer" onClick={() => setShowNTFBoostInfo(true)}>
             Rings{' '}
             <span
-              onMouseEnter={() => setShowNTFBoostInfo(true)}
-              onMouseLeave={() => setShowNTFBoostInfo(false)}
               className="ml-1 text-xs bg-orange-800 text-orange-100 px-1 py-px rounded-md"
             >
               {nftBoost && nftBoost > 0 ? '🔥' : '🥶'}{' '}
               {nftBoost ? Math.min(Number(nftBoost), MAX_NFT_BOOST).toString() : '0'}% NFT Boost
               <span className="icon-info ml-1"></span>
             </span>
-            <Tooltip
-              className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 right-12 top-8 px-4 py-2
-               text-white text-xs w-[260px] opacity-90"
-              show={showNTFBoostInfo}
-              setShow={setShowNTFBoostInfo}
+            <div
+              className={`box-fenix-goldies cursor-default absolute left-[-70px] max-lg:left-1/2 max-lg:-translate-x-1/2 top-8 px-4 py-2
+               text-white text-xs w-[360px] flex flex-col items-center ${showNTFBoostInfo ? 'block' : 'hidden'}`}
             >
-              <h3 className="text-lg mb-1">Fenix Goldies NFT</h3>
-              <ul className="list-disc  pl-4 space-y-1">
+              <div className='flex items-center flex-col mx-auto gap-2 mt-4 justify-center z-[500]'>
+                <Image src={'/static/images/tokens/FNX.svg'} alt='FNX' className='w-10 z-[10]' width={10} height={10}></Image>
+                <h3 className="text-xl font-normal leading-none z-[10]">Fenix Goldies NFT</h3>
+                <h3 className="text-base font-bold leading-none z-[10]">Boost up to 20%!</h3>
+              </div>
+              <div className='text-xs font-normal flex flex-col gap-1 z-[500] relative w-[80%]'>
+                <div className='z-[10] text-shark-100 mt-4 mb-2 w-[100%]'>
+                  For every NFT you have you get a 1% Boost, up to a maximum of 20 NFTs (20%).
+                </div>
+                <div className='z-[10] text-shark-100 flex items-center justify-start gap-2'>
+                  <Image src={'/static/images/landing/Build/polygon.svg'} height={10} width={10} alt="polygon" />
+                  1 NFT = 1% Boost
+                </div>
+                <div className='z-[10] text-shark-100 flex items-center justify-start gap-2'>
+                  <Image src={'/static/images/landing/Build/polygon.svg'} height={10} width={10} alt="polygon" />
+                  2 NFTs = 2% Boost
+                </div>
+                <div className='z-[10] text-shark-100 flex items-center justify-start gap-2'>
+                  <Image src={'/static/images/landing/Build/polygon.svg'} height={10} width={10} alt="polygon" />
+                  20 NFTs = 20% Boost
+                </div>
+                <Button variant='primary' className='mx-auto mt-3 w-[70%] !py-1' onClick={() => {window.open('https://blastr.xyz/fenix-goldies', '_blank')}}>Fenix Goldies NFTs</Button>
+              </div>
+              {/* <ul className="list-disc  pl-4 space-y-1">
                 <li className="list-item">100% of Blast Gold will be distributed to holders.</li>
                 <li className="list-item">Fully refundable after 21 days</li>
                 <li className="list-item">Early Access to our District One Sprint Launch</li>
                 <li className="list-item">
                   For every NFT you own, you get a 1% boost, up to a maximum of 20 NFTs (20%)
                 </li>
-              </ul>
-            </Tooltip>
+              </ul> */}
+            </div>
           </p>
           <div className="flex items-center gap-4 w-full">
             <div className="flex flex-col items-center h-12 justify-center gap-y-1 mt-1">

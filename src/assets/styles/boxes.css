@@ -326,11 +326,10 @@
   @apply relative
   bg-no-repeat
   bg-cover
-  /* xl:w-[600px] */
-  /* w-[500px] */
-  min-w-fit
+  xl:w-[480px]
+  w-[400px]
   h-[45px]
-
+    
   before:content-[""]
   before:absolute
   xl:before:bg-[url("/static/images/header/header-landing3.svg")]
@@ -341,7 +340,7 @@
   before:w-1/2
   before:top-0
   before:left-0
-
+    
   after:content-[""]
   after:absolute
   xl:after:bg-[url("/static/images/header/header-landing3.svg")]
@@ -2048,6 +2047,80 @@ bg-shark-400
   after:w-full
   after:bottom-0
   after:left-0
+  after:hidden
+  after:xl:block;
+}
+/* . {
+  @apply
+bg-shark-400
+  h-[322.6px]
+  w-[275.5px]
+  py-3
+  px-8
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/points-program/box.svg")]
+  before:bg-no-repeat
+  before:h-[50%]
+  before:bg-cover
+  before:w-full
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/points-program/box.svg")]
+  after:bg-no-repeat
+  after:bg-bottom
+  after:h-[50%]
+  after:bg-cover
+  after:w-full
+  after:bottom-0
+  after:left-0
+  after:hidden
+  after:xl:block;
+} */
+
+.box-fenix-goldies {
+  @apply
+  h-[322.6px]
+  w-[275.5px]
+  p-5
+  xl:py-5
+  xl:px-5
+  z-[50]
+  mb-10
+  bg-shark-400
+  xl:bg-transparent
+  bg-opacity-40
+  max-xl:backdrop-blur-[15px]
+  rounded-lg
+
+  before:content-[""]
+  before:absolute
+  before:bg-[url("/static/images/points-program/box.svg")]
+  before:bg-no-repeat
+  before:h-full
+  before:bg-cover
+  before:w-1/2
+  before:top-0
+  before:left-0
+  before:hidden
+  before:xl:block
+
+  after:content-[""]
+  after:absolute
+  after:bg-[url("/static/images/points-program/box.svg")]
+  after:bg-no-repeat
+  after:bg-right
+  after:h-full
+  after:bg-cover
+  after:w-1/2
+  after:top-0
+  after:right-0
   after:hidden
   after:xl:block;
 }
