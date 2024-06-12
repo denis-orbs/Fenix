@@ -75,7 +75,7 @@ export const DATA_ROW = [
 ]
 // export const OPTIONS_FILTER = ['All Pools', 'Stable', 'Volatile', 'Concentrated']
 
-export const OPTIONS_FILTER = ['All', 'Blue Chips', 'LST/LRT', 'Stables', 'Memes', 'Blast Native']
+export const OPTIONS_FILTER = ['All', 'Blue Chips', 'LST/LRT', 'Stables', 'Memes', 'Blast Native', 'Classic']
 
 export const MEMES_POOLS = [
   '0x8e57e61b7524a2f56fd01bbfe5de9bb96ed186b4',
@@ -118,6 +118,13 @@ export const BLAST_NATIVE_POOLS = [
   '0x9508122abdd654b68c7dbf5bdba329b852e4a512',
   '0x047d5d8911d18aa5e64e666e53af2b47b46ab363',
   '0xc1fd5e0b3388c66dfad458ded01dcddae68cb03e',
+]
+export const CLASSIC = [
+  '0xf4f76fc7ae409862eca9ffdb1767638e7dcd6e8b',
+  '0xd49ad1dd6c5eae53abdafeaed1866330c42ccae4',
+  '0x3c7fd63cab763a10b2754b1464e09d37a9fc79e7',
+  '0x8c22d23ec102c9e098c8e0b9ed4ea01aa0b4be35',
+  '0xb5909f3c47557d0eef11503199fc12c1252ab15a',
 ]
 
 export const NAV_LIST = [
