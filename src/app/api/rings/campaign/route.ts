@@ -168,6 +168,12 @@ export const boostedPools: BoostedPool[] = [
   //   apr: 0,
   // },
   {
+    pair: 'DOLA/USDB',
+    points: 400_000,
+    id: '0xd49ad1dd6c5eae53abdafeaed1866330c42ccae4',
+    apr: 0,
+  },
+  {
     pair: 'PAC/WETH',
     points: 300_000,
     id: '0x8e57e61b7524a2f56fd01bbfe5de9bb96ed186b4',
