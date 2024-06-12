@@ -135,6 +135,7 @@ export const getLiquidityTableElements = createAsyncThunk(
           )
 
           pairs[pair.pair_address] = {
+            id: pair.pair_address,
             pairAddress: pair.pair_address,
             pairSymbol: pair.symbol,
             pairInformationV2: pair,
