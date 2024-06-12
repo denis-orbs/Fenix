@@ -33,7 +33,7 @@ const Deposit = ({ vote }: DepositProps) => {
       const availableTokenData = await fetchTokens(chainId)
       setTokens(availableTokenData.length)
 
-      let weekly_emission = await multicall(wagmiConfig, {
+      const weekly_emission = await multicall(wagmiConfig, {
         contracts: [
           {
             address: MINTER_ADDRESS[chainId] as Address,
@@ -47,10 +47,10 @@ const Deposit = ({ vote }: DepositProps) => {
 
       //
 
-      let pushExternal: BigDecimal[] = []
-      let pushInternal: BigDecimal[] = []
-      let a = vote.voteTableElement.map((reward) => {
-        let usdValueExternal = reward.rewardPair.externalBribeReward.tokens
+      const pushExternal: BigDecimal[] = []
+      const pushInternal: BigDecimal[] = []
+      const a = vote.voteTableElement.map((reward) => {
+        const usdValueExternal = reward.rewardPair.externalBribeReward.tokens
           .map((token, index) => {
             const tokenElement = availableTokenData.find((t) => t.tokenAddress.toLowerCase() === token.toLowerCase())
             if (!tokenElement) return new BigDecimal(0n, 18)
@@ -62,8 +62,8 @@ const Deposit = ({ vote }: DepositProps) => {
           .reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
         pushExternal.push(usdValueExternal)
       })
-      let b = vote.voteTableElement.map((reward) => {
-        let usdValueExternal = reward.rewardPair.internalBribeReward.tokens
+      const b = vote.voteTableElement.map((reward) => {
+        const usdValueExternal = reward.rewardPair.internalBribeReward.tokens
           .map((token, index) => {
             const tokenElement = availableTokenData.find((t) => t.tokenAddress.toLowerCase() === token.toLowerCase())
             if (!tokenElement) return new BigDecimal(0n, 18)
@@ -75,8 +75,8 @@ const Deposit = ({ vote }: DepositProps) => {
           .reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
         pushInternal.push(usdValueExternal)
       })
-      let totalExternal = pushExternal?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
-      let totalInternal = pushInternal?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
+      const totalExternal = pushExternal?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
+      const totalInternal = pushInternal?.reduce((a, b) => b.add(a), new BigDecimal(0n, 18))
       EXCHANGE_LIST[0].amount = `$ ${totalInternal.toString()}`
       EXCHANGE_LIST[1].amount = `$ ${totalExternal.toString()}`
       EXCHANGE_LIST[2].amount = `$ ${totalInternal.add(totalExternal).toString()}`

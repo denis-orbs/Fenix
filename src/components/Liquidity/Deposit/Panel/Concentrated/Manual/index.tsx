@@ -550,7 +550,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }
 
   const getFromAmount0 = (value: any, dec1: any, dec2: any) => {
-    let x = Position.fromAmount0({
+    const x = Position.fromAmount0({
       pool: pool[1] as unknown as Pool,
       tickLower: lowerTick,
       tickUpper: higherTick,
@@ -561,7 +561,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }
 
   const getFromAmount1 = (value: any, dec1: any, dec2: any) => {
-    let x = Position.fromAmount1({
+    const x = Position.fromAmount1({
       pool: pool[1] as unknown as Pool,
       tickLower: lowerTick,
       tickUpper: higherTick,

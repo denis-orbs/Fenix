@@ -38,7 +38,7 @@ const config: Config = {
             width: '100%',
           },
         },
-        'notification': {
+        notification: {
           '0%': { transform: 'translateX(0)' },
           '20%': { transform: 'translateX(-1.2px)' },
           '40%': { transform: 'translateX(1.2px)' },
@@ -53,7 +53,7 @@ const config: Config = {
 
         'toast-in': 'toast-in 250ms linear',
         progress: 'progress 3s linear',
-        'notification': 'notification 2s infinite alternate'
+        notification: 'notification 2s infinite alternate',
       },
       backgroundImage: {
         // Gradients

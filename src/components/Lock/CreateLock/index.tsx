@@ -56,9 +56,9 @@ const CreateLock = () => {
 
   const fetchBalanceFnx = async () => {
     if (address && chainId) {
-      let bal = (await fetchTokenBalance(FENIX_ADDRESS[chainId] as Address, address)) as bigint
+      const bal = (await fetchTokenBalance(FENIX_ADDRESS[chainId] as Address, address)) as bigint
       setFnxBalance(fromWei(BigInt(bal).toString()))
-      let tokenAllow = await getTokenAllowance(
+      const tokenAllow = await getTokenAllowance(
         address,
         FENIX_ADDRESS[chainId] as Address,
         VOTING_ESCROW_ADDRESS[chainId] as Address

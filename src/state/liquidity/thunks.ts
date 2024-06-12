@@ -310,7 +310,7 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
 
     const data2 = await fetchV3PoolDayData()
     if (chainId) {
-      let tokens = await fetchTokens(chainId)
+      const tokens = await fetchTokens(chainId)
 
       // const weekFeesUsd = data2.pools.forEach((pool: any) => {
       //

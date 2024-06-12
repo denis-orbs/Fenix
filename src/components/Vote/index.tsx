@@ -163,7 +163,7 @@ const Vote = () => {
         const token0Symbol = pairToken0Details ? pairToken0Details.symbol : pair.token0_symbol
         const token1Symbol = pairToken1Details ? pairToken1Details.symbol : pair.token1_symbol
 
-        let voteDollarValue =
+        const voteDollarValue =
           ((usdValueExternal.toRoundedFloat() + usdValueInternal.toRoundedFloat()) /
             (parsedVoteWeight.toRoundedFloat() + currentVotingAmount.toRoundedFloat())) *
           currentVotingAmount.toRoundedFloat()
@@ -180,7 +180,7 @@ const Vote = () => {
           //
           // }
           if (reward.totalVotesOnGauge > 0n) {
-            let totalVotesOnGaugeBigDecimal = new BigDecimal(reward.totalVotesOnGauge, 18)
+            const totalVotesOnGaugeBigDecimal = new BigDecimal(reward.totalVotesOnGauge, 18)
               .mulNumber(chrTokenPrice)
               .toRoundedFloat()
 
