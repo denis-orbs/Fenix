@@ -19,7 +19,7 @@ const CreateReferral = () => {
     handleCopyReferralLink()
     setTimeout(() => {
       const textToTweet = encodeURIComponent(
-        'Check out this cool referral link: ' + 'https://www.fenixfinance.io/?referrer=' + referralCode
+        'Use my referral link to get 5% extra Fenix Rings: ' + 'https://www.fenixfinance.io/?referrer=' + referralCode
       )
       window.open('https://twitter.com/intent/tweet?text=' + textToTweet, '_blank')
     }, 600)
@@ -59,33 +59,37 @@ const CreateReferral = () => {
     ;(document.querySelector('#ReferralInput') as HTMLInputElement)?.focus()
   }, [])
 
-  const validateCode = async (code: string) => {
-    if (!code) {
-      setErrorMessage('')
-      return
-    }
-    setErrorMessage('')
-    const isCodeFormatValid = /^[a-zA-Z0-9-]+$/.test(code)
-    if (!isCodeFormatValid) {
-      setErrorMessage('Code can only contain letters, numbers, and dashes')
-      return
-    }
-    let codeIsFree = true
-    try {
-      codeIsFree = await Fuul.isAffiliateCodeFree(createAffiliateCodeValue)
-      if (codeIsFree === false) {
-        setErrorMessage('This code is already taken')
+  useEffect(() => {
+    const validateCode = async (code: string) => {
+      if (!code) {
+        setErrorMessage('')
         return
       }
-    } catch (error) {
-      setErrorMessage('This code is already taken')
-    }
+      setErrorMessage('')
+      const isCodeFormatValid = /^[a-zA-Z0-9-]+$/.test(code)
+      if (!isCodeFormatValid) {
+        setErrorMessage('Code can only contain letters, numbers, and dashes')
+        return
+      }
+      let codeIsFree = true
+      try {
+        codeIsFree = await Fuul.isAffiliateCodeFree(createAffiliateCodeValue)
+        if (codeIsFree === false) {
+          setErrorMessage('This code is already taken')
+          return
+        }
+      } catch (error) {
+        console.log(error)
+        setErrorMessage('This code is already taken')
+      }
 
-    setErrorMessage('')
-  }
-  const debouncedCodeValue = useDebounce(createAffiliateCodeValue, 500)
+      setErrorMessage('')
+    }
+    if (createAffiliateCodeValue) {
+      validateCode(createAffiliateCodeValue)
+    }
+  }, [createAffiliateCodeValue])
   const createAffiliateCode = async () => {
-    //
     if (!account) return
 
     const message = `I confirm that I am creating the ${createAffiliateCodeValue} code on Fuul`
@@ -122,7 +126,6 @@ const CreateReferral = () => {
                 value={createAffiliateCodeValue}
                 onChange={(e) => {
                   setCreateAffiliateCodeValue(e.target.value)
-                  validateCode(e.target.value)
                 }}
                 placeholder="Write your custom referral code here"
                 id="ReferralInput"

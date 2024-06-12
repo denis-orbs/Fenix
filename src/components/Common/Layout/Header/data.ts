@@ -16,6 +16,7 @@ export const MENU_LINKS = [
     href: '/liquidity',
     new: false,
   },
+
   // {
   //   name: 'Vote',
   //   href: '/vote',
@@ -39,6 +40,11 @@ export const MENU_LINKS = [
   {
     name: 'Fenix Rings',
     href: '/points-program',
+    new: false,
+  },
+  {
+    name: 'Referrals',
+    href: '/referrals',
     new: true,
   },
 ]
