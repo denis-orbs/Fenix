@@ -50,15 +50,15 @@ const Header = () => {
         </div>
 
         <div
-          className={`${pathname === '/' ? 'flex  justify-center  items-center' : 'w-full relative flex justify-center relative z-50 max-xl:mr-auto max-2xl:mr-[20px]'} `}
+          className={`${pathname === '/' ? 'flex justify-center items-center' : 'w-full relative flex justify-center z-50 max-xl:mr-auto max-2xl:mr-[20px]'} `}
         >
           <Menu />
-          {width < 1380 && <Toggle onClick={handleShowSubMenu} />}
+          {/* {width < 1380 && <Toggle onClick={handleShowSubMenu} />} */}
           <SubMenu showMenu={showSubMenu} setShowMenu={setShowSubMenu} />
         </div>
 
         <div
-          className={`flex  z-50 items-center gap-3.5  ${width < 860 ? 'px-1' : 'px-5'} 
+          className={`flex z-50 items-center gap-3.5  ${width < 860 ? 'px-1' : 'px-5'} 
           h-[95px]
           ${pathname === '/' ? 'absolute right-0 w-full justify-end' : 'w-full justify-center'}`}
         >
