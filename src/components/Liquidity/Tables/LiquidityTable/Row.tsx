@@ -58,7 +58,7 @@ const RowData = ({
   if (aprIchi && aprIchi?.length > 0 && aprIchi[0]) {
     if (aprIchi[0].hasOwnProperty('apr')) aprdisplayIchi = aprIchi[0]?.apr[1]?.apr?.toFixed(0)
   }
-
+  console.log('row >> ', row)
   const { data: ichiApr, isLoading: ichiAprLoading } = useQuery({
     queryKey: ['ichiApr', row?.id],
     staleTime: 1000 * 60 * 20,
