@@ -118,17 +118,17 @@ const PointSummary = ({ userData }: any) => {
       <div className="flex flex-col xl:flex-row items-center justify-between gap-5 xl:gap-20 relative z-20">
         <div className="point-summary-box" onMouseLeave={() => setShowNTFBoostInfo(false)}>
           <p
-            className="text-base mb-2 text-white w-full text-left relative cursor-pointer"
+            className="text-base mb-2 text-white flex items-center w-full gap-2 text-left relative cursor-pointer"
             onClick={() => setShowNTFBoostInfo(true)}
           >
             Rings{' '}
-            <span className="ml-1 text-xs bg-orange-800 text-orange-100 px-1 py-px rounded-md">
-              {nftBoost && nftBoost > 0 ? '🔥' : '🥶'}{' '}
+            <span className="text-xs flex items-center bg-shark-400 border border-shark-100 gap-2 text-white font-normal px-5 py-1 rounded-md">
+              <Image src="/static/images/tokens/blackFNX.svg" alt='Black FNX' width={10} height={10} className='w-[1.25rem]  h-[1.25rem] ml-[-4px]'></Image>
               {nftBoost ? Math.min(Number(nftBoost), MAX_NFT_BOOST).toString() : '0'}% NFT Boost
-              <span className="icon-info ml-1"></span>
+              {/* <span className="icon-info ml-1"></span> */}
             </span>
             <div
-              className={`box-fenix-goldies cursor-default absolute left-[-70px] max-lg:left-1/2 max-lg:-translate-x-1/2 top-8 px-4 py-2
+              className={`box-fenix-goldies cursor-default absolute left-[-60px] max-lg:left-1/2 max-lg:-translate-x-1/2 top-8 px-4 py-2
                text-white text-xs w-[360px] flex flex-col items-center ${showNTFBoostInfo ? 'block' : 'hidden'}`}
             >
               <div className="flex items-center flex-col mx-auto gap-2 mt-4 justify-center z-[500]">
