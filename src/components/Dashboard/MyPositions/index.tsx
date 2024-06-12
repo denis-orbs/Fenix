@@ -28,6 +28,7 @@ const MyPositions = () => {
   // const isConnected = useStore((state) => state.isConnected)
   const { isConnected } = useActiveConnectionDetails()
 
+  console.log(position)
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
   }
@@ -85,6 +86,8 @@ const MyPositions = () => {
       return response.json()
     },
   })
+
+
   return (
     <>
       {position.length !== 0 && loading === false && isLoadingRingsCampaign === false && address ? (
