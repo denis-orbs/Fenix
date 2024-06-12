@@ -201,7 +201,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                       </div>
                       <div className="flex flex-col items-end justify-start">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-transparent icon-wallet w-5 bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
+                          <span className="text-sm text-transparent w-4 icon-wallet bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text"></span>
                           {/* <p className="text-xs text-white">Balance: {token.balance}</p> */}
                           {/* todo fetch balance */}
                           <p className="text-xs text-white">
