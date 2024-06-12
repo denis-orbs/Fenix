@@ -97,6 +97,8 @@ export interface PairInfo {
   inactive_gauge?: boolean
 }
 export interface LiquidityTableElement {
+  id?: string
+  aprRings?: Number
   pairAddress: Address
   pairSymbol: string
   pairInformationV2?: PairInfo

@@ -27,7 +27,7 @@ const HeaderRow = ({
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
     : { text: '', className: 'w-[0%]', sortable: true }
-
+  console.log('HeaderRow', poolData)
   //
   return (
     <div className="relative">
