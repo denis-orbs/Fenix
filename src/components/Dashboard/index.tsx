@@ -19,7 +19,8 @@ const Dashboard = () => {
 
       {/* <StrategiesDCA /> */}
       <MyStrategies />
-      {/* <LiquidityPositions /> */}
+      <br></br>
+      <LiquidityPositions />
     </div>
   )
 }
