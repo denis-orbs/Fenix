@@ -48,6 +48,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   const [activePage, setActivePage] = useState<number>(1)
   const [isMinHover, setIsMinHover] = useState<boolean>(false)
   const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
+  const [showZeroPositions, setShowZeroPositions] = useState<boolean>(false)
   const { data: ringsCampaignsData } = useRingsCampaigns()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -63,7 +64,8 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
     return paginatedItems
   }
 
-  const pagination = paginate(data, activePage, itemsPerPage)
+  const nonZeroData = showZeroPositions ? data : data.filter((i) => (Number(i.liquidity) != 0) && (Number(i.depositedToken0 != 0) || (Number(i.depositedToken1 != 0))))
+  const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
   type priceClacualtionProps = {
     token0: {
