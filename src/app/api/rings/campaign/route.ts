@@ -334,7 +334,6 @@ export async function GET(request: NextRequest) {
     query: POOLSV2_LIST,
     fetchPolicy: 'cache-first',
   })
-  const tokenPrices = await TokenDataProvider.getTokenPrices()
 
   const tokenData = await TokenDataProvider.getTokenPrices()
   let poolData: any
@@ -375,7 +374,7 @@ export async function GET(request: NextRequest) {
 
     if (pool.extraPoints && pool.extraPoints.length > 0) {
       updatedPool.extraPoints = pool.extraPoints.map((extra) => {
-        const tokenPrice = tokenData.find((t) => t.tokenAddress.toLowerCase() === extra.tokenAddress.toLowerCase())
+        const tokenPrice = tokenData?.find((t) => t.tokenAddress.toLowerCase() === extra.tokenAddress.toLowerCase())
         return {
           ...extra,
           apr: poolData?.totalValueLockedUSD
