@@ -166,7 +166,7 @@ const Classic = ({
     } else {
       setButtonText('Create Position')
     }
-  }, [firstValue, secondValue, defaultPairs])
+  }, [defaultPairs])
 
   useEffect(() => {
     const asyncGetReserve = async () => {
@@ -198,7 +198,7 @@ const Classic = ({
 
     asyncGetReserve()
     asyncGetPair()
-  }, [firstToken, secondToken, depositType])
+  }, [firstToken, secondToken, depositType, pairAddress])
 
   useEffect(() => {
     const asyncGetAllowance = async () => {
