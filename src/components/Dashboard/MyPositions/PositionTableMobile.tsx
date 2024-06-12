@@ -94,20 +94,21 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
         {isMobile ? (
           <div className="m-2 flex flex-col sm:flex-row gap-2 justify-between items-center">
             <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
-            </div>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
+              {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
+              
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
+
             </div>
           </div>
         ) : (
           <>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
+          <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
+              
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
+
             </div>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
-            </div>
+            
           </>
         )}
       </>
@@ -176,9 +177,9 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#2AED8F" />
               </svg>
-              <span>In Range</span>
+              <span className='text-xs'>In Range</span>
             </div>
-            <span className="text-white">Pool price {currentPoolPrice}</span>
+            {/* <span className="text-white">Pool price {currentPoolPrice}</span> */}
           </div>
         ) : (
           <div className="text-red-600 text-sm flex justify-center items-center gap-2 flex-col">
@@ -186,9 +187,9 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#dc2626" />
               </svg>
-              <span>Out of Range</span>
+              <span className='text-xs'>Out of Range</span>
             </div>
-            <span className="text-white">Pool price {currentPoolPrice}</span>
+            {/* <span className="text-white">Pool price {currentPoolPrice}</span> */}
           </div>
         )}
       </>
@@ -300,7 +301,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
             return (
               <>
                 <div
-                  className={`border border-shark-950 px-3 py-2 rounded-[10px] bg-shark-400 ${
+                  className={`border border-shark-950 px-3 py-2 rounded-[10px] bg-shark-400 my-2 ${
                     isOpen ? 'bg-opacity-60' : 'bg-opacity-20'
                   } ${'xl:hidden'}`}
                 >
@@ -366,7 +367,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                           )}
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-white">Status</span>
+                          <span className="text-white text-sm">Status</span>
                           <SetStatus
                             token0={position.token0}
                             token1={position.token1}
@@ -411,30 +412,30 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                           />
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-white">TVL</span>
+                          <span className="text-white text-sm">TVL</span>
                           <div className="flex flex-col justify-center items-end">
                             <TvlTotal data={position} />
                             <span className="flex justify-center items-center gap-2">
                               <p className="flex gap-2 items-center">
-                                <Image
+                                {/* <Image
                                   src={`/static/images/tokens/${position.token0.symbol}.svg`}
                                   alt="token"
                                   className="rounded-full w-5 h-5"
                                   width={10}
                                   height={10}
-                                />
+                                /> */}
                                 <span className="text-xs text-white">
                                   {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
                                 </span>
                               </p>
                               <p className="flex gap-2 items-center">
-                                <Image
+                                {/* <Image
                                   src={`/static/images/tokens/${position.token1.symbol}.svg`}
                                   alt="token"
                                   className="rounded-full w-5 h-5"
                                   width={10}
                                   height={10}
-                                />
+                                /> */}
                                 <span className="text-xs text-white">
                                   {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
                                 </span>
@@ -443,7 +444,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                           </div>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-white">Action</span>
+                          <span className="text-white text-sm">Action</span>
                           <div className="flex items-center gap-2">
                             <Button
                               variant="tertiary"
@@ -461,7 +462,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                                 }
                               }}
                             >
-                              <span className="text-l">Manage</span>
+                              <span className="text-xs">Manage</span>
                             </Button>
                             {position.liquidity !== 'ichi' ? (
                               <>
@@ -474,7 +475,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                                     }
                                   }}
                                 >
-                                  <span className="text-l">Claim</span>
+                                  <span className="text-xs">Claim</span>
                                 </Button>
                               </>
                             ) : (

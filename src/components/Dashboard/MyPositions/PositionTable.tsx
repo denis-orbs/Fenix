@@ -97,55 +97,30 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       <>
         {isMobile ? (
           <div className="flex gap-2 justify-between">
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
+            <div className="px-2 py-1 text-[.625rem] leading-4  whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+             Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
+              {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
             </div>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+            {/* <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
               Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
-            </div>
+            </div> */}
           </div>
         ) : (
           <>
             <div
-              className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300"
-              onMouseEnter={() => setIsMinHover(true)}
-              onMouseLeave={() => setIsMinHover(false)}
+              className="relative px-2 py-1 text-[.625rem] leading-4  whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300"
             >
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
-              {/* {isMinHover && (
-                <Tooltip
-                  className={cn(
-                    'absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto top-1/2 -translate-y-1/2 px-5 py-3 xl:left-0',
-                  )}
-                  show={isMinHover}
-                  setShow={() => {}}
-                >
-                  {<div className='text-xs text-white text-opacity-75'>
-                    Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
-                  </div>}
-                </Tooltip>
-              )} */}
+              {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
             </div>
-            <div
+            {/* <div
               className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300"
-              onMouseEnter={() => setIsMaxHover(true)}
-              onMouseLeave={() => setIsMaxHover(false)}
-            >
-              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
-              {/* {isMaxHover && (
-                <Tooltip
-                  className={cn(
-                    'absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto top-1/2 -translate-y-1/2 px-5 py-3 xl:left-0',
-                  )}
-                  show={isMaxHover}
-                  setShow={() => {}}
-                >
-                  {<div className='text-xs text-white text-opacity-75'>
-                    Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
-                  </div>}
-                </Tooltip>
-              )} */}
-            </div>
+              
+            > */}
+              {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol} */}
+               {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}  */}
+            {/* </div> */}
           </>
         )}
       </>
@@ -216,9 +191,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#2AED8F" />
               </svg>
-              <span>In range</span>
+              <span className='text-xs'>In range</span>
             </div>
-            <span className="text-white">Pool price: {Number(currentPoolPrice)}</span>
+            {/* <span className="text-white">Pool price: {Number(currentPoolPrice)}</span> */}
           </div>
         ) : (
           <div className="text-red-600 text-sm flex-col flex justify-center items-start gap-1">
@@ -226,9 +201,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#dc2626" />
               </svg>
-              <span>Out of range</span>
+              <span className='text-xs'>Out of range</span>
             </div>
-            <span className="text-white">Pool price: {Number(currentPoolPrice)}</span>
+            {/* <span className="text-white">Pool price: {Number(currentPoolPrice)}</span> */}
           </div>
         )}
       </>
@@ -450,33 +425,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                         </TableCell>
                         <TableCell className="w-[15%] flex justify-end">
                           <div className="flex flex-col justify-center items-end">
-                            <TvlTotal data={position} />
-                            <span className="flex justify-center items-center gap-2">
-                              <p className="flex gap-2 items-center">
-                                <Image
-                                  src={`/static/images/tokens/${position.token0.symbol}.svg`}
-                                  alt="token"
-                                  className="rounded-full w-5 h-5"
-                                  width={10}
-                                  height={10}
-                                />
-                                <span className="text-xs">
+                            <TvlTotal data={position} />                             
+                             <span className="text-xs">
                                   {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
-                                </span>
-                              </p>
-                              <p className="flex gap-2 items-center">
-                                <Image
-                                  src={`/static/images/tokens/${position.token1.symbol}.svg`}
-                                  alt="token"
-                                  className="rounded-full w-5 h-5"
-                                  width={10}
-                                  height={10}
-                                />
-                                <span className="text-xs">
+                              </span>
+                              <span className="text-xs">
                                   {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
-                                </span>
-                              </p>
-                            </span>
+                              </span>
                           </div>
                         </TableCell>
                         <TableCell className="w-[20%] flex justify-end">
@@ -497,7 +452,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                 }
                               }}
                             >
-                              <span className="text-l">Manage</span>
+                              <span className="text-xs">Manage</span>
                             </Button>
                             {position.liquidity !== 'ichi' ? (
                               <>
@@ -510,7 +465,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                     }
                                   }}
                                 >
-                                  <span className="text-l">Claim</span>
+                                  <span className="text-xs">Claim</span>
                                 </Button>
                               </>
                             ) : (
