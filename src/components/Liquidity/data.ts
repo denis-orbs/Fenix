@@ -99,6 +99,7 @@ export const LRTS_POOLS = [
 export const BLUE_CHIPS_POOLS = [
   '0x1d74611f3ef04e7252f7651526711a937aa1f75e',
   '0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f',
+  '0xf4f76fc7ae409862eca9ffdb1767638e7dcd6e8b'
 ]
 
 export const STABLES_POOLS = [
