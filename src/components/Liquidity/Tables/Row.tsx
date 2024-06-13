@@ -18,7 +18,7 @@ interface RowDataProps {
 const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, activeRange }: RowDataProps) => {
   return (
     <>
-      <TableRow className="hidden 2xl:flex">
+      <TableRow className="hidden xl:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[30%]'}`}>
           <div className="flex items-center gap-2">
             <div className="flex items-center">
