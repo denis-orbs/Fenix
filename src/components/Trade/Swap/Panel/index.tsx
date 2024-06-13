@@ -469,7 +469,7 @@ const Panel = () => {
           inTokenAddress: tokenSell.address as Address,
           outTokenAddress: tokenGet.address as Address,
           amount: removeTrailingZeros(swapValue),
-          gasPrice: '3',
+          gasPrice: '6',
           slippage: slippage == 'Auto' ? '1' : removeTrailingZeros(slippage),
           account: account || zeroAddress,
         })
