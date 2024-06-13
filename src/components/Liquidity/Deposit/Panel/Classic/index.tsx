@@ -108,6 +108,9 @@ const Classic = ({
     address: pairAddress as Address,
     functionName: 'balanceOf',
     args: [useAccount().address],
+    query: {
+      refetchInterval: 1500
+    }
   })
   const updateTokenPrice = useCallback((data: any[], symbol: string) => {
     const foundToken = data.find((token) => token.basetoken.symbol === symbol)
@@ -149,13 +152,16 @@ const Classic = ({
   }
 
   useEffect(() => {
+    setlpBalance((lpTokenBalance?.data as bigint) || 0n)
+  }, [lpTokenBalance])
+
+  useEffect(() => {
     if (defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
       setIsLoading(false)
     }
 
-    setlpBalance((lpTokenBalance?.data as bigint) || 0n)
     if (
       account &&
       isConnected &&
