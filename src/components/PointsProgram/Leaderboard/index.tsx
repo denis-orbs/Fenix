@@ -53,8 +53,8 @@ const Leaderboard = () => {
       <div className="relative">
         <div className="flex items-center w-full mb-3">
           <span className="text-white w-[10%] text-center text-sm">Rank</span>
-          <span className="text-white w-[20%] text-sm">Ranking Addresses</span>
-          <span className="text-white w-[10%] text-sm text-center">Multiplier</span>
+          <span className="text-white w-[15%] text-sm">Ranking Addresses</span>
+          <span className="text-white w-[15%] text-sm text-center">Multiplier</span>
           <span className="text-white w-[20%] text-sm text-center">Gold Potential Rewards</span>
           <span className="text-white w-[20%] text-sm text-center">Fenix Gold Rings</span>
           <span
