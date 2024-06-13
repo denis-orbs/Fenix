@@ -157,6 +157,7 @@ const HeaderRow = ({
                 return {
                   ...pool,
                   aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+                  totalCampaigns: Number(totalCampaigns.find((add) => add.pairAddress.toLowerCase() === pool.id.toLowerCase())?.pointStack?.length) || 0,
                 }
               } else {
                 return {
@@ -200,6 +201,7 @@ const HeaderRow = ({
       }
     }
   }, [paginationResult])
+  console.log('paginationResult >> ', paginationResult)
 
   function compareBigDecimal(a: any, b: any) {
     return a - b
