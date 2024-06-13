@@ -9,6 +9,7 @@ import { useWindowSize } from 'usehooks-ts'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { fetchRingsPoolApr } from './getAprRings'
+import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 
 interface HeaderRowProps {
   loading: boolean
@@ -70,6 +71,11 @@ const HeaderRow = ({
         if (sort === 'asc') {
           const sortedPaginationResult = [...paginationResult]
           let sortArr: any = [...paginationResult]
+          if (sortIndex === 2) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.totalCampaigns), Number(b.totalCampaigns))
+            })
+          }
           if (sortIndex === 3) {
             sortArr = sortedPaginationResult.sort((a, b) => {
               return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
@@ -95,6 +101,11 @@ const HeaderRow = ({
         } else if (sort === 'desc') {
           const sortedPaginationResult = [...paginationResult]
           let sortArr: any = [...paginationResult]
+          if (sortIndex === 2) {
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.totalCampaigns), Number(a.totalCampaigns))
+            })
+          }
           if (sortIndex === 3) {
             sortArr = paginationResult.sort((a, b) => {
               return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
@@ -173,6 +184,7 @@ const HeaderRow = ({
                 return {
                   ...pool,
                   aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+                  totalCampaigns: Number(totalCampaigns.find((add) => add.pairAddress.toLowerCase() === pool.id.toLowerCase())?.pointStack?.length) || 0,
                 }
               } else {
                 return {
@@ -207,7 +219,7 @@ const HeaderRow = ({
                 sortable: false,
               },
               RANGE,
-              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right` },
+              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right`, sortable: true },
               { text: 'TVL', className: 'w-[13%] text-right', sortable: true },
               { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[13%]'} text-right`, sortable: true },
               {

@@ -211,6 +211,7 @@ export interface BasicPool {
   reserve1?: string
   totalSupply?: string
   aprRings?: string
+  totalCampaigns?: number
 }
 export interface BasicToken {
   id: string
