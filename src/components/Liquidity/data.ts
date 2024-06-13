@@ -106,6 +106,8 @@ export const STABLES_POOLS = [
   '0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d',
   '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
   '0xd0cd894c605a9eedacbc0fa9bd8440627a5d37b1',
+  '0xb5909f3c47557d0eef11503199fc12c1252ab15a',
+  '0xd49ad1dd6c5eae53abdafeaed1866330c42ccae4',
 ]
 
 export const BLAST_NATIVE_POOLS = [
