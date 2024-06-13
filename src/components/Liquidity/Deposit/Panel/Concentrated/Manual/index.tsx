@@ -119,6 +119,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
       setSecondValue('0')
     } else if (rangePrice2 != -1 && rangePrice1 > rangePrice2) {
       setButtonText("Min price can't be higher than max price")
+    } else if(lowerTick == higherTick) { 
+      setButtonText("The gap between min and max price is not enough")
     } else if (
       account &&
       isConnected &&
