@@ -86,7 +86,7 @@ export const boostedPools: BoostedPool[] = [
   },
   {
     pair: 'inETH/WETH',
-    points: 600_000,
+    points: 450_000,
     id: '0x46f2aa2aa7d31ddd237d620e52a33a8d5af2a5ab',
     apr: 0,
     poolType: 'v3',
@@ -107,7 +107,7 @@ export const boostedPools: BoostedPool[] = [
   },
   {
     pair: 'USD+/USDB',
-    points: 2_000_000,
+    points: 600_000,
     id: '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
     apr: 0,
     poolType: 'v3',
@@ -192,7 +192,7 @@ export const boostedPools: BoostedPool[] = [
   // },
   {
     pair: 'DOLA/USDB',
-    points: 400_000,
+    points: 420_000,
     id: '0xd49ad1dd6c5eae53abdafeaed1866330c42ccae4',
     apr: 0,
     poolType: 'v2',
