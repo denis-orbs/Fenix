@@ -67,10 +67,9 @@ const LiquidityPositions = () => {
 
     updateRingsApr()
   }, [poolsDataClassic, isSetRingsApr])
-  // console.log('poolsDataClassic', poolsDataClassic)
   return (
     <>
-      {poolsDataClassic.length !== 0 ? (
+      {poolsDataClassic.length > 0 ? (
         <div className="mb-10">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">Liquidity Positions</h1>
@@ -94,19 +93,20 @@ const LiquidityPositions = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-3 w-full lg:w-4/5 mx-auto">
-          <div className="text-white flex justify-between items-center flex-wrap">
-            <p className="flex gap-3 text-lg ms-2">Liquidity Positions</p>
-            <Button variant="tertiary" className="flex gap-2 !py-2" href="/liquidity">
-              <span className="icon-logout"></span>New Deposit
-            </Button>
-          </div>
-          <div className="box-dashboard p-6">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <TableSkeleton key={index} />
-            ))}
-          </div>
-        </div>
+        <></>
+        // <div className="flex flex-col gap-3 w-full lg:w-4/5 mx-auto">
+        //   <div className="text-white flex justify-between items-center flex-wrap">
+        //     <p className="flex gap-3 text-lg ms-2">Liquidity Positions</p>
+        //     <Button variant="tertiary" className="flex gap-2 !py-2" href="/liquidity">
+        //       <span className="icon-logout"></span>New Deposit
+        //     </Button>
+        //   </div>
+        //   <div className="box-dashboard p-6">
+        //     {Array.from({ length: 5 }).map((_, index) => (
+        //       <TableSkeleton key={index} />
+        //     ))}
+        //   </div>
+        // </div>
       )}
     </>
   )
