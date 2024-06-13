@@ -67,7 +67,7 @@ const LiquidityPositions = () => {
 
     updateRingsApr()
   }, [poolsDataClassic, isSetRingsApr])
-
+  // console.log('poolsDataClassic', poolsDataClassic)
   return (
     <>
       {poolsDataClassic.length !== 0 ? (
