@@ -52,8 +52,9 @@ const Leaderboard = () => {
       </div>
       <div className="relative">
         <div className="flex items-center w-full mb-3">
-          <span className="text-white w-36 text-center text-sm">#</span>
+          <span className="text-white w-36 text-center text-sm">Rank</span>
           <span className="text-white w-full text-sm">Ranking Addresses</span>
+          <span className="text-white w-full text-sm">Multiplier</span>
           <span
             className="text-white w-36 cursor-pointer text-center text-sm flex items-center justify-end gap-x-2 mr-4"
             onClick={() => handleSort()}

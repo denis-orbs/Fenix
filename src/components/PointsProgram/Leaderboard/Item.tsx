@@ -16,17 +16,17 @@ const Item = ({ data, isUser }: { data: RankingEntry; isUser: boolean }) => {
       </span>
       <span className="text-white w-full">
         <div className="flex items-center gap-4">
-          <Image
-            src="/static/images/points-program/orbit.svg"
-            alt="user"
-            width={40}
-            height={40}
-            className="w-10 h-10"
-          />
           <p className="text-sm max-w-[100px] xl:max-w-auto truncate">{data.id}</p>
         </div>
       </span>
-      <span className="text-white xl:w-36 text-center text-sm">
+      <span className="text-white flex items-center gap-3 xl:w-[200px] text-center text-sm">
+        <Image
+          src="/static/images/points-program/orbit.svg"
+          alt="user"
+          width={40}
+          height={40}
+          className="w-8 h-8"
+        />
         {formatAmount(data.accumulated_rings_points, 6, true)}
       </span>
     </div>

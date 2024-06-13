@@ -106,7 +106,9 @@ const MyStrategies = () => {
     // FIXME: STARK
     dispatch(setApr(position))
   }, [position, dispatch])
-
+  console.log('OPTIONS_STRATEGIES :>> ', OPTIONS_STRATEGIES)
+  console.log('position >> ', position)
+  console.log('tokens >> ', tokens)
   return (
     <>
       {/* {console.log('finalp', position)} */}

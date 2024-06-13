@@ -187,6 +187,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
     ringsCampaign?.boostedPools.find((pool: BoostedPool) => {
       return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
     })?.apr || 0
+    console.log('parseFloat(row?.apr) >> ', parseFloat(row?.apr))
   return (
     <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
       <div className="relative z-10">
