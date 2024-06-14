@@ -156,7 +156,7 @@ const HeaderRow = ({
               if (pool?.id) {
                 return {
                   ...pool,
-                  aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+                  aprRings: Number(await fetchRingsPoolApr(pool)) + (Number.isNaN(pool.apr) ? 0 : Number(pool?.apr)),
                   totalCampaigns: Number(totalCampaigns.find((add) => add.pairAddress.toLowerCase() === pool.id.toLowerCase())?.pointStack?.length) || 0,
                 }
               } else {
@@ -184,7 +184,7 @@ const HeaderRow = ({
               if (pool?.id) {
                 return {
                   ...pool,
-                  aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+                  aprRings: Number(await fetchRingsPoolApr(pool)) + (Number.isNaN(pool.apr) ? 0 : Number(pool?.apr)),
                   totalCampaigns: Number(totalCampaigns.find((add) => add.pairAddress.toLowerCase() === pool.id.toLowerCase())?.pointStack?.length) || 0,
                 }
               } else {
