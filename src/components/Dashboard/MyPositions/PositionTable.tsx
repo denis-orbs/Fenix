@@ -34,9 +34,10 @@ interface MyPositionssProps {
   data: positions[]
   tokens: Token[]
   ringsCampaign: RingCampaignData
+  showDust?: boolean
 }
 
-const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionssProps) => {
+const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, showDust }: MyPositionssProps) => {
   const router = useRouter()
   const [isInRange, setIsInRange] = useState(false)
 
@@ -48,7 +49,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   const [activePage, setActivePage] = useState<number>(1)
   const [isMinHover, setIsMinHover] = useState<boolean>(false)
   const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
-  const [showZeroPositions, setShowZeroPositions] = useState<boolean>(false)
+  const [tvlPosition, setTvlPosition] = useState<any>([])
   const { data: ringsCampaignsData } = useRingsCampaigns()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -64,7 +65,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
     return paginatedItems
   }
 
-  const nonZeroData = showZeroPositions ? data : data.filter((i) => (Number(i.liquidity) > 0.001) && (Number(i.depositedToken0 != 0) || (Number(i.depositedToken1 != 0))))
+  const nonZeroData = showDust ? data : data.filter((i) => {
+    return (Number(tvlPosition[i.id]) > 0.1)
+  })
   const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
   type priceClacualtionProps = {
@@ -237,29 +240,35 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
     )
   }
 
-  const TvlTotal = ({ data }: any) => {
+  const TvlTotalValue = (data: any) => {
     const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
+    const tvl = 
+      Number(data?.depositedToken0) *
+        Number(
+          tokens.find(
+            (e) =>
+              e.tokenAddress.toLowerCase() ===
+              (data.liquidity === 'ichi' ? ichitokens.tokenA.toLowerCase() : data?.token0?.id.toLowerCase())
+          )?.priceUSD
+        ) +
+        Number(data?.depositedToken1) *
+          Number(
+            tokens.find(
+              (e) =>
+                e.tokenAddress.toLowerCase() ===
+                (data.liquidity === 'ichi' ? ichitokens.tokenB.toLowerCase() : data?.token1?.id.toLowerCase())
+            )?.priceUSD
+          )
+      
+    tvlPosition[data.id] = tvl
+    return formatDollarAmount(tvl)
+  }
+
+  const TvlTotal = ({ data }: any) => {
     return (
       <>
         <p className="text-xs text-white mb-1">
-          {formatDollarAmount(
-            Number(data?.depositedToken0) *
-              Number(
-                tokens.find(
-                  (e) =>
-                    e.tokenAddress.toLowerCase() ===
-                    (data.liquidity === 'ichi' ? ichitokens.tokenA.toLowerCase() : data?.token0?.id.toLowerCase())
-                )?.priceUSD
-              ) +
-              Number(data?.depositedToken1) *
-                Number(
-                  tokens.find(
-                    (e) =>
-                      e.tokenAddress.toLowerCase() ===
-                      (data.liquidity === 'ichi' ? ichitokens.tokenB.toLowerCase() : data?.token1?.id.toLowerCase())
-                  )?.priceUSD
-                )
-          )}
+          {TvlTotalValue(data)}
         </p>
       </>
     )
@@ -335,7 +344,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
             ]}
             setSort={() => {}}
             setSortIndex={() => {}}
-            sort={null}
+            sort={"normal"}
             sortIndex={1}
           />
 
@@ -529,7 +538,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                 <div className="items-center hidden xl:flex">
                   <Pagination
                     className="mx-auto"
-                    numberPages={Math.ceil(data.length / itemsPerPage)}
+                    numberPages={Math.ceil(nonZeroData.length / itemsPerPage)}
                     activePage={activePage}
                     itemsPerPage={itemsPerPage}
                     setActivePage={setActivePage}
@@ -537,13 +546,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                   />
                   <div className=" hidden">
                     <PaginationMobile
-                      count={data.length}
+                      count={nonZeroData.length}
                       itemsPerPage={itemsPerPage}
                       setItemPerPage={setItemPerPage}
                       activePage={activePage}
                       setActivePage={setActivePage}
                       className="mx-auto"
-                      numberPages={Math.ceil(data.length / itemsPerPage)}
+                      numberPages={Math.ceil(nonZeroData.length / itemsPerPage)}
                     />
                   </div>
                 </div>
