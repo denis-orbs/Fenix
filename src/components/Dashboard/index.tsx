@@ -16,11 +16,10 @@ const Dashboard = () => {
       <MyNest />
       <VotingRewards /> */}
       <MyPositions />
-
+      <LiquidityPositions />
       {/* <StrategiesDCA /> */}
       <MyStrategies />
       <br></br>
-      <LiquidityPositions />
     </div>
   )
 }
