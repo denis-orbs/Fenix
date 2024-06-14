@@ -101,7 +101,7 @@ const MyPositions = () => {
           </div>
           <div className="dashboard-box flex-col xl:flex-row">
             <PositionTable data={position} tokens={tokens} ringsCampaign={ringsCampaign} showDust={activeSwitch} />
-            <PositionTableMobile data={position} tokens={tokens} ringsCampaign={ringsCampaign} />
+            <PositionTableMobile data={position} tokens={tokens} ringsCampaign={ringsCampaign} showDust={activeSwitch} />
           </div>
         </div>
       ) : (position.length === 0 && loading === false && isLoadingRingsCampaign === false) || address === undefined ? (

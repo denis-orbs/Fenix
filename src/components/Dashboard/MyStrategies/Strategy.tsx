@@ -188,6 +188,8 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
       return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
     })?.apr || 0
   return (
+    (((Number(row?.depositedToken0) * Number(tokens.find((e) => e.tokenAddress.toLowerCase() ===(row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase()))?.priceUSD)) +
+      (Number(row?.depositedToken1) * Number(tokens.find((e) =>e.tokenAddress.toLowerCase() ===(row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase()))?.priceUSD)) > 0.1)) ?
     <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
       <div className="relative z-10">
         <div className="relative text-white flex flex-col">
@@ -373,7 +375,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           )}
         </div>
       </div>
-    </div>
+    </div> : <></>
   )
 }
 

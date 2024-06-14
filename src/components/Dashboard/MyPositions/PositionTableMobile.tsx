@@ -30,9 +30,10 @@ interface MyPositionsMobileProps {
   data: positions[]
   tokens: Token[]
   ringsCampaign: RingCampaignData
+  showDust?: boolean
 }
 
-const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionsMobileProps) => {
+const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampaign, showDust }: MyPositionsMobileProps) => {
   const router = useRouter()
   const dispatch = useDispatch()
   const { writeContractAsync } = useWriteContract()
@@ -43,6 +44,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
   const [isInRange, setIsInRange] = useState<boolean>(true)
+  const [tvlPosition, setTvlPosition] = useState<any>([])
   const { data: ringsCampaignsData } = useRingsCampaigns()
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
@@ -59,7 +61,34 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     return paginatedItems
   }
 
-  const pagination = paginate(data, activePage, itemsPerPage)
+  const TvlTotalValue = (data: any) => {
+    const tvl = 
+      Number(data?.depositedToken0) *
+        Number(
+          tokens.find(
+            (e) =>
+              e.tokenAddress.toLowerCase() ===
+              (data?.token0?.id.toLowerCase())
+          )?.priceUSD
+        ) +
+        Number(data?.depositedToken1) *
+          Number(
+            tokens.find(
+              (e) =>
+                e.tokenAddress.toLowerCase() ===
+                (data?.token1?.id.toLowerCase())
+            )?.priceUSD
+          )
+      
+    tvlPosition[data.id] = tvl
+    return formatDollarAmount(tvl)
+  }
+
+  const nonZeroData = showDust ? data : data.filter((i) => {
+    return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
+  })
+
+  const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
   type priceClacualtionProps = {
     token0: {
@@ -196,28 +225,10 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   }
 
   const TvlTotal = ({ data }: any) => {
-    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
     return (
       <>
         <p className="text-xs text-white mb-1">
-          {formatDollarAmount(
-            Number(data?.depositedToken0) *
-              Number(
-                tokens.find(
-                  (e) =>
-                    e.tokenAddress.toLowerCase() ===
-                    (data.liquidity === 'ichi' ? ichitokens.tokenA.toLowerCase() : data?.token0?.id.toLowerCase())
-                )?.priceUSD
-              ) +
-              Number(data?.depositedToken1) *
-                Number(
-                  tokens.find(
-                    (e) =>
-                      e.tokenAddress.toLowerCase() ===
-                      (data.liquidity === 'ichi' ? ichitokens.tokenB.toLowerCase() : data?.token1?.id.toLowerCase())
-                  )?.priceUSD
-                )
-          )}
+          {TvlTotalValue(data)}
         </p>
       </>
     )
@@ -501,13 +512,13 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
               /> */}
               <div className="mx-auto">
                 <PaginationMobile
-                  count={data.length}
+                  count={nonZeroData.length}
                   itemsPerPage={itemsPerPage}
                   setItemPerPage={setItemPerPage}
                   activePage={activePage}
                   setActivePage={setActivePage}
                   className="mx-auto"
-                  numberPages={Math.ceil(data.length / itemsPerPage)}
+                  numberPages={Math.ceil(nonZeroData.length / itemsPerPage)}
                 />
               </div>
             </div>

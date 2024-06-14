@@ -65,8 +65,31 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     return paginatedItems
   }
 
+  const TvlTotalValue = (data: any) => {
+    const tvl = 
+      Number(data?.depositedToken0) *
+        Number(
+          tokens.find(
+            (e) =>
+              e.tokenAddress.toLowerCase() ===
+              (data?.token0?.id.toLowerCase())
+          )?.priceUSD
+        ) +
+        Number(data?.depositedToken1) *
+          Number(
+            tokens.find(
+              (e) =>
+                e.tokenAddress.toLowerCase() ===
+                (data?.token1?.id.toLowerCase())
+            )?.priceUSD
+          )
+      
+    tvlPosition[data.id] = tvl
+    return formatDollarAmount(tvl)
+  }
+
   const nonZeroData = showDust ? data : data.filter((i) => {
-    return (Number(tvlPosition[i.id]) > 0.1)
+    return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
   })
   const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
@@ -240,35 +263,11 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     )
   }
 
-  const TvlTotalValue = (data: any) => {
-    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
-    const tvl = 
-      Number(data?.depositedToken0) *
-        Number(
-          tokens.find(
-            (e) =>
-              e.tokenAddress.toLowerCase() ===
-              (data.liquidity === 'ichi' ? ichitokens.tokenA.toLowerCase() : data?.token0?.id.toLowerCase())
-          )?.priceUSD
-        ) +
-        Number(data?.depositedToken1) *
-          Number(
-            tokens.find(
-              (e) =>
-                e.tokenAddress.toLowerCase() ===
-                (data.liquidity === 'ichi' ? ichitokens.tokenB.toLowerCase() : data?.token1?.id.toLowerCase())
-            )?.priceUSD
-          )
-      
-    tvlPosition[data.id] = tvl
-    return formatDollarAmount(tvl)
-  }
-
   const TvlTotal = ({ data }: any) => {
     return (
       <>
         <p className="text-xs text-white mb-1">
-          {TvlTotalValue(data)}
+          {tvlPosition[data.id] ? formatDollarAmount(tvlPosition[data.id]) : TvlTotalValue(data)}
         </p>
       </>
     )
