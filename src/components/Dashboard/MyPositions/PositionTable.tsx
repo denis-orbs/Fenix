@@ -64,7 +64,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
     return paginatedItems
   }
 
-  const nonZeroData = showZeroPositions ? data : data.filter((i) => (Number(i.liquidity) != 0) && (Number(i.depositedToken0 != 0) || (Number(i.depositedToken1 != 0))))
+  const nonZeroData = showZeroPositions ? data : data.filter((i) => (Number(i.liquidity) > 0.01) && (Number(i.depositedToken0 != 0) || (Number(i.depositedToken1 != 0))))
   const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
   type priceClacualtionProps = {
