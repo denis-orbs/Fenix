@@ -240,22 +240,19 @@ const HeaderRow = ({
           ) : (
             pagination.map((row, index) => (
               <>
-                {row.id !== '0x8c22d23ec102c9e098c8e0b9ed4ea01aa0b4be35' &&
-                row.id !== '0x3c7fd63cab763a10b2754b1464e09d37a9fc79e7' ? (
-                  <>
-                    <Fragment key={index}>
-                      <Row
-                        row={row}
-                        tokensData={null}
-                        activeRange={activeRange}
-                        titleHeader={titleHeader}
-                        titleHeader2={titleHeader2}
-                        titleButton={titleButton}
-                        titleButton2={titleButton2}
-                      />
-                    </Fragment>
-                  </>
-                ) : null}
+                <>
+                  <Fragment key={index}>
+                    <Row
+                      row={row}
+                      tokensData={null}
+                      activeRange={activeRange}
+                      titleHeader={titleHeader}
+                      titleHeader2={titleHeader2}
+                      titleButton={titleButton}
+                      titleButton2={titleButton2}
+                    />
+                  </Fragment>
+                </>
               </>
             ))
           )}
