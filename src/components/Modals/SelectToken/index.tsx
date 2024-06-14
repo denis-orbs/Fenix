@@ -30,14 +30,17 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   )
   const { address, chainId } = useAccount()
 
-  const handlerClose = () => setOpenModal(false)
+  const handlerClose = () => {
+    setSearchValue('')
+    setOpenModal(false)
+  }
 
   const handlerSelectToken = (token: IToken) => {
     //
     setToken(token)
     // settoken0(token0Data?.address)
     // settoken1(token1Data?.address)
-    setOpenModal(false)
+    handlerClose()
   }
 
   useEffect(() => {
