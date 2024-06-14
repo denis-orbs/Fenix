@@ -359,12 +359,28 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
         const feesToken1 = (Number(pool.volumeToken1) * feePercentage) / 100
 
         const feeUsd =
-          feesToken0 * Number(tokens.find((t) => t.tokenAddress === pool.token0.id)?.priceUSD) +
-          feesToken1 * Number(tokens.find((t) => t.tokenAddress === pool.token1.id)?.priceUSD)
+          feesToken0 *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token0.id.toLowerCase())?.priceUSD) +
+          feesToken1 *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token1.id.toLowerCase())?.priceUSD)
 
         const volumeUSD =
-          Number(pool.volumeToken0) * Number(tokens.find((t) => t.tokenAddress === pool.token0.id)?.priceUSD) +
-          Number(pool.volumeToken1) * Number(tokens.find((t) => t.tokenAddress === pool.token1.id)?.priceUSD)
+          Number(pool.volumeToken0) *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token0.id.toLowerCase())?.priceUSD) +
+          Number(pool.volumeToken1) *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token1.id.toLowerCase())?.priceUSD)
+
+        console.log(
+          Number(pool.volumeToken0),
+          Number(pool.volumeToken1),
+          Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token0.id.toLowerCase())?.priceUSD),
+          Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token1.id.toLowerCase())?.priceUSD),
+          volumeUSD,
+          'volumeUSD',
+          pool.id,
+          pool.token0.symbol,
+          pool.token1.symbol
+        )
 
         const tvl =
           Number(pool.reserve0) *
@@ -374,7 +390,7 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
 
         return {
           id: pool.id,
-          volumeUSD: volumeUSD,
+          volumeUSD: volumeUSD / 2,
           feesUSD: feeUsd,
           liquidity: pool.totalSupply,
           totalValueLockedUSD: tvl,
