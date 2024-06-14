@@ -37,67 +37,67 @@ export const totalCampaigns: Campaign[] = [
     blastGoldAmount: '3.000',
   },
   // {
-    //   multiplier: '🔥 Rings Boost',
-    //   pairAddress: '0xbcf0265f4bd3cb293b709fab0bf5c83c7eeb6b74',
-    //   pointStack: ['fenix-ring', 'blast'],
-    // },
-    {
-      multiplier: '🔥 Rings Boost',
-      pairAddress: '0x1eba6f6cfdb86e965040bf9e75d3ded9a3fd22a5',
-      pointStack: ['fenix-ring', 'blast', 'blast-gold'],
-      blastGoldAmount: '3.000',
-    },
-    {
-      multiplier: '🔥 Rings Boost',
-      pairAddress: '0x46f2aa2aa7d31ddd237d620e52a33a8d5af2a5ab',
-      pointStack: ['fenix-ring', 'blast', 'blast-gold'],
-      blastGoldAmount: '1.125',
-    },
-    {
-      multiplier: '🔥 Rings Boost',
-      pairAddress: '0x9304ba542df9bc61dd1c97c073ed35f81cab6149',
-      pointStack: ['fenix-ring', 'blast', 'blast-gold'],
-      blastGoldAmount: '3.750',
-    },
-    {
-      multiplier: '🔥 Rings Boost',
-      pairAddress: '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
-      pointStack: ['fenix-ring', 'blast', 'blast-gold'],
-      blastGoldAmount: '1.500',
-    },
-    // {
-      //   multiplier: '🔥 Rings Boost',
-      //   pairAddress: '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
-      //   pointStack: ['fenix-ring', 'blast'],
-      // },
-      {
-        multiplier: '🔥 Rings Boost',
-        pairAddress: '0xd0cd894c605a9eedacbc0fa9bd8440627a5d37b1',
-        pointStack: ['fenix-ring', 'blast', 'blast-gold'],
-        blastGoldAmount: '300',
-      },
-      {
-        multiplier: '🔥 Rings Boost',
-        pairAddress: '0x117106000ceb709ba3ec885027d111463204d6b6',
-        pointStack: ['fenix-ring', 'blast', 'blast-gold'],
-        blastGoldAmount: '750',
-      },
-      // {
-        //   multiplier: '🔥 Rings Boost',
-        //   pairAddress: '0xcf68cdfea89f9e6964d4c2bd8a42eba5da9f945d',
-        //   pointStack: ['fenix-ring', 'blast'],
-        // },
-        {
-          multiplier: '🔥 Rings Boost',
-          pairAddress: '0x886369748d1d66747b8f51ab38de00dea13f0101',
-          pointStack: ['fenix-ring', 'blast', 'fdao', 'blast-gold'],
-          blastGoldAmount: '938',
-        },
-        {
-          multiplier: '🔥 Rings Boost',
-          pairAddress: '0xd49ad1dd6c5eae53abdafeaed1866330c42ccae4',
-          pointStack: ['fenix-ring', 'blast', 'blast-gold'],
-          blastGoldAmount: '1.500',
+  //   multiplier: '🔥 Rings Boost',
+  //   pairAddress: '0xbcf0265f4bd3cb293b709fab0bf5c83c7eeb6b74',
+  //   pointStack: ['fenix-ring', 'blast'],
+  // },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x1eba6f6cfdb86e965040bf9e75d3ded9a3fd22a5',
+    pointStack: ['fenix-ring', 'blast', 'blast-gold'],
+    blastGoldAmount: '3.000',
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x46f2aa2aa7d31ddd237d620e52a33a8d5af2a5ab',
+    pointStack: ['fenix-ring', 'blast', 'blast-gold'],
+    blastGoldAmount: '1.125',
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x9304ba542df9bc61dd1c97c073ed35f81cab6149',
+    pointStack: ['fenix-ring', 'blast', 'blast-gold'],
+    blastGoldAmount: '3.750',
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
+    pointStack: ['fenix-ring', 'blast', 'blast-gold'],
+    blastGoldAmount: '1.500',
+  },
+  // {
+  //   multiplier: '🔥 Rings Boost',
+  //   pairAddress: '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
+  //   pointStack: ['fenix-ring', 'blast'],
+  // },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xd0cd894c605a9eedacbc0fa9bd8440627a5d37b1',
+    pointStack: ['fenix-ring', 'blast', 'blast-gold'],
+    blastGoldAmount: '300',
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x117106000ceb709ba3ec885027d111463204d6b6',
+    pointStack: ['fenix-ring', 'blast', 'blast-gold'],
+    blastGoldAmount: '750',
+  },
+  // {
+  //   multiplier: '🔥 Rings Boost',
+  //   pairAddress: '0xcf68cdfea89f9e6964d4c2bd8a42eba5da9f945d',
+  //   pointStack: ['fenix-ring', 'blast'],
+  // },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x886369748d1d66747b8f51ab38de00dea13f0101',
+    pointStack: ['fenix-ring', 'blast', 'fdao', 'blast-gold'],
+    blastGoldAmount: '938',
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0xd49ad1dd6c5eae53abdafeaed1866330c42ccae4',
+    pointStack: ['fenix-ring', 'blast', 'blast-gold'],
+    blastGoldAmount: '1.500',
   },
   // {
   //   multiplier: '🔥 Rings Boost',
@@ -219,9 +219,7 @@ export const getPointsDistributionTargetTimestamps = () => {
   const day = now.getUTCDate()
   // This is the hours where the cron that updates the points runs
   const times = [
-    '17:00:00', // 05:00 PM UTC
-    '01:00:00', // 01:00 AM UTC
-    '09:00:00', // 09:00 AM UTC
+    '19:00:00', // 05:00 PM UTC
   ]
 
   return times.map((time) => new Date(Date.UTC(year, month, day, ...time.split(':').map(Number))))
