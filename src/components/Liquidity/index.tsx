@@ -16,6 +16,7 @@ import {
   MEMES_POOLS,
   OPTIONS_FILTER,
   STABLES_POOLS,
+  CLASSIC,
   STEPS,
 } from './data'
 
@@ -41,6 +42,9 @@ const Liquidity = () => {
         setFilteredPools(combinedPools)
       } else if (currentTab === 'BLAST NATIVE') {
         const combinedPools = pools.filter((pool: BasicPool) => BLAST_NATIVE_POOLS.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
+      } else if (currentTab === 'CLASSIC') {
+        const combinedPools = pools.filter((pool: BasicPool) => CLASSIC.includes(pool.id.toLowerCase()))
         setFilteredPools(combinedPools)
       } else {
         setFilteredPools(pools)

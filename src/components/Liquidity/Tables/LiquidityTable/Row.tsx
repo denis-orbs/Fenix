@@ -101,6 +101,8 @@ const RowData = ({
     gammaVaults?.find((vault: GammaVault) => vault?.poolAddress?.toLowerCase() === row?.id?.toLowerCase())?.returns
       ?.weekly?.feeApr || null
 
+  // console.log('row >> ', row)
+  
   return (
     <>
       <TableRow className="hidden lg:flex">

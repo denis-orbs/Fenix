@@ -194,6 +194,7 @@ const HeaderRow = ({
   }
 
   const pagination = paginate(paginationResult, activePage, itemsPerPage)
+
   const { width } = useWindowSize()
   return (
     <div className="relative">
