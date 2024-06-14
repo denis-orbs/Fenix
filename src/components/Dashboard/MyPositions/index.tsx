@@ -28,6 +28,7 @@ const MyPositions = () => {
   // const isConnected = useStore((state) => state.isConnected)
   const { isConnected } = useActiveConnectionDetails()
 
+  console.log(position)
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
   }
@@ -85,14 +86,16 @@ const MyPositions = () => {
       return response.json()
     },
   })
+
+
   return (
     <>
       {position.length !== 0 && loading === false && isLoadingRingsCampaign === false && address ? (
         <div className="mb-10 mt-5">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">My Positions</h1>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
-              <span className="icon-logout "></span>Create position
+            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm flex gap-1 items-center" href="/liquidity">
+              <span className="icon-logout"/>Create position
             </Button>
           </div>
           <div className="dashboard-box flex-col xl:flex-row">
