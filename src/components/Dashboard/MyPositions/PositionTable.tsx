@@ -94,7 +94,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     setNonZeroData(showDust ? data : data.filter((i) => {
       return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
     }))
-  }, [data, showDust])
+  }, [data, showDust, tvlPosition])
   const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
   type priceClacualtionProps = {
