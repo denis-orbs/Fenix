@@ -100,7 +100,7 @@ const RowData = ({
   const gammaVaultApr =
     gammaVaults?.find((vault: GammaVault) => vault?.poolAddress?.toLowerCase() === row?.id?.toLowerCase())?.returns
       ?.weekly?.feeApr || null
-console.log('row >> ', row)
+
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -161,7 +161,7 @@ console.log('row >> ', row)
               <span ref={hoverRef} className="flex gap-2">
                 <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
-                    <>
+                    <div className='relative flex items-center'>
                       {campaign?.pointStack?.map((stack, index) => (
                         <Image
                           key={index}
@@ -200,38 +200,38 @@ console.log('row >> ', row)
                           }}
                         />
                       ))}
-                    </>
-                  )}
-                  {openTooltipGold && (
-                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
-                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                        <p className="text-xs">This pool will receive 50.000 Blast Gold from 13th - 25th of June</p>
-                      </div>
-                    </div>
-                  )}
-                  {openTooltipEigenLayer && (
-                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
-                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                        <p className="text-xs">
-                          Eigenlayer points will be distributed to liquidity providers in this pool
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  {openTooltipKelpMiles && (
-                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
-                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                        <p className="text-xs">wrsETH liquidity providers will earn 1x Kelp Miles from this pool</p>
-                      </div>
-                    </div>
-                  )}
-                  {openTooltipTurtleClub && (
-                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
-                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                        <p className="text-xs">
-                          Deposit liquidity to receive a 25% Turtle Points boost from Fenix Rings earned
-                        </p>
-                      </div>
+                      {openTooltipGold && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">This pool will receive {campaign?.blastGoldAmount} of Blast Gold till the 25th June</p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipEigenLayer && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              Eigenlayer points will be distributed to liquidity providers in this pool
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipKelpMiles && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">wrsETH liquidity providers will earn 1x Kelp Miles from this pool</p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipTurtleClub && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              Deposit liquidity to receive a 25% Turtle Points boost from Fenix Rings earned
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </span>
