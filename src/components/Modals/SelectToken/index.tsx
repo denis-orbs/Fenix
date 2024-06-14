@@ -31,7 +31,6 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   const { address, chainId } = useAccount()
 
   const handlerClose = () => {
-    setSearchValue('')
     setOpenModal(false)
   }
 
@@ -42,7 +41,9 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
     // settoken1(token1Data?.address)
     handlerClose()
   }
-
+  useEffect(() => {
+    setSearchValue('')
+  }, [openModal])
   useEffect(() => {
     const getList = async () => {
       try {
