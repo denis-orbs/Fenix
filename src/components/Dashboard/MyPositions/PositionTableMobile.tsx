@@ -42,7 +42,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
-  const [isInRange, setIsInRange] = useState<boolean>(true)
+
   const { data: ringsCampaignsData } = useRingsCampaigns()
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
@@ -170,7 +170,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     }
     return (
       <>
-        {isInRange ? (
+        {isInRangeAux ? (
           <div className="text-green-400 text-sm flex justify-center items-center gap-2 flex-col">
             <div className="flex items-center gap-x-1 justify-end ml-auto">
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -285,6 +285,8 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
       {pagination.length > 0 ? (
         <>
           {pagination.map((position: positions) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            const [isInRange, setIsInRange] = useState<boolean>(true)
             const fenixRingApr =
               ringsCampaign.boostedPools.find((pool) => {
                 return pool.id.toLowerCase() === position.pool.id.toLowerCase()

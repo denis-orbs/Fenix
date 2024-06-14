@@ -25,7 +25,8 @@ const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
-  const [position, setposition] = useState<positions[]>([])
+  // const [position, setposition] = useState<positions[]>([])
+  const [position, setposition] = useState<any[]>([])
   const [positionAmounts, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
   const [loading, setLoading] = useState(false)
@@ -52,6 +53,65 @@ const MyStrategies = () => {
     }
   }
   const { address } = useAccount()
+
+  const [allGamaData, setAllGamaData] = useState<any>()
+  const [userGamaData, setUserGamaData] = useState<any>()
+  const [finalGamaArr, setFinalGamaArr] = useState<any>()
+
+  const getAllGammaData = () => {
+    fetch(`https://wire2.gamma.xyz/fenix/blast/hypervisors/allData`)
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log('gammaAll', data)
+        const isEmpty = Object.keys(data).length === 0
+        if (!isEmpty) {
+          setAllGamaData(data)
+        } else setAllGamaData(null)
+      })
+      .catch((err) => console.log(err))
+  }
+
+  const getGammaAddressData = () => {
+    fetch(`https://wire2.gamma.xyz/fenix/blast/user/0x7C9457A775015Eee6e098Cb1a4Ba6CF9b0fDF3C0`)
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log('gamma', data)
+        const isEmpty = Object.keys(data).length === 0
+        if (!isEmpty) {
+          setUserGamaData(data)
+        } else setUserGamaData(null)
+      })
+      .catch((err) => console.log(err))
+  }
+
+  useEffect(() => {
+    getAllGammaData()
+    getGammaAddressData()
+  }, [])
+
+  useEffect(() => {
+    if (allGamaData !== (null || undefined) && userGamaData !== (null || undefined)) {
+      const newArr: any[] = []
+      for (const item in allGamaData) {
+        console.log('item', item, userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'].hasOwnProperty(item))
+        //should be accoundt address
+        if (userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'].hasOwnProperty(item)) {
+          const nestedObj = userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'][item]
+          const newObj = {
+            isGama: true,
+            ...allGamaData[item],
+            ...nestedObj,
+          }
+          newArr.push(newObj)
+        } else {
+          console.log('hit no')
+        }
+      }
+      if (newArr.length > 0) {
+        setposition((prev) => [...prev, ...newArr])
+      }
+    }
+  }, [allGamaData, userGamaData])
 
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
@@ -91,16 +151,16 @@ const MyStrategies = () => {
   // }, [address])
 
   const ichipositions = useIchiPositions()
-   useEffect(() => {
-     setLoading(true)
-     if (ichipositions.length > 0) {
-       setposition(ichipositions)
+  useEffect(() => {
+    setLoading(true)
+    if (ichipositions.length > 0) {
+      setposition((prev) => [...prev, ...ichipositions])
       //  setposition((prevPositions) => [...prevPositions, ...ichipositions])
-       setLoading(false)
-     } else if (ichipositions.length === 0) {
-       setLoading(false)
-     }
-   }, [ichipositions])
+      setLoading(false)
+    } else if (ichipositions.length === 0) {
+      setLoading(false)
+    }
+  }, [ichipositions])
 
   useEffect(() => {
     // FIXME: STARK
@@ -109,7 +169,7 @@ const MyStrategies = () => {
 
   return (
     <>
-      {/* {console.log('finalp', position)} */}
+      {console.log('finalp', position)}
       {position.length !== 0 && loading === false && address ? (
         <div className="relative">
           <div className="mb-4 flex w-[100%] items-center justify-between">
@@ -120,7 +180,7 @@ const MyStrategies = () => {
               <span className="icon-logout"></span>New strategy
             </Button>
           </div>
-          <div className="dashboard-box mb-10 hidden xl:block">
+          {/* <div className="dashboard-box mb-10 hidden xl:block">
             <Swiper
               spaceBetween={50}
               breakpoints={{
@@ -169,9 +229,9 @@ const MyStrategies = () => {
                 ></span>
               </div>
             )}
-          </div>
+          </div> */}
           <div className="dashboard-box mb-10 block xl:hidden">
-            <div className="">
+            {/* <div className="">
               {Array.from({ length: position.length }).map((_, index) => {
                 return (
                   <>
@@ -187,7 +247,7 @@ const MyStrategies = () => {
                   </>
                 )
               })}
-            </div>
+            </div> */}
           </div>
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
