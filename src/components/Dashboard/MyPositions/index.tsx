@@ -103,7 +103,7 @@ const MyPositions = () => {
       ) : (position.length === 0 && loading === false && isLoadingRingsCampaign === false) || address === undefined ? (
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">My Positions</p>
+            <p className="flex gap-3 text-lg ms-2">Concentrated Liquidity Positions</p>
             <Button
               variant="tertiary"
               className={`!py-3 xl:me-5 !text-xs !lg:text-sm ${isConnected === true ? '!block' : '!hidden'}`}
@@ -119,7 +119,7 @@ const MyPositions = () => {
       ) : (
         <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">My Positions</p>
+            <p className="flex gap-3 text-lg ms-2">Concentrated Liquidity Positions</p>
           </div>
           <div className="box-dashboard p-6 flex gap-8 justify-center items-center ">
             <p className="text-white text-sm flex items-center gap-3">
