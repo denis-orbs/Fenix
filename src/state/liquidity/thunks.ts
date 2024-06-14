@@ -362,6 +362,10 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
           feesToken0 * Number(tokens.find((t) => t.tokenAddress === pool.token0.id)?.priceUSD) +
           feesToken1 * Number(tokens.find((t) => t.tokenAddress === pool.token1.id)?.priceUSD)
 
+        const volumeUSD =
+          Number(pool.volumeToken0) * Number(tokens.find((t) => t.tokenAddress === pool.token0.id)?.priceUSD) +
+          Number(pool.volumeToken1) * Number(tokens.find((t) => t.tokenAddress === pool.token1.id)?.priceUSD)
+
         const tvl =
           Number(pool.reserve0) *
             Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token0.id.toLowerCase())?.priceUSD) +
@@ -370,7 +374,7 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
 
         return {
           id: pool.id,
-          volumeUSD: pool.volumeUSD,
+          volumeUSD: volumeUSD,
           feesUSD: feeUsd,
           liquidity: pool.totalSupply,
           totalValueLockedUSD: tvl,
