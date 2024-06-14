@@ -38,7 +38,6 @@ interface MyPositionssProps {
 
 const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionssProps) => {
   const router = useRouter()
-  const [isInRange, setIsInRange] = useState(false)
 
   const dispatch = useDispatch()
   const { writeContractAsync } = useWriteContract()
@@ -197,20 +196,18 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
     const currentPoolPrice = poolPriceData
       ? Number(poolPriceData?.price / 10 ** Number(token1.decimals)).toFixed(6)
       : '0'
-
     const isInRangeAux = useMemo(() => {
       return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
     }, [minPrice, maxPrice, currentPoolPrice, liquidity])
-
     useEffect(() => {
       setIsInRange(isInRangeAux)
-    }, [isInRangeAux, , setIsInRange])
+    }, [isInRangeAux, setIsInRange])
     if (isPoolPriceDataLoading) {
       return <Loader />
     }
     return (
       <>
-        {isInRange ? (
+        {isInRangeAux ? (
           <div className="text-green-400 text-sm flex-col flex justify-center items-start gap-1">
             <div className="flex items-center gap-x-1">
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -333,7 +330,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
             ]}
             setSort={() => {}}
             setSortIndex={() => {}}
-            sort={null}
+            sort={'normal'}
             sortIndex={1}
           />
 
@@ -341,6 +338,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
             <>
               <TableBody>
                 {pagination.map((position: positions) => {
+                  // console.log('each', isInRange, position)
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                  const [isInRange, setIsInRange] = useState<boolean>(false)
                   const fenixRingApr =
                     ringsCampaign.boostedPools.find((pool) => {
                       return pool.id.toLowerCase() === position.pool.id.toLowerCase()
