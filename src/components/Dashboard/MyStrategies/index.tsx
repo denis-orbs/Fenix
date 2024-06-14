@@ -56,7 +56,7 @@ const MyStrategies = () => {
 
   const [allGamaData, setAllGamaData] = useState<any>()
   const [userGamaData, setUserGamaData] = useState<any>()
-  const [finalGamaArr, setFinalGamaArr] = useState<any>()
+  const [finalGamaArr, setFinalGamaArr] = useState<any>(true)
 
   const getAllGammaData = () => {
     fetch(`https://wire2.gamma.xyz/fenix/blast/hypervisors/allData`)
@@ -90,17 +90,23 @@ const MyStrategies = () => {
   }, [])
 
   useEffect(() => {
-    if (allGamaData !== (null || undefined) && userGamaData !== (null || undefined)) {
+    if (allGamaData !== (null || undefined) && userGamaData !== (null || undefined) && finalGamaArr) {
       const newArr: any[] = []
       for (const item in allGamaData) {
-        console.log('item', item, userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'].hasOwnProperty(item))
+        // console.log('item', item, userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'].hasOwnProperty(item))
         //should be accoundt address
         if (userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'].hasOwnProperty(item)) {
           const nestedObj = userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'][item]
           const newObj = {
-            isGama: true,
-            ...allGamaData[item],
-            ...nestedObj,
+            liquidity: 'gamma',
+            id: item,
+            depositedToken0: nestedObj.balance0,
+            depositedToken1: nestedObj.balance1,
+            token0: allGamaData[item].token0,
+            token1: allGamaData[item].token1,
+            inRange: allGamaData[item].inRange,
+            // ...allGamaData[item],
+            // ...nestedObj,
           }
           newArr.push(newObj)
         } else {
@@ -109,6 +115,7 @@ const MyStrategies = () => {
       }
       if (newArr.length > 0) {
         setposition((prev) => [...prev, ...newArr])
+        setFinalGamaArr(!finalGamaArr)
       }
     }
   }, [allGamaData, userGamaData])
@@ -229,9 +236,9 @@ const MyStrategies = () => {
                 ></span>
               </div>
             )}
-          </div> */}
+          </div>
           <div className="dashboard-box mb-10 block xl:hidden">
-            {/* <div className="">
+            <div className="">
               {Array.from({ length: position.length }).map((_, index) => {
                 return (
                   <>
@@ -247,8 +254,8 @@ const MyStrategies = () => {
                   </>
                 )
               })}
-            </div> */}
-          </div>
+            </div>
+          </div> */}
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
       ) : (position.length === 0 && loading === false) || address === undefined ? (
