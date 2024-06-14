@@ -99,13 +99,6 @@ export const boostedPools: BoostedPool[] = [
     poolType: 'v3',
   },
   {
-    pair: 'USD+/WETH',
-    points: 600_000,
-    id: '0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d',
-    apr: 0,
-    poolType: 'v3',
-  },
-  {
     pair: 'USD+/USDB',
     points: 600_000,
     id: '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
