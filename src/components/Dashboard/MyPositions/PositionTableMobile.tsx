@@ -45,6 +45,8 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [openId, setOpenId] = useState<string>('')
   const [isInRange, setIsInRange] = useState<boolean>(true)
   const [tvlPosition, setTvlPosition] = useState<any>([])
+  const [nonZeroData, setNonZeroData] = useState<positions[]>([])
+
   const { data: ringsCampaignsData } = useRingsCampaigns()
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
@@ -84,9 +86,11 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     return formatDollarAmount(tvl)
   }
 
-  const nonZeroData = showDust ? data : data.filter((i) => {
-    return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
-  })
+  useEffect(() => {
+    setNonZeroData(showDust ? data : data.filter((i) => {
+      return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
+    }))
+  }, [data, showDust])
 
   const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 

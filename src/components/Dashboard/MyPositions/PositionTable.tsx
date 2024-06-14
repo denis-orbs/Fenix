@@ -50,6 +50,8 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
   const [isMinHover, setIsMinHover] = useState<boolean>(false)
   const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
   const [tvlPosition, setTvlPosition] = useState<any>([])
+  const [nonZeroData, setNonZeroData] = useState<positions[]>([])
+
   const { data: ringsCampaignsData } = useRingsCampaigns()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -88,9 +90,11 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     return formatDollarAmount(tvl)
   }
 
-  const nonZeroData = showDust ? data : data.filter((i) => {
-    return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
-  })
+  useEffect(() => {
+    setNonZeroData(showDust ? data : data.filter((i) => {
+      return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
+    }))
+  }, [data, showDust])
   const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
   type priceClacualtionProps = {
