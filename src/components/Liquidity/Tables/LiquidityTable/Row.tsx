@@ -203,7 +203,7 @@ const RowData = ({
                       {openTooltipGold && (
                         <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
                           <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                            <p className="text-xs">This pool will receive {campaign?.blastGoldAmount} Blast Gold from 13th - 25th of June</p>
+                            <p className="text-xs">This pool will receive {campaign?.blastGoldAmount} of Blast Gold till the 25th June</p>
                           </div>
                         </div>
                       )}
