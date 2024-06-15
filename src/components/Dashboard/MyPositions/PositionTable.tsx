@@ -37,6 +37,7 @@ interface MyPositionssProps {
 }
 
 const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionssProps) => {
+  console.log('dd', data.length)
   const router = useRouter()
 
   const dispatch = useDispatch()
@@ -47,6 +48,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   const [activePage, setActivePage] = useState<number>(1)
   const [isMinHover, setIsMinHover] = useState<boolean>(false)
   const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
+  const [isInRange, setIsInRange] = useState<boolean>(false)
   const { data: ringsCampaignsData } = useRingsCampaigns()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -340,7 +342,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                 {pagination.map((position: positions) => {
                   // console.log('each', isInRange, position)
                   // eslint-disable-next-line react-hooks/rules-of-hooks
-                  const [isInRange, setIsInRange] = useState<boolean>(false)
+
                   const fenixRingApr =
                     ringsCampaign.boostedPools.find((pool) => {
                       return pool.id.toLowerCase() === position.pool.id.toLowerCase()
