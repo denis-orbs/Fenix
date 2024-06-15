@@ -31,7 +31,7 @@ const MyStrategies = () => {
   const [tokens, setTokens] = useState<Token[]>([])
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState<number>(0)
-  const { chainId } = useAccount()
+  const { chainId, address } = useAccount()
 
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
@@ -52,7 +52,6 @@ const MyStrategies = () => {
       setProgress(swiperRef?.current?.progress)
     }
   }
-  const { address } = useAccount()
 
   const [allGamaData, setAllGamaData] = useState<any>()
   const [userGamaData, setUserGamaData] = useState<any>()
@@ -73,7 +72,7 @@ const MyStrategies = () => {
   }
 
   const getGammaAddressData = () => {
-    fetch(`https://wire2.gamma.xyz/fenix/blast/user/${address}`)
+    fetch(`https://wire2.gamma.xyz/fenix/blast/user/${address?.toLowerCase()}`)
       .then((res) => res.json())
       .then((data) => {
         // console.log('gamma', data)
@@ -86,18 +85,17 @@ const MyStrategies = () => {
   }
 
   useEffect(() => {
+    setposition([])
     getAllGammaData()
     getGammaAddressData()
   }, [address])
 
   useEffect(() => {
-    if (allGamaData !== (null || undefined) && userGamaData !== (null || undefined) && finalGamaArr && address) {
+    if (allGamaData != null && userGamaData != null && finalGamaArr && address) {
       const newArr: any[] = []
       for (const item in allGamaData) {
-        console.log('item', item, userGamaData[address].hasOwnProperty(item))
-        //should be accoundt address
-        if (userGamaData[address].hasOwnProperty(item)) {
-          const nestedObj = userGamaData[address][item]
+        if (userGamaData[address.toLowerCase()].hasOwnProperty(item)) {
+          const nestedObj = userGamaData[address.toLowerCase()][item]
           const newObj = {
             liquidity: 'gamma',
             id: item,
@@ -107,8 +105,6 @@ const MyStrategies = () => {
             token1: { id: allGamaData[item].token1 },
             inRange: allGamaData[item].inRange,
             apr: allGamaData[item].returns.monthly.feeApr,
-            // ...allGamaData[item],
-            // ...nestedObj,
           }
           newArr.push(newObj)
         } else {
@@ -120,7 +116,24 @@ const MyStrategies = () => {
         setFinalGamaArr(!finalGamaArr)
       }
     }
-  }, [allGamaData, userGamaData, address])
+  }, [allGamaData, userGamaData, address, finalGamaArr])
+
+  const ichipositions = useIchiPositions()
+  useEffect(() => {
+    setLoading(true)
+    if (ichipositions.length > 0) {
+      setposition((prev) => [...prev, ...ichipositions])
+      //  setposition((prevPositions) => [...prevPositions, ...ichipositions])
+      setLoading(false)
+    } else if (ichipositions.length === 0) {
+      setLoading(false)
+    }
+  }, [ichipositions])
+
+  useEffect(() => {
+    // FIXME: STARK
+    dispatch(setApr(position))
+  }, [position, dispatch])
 
   // const fetchpositions = async (address: Address) => {
   //   const positions = await fetchV3Positions(address)
@@ -158,23 +171,6 @@ const MyStrategies = () => {
   //   if (address) fetchpositions(address)
   //   setLoading(true)
   // }, [address])
-
-  const ichipositions = useIchiPositions()
-  useEffect(() => {
-    setLoading(true)
-    if (ichipositions.length > 0) {
-      setposition((prev) => [...prev, ...ichipositions])
-      //  setposition((prevPositions) => [...prevPositions, ...ichipositions])
-      setLoading(false)
-    } else if (ichipositions.length === 0) {
-      setLoading(false)
-    }
-  }, [ichipositions])
-
-  useEffect(() => {
-    // FIXME: STARK
-    dispatch(setApr(position))
-  }, [position, dispatch])
 
   return (
     <>
