@@ -65,6 +65,7 @@ const MyStrategies = () => {
         // console.log('gammaAll', data)
         const isEmpty = Object.keys(data).length === 0
         if (!isEmpty) {
+          console.log(data, 'setAllGamaData')
           setAllGamaData(data)
         } else setAllGamaData(null)
       })
@@ -72,7 +73,7 @@ const MyStrategies = () => {
   }
 
   const getGammaAddressData = () => {
-    fetch(`https://wire2.gamma.xyz/fenix/blast/user/0x7C9457A775015Eee6e098Cb1a4Ba6CF9b0fDF3C0`)
+    fetch(`https://wire2.gamma.xyz/fenix/blast/user/${address}`)
       .then((res) => res.json())
       .then((data) => {
         // console.log('gamma', data)
@@ -87,24 +88,25 @@ const MyStrategies = () => {
   useEffect(() => {
     getAllGammaData()
     getGammaAddressData()
-  }, [])
+  }, [address])
 
   useEffect(() => {
-    if (allGamaData !== (null || undefined) && userGamaData !== (null || undefined) && finalGamaArr) {
+    if (allGamaData !== (null || undefined) && userGamaData !== (null || undefined) && finalGamaArr && address) {
       const newArr: any[] = []
       for (const item in allGamaData) {
-        // console.log('item', item, userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'].hasOwnProperty(item))
+        console.log('item', item, userGamaData[address].hasOwnProperty(item))
         //should be accoundt address
-        if (userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'].hasOwnProperty(item)) {
-          const nestedObj = userGamaData['0x7c9457a775015eee6e098cb1a4ba6cf9b0fdf3c0'][item]
+        if (userGamaData[address].hasOwnProperty(item)) {
+          const nestedObj = userGamaData[address][item]
           const newObj = {
             liquidity: 'gamma',
             id: item,
             depositedToken0: nestedObj.balance0,
             depositedToken1: nestedObj.balance1,
-            token0: allGamaData[item].token0,
-            token1: allGamaData[item].token1,
+            token0: { id: allGamaData[item].token0 },
+            token1: { id: allGamaData[item].token1 },
             inRange: allGamaData[item].inRange,
+            apr: allGamaData[item].returns.monthly.feeApr,
             // ...allGamaData[item],
             // ...nestedObj,
           }
@@ -118,40 +120,40 @@ const MyStrategies = () => {
         setFinalGamaArr(!finalGamaArr)
       }
     }
-  }, [allGamaData, userGamaData])
+  }, [allGamaData, userGamaData, address])
 
-  const fetchpositions = async (address: Address) => {
-    const positions = await fetchV3Positions(address)
-    const nativePrice = await fetchNativePrice()
-    const positionsPoolAddresses = await positions.map((position: positions) => {
-      return {
-        id: position.pool.id,
-        liq: position.liquidity,
-        lower: position.tickLower.tickIdx,
-        higher: position.tickUpper.tickIdx,
-      }
-    })
-    const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
-    // TODO: Fetch APR for each position
-    const aprs = await Promise.all(
-      positions.map((position: positions, index: number) => {
-        return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
-      })
-    )
-    const final = positions.map((position: positions, index: number) => {
-      // console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
-      return {
-        ...position,
-        depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
-        depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
-        apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
-      }
-    })
-    const finalSorted = final.sort((a, b) => (Number(a.id) < Number(b.id) ? 1 : -1))
-    setposition((prevPositions) => [...prevPositions, ...finalSorted])
-    setpositionAmounts(amounts)
-    setLoading(false)
-  }
+  // const fetchpositions = async (address: Address) => {
+  //   const positions = await fetchV3Positions(address)
+  //   const nativePrice = await fetchNativePrice()
+  //   const positionsPoolAddresses = await positions.map((position: positions) => {
+  //     return {
+  //       id: position.pool.id,
+  //       liq: position.liquidity,
+  //       lower: position.tickLower.tickIdx,
+  //       higher: position.tickUpper.tickIdx,
+  //     }
+  //   })
+  //   const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
+  //   // TODO: Fetch APR for each position
+  //   const aprs = await Promise.all(
+  //     positions.map((position: positions, index: number) => {
+  //       return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
+  //     })
+  //   )
+  //   const final = positions.map((position: positions, index: number) => {
+  //     // console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
+  //     return {
+  //       ...position,
+  //       depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
+  //       depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
+  //       apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
+  //     }
+  //   })
+  //   const finalSorted = final.sort((a, b) => (Number(a.id) < Number(b.id) ? 1 : -1))
+  //   setposition((prevPositions) => [...prevPositions, ...finalSorted])
+  //   setpositionAmounts(amounts)
+  //   setLoading(false)
+  // }
   // useEffect(() => {
   //   if (address) fetchpositions(address)
   //   setLoading(true)
@@ -187,7 +189,7 @@ const MyStrategies = () => {
               <span className="icon-logout"></span>New strategy
             </Button>
           </div>
-          {/* <div className="dashboard-box mb-10 hidden xl:block">
+          <div className="dashboard-box mb-10 hidden xl:block">
             <Swiper
               spaceBetween={50}
               breakpoints={{
@@ -255,7 +257,7 @@ const MyStrategies = () => {
                 )
               })}
             </div>
-          </div> */}
+          </div>
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
       ) : (position.length === 0 && loading === false) || address === undefined ? (

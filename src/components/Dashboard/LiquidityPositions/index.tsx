@@ -67,7 +67,7 @@ const LiquidityPositions = () => {
     }
 
     updateRingsApr()
-  }, [poolsDataClassic, isSetRingsApr])
+  }, [poolsDataClassic, isSetRingsApr, address])
   return (
     <>
       {console.log('data', poolsDataClassic)}

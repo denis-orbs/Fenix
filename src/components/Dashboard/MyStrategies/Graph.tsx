@@ -73,7 +73,18 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
                flex items-center
               bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-2  rounded-sm  z-50"
               >
-                Position Managed by ichi
+                Position Managed by ICHI
+              </p>
+            </>
+          ) : row.liquidity === 'gamma' ? (
+            <>
+              <p
+                className="bg-shark-300 
+               h-[50px]
+               flex items-center
+              bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-2  rounded-sm  z-50"
+              >
+                Position Managed by GAMMA
               </p>
             </>
           ) : (
