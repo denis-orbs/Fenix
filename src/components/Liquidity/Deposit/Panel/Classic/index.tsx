@@ -109,8 +109,8 @@ const Classic = ({
     functionName: 'balanceOf',
     args: [useAccount().address],
     query: {
-      refetchInterval: 1500
-    }
+      refetchInterval: 1500,
+    },
   })
   const updateTokenPrice = useCallback((data: any[], symbol: string) => {
     const foundToken = data.find((token) => token.basetoken.symbol === symbol)
@@ -549,7 +549,7 @@ const Classic = ({
           </div>
           <div className="flex items-center gap-[5px] text-xs leading-normal">
             {/* <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]"> */}
-            <div className="text-white">Liquidity</div>
+            {/* <div className="text-white">Liquidity</div>
             <div className="flex items-center gap-2.5">
               <p className="flex flex-shrink-0 items-center gap-[5px] text-shark-100">
                 <Image
@@ -571,21 +571,21 @@ const Classic = ({
                 />
                 <span>{formatNumber(Number(secondReserve) / 1e18, 8)}</span>
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
 
         <div className="text-xs leading-normal text-white">
-          <div className="text-right md:mb-[5px]">APR</div>
+          {/* <div className="text-right md:mb-[5px]">APR</div> */}
 
-          <p className="border-1 rounded-[10px] border border-solid border-shark-300 bg-shark-400 bg-opacity-40 px-5 py-[5px]">
+          {/* <p className="border-1 rounded-[10px] border border-solid border-shark-300 bg-shark-400 bg-opacity-40 px-5 py-[5px]">
             {
               pairs?.find(
                 (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
               )?.apr
             }{' '}
             %
-          </p>
+          </p> */}
         </div>
       </div>
       <div className="mb-2.5 flex flex-wrap gap-1.5 rounded-[10px] border border-shark-950 bg-shark-400 bg-opacity-40 p-[13px] md:gap-2.5 md:px-[19px] md:py-[11px]">
