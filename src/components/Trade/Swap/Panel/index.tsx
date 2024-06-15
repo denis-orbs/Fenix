@@ -242,10 +242,13 @@ const Panel = () => {
         )
         return
       }
-      const gasLimit = ethers.BigNumber.from('100000')
+      const estimatedGas = await signer.estimateGas({
+        to: contractAddressList.open_ocean,
+        data: swapTransactionData,
+      })
       const txResponse = await signer.sendTransaction({
         to: contractAddressList.open_ocean,
-        // gasLimit: gasLimit,
+        gasLimit: estimatedGas.toBigInt(),
         data: swapTransactionData,
       })
 
@@ -477,7 +480,6 @@ const Panel = () => {
           inTokenAddress: tokenSell.address as Address,
           outTokenAddress: tokenGet.address as Address,
           amount: removeTrailingZeros(swapValue),
-          gasPrice: '6',
           slippage: slippage == 'Auto' ? '1' : removeTrailingZeros(slippage),
           account: account || zeroAddress,
         })
