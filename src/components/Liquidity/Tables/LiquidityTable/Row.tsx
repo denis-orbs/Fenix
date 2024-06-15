@@ -116,7 +116,7 @@ const RowData = ({
               <Image
                 src={`/static/images/tokens/${adjustToken0}.svg`}
                 alt="token"
-                className="rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
+                className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
