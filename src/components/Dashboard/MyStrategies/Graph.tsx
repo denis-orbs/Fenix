@@ -70,7 +70,11 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
               <p
                 className="bg-shark-300 
                h-[50px]
-               flex items-center
+               mx-auto
+               w-full
+               text-center
+               justify-center
+                 flex items-center
               bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-2  rounded-sm  z-50"
               >
                 Position Managed by ichi
