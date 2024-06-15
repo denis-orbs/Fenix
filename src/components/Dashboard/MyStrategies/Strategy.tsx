@@ -186,7 +186,9 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
   const ichiVaultData = ichiVaults.find((e) => e.id.toLowerCase() === row?.id.toLowerCase())
   const fenixRingApr =
     ringsCampaign?.boostedPools.find((pool: BoostedPool) => {
-      return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
+      return row.liquidity === 'ichi'
+        ? pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
+        : pool?.id?.toLowerCase() === row?.pool.id.toLowerCase()
     })?.apr || 0
   return (
     <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
