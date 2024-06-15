@@ -93,7 +93,7 @@ const Panel = () => {
       message: !isApproval ? `Proccessing ${notificationMessage} swap...` : 'Proccessing approval...',
       notificationType: NotificationType.DEFAULT,
       txHash: hash,
-      notificationDuration: NotificationDuration.DURATION_25000,
+      notificationDuration: NotificationDuration.DURATION_3000,
     })
 
     if (!hash) return
@@ -102,7 +102,7 @@ const Panel = () => {
       .then((transactionReceipt) => {
         setTimeout(() => {
           readNotification(id)
-        }, 1000)
+        }, 10)
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
@@ -219,6 +219,29 @@ const Panel = () => {
     const signer = provider.getSigner()
     // const signer = provider.getSigner()
     try {
+      if (nativeETH_WETH) {
+        const txResponse = writeContract(
+          {
+            address: WETH_ADDRESS,
+            abi: wethAbi,
+            functionName: 'deposit',
+            value: parseUnits(swapValue, tokenSell.decimals),
+          },
+          {
+            onSuccess: async (txHash) => {
+              setForValue('')
+              setSwapValue('')
+              setTimeout(() => {
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
+            },
+            onError: (e) => {
+              handleTransactionError(e)
+            },
+          }
+        )
+        return
+      }
       const gasLimit = ethers.BigNumber.from('100000')
       const txResponse = await signer.sendTransaction({
         to: contractAddressList.open_ocean,
@@ -388,21 +411,6 @@ const Panel = () => {
       setForValue(swapValue)
     }
   }, [swapValue, nativeWETH_ETH])
-
-  // useEffect(() => {
-  //   //
-  //   if (tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE && !(nativeETH_WETH || nativeWETH_ETH)) {
-  //     const price = tokenGet?.price
-  //     setTokenGet({
-  //       name: 'Wrapped Ether',
-  //       symbol: 'WETH',
-  //       address: '0x4300000000000000000000000000000000000004',
-  //       decimals: 18,
-  //       img: 'WETH.svg',
-  //       price: price,
-  //     })
-  //   }
-  // }, [tokenSell?.address, tokenGet?.address, tokenGet?.price, nativeETH_WETH, nativeWETH_ETH])
 
   const normalizeToken = (token: string) =>
     token.toLowerCase() === NATIVE_ETH_LOWERCASE ? WETH_ADDRESS.toLowerCase() : token.toLowerCase()
