@@ -510,7 +510,7 @@ const Classic = ({
                 {firstToken.symbol} / {secondToken.symbol}
               </h5>
               <div className="flex items-center gap-[5px] max-md:flex-wrap">
-                {'VOLATILE' === depositType ? (
+                {/* {'VOLATILE' === depositType ? (
                   <Button variant="tertiary" className="h-[28px] flex-shrink-0 !px-1 !py-1 max-md:!text-xs">
                     Volatile Pool
                   </Button>
@@ -525,9 +525,9 @@ const Classic = ({
                   <Button variant="tertiary" className="h-[28px] flex-shrink-0 !px-5 !py-0 max-md:!text-xs">
                     Stable Pool
                   </Button>
-                ) : null}
+                ) : null} */}
 
-                <Button
+                {/* <Button
                   variant="tertiary"
                   className="h-[28px] flex-shrink-0 !border-opacity-100 !bg-shark-300 !bg-opacity-40 !px-5 !py-0 max-md:!text-xs [&:not(:hover)]:border-shark-200"
                 >
@@ -537,7 +537,7 @@ const Classic = ({
                     )?.fee
                   }{' '}
                   %
-                </Button>
+                </Button> */}
                 {/* <Button
                   variant="tertiary"
                   className="!p-0 h-[28px] w-[33px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
