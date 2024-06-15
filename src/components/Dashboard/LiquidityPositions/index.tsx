@@ -24,6 +24,7 @@ const LiquidityPositions = () => {
   const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
 
   useEffect(() => {
+    setLoading(true)
     setTimeout(() => {
       setLoading(false)
     }, 5000)
@@ -31,6 +32,7 @@ const LiquidityPositions = () => {
 
   useEffect(() => {
     const filterPoolsDataClassic = () => {
+      setLoading(true)
       const filteredData: PoolData[] = (v2PairsData || [])
         .filter((pool) => pool.pairSymbol !== 'Concentrated pool')
         .filter((row) => Number(fromWei(row.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
@@ -38,6 +40,7 @@ const LiquidityPositions = () => {
           pairDetails: row, // Add the required pairDetails property
         }))
       setPoolsDataClassic(filteredData)
+      setLoading(false)
     }
 
     filterPoolsDataClassic()
@@ -46,6 +49,7 @@ const LiquidityPositions = () => {
   useEffect(() => {
     const updateRingsApr = async () => {
       if (!isSetRingsApr && poolsDataClassic.length > 0 && !('aprRings' in poolsDataClassic[0])) {
+        setLoading(true)
         const newArr = await Promise.all(
           poolsDataClassic.map(async (pool: any) => {
             if (pool.pairDetails?.pairSymbol) {
@@ -63,11 +67,19 @@ const LiquidityPositions = () => {
         )
         setPoolsDataClassicRing(newArr)
         setIsSetRingsApr(true)
+        setLoading(false)
       }
     }
 
     updateRingsApr()
   }, [poolsDataClassic, isSetRingsApr, address])
+
+  useEffect(() => {
+    // Reset relevant states when the address changes
+    setPoolsDataClassic([])
+    setPoolsDataClassicRing([])
+    setIsSetRingsApr(false)
+  }, [address])
   return (
     <>
       {console.log('data', poolsDataClassic)}
