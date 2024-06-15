@@ -308,13 +308,12 @@ const Classic = ({
         abi: ROUTERV2_ABI,
         address: contractAddressList.v2router as Address,
         functionName: 'addLiquidity',
-        // TODO: handle deadline and slippage
         args: [
           firstToken.address as Address,
           secondToken.address as Address,
           depositType === 'STABLE',
           parseUnits(firstValue, firstToken?.decimals),
-          parseUnits(firstValue, firstToken?.decimals),
+          parseUnits(secondValue, secondToken?.decimals),
           0,
           0,
           account.address as Address,
