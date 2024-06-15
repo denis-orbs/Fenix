@@ -389,20 +389,20 @@ const Panel = () => {
     }
   }, [swapValue, nativeWETH_ETH])
 
-  useEffect(() => {
-    //
-    if (tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE && !(nativeETH_WETH || nativeWETH_ETH)) {
-      const price = tokenGet?.price
-      setTokenGet({
-        name: 'Wrapped Ether',
-        symbol: 'WETH',
-        address: '0x4300000000000000000000000000000000000004',
-        decimals: 18,
-        img: 'WETH.svg',
-        price: price,
-      })
-    }
-  }, [tokenSell?.address, tokenGet?.address, tokenGet?.price, nativeETH_WETH, nativeWETH_ETH])
+  // useEffect(() => {
+  //   //
+  //   if (tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE && !(nativeETH_WETH || nativeWETH_ETH)) {
+  //     const price = tokenGet?.price
+  //     setTokenGet({
+  //       name: 'Wrapped Ether',
+  //       symbol: 'WETH',
+  //       address: '0x4300000000000000000000000000000000000004',
+  //       decimals: 18,
+  //       img: 'WETH.svg',
+  //       price: price,
+  //     })
+  //   }
+  // }, [tokenSell?.address, tokenGet?.address, tokenGet?.price, nativeETH_WETH, nativeWETH_ETH])
 
   const normalizeToken = (token: string) =>
     token.toLowerCase() === NATIVE_ETH_LOWERCASE ? WETH_ADDRESS.toLowerCase() : token.toLowerCase()
