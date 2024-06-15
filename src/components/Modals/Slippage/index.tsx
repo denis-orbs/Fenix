@@ -8,7 +8,7 @@ import { z } from 'zod'
 import { NumericalInput } from '../../UI/Input'
 
 const slippageOptions = [
-  { label: 'Auto', value: 'Auto' },
+  // { label: 'Auto', value: 'Auto' },
   { label: '0.5%', value: 0.5 },
   { label: '1.0%', value: 1 },
   { label: '1.5%', value: 1.5 },
@@ -104,7 +104,7 @@ const Slippage = () => {
             {slippageOptions.map((option) => (
               <Button
                 key={option.label}
-                className="!py-2"
+                className="!py-2 w-[25%]"
                 variant="tertiary"
                 onClick={() => setSlippageInput(option.value)}
               >
