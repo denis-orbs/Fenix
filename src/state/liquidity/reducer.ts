@@ -1,6 +1,6 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
-import { getAllPools, getConcentratedPools, getGammaVaults, getLiquidityV2Pairs, getRingsCampaigns } from './thunks'
+import { getAllPools, getGammaVaults, getLiquidityV2Pairs, getRingsCampaigns } from './thunks'
 import { LiquidityState, V2PairId, v2FactoryData, v3FactoryData } from './types'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import {
@@ -35,10 +35,7 @@ export const initialState: LiquidityState = {
     data: [],
     tableData: [],
   },
-  concentratedPools: {
-    state: ApiState.LOADING,
-    data: [],
-  },
+
   pools: {
     state: ApiState.LOADING,
     data: [],
@@ -98,16 +95,7 @@ export default createReducer(initialState, (builder) => {
     .addCase(getLiquidityV2Pairs.rejected, (state) => {
       state.v2Pairs.state = ApiState.ERROR
     })
-    .addCase(getConcentratedPools.pending, (state) => {
-      state.concentratedPools.state = ApiState.LOADING
-    })
-    .addCase(getConcentratedPools.fulfilled, (state, action) => {
-      state.concentratedPools.state = ApiState.SUCCESS
-      state.concentratedPools.data = action.payload
-    })
-    .addCase(getConcentratedPools.rejected, (state) => {
-      state.concentratedPools.state = ApiState.ERROR
-    })
+
     .addCase(getLiquidityTableElements.pending, (state) => {
       state.v2Pairs.tablestate = ApiState.LOADING
     })
