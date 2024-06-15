@@ -24,7 +24,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
       <div
         className={`border border-shark-950 px-3 py-2 rounded-[10px] bg-shark-400 ${
           isOpen ? 'bg-opacity-60' : 'bg-opacity-20'
-        } ${'2xl:hidden'}`}
+        } ${'xl:hidden'}`}
       >
         <div className="flex gap-[9px] items-center">
           <div className="relative flex items-center">
@@ -118,7 +118,7 @@ const MobileRow = ({ row, titleHeader, titleHeader2, titleButton, titleButton2, 
                   {/* <span className="icon-info text-[13px]"></span> */}
                 </div>
                 <div className="flex gap-[7px]">
-                  <div className="ml-auto text-xs leading-normal"> {row.pairDetails.apr} %</div>
+                  <div className="ml-auto text-xs leading-normal"> {row.pairDetails.maxAPR?.toFixed(2)} %</div>
                   <div
                     className="flex items-center gap-[5px] cursor-pointer
                      text-shark-100 hover:text-transparent hover:bg-gradient-to-r hover:from-outrageous-orange-500 hover:to-festival-500 hover:bg-clip-text"

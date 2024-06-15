@@ -26,7 +26,6 @@
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-this-alias": "off",
     "object-shorthand": ["off", "always"],
-    "semi": ["error", "never"],
     "import/prefer-default-export": "off",
     "react/destructuring-assignment": ["error", "always"],
     "react/no-multi-comp": "off",

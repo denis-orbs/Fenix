@@ -85,7 +85,7 @@ const Pagination = ({
             onClick={hadlerPrev}
             disabled={activePage === 1}
           >
-            <span className="icon-arrow-left text-sm"></span>
+            <span className="icon-arrow-right rotate-180 text-sm"></span>
             Previous
           </button>
 

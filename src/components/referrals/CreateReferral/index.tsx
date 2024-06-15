@@ -13,12 +13,13 @@ import Clipboard from 'clipboard'
 
 const CreateReferral = () => {
   const [isCopied, setIsCopied] = useState(false)
+  let referralCode = useReferralCode()
 
   const shareOnX = () => {
     handleCopyReferralLink()
     setTimeout(() => {
       const textToTweet = encodeURIComponent(
-        'Check out this cool referral link: ' + 'https://www.fenixfinance.io/?referrer=' + referralCode
+        'Use my referral link to get 5% extra Fenix Rings: ' + 'https://www.fenixfinance.io/?referrer=' + referralCode
       )
       window.open('https://twitter.com/intent/tweet?text=' + textToTweet, '_blank')
     }, 600)
@@ -46,7 +47,6 @@ const CreateReferral = () => {
   }
   const { signMessageAsync } = useSignMessage()
   const { account } = useActiveConnectionDetails()
-  const referralCode = useReferralCode()
   const setReferralCode = useSetReferralCodeCallback()
   const [errorMessage, setErrorMessage] = useState('')
   const [createAffiliateCodeValue, setCreateAffiliateCodeValue] = useState('')
@@ -55,33 +55,41 @@ const CreateReferral = () => {
     setCreateAffiliateCodeValue('')
   }, [account])
 
-  const validateCode = async (code: string) => {
-    if (!code) {
-      setErrorMessage('')
-      return
-    }
-    setErrorMessage('')
-    const isCodeFormatValid = /^[a-zA-Z0-9-]+$/.test(code)
-    if (!isCodeFormatValid) {
-      setErrorMessage('Code can only contain letters, numbers, and dashes')
-      return
-    }
-    let codeIsFree = true
-    try {
-      codeIsFree = await Fuul.isAffiliateCodeFree(createAffiliateCodeValue)
-      if (codeIsFree === false) {
-        setErrorMessage('This code is already taken')
+  useEffect(() => {
+    ;(document.querySelector('#ReferralInput') as HTMLInputElement)?.focus()
+  }, [])
+
+  useEffect(() => {
+    const validateCode = async (code: string) => {
+      if (!code) {
+        setErrorMessage('')
         return
       }
-    } catch (error) {
-      setErrorMessage('This code is already taken')
-    }
+      setErrorMessage('')
+      const isCodeFormatValid = /^[a-zA-Z0-9-]+$/.test(code)
+      if (!isCodeFormatValid) {
+        setErrorMessage('Code can only contain letters, numbers, and dashes')
+        return
+      }
+      let codeIsFree = true
+      try {
+        codeIsFree = await Fuul.isAffiliateCodeFree(createAffiliateCodeValue)
+        if (codeIsFree === false) {
+          setErrorMessage('This code is already taken')
+          return
+        }
+      } catch (error) {
+        console.log(error)
+        setErrorMessage('This code is already taken')
+      }
 
-    setErrorMessage('')
-  }
-  const debouncedCodeValue = useDebounce(createAffiliateCodeValue, 500)
+      setErrorMessage('')
+    }
+    if (createAffiliateCodeValue) {
+      validateCode(createAffiliateCodeValue)
+    }
+  }, [createAffiliateCodeValue])
   const createAffiliateCode = async () => {
-    //
     if (!account) return
 
     const message = `I confirm that I am creating the ${createAffiliateCodeValue} code on Fuul`
@@ -102,7 +110,9 @@ const CreateReferral = () => {
       }
     }
   }
-
+  if (!account) {
+    referralCode = ''
+  }
   return (
     <div className="box-referrals-short max-sm:max-w-[372px]">
       <div className="relative z-50 flex items-center justify-between flex-wrap xl:flex-nowrap  gap-2">
@@ -116,10 +126,10 @@ const CreateReferral = () => {
                 value={createAffiliateCodeValue}
                 onChange={(e) => {
                   setCreateAffiliateCodeValue(e.target.value)
-                  validateCode(e.target.value)
                 }}
-                placeholder="your-referral-code"
-              ></input>
+                placeholder="Write your custom referral code here"
+                id="ReferralInput"
+              />
 
               {errorMessage && (
                 <p className="text-xs absolute italic left-1 text-red-500 mt-[0.2rem]">{errorMessage}</p>
@@ -129,6 +139,7 @@ const CreateReferral = () => {
               onClick={createAffiliateCode}
               disabled={errorMessage.length > 0 || !createAffiliateCodeValue}
               variant="primary"
+              labelWallet="Get Link"
               className="!text-xs max-sm:!p-2"
               walletConfig={{
                 needSupportedChain: false,

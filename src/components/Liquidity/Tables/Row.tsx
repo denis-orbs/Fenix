@@ -18,7 +18,7 @@ interface RowDataProps {
 const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, activeRange }: RowDataProps) => {
   return (
     <>
-      <TableRow className="hidden 2xl:flex">
+      <TableRow className="hidden xl:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[30%]'}`}>
           <div className="flex items-center gap-2">
             <div className="flex items-center">
@@ -92,7 +92,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
           <div className="flex items-center  ">
             <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.apr} %
+              {row.pairDetails.maxAPR?.toFixed(2)} %
             </p>
           </div>
         </TableCell>

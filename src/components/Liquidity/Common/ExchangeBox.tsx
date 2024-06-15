@@ -138,7 +138,7 @@ const ExchangeBox = ({
           ) : null}
 
           {option !== 'WITHDRAWINN' ? (
-            <div>
+            <div className='flex items-center justify-end w-full'>
               <span className="icon-wallet text-xs mr-2"></span>
               <span onClick={handleMax}>
                 Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol}

@@ -108,6 +108,9 @@ const Classic = ({
     address: pairAddress as Address,
     functionName: 'balanceOf',
     args: [useAccount().address],
+    query: {
+      refetchInterval: 1500,
+    },
   })
   const updateTokenPrice = useCallback((data: any[], symbol: string) => {
     const foundToken = data.find((token) => token.basetoken.symbol === symbol)
@@ -149,13 +152,16 @@ const Classic = ({
   }
 
   useEffect(() => {
+    setlpBalance((lpTokenBalance?.data as bigint) || 0n)
+  }, [lpTokenBalance])
+
+  useEffect(() => {
     if (defaultPairs?.length == 2) {
       setFirstToken(defaultPairs[0])
       setSecondToken(defaultPairs[1])
       setIsLoading(false)
     }
 
-    setlpBalance((lpTokenBalance?.data as bigint) || 0n)
     if (
       account &&
       isConnected &&
@@ -166,7 +172,7 @@ const Classic = ({
     } else {
       setButtonText('Create Position')
     }
-  }, [firstValue, secondValue, defaultPairs])
+  }, [defaultPairs])
 
   useEffect(() => {
     const asyncGetReserve = async () => {
@@ -198,7 +204,7 @@ const Classic = ({
 
     asyncGetReserve()
     asyncGetPair()
-  }, [firstToken, secondToken, depositType])
+  }, [firstToken, secondToken, depositType, pairAddress])
 
   useEffect(() => {
     const asyncGetAllowance = async () => {
@@ -504,7 +510,7 @@ const Classic = ({
                 {firstToken.symbol} / {secondToken.symbol}
               </h5>
               <div className="flex items-center gap-[5px] max-md:flex-wrap">
-                {'VOLATILE' === depositType ? (
+                {/* {'VOLATILE' === depositType ? (
                   <Button variant="tertiary" className="h-[28px] flex-shrink-0 !px-1 !py-1 max-md:!text-xs">
                     Volatile Pool
                   </Button>
@@ -519,9 +525,9 @@ const Classic = ({
                   <Button variant="tertiary" className="h-[28px] flex-shrink-0 !px-5 !py-0 max-md:!text-xs">
                     Stable Pool
                   </Button>
-                ) : null}
+                ) : null} */}
 
-                <Button
+                {/* <Button
                   variant="tertiary"
                   className="h-[28px] flex-shrink-0 !border-opacity-100 !bg-shark-300 !bg-opacity-40 !px-5 !py-0 max-md:!text-xs [&:not(:hover)]:border-shark-200"
                 >
@@ -531,7 +537,7 @@ const Classic = ({
                     )?.fee
                   }{' '}
                   %
-                </Button>
+                </Button> */}
                 {/* <Button
                   variant="tertiary"
                   className="!p-0 h-[28px] w-[33px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
@@ -543,7 +549,7 @@ const Classic = ({
           </div>
           <div className="flex items-center gap-[5px] text-xs leading-normal">
             {/* <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]"> */}
-            <div className="text-white">Liquidity</div>
+            {/* <div className="text-white">Liquidity</div>
             <div className="flex items-center gap-2.5">
               <p className="flex flex-shrink-0 items-center gap-[5px] text-shark-100">
                 <Image
@@ -565,21 +571,21 @@ const Classic = ({
                 />
                 <span>{formatNumber(Number(secondReserve) / 1e18, 8)}</span>
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
 
         <div className="text-xs leading-normal text-white">
-          <div className="text-right md:mb-[5px]">APR</div>
+          {/* <div className="text-right md:mb-[5px]">APR</div> */}
 
-          <p className="border-1 rounded-[10px] border border-solid border-shark-300 bg-shark-400 bg-opacity-40 px-5 py-[5px]">
+          {/* <p className="border-1 rounded-[10px] border border-solid border-shark-300 bg-shark-400 bg-opacity-40 px-5 py-[5px]">
             {
               pairs?.find(
                 (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
               )?.apr
             }{' '}
             %
-          </p>
+          </p> */}
         </div>
       </div>
       <div className="mb-2.5 flex flex-wrap gap-1.5 rounded-[10px] border border-shark-950 bg-shark-400 bg-opacity-40 p-[13px] md:gap-2.5 md:px-[19px] md:py-[11px]">

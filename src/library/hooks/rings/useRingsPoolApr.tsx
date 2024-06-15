@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { toBN } from '../../utils/numbers'
 
 export const useRingsPoolApr = (row: BasicPool | string) => {
-  const poolId = typeof row === 'string' ? row : row.id
+  const poolId = typeof row === 'string' ? row : row?.id
   return useQuery({
     queryKey: ['ringsPointsCampaign', poolId],
     staleTime: 1000 * 60 * 5,

@@ -33,6 +33,7 @@ const MyStrategies = () => {
   const [progress, setProgress] = useState<number>(0)
   const { chainId } = useAccount()
 
+  // console.log(position)
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
   }
@@ -57,7 +58,7 @@ const MyStrategies = () => {
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
     const nativePrice = await fetchNativePrice()
-    const positionsPoolAddresses = await positions.map((position: positions) => {
+    const positionsPoolAddresses = positions.map((position: positions) => {
       return {
         id: position.pool.id,
         liq: position.liquidity,
@@ -86,10 +87,15 @@ const MyStrategies = () => {
     setpositionAmounts(amounts)
     setLoading(false)
   }
-  // useEffect(() => {
-  //   if (address) fetchpositions(address)
-  //   setLoading(true)
-  // }, [address])
+
+  useEffect(() => {
+    // if (address) fetchpositions(address)
+    setLoading(true)
+     // TODO: Remove This
+    setTimeout(()=>{
+      setLoading(false)
+    },2000)
+  }, [address])
 
   const ichipositions = useIchiPositions()
    useEffect(() => {
