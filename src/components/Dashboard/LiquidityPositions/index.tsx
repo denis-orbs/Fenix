@@ -25,14 +25,14 @@ const LiquidityPositions = () => {
 
   useEffect(() => {
     setLoading(true)
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setLoading(false)
     }, 5000)
+    return () => clearTimeout(timeout)
   }, [])
 
   useEffect(() => {
     const filterPoolsDataClassic = () => {
-      setLoading(true)
       const filteredData: PoolData[] = (v2PairsData || [])
         .filter((pool) => pool.pairSymbol !== 'Concentrated pool')
         .filter((row) => Number(fromWei(row.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
@@ -40,11 +40,10 @@ const LiquidityPositions = () => {
           pairDetails: row, // Add the required pairDetails property
         }))
       setPoolsDataClassic(filteredData)
-      setLoading(false)
     }
 
     filterPoolsDataClassic()
-  }, [v2PairsData, loading, address])
+  }, [v2PairsData, address])
 
   useEffect(() => {
     const updateRingsApr = async () => {
@@ -82,6 +81,22 @@ const LiquidityPositions = () => {
     setIsSetRingsApr(false)
   }, [address])
 
+  const renderContent = () => {
+    if (loading) {
+      return Array.from({ length: 5 }).map((_, index) => <TableSkeleton key={index} />)
+    }
+
+    if (poolsDataClassicRing.length > 0) {
+      return <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassicRing} />
+    }
+
+    return (
+      <div className="box-dashboard p-6">
+        <NotFoundLock info={'No Pools Found.'} />
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="mb-10">
@@ -94,24 +109,7 @@ const LiquidityPositions = () => {
         <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
           <div className="rounded-lg z-10">
             <h1 className="text-white p-3">Classic liquidity</h1>
-            {loading ? (
-              <>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <TableSkeleton key={index} />
-                ))}
-              </>
-            ) : poolsDataClassicRing.length > 0 ? (
-              <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassicRing} />
-            ) : (
-              <>
-                <div className="box-dashboard p-6">
-                  <NotFoundLock info={'No Pools Found.'} />
-                  {/* {Array.from({ length: 5 }).map((_, index) => (
-                    <TableSkeleton key={index} />
-                  ))} */}
-                </div>
-              </>
-            )}
+            {renderContent()}
           </div>
         </div>
       </div>
