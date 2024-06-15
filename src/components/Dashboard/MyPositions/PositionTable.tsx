@@ -87,7 +87,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
           )
       
     tvlPosition[data.id] = tvl
-    return formatDollarAmount(tvl)
+    return tvl
   }
 
   useEffect(() => {
@@ -271,7 +271,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     return (
       <>
         <p className="text-xs text-white mb-1">
-          {tvlPosition[data.id] ? formatDollarAmount(tvlPosition[data.id]) : TvlTotalValue(data)}
+          {tvlPosition[data.id] ? formatDollarAmount(tvlPosition[data.id]) : formatDollarAmount(TvlTotalValue(data))}
         </p>
       </>
     )
