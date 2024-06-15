@@ -97,6 +97,7 @@ interface StrategyProps {
 }
 
 const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyProps) => {
+  console.log(row, 'rowtokens')
   const dispatch = useDispatch()
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const { writeContractAsync } = useWriteContract()
@@ -185,7 +186,9 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
   const ichiVaultData = ichiVaults.find((e) => e.id.toLowerCase() === row?.id.toLowerCase())
   const fenixRingApr =
     ringsCampaign?.boostedPools.find((pool: BoostedPool) => {
-      return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
+      return row.liquidity === 'ichi'
+        ? pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
+        : pool?.id?.toLowerCase() === row?.pool.id.toLowerCase()
     })?.apr || 0
   return (
     <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
@@ -198,7 +201,9 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   src={
                     row.liquidity === 'ichi'
                       ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}.svg`
-                      : `/static/images/tokens/${row?.token0?.symbol}.svg`
+                      : row.liquidity === 'gamma'
+                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token0.id.toLowerCase())?.basetoken.symbol}.svg`
+                        : `/static/images/tokens/${row?.token0?.symbol}.svg`
                   }
                   alt="token"
                   className="rounded-full "
@@ -209,7 +214,9 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   src={
                     row.liquidity === 'ichi'
                       ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}.svg`
-                      : `/static/images/tokens/${row?.token1?.symbol}.svg`
+                      : row.liquidity === 'gamma'
+                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token1.id.toLowerCase())?.basetoken.symbol}.svg`
+                        : `/static/images/tokens/${row?.token1?.symbol}.svg`
                   }
                   alt="token"
                   className="-ml-4 rounded-full"
@@ -221,10 +228,18 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                 <p>
                   {row.liquidity === 'ichi'
                     ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
-                    : `${row?.token0?.symbol} / ${row?.token1?.symbol}`}
+                    : row.liquidity === 'gamma'
+                      ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token0.id.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token1.id.toLowerCase())?.basetoken.symbol}`
+                      : `${row?.token0?.symbol} / ${row?.token1?.symbol}`}
                 </p>
 
-                <p className="text-xs">{row.liquidity === 'ichi' ? 'Ichi Position' : 'ID: ' + row?.id}</p>
+                <p className="text-xs">
+                  {row.liquidity === 'ichi'
+                    ? 'Ichi Position'
+                    : row.liquidity === 'gamma'
+                      ? 'Gamma Postion'
+                      : 'ID: ' + row?.id}
+                </p>
               </div>
             </div>
           </div>
@@ -243,8 +258,10 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                   setShow={setIsVisible}
                 >
                   <div className="flex justify-between items-center gap-3">
-                    <p className="text-sm pb-1">Ichi strategy</p>
-                    <p className="text-sm pb-1 text-chilean-fire-600">{parseFloat(row?.apr) < 0 ? 0 : row?.apr}</p>
+                    <p className="text-sm pb-1">{row.liquidity === 'ichi' ? 'Ichi' : 'Gamma'} APR</p>
+                    <p className="text-sm pb-1 text-chilean-fire-600">
+                      {parseFloat(row?.apr) < 0 ? 0 : parseFloat(row?.apr).toFixed(3)} %
+                    </p>
                   </div>
                   {fenixRingApr > 0 && (
                     <div className="flex justify-between items-center gap-3">
@@ -262,7 +279,12 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                 {/* <span className="icon-info text-xs"></span> */}
               </p>
               <h2 className="text-white text-2xl">
-                {row.liquidity === 'ichi' ? 'ICHI' : formatCurrency(fromWei(row?.liquidity))} LP
+                {row.liquidity === 'ichi'
+                  ? 'ICHI'
+                  : row.liquidity === 'gamma'
+                    ? 'GAMMA'
+                    : formatCurrency(fromWei(row?.liquidity))}{' '}
+                LP
               </h2>
             </div>
           </div>
@@ -273,13 +295,17 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
               <h4 className="text-sm text-white-400">
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
-                  : `${row?.token0?.symbol}`}
+                  : row.liquidity === 'gamma'
+                    ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token0.id.toLowerCase())?.basetoken.symbol}`
+                    : `${row?.token0?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
                 {formatCurrency(formatAmount(toBN(Number(row?.depositedToken0)), 6))}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
-                  : `${row?.token0?.symbol}`}
+                  : row.liquidity === 'gamma'
+                    ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token0.id.toLowerCase())?.basetoken.symbol}`
+                    : `${row?.token0?.symbol}`}
               </h4>
               <p className="text-xs text-white">
                 {formatDollarAmount(
@@ -298,13 +324,17 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
               <h4 className="text-sm text-white-500">
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
-                  : `${row?.token1?.symbol}`}
+                  : row.liquidity === 'gamma'
+                    ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token1.id.toLowerCase())?.basetoken.symbol}`
+                    : `${row?.token1?.symbol}`}
               </h4>
               <h4 className="text-sm text-white">
                 {formatCurrency(formatAmount(toBN(Number(row?.depositedToken1)), 6))}{' '}
                 {row.liquidity === 'ichi'
                   ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
-                  : `${row?.token1?.symbol}`}
+                  : row.liquidity === 'gamma'
+                    ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token1.id.toLowerCase())?.basetoken.symbol}`
+                    : `${row?.token1?.symbol}`}
               </h4>
               <p className="text-xs text-white">
                 {formatDollarAmount(
@@ -354,7 +384,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           >
             <span className="text-l">Manage</span>
           </Button>
-          {row.liquidity !== 'ichi' ? (
+          {row.liquidity !== 'ichi' || 'gamma' ? (
             <>
               <Button
                 variant="tertiary"
