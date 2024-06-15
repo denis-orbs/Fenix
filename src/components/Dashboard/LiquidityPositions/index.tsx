@@ -76,52 +76,45 @@ const LiquidityPositions = () => {
 
   useEffect(() => {
     // Reset relevant states when the address changes
+    setLoading(true)
     setPoolsDataClassic([])
     setPoolsDataClassicRing([])
     setIsSetRingsApr(false)
   }, [address])
+
   return (
     <>
-      {console.log('data', poolsDataClassic)}
-      {poolsDataClassicRing.length > 0 ? (
-        <div className="mb-10">
-          <div className="flex justify-between mb-4 items-center">
-            <h1 className="text-white text-xl">Classic Liquidity Positions</h1>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
-              <span className="icon-logout"></span>New deposit
-            </Button>
-          </div>
-          <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
-            <div className="rounded-lg z-10">
-              <h1 className="text-white p-3">Classic liquidity</h1>
-              {loading ? (
-                <>
-                  {Array.from({ length: 5 }).map((_, index) => (
+      <div className="mb-10">
+        <div className="flex justify-between mb-4 items-center">
+          <h1 className="text-white text-xl">Classic Liquidity Positions</h1>
+          <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
+            <span className="icon-logout"></span>New deposit
+          </Button>
+        </div>
+        <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
+          <div className="rounded-lg z-10">
+            <h1 className="text-white p-3">Classic liquidity</h1>
+            {loading ? (
+              <>
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <TableSkeleton key={index} />
+                ))}
+              </>
+            ) : poolsDataClassicRing.length > 0 ? (
+              <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassicRing} />
+            ) : (
+              <>
+                <div className="box-dashboard p-6">
+                  <NotFoundLock info={'No Pools Found.'} />
+                  {/* {Array.from({ length: 5 }).map((_, index) => (
                     <TableSkeleton key={index} />
-                  ))}
-                </>
-              ) : (
-                <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassicRing} />
-              )}
-            </div>
+                  ))} */}
+                </div>
+              </>
+            )}
           </div>
         </div>
-      ) : (
-        <div className="flex flex-col gap-3 w-full lg:w-4/5 mx-auto">
-          <div className="text-white flex justify-between items-center flex-wrap">
-            <p className="flex gap-3 text-lg ms-2">Classic Liquidity Positions</p>
-            <Button variant="tertiary" className="flex gap-2 !py-2" href="/liquidity">
-              <span className="icon-logout"></span>New Deposit
-            </Button>
-          </div>
-          <div className="box-dashboard p-6">
-            <NotFoundLock info={'No Pools Found.'} />
-            {/* {Array.from({ length: 5 }).map((_, index) => (
-              <TableSkeleton key={index} />
-            ))} */}
-          </div>
-        </div>
-      )}
+      </div>
     </>
   )
 }
