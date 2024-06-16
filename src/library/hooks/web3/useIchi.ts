@@ -212,6 +212,7 @@ export const useIchiPositions = () => {
             }
           })
         )
+
         setichipositions(pos)
         setichiLoading(false)
       }

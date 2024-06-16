@@ -34,6 +34,7 @@ const MyStrategies = () => {
   const [loadingGamma, setLoadingGamma] = useState(false)
   const [progress, setProgress] = useState<number>(0)
   const { chainId, address } = useAccount()
+  const { ichipositions, ichiLoading } = useIchiPositions()
 
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
@@ -57,7 +58,6 @@ const MyStrategies = () => {
 
   const [allGamaData, setAllGamaData] = useState<any>()
   const [userGamaData, setUserGamaData] = useState<any>()
-  const [finalGamaArr, setFinalGamaArr] = useState<boolean>(true)
 
   const getAllGammaData = () => {
     fetch(`https://wire2.gamma.xyz/fenix/blast/hypervisors/allData`)
@@ -86,6 +86,12 @@ const MyStrategies = () => {
   useEffect(() => {
     getAllGammaData()
   }, [])
+
+  useEffect(() => {
+    if (ichipositions.length > 0) {
+      setposition((prev) => [...prev, ...ichipositions])
+    }
+  }, [ichipositions])
 
   useEffect(() => {
     setposition([])
@@ -118,20 +124,11 @@ const MyStrategies = () => {
       }
 
       if (newArr.length > 0) {
-        console.log('ethindia', newArr, address)
         setposition((prev) => [...prev, ...newArr])
       }
       setLoadingGamma(false)
     }
   }, [allGamaData, userGamaData, address])
-
-  const { ichipositions, ichiLoading } = useIchiPositions()
-  useEffect(() => {
-    if (ichipositions.length > 0) {
-      console.log('ethindia2', ichipositions, address)
-      setposition((prev) => [...prev, ...ichipositions])
-    }
-  }, [ichipositions])
 
   useEffect(() => {
     dispatch(setApr(position))
@@ -139,7 +136,6 @@ const MyStrategies = () => {
 
   return (
     <>
-      {console.log('finalp', position)}
       {position.length !== 0 && !ichiLoading && !loadingGamma && address ? (
         <div className="relative">
           <div className="mb-4 flex w-[100%] items-center justify-between">
