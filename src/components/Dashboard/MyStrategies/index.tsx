@@ -34,6 +34,7 @@ const MyStrategies = () => {
   const [loadingGamma, setLoadingGamma] = useState(false)
   const [progress, setProgress] = useState<number>(0)
   const { chainId, address } = useAccount()
+  const { ichipositions, ichiLoading } = useIchiPositions()
 
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
@@ -88,6 +89,13 @@ const MyStrategies = () => {
   }, [])
 
   useEffect(() => {
+    if (ichipositions.length > 0) {
+      console.log('ethindia2', ichipositions, address)
+      setposition((prev) => [...prev, ...ichipositions])
+    }
+  }, [ichipositions])
+
+  useEffect(() => {
     setposition([])
     getGammaAddressData()
   }, [address])
@@ -118,20 +126,12 @@ const MyStrategies = () => {
       }
 
       if (newArr.length > 0) {
-        console.log('ethindia', newArr, address)
+        console.log('ethindia3', newArr, address)
         setposition((prev) => [...prev, ...newArr])
       }
       setLoadingGamma(false)
     }
   }, [allGamaData, userGamaData, address])
-
-  const { ichipositions, ichiLoading } = useIchiPositions()
-  useEffect(() => {
-    if (ichipositions.length > 0) {
-      console.log('ethindia2', ichipositions, address)
-      setposition((prev) => [...prev, ...ichipositions])
-    }
-  }, [ichipositions])
 
   useEffect(() => {
     dispatch(setApr(position))
