@@ -25,14 +25,17 @@ const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
-  const [position, setposition] = useState<positions[]>([])
+  // const [position, setposition] = useState<positions[]>([])
+  const [position, setposition] = useState<any[]>([])
   const [positionAmounts, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
-  const [loading, setLoading] = useState(false)
-  const [progress, setProgress] = useState<number>(0)
-  const { chainId } = useAccount()
 
-  // console.log(position)
+  const [loadingIchi, setLoadingIchi] = useState(false)
+  const [loadingGamma, setLoadingGamma] = useState(false)
+  const [progress, setProgress] = useState<number>(0)
+  const { chainId, address } = useAccount()
+  const { ichipositions, ichiLoading } = useIchiPositions()
+
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
   }
@@ -52,78 +55,92 @@ const MyStrategies = () => {
       setProgress(swiperRef?.current?.progress)
     }
   }
-  const { address } = useAccount()
 
-  const fetchpositions = async (address: Address) => {
-    const positions = await fetchV3Positions(address)
-    const nativePrice = await fetchNativePrice()
-    const positionsPoolAddresses = positions.map((position: positions) => {
-      return {
-        id: position.pool.id,
-        liq: position.liquidity,
-        lower: position.tickLower.tickIdx,
-        higher: position.tickUpper.tickIdx,
-      }
-    })
-    const amounts: any = await getPositionDataByPoolAddresses(positionsPoolAddresses)
-    // TODO: Fetch APR for each position
-    const aprs = await Promise.all(
-      positions.map((position: positions, index: number) => {
-        return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
+  const [allGamaData, setAllGamaData] = useState<any>()
+  const [userGamaData, setUserGamaData] = useState<any>()
+
+  const getAllGammaData = () => {
+    fetch(`https://wire2.gamma.xyz/fenix/blast/hypervisors/allData`)
+      .then((res) => res.json())
+      .then((data) => {
+        const isEmpty = Object.keys(data).length === 0
+        if (!isEmpty) {
+          console.log(data, 'setAllGamaData')
+          setAllGamaData(data)
+        } else setAllGamaData(null)
       })
-    )
-    const final = positions.map((position: positions, index: number) => {
-      // console.log(Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), 'hehehe')
-      return {
-        ...position,
-        depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
-        depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
-        apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
-      }
-    })
-    const finalSorted = final.sort((a, b) => (Number(a.id) < Number(b.id) ? 1 : -1))
-    setposition((prevPositions) => [...prevPositions, ...finalSorted])
-    setpositionAmounts(amounts)
-    setLoading(false)
+      .catch((err) => console.log(err))
+  }
+  const getGammaAddressData = () => {
+    fetch(`https://wire2.gamma.xyz/fenix/blast/user/${address?.toLowerCase()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const isEmpty = Object.keys(data).length === 0
+        if (!isEmpty) {
+          setUserGamaData(data)
+        } else setUserGamaData(null)
+      })
+      .catch((err) => console.log(err))
   }
 
   useEffect(() => {
-    // if (address) fetchpositions(address)
-    setLoading(true)
-     // TODO: Remove This
-    setTimeout(()=>{
-      setLoading(false)
-    },2000)
-  }, [address])
-
-  const ichipositions = useIchiPositions()
-   useEffect(() => {
-     setLoading(true)
-     if (ichipositions.length > 0) {
-       setposition(ichipositions)
-      //  setposition((prevPositions) => [...prevPositions, ...ichipositions])
-       setLoading(false)
-     } else if (ichipositions.length === 0) {
-       setLoading(false)
-     }
-   }, [ichipositions])
+    getAllGammaData()
+  }, [])
 
   useEffect(() => {
-    // FIXME: STARK
+    if (ichipositions.length > 0) {
+      setposition((prev) => [...prev, ...ichipositions])
+    }
+  }, [ichipositions])
+
+  useEffect(() => {
+    setposition([])
+    getGammaAddressData()
+  }, [address])
+
+  useEffect(() => {
+    setLoadingGamma(true)
+    if (allGamaData != null && userGamaData != null && address) {
+      const newArr: any[] = []
+      for (const item in allGamaData) {
+        if (userGamaData[address.toLowerCase()]?.hasOwnProperty(item.toLowerCase())) {
+          const nestedObj = userGamaData[address.toLowerCase()][item]
+          const newObj = {
+            liquidity: 'gamma',
+            id: item,
+            pool: { id: allGamaData[item].poolAddress },
+            depositedToken0: nestedObj.balance0,
+            depositedToken1: nestedObj.balance1,
+            token0: { id: allGamaData[item].token0 },
+            token1: { id: allGamaData[item].token1 },
+            inRange: allGamaData[item].inRange,
+            apr: allGamaData[item].returns.monthly.feeApr,
+          }
+
+          newArr.push(newObj)
+        } else {
+          console.log('hit no')
+        }
+      }
+
+      if (newArr.length > 0) {
+        setposition((prev) => [...prev, ...newArr])
+      }
+      setLoadingGamma(false)
+    }
+  }, [allGamaData, userGamaData, address])
+
+  useEffect(() => {
     dispatch(setApr(position))
   }, [position, dispatch])
 
-  
-
-
   return (
     <>
-      {/* {console.log('finalp', position)} */}
-      {position.length !== 0 && loading === false && address ? (
+      {position.length !== 0 && !ichiLoading && !loadingGamma && address ? (
         <div className="relative">
           <div className="mb-4 flex w-[100%] items-center justify-between">
             <h2 id="strategies" className="text-lg text-white">
-              My Strategies
+              Automated Strategies
             </h2>
             <Button variant="tertiary" className="!lg:text-sm !py-3 !text-xs xl:me-5" href="/liquidity">
               <span className="icon-logout"></span>New strategy
@@ -200,10 +217,10 @@ const MyStrategies = () => {
           </div>
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
-      ) : (position.length === 0 && loading === false) || address === undefined ? (
+      ) : address === undefined ? (
         <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
           <div className="flex items-center justify-between text-white">
-            <p className="ms-2 flex gap-3 text-lg">My Strategies</p>
+            <p className="ms-2 flex gap-3 text-lg">Automated Strategies</p>
           </div>
           <div className="box-dashboard flex items-center gap-8 p-6">
             <p className="text-sm text-white">You have no strategies.</p>
@@ -212,7 +229,7 @@ const MyStrategies = () => {
       ) : (
         <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
           <div className="flex items-center justify-between text-white">
-            <p className="ms-2 flex gap-3 text-lg">My Strategies</p>
+            <p className="ms-2 flex gap-3 text-lg">Automated Strategies</p>
           </div>
           <div className="box-dashboard flex items-center justify-center gap-8 p-6">
             <p className="flex items-center gap-3 text-sm text-white">
