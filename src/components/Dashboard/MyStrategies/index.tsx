@@ -58,7 +58,6 @@ const MyStrategies = () => {
 
   const [allGamaData, setAllGamaData] = useState<any>()
   const [userGamaData, setUserGamaData] = useState<any>()
-  const [finalGamaArr, setFinalGamaArr] = useState<boolean>(true)
 
   const getAllGammaData = () => {
     fetch(`https://wire2.gamma.xyz/fenix/blast/hypervisors/allData`)
@@ -90,7 +89,6 @@ const MyStrategies = () => {
 
   useEffect(() => {
     if (ichipositions.length > 0) {
-      console.log('ethindia2', ichipositions, address)
       setposition((prev) => [...prev, ...ichipositions])
     }
   }, [ichipositions])
@@ -126,7 +124,6 @@ const MyStrategies = () => {
       }
 
       if (newArr.length > 0) {
-        console.log('ethindia3', newArr, address)
         setposition((prev) => [...prev, ...newArr])
       }
       setLoadingGamma(false)
@@ -139,7 +136,6 @@ const MyStrategies = () => {
 
   return (
     <>
-      {console.log('finalp', position)}
       {position.length !== 0 && !ichiLoading && !loadingGamma && address ? (
         <div className="relative">
           <div className="mb-4 flex w-[100%] items-center justify-between">

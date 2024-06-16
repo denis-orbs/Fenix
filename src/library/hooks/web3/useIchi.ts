@@ -119,7 +119,6 @@ export const useIchiPositions = () => {
   const [ichiLoading, setichiLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    console.log('ethindiacalled')
     const fetchpositions = async () => {
       if (address) {
         setichiLoading(true)
@@ -213,7 +212,7 @@ export const useIchiPositions = () => {
             }
           })
         )
-        console.log('ethindia', pos, address)
+
         setichipositions(pos)
         setichiLoading(false)
       }
