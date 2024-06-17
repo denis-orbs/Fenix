@@ -41,6 +41,7 @@ const HeaderRow = ({
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
   const [sortIndex, setSortIndex] = useState<number>(-1)
   const [isSetRingsApr, setIsSetRingsApr] = useState<boolean>(false)
+  let [loading_, setLoading_] = useState<boolean>(false)
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
@@ -146,36 +147,10 @@ const HeaderRow = ({
     const arrNew = [...poolsData]
     setPaginationResult([...arrNew])
   }, [poolsData])
-  /* useEffect(() => {
-    if (!isSetRingsApr) {
-      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
-        const getRigns = async () => {
-          let newArr: any = [...paginationResult]
-          newArr = await Promise.all(
-            newArr.map(async (pool: any) => {
-              if (pool?.id) {
-                return {
-                  ...pool,
-                  aprRings: Number(await fetchRingsPoolApr(pool)) + (Number.isNaN(pool.apr) ? 0 : Number(pool?.apr)),
-                  totalCampaigns: Number(totalCampaigns.find((add) => add.pairAddress.toLowerCase() === pool.id.toLowerCase())?.pointStack?.length) || 0,
-                }
-              } else {
-                return {
-                  ...pool,
-                }
-              }
-            })
-          )
-          setPaginationResult([...newArr])
-          setIsSetRingsApr(true)
-        }
-        getRigns()
-      }
-    }
-  }, [paginationResult]) */
 
   useEffect(() => {
     if (!isSetRingsApr) {
+      setLoading_(true)
       if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
         const getRigns = async () => {
           let newArr: any = [...paginationResult]
@@ -196,12 +171,18 @@ const HeaderRow = ({
           )
           setPaginationResult([...newArr])
           setIsSetRingsApr(true)
+          setLoading_(false)
         }
         getRigns()
       }
+      // setLoading_(false)
     }
-  }, [paginationResult])
+  }, [paginationResult, isSetRingsApr])
   console.log('paginationResult >> ', paginationResult)
+/* useEffect(() => {
+  if(isSetRingsApr) {
+  }
+}, [isSetRingsApr]) */
 
   function compareBigDecimal(a: any, b: any) {
     return a - b
@@ -245,7 +226,7 @@ const HeaderRow = ({
         </div>
 
         <TableBody>
-          {loading ? (
+          {loading || loading_ ? (
             <>
               {Array.from({ length: 5 }).map((_, index) => (
                 <TableSkeleton key={index} />
@@ -257,7 +238,7 @@ const HeaderRow = ({
                 {row.id !== '0x8c22d23ec102c9e098c8e0b9ed4ea01aa0b4be35' &&
                 row.id !== '0x3c7fd63cab763a10b2754b1464e09d37a9fc79e7' ? (
                   <>
-                    <Fragment key={index}>
+                    <Fragment key={row.id}>
                       <Row
                         row={row}
                         tokensData={null}
