@@ -101,7 +101,7 @@ const LiquidityPositions = () => {
     <>
       <div className="mb-10">
         <div className="flex justify-between mb-4 items-center">
-          <h1 className="text-white text-xl">Classic Liquidity Positions</h1>
+          <h2 className="text-white text-base font-medium">Classic Liquidity Positions</h2>
           <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
             <span className="icon-logout"></span>New deposit
           </Button>

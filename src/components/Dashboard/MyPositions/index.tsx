@@ -98,6 +98,7 @@ const MyPositions = () => {
               <span className="icon-logout"/>Create position
             </Button>
           </div>
+          <h2 className="text-white text-base font-medium">Concentrated Liquidity:</h2>
           <div className="dashboard-box flex-col xl:flex-row">
             <PositionTable data={position} tokens={tokens} ringsCampaign={ringsCampaign} />
             <PositionTableMobile data={position} tokens={tokens} ringsCampaign={ringsCampaign} />

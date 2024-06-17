@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Button, Pagination, PaginationMobile, TableBody, TableCell, TableHead, TableRow, Tooltip } from '../../UI'
 import { positions } from '../MyStrategies/Strategy'
 import NoPositionFound from './NoPositionFound'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
 import { Token } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
@@ -28,6 +28,7 @@ import AprBox from '../../UI/Pools/AprBox'
 import { BoostedPool, RingCampaignData, extraPoints } from '@/src/app/api/rings/campaign/route'
 import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
+import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 
 interface MyPositionssProps {
   activePagination?: boolean
@@ -49,6 +50,16 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   const [isMinHover, setIsMinHover] = useState<boolean>(false)
   const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
   const [isInRange, setIsInRange] = useState<boolean>(false)
+
+  const hoverRef = useRef(null)
+
+  const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
+  const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
+  const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
+  const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
+  const [id, setId] = useState<string>('')
+  // const [campaign, setCampaign] = useState<Campaign>()
+
   const { data: ringsCampaignsData } = useRingsCampaigns()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -154,6 +165,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
     isInRange: boolean
   }
   const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, isInRange }: setStatusprops) => {
+    const [isOverRange, setIsOverRange] = useState(false)
     const minPrice = useMemo(() => {
       return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     }, [tickLower, token0?.decimals, token1?.decimals])
@@ -183,33 +195,90 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       return <Loader />
     }
     return (
-      <>
-        {isInRangeAux ? (
-          <div className="text-green-400 text-sm flex-col flex justify-center items-start gap-1">
-            <div className="flex items-center gap-x-1">
-              <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="3" cy="3" r="3" fill="#2AED8F" />
-              </svg>
-              <span className="text-xs">In range</span>
-            </div>
-            {/* <span className="text-white">Pool price: {Number(currentPoolPrice)}</span> */}
+      <div className="flex items-center gap-2 justify-start">
+        <div
+          className={`relative cursor-default rounded-full w-2 h-2 ${isInRangeAux ? 'bg-fenix-green' : 'bg-fenix-red'} mr-1`}
+          onMouseOver={() => setIsOverRange(true)}
+          onMouseLeave={() => setIsOverRange(false)}
+        >
+          <div
+            className={`absolute top-[-20px] ${isInRangeAux ? 'right-[-65px]' : 'right-[-90px]'} px-2 py-1 text-white text-xs whitespace-nowrap border bg-shark-400 rounded-lg border-shark-300 ${isOverRange ? 'block' : 'hidden'}`}
+          >
+            {' '}
+            {isInRangeAux ? 'In range' : 'Out of range'}{' '}
           </div>
-        ) : (
-          <div className="text-red-600 text-sm flex-col flex justify-center items-start gap-1">
-            <div className="flex items-center gap-x-1">
-              <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="3" cy="3" r="3" fill="#dc2626" />
-              </svg>
-              <span className="text-xs">Out of range</span>
-            </div>
-            {/* <span className="text-white">Pool price: {Number(currentPoolPrice)}</span> */}
-          </div>
-        )}
-      </>
+        </div>
+        <div className="flex flex-col items-start">
+          <div className="text-shark-100 text-xs font-normal">Min Price</div>
+          <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
+            {formatCurrency(minPrice, 2)}$
+          </span>
+        </div>
+        <div className="flex flex-col items-start">
+          <div className="text-shark-100 text-xs font-normal">Max Price</div>
+          <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
+            {formatCurrency(maxPrice, 2)}$
+          </span>
+        </div>
+      </div>
     )
   }
 
   const TvlTotal = ({ data }: any) => {
+    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
+    return (
+      <>
+        <p className="text-xs text-white mb-1">
+          {formatDollarAmount(
+            Number(data?.depositedToken0) *
+              Number(
+                tokens.find(
+                  (e) =>
+                    e.tokenAddress.toLowerCase() ===
+                    (data.liquidity === 'ichi' ? ichitokens.tokenA.toLowerCase() : data?.token0?.id.toLowerCase())
+                )?.priceUSD
+              ) +
+              Number(data?.depositedToken1) *
+                Number(
+                  tokens.find(
+                    (e) =>
+                      e.tokenAddress.toLowerCase() ===
+                      (data.liquidity === 'ichi' ? ichitokens.tokenB.toLowerCase() : data?.token1?.id.toLowerCase())
+                  )?.priceUSD
+                )
+          )}
+        </p>
+      </>
+    )
+  }
+  const InWalletTotal = ({ data }: any) => {
+    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
+    return (
+      <>
+        <p className="text-xs text-white mb-1">
+          {formatDollarAmount(
+            Number(data?.depositedToken0) *
+              Number(
+                tokens.find(
+                  (e) =>
+                    e.tokenAddress.toLowerCase() ===
+                    (data.liquidity === 'ichi' ? ichitokens.tokenA.toLowerCase() : data?.token0?.id.toLowerCase())
+                )?.priceUSD
+              ) +
+              Number(data?.depositedToken1) *
+                Number(
+                  tokens.find(
+                    (e) =>
+                      e.tokenAddress.toLowerCase() ===
+                      (data.liquidity === 'ichi' ? ichitokens.tokenB.toLowerCase() : data?.token1?.id.toLowerCase())
+                  )?.priceUSD
+                )
+          )}
+        </p>
+      </>
+    )
+  }
+  const EmissionsTotal = ({ data }: any) => {
     const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
     return (
       <>
@@ -293,17 +362,22 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       }
     )
   }
+  console.log('pagination >> ', pagination)
   return (
     <>
       <div className="relative hidden xl:block z-10 xl:mb-5 w-full">
         <div className="w-full">
           <TableHead
             items={[
-              { text: 'Your Positions', className: 'text-left w-[40%]', sortable: false },
-              { text: 'Status', className: 'text-left w-[15%]', sortable: false },
-              { text: 'APR', className: 'text-right w-[10%]', sortable: false },
-              { text: 'TVL', className: 'text-right w-[15%]', sortable: false },
-              { text: 'Action', className: 'text-right w-[20%]', sortable: false },
+              { text: 'Your Positions', className: 'text-left w-[23%]', sortable: false },
+              { text: 'Point Stack', className: 'text-left w-[10%]', sortable: false },
+              // { text: 'Status', className: 'text-left w-[15%]', sortable: false },
+              { text: 'Range', className: 'text-left w-[14%]', sortable: false },
+              { text: 'APR', className: 'text-right w-[12%]', sortable: false },
+              { text: 'TVL', className: 'text-right w-[8%]', sortable: false },
+              { text: 'In Wallet', className: 'text-right w-[8%]', sortable: false },
+              { text: 'Emissions', className: 'text-right w-[8%]', sortable: false },
+              { text: 'Action', className: 'text-right w-[17%]', sortable: false },
             ]}
             setSort={() => {}}
             setSortIndex={() => {}}
@@ -329,59 +403,163 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                   const extraAprNumber = extraAprs.reduce((acc: number, curr: extraPoints) => {
                     return acc + curr.apr
                   }, 0)
+                  const campaign = totalCampaigns.find(
+                    (add) => add.pairAddress.toLowerCase() === position.pool.id.toLowerCase()
+                  )
                   return (
                     <>
                       <TableRow key={position.id}>
-                        <TableCell className="flex w-[40%]">
+                        <TableCell className="flex w-[23%]">
                           <div className="flex items-center w-full gap-2">
-                            <div className="flex items-center w-[60px] max-2xl:w-[50px]">
+                            <div className="flex items-center w-[40px] max-2xl:w-[50px]">
                               <Image
                                 src={`/static/images/tokens/${position.token0.symbol}.svg`}
                                 alt="token"
-                                className="rounded-full w-10 h-10 max-2xl:w-8 max-2xl:h-8"
+                                className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
                                 width={30}
                                 height={30}
                               />
                               <Image
                                 src={`/static/images/tokens/${position.token1.symbol}.svg`}
                                 alt="token"
-                                className="-ml-4 rounded-full w-10 h-10 max-2xl:w-8 max-2xl:h-8"
+                                className="-ml-4 rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
                                 width={30}
                                 height={30}
                               />
                             </div>
-                            <div className="flex flex-col max-2xl:max-w-[85%] 2xl:max-w-full">
-                              <h5 className="text-sm text-white">
+                            <div className="flex flex-col gap-1 max-2xl:max-w-[85%] 2xl:max-w-full">
+                              <h5 className="text-sm text-white font-semibold leading-none">
                                 {position.token0.symbol} / {position.token1.symbol}
                               </h5>
-                              <div className="flex items-center gap-2">
-                                {position.liquidity === 'ichi' ? (
-                                  <div>
-                                    <span className="text-gray-600 flex items-center">
-                                      Managed By{' '}
-                                      <Image
-                                        src={`/static/images/providers/ichi.svg`}
-                                        alt="token"
-                                        className="mx-2 w-10 h-10"
-                                        width={30}
-                                        height={30}
-                                      />
-                                    </span>
-                                  </div>
-                                ) : (
-                                  <PriceCalculation
-                                    token0={position.token0}
-                                    token1={position.token1}
-                                    tickLower={position.tickLower}
-                                    tickUpper={position.tickUpper}
-                                    isMobile={false}
-                                  />
-                                )}
+                              <div className="flex items-center gap-1 h-[26px]">
+                                <span className="py-1 px-2 h-[1.875rem] flex flex-col justify-center text-xs button-primary rounded-lg">
+                                  Concentrated
+                                </span>
+                                <span className="!py-1 px-3  h-[1.875rem] flex flex-col justify-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
+                                  {formatAmount(toBN(position.pool.fee).div(10000), 3)}%
+                                </span>
+                                <span className="!py-0 px-3 h-[1.875rem] text-lg text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
+                                  <span className="icon-info"></span>
+                                </span>
                               </div>
+                              <span
+                                className={`!py-1 px-3 h-[1.875rem] flex flex-col justify-center items-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+                              >
+                                {
+                                  totalCampaigns.find(
+                                    (add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase()
+                                  )?.multiplier
+                                }
+                              </span>
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="w-[15%] flex justify-start">
+                        <TableCell className="flex w-[10%]">
+                          {/* Point Stack */}
+                          <div className="flex  justify-center items-center gap-2 ">
+                            {
+                              <span ref={hoverRef} className="flex gap-2">
+                                <span
+                                  ref={hoverRef}
+                                  className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}
+                                >
+                                  {totalCampaigns.find(
+                                    (add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase()
+                                  ) && (
+                                    <div className="relative flex items-center">
+                                      {campaign?.pointStack?.map((stack, index) => (
+                                        <Image
+                                          key={index}
+                                          src={`/static/images/point-stack/${stack}.svg`}
+                                          alt="token"
+                                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub ? 'z-[100]' : 'z-0'}`}
+                                          width={20}
+                                          height={20}
+                                          onMouseEnter={() => {
+                                            if (stack === 'blast-gold') {
+                                              setId(position.id)
+                                              setOpenTooltipGold(true)
+                                            }
+                                            if (stack === 'eigen-layer') {
+                                              setId(position.id)
+                                              setOpenTooltipEigenLayer(true)
+                                            }
+                                            if (stack === 'kelp-miles') {
+                                              setId(position.id)
+                                              setOpenTooltipKelpMiles(true)
+                                            }
+                                            if (stack === 'turtle-club') {
+                                              setId(position.id)
+                                              setOpenTooltipTurtleClub(true)
+                                            }
+                                          }}
+                                          onMouseLeave={() => {
+                                            if (openTooltipGold) {
+                                              setId('')
+                                              setOpenTooltipGold(false)
+                                            }
+                                            if (openTooltipEigenLayer) {
+                                              setId('')
+                                              setOpenTooltipEigenLayer(false)
+                                            }
+                                            if (openTooltipKelpMiles) {
+                                              setId('')
+                                              setOpenTooltipKelpMiles(false)
+                                            }
+                                            if (openTooltipTurtleClub) {
+                                              setId('')
+                                              setOpenTooltipTurtleClub(false)
+                                            }
+                                          }}
+                                        />
+                                      ))}
+                                      {openTooltipGold && position.id === id && (
+                                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                                            <p className="text-xs">
+                                              This pool will receive {campaign?.blastGoldAmount} of Blast Gold till the
+                                              25th June
+                                            </p>
+                                          </div>
+                                        </div>
+                                      )}
+                                      {openTooltipEigenLayer && position.id === id && (
+                                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                                            <p className="text-xs">
+                                              Eigenlayer points will be distributed to liquidity providers in this pool
+                                            </p>
+                                          </div>
+                                        </div>
+                                      )}
+                                      {openTooltipKelpMiles && position.id === id && (
+                                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                                            <p className="text-xs">
+                                              wrsETH liquidity providers will earn 1x Kelp Miles from this pool
+                                            </p>
+                                          </div>
+                                        </div>
+                                      )}
+                                      {openTooltipTurtleClub && position.id === id && (
+                                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                                            <p className="text-xs">
+                                              Deposit liquidity to receive a 25% Turtle Points boost from Fenix Rings
+                                              earned
+                                            </p>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </span>
+                              </span>
+                            }
+                          </div>
+                        </TableCell>
+                        <TableCell className="w-[14%]">
+                          {/* Range */}
                           <SetStatus
                             token0={position.token0}
                             token1={position.token1}
@@ -392,7 +570,8 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                             isInRange={isInRange}
                           />
                         </TableCell>
-                        <TableCell className="w-[10%] flex justify-end">
+                        <TableCell className="w-[12%] flex justify-end">
+                          {/* APR */}
                           <AprBox
                             apr={isInRange ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0}
                             tooltip={
@@ -425,26 +604,60 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                             }
                           />
                         </TableCell>
-                        <TableCell className="w-[15%] flex justify-end">
+                        <TableCell className="w-[8%] flex justify-end">
+                          {/* TVL */}
                           <div className="flex flex-col justify-center items-end">
                             <TvlTotal data={position} />
 
-                            <span className="text-xs">
+                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
                               {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
                               {position.token0.symbol}
                             </span>
 
-                            <span className="text-xs">
+                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
                               {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
                               {position.token1.symbol}
                             </span>
                           </div>
                         </TableCell>
-                        <TableCell className="w-[20%] flex justify-end">
+                        <TableCell className="w-[8%] flex justify-end">
+                          {/* In Wallet */}
+                          <div className="flex flex-col justify-center items-end">
+                            <InWalletTotal data={position} />
+
+                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
+                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
+                              {position.token0.symbol}
+                            </span>
+
+                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
+                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
+                              {position.token1.symbol}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="w-[8%] flex justify-end">
+                          {/* Emissions */}
+                          <div className="flex flex-col justify-center items-end">
+                            <EmissionsTotal data={position} />
+
+                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
+                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
+                              {position.token0.symbol}
+                            </span>
+
+                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
+                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
+                              {position.token1.symbol}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="w-[17%] flex justify-end">
+                          {/* Action */}
                           <div className="flex items-center gap-2">
                             <Button
                               variant="tertiary"
-                              className="h-[38px] w-[80px] bg-opacity-40 items-center justify-center"
+                              className="h-[38px] w-[80px] bg-opacity-40 flex items-center gap-1 justify-center"
                               onClick={() => {
                                 if (position.liquidity !== 'ichi') {
                                   dispatch(setApr(position?.apr))
@@ -458,19 +671,21 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                 }
                               }}
                             >
+                              <span className="icon-manage" />
                               <span className="text-xs">Manage</span>
                             </Button>
                             {position.liquidity !== 'ichi' ? (
                               <>
                                 <Button
                                   variant="tertiary"
-                                  className="h-[38px] w-[80px] bg-opacity-40 items-center justify-center"
+                                  className="h-[38px] w-[80px] bg-opacity-40 flex items-center gap-1 justify-center"
                                   onClick={() => {
                                     if (position.liquidity !== 'ichi') {
                                       handleClaim(position.id)
                                     }
                                   }}
                                 >
+                                  <span className="icon-coin" />
                                   <span className="text-xs">Claim</span>
                                 </Button>
                               </>
