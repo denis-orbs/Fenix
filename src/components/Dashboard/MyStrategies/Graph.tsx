@@ -58,8 +58,7 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
 
   const currentPoolPrice = Number(poolGlobalState?.price / 10 ** Number(row.token1.decimals)).toFixed(6)
 
-  const isInRange =
-    (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || row.liquidity === 'ichi'
+  const isInRange = true
 
   return (
     <div className="flex flex-col w-full h-32 justify-endñ ">
@@ -85,7 +84,11 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
               <p
                 className="bg-shark-300 
                h-[50px]
-               flex items-center
+               mx-auto
+               w-full
+               text-center
+               justify-center
+                 flex items-center
               bg-opacity-40 border border-shark-400 text-white text-xs px-3 py-2  rounded-sm  z-50"
               >
                 Position Managed by GAMMA
@@ -147,7 +150,7 @@ const Graph = ({ row, tickLower, tickUpper, token0Symbol, token1Symbol }: GraphP
       </div>
       <div className="flex items-center w-full justify-center px-10 py-2 border-t-2 border-shark-400">
         <p className="text-white text-xs">
-          {isInRange ? <span className="text-green-400">In range</span> : 'Out of range'}
+          {<span className="text-green-400">In range</span>}
           <span>
             {currentPoolPrice !== '0' && !isNaN(Number(currentPoolPrice)) && <span> ({currentPoolPrice})</span>}
           </span>

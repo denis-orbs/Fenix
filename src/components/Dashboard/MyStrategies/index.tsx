@@ -133,10 +133,9 @@ const MyStrategies = () => {
   useEffect(() => {
     dispatch(setApr(position))
   }, [position, dispatch])
-
   return (
     <>
-      {position.length !== 0 && !ichiLoading && !loadingGamma && address ? (
+      {position.length > 0 ? (
         <div className="relative">
           <div className="mb-4 flex w-[100%] items-center justify-between">
             <h2 id="strategies" className="text-lg text-white">
