@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import { useAccount, useBalance } from 'wagmi'
 import { IToken } from '@/src/library/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getTokenBalance } from '@/src/library/hooks/web3/useTokenBalance'
 import { Address } from 'viem'
 import { ethers } from 'ethers'
@@ -16,13 +16,15 @@ interface ExchangeBoxProps {
   token: IToken
   onOpenModal?: () => void
   variant?: 'primary' | 'secondary'
-  // FIXME: HAZ
-  onTokenValueChange?: (arg0: any, token: any) => void
-  // FIXME: HAZ
-
+  onTokenValueChange?: (arg0: string, token: IToken) => void
   value?: any
   setValue: (value: string) => void
   option?: string
+}
+
+type CancelableCall = {
+  canceled: boolean
+  cancel: () => void
 }
 
 const ExchangeBox = ({
@@ -40,6 +42,7 @@ const ExchangeBox = ({
   const account = useAccount()
   const [balance, setBalance] = useState('')
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false)
+  const latestCallRef = useRef<CancelableCall | null>(null)
 
   useEffect(() => {
     toBN(balance).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
@@ -73,9 +76,7 @@ const ExchangeBox = ({
         onTokenValueChange(
           toBN(balance)
             .div(10 ** (token?.decimals || 18))
-
             .toString(),
-
           token
         )
       } else {
@@ -86,34 +87,64 @@ const ExchangeBox = ({
 
   useEffect(() => {
     const asyncFn = async () => {
-      const b = await getTokenBalance(token.address as Address, account.address as Address)
-      // FIXME: HAZ
+      if (latestCallRef.current) {
+        latestCallRef.current.cancel()
+      }
 
-      setBalance(b)
+      const currentCall: CancelableCall = {
+        canceled: false,
+        cancel() {
+          this.canceled = true
+        },
+      }
+
+      latestCallRef.current = currentCall
+
+      try {
+        const b = await getTokenBalance(token.address as Address, account.address as Address)
+
+        if (!currentCall.canceled) {
+          setBalance(b.toString())
+        }
+      } catch (error) {
+        if (!currentCall.canceled) {
+          console.error(error)
+        }
+      }
     }
 
     asyncFn()
+
+    return () => {
+      if (latestCallRef.current) {
+        latestCallRef.current.cancel()
+      }
+    }
   }, [token, account.address])
 
   const handleOnChange = (e: any) => {
     if (onTokenValueChange) onTokenValueChange(e < 0 || e == '' ? 0 : e, token)
   }
+
   return (
     <div className={boxVariant}>
       <div className={`flex items-center mb-3 ${availableAlign}`}>
         {title && <p className="text-white font-medium">{title}</p>}
         <p className="text-shark-100 flex text-sm justify-end gap-6 xl:gap-0 w-full xl:w-3/5 items-cente xl:justify-between">
-          <span className=" ml-3">
-            {value && value !== '' && token?.price && formatDollarAmount(toBN(value).multipliedBy(token?.price))}
-          </span>
-          {option !== 'WITHDRAW' && (
-            <div>
+          {option !== 'WITHDRAW' ? (
+            <span className=" ml-3">
+              {value && value !== '' && token?.price && formatDollarAmount(toBN(value).multipliedBy(token?.price))}
+            </span>
+          ) : null}
+
+          {option !== 'WITHDRAWINN' ? (
+            <div className='flex items-center justify-end w-full'>
               <span className="icon-wallet text-xs mr-2"></span>
-              <span>
+              <span onClick={handleMax}>
                 Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol}
               </span>
             </div>
-          )}
+          ) : null}
         </p>
       </div>
       <div className="flex flex-col xl:flex-row items-center gap-3">
@@ -123,16 +154,20 @@ const ExchangeBox = ({
             onClick={onOpenModal ? () => onOpenModal() : undefined}
           >
             <div className="flex items-center gap-2">
-              <Image
-                src={`${token.img ? token.img : '/static/images/tokens/FNX.svg'}`}
-                alt="token"
-                className="w-6 h-6 rounded-full"
-                width={20}
-                height={20}
-              />
+              {option !== 'WITHDRAW' ? (
+                <>
+                  <Image
+                    src={`${token.symbol ? `/static/images/tokens/${token.symbol}.png` : '/static/images/tokens/FNX.svg'}`}
+                    alt="token"
+                    className="w-6 h-6 rounded-full"
+                    width={20}
+                    height={20}
+                  />
+                </>
+              ) : null}
               <span className="text-base">{token.symbol}</span>
             </div>
-            <span className="icon-chevron text-sm inline-block ml-2" />
+            {option !== 'WITHDRAW' ? <span className="icon-chevron text-sm inline-block ml-2" /> : null}
           </div>
         </div>
         <div className="relative w-full xl:w-3/5">
@@ -150,7 +185,8 @@ const ExchangeBox = ({
             onUserInput={(input) => handleOnChange(input)}
             precision={token.decimals}
           />
-          {option !== 'WITHDRAW' && (
+
+          {option !== 'WITHDRAWINN' ? (
             <div className="absolute right-2 top-[10px] flex items-center gap-1">
               <Button variant="tertiary" className="!py-1 !px-3" onClick={handleHalf}>
                 Half
@@ -159,7 +195,7 @@ const ExchangeBox = ({
                 Max
               </Button>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

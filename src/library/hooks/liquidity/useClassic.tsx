@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Address, http, maxUint256 } from 'viem'
+import { Address, http, maxUint256, parseUnits } from 'viem'
 import { multicall, writeContract } from '@wagmi/core'
 import { createConfig, fallback, useAccount, useChainId, useContractWrite, useWriteContract } from 'wagmi'
 import { ERC20_ABI, FACTORY_ABI, ROUTERV2_ABI } from '../../constants/abi'
@@ -98,7 +98,7 @@ export async function getLiquidityRemoveQuote(amount: Number, token1: Address, t
           abi: ROUTERV2_ABI,
           address: contractAddressList.v2router as Address,
           functionName: 'quoteRemoveLiquidity',
-          args: [token1, token2, stable, ethers.utils.parseUnits(amount.toString(), 'ether')],
+          args: [token1, token2, stable, parseUnits(amount.toString(), 18)],
         },
       ],
     }

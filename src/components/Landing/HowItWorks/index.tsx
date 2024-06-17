@@ -210,10 +210,10 @@ const HowItWorks = () => {
         </div>
       </div>
       <div className="container 2xl:mt-[200px] max-2xl:mt-[400px] max-xl:mt-[500px] mx-auto w-[100%]">
-        <div className="text-shark-100 text-xl md:text-lg md:mb-2 text-center font-normal">How it Works</div>
-        <div className="text-gradient3 text-[40px] max-md:text-2xl font-normal leading-relaxed text-center">
+        <h2 className="text-shark-100 text-xl md:text-lg md:mb-2 text-center font-normal">How it Works</h2>
+        <h4 className="text-gradient3 text-[40px] max-md:text-2xl font-normal leading-relaxed text-center">
           Fenix Finance
-        </div>
+        </h4>
         <div className="w-[100%] flex items-center flex-col xl:flex-row  justify-center ">
           <div className="w-full xl:w-1/2 flex items-center flex-col justify-center text-white  my-3">
             {articles.map((item, index) => (
@@ -223,12 +223,12 @@ const HowItWorks = () => {
                  flex items-center justify-between w-[100%]"
                 >
                   <div className="flex flex-col w-[80%] max-sm:w-[70%]">
-                    <div className="text-gradient4 text-xl max-md:text-lg font-normal leading-relaxed">
+                    <h3 className="text-gradient4 text-xl max-md:text-lg font-normal leading-relaxed">
                       {item.title}
-                    </div>
-                    <div className="text-white opacity-70 text-xs max-md:text-xs font-normal max-sm:w-[100%] w-[90%]">
+                    </h3>
+                    <p className="text-white opacity-70 text-xs max-md:text-xs font-normal max-sm:w-[100%] w-[90%]">
                       {item.text}
-                    </div>
+                    </p>
                   </div>
                   <div className="relative w-[20%] max-sm:w-[30%] my-auto">
                     <Image

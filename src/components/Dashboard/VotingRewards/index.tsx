@@ -38,7 +38,7 @@ const VotingRewards = () => {
           <div className="box-dashboard p-6 flex gap-8 items-center ">
             <p className="text-white text-sm">No rewards found.</p>
             <div className="flex text-white">
-              <span className="icon-reflesh cursor-pointer"></span>
+              <span className="icon-refresh cursor-pointer"></span>
               <Button variant="default" className="!py-0  flex gap-2">
                 {' '}
                 All Relays

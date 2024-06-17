@@ -44,7 +44,8 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
     if (btnDisabled) {
       setValue('')
     } else {
-      if (tokenBalance && isConnected) setValue(toBN(formatPrice(tokenBalance, 12)).div(2).toString())
+      if (tokenBalance && isConnected && toBN(tokenBalance).gt(0))
+        setValue(toBN(formatPrice(tokenBalance, 14)).div(2).toString())
       else setValue('')
     }
   }
@@ -53,8 +54,8 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
     if (btnDisabled) {
       setValue('')
     } else {
-      if (tokenBalance && isConnected) {
-        setValue(toBN(formatPrice(tokenBalance, 12)).toString())
+      if (tokenBalance && isConnected && toBN(tokenBalance).gt(0)) {
+        setValue(toBN(formatPrice(tokenBalance, 14)).toString())
       } else {
         setValue('')
       }
@@ -82,7 +83,7 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
       const myBigNumber = toBN(myNumber.toString())
       const userTokenBalance = myBigNumber.div(BN_TEN.pow(token.decimals)).toString() // the balance of the token
       const resultado = userTokenBalance
-      // console.log(resultado)
+      //
       setTokenBalance(resultado)
       setTokenSellUserBalance(resultado)
     }
@@ -124,7 +125,7 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
           >
             <div className="flex items-center gap-2">
               <Image
-                src={`/static/images/tokens/${token.symbol}.png`}
+                src={`/static/images/tokens/${token.symbol}.svg`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}

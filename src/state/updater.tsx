@@ -1,4 +1,5 @@
 import LiquidityUpdater from './liquidity/updater'
+import ReferralsUpdater from './referrals/updater'
 import UserUpdater from './user/updater'
 
 export default function AppUpdater() {
@@ -6,6 +7,7 @@ export default function AppUpdater() {
     <>
       <LiquidityUpdater />
       <UserUpdater />
+      <ReferralsUpdater />
     </>
   )
 }

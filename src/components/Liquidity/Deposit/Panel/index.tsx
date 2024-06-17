@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable max-len */
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -15,6 +17,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
 import { useSetChart, useShowChart } from '@/src/state/user/hooks'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { useAccount } from 'wagmi'
 
 const DepositTypeValues = {
   VOLATILE: 'VOLATILE',
@@ -25,7 +28,7 @@ const DepositTypeValues = {
 
 type DepositType = (typeof DepositTypeValues)[keyof typeof DepositTypeValues]
 
-const Panel = () => {
+const Panel = ({ disableChart }: { disableChart: boolean }) => {
   const [depositType, setDepositType] = useState<DepositType>('VOLATILE')
   const searchParams = useSearchParams()
   const setToken0 = useSetToken0()
@@ -34,6 +37,8 @@ const Panel = () => {
   const token1 = useToken1()
   const router = useRouter()
   const pathname = usePathname()
+  // const [disableChart, setDisableChart] = useState(false)
+
   useEffect(() => {
     const searchParamToken0 = searchParams.get('token0')
     const searchParamToken1 = searchParams.get('token1')
@@ -45,25 +50,23 @@ const Panel = () => {
     }
   }, [])
 
+  const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
+  const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
+  const [pair, setPair] = useState<V2PairId>()
+  const handlerSwitch = () => {
+    setDepositType(
+      'CONCENTRATED_MANUAL' === depositType || 'CONCENTRATED_AUTOMATIC' === depositType
+        ? 'VOLATILE'
+        : 'CONCENTRATED_MANUAL'
+    )
+  }
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString())
     params.set('type', depositType)
     params.set('token0', token0)
     params.set('token1', token1)
-    router.push(pathname + '?' + params.toString())
+    router.push(pathname + '?' + params.toString(), { scroll: false })
   }, [token0, token1, depositType])
-
-  const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
-  const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
-  const [pair, setPair] = useState<V2PairId>()
-
-  const handlerSwitch = (active: boolean) => {
-    if (!active) {
-      setDepositType('VOLATILE')
-    } else {
-      setDepositType('CONCENTRATED_AUTOMATIC' === depositType ? 'CONCENTRATED_AUTOMATIC' : 'CONCENTRATED_MANUAL')
-    }
-  }
 
   const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
   const { createPosition: createGammaPosition } = useGammaCreatePosition()
@@ -76,7 +79,7 @@ const Panel = () => {
     const searchParamToken0 = searchParams.get('token0')
     const searchParamToken1 = searchParams.get('token1')
     const typeSearch = searchParams.get('type')
-    // console.log(searchParams, searchParamToken0, searchParamToken1, 'searchParams')
+    //
 
     if (typeSearch == 'CONCENTRATED_AUTOMATIC') setDepositType('CONCENTRATED_AUTOMATIC')
     if (typeSearch == 'CONCENTRATED_MANUAL') setDepositType('CONCENTRATED_MANUAL')
@@ -86,8 +89,15 @@ const Panel = () => {
     if (!isAddress(searchParamToken0!) || !isAddress(searchParamToken1!)) return
     setDefaultPairs([searchParamToken0, searchParamToken1])
   }, [])
+  useEffect(() => {
+    if (disableChart) {
+      setChart(false)
+      setIsChartVisible(false)
+    }
+  }, [disableChart])
   const showChart = useShowChart()
   const setChart = useSetChart()
+  const { chainId } = useAccount()
   const [isChartVisible, setIsChartVisible] = useState(showChart)
   const handleSwitch = () => {
     setChart(!isChartVisible)
@@ -96,53 +106,55 @@ const Panel = () => {
   useEffect(() => {
     const getList = async () => {
       try {
-        const responseData = await fetchTokens()
-        const parsedData = responseData.map((item: any) => {
-          return {
-            id: 0,
-            name: item.basetoken.name,
-            symbol: item.basetoken.symbol,
-            address: item.basetoken.address,
-            decimals: item.decimals,
-            img: item.logourl,
-            isCommon: item.common,
-            price: parseFloat(item.priceUSD),
-          }
-        })
-
-        const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken]
-        if (defaultPairs.length > 0) {
-          parsedData.map((item: any) => {
-            if (item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
-            if (item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
+        if (chainId) {
+          const responseData = await fetchTokens(chainId)
+          const parsedData = responseData.map((item: any) => {
+            return {
+              id: 0,
+              name: item.basetoken.name,
+              symbol: item.basetoken.symbol,
+              address: item.basetoken.address,
+              decimals: item.decimals,
+              img: item.logourl,
+              isCommon: item.common,
+              price: parseFloat(item.priceUSD),
+            }
           })
-          setDefaultPairs([])
+
+          const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken]
+          if (defaultPairs.length > 0) {
+            parsedData.map((item: any) => {
+              if (item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
+              if (item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
+            })
+            setDefaultPairs([])
+          }
+          setDefaultPairsTokens(newDefaultPairsTokens)
         }
-        setDefaultPairsTokens(newDefaultPairsTokens)
       } catch (error) {}
     }
 
     defaultPairs.length > 0 ? getList() : {}
-  }, [defaultPairs])
+  }, [defaultPairs, chainId])
 
   return (
     <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
       <div className="w-full flex flex-col xl:flex-row justify-between gap-12 items-center relative z-10">
         <div className="w-full relative">
           <div className="flex items-center justify-between mb-[25px] font-semibold">
-            <h4 className="text-lg md:text-xl text-white font-medium">New Position</h4>
+            <h1 className="text-lg md:text-xl text-white font-medium">New Position</h1>
             <div className="flex items-center gap-[13px]">
-              <div className="flex items-center gap-3">
-                <Switch active={showChart} setActive={handleSwitch} />
-                <div className="text-xs text-shark-100 font-normal whitespace-nowrap">Chart</div>
-              </div>
-              {/* <div className="flex items-center gap-[9px] h-10">
+              <span
+                onClick={handleSwitch}
+                className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
+              ></span>
+              <div className="flex items-center gap-[9px] h-10">
                 <Switch active={activeSwitch} setActive={handlerSwitch} />
-                <span className="text-shark-100 text-xs leading-normal">Concentrated</span>
-              </div> */}
+                <span className="text-shark-100 text-xs leading-normal">{depositType}</span>
+              </div>
               {/* <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
                 <span className="icon-cog text-white"></span>
-              </div> */}
+  </div> */}
             </div>
           </div>
 

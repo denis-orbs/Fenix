@@ -20,7 +20,7 @@ import { formatAmount, formatDollarAmount, toBN } from '@/src/library/utils/numb
 import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
-import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
+
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { ichiVaults } from './ichiVaults'
@@ -28,6 +28,8 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import Loader from '@/src/components/UI/Icons/Loader'
+import { useAccount } from 'wagmi'
+import { ethers } from 'ethers'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
 interface modifiedIchiVault extends IchiVault {
@@ -53,6 +55,7 @@ const WithdrawAmountsICHI = ({
 
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
+  const { chainId } = useAccount()
 
   const vaultAddress =
     allIchiVaultsByTokenPair?.find((vault) => {
@@ -71,7 +74,7 @@ const WithdrawAmountsICHI = ({
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
     if (!amoutToWithdraw || amoutToWithdraw == '0') return 'Enter an amount'
-    if (amoutToWithdraw > totalUserShares) return 'Insufficient balance'
+    if (parseFloat(amoutToWithdraw) > parseFloat(totalUserShares)) return 'Insufficient balance'
     return BUTTON_TEXT_WITHDRAW
   }
   const token0 = useToken0()
@@ -115,15 +118,19 @@ const WithdrawAmountsICHI = ({
           return v
         }
       })?.tokenB
-      const tokenList = await fetchTokens()
-      const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
-      const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
-      setTotalShareDollar(Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice))
+      if (chainId) {
+        const tokenList = await fetchTokens(chainId)
+        const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
+        const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
+        setTotalShareDollar(
+          Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice)
+        )
+      }
 
       setTotalUserShares(data)
     }
     getTotalUserShares()
-  }, [account, vaultAddress, web3Provider])
+  }, [account, vaultAddress, web3Provider, chainId])
   useEffect(() => {
     if (allIchiVaultsByTokenPair && allIchiVaultsByTokenPair?.length > 0) {
       const firstToken = allIchiVaultsByTokenPair[0]
@@ -139,7 +146,13 @@ const WithdrawAmountsICHI = ({
     if (!account) return
     if (!vaultAddress) return
     try {
-      const txnDetails = await withdraw(account, amoutToWithdraw, vaultAddress.id, web3Provider, dex)
+      const txnDetails = await withdraw(
+        account,
+        ethers.utils.parseEther(amoutToWithdraw),
+        vaultAddress.id,
+        web3Provider,
+        dex
+      )
       // toast.success('Withdrawal Transaction Sent')
       addNotification({
         id: crypto.randomUUID(),
@@ -149,14 +162,14 @@ const WithdrawAmountsICHI = ({
         txHash: '',
         notificationDuration: NotificationDuration.DURATION_5000,
       })
-      txnDetails.wait()
+      const tx = await txnDetails.wait()
       // toast.success('Withdrawal Successful')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
         message: `Withdrawal Successful.`,
         notificationType: NotificationType.SUCCESS,
-        txHash: '',
+        txHash: tx.transactionHash,
         notificationDuration: NotificationDuration.DURATION_5000,
       })
       setAmountToWithdraw('')
@@ -178,17 +191,23 @@ const WithdrawAmountsICHI = ({
     toBN(totalUserShares).lte(0) ? setBtnDisabled(true) : setBtnDisabled(false)
   }, [totalUserShares])
 
+  const handleDecString = (value: any, decimals: any) => {
+    const regex = new RegExp(`^(\\d+\\.\\d{0,${decimals}})`)
+    const match = value.match(regex)
+    return match ? match[0] : value
+  }
+
   const handleHalf = () => {
-    // console.log(!totalUserShares)
-    // console.log()
-    // console.log(totalUserShares)
+    //
+    //
+    //
     if (btnDisabled) {
       setAmountToWithdraw('')
     } else {
       if (!totalUserShares || totalUserShares === '') {
         setAmountToWithdraw('')
       } else {
-        setAmountToWithdraw(toBN(totalUserShares).div(2).toString())
+        setAmountToWithdraw(handleDecString(toBN(totalUserShares).div(2).toString(), 18))
       }
     }
   }
@@ -200,10 +219,14 @@ const WithdrawAmountsICHI = ({
       if (!totalUserShares || totalUserShares === '') {
         setAmountToWithdraw('')
       } else {
-        setAmountToWithdraw(toBN(totalUserShares).toString())
+        setAmountToWithdraw(toBN(totalUserShares.toString()).toString())
       }
     }
   }
+  const firstTokenSymbol =
+    tokenList.find((token) => {
+      return token.address?.toLowerCase() === selected.toLowerCase()
+    })?.symbol || 'WETH'
   return (
     <>
       <div className="bg-shark-400 bg-opacity-40 px-[15px] py-[29px] md:px-[19px] border border-shark-950 rounded-[10px] mb-2.5">
@@ -268,13 +291,13 @@ const WithdrawAmountsICHI = ({
                       {/* {selected !== 'Choose one' ? ( */}
                       <>
                         <Image
-                          src={`/static/images/tokens/${tokenAddressToSymbol[selected]}.svg`}
+                          src={`/static/images/tokens/${firstTokenSymbol}.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
                           width={20}
                           height={20}
                         />
-                        <span className="text-base">{tokenAddressToSymbol[selected]}</span>
+                        <span className="text-base">{firstTokenSymbol}</span>
                       </>
                     </div>
                     <span
@@ -298,9 +321,11 @@ const WithdrawAmountsICHI = ({
                       >
                         <Image
                           src={`/static/images/tokens/${
-                            tokenAddressToSymbol[
-                              vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase()
-                            ]
+                            tokenList.find(
+                              (t) =>
+                                t?.address?.toLowerCase() ===
+                                (vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
+                            )?.symbol
                           }.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
@@ -310,19 +335,21 @@ const WithdrawAmountsICHI = ({
                         <div className="flex flex-col">
                           <span className="text-base">
                             {
-                              tokenAddressToSymbol[
-                                vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
-                              ]
+                              tokenList.find(
+                                (t) =>
+                                  t?.address?.toLowerCase() ===
+                                  (vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
+                              )?.symbol
                             }
                           </span>
                           {rignsAprLoading && <Loader />}
                           {!rignsAprLoading && vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
+                              {(vault?.apr  as any[1])[0]?.apr === null || (vault?.apr  as any[1])[0]?.apr < 0
                                 ? '0'
                                 : formatAmount(
-                                    toBN(vault?.apr[1]?.apr?.toFixed(0))
+                                    toBN((vault?.apr  as any[1])[0]?.apr?.toFixed(0))
                                       .plus(ringsApr || 0)
                                       .toString(),
                                     2

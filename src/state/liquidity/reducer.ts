@@ -1,6 +1,6 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
-import { getAllPools, getConcentratedPools, getLiquidityV2Pairs } from './thunks'
+import { getAllPools, getGammaVaults, getLiquidityV2Pairs, getRingsCampaigns } from './thunks'
 import { LiquidityState, V2PairId, v2FactoryData, v3FactoryData } from './types'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import {
@@ -24,6 +24,9 @@ import {
   NATIVE_PRICE,
 } from '@/src/library/apollo/queries/global'
 import { POOL_DAY_DATA } from '@/src/library/apollo/queries/pools'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ALGEBRA_SUBGRAPH } from '@/src/library/constants/addresses'
+import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -32,10 +35,7 @@ export const initialState: LiquidityState = {
     data: [],
     tableData: [],
   },
-  concentratedPools: {
-    state: ApiState.LOADING,
-    data: [],
-  },
+
   pools: {
     state: ApiState.LOADING,
     data: [],
@@ -45,6 +45,15 @@ export const initialState: LiquidityState = {
   token1: process.env.NEXT_PUBLIC_DEFAULT_TOKEN_1_ADDRESS as Address,
   token1TypedValue: '',
   clmProvider: ClmProvider.ICHI,
+
+  gammaVaults: {
+    data: [],
+    state: ApiState.LOADING,
+  },
+  ringsCampaigns: {
+    state: ApiState.LOADING,
+    data: [],
+  },
 }
 
 export default createReducer(initialState, (builder) => {
@@ -86,16 +95,7 @@ export default createReducer(initialState, (builder) => {
     .addCase(getLiquidityV2Pairs.rejected, (state) => {
       state.v2Pairs.state = ApiState.ERROR
     })
-    .addCase(getConcentratedPools.pending, (state) => {
-      state.concentratedPools.state = ApiState.LOADING
-    })
-    .addCase(getConcentratedPools.fulfilled, (state, action) => {
-      state.concentratedPools.state = ApiState.SUCCESS
-      state.concentratedPools.data = action.payload
-    })
-    .addCase(getConcentratedPools.rejected, (state) => {
-      state.concentratedPools.state = ApiState.ERROR
-    })
+
     .addCase(getLiquidityTableElements.pending, (state) => {
       state.v2Pairs.tablestate = ApiState.LOADING
     })
@@ -107,11 +107,33 @@ export default createReducer(initialState, (builder) => {
     .addCase(getLiquidityTableElements.rejected, (state) => {
       state.v2Pairs.tablestate = ApiState.ERROR
     })
+    .addCase(getGammaVaults.pending, (state) => {
+      state.gammaVaults = { data: [], state: ApiState.LOADING }
+    })
+    .addCase(getGammaVaults.fulfilled, (state, action) => {
+      state.gammaVaults = { data: action.payload, state: ApiState.SUCCESS }
+    })
+    .addCase(getGammaVaults.rejected, (state) => {
+      state.gammaVaults = { data: [], state: ApiState.ERROR }
+    })
+    .addCase(getRingsCampaigns.pending, (state) => {
+      state.ringsCampaigns = { data: [], state: ApiState.LOADING }
+    })
+    .addCase(getRingsCampaigns.fulfilled, (state, action) => {
+      state.ringsCampaigns = { data: action.payload, state: ApiState.SUCCESS }
+    })
+    .addCase(getRingsCampaigns.rejected, (state) => {
+      state.ringsCampaigns = { data: [], state: ApiState.ERROR }
+    })
 })
 
 // Function to fetch v3 algebra pool data
-export const fetchPoolData = async () => {
+export const fetchPoolData = async (chainId: number) => {
   try {
+    const algebra_client = new ApolloClient({
+      uri: chainId ? ALGEBRA_SUBGRAPH[chainId] : ALGEBRA_SUBGRAPH[FALLBACK_CHAIN_ID],
+      cache: new InMemoryCache(),
+    })
     const { data } = await algebra_client.query({
       query: GET_V3_ALGEBRA_DATA,
     })
@@ -187,9 +209,9 @@ export const fetchv2PairId = async (token0Id: any, token1Id: any, isStable: Bool
       query: GET_V2_PAIR_ID,
       variables: { token0Id, token1Id, isStable }, // Pass the user variable as owner
     })
-    // console.log(data)
+    //
     // // Data is available in `data.pools`
-    // console.log(data.pairs)
+    //
     return data.pairs as V2PairId[]
   } catch (error) {
     console.error('Error fetching pool data:', error)
@@ -204,7 +226,7 @@ export const fetchNativePrice = async () => {
       fetchPolicy: 'cache-first',
     })
     // Data is available in `data.positions`
-    // console.log(data.bundles[0].maticPriceUSD, 'price')
+    //
     return data.bundles[0].maticPriceUSD as string
   } catch (error) {
     console.error('Error fetching positions:', error)

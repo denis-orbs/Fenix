@@ -57,6 +57,6 @@ export const useAlgebraMultiRouting = (tokenGet: IToken, tokenSell: IToken) => {
   } else {
     swapRoute = null
   }
-  // console.log(swapRoute?.tokenPath)
+  //
   return { swapRoute }
 }

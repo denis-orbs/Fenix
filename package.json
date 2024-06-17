@@ -14,6 +14,7 @@
     "@apollo/client": "^3.9.6",
     "@crocswap-libs/blast-points-client": "1.1.2",
     "@cryptoalgebra/integral-sdk": "^0.12.4",
+    "@fuul/sdk": "^4.7.1",
     "@ichidao/ichi-vaults-sdk": "^0.0.40",
     "@prisma/client": "^5.13.0",
     "@rainbow-me/rainbowkit": "^2.0.1",
@@ -29,6 +30,7 @@
     "autoprefixer": "10.4.16",
     "axios": "^1.6.8",
     "bignumber.js": "^9.1.2",
+    "clipboard": "^2.0.11",
     "dotenv": "^16.4.5",
     "encoding": "^0.1.13",
     "ethers": "5.7.2",
@@ -85,6 +87,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.1.0",
     "prettier": "^3.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.3",
     "prisma": "^5.13.0",
     "ts-node": "^10.9.2"
   },

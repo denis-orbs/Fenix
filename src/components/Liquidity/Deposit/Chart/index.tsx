@@ -1,39 +1,48 @@
 'use client'
 
-import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
+import { NATIVE_ETH_LOWERCASE, WETH_ADDRESS } from '@/src/library/Constants'
+import { contractAddressList } from '@/src/library/constants/contactAddresses'
+import { useAllPools } from '@/src/state/liquidity/hooks'
+import { zeroAddress } from 'viem'
+import { Token, computePoolAddress } from '@cryptoalgebra/integral-sdk'
+import { blast } from 'viem/chains'
+import { INIT_CODE_HASH_MANUAL_OVERRIDE } from '@/src/library/constants/algebra'
 
-const generateChartUrl = (tokenA: string, tokenB: string) => {
-  tokenA = tokenA === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : tokenA.toLowerCase()
-  tokenB = tokenB === NATIVE_ETH_LOWERCASE ? '0x4300000000000000000000000000000000000004' : tokenB.toLowerCase()
-
-  const baseUrls: { [key: string]: string } = {
-    '0x4300000000000000000000000000000000000003/0x4300000000000000000000000000000000000004':
-      'https://www.defined.fi/blast/0x1d74611f3ef04e7252f7651526711a937aa1f75e', // USDB/WETH
-    '0x4300000000000000000000000000000000000004/0xf7bc58b8d8f97adc129cfc4c9f45ce3c0e1d2692':
-      'https://www.defined.fi/blast/0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f', // WETH/WBTC
-    '0x4300000000000000000000000000000000000004/0xeb466342c4d449bc9f53a865d5cb90586f405215':
-      'https://www.defined.fi/blast/0x86d1da56fc79accc0daf76ca75668a4d98cb90a7',
-  }
-
-  const key = [tokenA, tokenB].sort().join('/')
-  const quoteToken = tokenA < tokenB ? 'token0' : 'token1'
-
-  if (baseUrls[key]) {
-    return `${baseUrls[key]}?quoteToken=${quoteToken}&embedded=1&hideTxTable=1&hideSidebar=1&embedColorMode=DEFAULT`
-  }
-
-  return null
-}
 const Chart = ({ token0, token1 }: { token0?: string | null; token1?: string | null }) => {
-  //  console.log(token0, token1, 'token0, token1')
-  if (!token0 || !token1) return null
-  const chartUrl = generateChartUrl(token0.toLowerCase(), token1.toLowerCase())
-  if (!chartUrl) return null
+  const normalizeToken = (token: string) =>
+    token.toLowerCase() === NATIVE_ETH_LOWERCASE ? WETH_ADDRESS.toLowerCase() : token.toLowerCase()
+
+  const tokenA = token0 && token1 ? (normalizeToken(token0) < normalizeToken(token1) ? token0 : token1) : zeroAddress
+  const tokenB = token0 && token1 ? (normalizeToken(token0) < normalizeToken(token1) ? token1 : token0) : zeroAddress
+  const poolAddress =
+    tokenA == tokenB
+      ? '0x0000000000000000000000000000000000000000'
+      : computePoolAddress({
+          tokenA: new Token(blast.id, tokenA, 18), // decimals here are arbitrary
+          tokenB: new Token(blast.id, tokenB, 18), // decimals here are arbitrary
+          poolDeployer: contractAddressList.pool_deployer,
+          initCodeHashManualOverride: INIT_CODE_HASH_MANUAL_OVERRIDE,
+        })
+
+  const { data } = useAllPools()
+
+  const availablePool = data?.find((pool: any) => pool?.id?.toLowerCase() === poolAddress.toLowerCase())
+
+  if (!token0 || !token1 || availablePool == null) return null
+
   return (
-    <div
-      className={`flex flex-col w-[100%] xl:rounded-2xl max-xl:rounded-b-2xl max-xl:pb-4 max-xl:h-[600px] xl:h-[525px] px-3 xl:border xl:border-shark-950 xl:p-[3px] max-xl:bg-shark-400 max-xl:bg-opacity-40`}
-    >
-      <iframe height="100%" width="100%" src={chartUrl} allow="clipboard-write" className="rounded-lg" />
+    <div  className='w-[100%] relative'>
+      <div
+        className={`sticky top-5 mt-[22px] left-0 flex flex-col w-[100%] xl:rounded-2xl max-xl:rounded-b-2xl max-xl:pb-4 max-xl:h-[600px] xl:h-[525px] px-3 xl:border xl:border-shark-950 xl:p-[3px] max-xl:bg-shark-400 max-xl:bg-opacity-40`}
+      >
+        <iframe
+          height="100%"
+          width="100%"
+          src={`https://dexscreener.com/blast/${poolAddress}?embed=1&theme=dark&trades=0&info=0`}
+          allow="clipboard-write"
+          className="rounded-lg"
+        />
+      </div>
     </div>
   )
 }

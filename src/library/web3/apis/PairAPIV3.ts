@@ -6,6 +6,9 @@ import { MaNFTInfoV3, PairInfoV3 } from './pairAPI'
 import { PairAPIV3Address } from '../ContractAddresses'
 import { Address } from 'viem'
 import { wagmiConfig } from '@/src/app/layout'
+import { ChainId } from '@cryptoalgebra/integral-sdk'
+import { PAIR_API_ADDRESS } from '../../constants/addresses'
+import { FALLBACK_CHAIN_ID } from '../../constants/chains'
 
 export async function getPairInformation(user: Address, pair: Address): Promise<PairInfoV3> {
   const publicClient = getPublicClient(wagmiConfig)
@@ -79,10 +82,10 @@ export async function getPositionsOfOwnerInGauge(owner: Address, gauge: Address)
   return parsedPositions
 }
 
-export async function getAllPairsForUser(user: Address): Promise<PairInfoV3[]> {
+export async function getAllPairsForUser(user: Address, chainId: number): Promise<PairInfoV3[]> {
   const publicClient = getPublicClient(wagmiConfig)
   const allPairs = (await publicClient?.readContract({
-    address: PairAPIV3Address,
+    address: chainId ? (PAIR_API_ADDRESS[chainId] as Address) : (PAIR_API_ADDRESS[FALLBACK_CHAIN_ID] as Address),
     abi: pairAPIV3ABI,
     functionName: 'getAllPair',
     args: [user, 300, 0],

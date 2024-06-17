@@ -1,6 +1,7 @@
+/* eslint-disable max-len */
 'use client'
 
-import { useState } from 'react'
+import { use, useState, useEffect } from 'react'
 import cn from '@/src/library/utils/cn'
 import Button from '../Button'
 
@@ -22,6 +23,7 @@ const Pagination = ({
   setItemPerPage,
 }: PaginationProps) => {
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
+  const [paginationArr, setPaginationArr] = useState<number[]>([])
   const mergeClassName = cn('text-white text-xs w-full md:max-w-full box-large hidden lg:block', className)
 
   const pageClassName = (index: number) => {
@@ -31,32 +33,71 @@ const Pagination = ({
     )
   }
 
-  const hadlerPrev = () => setActivePage(activePage > 1 ? activePage - 1 : activePage)
-  const hadlerNext = () => setActivePage(activePage < numberPages ? activePage + 1 : activePage)
+  const clearSelection = () => {
+    if (window.getSelection) {
+      const selection = window.getSelection()
+      if (selection) {
+        selection.removeAllRanges()
+      }
+    }
+  }
 
-  const hadlerPage = (index: number) => setActivePage(index + 1)
+  const hadlerPrev = () => {
+    setActivePage(activePage > 1 ? activePage - 1 : activePage)
+    clearSelection()
+  }
+  const hadlerNext = () => {
+    setActivePage(activePage < numberPages ? activePage + 1 : activePage)
+    clearSelection()
+  }
 
-  const visiblePages = 6
-  const startPage = Math.max(1, activePage - Math.floor(visiblePages / 2))
+  const hadlerPage = (index: number) => {
+    setActivePage(index + 1)
+    clearSelection()
+  }
+
+  const visiblePages = 4
+  const startPage =
+    activePage <= 3 || numberPages <= 5
+      ? 1
+      : activePage === numberPages - 1
+        ? activePage - 3
+        : activePage === numberPages
+          ? activePage - 4
+          : activePage - 2
   const endPage = Math.min(numberPages, startPage + visiblePages)
+
+  useEffect(() => {
+    const arr = []
+    for (let i = 0; i < numberPages; i++) {
+      arr.push(i + 1)
+    }
+    setPaginationArr([...arr.slice(startPage - 1, endPage)])
+  }, [activePage, itemsPerPage, startPage, numberPages, endPage])
+
   return (
     <div className={mergeClassName}>
       <div className="w-full flex justify-center items-center">
-        <div className="w-[90%] flex items-center justify-center gap-2.5 h-[62px] relative z-10">
+        <div className="w-[85%] flex items-center justify-center gap-2.5 h-[62px] relative z-10">
           <button
             type="button"
-            className="flex items-center justify-center leading-normal [&:not(:hover)]:text-shark-100 gap-2.5 px-5 py-2.5 transition-colors button-secondary rounded-[10px] mr-1.5"
+            className={`flex items-center justify-center leading-normal gap-2.5 px-5 py-2.5 ${activePage === 1 ? 'text-shark-100 opacity-60' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} rounded-[10px] mr-1.5`}
             onClick={hadlerPrev}
             disabled={activePage === 1}
           >
-            <span className="-scale-x-100 icon-arrow"></span>
+            <span className="icon-arrow-right rotate-180 text-sm"></span>
             Previous
           </button>
 
-          {Array.from({ length: numberPages })
+          {paginationArr.map((page: number, index: number) => (
+            <button key={index} type="button" className={pageClassName(page - 1)} onClick={() => hadlerPage(page - 1)}>
+              {page}
+            </button>
+          ))}
+
+          {/* {Array.from({ length: numberPages })
             .map((_, index) => index)
             .slice(startPage, endPage)
-
             .map((page, index) => (
               <button
                 key={index}
@@ -66,15 +107,15 @@ const Pagination = ({
               >
                 {page}
               </button>
-            ))}
+            ))} */}
           <button
             type="button"
-            className="flex items-center justify-center leading-normal [&:not(:hover)]:text-shark-100 gap-2.5 px-5 py-2.5 transition-colors button-secondary rounded-[10px] ml-1.5"
+            className={`flex items-center justify-center leading-normal ${activePage === numberPages ? 'text-shark-100 opacity-60' : '[&:not(:hover)]:text-shark-100 button-secondary transition-colors'} gap-2.5 px-5 py-2.5 rounded-[10px] ml-1.5`}
             onClick={hadlerNext}
             disabled={activePage === numberPages}
           >
             Next
-            <span className="icon-arrow"></span>
+            <span className="icon-arrow-right"></span>
           </button>
         </div>
         <div
@@ -84,10 +125,7 @@ const Pagination = ({
         >
           <span className="text-lg icon-cog text-white "></span>
           {isOpenItemsPerPage && (
-            <div
-              className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute left-full bottom-0 translate-x-1"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute left-full bottom-0 translate-x-1">
               <Button onClick={() => setItemPerPage(5)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
                 5
               </Button>

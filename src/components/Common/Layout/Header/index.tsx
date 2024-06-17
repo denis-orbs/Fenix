@@ -8,9 +8,14 @@ import AccountHandler from './AccountHandler'
 import WalletSelection from '@/src/components/Modals/WalletSelection'
 import { useWindowSize } from 'usehooks-ts'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+import SubMenu from './SubMenu'
+import Toggle from './Mobile/Toggle'
 const Header = () => {
   const pathname = usePathname()
   const { width } = useWindowSize()
+  const [showSubMenu, setShowSubMenu] = useState<boolean>(false)
+  const handleShowSubMenu = () => setShowSubMenu(!showSubMenu)
 
   // Todas las clases que tienen como condicion "pathname === '/' son tomadas en cuenta para el landing page de forma que no modifiquen estilos importantes en el resto de la aplicación"
   return (
@@ -45,13 +50,15 @@ const Header = () => {
         </div>
 
         <div
-          className={`${pathname === '/' ? 'flex  justify-center  items-center' : 'w-full flex justify-center relative z-10 max-xl:mr-auto max-2xl:mr-[40px]'} `}
+          className={`${pathname === '/' ? 'flex justify-center items-center' : 'w-full relative flex justify-center z-50 max-xl:mr-auto max-2xl:mr-[20px]'} `}
         >
           <Menu />
+          {/* {width < 1380 && <Toggle onClick={handleShowSubMenu} />} */}
+          <SubMenu showMenu={showSubMenu} setShowMenu={setShowSubMenu} />
         </div>
 
         <div
-          className={`flex  z-10 items-center gap-3.5  ${width < 860 ? 'px-1' : 'px-5'} 
+          className={`flex z-50 items-center gap-3.5  ${width < 860 ? 'px-1' : 'px-5'} 
           h-[95px]
           ${pathname === '/' ? 'absolute right-0 w-full justify-end' : 'w-full justify-center'}`}
         >

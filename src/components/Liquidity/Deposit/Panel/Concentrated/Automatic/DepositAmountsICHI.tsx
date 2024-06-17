@@ -27,7 +27,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { IToken } from '@/src/library/types'
 import { connectorsForWallets, useConnectModal } from '@rainbow-me/rainbowkit'
-import { tokenAddressToSymbol } from '@/src/library/constants/tokenAddressToSymbol'
+
 import Spinner from '@/src/components/Common/Spinner'
 import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
@@ -141,7 +141,7 @@ const DepositAmountsICHI = ({
     if (isToken0ApprovalRequired) {
       setWaitingApproval(true)
       try {
-        // console.log('vault', vaultAddress)
+        //
         const txApproveDepositDetails = await approveDepositToken(
           account,
           vaultAddress.tokenA.toLowerCase() === selected.toLowerCase() && vaultAddress.allowTokenA ? 0 : 1,
@@ -152,11 +152,13 @@ const DepositAmountsICHI = ({
         await txApproveDepositDetails.wait()
         setIsToken0ApprovalRequired(false)
         setWaitingApproval(false)
+        setLoading(false)
 
         return
       } catch (error) {
-        // console.log(error)
+        //
         setWaitingApproval(false)
+        setLoading(false)
 
         return
       }
@@ -190,23 +192,22 @@ const DepositAmountsICHI = ({
         dex,
         1
       )
-      await txDepositDetails.wait()
+      const tx = await txDepositDetails.wait()
       // toast.success('Deposited successfully')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
         message: `Deposited successfully.`,
         notificationType: NotificationType.SUCCESS,
-        txHash: '',
+        txHash: tx.transactionHash,
         notificationDuration: NotificationDuration.DURATION_5000,
       })
       setLoading(false)
     } catch (error) {
-      // console.log('gg', error.reason)
-      // console.log('gg', error)
+      //
+      //
       if (error instanceof Error && 'code' in error) {
         if (error.code == 'ACTION_REJECTED') {
-          console.log(error)
           // toast.error('Action rejected')
           // toast.error(error.message.split('(')[0].trim().toUpperCase())
           addNotification({
@@ -220,11 +221,10 @@ const DepositAmountsICHI = ({
           setLoading(false)
           // FIXME: STARK
         } else if ('reason' in error && error?.reason == 'IV.deposit: deposits too large') {
-          // toast.error(`${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`)
           addNotification({
             id: crypto.randomUUID(),
             createTime: new Date().toISOString(),
-            message: `${tokenAddressToSymbol[selected]} deposits are unavailable due to pool volatility.`,
+            message: `Deposits are unavailable due to pool volatility.`,
             notificationType: NotificationType.ERROR,
             txHash: '',
             notificationDuration: NotificationDuration.DURATION_5000,
@@ -232,14 +232,14 @@ const DepositAmountsICHI = ({
           setLoading(false)
         }
       } else {
-        // console.log(error.reason)
+        //
         // toast.error('Transaction failed')
         // toast.error(error.message.split('(')[0].trim().toUpperCase())
         // FIXME: STARK
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
-          message: `${error}`,
+          message: `${(error as Error).message}`,
           notificationType: NotificationType.ERROR,
           txHash: '',
           notificationDuration: NotificationDuration.DURATION_5000,
@@ -297,13 +297,16 @@ const DepositAmountsICHI = ({
       )
     }
   }, [allIchiVaultsByTokenPair])
-
+  const firstTokenSymbol =
+    tokenList.find((token) => {
+      return token.address?.toLowerCase() === selected.toLowerCase()
+    })?.symbol || 'WETH'
   const getButtonText = () => {
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
     if (waitingApproval) return 'Waiting for approval'
     if (!token0TypedValue) return 'Enter an amount'
-    if (isToken0ApprovalRequired) return `Approve ${tokenAddressToSymbol[selected]}`
+    if (isToken0ApprovalRequired) return `Approve ${firstTokenSymbol}`
 
     const typedValueBN = toBN(token0TypedValue)
     const balanceBN = toBN(formatUnits(token0Balance || 0n, token0Decimals))
@@ -333,12 +336,19 @@ const DepositAmountsICHI = ({
       setToken0TypedValue('')
     } else {
       if (token0Balance) {
-        return setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
+        return setToken0TypedValue(toBN(token0Balance.toString())
+        .div(10 ** (token0Decimals || 18))
+        .toString())
       } else {
         setToken0TypedValue('')
       }
     }
   }
+
+  // const secondTokenSymbol =
+  //   tokenList.find((token) => {
+  //     return token.address?.toLowerCase() === secondToken.toLowerCase()
+  //   })?.symbol || 'WETH'
 
   return (
     <>
@@ -400,13 +410,13 @@ const DepositAmountsICHI = ({
                     <div className="flex justify-center items-center gap-3">
                       <>
                         <Image
-                          src={`/static/images/tokens/${tokenAddressToSymbol[selected]}.svg`}
+                          src={`/static/images/tokens/${firstTokenSymbol}.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
                           width={20}
                           height={20}
                         />
-                        <span className="text-base">{tokenAddressToSymbol[selected]}</span>
+                        <span className="text-base">{firstTokenSymbol}</span>
                       </>
 
                       {/* <span
@@ -434,7 +444,14 @@ const DepositAmountsICHI = ({
                       >
                         <Image
                           // src={`/static/images/tokens/${token?.symbol}.svg`}
-                          src={`/static/images/tokens/${tokenAddressToSymbol[vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()]}.svg`}
+                          src={`/static/images/tokens/${
+                            tokenList.find((t) => {
+                              return (
+                                t.address?.toLowerCase() ===
+                                (vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
+                              )
+                            })?.symbol
+                          }.svg`}
                           alt="token"
                           className="w-6 h-6 rounded-full"
                           width={20}
@@ -443,23 +460,26 @@ const DepositAmountsICHI = ({
                         <div className="flex flex-col">
                           <span className="text-base">
                             {
-                              tokenAddressToSymbol[
-                                vault.allowTokenA ? vault.tokenA.toLocaleLowerCase() : vault.tokenB.toLocaleLowerCase()
-                              ]
+                              tokenList.find((t) => {
+                                return (
+                                  t.address?.toLowerCase() ===
+                                  (vault.allowTokenA ? vault.tokenA.toLowerCase() : vault.tokenB.toLowerCase())
+                                )
+                              })?.symbol
                             }
                           </span>
                           {rignsAprLoading && <Loader />}
                           {!rignsAprLoading && vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
+                              {(vault?.apr as any[1])[0]?.apr === null || (vault?.apr as any[1])[0]?.apr < 0
                                 ? '0'
                                 : formatAmount(
-                                    toBN(vault?.apr[1]?.apr?.toFixed(0))
+                                    toBN((vault?.apr as any[1])[0]?.apr?.toFixed(0))
                                       .plus(ringsApr || 0)
                                       .toString(),
                                     2
-                                  )}
+                                  ).replace('NaN', '0')}
                               %
                             </span>
                           )}

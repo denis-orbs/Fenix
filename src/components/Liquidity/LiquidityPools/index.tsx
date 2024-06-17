@@ -12,20 +12,22 @@ import { v2FactoryData, v3FactoryData } from '@/src/state/liquidity/types'
 import { useAppSelector } from '@/src/state'
 import { fetchGlobalStatistics } from '@/src/state/liquidity/thunks'
 import { formatDollarAmount, toBN } from '@/src/library/utils/numbers'
+import { useAccount } from 'wagmi'
 
 const LiquidityPools = () => {
   const [tokens, setTokens] = useState<Number>(0)
   const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
-  // console.log(liquidityTable, 'liquidityTable')
+  const { chainId } = useAccount()
+  //
 
   const tokensData = async (liquidityTable: any) => {
-    setTokens((await fetchTokens()).length)
+    if (chainId) setTokens((await fetchTokens(chainId)).length)
   }
 
   useEffect(() => {
     tokensData(liquidityTable)
     // fetchData()
-  }, [])
+  }, [chainId])
   const [globalStatistics, setGlobalStatistics] =
     useState<Omit<Awaited<ReturnType<typeof fetchGlobalStatistics>>, 'totalUsers'>>()
 
@@ -65,14 +67,14 @@ const LiquidityPools = () => {
         className="flex flex-col items-center justify-between
        w-full xl:flex-row relative z-10 "
       >
-        <div className="w-full xl:w-1/2">
-          <h4 className="mb-3 text-xl text-white">Liquidity Pools</h4>
+        <div className="w-full xl:w-1/2 relative">
+          <h1 className="mb-3 text-xl text-white">Liquidity Pools</h1>
           <p className="mb-4 text-xs text-shark-100">
             Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and stake liquidity to earn rewards.
           </p>
-          <div className="flex flex-col gap-2 mb-8 md:flex-row">
+          <div className="flex flex-col gap-2 mb-8 md:flex-row z-[3000]">
             <Button href="liquidity/deposit?type=CONCENTRATED_MANUAL&token0=0x4300000000000000000000000000000000000003&token1=0x4300000000000000000000000000000000000004">
-              <div className="flex gap-2 text-xs">
+              <div className="flex gap-2 ">
                 <span className="icon-send"></span>
                 Create Position
               </div>

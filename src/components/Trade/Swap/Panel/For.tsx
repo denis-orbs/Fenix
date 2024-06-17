@@ -59,7 +59,7 @@ const For = ({ token, setToken, setValue, value }: ForProps) => {
   }, [tokenData, token.decimals, account, nativeToken])
   useEffect(() => {
     if (nativeToken) {
-      // console.log(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
+      //
       setTokenBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
     }
   }, [nativeToken, userBalance?.data?.value, token])
@@ -99,7 +99,7 @@ const For = ({ token, setToken, setValue, value }: ForProps) => {
           >
             <div className="flex items-center gap-2">
               <Image
-                src={`/static/images/tokens/${token.symbol}.png`}
+                src={`/static/images/tokens/${token.symbol}.svg`}
                 alt="token"
                 className="w-6 h-6 rounded-full"
                 width={20}

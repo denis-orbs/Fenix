@@ -1,3 +1,4 @@
+'use client'
 import { Button, Pagination, PaginationMobile, TableBody, TableHead, TableSkeleton } from '@/src/components/UI'
 import { BasicPool, PoolData } from '@/src/state/liquidity/types'
 import { Fragment, useEffect, useState } from 'react'
@@ -7,6 +8,7 @@ import { useAccount, useChainId, useChains } from 'wagmi'
 import { useWindowSize } from 'usehooks-ts'
 import { isSupportedChain } from '@/src/library/constants/chains'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import { fetchRingsPoolApr } from './getAprRings'
 
 interface HeaderRowProps {
   loading: boolean
@@ -34,9 +36,10 @@ const HeaderRow = ({
   const [activePage, setActivePage] = useState<number>(1)
   const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
   const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
-  const [sort, setSort] = useState<'asc' | 'desc' | null>(null)
+  const [sort, setSort] = useState<'asc' | 'desc' | 'normal'>('normal')
   const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
   const [sortIndex, setSortIndex] = useState<number>(-1)
+  const [isSetRingsApr, setIsSetRingsApr] = useState<boolean>(false)
 
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
@@ -61,55 +64,148 @@ const HeaderRow = ({
   const { isConnected } = useActiveConnectionDetails()
 
   useEffect(() => {
-    if (paginationStatus && paginationResult && paginationResult.length > 0) {
-      if (sort === 'asc') {
-        setPaginationResult(
-          paginationResult.sort((a, b) => {
-            return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
-          })
-        )
-      } else {
-        setPaginationResult(
-          paginationResult.sort((a, b) => {
+    const sortData = async () => {
+      // console.log('sortIndex >> ', sortIndex)
+      if (paginationResult && paginationResult.length > 0) {
+        if (sort === 'asc') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          if (sortIndex === 3) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
+            })
+          }
+          if (sortIndex === 4) {
+            // console.log('4')
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.aprRings), Number(b.aprRings))
+            })
+          }
+          if (sortIndex === 5) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.volumeUSD), Number(b.volumeUSD))
+            })
+          }
+          if (sortIndex === 6) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(a.feesUSD), Number(b.feesUSD))
+            })
+          }
+          setPaginationResult([...sortArr])
+        } else if (sort === 'desc') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          if (sortIndex === 3) {
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
+            })
+          }
+          if (sortIndex === 4) {
+            // console.log('4')
+            // console.log('paginationResult :>> ', paginationResult)
+            sortArr = paginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.aprRings), Number(a.aprRings))
+            })
+          }
+          if (sortIndex === 5) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.volumeUSD), Number(a.volumeUSD))
+            })
+          }
+          if (sortIndex === 6) {
+            sortArr = sortedPaginationResult.sort((a, b) => {
+              return compareBigDecimal(Number(b.feesUSD), Number(a.feesUSD))
+            })
+          }
+          setPaginationResult([...sortArr])
+        } else if (sort === 'normal') {
+          const sortedPaginationResult = [...paginationResult]
+          let sortArr: any = [...paginationResult]
+          sortArr = sortedPaginationResult.sort((a, b) => {
             return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
           })
-        )
+          setPaginationResult([...sortArr])
+        }
       }
-    } else {
-      setPaginationStatus(true)
     }
-  }, [sort, chainId, paginationStatus, paginationResult])
+    sortData()
+  }, [sort, chainId])
 
   useEffect(() => {
-    setPaginationResult(poolsData)
+    const arrNew = [...poolsData]
+    setPaginationResult([...arrNew])
   }, [poolsData])
-
   /* useEffect(() => {
-    if (paginationStatus && paginationResult && paginationResult.length > 0) {
-      // setSort('asc')
-      setPaginationResult(
-        paginationResult.sort((a, b) => {
-          return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-        })
-      )
+    if (!isSetRingsApr) {
+      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
+        const getRigns = async () => {
+          let newArr: any = [...paginationResult]
+          newArr = await Promise.all(
+            newArr.map(async (pool: any) => {
+              if (pool?.id) {
+                return {
+                  ...pool,
+                  aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+                }
+              } else {
+                return {
+                  ...pool,
+                }
+              }
+            })
+          )
+          setPaginationResult([...newArr])
+          setIsSetRingsApr(true)
+        }
+        getRigns()
+      }
     }
-  }, [paginationStatus, paginationResult]) */
+  }, [paginationResult]) */
+
+  useEffect(() => {
+    if (!isSetRingsApr) {
+      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
+        const getRigns = async () => {
+          let newArr: any = [...paginationResult]
+          newArr = await Promise.all(
+            newArr.map(async (pool: any) => {
+              if (pool?.id) {
+                return {
+                  ...pool,
+                  aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
+                }
+              } else {
+                return {
+                  ...pool,
+                }
+              }
+            })
+          )
+          setPaginationResult([...newArr])
+          setIsSetRingsApr(true)
+        }
+        getRigns()
+      }
+    }
+  }, [paginationResult])
 
   function compareBigDecimal(a: any, b: any) {
     return a - b
   }
+
   const pagination = paginate(paginationResult, activePage, itemsPerPage)
+
   const { width } = useWindowSize()
   return (
     <div className="relative">
-      <div className="w-full mb-2.5 xl:mb-5">
+      <div className="mb-2.5 w-full xl:mb-5">
         <div className="hidden lg:block">
           <TableHead
             items={[
               {
                 text: 'Pair',
                 className: `${activeRange ? 'w-[20%]' : 'w-[20%]'}`,
-                sortable: true,
+                sortable: false,
               },
               RANGE,
               { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right` },
@@ -144,17 +240,21 @@ const HeaderRow = ({
             </>
           ) : (
             pagination.map((row, index) => (
-              <Fragment key={index}>
-                <Row
-                  row={row}
-                  tokensData={null}
-                  activeRange={activeRange}
-                  titleHeader={titleHeader}
-                  titleHeader2={titleHeader2}
-                  titleButton={titleButton}
-                  titleButton2={titleButton2}
-                />
-              </Fragment>
+              <>
+                <>
+                  <Fragment key={index}>
+                    <Row
+                      row={row}
+                      tokensData={null}
+                      activeRange={activeRange}
+                      titleHeader={titleHeader}
+                      titleHeader2={titleHeader2}
+                      titleButton={titleButton}
+                      titleButton2={titleButton2}
+                    />
+                  </Fragment>
+                </>
+              </>
             ))
           )}
         </TableBody>
@@ -162,8 +262,7 @@ const HeaderRow = ({
 
       {activePagination && (
         <>
-          <div className="items-center hidden lg:flex">
-            {/* <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p> */}
+          <div className="hidden items-center lg:flex">
             <Pagination
               itemsPerPage={itemsPerPage}
               setItemPerPage={setItemPerPage}
@@ -172,36 +271,8 @@ const HeaderRow = ({
               className="mx-auto"
               numberPages={Math.ceil(poolsData.length / itemsPerPage)}
             />
-            {/* <div
-              onClick={() => setIsOpenItemsPerPage(!isOpenItemsPerPage)}
-              className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400"
-            >
-              {isOpenItemsPerPage && (
-                <div
-                  className="w-[68px] p-2 flex flex-col gap-1 rounded-[10px] bg-shark-400 bg-opacity-40 absolute right-55px bottom-0 -translate-y-16"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Button onClick={() => setItemPerPage(5)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    5
-                  </Button>
-                  <Button onClick={() => setItemPerPage(10)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    10
-                  </Button>
-                  <Button onClick={() => setItemPerPage(20)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    20
-                  </Button>
-                  <Button onClick={() => setItemPerPage(50)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    50
-                  </Button>
-                  <Button onClick={() => setItemPerPage(100)} variant="tertiary" className="!py-1 !h-[33px] !text-xs">
-                    100
-                  </Button>
-                </div>
-              )}
-              <span className="text-lg icon-cog text-white cursor-pointer"></span>
-            </div> */}
           </div>
-          <div className="lg:hidden py-5">
+          <div className="py-5 lg:hidden">
             <PaginationMobile
               count={poolsData.length}
               itemsPerPage={itemsPerPage}

@@ -71,7 +71,7 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
   )
 
   if (state[0].status === 'failure') {
-    // console.log("log", "useCL state failed", token1, token2, pool[0])
+    //
     return {
       price: 0,
       currentTick: 0,
@@ -86,7 +86,7 @@ export async function getAlgebraPoolPrice(token1: Address, token2: Address) {
     boolean,
   ]
 
-  // console.log("state", sqrtPriceToPrice(result[0].toString()), result[0], result[1], pool[0].result)
+  //
   return {
     price: sqrtPriceToPrice(result[0].toString()),
     currentTick: result[1],
@@ -189,7 +189,7 @@ export async function getPriceAndTick(price: any) {
   )
 
   if (tick[0].status === 'failure') {
-    // console.log('Failed')
+    //
     return { price: 0, tick: 0 }
   }
   const result: [number, number] = tick[0].result as [number, number]
@@ -230,7 +230,7 @@ export async function getAmounts(cTick: any, hTick: any, lTick: any, amount0: an
   )
 
   if (amounts[0].status === 'failure') {
-    // console.log('Failed')
+    //
     return { amount0: amount0, amount1: amount1 }
   }
   const result: [number, number] = amounts[0].result as [number, number]
@@ -266,7 +266,7 @@ export async function getRatio(cTick: any, hTick: any, lTick: any) {
   )
 
   if (amounts[0].status === 'failure') {
-    // console.log('Failed')
+    //
     return '1'
   }
   const result: [number, number] = amounts[0].result as [number, number]
@@ -299,7 +299,7 @@ export async function getPositionData(id: any) {
   )
 
   if (positions[0].status === 'failure') {
-    // console.log('Failed')
+    //
     return false
   }
 

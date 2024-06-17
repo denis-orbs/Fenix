@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import RowSkeleton from '@/src/components/UI/Table/TableSkeleton'
-import { TableHead, TableBody, TableCell, TableRow, Button, Pagination } from '@/src/components/UI'
+import { TableHead, TableBody, TableCell, TableRow, Button, Pagination, PaginationMobile } from '@/src/components/UI'
 import NotFoundLock from './NotFoundLock'
 import { useRouter } from 'next/navigation'
 import { useAccount } from 'wagmi'
@@ -22,19 +22,24 @@ type LOCK = {
 interface MyLocksProps {
   activePagination?: boolean
   Locks: LOCK[]
+  tab: string
 }
 
-const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
+const MyLocks = ({ activePagination = true, Locks, tab }: MyLocksProps) => {
   const [nowTime, setnowTime] = useState<Number>(0)
   const { push } = useRouter()
   const router = useRouter()
-  const { address } = useAccount()
+  const { address, chainId } = useAccount()
   const dispatch = useDispatch<AppThunkDispatch>()
   const lock = useAppSelector<lockState>((state) => state.lock)
   const handlerNavigation = () => push('/lock/manage')
 
+  const [data, setData] = useState<any>(lock.positions)
+  const [sidx, setSidx] = useState<number>(1)
+  const [svalue, setSvalue] = useState<'asc' | 'desc' | 'normal'>('normal')
+
   useEffect(() => {
-    if (address) dispatch(fetchNftsAsync(address))
+    if (address && chainId) dispatch(fetchNftsAsync({ address, chainId }))
     const now = new Date().getTime() / 1000
     setnowTime(now)
   }, [address])
@@ -43,23 +48,123 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
     router.push(`lock/${id}`)
   }
 
+  const [itemsPerPage, setItemPerPage] = useState<number>(5)
+  const [activePage, setActivePage] = useState<number>(1)
+
+  function paginate(items: any, currentPage: number, itemsPerPage: number) {
+    // Calculate total pages
+    const totalPages = Math.ceil(items.length / itemsPerPage)
+
+    // Ensure current page isn't out of range
+    currentPage = Math.max(1, Math.min(currentPage, totalPages))
+
+    const start = (currentPage - 1) * itemsPerPage
+    const end = start + itemsPerPage
+    const paginatedItems = items.slice(start, end)
+
+    return paginatedItems
+  }
+
+  useEffect(() => {
+    if (tab === 'ACTIVE') {
+      const newdata = lock.positions.filter((pos) => {
+        if (BigInt(nowTime.toFixed(0).toString()) < pos.veNFTInfo.lockEnd) {
+          return pos
+        }
+      })
+      setData(newdata)
+    } else if (tab === 'EXPIRED') {
+      const newdata = lock.positions.filter((pos) => {
+        if (BigInt(nowTime.toFixed(0).toString()) >= pos.veNFTInfo.lockEnd) {
+          return pos
+        }
+      })
+      setData(newdata)
+    } else if (tab === 'VOTE') {
+      const newdata = lock.positions.filter((pos) => {
+        if (pos.veNFTInfo.voted) {
+          return pos
+        }
+      })
+      setData(newdata)
+    } else if (tab === 'NOT VOTE') {
+      const newdata = lock.positions.filter((pos) => {
+        if (!pos.veNFTInfo.voted) {
+          return pos
+        }
+      })
+      setData(newdata)
+    } else setData(lock.positions)
+  }, [lock.positions, tab])
+
+  useEffect(() => {
+    if (sidx === 1) {
+      if (svalue === 'asc') {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(a.veNFTInfo.amount) / 10 ** 18 - Number(b.veNFTInfo.amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(b.veNFTInfo.amount) / 10 ** 18 - Number(a.veNFTInfo.amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      } else {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(a.veNFTInfo.amount) / 10 ** 18 - Number(b.veNFTInfo.amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      }
+    } else if (sidx === 2) {
+      if (svalue === 'asc') {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(a.veNFTInfo.voting_amount) / 10 ** 18 - Number(b.veNFTInfo.voting_amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(b.veNFTInfo.voting_amount) / 10 ** 18 - Number(a.veNFTInfo.voting_amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      } else {
+        const sortedArr = [...data].sort(
+          (a, b) => Number(a.veNFTInfo.voting_amount) / 10 ** 18 - Number(b.veNFTInfo.voting_amount) / 10 ** 18
+        )
+        setData(sortedArr)
+      }
+    } else if (sidx === 3) {
+      if (svalue === 'asc') {
+        const sortedArr = [...data].sort((a, b) => Number(a.veNFTInfo.lockEnd) - Number(b.veNFTInfo.lockEnd))
+        setData(sortedArr)
+      } else if (svalue === 'desc') {
+        const sortedArr = [...data].sort((a, b) => Number(b.veNFTInfo.lockEnd) - Number(a.veNFTInfo.lockEnd))
+        setData(sortedArr)
+      } else {
+        const sortedArr = [...data].sort((a, b) => Number(a.veNFTInfo.lockEnd) - Number(b.veNFTInfo.lockEnd))
+        setData(sortedArr)
+      }
+    }
+  }, [sidx, svalue])
+
+  const pagination = paginate(data, activePage, itemsPerPage)
+
   return (
     <>
-      <div className="relative hidden xl:block z-10 xl:mb-5">
+      <div className="relative hidden lg:block z-10 xl:mb-5">
         <div className="w-full">
           <TableHead
             items={[
-              { text: 'Lock ID', className: 'text-left w-[30%]', sortable: true },
-              { text: 'Lock Amount', className: 'text-left w-[10%]', sortable: true },
-              { text: 'Voting Power', className: 'text-left w-[10%]', sortable: true },
-              { text: 'Unlock Date', className: 'text-left w-[10%]', sortable: true },
-              { text: 'Vote Status', className: 'text-center w-[15%]', sortable: true },
-              { text: 'Action', className: 'text-right w-[25%]', sortable: false },
+              { text: 'Lock ID', className: 'text-left text-xs w-[20%]', sortable: false },
+              { text: 'Lock Amount', className: 'text-left text-xs w-[15%]', sortable: true },
+              { text: 'Voting Power', className: 'text-left text-xs w-[15%]', sortable: true },
+              { text: 'Unlock Date', className: 'text-left text-xs w-[15%]', sortable: true },
+              { text: 'Vote Status', className: 'text-center text-xs w-[15%]', sortable: false },
+              { text: 'Action', className: 'text-right text-xs w-[20%]', sortable: false },
             ]}
-            setSort={() => {}}
-            setSortIndex={() => {}}
-            sort={null}
-            sortIndex={1}
+            setSort={setSvalue}
+            sort={svalue}
+            setSortIndex={setSidx}
+            sortIndex={sidx}
           />
           {lock.positions.length !== 0 ? (
             <>
@@ -72,13 +177,15 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                   </>
                 ) : (
                   <>
-                    {lock.positions.map((lock, index) => {
+                    {pagination.map((lock: any, index: number) => {
+                      //
                       return (
                         <TableRow key={index}>
-                          <TableCell className="w-[30%]">
+                          <TableCell className="w-[20%]">
                             <div className="flex items-center gap-3">
                               <Image
-                                src={'/static/images/vote/fenix-logo.svg'}
+                                // src={'/static/images/vote/fenix-logo.svg'}
+                                src={'/static/images/tokens/FNX.svg'}
                                 className="h-[40px] w-[40px]"
                                 alt="alternative fenix"
                                 width={40}
@@ -98,7 +205,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                               </div>
                             </div>
                           </TableCell>
-                          <TableCell className="w-[10%]">
+                          <TableCell className="w-[15%]">
                             <div className="flex items-center gap-2">
                               <Image
                                 src={`/static/images/tokens/FNX.svg`}
@@ -112,7 +219,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell className="w-[10%]">
+                          <TableCell className="w-[15%]">
                             <div className="flex items-center gap-2">
                               <Image
                                 src={`/static/images/tokens/FNX.svg`}
@@ -126,7 +233,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell className="w-[10%]">
+                          <TableCell className="w-[15%]">
                             <div className="flex items-center gap-2">
                               <p className="text-xs text-white">{formatDate(Number(lock.veNFTInfo.lockEnd))}</p>
                             </div>
@@ -142,7 +249,7 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                               </span>
                             )}
                           </TableCell>
-                          <TableCell className="w-[25%]">
+                          <TableCell className="w-[20%]">
                             <div className="flex justify-end w-full">
                               <Button
                                 variant="tertiary"
@@ -160,19 +267,17 @@ const MyLocks = ({ activePagination = true, Locks }: MyLocksProps) => {
                 )}
               </TableBody>
               {activePagination && (
-                <div className="items-center hidden md:flex">
-                  <p className="text-sm text-shark-100">Showing 2 out of 2 migrations...</p>
+                <div className="items-center hidden xl:flex">
                   <Pagination
                     className="mx-auto"
-                    numberPages={7}
-                    activePage={1}
-                    itemsPerPage={20}
-                    setActivePage={() => {}}
-                    setItemPerPage={() => {}}
+                    numberPages={
+                      data ? Math.ceil(data.length / itemsPerPage) : Math.ceil(lock.positions.length / itemsPerPage)
+                    }
+                    activePage={activePage}
+                    itemsPerPage={itemsPerPage}
+                    setActivePage={setActivePage}
+                    setItemPerPage={setItemPerPage}
                   />
-                  <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 px-4 transition-colors border rounded-lg border-shark-300 bg-shark-400 bg-opacity-40 hover:bg-outrageous-orange-400">
-                    <span className="text-lg text-white icon-cog cursor-pointer"></span>
-                  </div>
                 </div>
               )}
             </>

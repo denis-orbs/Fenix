@@ -1,8 +1,9 @@
-import { Address } from '@/src/library/types'
 import { ApiState } from '@/src/library/types/connection'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
+import { Address } from 'viem'
+import { BoostedPool, RingCampaignData } from '@/src/app/api/rings/campaign/route'
 
 export interface LiquidityState {
   // Liquidity V2 Pairs
@@ -21,7 +22,14 @@ export interface LiquidityState {
     state: ApiState
     data: LiquidityTableElement[]
   }
-  concentratedPools: { state: ApiState; data: any }
+  gammaVaults: {
+    state: ApiState
+    data: GammaVault[]
+  }
+  ringsCampaigns: {
+    state: ApiState
+    data: RingCampaignData
+  }
 }
 
 // TODO: Move this type to types/liquidity.ts
@@ -88,6 +96,8 @@ export interface PairInfo {
   inactive_gauge?: boolean
 }
 export interface LiquidityTableElement {
+  id?: string
+  aprRings?: Number
   pairAddress: Address
   pairSymbol: string
   pairInformationV2?: PairInfo
@@ -195,6 +205,11 @@ export interface BasicPool {
   token0: BasicToken
   token1: BasicToken
   apr?: string
+  isStable?: boolean
+  reserve0?: string
+  reserve1?: string
+  totalSupply?: string
+  aprRings?: string
 }
 export interface BasicToken {
   id: string
@@ -214,4 +229,56 @@ export interface ConcentratedPool extends BasicPool {
   tick: string
   tickSpacing: string
   untrackedFeesUSD: string
+}
+
+export interface GammaVault {
+  id: string // ID único para el objeto GammaVault
+  createDate: string
+  poolAddress: string
+  name: string
+  token0: string
+  token1: string
+  decimals0: number
+  decimals1: number
+  depositCap0: number
+  depositCap1: number
+  grossFeesClaimed0: number
+  grossFeesClaimed1: number
+  grossFeesClaimedUSD: string
+  feesReinvested0: number
+  feesReinvested1: number
+  feesReinvestedUSD: string
+  tvl0: number
+  tvl1: number
+  tvlUSD: string
+  totalSupply: number
+  maxTotalSupply: number
+  capacityUsed: string
+  sqrtPrice: string
+  tick: number
+  baseLower: number
+  baseUpper: number
+  inRange: boolean
+  observationIndex: string
+  poolTvlUSD: string
+  poolFeesUSD: string
+  returns: {
+    daily: {
+      feeApr: number
+      feeApy: number
+    }
+    weekly: {
+      feeApr: number
+      feeApy: number
+    }
+    monthly: {
+      feeApr: number
+      feeApy: number
+    }
+    allTime: {
+      feeApr: number
+      feeApy: number
+    }
+    status: string
+  }
 }

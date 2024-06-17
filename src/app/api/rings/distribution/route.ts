@@ -1,7 +1,6 @@
 import { RINGS_TOKEN_DECIMALS } from '@/src/library/constants/misc'
 import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { notificationService } from '@/src/library/utils/notificationService/factory'
-import { PrismaClient } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 interface Reward {
   recipient: string
@@ -9,7 +8,7 @@ interface Reward {
   rewardToken: string
   amount: string
 }
-const prisma = new PrismaClient()
+import prisma from '@/src/library/utils/db'
 
 export async function GET(request: NextRequest) {
   const authorizationHeader = request.headers.get('Authorization')
@@ -50,7 +49,6 @@ export async function GET(request: NextRequest) {
             },
           }),
         ])
-        console.log('Data introduced for wallet', reward.recipient, 'Points:', rewardAmount)
       }
     } catch (error) {
       await notificationService.sendNotification(

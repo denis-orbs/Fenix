@@ -62,7 +62,7 @@ const Manage = ({}: {}) => {
       if (actualApr) setAprId(actualApr?.apr)
     }
   }, [apr])
-  // console.log('gg', apr)
+  //
 
   const [firstToken, setFirstToken] = useState({
     name: 'Fenix',
@@ -75,17 +75,17 @@ const Manage = ({}: {}) => {
   const [firstValue, setFirstValue] = useState('')
   const [secondToken, setSecondToken] = useState({
     name: 'Ethereum',
-    symbol: 'ETH',
+    symbol: 'WETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023' as Address,
+    address: '0x4300000000000000000000000000000000000004' as Address,
     img: '/static/images/tokens/WETH.png',
   } as IToken)
   const [secondValue, setSecondValue] = useState('')
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
-  const [lpValue, setLpValue] = useState(0)
-  const [shouldApproveFirst, setShouldApproveFirst] = useState(true)
-  const [shouldApproveSecond, setShouldApproveSecond] = useState(true)
+  const [lpValue, setLpValue] = useState('0')
+  const [firstAllowance, setFirstAllowance] = useState(0)
+  const [secondAllowance, setSecondAllowance] = useState(0)
   const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
 
   const [withdrawPercent, setWithdrawPercent] = useState(50)
@@ -96,7 +96,7 @@ const Manage = ({}: {}) => {
 
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
 
-  const account = useAccount()
+  const { address, chainId } = useAccount()
   const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
 
   const { writeContractAsync } = useWriteContract()
@@ -110,42 +110,44 @@ const Manage = ({}: {}) => {
   }
 
   const asyncGetAllowance = async (token1: Address, token2: Address) => {
-    const allowanceFirst: any = await getTokenAllowance(
+    const _allowanceFirst: any = await getTokenAllowance(
       token1,
-      account.address as Address,
+      address as Address,
       contractAddressList.cl_manager as Address
     )
-    const allowanceSecond: any = await getTokenAllowance(
+    const _allowanceSecond: any = await getTokenAllowance(
       token2,
-      account.address as Address,
+      address as Address,
       contractAddressList.cl_manager as Address
     )
 
-    setShouldApproveFirst(allowanceFirst == '0')
-    setShouldApproveSecond(allowanceSecond == '0')
+    setFirstAllowance(_allowanceFirst)
+    setSecondAllowance(_allowanceSecond)
   }
   const getList = async (token0: Address, token1: Address) => {
     try {
-      const responseData = await fetchTokens()
+      if (chainId) {
+        const responseData = await fetchTokens(chainId)
 
-      const parsedData = responseData.map((item: any) => {
-        return {
-          id: 0,
-          name: item.basetoken.name,
-          symbol: item.basetoken.symbol,
-          address: item.basetoken.address,
-          decimals: item.decimals,
-          img: item.logourl,
-          isCommon: item.common,
-          price: parseFloat(item.priceUSD),
-        }
-      })
+        const parsedData = responseData.map((item: any) => {
+          return {
+            id: 0,
+            name: item.basetoken.name,
+            symbol: item.basetoken.symbol,
+            address: item.basetoken.address,
+            decimals: item.decimals,
+            img: item.logourl,
+            isCommon: item.common,
+            price: parseFloat(item.priceUSD),
+          }
+        })
 
-      parsedData.map((item: any) => {
-        if (item.address.toLowerCase() == token0.toLowerCase()) setFirstToken(item)
-        if (item.address.toLowerCase() == token1.toLowerCase()) setSecondToken(item)
-      })
-      setIsLoading(false)
+        parsedData.map((item: any) => {
+          if (item.address.toLowerCase() == token0.toLowerCase()) setFirstToken(item)
+          if (item.address.toLowerCase() == token1.toLowerCase()) setSecondToken(item)
+        })
+        setIsLoading(false)
+      }
     } catch (error) {}
   }
   const updatePositionData = async (positionId: any) => {
@@ -154,8 +156,8 @@ const Manage = ({}: {}) => {
     setPositionData(data)
     asyncGetAllowance(data.token0, data.token1)
     getList(data.token0, data.token1)
-    setLpValue(Number(BigInt(data.liquidity) / BigInt(2)))
-    // console.log('LP Value', Number(BigInt(data.liquidity) / BigInt(2)))
+    setLpValue((BigInt(data.liquidity) / BigInt(2)).toString())
+    //
   }
 
   useEffect(() => {
@@ -177,47 +179,49 @@ const Manage = ({}: {}) => {
     } else {
       updatePositionData(positionId)
     }
-  }, [])
+  }, [chainId])
 
   useEffect(() => {
     asyncGetAllowance(firstToken.address as Address, secondToken.address as Address)
-  }, [firstToken, secondToken, account.address])
+  }, [firstToken, secondToken, address])
 
   useEffect(() => {
     if (!positionData) return
     if (optionActive != 'WITHDRAW') return
 
     setLpValue(
-      positionData.liquidity == 0
-        ? 0
-        : Number(
-            (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
+      withdrawPercent == 100
+        ? BigInt(positionData.liquidity).toString()
+        : positionData.liquidity == 0
+          ? '0'
+          : (
+              (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
               BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-          )
+            ).toString()
     )
     setFirstValue(
       formatNumber(
-        withdrawPercent == 100 ?
-          Number(BigInt(positionData.amount0)) / 10 ** firstToken.decimals
-        : positionData.amount0 == 0
-          ? 0
-          : Number(
-              (BigInt(positionData.amount0) * BigInt(10 ** 10)) /
-                BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-            ) /
+        withdrawPercent == 100
+          ? Number(BigInt(positionData.amount0)) / 10 ** firstToken.decimals
+          : positionData.amount0 == 0
+            ? 0
+            : Number(
+                (BigInt(positionData.amount0) * BigInt(10 ** 10)) /
+                  BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
+              ) /
               10 ** firstToken.decimals
       )
     )
     setSecondValue(
       formatNumber(
-        withdrawPercent == 100 ?
-          Number(BigInt(positionData.amount1)) / 10 ** secondToken.decimals
-        : positionData.amount1 == 0
-          ? 0
-          : Number(
-              (BigInt(positionData.amount1) * BigInt(10 ** 10)) /
-                BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-            ) /
+        withdrawPercent == 100
+          ? Number(BigInt(positionData.amount1)) / 10 ** secondToken.decimals
+          : positionData.amount1 == 0
+            ? 0
+            : Number(
+                (BigInt(positionData.amount1) * BigInt(10 ** 10)) /
+                  BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
+              ) /
               10 ** secondToken.decimals
       )
     )
@@ -289,7 +293,7 @@ const Manage = ({}: {}) => {
 
       {
         onSuccess: async (x) => {
-          // console.log('success', x, +new Date())
+          //
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
             // toast(`Added successfully.`)
@@ -366,7 +370,7 @@ const Manage = ({}: {}) => {
         args: [
           firstToken.address,
           Math.floor(Number(formatNumber(Number(firstValue) * (1 - slippage))) * 10 ** firstToken.decimals),
-          account.address,
+          address,
         ],
       }),
       encodeFunctionData({
@@ -375,7 +379,7 @@ const Manage = ({}: {}) => {
         args: [
           secondToken.address,
           Math.floor(Number(formatNumber(Number(secondValue) * (1 - slippage))) * 10 ** secondToken.decimals),
-          account.address,
+          address,
         ],
       }),
     ]
@@ -445,11 +449,11 @@ const Manage = ({}: {}) => {
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
-            // toast(`Approved successfully`)
+            // toast(`Approved Successfully`)
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
-              message: `Approved successfully.`,
+              message: `Approved Successfully.`,
               notificationType: NotificationType.SUCCESS,
               txHash: transaction.transactionHash,
               notificationDuration: NotificationDuration.DURATION_5000,
@@ -495,14 +499,14 @@ const Manage = ({}: {}) => {
           <div className="flex items-center gap-2.5 mb-2.5">
             <div className="flex items-center flex-shrink-0">
               <Image
-                src={firstToken.img}
+                src={`/static/images/tokens/${firstToken.symbol}.svg`}
                 alt="token"
                 className="rounded-full max-md:w-5 max-md:h-5"
                 width={30.5}
                 height={30.5}
               />
               <Image
-                src={secondToken.img}
+                src={`/static/images/tokens/${secondToken.symbol}.svg`}
                 alt="token"
                 className="-ml-2.5 md:-ml-4 rounded-full max-md:w-5 max-md:h-5"
                 width={30.5}
@@ -519,11 +523,23 @@ const Manage = ({}: {}) => {
             <div className="text-white">Position Liquidity</div>
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
-                <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
+                <Image
+                  src={`/static/images/tokens/${firstToken.symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
                 <span>{formatNumber(Number(positionData?.amount0) / 10 ** firstToken.decimals, 8)}</span>
               </p>
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
-                <Image src={secondToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} />
+                <Image
+                  src={`/static/images/tokens/${secondToken.symbol}.svg`}
+                  alt="token"
+                  className="w-5 h-5 rounded-full"
+                  width={20}
+                  height={20}
+                />
                 <span>{formatNumber(Number(positionData?.amount1) / 10 ** secondToken.decimals, 8)}</span>
               </p>
             </div>
@@ -602,12 +618,19 @@ const Manage = ({}: {}) => {
           setSecondValue={setSecondValue}
           onTokenValueChange={handleOnTokenValueChange}
           option={optionActive}
+          hideTokenSwap={true}
         />
       </div>
 
       <ApproveButtons
-        shouldApproveFirst={optionActive === 'WITHDRAW' ? false : shouldApproveFirst}
-        shouldApproveSecond={optionActive === 'WITHDRAW' ? false : shouldApproveSecond}
+        shouldApproveFirst={
+          optionActive === 'WITHDRAW' ? false : Number(firstValue) * 10 ** firstToken.decimals >= Number(firstAllowance)
+        }
+        shouldApproveSecond={
+          optionActive === 'WITHDRAW'
+            ? false
+            : Number(secondValue) * 10 ** secondToken.decimals >= Number(secondAllowance)
+        }
         token0={firstToken}
         token1={secondToken}
         handleApprove={handleApprove}

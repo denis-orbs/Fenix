@@ -5,7 +5,7 @@ export const MENU_LINKS = [
     href: '/trade/swap',
     new: false,
   },
-  
+
   {
     name: 'Dashboard',
     href: '/dashboard',
@@ -26,17 +26,26 @@ export const MENU_LINKS = [
   //   href: '/lock',
   // },
   // {
+  //   name: 'Bribes',
+  //   href: '/bribes',
+  // },
+  // {
+  //   name: 'Claims',
+  //   href: '/claim',
+  // },
+  // {
   //   name: 'Migration',
   //   href: '/migration',
   // },
   {
     name: 'Fenix Rings',
     href: '/points-program',
-    new: true,
+    new: false,
   },
   // {
-  //   name: 'Bribes',
-  //   href: '/bribes',
+  //   name: 'Referrals',
+  //   href: '/referrals',
+  //   new: true,
   // },
 ]
 

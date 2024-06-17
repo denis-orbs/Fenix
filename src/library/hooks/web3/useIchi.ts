@@ -56,17 +56,17 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
       const kapr = await getLp(v.id)
       // FIXME: STARK
       v.apr = kapr
-      // console.log(v)
+      //
       return v
     })
 
     // const tokenVaultsWithApr = tokenVaults.map(async (token) => {
     //   const apr = await getLp(token.id)
-    //   console.log('apr', apr)
+    //
     //   token.apr = apr
     //   return token
     // })
-    // console.log('mod', tokenVaultsWithApr)
+    //
     // FIXME: STARK
     setVault(tokenVaults)
   }, [token0, token1, tokenA, tokenB])
@@ -115,11 +115,13 @@ export const useIchiPositions = () => {
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
   const { address } = useAccount()
-  const [positions, setpositions] = useState<positions[]>([])
+  const [ichipositions, setichipositions] = useState<positions[]>([])
+  const [ichiLoading, setichiLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchpositions = async () => {
       if (address) {
+        setichiLoading(true)
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
         const pos = await Promise.all(
           amounts?.map(async (item) => {
@@ -129,7 +131,7 @@ export const useIchiPositions = () => {
             const tokenAid = vaultInfo.tokenA
             const tokenBid = vaultInfo.tokenB
             //const vaultInfo = useIchiVaultsData(item.vaultAddress)
-            //   console.log(tokenA)
+            //
 
             const getLp = async (vadd: string) => {
               const web3Provider = getWeb3Provider()
@@ -210,16 +212,15 @@ export const useIchiPositions = () => {
             }
           })
         )
-        // FIXME: STARK
-        //DEV FIX
-        //  console.log(pos, 'pos')
-        setpositions(pos)
+
+        setichipositions(pos)
+        setichiLoading(false)
       }
     }
     fetchpositions()
   }, [address])
 
-  return positions
+  return { ichipositions, ichiLoading }
 }
 
 export const useIchiVaultsData = (vaultAddress: string) => {
@@ -242,6 +243,6 @@ export const useIchiVaultsData = (vaultAddress: string) => {
       if (vaultInfo) setvaultData(vaultInfo)
     }
     fetchVault()
-  }, [])
+  }, [vaultAddress])
   return vaultData
 }

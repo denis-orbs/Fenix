@@ -30,9 +30,10 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
       </div>
 
       <div className="flex flex-col mb-4 z-[2000]">
+
         {MENU_LINKS.map((link, index) => (
           <div className="relative" key={index}>
-            <Link onClick={() => handleCloseMenu()} href={link.href} className="text-white text-xs py-4">
+            <Link onClick={() => handleCloseMenu()} href={link.href} className="text-white text-xs my-4">
               <span>{link.name}</span>
             </Link>
             {link.new && (

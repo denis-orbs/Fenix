@@ -114,7 +114,7 @@ export const useGammaCreatePosition = () => {
     //     }
     //   )
     // } catch (error) {
-    //   console.log(error)
+    //
     // }
   }
 

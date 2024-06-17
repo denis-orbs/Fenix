@@ -60,7 +60,7 @@ export const formatCurrency = (
     const numericAmount = parseFloat(formatAmount(bnAmount.div(1e9), fixed, separator)).toFixed(decimals)
     const numericAmountWithComa = numericAmount.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-    return numericAmountWithComa + 'b'
+    return numericAmountWithComa + 'B'
   }
 
   if (bnAmount.abs().gte(1e6)) {
@@ -68,14 +68,14 @@ export const formatCurrency = (
     const numericAmount = parseFloat(formatAmount(bnAmount.div(1e6), fixed, separator)).toFixed(decimals)
     const numericAmountWithComa = numericAmount.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-    return numericAmountWithComa + 'm'
+    return numericAmountWithComa + 'M'
   }
 
   if (bnAmount.abs().gte(1e3)) {
     const numericAmount = parseFloat(formatAmount(bnAmount.div(1e3), fixed, separator)).toFixed(decimals)
     const numericAmountWithComa = numericAmount.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-    return numericAmountWithComa + 'k'
+    return numericAmountWithComa + 'K'
   }
 
   const formattedAmount = parseFloat(formatAmount(bnAmount, fixed, separator))
@@ -137,4 +137,11 @@ export const parseCurrency = (formattedValue: string): BigNumber => {
   } else {
     return new BigNumber(formattedValue.replace(',', ''))
   }
+}
+export function daysFromNow(epochTime: number) {
+  const secondsInADay = 86400
+  const currentEpochTime = Math.floor(Date.now() / 1000) // Current time in epoch seconds
+  const differenceInSeconds = epochTime - currentEpochTime
+  const differenceInDays = differenceInSeconds / secondsInADay
+  return differenceInDays // Using Math.floor to round down to the nearest whole number of days
 }

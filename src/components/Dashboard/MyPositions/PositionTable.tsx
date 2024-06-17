@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-multi-comp */
 import Image from 'next/image'
 import { Button, Pagination, PaginationMobile, TableBody, TableCell, TableHead, TableRow, Tooltip } from '../../UI'
@@ -8,7 +9,7 @@ import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/li
 import { Token } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
-import { Address, encodeFunctionData } from 'viem'
+import { Address, encodeFunctionData, zeroAddress } from 'viem'
 import { useAccount, useWriteContract } from 'wagmi'
 import { publicClient } from '@/src/library/constants/viemClient'
 import { CL_MANAGER_ABI } from '@/src/library/constants/abi'
@@ -22,8 +23,11 @@ import { getAlgebraPoolPrice } from '@/src/library/hooks/liquidity/useCL'
 import Loader from '../../UI/Icons/Loader'
 import { useQuery } from '@tanstack/react-query'
 import AprBox from '../../UI/Pools/AprBox'
+// import cn from '@/src/library/utils/cn'
 
-import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import { BoostedPool, RingCampaignData, extraPoints } from '@/src/app/api/rings/campaign/route'
+import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
+import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 
 interface MyPositionssProps {
   activePagination?: boolean
@@ -33,14 +37,19 @@ interface MyPositionssProps {
 }
 
 const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionssProps) => {
+  console.log('dd', data.length)
   const router = useRouter()
+
   const dispatch = useDispatch()
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
   const addNotification = useNotificationAdderCallback()
-  const [itemsPerPage, setItemPerPage] = useState<any>(5)
+  const [itemsPerPage, setItemPerPage] = useState<number>(10)
   const [activePage, setActivePage] = useState<number>(1)
-
+  const [isMinHover, setIsMinHover] = useState<boolean>(false)
+  const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
+  const [isInRange, setIsInRange] = useState<boolean>(false)
+  const { data: ringsCampaignsData } = useRingsCampaigns()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
     const totalPages = Math.ceil(items.length / itemsPerPage)
@@ -89,21 +98,30 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       <>
         {isMobile ? (
           <div className="flex gap-2 justify-between">
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
+            <div className="px-2 py-1 text-[.625rem] leading-4  whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} Max:{' '}
+              {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
+              {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
             </div>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+            {/* <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
               Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
-            </div>
+            </div> */}
           </div>
         ) : (
           <>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
+            <div className="relative px-2 py-1 text-[.625rem] leading-4  whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+              {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max:{' '}
+              {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
             </div>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
-            </div>
+            {/* <div
+              className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300"
+              
+            > */}
+            {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol} */}
+            {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}  */}
+            {/* </div> */}
           </>
         )}
       </>
@@ -132,8 +150,10 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       price1: string
     }
     liquidity: string
+    setIsInRange: (inRange: boolean) => void
+    isInRange: boolean
   }
-  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity }: setStatusprops) => {
+  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, isInRange }: setStatusprops) => {
     const minPrice = useMemo(() => {
       return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     }, [tickLower, token0?.decimals, token1?.decimals])
@@ -153,24 +173,26 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
     const currentPoolPrice = poolPriceData
       ? Number(poolPriceData?.price / 10 ** Number(token1.decimals)).toFixed(6)
       : '0'
-
-    const isInRange = useMemo(() => {
+    const isInRangeAux = useMemo(() => {
       return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
     }, [minPrice, maxPrice, currentPoolPrice, liquidity])
+    useEffect(() => {
+      setIsInRange(isInRangeAux)
+    }, [isInRangeAux, setIsInRange])
     if (isPoolPriceDataLoading) {
       return <Loader />
     }
     return (
       <>
-        {isInRange ? (
+        {isInRangeAux ? (
           <div className="text-green-400 text-sm flex-col flex justify-center items-start gap-1">
             <div className="flex items-center gap-x-1">
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#2AED8F" />
               </svg>
-              <span>In range</span>
+              <span className="text-xs">In range</span>
             </div>
-            <span className="text-white">Pool price: {Number(currentPoolPrice)}</span>
+            {/* <span className="text-white">Pool price: {Number(currentPoolPrice)}</span> */}
           </div>
         ) : (
           <div className="text-red-600 text-sm flex-col flex justify-center items-start gap-1">
@@ -178,9 +200,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#dc2626" />
               </svg>
-              <span>Out of range</span>
+              <span className="text-xs">Out of range</span>
             </div>
-            <span className="text-white">Pool price: {Number(currentPoolPrice)}</span>
+            {/* <span className="text-white">Pool price: {Number(currentPoolPrice)}</span> */}
           </div>
         )}
       </>
@@ -188,10 +210,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   }
 
   const TvlTotal = ({ data }: any) => {
-    let ichitokens: IchiVault
-    if (data.liquidity === 'ichi') {
-      ichitokens = useIchiVaultsData(data?.id)
-    }
+    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
     return (
       <>
         <p className="text-xs text-white mb-1">
@@ -274,7 +293,6 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       }
     )
   }
-
   return (
     <>
       <div className="relative hidden xl:block z-10 xl:mb-5 w-full">
@@ -289,40 +307,50 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
             ]}
             setSort={() => {}}
             setSortIndex={() => {}}
-            sort={null}
+            sort={'normal'}
             sortIndex={1}
           />
+
           {data && data?.length > 0 ? (
             <>
               <TableBody>
                 {pagination.map((position: positions) => {
+                  // console.log('each', isInRange, position)
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+
                   const fenixRingApr =
                     ringsCampaign.boostedPools.find((pool) => {
                       return pool.id.toLowerCase() === position.pool.id.toLowerCase()
                     })?.apr || 0
-
+                  const extraAprs =
+                    ringsCampaignsData.find((pool: BoostedPool) => {
+                      return pool.id.toLowerCase() === position.pool.id.toLowerCase()
+                    })?.extraPoints || []
+                  const extraAprNumber = extraAprs.reduce((acc: number, curr: extraPoints) => {
+                    return acc + curr.apr
+                  }, 0)
                   return (
                     <>
                       <TableRow key={position.id}>
-                        <TableCell className="w-[40%]">
-                          <div className="flex items-center gap-2">
-                            <div className="flex items-center">
+                        <TableCell className="flex w-[40%]">
+                          <div className="flex items-center w-full gap-2">
+                            <div className="flex items-center w-[60px] max-2xl:w-[50px]">
                               <Image
                                 src={`/static/images/tokens/${position.token0.symbol}.svg`}
                                 alt="token"
-                                className="rounded-full w-10 h-10"
+                                className="rounded-full w-10 h-10 max-2xl:w-8 max-2xl:h-8"
                                 width={30}
                                 height={30}
                               />
                               <Image
                                 src={`/static/images/tokens/${position.token1.symbol}.svg`}
                                 alt="token"
-                                className="-ml-4 rounded-full w-10 h-10"
+                                className="-ml-4 rounded-full w-10 h-10 max-2xl:w-8 max-2xl:h-8"
                                 width={30}
                                 height={30}
                               />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col max-2xl:max-w-[85%] 2xl:max-w-full">
                               <h5 className="text-sm text-white">
                                 {position.token0.symbol} / {position.token1.symbol}
                               </h5>
@@ -360,18 +388,20 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                             tickLower={position.tickLower}
                             tickUpper={position.tickUpper}
                             liquidity={position.liquidity}
+                            setIsInRange={setIsInRange}
+                            isInRange={isInRange}
                           />
                         </TableCell>
                         <TableCell className="w-[10%] flex justify-end">
                           <AprBox
-                            apr={parseFloat(position?.apr) > 0 ? parseFloat(position?.apr) + fenixRingApr : 0}
+                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0}
                             tooltip={
                               <div>
                                 <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Fees APR</p>
                                   <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
                                 </div>
-                                {fenixRingApr > 0 && parseFloat(position?.apr) > 0 && (
+                                {fenixRingApr > 0 && isInRange && (
                                   <div className="flex justify-between items-center gap-3">
                                     <p className="text-sm pb-1">Rings APR</p>
                                     <p className="text-sm pb-1 text-chilean-fire-600">
@@ -379,6 +409,18 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                     </p>
                                   </div>
                                 )}
+                                {extraAprs &&
+                                  extraAprs.length > 0 &&
+                                  extraAprs.map((extraApr: extraPoints) => {
+                                    return (
+                                      <div key={extraApr.name} className="flex justify-between items-center gap-3">
+                                        <p className="text-sm pb-1">{extraApr.name}</p>
+                                        <p className="text-sm pb-1 text-chilean-fire-600">
+                                          {formatAmount(extraApr.apr, 2)}%
+                                        </p>
+                                      </div>
+                                    )
+                                  })}
                               </div>
                             }
                           />
@@ -386,31 +428,15 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                         <TableCell className="w-[15%] flex justify-end">
                           <div className="flex flex-col justify-center items-end">
                             <TvlTotal data={position} />
-                            <span className="flex justify-center items-center gap-2">
-                              <p className="flex gap-2 items-center">
-                                <Image
-                                  src={`/static/images/tokens/${position.token0.symbol}.svg`}
-                                  alt="token"
-                                  className="rounded-full w-5 h-5"
-                                  width={10}
-                                  height={10}
-                                />
-                                <span className="text-xs">
-                                  {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
-                                </span>
-                              </p>
-                              <p className="flex gap-2 items-center">
-                                <Image
-                                  src={`/static/images/tokens/${position.token1.symbol}.svg`}
-                                  alt="token"
-                                  className="rounded-full w-5 h-5"
-                                  width={10}
-                                  height={10}
-                                />
-                                <span className="text-xs">
-                                  {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
-                                </span>
-                              </p>
+
+                            <span className="text-xs">
+                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
+                              {position.token0.symbol}
+                            </span>
+
+                            <span className="text-xs">
+                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
+                              {position.token1.symbol}
                             </span>
                           </div>
                         </TableCell>
@@ -432,7 +458,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                 }
                               }}
                             >
-                              <span className="text-l">Manage</span>
+                              <span className="text-xs">Manage</span>
                             </Button>
                             {position.liquidity !== 'ichi' ? (
                               <>
@@ -445,7 +471,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                     }
                                   }}
                                 >
-                                  <span className="text-l">Claim</span>
+                                  <span className="text-xs">Claim</span>
                                 </Button>
                               </>
                             ) : (

@@ -33,10 +33,9 @@ const InputRange = ({
   useEffect(() => {
     if (onChangeShown) {
       onChangeShown(currentValue)
-      // console.log(currentValue)
     }
-    // console.log("ddd", currentValue)
-  }, [currentValue])
+    //
+  }, [])
 
   const isDisabledClass = disabled
     ? '[&::-webkit-slider-thumb]:bg-[#333A43] [&::-webkit-slider-thumb]:pointer-events-none'

@@ -25,18 +25,23 @@ const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
-  const [position, setposition] = useState<positions[]>([])
+  // const [position, setposition] = useState<positions[]>([])
+  const [position, setposition] = useState<any[]>([])
   const [positionAmounts, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
-  const [loading, setLoading] = useState(false)
+
+  const [loadingIchi, setLoadingIchi] = useState(false)
+  const [loadingGamma, setLoadingGamma] = useState(false)
   const [progress, setProgress] = useState<number>(0)
+  const { chainId, address } = useAccount()
+  const { ichipositions, ichiLoading } = useIchiPositions()
 
   const tokensprice = async () => {
-    setTokens(await fetchTokens())
+    if (chainId) setTokens(await fetchTokens(chainId))
   }
   useEffect(() => {
     tokensprice()
-  }, [])
+  }, [chainId])
 
   const slideToLeft = () => {
     if (swiperRef.current && progress > 0) {
@@ -50,32 +55,93 @@ const MyStrategies = () => {
       setProgress(swiperRef?.current?.progress)
     }
   }
-  const { address } = useAccount()
 
-  const ichipositions = useIchiPositions()
+  const [allGamaData, setAllGamaData] = useState<any>()
+  const [userGamaData, setUserGamaData] = useState<any>()
+
+  const getAllGammaData = () => {
+    fetch(`https://wire2.gamma.xyz/fenix/blast/hypervisors/allData`)
+      .then((res) => res.json())
+      .then((data) => {
+        const isEmpty = Object.keys(data).length === 0
+        if (!isEmpty) {
+          console.log(data, 'setAllGamaData')
+          setAllGamaData(data)
+        } else setAllGamaData(null)
+      })
+      .catch((err) => console.log(err))
+  }
+  const getGammaAddressData = () => {
+    fetch(`https://wire2.gamma.xyz/fenix/blast/user/${address?.toLowerCase()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const isEmpty = Object.keys(data).length === 0
+        if (!isEmpty) {
+          setUserGamaData(data)
+        } else setUserGamaData(null)
+      })
+      .catch((err) => console.log(err))
+  }
+
   useEffect(() => {
-    setLoading(true)
+    getAllGammaData()
+  }, [])
+
+  useEffect(() => {
     if (ichipositions.length > 0) {
-      setposition(ichipositions)
-      setLoading(false)
+      setposition((prev) => [...prev, ...ichipositions])
     }
   }, [ichipositions])
 
   useEffect(() => {
-    // FIXME: STARK
+    setposition([])
+    getGammaAddressData()
+  }, [address])
+
+  useEffect(() => {
+    setLoadingGamma(true)
+    if (allGamaData != null && userGamaData != null && address) {
+      const newArr: any[] = []
+      for (const item in allGamaData) {
+        if (userGamaData[address.toLowerCase()]?.hasOwnProperty(item.toLowerCase())) {
+          const nestedObj = userGamaData[address.toLowerCase()][item]
+          const newObj = {
+            liquidity: 'gamma',
+            id: item,
+            pool: { id: allGamaData[item].poolAddress },
+            depositedToken0: nestedObj.balance0,
+            depositedToken1: nestedObj.balance1,
+            token0: { id: allGamaData[item].token0 },
+            token1: { id: allGamaData[item].token1 },
+            inRange: allGamaData[item].inRange,
+            apr: allGamaData[item].returns.monthly.feeApr,
+          }
+
+          newArr.push(newObj)
+        } else {
+          console.log('hit no')
+        }
+      }
+
+      if (newArr.length > 0) {
+        setposition((prev) => [...prev, ...newArr])
+      }
+      setLoadingGamma(false)
+    }
+  }, [allGamaData, userGamaData, address])
+
+  useEffect(() => {
     dispatch(setApr(position))
   }, [position, dispatch])
-
   return (
     <>
-      {/* {console.log('finalp', position)} */}
-      {position.length !== 0 && loading === false && address ? (
+      {position.length > 0 ? (
         <div className="relative">
-          <div className="flex items-center w-[100%] mb-4 justify-between">
+          <div className="mb-4 flex w-[100%] items-center justify-between">
             <h2 id="strategies" className="text-lg text-white">
-              My Strategies
+              Automated Strategies
             </h2>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
+            <Button variant="tertiary" className="!lg:text-sm !py-3 !text-xs xl:me-5" href="/liquidity">
               <span className="icon-logout"></span>New strategy
             </Button>
           </div>
@@ -117,13 +183,13 @@ const MyStrategies = () => {
               })}
             </Swiper>
             {position?.length >= 3 && (
-              <div className="flex gap-2 justify-center">
+              <div className="flex justify-center gap-2">
                 <span
-                  className={`icon-arrow rotate-180 ${progress <= 0 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'} text-2xl`}
+                  className={`icon-arrow-left ${progress <= 0 ? 'cursor-not-allowed text-shark-400' : 'cursor-pointer text-white'} text-2xl`}
                   onClick={slideToLeft}
                 ></span>
                 <span
-                  className={`icon-arrow text-2xl ${progress >= 1 ? 'text-shark-400 cursor-not-allowed' : 'text-white cursor-pointer'}`}
+                  className={`icon-arrow-right text-2xl ${progress >= 1 ? 'cursor-not-allowed text-shark-400' : 'cursor-pointer text-white'}`}
                   onClick={slideToRight}
                 ></span>
               </div>
@@ -150,22 +216,22 @@ const MyStrategies = () => {
           </div>
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
-      ) : (position.length === 0 && loading === false) || address === undefined ? (
-        <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
-          <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">My Positions</p>
+      ) : address === undefined ? (
+        <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
+          <div className="flex items-center justify-between text-white">
+            <p className="ms-2 flex gap-3 text-lg">Automated Strategies</p>
           </div>
-          <div className="box-dashboard p-6 flex gap-8 items-center ">
-            <p className="text-white text-sm">You have no positions.</p>
+          <div className="box-dashboard flex items-center gap-8 p-6">
+            <p className="text-sm text-white">You have no strategies.</p>
           </div>
         </div>
       ) : (
-        <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
-          <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">My Positions</p>
+        <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
+          <div className="flex items-center justify-between text-white">
+            <p className="ms-2 flex gap-3 text-lg">Automated Strategies</p>
           </div>
-          <div className="box-dashboard p-6 flex gap-8 justify-center items-center ">
-            <p className="text-white text-sm flex items-center gap-3">
+          <div className="box-dashboard flex items-center justify-center gap-8 p-6">
+            <p className="flex items-center gap-3 text-sm text-white">
               <Spinner /> Loading
             </p>
           </div>

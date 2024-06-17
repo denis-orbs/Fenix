@@ -2,7 +2,7 @@
 'use client'
 
 import { Button, TableCell, TableRow } from '@/src/components/UI'
-import { BasicPool, PoolData, v3PoolData } from '@/src/state/liquidity/types'
+import { BasicPool, GammaVault, PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRowNew'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
@@ -18,6 +18,9 @@ import { getWeb3Provider } from '@/src/library/utils/web3'
 import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import Loader from '@/src/components/UI/Icons/Loader'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
+import { adjustTokenOrder } from '@/src/library/utils/tokens'
+import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
+import { useGammaVaults } from '@/src/state/liquidity/hooks'
 
 interface RowDataProps {
   row: BasicPool
@@ -45,6 +48,9 @@ const RowData = ({
 
   const [openInfo, setOpenInfo] = useState<boolean>(false)
   const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
+  const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
+  const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
+  const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
   const [campaign, setCampaign] = useState<Campaign>()
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
@@ -52,7 +58,7 @@ const RowData = ({
   if (aprIchi && aprIchi?.length > 0 && aprIchi[0]) {
     if (aprIchi[0].hasOwnProperty('apr')) aprdisplayIchi = aprIchi[0]?.apr[1]?.apr?.toFixed(0)
   }
-
+  console.log('row >> ', row)
   const { data: ichiApr, isLoading: ichiAprLoading } = useQuery({
     queryKey: ['ichiApr', row?.id],
     staleTime: 1000 * 60 * 20,
@@ -78,7 +84,7 @@ const RowData = ({
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
     setCampaign({ ...campaign_ })
-    console.log('campaign_ >> ', campaign_)
+    //
   }, [row])
 
   function getAverageApr(...aprs: number[]): string {
@@ -87,44 +93,63 @@ const RowData = ({
     const average = sum / values.length
     return formatAmount(average.toString(), 2)
   }
-  // console.log(data?.boostedPools?.find((pool: string) => pool?.toLowerCase() == row?.id?.toLowerCase()))
+  //
+  const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
+  const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)
+  const { loading: gammaVaultsLoading, data: gammaVaults } = useGammaVaults()
+  const gammaVaultApr =
+    gammaVaults?.find((vault: GammaVault) => vault?.poolAddress?.toLowerCase() === row?.id?.toLowerCase())?.returns
+      ?.weekly?.feeApr || null
 
+  // console.log('row >> ', row)
+  
   return (
     <>
       <TableRow className="hidden lg:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[20%]'}`}>
-          <div className="flex justify-center items-center gap-2">
-            <div className="flex items-center max-2xl:hidden">
+          <div
+            className={`flex justify-center items-center gap-2 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? '' : 'mb-[28px]'}`}
+          >
+            <div
+              className={`flex items-center w-[40px] ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? '' : 'mt-[28px]'}`}
+            >
               <Image
-                src={`/static/images/tokens/${row.token0.symbol}.svg`}
+                src={`/static/images/tokens/${adjustToken0}.svg`}
                 alt="token"
-                className="rounded-full w-7 h-7"
+                className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
               <Image
-                src={`/static/images/tokens/${row.token1.symbol}.svg`}
+                src={`/static/images/tokens/${adjustToken1}.svg`}
                 alt="token"
-                className="-ml-4 rounded-full w-7 h-7"
+                className="-ml-[0.9rem] rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
             </div>
             <div className="flex flex-col gap-1">
-              <h5 className={`text-xs text-white`}>
+              <h5 className={`text-xs text-white h-[26px] flex items-center`}>
                 <div>
-                  {row.token0.symbol} / {row.token1.symbol}
+                  {adjustToken0} / {adjustToken1}
                 </div>
               </h5>
-              <div className="flex items-center gap-1">
-                <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
+              <div className="flex items-center gap-1 h-[26px]">
+                {row.poolType === 'concentrated' && (
+                  <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
+                )}
+                {row.poolType === 'volatile' ? (
+                  <span className="py-1 px-2  text-xs button-tertiary rounded-lg">Volatile</span>
+                ) : row.poolType === 'stable' ? (
+                  <span className="py-1 px-2  text-xs button-tertiary rounded-lg">Stable</span>
+                ) : null}
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
                   {/* FEES */}
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
                 </span>
               </div>
               <span
-                className={`!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+                className={`!py-1 h-[26px] px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 flex justify-center ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
               >
                 {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase())?.multiplier}
                 {/* <p className="text-xs">TVL {formatDollarAmount(Number(row.totalValueLockedUSD))}</p> */}
@@ -134,65 +159,81 @@ const RowData = ({
         </TableCell>
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[15%]'} flex justify-end items-center`}>
           <div className="flex  justify-center items-center gap-2 ">
-            {/* <span ref={hoverRef} className="flex gap-2">
-              {row.token0.symbol !== 'axlUSDC' && row.token1.symbol !== 'axlUSDC' && (
-                <span ref={hoverRef} className="flex flex-row transition-transform transform group">
-                  {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
-                    <>
-                      <Image
-                        src={`/static/images/point-stack/fenix-ring.svg`}
-                        alt="token"
-                        className={''}
-                        width={20}
-                        height={20}
-                      />
-                      <Image
-                        src={`/static/images/point-stack/blast.svg`}
-                        alt="token"
-                        className={''}
-                        width={20}
-                        height={20}
-                      />
-                      <Image
-                        src={`/static/images/point-stack/blast-gold.svg`}
-                        alt="token"
-                        className={`${row.token0.symbol === 'USDB' && row.token1.symbol === 'WETH' ? '' : 'hidden'}`}
-                        width={20}
-                        height={20}
-                      />
-                    </>
-                  )}
-                </span>
-              )}
-            </span> */}
             {
               <span ref={hoverRef} className="flex gap-2">
-                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]': 'z-0'}`}>
+                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
-                    <>
+                    <div className='relative flex items-center'>
                       {campaign?.pointStack?.map((stack, index) => (
                         <Image
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow notification'} ${openTooltipGold ? 'z-[100]': 'z-0'}`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub ? 'z-[100]' : 'z-0'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
                             if (stack === 'blast-gold') {
                               setOpenTooltipGold(true)
                             }
+                            if (stack === 'eigen-layer') {
+                              setOpenTooltipEigenLayer(true)
+                            }
+                            if (stack === 'kelp-miles') {
+                              setOpenTooltipKelpMiles(true)
+                            }
+                            if (stack === 'turtle-club') {
+                              setOpenTooltipTurtleClub(true)
+                            }
                           }}
-                          onMouseLeave={() => setOpenTooltipGold(false)}
+                          onMouseLeave={() => {
+                            if (openTooltipGold) {
+                              setOpenTooltipGold(false)
+                            }
+                            if (openTooltipEigenLayer) {
+                              setOpenTooltipEigenLayer(false)
+                            }
+                            if (openTooltipKelpMiles) {
+                              setOpenTooltipKelpMiles(false)
+                            }
+                            if (openTooltipTurtleClub) {
+                              setOpenTooltipTurtleClub(false)
+                            }
+                          }}
                         />
                       ))}
-                    </>
-                  )}
-                  {openTooltipGold && (
-                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
-                      <div className='relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1'>
-                        <p className="text-xs">The pool is receiving 7000 Gold from May 15th - 31st</p>
-                      </div>
+                      {openTooltipGold && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">This pool will receive {campaign?.blastGoldAmount} of Blast Gold till the 25th June</p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipEigenLayer && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              Eigenlayer points will be distributed to liquidity providers in this pool
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipKelpMiles && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">wrsETH liquidity providers will earn 1x Kelp Miles from this pool</p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipTurtleClub && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              Deposit liquidity to receive a 25% Turtle Points boost from Fenix Rings earned
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </span>
@@ -204,7 +245,7 @@ const RowData = ({
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* TVL */}
-              {formatDollarAmount(Number(row.totalValueLockedUSD))}
+              {formatDollarAmount(Number(row.totalValueLockedUSD)).replace('NaN', '0')}
             </p>
           </div>
         </TableCell>
@@ -216,7 +257,7 @@ const RowData = ({
                 <Loader />
               ) : (
                 <>
-                  {formatAmount((Number(row?.apr) || 0) + (Number(ringsApr) || 0), 2)}%{' '}
+                  {formatAmount((Number(row?.apr) || 0) + fDAOEmisionsAPR + (Number(ringsApr) || 0), 2)}%{' '}
                   <span
                     className="icon-info"
                     onMouseEnter={() => setOpenInfo(true)}
@@ -226,7 +267,7 @@ const RowData = ({
               )}
             </p>
             {openInfo && (
-              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+              <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto lg:w-[200px] top-9 px-5 py-3 transform left-1/2 -translate-x-1/2 gap-y-1">
                 <div className="flex justify-between items-center gap-3">
                   <p className="text-sm">Fees APR</p>
                   <p className="text-sm text-chilean-fire-600">{formatAmount(Number(row?.apr) || 0, 2)}%</p>
@@ -239,14 +280,31 @@ const RowData = ({
                 )}
                 {ichiAprLoading && (
                   <div className="flex justify-between items-center gap-3">
-                    <p className="text-sm">Ichi Strategy</p>
+                    <p className="text-sm">Ichi</p>
                     <Loader />
                   </div>
                 )}
+
                 {!ichiAprLoading && ichiApr !== null && !isNaN(Number(ichiApr)) && Number(ichiApr) !== 0 && (
                   <div className="flex justify-between items-center gap-3">
                     <p className="text-sm">Ichi Strategy</p>
-                    <p className="text-sm text-chilean-fire-600">{formatAmount(Number(ichiApr) || 0, 2)}%</p>
+                    <p className="text-sm text-chilean-fire-600">
+                      {formatAmount(Number(ichiApr) < 0 ? 0 : Number(ichiApr) || 0, 2)}%
+                    </p>
+                  </div>
+                )}
+                {!!fDAOEmisionsAPR && (
+                  <div className="flex justify-between items-center gap-3">
+                    <p className="text-sm">fDAO Emissions</p>
+                    <p className="text-sm text-chilean-fire-600">{formatAmount(Number(fDAOEmisionsAPR), 2)}%</p>
+                  </div>
+                )}
+                {gammaVaultApr && (
+                  <div className="flex justify-between items-center gap-3">
+                    <p className="text-sm">Gamma</p>
+                    <p className="text-sm text-chilean-fire-600">
+                      {formatAmount(gammaVaultApr < 0 || isNaN(gammaVaultApr) ? 0 : Number(gammaVaultApr), 2)}%
+                    </p>
                   </div>
                 )}
               </div>
@@ -254,45 +312,30 @@ const RowData = ({
           </div>
         </TableCell>
 
-        {/* <TableCell className={`w-[10%]`}>
-          <div className="flex flex-col items-end justify-center w-full px-3">
-            TVL
-            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.totalValueLockedUSD))}</p>
-            <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-
-              </p>
-              <p className="flex items-center gap-2 text-xs text-shark-100">
-
-              </p>
-            </div>
-          </div>
-        </TableCell> */}
-
         <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* VOLUME */}
-            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
-            <div className="flex flex-col gap-2">
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD)).replace('NaN', '0')}</p>
+            <div className="flex flex-col gap-1">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token0.symbol}.png`}
+                  src={`/static/images/tokens/${row.token0.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 /> */}
-                {formatCurrency(Number(row.volumeToken0), 2)} {row.token0.symbol}
+                {formatCurrency(Number(row.volumeToken0) / 2, 2)} {row.token0.symbol}
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100 font-normal ">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token1.symbol}.png`}
+                  src={`/static/images/tokens/${row.token1.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
                 /> */}
-                {formatCurrency(Number(row.volumeToken1), 2)} {row.token1.symbol}
+                {formatCurrency(Number(row.volumeToken1) / 2, 2)} {row.token1.symbol}
               </p>
             </div>
           </div>
@@ -301,11 +344,11 @@ const RowData = ({
         <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* FEES */}
-            <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
-            <div className="flex flex-col  gap-2">
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD).replace('NaN', '0')}</p>
+            <div className="flex flex-col  gap-1">
               <p className="flex  items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token0.symbol}.png`}
+                  src={`/static/images/tokens/${row.token0.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -315,7 +358,7 @@ const RowData = ({
               </p>
               <p className="flex items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
-                  src={`/static/images/tokens/${row.token1.symbol}.png`}
+                  src={`/static/images/tokens/${row.token1.symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
@@ -342,7 +385,13 @@ const RowData = ({
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href={`/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`}
+                href={
+                  row.poolType === 'concentrated'
+                    ? `/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`
+                    : row.poolType === 'volatile'
+                      ? `/liquidity/deposit?type=VOLATILE&token0=${row.token0.id}&token1=${row.token1.id}`
+                      : `/liquidity/deposit?type=STABLE&token0=${row.token0.id}&token1=${row.token1.id}`
+                }
               >
                 <span className="icon-circles"></span>
                 Deposit

@@ -18,7 +18,7 @@ interface RowDataProps {
 const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, activeRange }: RowDataProps) => {
   return (
     <>
-      <TableRow className="hidden 2xl:flex">
+      <TableRow className="hidden xl:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[30%]'}`}>
           <div className="flex items-center gap-2">
             <div className="flex items-center">
@@ -63,9 +63,9 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                   {row.pairDetails.fee} %
                 </span>
-                <Button variant="tertiary" className="!py-1">
+                {/* <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
@@ -92,7 +92,7 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
           <div className="flex items-center  ">
             <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.apr} %
+              {row.pairDetails.maxAPR?.toFixed(2)} %
             </p>
           </div>
         </TableCell>
@@ -212,8 +212,30 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
             </div>
           </div>
         </TableCell>
-
         <TableCell className="flex justify-end items-center w-[15%]">
+          <div className="flex justify-end gap-2 w-full">
+            {titleButton2 === '' ? (
+              <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs" href="/liquidity">
+                <span className="icon-circles"></span>
+                Deposit
+              </Button>
+            ) : (
+              <Button
+                variant="tertiary"
+                className="flex items-center gap-2 w-24 h-9 !text-xs"
+                href={
+                  !row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
+                    ? `/liquidity/deposit?type=VOLATILE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                    : `/liquidity/deposit?type=STABLE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                }
+              >
+                <span className="icon-logout"></span>
+                Manage
+              </Button>
+            )}
+          </div>
+        </TableCell>
+        {/* <TableCell className="flex justify-end items-center w-[15%]">
           <div className="flex gap-2 w-full">
             {titleButton === '' ? (
               <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs ">
@@ -237,14 +259,18 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 variant="tertiary"
                 className="flex items-center gap-2 w-24 h-9 !text-xs "
                 // eslint-disable-next-line max-len
-                href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'volatile' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'stable' : 'manual'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
+                href={
+                  !row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
+                    ? `/liquidity/deposit?type=VOLATILE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                    : `/liquidity/deposit?type=STABLE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                }
               >
                 <span className="icon-logout"></span>
                 Manage
               </Button>
             )}
           </div>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
       <MobileRow
         row={row}

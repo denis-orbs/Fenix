@@ -8,24 +8,44 @@ import { useAllPools } from '@/src/state/liquidity/hooks'
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useEffect, useState } from 'react'
 import HeaderRow from './Tables/LiquidityTable/HeaderRow'
-import { OPTIONS_FILTER, STEPS } from './data'
+import LiquidityBanner from '@/src/components/Common/LiquidityBanner'
+import {
+  BLAST_NATIVE_POOLS,
+  BLUE_CHIPS_POOLS,
+  LRTS_POOLS,
+  MEMES_POOLS,
+  OPTIONS_FILTER,
+  STABLES_POOLS,
+  CLASSIC,
+  STEPS,
+} from './data'
 
 const Liquidity = () => {
-  const [currentTab, setCurrentTab] = useState<string>('ALL POOLS')
+  const [currentTab, setCurrentTab] = useState<string>('ALL')
   const [searchValue, setSearchValue] = useState<string>('')
   const [filteredPools, setFilteredPools] = useState<BasicPool[]>([])
-  // console.log(filteredPools)
+  //
   const { loading, data: pools } = useAllPools()
-
   useEffect(() => {
     if (pools && pools?.length > 0) {
-      if (currentTab === 'VOLATILE') {
-        // fix filter. user the type of position pool in BasicPool interface
-        setFilteredPools([])
-      } else if (currentTab === 'STABLE') {
-        setFilteredPools([])
-      } else if (currentTab === 'CONCENTRATED') {
-        setFilteredPools(pools)
+      if (currentTab === 'BLUE CHIPS') {
+        const combinedPools = pools.filter((pool: BasicPool) => BLUE_CHIPS_POOLS.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
+      } else if (currentTab === 'LST/LRT') {
+        const combinedPools = pools.filter((pool: BasicPool) => LRTS_POOLS.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
+      } else if (currentTab === 'STABLES') {
+        const combinedPools = pools.filter((pool: BasicPool) => STABLES_POOLS.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
+      } else if (currentTab === 'MEMES') {
+        const combinedPools = pools.filter((pool: BasicPool) => MEMES_POOLS.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
+      } else if (currentTab === 'BLAST NATIVE') {
+        const combinedPools = pools.filter((pool: BasicPool) => BLAST_NATIVE_POOLS.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
+      } else if (currentTab === 'CLASSIC') {
+        const combinedPools = pools.filter((pool: BasicPool) => CLASSIC.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
       } else {
         setFilteredPools(pools)
       }
@@ -42,7 +62,7 @@ const Liquidity = () => {
       return Number(b.totalValueLockedUSD) - Number(a.totalValueLockedUSD)
     })
   return (
-    <section>
+    <section className="pt-5">
       <div className="flex flex-col items-center overflow-hidden gap-5 py-5 xl:flex-row">
         <div className="w-full xl:w-2/3 ">
           <Deposit />
@@ -51,10 +71,10 @@ const Liquidity = () => {
           <Steps steps={STEPS} title="Start Now" />
         </div>
       </div>
-
-      <div className="flex flex-col justify-between gap-5 mb-4 md:items-center xl:flex-row overflow-hidden">
-        <h5 className="text-lg mb-1 text-white max-xl:w-full    lg:flex-shrink-0">Liquidity Pools</h5>
-        <div className='w-full'>
+      <LiquidityBanner />
+      <div className="flex flex-col justify-between gap-5 mb-4 md:items-center xl:flex-row overflow-hidden mt-5">
+        <h5 className="text-lg mb-1 text-white max-xl:w-full lg:flex-shrink-0">Liquidity Pools</h5>
+        <div className="2xl:max-w-[70%] xl:max-w-[65%]  w-full">
           <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
         </div>
         <div className="w-full xl:w-1/3">

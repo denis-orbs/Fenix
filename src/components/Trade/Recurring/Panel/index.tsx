@@ -26,9 +26,9 @@ const Panel = () => {
     symbol: 'ETH',
     id: 1,
     decimals: 18,
-    address: '0x4200000000000000000000000000000000000023',
+    address: '0x4300000000000000000000000000000000000004',
     price: 0,
-    img: '/static/images/tokens/WETH.png',
+    img: '/static/images/tokens/WETH.svg',
   })
   const [allocateValue, setAllocateValue] = useState<number>(0)
   const [withValue, setWithValue] = useState<number>(0)
@@ -44,7 +44,7 @@ const Panel = () => {
               <h4 className="text-white font-medium text-lg">Recurring Order</h4>
               <span className="flex items-center justify-center w-5 h-5 text-xs text-white rounded-full cursor-pointer icon-info bg-shark-200 hover:bg-outrageous-orange-500"></span>
             </div>
-            <span className="icon-reflesh text-shark-100 text-xl cursor-pointer"></span>
+            <span className="icon-refresh text-shark-100 text-xl cursor-pointer"></span>
           </div>
           <div className="flex flex-col gap-1 mb-5 relative">
             <div className="mb-3">

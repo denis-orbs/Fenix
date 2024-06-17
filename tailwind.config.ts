@@ -38,12 +38,14 @@ const config: Config = {
             width: '100%',
           },
         },
-        /* 'vibrate': {
-          '0%, 100%': { transform: 'translateX(0)' },
-          '25%': { transform: 'translateX(-1px)' },
-          '50%': { transform: 'translateX(1px)' },
-          '75%': { transform: 'translateX(-1px)' },
-        }, */
+        notification: {
+          '0%': { transform: 'translateX(0)' },
+          '20%': { transform: 'translateX(-1.2px)' },
+          '40%': { transform: 'translateX(1.2px)' },
+          '60%': { transform: 'translateX(-1.2px)' },
+          '80%': { transform: 'translateX(1.2px)' },
+          '100%': { transform: 'translateX(0px)' },
+        },
       },
       animation: {
         'spin-slow': 'spin 25s linear infinite',
@@ -51,12 +53,14 @@ const config: Config = {
 
         'toast-in': 'toast-in 250ms linear',
         progress: 'progress 3s linear',
-        // 'vibrate': '0.3s vibrate infinite 2.7s'
+        notification: 'notification 2s infinite alternate',
       },
       backgroundImage: {
         // Gradients
         'button-primary':
           'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%)',
+        'ranking-gradient':
+          'linear-gradient(90deg, rgba(254, 94, 53, 0.40) 10.49%, rgba(246, 119, 2, 0.40) 92.04%, rgba(255, 239, 118, 0.40) 158.76%)',
         'button-primary-hover': 'linear-gradient(90deg, #FE5E35 10.49%, #F67702 92.04%, #FFEF76 158.76%)',
         'error-404': 'url("/static/images/404/Background_1.svg")',
         'error-404-mobile': 'url("/static/images/404/backgroundMobile.svg")',
