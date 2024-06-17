@@ -34,10 +34,10 @@ interface MyPositionssProps {
   data: positions[]
   tokens: Token[]
   ringsCampaign: RingCampaignData
+  showDust?: boolean
 }
 
-const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionssProps) => {
-  console.log('dd', data.length)
+const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, showDust }: MyPositionssProps) => {
   const router = useRouter()
 
   const dispatch = useDispatch()
@@ -48,7 +48,10 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   const [activePage, setActivePage] = useState<number>(1)
   const [isMinHover, setIsMinHover] = useState<boolean>(false)
   const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
-  const [isInRange, setIsInRange] = useState<boolean>(false)
+  const [tvlPosition, setTvlPosition] = useState<any>([])
+  const [nonZeroData, setNonZeroData] = useState<positions[]>([])
+  const [isInRangeAll, setIsInRangeAll] = useState<{ [key: string]: boolean }>({})
+
   const { data: ringsCampaignsData } = useRingsCampaigns()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -64,7 +67,35 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
     return paginatedItems
   }
 
-  const pagination = paginate(data, activePage, itemsPerPage)
+  const TvlTotalValue = (data: any) => {
+    const tvl = 
+      Number(data?.depositedToken0) *
+        Number(
+          tokens.find(
+            (e) =>
+              e.tokenAddress.toLowerCase() ===
+              (data?.token0?.id.toLowerCase())
+          )?.priceUSD
+        ) +
+        Number(data?.depositedToken1) *
+          Number(
+            tokens.find(
+              (e) =>
+                e.tokenAddress.toLowerCase() ===
+                (data?.token1?.id.toLowerCase())
+            )?.priceUSD
+          )
+      
+    tvlPosition[data.id] = tvl
+    return tvl
+  }
+
+  useEffect(() => {
+    setNonZeroData(showDust ? data : data.filter((i) => {
+      return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
+    }))
+  }, [data, showDust, tvlPosition, tokens])
+  const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
   type priceClacualtionProps = {
     token0: {
@@ -150,10 +181,11 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       price1: string
     }
     liquidity: string
-    setIsInRange: (inRange: boolean) => void
+    setIsInRange: any
     isInRange: boolean
+    id: any
   }
-  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, isInRange }: setStatusprops) => {
+  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, isInRange, id }: setStatusprops) => {
     const minPrice = useMemo(() => {
       return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     }, [tickLower, token0?.decimals, token1?.decimals])
@@ -177,7 +209,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
     }, [minPrice, maxPrice, currentPoolPrice, liquidity])
     useEffect(() => {
-      setIsInRange(isInRangeAux)
+      setIsInRangeAll(prevState => ({ ...prevState, [id]: isInRangeAux }))
     }, [isInRangeAux, setIsInRange])
     if (isPoolPriceDataLoading) {
       return <Loader />
@@ -210,28 +242,10 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   }
 
   const TvlTotal = ({ data }: any) => {
-    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
     return (
       <>
         <p className="text-xs text-white mb-1">
-          {formatDollarAmount(
-            Number(data?.depositedToken0) *
-              Number(
-                tokens.find(
-                  (e) =>
-                    e.tokenAddress.toLowerCase() ===
-                    (data.liquidity === 'ichi' ? ichitokens.tokenA.toLowerCase() : data?.token0?.id.toLowerCase())
-                )?.priceUSD
-              ) +
-              Number(data?.depositedToken1) *
-                Number(
-                  tokens.find(
-                    (e) =>
-                      e.tokenAddress.toLowerCase() ===
-                      (data.liquidity === 'ichi' ? ichitokens.tokenB.toLowerCase() : data?.token1?.id.toLowerCase())
-                  )?.priceUSD
-                )
-          )}
+          {tvlPosition[data.id] ? formatDollarAmount(tvlPosition[data.id]) : formatDollarAmount(TvlTotalValue(data))}
         </p>
       </>
     )
@@ -311,13 +325,12 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
             sortIndex={1}
           />
 
-          {data && data?.length > 0 ? (
+          {nonZeroData && nonZeroData?.length > 0 ? (
             <>
               <TableBody>
                 {pagination.map((position: positions) => {
-                  // console.log('each', isInRange, position)
                   // eslint-disable-next-line react-hooks/rules-of-hooks
-
+                  //const [isInRange, setIsInRange] = useState<boolean>(false)
                   const fenixRingApr =
                     ringsCampaign.boostedPools.find((pool) => {
                       return pool.id.toLowerCase() === position.pool.id.toLowerCase()
@@ -388,20 +401,21 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                             tickLower={position.tickLower}
                             tickUpper={position.tickUpper}
                             liquidity={position.liquidity}
-                            setIsInRange={setIsInRange}
-                            isInRange={isInRange}
+                            setIsInRange={setIsInRangeAll}
+                            isInRange={isInRangeAll[position.id]}
+                            id={position.id}
                           />
                         </TableCell>
                         <TableCell className="w-[10%] flex justify-end">
                           <AprBox
-                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0}
+                            apr={isInRangeAll[position.id] ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0}
                             tooltip={
                               <div>
                                 <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Fees APR</p>
                                   <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
                                 </div>
-                                {fenixRingApr > 0 && isInRange && (
+                                {fenixRingApr > 0 && isInRangeAll[position.id] && (
                                   <div className="flex justify-between items-center gap-3">
                                     <p className="text-sm pb-1">Rings APR</p>
                                     <p className="text-sm pb-1 text-chilean-fire-600">
@@ -491,7 +505,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                 <div className="items-center hidden xl:flex">
                   <Pagination
                     className="mx-auto"
-                    numberPages={Math.ceil(data.length / itemsPerPage)}
+                    numberPages={Math.ceil(nonZeroData.length / itemsPerPage)}
                     activePage={activePage}
                     itemsPerPage={itemsPerPage}
                     setActivePage={setActivePage}
@@ -499,13 +513,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                   />
                   <div className=" hidden">
                     <PaginationMobile
-                      count={data.length}
+                      count={nonZeroData.length}
                       itemsPerPage={itemsPerPage}
                       setItemPerPage={setItemPerPage}
                       activePage={activePage}
                       setActivePage={setActivePage}
                       className="mx-auto"
-                      numberPages={Math.ceil(data.length / itemsPerPage)}
+                      numberPages={Math.ceil(nonZeroData.length / itemsPerPage)}
                     />
                   </div>
                 </div>

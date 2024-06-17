@@ -25,8 +25,8 @@ const MyStrategies = () => {
   const swiperRef = useRef<SwiperCore | null>(null)
   const [modalSelected, setModalSelected] = useState('delete')
   const [openModal, setOpenModal] = useState(false)
-  // const [position, setposition] = useState<positions[]>([])
   const [position, setposition] = useState<any[]>([])
+  const [nonZeroPosition, setNonZeroposition] = useState<any[]>([])
   const [positionAmounts, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
 
@@ -99,6 +99,30 @@ const MyStrategies = () => {
   }, [address])
 
   useEffect(() => {
+    if(tokens.length < 1) return;
+    setNonZeroposition(position.filter((i) => {
+      const tvl = 
+      Number(i?.depositedToken0) *
+        Number(
+          tokens.find(
+            (e) =>
+              e.tokenAddress.toLowerCase() ===
+              (i?.token0?.id.toLowerCase())
+          )?.priceUSD
+        ) +
+        Number(i?.depositedToken1) *
+          Number(
+            tokens.find(
+              (e) =>
+                e.tokenAddress.toLowerCase() ===
+                (i?.token1?.id.toLowerCase())
+            )?.priceUSD
+          );
+
+      return tvl > 0.1
+    }))
+  }, [position, tokens])
+  useEffect(() => {
     setLoadingGamma(true)
     if (allGamaData != null && userGamaData != null && address) {
       const newArr: any[] = []
@@ -166,12 +190,12 @@ const MyStrategies = () => {
               }}
               allowTouchMove={false}
             >
-              {Array.from({ length: position.length }).map((_, index) => {
+              {Array.from({ length: nonZeroPosition.length }).map((_, index) => {
                 return (
                   <>
                     <SwiperSlide key={index}>
                       <Strategy
-                        row={position[index]}
+                        row={nonZeroPosition[index]}
                         tokens={tokens}
                         options={OPTIONS_STRATEGIES}
                         setModalSelected={setModalSelected}
@@ -182,7 +206,7 @@ const MyStrategies = () => {
                 )
               })}
             </Swiper>
-            {position?.length >= 3 && (
+            {nonZeroPosition?.length >= 3 && (
               <div className="flex justify-center gap-2">
                 <span
                   className={`icon-arrow-left ${progress <= 0 ? 'cursor-not-allowed text-shark-400' : 'cursor-pointer text-white'} text-2xl`}
@@ -197,12 +221,12 @@ const MyStrategies = () => {
           </div>
           <div className="dashboard-box mb-10 block xl:hidden">
             <div className="">
-              {Array.from({ length: position.length }).map((_, index) => {
+              {Array.from({ length: nonZeroPosition.length }).map((_, index) => {
                 return (
                   <>
                     <SwiperSlide key={index}>
                       <StrategyMobile
-                        row={position[index]}
+                        row={nonZeroPosition[index]}
                         tokens={tokens}
                         options={OPTIONS_STRATEGIES}
                         setOpenModal={setOpenModal}
@@ -216,7 +240,7 @@ const MyStrategies = () => {
           </div>
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
-      ) : address === undefined ? (
+      ) : (nonZeroPosition.length === 0) || address === undefined ? (
         <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
           <div className="flex items-center justify-between text-white">
             <p className="ms-2 flex gap-3 text-lg">Automated Strategies</p>
