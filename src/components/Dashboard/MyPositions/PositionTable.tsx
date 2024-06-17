@@ -195,7 +195,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       return <Loader />
     }
     return (
-      <div className="flex items-center gap-2 justify-start">
+      <div className="flex items-center gap-2 max-2xl:gap-1 justify-start">
         <div
           className={`relative cursor-default rounded-full w-2 h-2 ${isInRangeAux ? 'bg-fenix-green' : 'bg-fenix-red'} mr-1`}
           onMouseOver={() => setIsOverRange(true)}
@@ -411,7 +411,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                       <TableRow key={position.id}>
                         <TableCell className="flex w-[23%]">
                           <div className="flex items-center w-full gap-2">
-                            <div className="flex items-center w-[40px] max-2xl:w-[50px]">
+                            <div className="flex items-center min-w-[38px] max-2xl:w-[50px]">
                               <Image
                                 src={`/static/images/tokens/${position.token0.symbol}.svg`}
                                 alt="token"
@@ -432,8 +432,8 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                                 {position.token0.symbol} / {position.token1.symbol}
                               </h5>
                               <div className="flex items-center gap-1 h-[26px]">
-                                <span className="py-1 px-2 h-[1.875rem] flex flex-col justify-center text-xs button-primary rounded-lg">
-                                  Concentrated
+                                <span className="py-1 px-2 h-[1.875rem] max-w-[95%] flex flex-col justify-center text-xs button-primary rounded-lg">
+                                  <span className='truncate'>Concentrated</span>
                                 </span>
                                 <span className="!py-1 px-3  h-[1.875rem] flex flex-col justify-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
                                   {formatAmount(toBN(position.pool.fee).div(10000), 3)}%
