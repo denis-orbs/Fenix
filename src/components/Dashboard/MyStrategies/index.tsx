@@ -122,6 +122,7 @@ const MyStrategies = () => {
       return tvl > 0.1
     }))
   }, [position, tokens])
+  useEffect(() => {
     setLoadingGamma(true)
     if (allGamaData != null && userGamaData != null && address) {
       const newArr: any[] = []
@@ -239,7 +240,7 @@ const MyStrategies = () => {
           </div>
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
-      ) : (nonZeroPosition.length === 0 && loading === false) || address === undefined ? (
+      ) : (nonZeroPosition.length === 0) || address === undefined ? (
         <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
           <div className="flex items-center justify-between text-white">
             <p className="ms-2 flex gap-3 text-lg">Automated Strategies</p>

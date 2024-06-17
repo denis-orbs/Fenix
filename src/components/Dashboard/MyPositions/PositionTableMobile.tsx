@@ -44,7 +44,6 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [isInRange, setIsInRange] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
-  const [isInRange, setIsInRange] = useState<boolean>(true)
   const [tvlPosition, setTvlPosition] = useState<any>([])
   const [nonZeroData, setNonZeroData] = useState<positions[]>([])
 
