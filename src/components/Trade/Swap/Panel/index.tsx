@@ -510,7 +510,26 @@ const Panel = () => {
       setSwapQuoteLoading(false)
     }
   }, [tokenGet.address, tokenSell.address, swapValue, account, slippage, tokenGet.decimals])
+  const handleTokenSwap = () => {
+    const prevForValue = forValue
+    switchTokensValues(tokenGet, tokenSell, setTokenGet, setTokenSell)
+    setSwapValue(prevForValue)
+  }
+  const updateTokenSell = (newToken: IToken) => {
+    if (newToken.address === tokenGet.address) {
+      handleTokenSwap()
+    } else {
+      setTokenSell(newToken)
+    }
+  }
 
+  const updateTokenGet = (newToken: IToken) => {
+    if (newToken.address === tokenSell.address) {
+      handleTokenSwap()
+    } else {
+      setTokenGet(newToken)
+    }
+  }
   return (
     <>
       <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
@@ -551,19 +570,17 @@ const Panel = () => {
               <div className="mb-3">
                 <Swap
                   token={tokenSell}
-                  setToken={setTokenSell}
+                  setToken={updateTokenSell}
                   value={swapValue}
                   setValue={setSwapValue}
                   setTokenSellUserBalance={setTokenSellUserBalance}
                 />
                 <Separator
                   onClick={() => {
-                    const prevForValue = forValue
-                    switchTokensValues(tokenGet, tokenSell, setTokenGet, setTokenSell)
-                    setSwapValue(prevForValue)
+                    handleTokenSwap()
                   }}
                 />
-                <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
+                <For token={tokenGet} setToken={updateTokenGet} value={forValue} setValue={setForValue} />
               </div>
               <div
                 className={`${priceImpact && currentButtonState !== ButtonState.LOADING && Number(priceImpact) > 3 && swapValue && forValue && !swapQuoteLoading ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}

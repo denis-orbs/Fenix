@@ -308,13 +308,12 @@ const Classic = ({
         abi: ROUTERV2_ABI,
         address: contractAddressList.v2router as Address,
         functionName: 'addLiquidity',
-        // TODO: handle deadline and slippage
         args: [
           firstToken.address as Address,
           secondToken.address as Address,
           depositType === 'STABLE',
           parseUnits(firstValue, firstToken?.decimals),
-          parseUnits(firstValue, firstToken?.decimals),
+          parseUnits(secondValue, secondToken?.decimals),
           0,
           0,
           account.address as Address,
@@ -488,7 +487,7 @@ const Classic = ({
       </div>
       <div className="mb-2.5 flex items-center justify-between gap-1.5 rounded-[10px] border border-shark-950 bg-shark-400 bg-opacity-40 px-[10px] py-[11px] max-md:items-start sm:gap-2.5 sm:px-[19px]">
         <div>
-          <div className="mb-2.5 flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5">
             <div className="flex flex-shrink-0 items-center">
               <Image
                 src={`/static/images/tokens/${firstToken.symbol}.svg`}

@@ -43,18 +43,6 @@ export const getLiquidityV2Pairs = createAsyncThunk(
   }
 )
 
-export const getConcentratedPools = createAsyncThunk('liquidity/getConcentratedPools', async () => {
-  const response = await fetch('https://api.steer.finance/getSmartPools?chainId=56&dexName=pancake')
-  const data = await response.json()
-  const poolsArray = Object.values(data.pools).reduce((acc: any, current: any) => {
-    if (current.length > 0) {
-      acc.push(...current)
-    }
-    return acc
-  }, [])
-  return poolsArray
-})
-
 export const getLiquidityTableElements = createAsyncThunk(
   'liquidity/getPairInfo',
   async ({ address, chainId }: { address: Address; chainId: number }) => {

@@ -41,6 +41,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const addNotification = useNotificationAdderCallback()
   const [itemsPerPage, setItemPerPage] = useState<number>(10)
   const [activePage, setActivePage] = useState<number>(1)
+  const [isInRange, setIsInRange] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
   const [isInRange, setIsInRange] = useState<boolean>(true)
@@ -128,20 +129,17 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
           <div className="m-2 flex flex-col sm:flex-row gap-2 justify-between items-center">
             <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
-              
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
-
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max:{' '}
+              {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
             </div>
           </div>
         ) : (
           <>
-          <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
+            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
-              
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
-
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max:{' '}
+              {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
             </div>
-            
           </>
         )}
       </>
@@ -204,13 +202,13 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     }
     return (
       <>
-        {isInRange ? (
+        {isInRangeAux ? (
           <div className="text-green-400 text-sm flex justify-center items-center gap-2 flex-col">
             <div className="flex items-center gap-x-1 justify-end ml-auto">
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#2AED8F" />
               </svg>
-              <span className='text-xs'>In Range</span>
+              <span className="text-xs">In Range</span>
             </div>
             {/* <span className="text-white">Pool price {currentPoolPrice}</span> */}
           </div>
@@ -220,7 +218,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#dc2626" />
               </svg>
-              <span className='text-xs'>Out of Range</span>
+              <span className="text-xs">Out of Range</span>
             </div>
             {/* <span className="text-white">Pool price {currentPoolPrice}</span> */}
           </div>
@@ -301,6 +299,8 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
       {pagination.length > 0 ? (
         <>
           {pagination.map((position: positions) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+
             const fenixRingApr =
               ringsCampaign.boostedPools.find((pool) => {
                 return pool.id.toLowerCase() === position.pool.id.toLowerCase()
@@ -441,6 +441,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                                 /> */}
                                 <span className="text-xs text-white">
                                   {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
+                                  {position.token0.symbol}
                                 </span>
                               </p>
                               <p className="flex gap-2 items-center">
@@ -453,6 +454,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                                 /> */}
                                 <span className="text-xs text-white">
                                   {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
+                                  {position.token1.symbol}
                                 </span>
                               </p>
                             </span>

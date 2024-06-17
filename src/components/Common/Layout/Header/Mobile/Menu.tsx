@@ -17,8 +17,8 @@ interface MenuProps {
 const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
   const pathname = usePathname()
   const className = cn(
-    'absolute transition-all z-[150]  py-4 px-10 bg-shark-500 backdrop-blur-3xl bg-opacity-80 top-full rounded-2xl border border-shark-400',
-    showMenu ? 'right-5 opacity-100 visible' : 'right-0 opacity-50 invisible'
+    'absolute transition-all py-4 px-10 bg-shark-500 backdrop-blur-3xl bg-opacity-80 top-full rounded-2xl border border-shark-400',
+    showMenu ? 'right-5 opacity-100 visible z-[2000]' : 'right-0 opacity-50 invisible'
   )
 
   const handleCloseMenu = () => setShowMenu(false)
@@ -29,14 +29,15 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
         <span className="icon-x text-white text-xl ml-auto cursor-pointer" onClick={handleCloseMenu}></span>
       </div>
 
-      <div className="flex flex-col gap-2 mb-4">
+      <div className="flex flex-col mb-4 z-[2000]">
+
         {MENU_LINKS.map((link, index) => (
           <div className="relative" key={index}>
             <Link onClick={() => handleCloseMenu()} href={link.href} className="text-white text-xs my-4">
               <span>{link.name}</span>
             </Link>
             {link.new && (
-              <span className="absolute left-20 text-[9px] top-1 bg-alizarin-crimson-600 rounded-md w-7 h-5 flex items-center justify-center  text-white">
+              <span className="absolute left-20 text-[9px] top-1 bg-alizarin-crimson-600 rounded-md w-7 h-5 flex items-center justify-center z-[2000] text-white">
                 New
               </span>
             )}

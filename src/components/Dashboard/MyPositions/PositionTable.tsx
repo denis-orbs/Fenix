@@ -130,7 +130,8 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
         {isMobile ? (
           <div className="flex gap-2 justify-between">
             <div className="px-2 py-1 text-[.625rem] leading-4  whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-             Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} Max:{' '}
+              {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
               {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
             </div>
             {/* <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
@@ -140,18 +141,17 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
           </div>
         ) : (
           <>
-            <div
-              className="relative px-2 py-1 text-[.625rem] leading-4  whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300"
-            >
+            <div className="relative px-2 py-1 text-[.625rem] leading-4  whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max:{' '}
+              {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
             </div>
             {/* <div
               className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300"
               
             > */}
-              {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol} */}
-               {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}  */}
+            {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol} */}
+            {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}  */}
             {/* </div> */}
           </>
         )}
@@ -222,7 +222,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#2AED8F" />
               </svg>
-              <span className='text-xs'>In range</span>
+              <span className="text-xs">In range</span>
             </div>
             {/* <span className="text-white">Pool price: {Number(currentPoolPrice)}</span> */}
           </div>
@@ -232,7 +232,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#dc2626" />
               </svg>
-              <span className='text-xs'>Out of range</span>
+              <span className="text-xs">Out of range</span>
             </div>
             {/* <span className="text-white">Pool price: {Number(currentPoolPrice)}</span> */}
           </div>
@@ -441,13 +441,17 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                         </TableCell>
                         <TableCell className="w-[15%] flex justify-end">
                           <div className="flex flex-col justify-center items-end">
-                            <TvlTotal data={position} />                             
-                             <span className="text-xs">
-                                  {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
-                              </span>
-                              <span className="text-xs">
-                                  {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
-                              </span>
+                            <TvlTotal data={position} />
+
+                            <span className="text-xs">
+                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
+                              {position.token0.symbol}
+                            </span>
+
+                            <span className="text-xs">
+                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
+                              {position.token1.symbol}
+                            </span>
                           </div>
                         </TableCell>
                         <TableCell className="w-[20%] flex justify-end">

@@ -11,6 +11,7 @@ import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 
 interface SelectTokenProps {
   openModal: boolean
@@ -47,8 +48,9 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   useEffect(() => {
     const getList = async () => {
       try {
-        if (chainId) {
-          const responseData = await fetchTokens(chainId)
+        const chainToUse = chainId ? chainId : FALLBACK_CHAIN_ID
+        if (chainToUse) {
+          const responseData = await fetchTokens(chainToUse)
 
           const parsedData = responseData.map((item: any) => {
             //
