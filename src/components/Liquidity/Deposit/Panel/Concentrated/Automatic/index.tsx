@@ -40,7 +40,11 @@ const providers = [
   },
 ]
 
-const Automatic = () => {
+const Automatic = ({
+  providerPick
+}: {
+  providerPick?: number
+}) => {
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
   const [firstToken, setFirstToken] = useState<IToken>({
     name: 'Fenix',
@@ -115,6 +119,11 @@ const Automatic = () => {
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
   }
+
+  useEffect(() => {
+    if(!providerPick) return;
+    setCurrentProvider(providerPick.toString())
+  }, [providerPick])
 
   return (
     <>

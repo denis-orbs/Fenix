@@ -446,15 +446,18 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                               variant="tertiary"
                               className="h-[38px] w-[80px] bg-opacity-40 items-center justify-center"
                               onClick={() => {
-                                if (position.liquidity !== 'ichi') {
-                                  dispatch(setApr(position?.apr))
-                                  router.push(`/liquidity/manage?id=${position?.id}`)
-                                  router.refresh()
-                                } else {
+                                if (position.liquidity == 'ichi') {
                                   router.push(
                                     `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
                                   )
-                                  // router.refresh()
+                                } else if(position.liquidity == 'gamma') {
+                                  router.push(
+                                    `liquidity/deposit?provider=2&type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
+                                  )
+                                } else {
+                                  dispatch(setApr(position?.apr))
+                                  router.push(`/liquidity/manage?id=${position?.id}`)
+                                  router.refresh()
                                 }
                               }}
                             >
