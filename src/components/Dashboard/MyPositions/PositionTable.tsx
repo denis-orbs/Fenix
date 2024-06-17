@@ -50,6 +50,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
   const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
   const [tvlPosition, setTvlPosition] = useState<any>([])
   const [nonZeroData, setNonZeroData] = useState<positions[]>([])
+  const [isInRangeAll, setIsInRangeAll] = useState<{ [key: string]: boolean }>({})
 
   const { data: ringsCampaignsData } = useRingsCampaigns()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
@@ -180,10 +181,11 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
       price1: string
     }
     liquidity: string
-    setIsInRange: (inRange: boolean) => void
+    setIsInRange: any
     isInRange: boolean
+    id: any
   }
-  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, isInRange }: setStatusprops) => {
+  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, isInRange, id }: setStatusprops) => {
     const minPrice = useMemo(() => {
       return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     }, [tickLower, token0?.decimals, token1?.decimals])
@@ -207,7 +209,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
       return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
     }, [minPrice, maxPrice, currentPoolPrice, liquidity])
     useEffect(() => {
-      setIsInRange(isInRangeAux)
+      setIsInRangeAll(prevState => ({ ...prevState, [id]: isInRangeAux }))
     }, [isInRangeAux, setIsInRange])
     if (isPoolPriceDataLoading) {
       return <Loader />
@@ -327,9 +329,8 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
             <>
               <TableBody>
                 {pagination.map((position: positions) => {
-                  // console.log('each', isInRange, position)
                   // eslint-disable-next-line react-hooks/rules-of-hooks
-                  const [isInRange, setIsInRange] = useState<boolean>(false)
+                  //const [isInRange, setIsInRange] = useState<boolean>(false)
                   const fenixRingApr =
                     ringsCampaign.boostedPools.find((pool) => {
                       return pool.id.toLowerCase() === position.pool.id.toLowerCase()
@@ -400,20 +401,21 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                             tickLower={position.tickLower}
                             tickUpper={position.tickUpper}
                             liquidity={position.liquidity}
-                            setIsInRange={setIsInRange}
-                            isInRange={isInRange}
+                            setIsInRange={setIsInRangeAll}
+                            isInRange={isInRangeAll[position.id]}
+                            id={position.id}
                           />
                         </TableCell>
                         <TableCell className="w-[10%] flex justify-end">
                           <AprBox
-                            apr={isInRange ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0}
+                            apr={isInRangeAll[position.id] ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0}
                             tooltip={
                               <div>
                                 <div className="flex justify-between items-center gap-3">
-                                  <p className="text-sm pb-1">Fees APR</p>
+                                  <p className="text-sm pb-1">Fees APR #{`${position.id}`}</p>
                                   <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
                                 </div>
-                                {fenixRingApr > 0 && isInRange && (
+                                {fenixRingApr > 0 && isInRangeAll[position.id] && (
                                   <div className="flex justify-between items-center gap-3">
                                     <p className="text-sm pb-1">Rings APR</p>
                                     <p className="text-sm pb-1 text-chilean-fire-600">
