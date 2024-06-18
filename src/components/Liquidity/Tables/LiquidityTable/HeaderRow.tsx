@@ -82,7 +82,6 @@ const HeaderRow = ({
     return mappedData.sort((a, b) => (+a[sortBy]! - +b[sortBy]!) * sort);
   }, [poolsData, poolsAprRing, sortBy, sort]);
   const pageData = useMemo(() => {
-    console.log('!!!', sortedMappedTableData);
     const totalPages = Math.max(1, Math.ceil(sortedMappedTableData.length / itemsPerPage));
 
     // Ensure current page isn't out of range

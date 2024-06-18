@@ -27,6 +27,7 @@ import { POOL_DAY_DATA } from '@/src/library/apollo/queries/pools'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ALGEBRA_SUBGRAPH } from '@/src/library/constants/addresses'
 import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
+import moment from 'moment'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -238,7 +239,7 @@ export const fetchV3PoolDayData = async () => {
   try {
     const { data } = await algebra_client.query({
       query: POOL_DAY_DATA,
-      // variables: { date: selectedDateTimestamp / 1000 }, // Pass the user variable as owner
+      variables: { from: Math.round(+moment().add(-1, 'week') / 1000) },
     })
     // Data is available in `data.positions`
     return data
