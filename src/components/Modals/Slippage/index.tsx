@@ -49,8 +49,8 @@ const Slippage = () => {
   }, [slippageInput])
 
   return (
-    <Modal className="mx-auto" openModal={openModal} setOpenModal={setSlippageModal}>
-      <div className="common-modal">
+    <Modal className="" openModal={openModal} setOpenModal={setSlippageModal}>
+      <div className="common-modal w-full">
         <span
           className="absolute top-2 right-4 xl:top-[2px] xl:right-[2px] text-2xl cursor-pointer icon-x text-shark-100"
           onClick={handleClose}
@@ -99,7 +99,7 @@ const Slippage = () => {
             </div>
           )}
           <div
-            className={`flex flex-wrap justify-center gap-3  ${Number(slippageInput) > 50 ? 'pb-2' : 'p-3'}  lg:flex-nowrap`}
+            className={`flex justify-center gap-3  ${Number(slippageInput) > 50 ? 'pb-2' : 'p-3'}  lg:flex-nowrap`}
           >
             {slippageOptions.map((option) => (
               <Button
