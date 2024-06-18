@@ -1,8 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import cn from '@/src/library/utils/cn'
-import TotalRewardsTooltip from '@/src/components/Vote/TotalRewardsTooltip'
+import cn from '@/src/library/utils/cn';
 
 interface IItems {
   text: string
