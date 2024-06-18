@@ -6,7 +6,7 @@ import { Button } from '@/src/components/UI'
 import Image from 'next/image'
 import { useCloseBanner, useShowBanner } from '@/src/state/user/hooks'
 
-const BlastBanner = () => {
+const LiquidityBanner = () => {
   const showBanner = useShowBanner()
   const setCloseBanner = useCloseBanner()
   const [close, setClose] = useState<boolean>(false)
@@ -39,4 +39,4 @@ const BlastBanner = () => {
   )
 }
 
-export default BlastBanner
+export default LiquidityBanner

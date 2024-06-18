@@ -491,3 +491,7 @@ body {
 /* .notification {
   animation: horizontal-shaking 2s infinite alternate;
 } */
+
+.gradient-banner {
+  background: var(--2, linear-gradient(90deg, #F47703 10.49%, #F67702 92.04%, #FFEF76 132.93%));
+}
