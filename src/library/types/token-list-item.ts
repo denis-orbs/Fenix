@@ -1,5 +1,5 @@
 interface TokenListItem {
-  tokenAddress: string,
+  tokenAddress: string
   priceUSD: string
   chainId: string
   basetoken: {
@@ -12,4 +12,4 @@ interface TokenListItem {
   common: boolean
 }
 
-export default TokenListItem;
+export default TokenListItem

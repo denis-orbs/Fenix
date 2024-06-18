@@ -372,7 +372,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           const lTick = Number(newPriceL.toFixed(18)) == 0 ? -887220 : priceToClosestTick(newPriceL)
           const lTickRounded = parseInt((lTick / 60).toString()) * 60
 
-          const hTick = Number(newPriceL.toFixed(18)) == 0 ? -887220 : priceToClosestTick(newPriceH)
+          const hTick = Number(newPriceH.toFixed(18)) == 0 ? -887220 : priceToClosestTick(newPriceH)
           const hTickRounded = parseInt((hTick / 60).toString()) * 60
 
           setLowerTick(lTickRounded)
