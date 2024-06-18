@@ -182,10 +182,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     }
     liquidity: string
     setIsInRange: any
-    isInRange: boolean
     id: any
   }
-  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, isInRange, id }: setStatusprops) => {
+  const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, id }: setStatusprops) => {
     const minPrice = useMemo(() => {
       return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     }, [tickLower, token0?.decimals, token1?.decimals])
@@ -209,8 +208,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
       return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
     }, [minPrice, maxPrice, currentPoolPrice, liquidity])
     useEffect(() => {
-      setIsInRangeAll(prevState => ({ ...prevState, [id]: isInRangeAux }))
-    }, [isInRangeAux, setIsInRange])
+      setIsInRangeAll(prevState => {
+        if (prevState[id] !== isInRangeAux) {
+          return { ...prevState, [id]: isInRangeAux }
+        }
+        return prevState
+      })
+    }, [isInRangeAux, id, setIsInRangeAll])
     if (isPoolPriceDataLoading) {
       return <Loader />
     }
@@ -402,7 +406,6 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                             tickUpper={position.tickUpper}
                             liquidity={position.liquidity}
                             setIsInRange={setIsInRangeAll}
-                            isInRange={isInRangeAll[position.id]}
                             id={position.id}
                           />
                         </TableCell>
@@ -460,6 +463,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                               variant="tertiary"
                               className="h-[38px] w-[80px] bg-opacity-40 items-center justify-center"
                               onClick={() => {
+                                console.log("12345", position.liquidity == 'ichi', position.liquidity == 'gamma')
                                 if (position.liquidity == 'ichi') {
                                   router.push(
                                     `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
@@ -469,6 +473,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                                     `liquidity/deposit?provider=2&type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
                                   )
                                 } else {
+                                  console.log("12345", "?")
                                   dispatch(setApr(position?.apr))
                                   router.push(`/liquidity/manage?id=${position?.id}`)
                                   router.refresh()

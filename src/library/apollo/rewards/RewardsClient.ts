@@ -3,6 +3,7 @@ import { useAccount } from 'wagmi'
 import { REWARD_CLIENT } from '../../constants/addresses'
 import { FALLBACK_CHAIN_ID } from '../../constants/chains'
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 const { chainId } = useAccount()
 
 const rewardsClient = new ApolloClient({

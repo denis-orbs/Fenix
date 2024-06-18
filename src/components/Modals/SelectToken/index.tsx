@@ -105,7 +105,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
           </div>
 
           {/* <div className="mb-1 text-sm text-white">Common Tokens</div> */}
-          <div className=" grid grid-cols-3 sm:flex  flex-row items-center gap-1 my-1">
+          <div className="flex flex-row items-center gap-1 my-1">
             {_commonList ? (
               _commonList.map((token, index) => (
                 <div

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Address, http } from 'viem'
+import { Address, http, maxUint256 } from 'viem'
 import { multicall, writeContract } from '@wagmi/core'
 import { createConfig, fallback, useAccount, useChainId, useContractWrite, useWriteContract } from 'wagmi'
 import {
@@ -158,7 +158,7 @@ export async function getPriceToTick(price: any) {
 
 export async function getPriceAndTick(price: any) {
   if (price == Infinity)
-    return { price: 115792089237316195423570985008687907853269984665640564039457584007913129639935, tick: 887220 }
+    return { price: maxUint256, tick: 887220 }
   if (price == 0) return { price: 0, tick: -887220 }
   if (isNaN(price)) return { price: 0, tick: 0 }
   price = priceToSqrtPrice(price > 1 ? BigInt(price * 1e18) : parseInt((price * 1e18).toString()))

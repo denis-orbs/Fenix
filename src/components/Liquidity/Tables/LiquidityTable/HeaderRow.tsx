@@ -1,25 +1,42 @@
-'use client'
-import { Button, Pagination, PaginationMobile, TableBody, TableHead, TableSkeleton } from '@/src/components/UI'
-import { BasicPool, PoolData } from '@/src/state/liquidity/types'
-import { Fragment, useEffect, useState } from 'react'
-import Row from './Row'
-import { fetchTokens } from '@/src/library/common/getAvailableTokens'
-import { useAccount, useChainId, useChains } from 'wagmi'
-import { useWindowSize } from 'usehooks-ts'
-import { isSupportedChain } from '@/src/library/constants/chains'
-import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
-import { fetchRingsPoolApr } from './getAprRings'
+'use client';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
+// api
+import { fetchRingsApr } from './getAprRings';
+
+// components
+import Row from './Row';
+import { Pagination, PaginationMobile, TableBody, TableSkeleton } from '@/src/components/UI';
+import TableHeadNew from '@/src/components/UI/Table/TableHeadNew';
+
+// models
+import { BasicPool } from '@/src/state/liquidity/types';
+import SortTypes from '@/src/library/types/common/sort-types.enum';
+import TableHeaderCell from '@/src/library/types/common/table-header-cell';
+
+// personal models
 interface HeaderRowProps {
-  loading: boolean
-  poolsData: BasicPool[]
-  activePagination?: boolean
-  titleHeader?: string
-  titleHeader2?: string
-  titleButton?: string
-  titleButton2?: string
-  activeRange?: boolean
+  loading: boolean,
+  poolsData: BasicPool[],
+  activePagination?: boolean,
+  titleHeader?: string,
+  titleHeader2?: string,
+  titleButton?: string,
+  titleButton2?: string,
+  activeRange?: boolean,
 }
+
+// personal constants
+const HeaderCellsRaw: TableHeaderCell[] = [
+  { text: 'Pair', className: 'w-[20%]' },
+  { text: 'Range', className: 'w-[12%] text-center' },
+  { text: 'Point Stack', className: 'w-[15%] text-right', rangeClassName: 'w-[8%] text-right' },
+  { text: 'TVL', className: 'w-[13%] text-right', sortBy: 'totalValueLockedUSD' },
+  { text: 'APR', className: 'w-[13%] text-right', rangeClassName: 'w-[8%] text-right', sortBy: 'aprRings' },
+  { text: 'Volume', className: 'w-[13%] text-right', sortBy: 'volumeUSD' },
+  { text: 'Fees', className: 'w-[13%] text-right', sortBy: 'feesUSD' },
+  { text: 'Action', className: 'w-[13%] flex justify-end' },
+]
 
 const HeaderRow = ({
   poolsData,
@@ -31,262 +48,120 @@ const HeaderRow = ({
   titleHeader2 = '',
   activeRange = false,
 }: HeaderRowProps) => {
-  // const tokensData = fetchTokens()
-  const [itemsPerPage, setItemPerPage] = useState<any>(20)
-  const [activePage, setActivePage] = useState<number>(1)
-  const [isOpenItemsPerPage, setIsOpenItemsPerPage] = useState(false)
-  const [paginationResult, setPaginationResult] = useState<BasicPool[]>(poolsData)
-  const [sort, setSort] = useState<'asc' | 'desc' | 'normal'>('normal')
-  const [paginationStatus, setPaginationStatus] = useState<boolean>(false)
-  const [sortIndex, setSortIndex] = useState<number>(-1)
-  const [isSetRingsApr, setIsSetRingsApr] = useState<boolean>(false)
+  // state
+  const [poolsAprRing, setPoolsAprRing] = useState<{ [key: string]: string } | null>(null);
+  const [itemsPerPage, setItemPerPage] = useState<number>(20);
+  const [activePage, setActivePage] = useState<number>(1);
+  const [sort, setSort] = useState<SortTypes | null>(null);
+  const [sortBy, setSortBy] = useState<keyof BasicPool | null>(null);
 
-  const RANGE = activeRange
-    ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
-    : { text: '', className: 'w-[0px] !p-0', sortable: true }
+  // computed
+  const HeaderCells = useMemo(() => [
+    HeaderCellsRaw.at(0),
+    ...(activeRange ? [HeaderCellsRaw.at(1)] : []),
+    ...HeaderCellsRaw.slice(2, -3).map(
+      (cell) => ({
+        ...cell,
+        ...((activeRange && cell.rangeClassName) ? { className: cell.rangeClassName } : {})
+      })
+    ),
+    { ...HeaderCellsRaw.at(-3), text: titleHeader || HeaderCellsRaw.at(-3)!.text },
+    { ...HeaderCellsRaw.at(-2), text: titleHeader2 || HeaderCellsRaw.at(-2)!.text },
+    HeaderCellsRaw.at(-1),
+  ] as TableHeaderCell[], [activeRange, titleHeader, titleHeader2]);
+  const sortedMappedTableData: BasicPool[] = useMemo(() => {
+    const mappedData = poolsData.map((item) => ({
+      ...item,
+      aprRings: (+(poolsAprRing?.[item.id] ?? 0) + +(isNaN(+item.apr!) ? 0 : item.apr ?? 0)).toString(),
+    }));
 
-  function paginate(items: BasicPool[], currentPage: number, itemsPerPage: number) {
-    // Calculate total pages
-    const totalPages = Math.ceil(items.length / itemsPerPage)
+    if (!(sortBy && sort && mappedData[0][sortBy])) {
+      return mappedData;
+    }
+
+    return mappedData.sort((a, b) => (+a[sortBy]! - +b[sortBy]!) * sort);
+  }, [poolsData, poolsAprRing, sortBy, sort]);
+  const pageData = useMemo(() => {
+    const totalPages = Math.max(1, Math.ceil(sortedMappedTableData.length / itemsPerPage));
 
     // Ensure current page isn't out of range
-    currentPage = Math.max(1, Math.min(currentPage, totalPages))
+    const start = (Math.min(activePage, totalPages) - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return sortedMappedTableData.slice(start, end);
+  }, [sortedMappedTableData, itemsPerPage, activePage]);
 
-    const start = (currentPage - 1) * itemsPerPage
-    const end = start + itemsPerPage
-    const paginatedItems = items.slice(start, end)
-
-    return paginatedItems
+  // helpers
+  function toggleSort(sortBy: keyof BasicPool | null, sort: SortTypes | null): void {
+    setSortBy(sortBy);
+    setSort(sort);
   }
 
-  const { chainId } = useAccount()
-  const activeChain = useChains()
-  const { isConnected } = useActiveConnectionDetails()
-
-  useEffect(() => {
-    const sortData = async () => {
-      // console.log('sortIndex >> ', sortIndex)
-      if (paginationResult && paginationResult.length > 0) {
-        if (sort === 'asc') {
-          const sortedPaginationResult = [...paginationResult]
-          let sortArr: any = [...paginationResult]
-          if (sortIndex === 3) {
-            sortArr = sortedPaginationResult.sort((a, b) => {
-              return compareBigDecimal(Number(a.totalValueLockedUSD), Number(b.totalValueLockedUSD))
-            })
-          }
-          if (sortIndex === 4) {
-            // console.log('4')
-            sortArr = paginationResult.sort((a, b) => {
-              return compareBigDecimal(Number(a.aprRings), Number(b.aprRings))
-            })
-          }
-          if (sortIndex === 5) {
-            sortArr = sortedPaginationResult.sort((a, b) => {
-              return compareBigDecimal(Number(a.volumeUSD), Number(b.volumeUSD))
-            })
-          }
-          if (sortIndex === 6) {
-            sortArr = sortedPaginationResult.sort((a, b) => {
-              return compareBigDecimal(Number(a.feesUSD), Number(b.feesUSD))
-            })
-          }
-          setPaginationResult([...sortArr])
-        } else if (sort === 'desc') {
-          const sortedPaginationResult = [...paginationResult]
-          let sortArr: any = [...paginationResult]
-          if (sortIndex === 3) {
-            sortArr = paginationResult.sort((a, b) => {
-              return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-            })
-          }
-          if (sortIndex === 4) {
-            // console.log('4')
-            // console.log('paginationResult :>> ', paginationResult)
-            sortArr = paginationResult.sort((a, b) => {
-              return compareBigDecimal(Number(b.aprRings), Number(a.aprRings))
-            })
-          }
-          if (sortIndex === 5) {
-            sortArr = sortedPaginationResult.sort((a, b) => {
-              return compareBigDecimal(Number(b.volumeUSD), Number(a.volumeUSD))
-            })
-          }
-          if (sortIndex === 6) {
-            sortArr = sortedPaginationResult.sort((a, b) => {
-              return compareBigDecimal(Number(b.feesUSD), Number(a.feesUSD))
-            })
-          }
-          setPaginationResult([...sortArr])
-        } else if (sort === 'normal') {
-          const sortedPaginationResult = [...paginationResult]
-          let sortArr: any = [...paginationResult]
-          sortArr = sortedPaginationResult.sort((a, b) => {
-            return compareBigDecimal(Number(b.totalValueLockedUSD), Number(a.totalValueLockedUSD))
-          })
-          setPaginationResult([...sortArr])
-        }
-      }
-    }
-    sortData()
-  }, [sort, chainId])
-
-  useEffect(() => {
-    const arrNew = [...poolsData]
-    setPaginationResult([...arrNew])
-  }, [poolsData])
-  /* useEffect(() => {
-    if (!isSetRingsApr) {
-      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
-        const getRigns = async () => {
-          let newArr: any = [...paginationResult]
-          newArr = await Promise.all(
-            newArr.map(async (pool: any) => {
-              if (pool?.id) {
-                return {
-                  ...pool,
-                  aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
-                }
-              } else {
-                return {
-                  ...pool,
-                }
-              }
-            })
-          )
-          setPaginationResult([...newArr])
-          setIsSetRingsApr(true)
-        }
-        getRigns()
-      }
-    }
-  }, [paginationResult]) */
-
-  useEffect(() => {
-    if (!isSetRingsApr) {
-      if (paginationResult.length > 0 && !('aprRings' in paginationResult[0])) {
-        const getRigns = async () => {
-          let newArr: any = [...paginationResult]
-          newArr = await Promise.all(
-            newArr.map(async (pool: any) => {
-              if (pool?.id) {
-                return {
-                  ...pool,
-                  aprRings: Number(await fetchRingsPoolApr(pool)) + Number(pool?.apr),
-                }
-              } else {
-                return {
-                  ...pool,
-                }
-              }
-            })
-          )
-          setPaginationResult([...newArr])
-          setIsSetRingsApr(true)
-        }
-        getRigns()
-      }
-    }
-  }, [paginationResult])
-
-  function compareBigDecimal(a: any, b: any) {
-    return a - b
+  // async helpers
+  async function loadAprRings(): Promise<void> {
+    setPoolsAprRing(await fetchRingsApr());
   }
 
-  const pagination = paginate(paginationResult, activePage, itemsPerPage)
+  // lifecycle hooks
+  useEffect(() => {
+    loadAprRings();
+  }, []);
 
-  const { width } = useWindowSize()
   return (
     <div className="relative">
       <div className="mb-2.5 w-full xl:mb-5">
         <div className="hidden lg:block">
-          <TableHead
-            items={[
-              {
-                text: 'Pair',
-                className: `${activeRange ? 'w-[20%]' : 'w-[20%]'}`,
-                sortable: false,
-              },
-              RANGE,
-              { text: 'Point Stack', className: `${activeRange ? 'w-[8%]' : 'w-[15%]'} text-right` },
-              { text: 'TVL', className: 'w-[13%] text-right', sortable: true },
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[13%]'} text-right`, sortable: true },
-              {
-                text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
-                className: 'w-[13%] text-right',
-                sortable: true,
-              },
-              // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
-              {
-                text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
-                className: 'w-[13%] text-right',
-                sortable: true,
-              },
-              { text: 'Action', className: 'w-[13%] flex justify-end', sortable: false },
-            ]}
-            setSort={setSort}
-            sort={sort}
-            sortIndex={sortIndex}
-            setSortIndex={setSortIndex}
-          />
+          <TableHeadNew items={HeaderCells} sort={sort} sortBy={sortBy} setSort={toggleSort} />
         </div>
 
         <TableBody>
-          {loading ? (
-            <>
-              {Array.from({ length: 5 }).map((_, index) => (
+          {loading
+            ? Array.from({ length: 5 }).map((_, index) => (
                 <TableSkeleton key={index} />
+              ))
+            : pageData.map((row) => (
+                <Row
+                  key={row.id}
+                  row={row}
+                  tokensData={null}
+                  activeRange={activeRange}
+                  titleHeader={titleHeader}
+                  titleHeader2={titleHeader2}
+                  titleButton={titleButton}
+                  titleButton2={titleButton2}
+                />
               ))}
-            </>
-          ) : (
-            pagination.map((row, index) => (
-              <>
-                <>
-                  <Fragment key={index}>
-                    <Row
-                      row={row}
-                      tokensData={null}
-                      activeRange={activeRange}
-                      titleHeader={titleHeader}
-                      titleHeader2={titleHeader2}
-                      titleButton={titleButton}
-                      titleButton2={titleButton2}
-                    />
-                  </Fragment>
-                </>
-              </>
-            ))
-          )}
         </TableBody>
       </div>
 
-      {activePagination && (
-        <>
-          <div className="hidden items-center lg:flex">
-            <Pagination
-              itemsPerPage={itemsPerPage}
-              setItemPerPage={setItemPerPage}
-              activePage={activePage}
-              setActivePage={setActivePage}
-              className="mx-auto"
-              numberPages={Math.ceil(poolsData.length / itemsPerPage)}
-            />
-          </div>
-          <div className="py-5 lg:hidden">
-            <PaginationMobile
-              count={poolsData.length}
-              itemsPerPage={itemsPerPage}
-              setItemPerPage={setItemPerPage}
-              activePage={activePage}
-              setActivePage={setActivePage}
-              className="mx-auto"
-              numberPages={Math.ceil(poolsData.length / itemsPerPage)}
-            />
-          </div>
-        </>
-      )}
+      {activePagination
+        ? (
+            <>
+              <div className="hidden items-center lg:flex">
+                <Pagination
+                  itemsPerPage={itemsPerPage}
+                  setItemPerPage={setItemPerPage}
+                  activePage={activePage}
+                  setActivePage={setActivePage}
+                  className="mx-auto"
+                  numberPages={Math.ceil(poolsData.length / itemsPerPage)}
+                />
+              </div>
+              <div className="py-5 lg:hidden">
+                <PaginationMobile
+                  count={poolsData.length}
+                  itemsPerPage={itemsPerPage}
+                  setItemPerPage={setItemPerPage}
+                  activePage={activePage}
+                  setActivePage={setActivePage}
+                  className="mx-auto"
+                  numberPages={Math.ceil(poolsData.length / itemsPerPage)}
+                />
+              </div>
+            </>
+          )
+        : null}
     </div>
-  )
+  );
 }
 
-export default HeaderRow
+export default HeaderRow;
