@@ -108,7 +108,7 @@ const MyPositions = () => {
           </div>
         </div>
       ) : (position.length === 0 && loading === false && isLoadingRingsCampaign === false) || address === undefined ? (
-        <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
+        <div className="flex flex-col gap-3 w-full mb-10 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
             <p className="flex gap-3 text-lg ms-2">Concentrated Liquidity Positions</p>
             <div className=' flex items-center gap-3'>
@@ -127,7 +127,7 @@ const MyPositions = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col  gap-3 w-full lg:w-4/5 mt-10 mx-auto">
+        <div className="flex flex-col  gap-3 w-full mb-10 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
             <p className="flex gap-3 text-lg ms-2">Concentrated Liquidity Positions</p>
           </div>

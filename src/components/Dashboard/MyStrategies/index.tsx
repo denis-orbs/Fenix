@@ -101,7 +101,7 @@ const MyStrategies = () => {
   useEffect(() => {
     if(tokens.length < 1) return;
     setNonZeroposition(position.filter((i) => {
-      const tvl = 
+      const tvl =
       Number(i?.depositedToken0) *
         Number(
           tokens.find(
@@ -241,7 +241,7 @@ const MyStrategies = () => {
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
       ) : (nonZeroPosition.length === 0) || address === undefined ? (
-        <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
+        <div className="mx-auto mt-10 flex w-full flex-col gap-3">
           <div className="flex items-center justify-between text-white">
             <p className="ms-2 flex gap-3 text-lg">Automated Strategies</p>
           </div>
@@ -250,7 +250,7 @@ const MyStrategies = () => {
           </div>
         </div>
       ) : (
-        <div className="mx-auto mt-10 flex w-full flex-col gap-3 lg:w-4/5">
+        <div className="mx-auto mt-10 flex w-full flex-col gap-3">
           <div className="flex items-center justify-between text-white">
             <p className="ms-2 flex gap-3 text-lg">Automated Strategies</p>
           </div>
