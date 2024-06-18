@@ -34,8 +34,8 @@ const providers = [
     src: 'https://app.gamma.xyz',
     logo: {
       src: '/static/images/providers/gamma.svg',
-      width: 63.75,
-      height: 21,
+      width: 93.75,
+      height: 51,
     },
   },
 ]
