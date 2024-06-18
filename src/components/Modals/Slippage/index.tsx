@@ -8,7 +8,7 @@ import { z } from 'zod'
 import { NumericalInput } from '../../UI/Input'
 
 const slippageOptions = [
-  { label: 'Auto', value: 'Auto' },
+  // { label: 'Auto', value: 'Auto' },
   { label: '0.5%', value: 0.5 },
   { label: '1.0%', value: 1 },
   { label: '1.5%', value: 1.5 },
@@ -19,14 +19,14 @@ interface SlippageProps {
   openModal: boolean
   setOpenModal: (openModal: boolean) => void
 }
-const slippageSchema = z.union([z.number().min(0).max(50), z.literal('Auto')])
+const slippageSchema = z.union([z.number().min(0).max(50), z.literal(0.5)])
 const Slippage = () => {
   // const handlerClose = () => setOpenModal(false)
   const openModal = useStore((state) => state.slippageModal)
   const { setSlippageModal } = useStore()
   const setSlippage = useSetSlippageToleranceCallback()
   const slippage = useSlippageTolerance()
-  const [slippageInput, setSlippageInput] = useState<any>('Auto')
+  const [slippageInput, setSlippageInput] = useState<any>(0.5)
   const [invalidInput, setInvalidInput] = useState<boolean>(false)
   const handleClose = () => setSlippageModal(false)
 
@@ -77,14 +77,14 @@ const Slippage = () => {
               onUserInput={(input) => setSlippageInput(input)}
               precision={2}
             />
-            <button
+            {/* <button
               onClick={() => {
                 setSlippageInput('Auto')
               }}
               className="absolute w-6 h-6 text-xs text-white rounded-lg cursor-pointer hover:bg-button-primary hover:border-outrageous-orange-400 right-2 top-4 bg-shark-300 bg-none"
             >
               %
-            </button>
+            </button> */}
           </div>
           {Number(slippageInput) > 50 && (
             <div className="py-2 relative z-[200]">
@@ -104,7 +104,7 @@ const Slippage = () => {
             {slippageOptions.map((option) => (
               <Button
                 key={option.label}
-                className="!py-2"
+                className="!py-2 w-[25%]"
                 variant="tertiary"
                 onClick={() => setSlippageInput(option.value)}
               >
