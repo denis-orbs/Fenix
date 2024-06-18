@@ -1178,7 +1178,7 @@
   after:border-[transparent_transparent_#1a1d21];
 }
 
-/* Background for comon modals */
+/* Background for common modals */
 .common-modal {
   @apply relative
   flex
@@ -1189,6 +1189,7 @@
   rounded-2xl
   z-[100]
   sm:min-w-[580px]
+  sm:max-w-[580px]
   sm:min-h-[470px]
   flex-shrink-0
   bg-shark-400
