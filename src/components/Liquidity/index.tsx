@@ -72,7 +72,7 @@ const Liquidity = () => {
         </div>
       </div>
       <GoldRushBanner />
-      {/* <div className="flex flex-col justify-between gap-5 mb-4 md:items-center xl:flex-row overflow-hidden mt-5">
+      <div className="flex flex-col justify-between gap-5 mb-4 md:items-center xl:flex-row overflow-hidden mt-5">
         <h5 className="text-lg mb-1 text-white max-xl:w-full lg:flex-shrink-0">Liquidity Pools</h5>
         <div className="2xl:max-w-[70%] xl:max-w-[65%]  w-full">
           <Filter options={OPTIONS_FILTER} currentTab={currentTab} setCurrentTab={setCurrentTab} />
@@ -81,7 +81,7 @@ const Liquidity = () => {
           <Search setSearchValue={setSearchValue} searchValue={searchValue} placeholder="Search by symbol" />
         </div>
       </div>
-      <HeaderRow loading={loading} poolsData={filteredPoolsData} /> */}
+      <HeaderRow loading={loading} poolsData={filteredPoolsData} />
     </section>
   )
 }
