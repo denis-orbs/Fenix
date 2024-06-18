@@ -1,39 +1,45 @@
+import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Address, encodeFunctionData } from 'viem'
+import { useAccount, useWriteContract } from 'wagmi'
+import { Toaster } from 'react-hot-toast'
+import { ethers } from 'ethers'
+
+// hooks
+import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { getPositionData } from '@/src/library/hooks/liquidity/useCL'
+
+// store
+import { useAppSelector } from '@/src/state'
+import { useSelector } from 'react-redux'
+import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
+
+// helpers
+import { formatNumber } from '@/src/library/utils/numbers'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+
+// components
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
-import { useEffect, useState } from 'react'
-import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
-import ExchangeBox from '@/src/components/Liquidity/Common/ExchangeBox'
-import SelectToken from '@/src/components/Modals/SelectToken'
-import {
-  getLiquidityRemoveQuote,
-  getPair,
-  getTokenAllowance,
-  getTokenReserve,
-} from '@/src/library/hooks/liquidity/useClassic'
-import { Address, encodeFunctionData, isAddress } from 'viem'
-import { IToken } from '@/src/library/types'
 import Separator from '@/src/components/Trade/Common/Separator'
-import { useAccount, useWriteContract } from 'wagmi'
-import { CL_MANAGER_ABI, ERC20_ABI, ROUTERV2_ABI } from '@/src/library/constants/abi'
-import { contractAddressList } from '@/src/library/constants/contactAddresses'
-import { ethers } from 'ethers'
-import { publicClient } from '@/src/library/constants/viemClient'
-import { Toaster, toast } from 'react-hot-toast'
-import { getTokensBalance } from '@/src/library/hooks/web3/useTokenBalance'
-import { LiquidityTableElement } from '@/src/state/liquidity/types'
-import { useAppSelector } from '@/src/state'
-import { getPositionData } from '@/src/library/hooks/liquidity/useCL'
-import { useRouter, useSearchParams } from 'next/navigation'
 import InputRange from '@/src/components/UI/SliderRange/InputRange'
-import { formatNumber } from '@/src/library/utils/numbers'
-import Loader from '@/src/components/UI/Icons/Loader'
 import ApproveButtons from '../../../Common/ApproveButtons'
-import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
-import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
-import { fetchTokens } from '@/src/library/common/getAvailableTokens'
-import { useSelector } from 'react-redux'
-import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 
+// models
+import { IToken } from '@/src/library/types'
+import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+import TokenListItem from '@/src/library/types/token-list-item'
+
+// constants
+import { CL_MANAGER_ABI, ERC20_ABI } from '@/src/library/constants/abi'
+import { contractAddressList } from '@/src/library/constants/contactAddresses'
+import { publicClient } from '@/src/library/constants/viemClient'
+import { MAX_UINT_256 } from '@/src/library/constants/common-constants'
+import { AddressZero } from '@/node_modules/@ethersproject/constants'
+
+// custom models
 interface PositionData {
   id: number
   token0: Address
@@ -45,120 +51,73 @@ interface PositionData {
   pool: Address
 }
 
-const Manage = ({}: {}) => {
-  const maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639934'
+// custom constants
+const FirstTokenInitialState = {
+  name: 'Fenix',
+  symbol: 'FNX',
+  id: 0,
+  decimals: 18,
+  address: '0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9' as Address,
+  img: '/static/images/tokens/FNX.svg',
+} as IToken
 
-  const searchParams = useSearchParams()
+const SecondTokenInitialState = {
+  name: 'Ethereum',
+  symbol: 'WETH',
+  id: 1,
+  decimals: 18,
+  address: '0x4300000000000000000000000000000000000004' as Address,
+  img: '/static/images/tokens/WETH.png',
+} as IToken
+
+const Manage = ({}: {}) => {
+  // common
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const { address, chainId } = useAccount()
+  const { writeContractAsync } = useWriteContract()
+  const addNotification = useNotificationAdderCallback()
+
+  // (store)
+  const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
   // FIXME: STARK
   //DEV FIX
   const { apr } = useSelector<any>((store) => store.apr as positions | '') as any
 
+  // states
+  // (common)
   const [aprId, setAprId] = useState(null)
+  const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
+  const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  // (tokens)
+  const [firstToken, setFirstToken] = useState<IToken>(FirstTokenInitialState)
+  const [firstValue, setFirstValue] = useState<string>('')
+  const [secondToken, setSecondToken] = useState<IToken>(SecondTokenInitialState)
+  const [secondValue, setSecondValue] = useState<string>('')
+
+  // (lp and allowance)
+  const [lpValue, setLpValue] = useState<string>('0')
+  const [firstAllowance, setFirstAllowance] = useState<number | string>(0)
+  const [secondAllowance, setSecondAllowance] = useState<number | string>(0)
+
+  // (other)
+  const [pairAddress, setPairAddress] = useState<string>(AddressZero)
+  const [withdrawPercent, setWithdrawPercent] = useState<number>(50)
+  const [positionData, setPositionData] = useState<PositionData>()
+  const [slippage, setSlippage] = useState<number>(0.1)
+
+  // computed
   const pid = searchParams.get('id')
+
+  // effects
   useEffect(() => {
     if (aprId !== null) {
       const actualApr = apr.find((pos: positions) => pos.id == pid)
       if (actualApr) setAprId(actualApr?.apr)
     }
   }, [apr])
-  //
-
-  const [firstToken, setFirstToken] = useState({
-    name: 'Fenix',
-    symbol: 'FNX',
-    id: 0,
-    decimals: 18,
-    address: '0xCF0A6C7cf979Ab031DF787e69dfB94816f6cB3c9' as Address,
-    img: '/static/images/tokens/FNX.svg',
-  } as IToken)
-  const [firstValue, setFirstValue] = useState('')
-  const [secondToken, setSecondToken] = useState({
-    name: 'Ethereum',
-    symbol: 'WETH',
-    id: 1,
-    decimals: 18,
-    address: '0x4300000000000000000000000000000000000004' as Address,
-    img: '/static/images/tokens/WETH.png',
-  } as IToken)
-  const [secondValue, setSecondValue] = useState('')
-  const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
-  const [lpValue, setLpValue] = useState('0')
-  const [firstAllowance, setFirstAllowance] = useState(0)
-  const [secondAllowance, setSecondAllowance] = useState(0)
-  const [pairAddress, setPairAddress] = useState('0x0000000000000000000000000000000000000000')
-
-  const [withdrawPercent, setWithdrawPercent] = useState(50)
-
-  const [positionData, setPositionData] = useState<PositionData>()
-  const [isLoading, setIsLoading] = useState(true)
-  const [slippage, setSlippage] = useState(0.1)
-
-  const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
-
-  const { address, chainId } = useAccount()
-  const pairs = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
-
-  const { writeContractAsync } = useWriteContract()
-
-  const addNotification = useNotificationAdderCallback()
-
-  const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
-    setOptionActive(option)
-    setFirstValue('')
-    setSecondValue('')
-  }
-
-  const asyncGetAllowance = async (token1: Address, token2: Address) => {
-    const _allowanceFirst: any = await getTokenAllowance(
-      token1,
-      address as Address,
-      contractAddressList.cl_manager as Address
-    )
-    const _allowanceSecond: any = await getTokenAllowance(
-      token2,
-      address as Address,
-      contractAddressList.cl_manager as Address
-    )
-
-    setFirstAllowance(_allowanceFirst)
-    setSecondAllowance(_allowanceSecond)
-  }
-  const getList = async (token0: Address, token1: Address) => {
-    try {
-      if (chainId) {
-        const responseData = await fetchTokens(chainId)
-
-        const parsedData = responseData.map((item: any) => {
-          return {
-            id: 0,
-            name: item.basetoken.name,
-            symbol: item.basetoken.symbol,
-            address: item.basetoken.address,
-            decimals: item.decimals,
-            img: item.logourl,
-            isCommon: item.common,
-            price: parseFloat(item.priceUSD),
-          }
-        })
-
-        parsedData.map((item: any) => {
-          if (item.address.toLowerCase() == token0.toLowerCase()) setFirstToken(item)
-          if (item.address.toLowerCase() == token1.toLowerCase()) setSecondToken(item)
-        })
-        setIsLoading(false)
-      }
-    } catch (error) {}
-  }
-  const updatePositionData = async (positionId: any) => {
-    const data: PositionData = (await getPositionData(positionId)) as PositionData
-
-    setPositionData(data)
-    asyncGetAllowance(data.token0, data.token1)
-    getList(data.token0, data.token1)
-    setLpValue((BigInt(data.liquidity) / BigInt(2)).toString())
-    //
-  }
 
   useEffect(() => {
     if (!positionData) return
@@ -195,9 +154,9 @@ const Manage = ({}: {}) => {
         : positionData.liquidity == 0
           ? '0'
           : (
-              (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
-              BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-            ).toString()
+            (BigInt(positionData.liquidity) * BigInt(10 ** 10)) /
+            BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
+          ).toString(),
     )
     setFirstValue(
       formatNumber(
@@ -206,11 +165,11 @@ const Manage = ({}: {}) => {
           : positionData.amount0 == 0
             ? 0
             : Number(
-                (BigInt(positionData.amount0) * BigInt(10 ** 10)) /
-                  BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-              ) /
-              10 ** firstToken.decimals
-      )
+              (BigInt(positionData.amount0) * BigInt(10 ** 10)) /
+              BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0)),
+            ) /
+            10 ** firstToken.decimals,
+      ),
     )
     setSecondValue(
       formatNumber(
@@ -219,46 +178,110 @@ const Manage = ({}: {}) => {
           : positionData.amount1 == 0
             ? 0
             : Number(
-                (BigInt(positionData.amount1) * BigInt(10 ** 10)) /
-                  BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0))
-              ) /
-              10 ** secondToken.decimals
-      )
+              (BigInt(positionData.amount1) * BigInt(10 ** 10)) /
+              BigInt(((100 * 10 ** 10) / withdrawPercent).toFixed(0)),
+            ) /
+            10 ** secondToken.decimals,
+      ),
     )
   }, [withdrawPercent, positionData, optionActive])
 
-  const handleOnTokenValueChange = (input: any, token: IToken) => {
-    if (optionActive == 'ADD') {
-      if (firstToken.address === token.address) {
-        if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(positionData?.ratio)))
-        if (parseFloat(input) == 0) setSecondValue('')
-        setFirstValue(input == '' ? 0 : input)
+  // helpers
+  function handlerOption(option: 'ADD' | 'WITHDRAW'): void {
+    setOptionActive(option)
+    setFirstValue('')
+    setSecondValue('')
+  }
 
-        if (timeout) clearTimeout(timeout)
-        setTimeoutID(
-          setTimeout(() => {
-            setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
-          }, 500)
-        )
-      } else {
-        if (parseFloat(input) != 0)
-          setFirstValue(
-            formatNumber(parseFloat(input) / (Number(positionData?.ratio) == 0 ? 1 : Number(positionData?.ratio)))
-          )
-        if (parseFloat(input) == 0) setFirstValue('')
-        setSecondValue(input == '' ? 0 : input)
+  function handleOnTokenValueChange(input: string, token: IToken): void {
+    // if (optionActive != 'ADD') {
+    //   return
+    // }
 
-        if (timeout) clearTimeout(timeout)
-        setTimeoutID(
-          setTimeout(() => {
-            setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
-          }, 500)
+    if (firstToken.address === token.address) {
+      if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(positionData?.ratio)))
+      if (parseFloat(input) == 0) setSecondValue('')
+      setFirstValue(input == '' ? '0' : input)
+
+      if (timeout) clearTimeout(timeout)
+      setTimeoutID(
+        setTimeout(() => {
+          setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
+        }, 500),
+      )
+    } else {
+      if (parseFloat(input) != 0) {
+        setFirstValue(
+          formatNumber(parseFloat(input) / (Number(positionData?.ratio) == 0 ? 1 : Number(positionData?.ratio))),
         )
       }
+      if (parseFloat(input) == 0) setFirstValue('')
+      setSecondValue(input == '' ? '0' : input)
+
+      if (timeout) clearTimeout(timeout)
+      setTimeoutID(
+        setTimeout(() => {
+          setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
+        }, 500),
+      )
     }
   }
 
-  const handleIncreaseLiquidity = async () => {
+  // async helpers
+  async function asyncGetAllowance(token1: Address, token2: Address): Promise<void> {
+    const _allowanceFirst: string = await getTokenAllowance(
+      token1,
+      address as Address,
+      contractAddressList.cl_manager as Address,
+    )
+    const _allowanceSecond: string = await getTokenAllowance(
+      token2,
+      address as Address,
+      contractAddressList.cl_manager as Address,
+    )
+
+    setFirstAllowance(_allowanceFirst)
+    setSecondAllowance(_allowanceSecond)
+  }
+
+  async function getList(token0: Address, token1: Address): Promise<void> {
+    try {
+      if (chainId) {
+        const responseData = await fetchTokens(chainId)
+
+        const parsedData = responseData.map((item: TokenListItem) => {
+          return {
+            id: 0,
+            name: item.basetoken.name,
+            symbol: item.basetoken.symbol,
+            address: item.basetoken.address,
+            decimals: +item.decimals,
+            img: item.logourl,
+            isCommon: item.common,
+            price: parseFloat(item.priceUSD),
+          } as (IToken & { isCommon: boolean })
+        })
+
+        parsedData.map((item) => {
+          if (item.address?.toLowerCase() == token0.toLowerCase()) setFirstToken(item)
+          if (item.address?.toLowerCase() == token1.toLowerCase()) setSecondToken(item)
+        })
+        setIsLoading(false)
+      }
+    } catch (error) {
+    }
+  }
+
+  async function updatePositionData(positionId: number | string | null): Promise<void> {
+    const data: PositionData = (await getPositionData(positionId)) as PositionData
+
+    setPositionData(data)
+    asyncGetAllowance(data.token0, data.token1)
+    getList(data.token0, data.token1)
+    setLpValue((BigInt(data.liquidity) / BigInt(2)).toString())
+  }
+
+  async function handleIncreaseLiquidity(): Promise<void> {
     if (!positionData) return
     setIsLoading(true)
 
@@ -293,7 +316,6 @@ const Manage = ({}: {}) => {
 
       {
         onSuccess: async (x) => {
-          //
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
             // toast(`Added successfully.`)
@@ -330,11 +352,11 @@ const Manage = ({}: {}) => {
           })
           setIsLoading(false)
         },
-      }
+      },
     )
   }
 
-  const handleDecreaseLiquidity = async () => {
+  async function handleDecreaseLiquidity(): Promise<void> {
     if (!positionData) return
     setIsLoading(true)
 
@@ -431,11 +453,11 @@ const Manage = ({}: {}) => {
           })
           setIsLoading(false)
         },
-      }
+      },
     )
   }
 
-  const handleApprove = async (token: Address) => {
+  async function handleApprove(token: Address): Promise<void> {
     setIsLoading(true)
 
     writeContractAsync(
@@ -443,7 +465,7 @@ const Manage = ({}: {}) => {
         abi: ERC20_ABI,
         address: token,
         functionName: 'approve',
-        args: [contractAddressList.cl_manager, maxUint256],
+        args: [contractAddressList.cl_manager, MAX_UINT_256],
       },
       {
         onSuccess: async (x) => {
@@ -485,7 +507,7 @@ const Manage = ({}: {}) => {
           })
           setIsLoading(false)
         },
-      }
+      },
     )
   }
 

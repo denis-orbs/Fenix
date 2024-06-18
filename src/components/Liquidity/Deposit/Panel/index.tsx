@@ -1,117 +1,126 @@
 /* eslint-disable max-len */
-/* eslint-disable max-len */
-'use client'
+'use client';
+import { useEffect, useState } from 'react';
+import { Address, isAddress } from 'viem';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useAccount } from 'wagmi';
 
-import { useEffect, useState } from 'react'
-import { Button, Switch } from '@/src/components/UI'
-import Classic from '@/src/components/Liquidity/Deposit/Panel/Classic'
-import Automatic from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic'
-import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual'
-import { IToken } from '@/src/library/types'
-import { useGammaCreatePosition } from '@/src/library/hooks/web3/useGamma'
-import { Address, isAddress } from 'viem'
-import { fetchv2PairId } from '@/src/state/liquidity/reducer'
-import { useAppSelector } from '@/src/state'
-import { V2PairId } from '@/src/state/liquidity/types'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks'
-import { useSetChart, useShowChart } from '@/src/state/user/hooks'
-import { fetchTokens } from '@/src/library/common/getAvailableTokens'
-import { useAccount } from 'wagmi'
+// hooks
+import { useGammaCreatePosition } from '@/src/library/hooks/web3/useGamma';
+import { useSetToken0, useSetToken1, useToken0, useToken1 } from '@/src/state/liquidity/hooks';
+import { useSetChart, useShowChart } from '@/src/state/user/hooks';
+
+// store
+import { fetchv2PairId } from '@/src/state/liquidity/reducer';
+import { useAppSelector } from '@/src/state';
+
+// helpers
+import { fetchTokens } from '@/src/library/common/getAvailableTokens';
+
+// components
+import { Button, Switch } from '@/src/components/UI';
+import Classic from '@/src/components/Liquidity/Deposit/Panel/Classic';
+import Automatic from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic';
+import Manual from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Manual';
+
+// models
+import { IToken } from '@/src/library/types';
+import { V2PairId } from '@/src/state/liquidity/types';
 
 const DepositTypeValues = {
   VOLATILE: 'VOLATILE',
   STABLE: 'STABLE',
   CONCENTRATED_AUTOMATIC: 'CONCENTRATED_AUTOMATIC',
   CONCENTRATED_MANUAL: 'CONCENTRATED_MANUAL',
-} as const
+};
 
 type DepositType = (typeof DepositTypeValues)[keyof typeof DepositTypeValues]
 
 const Panel = ({ disableChart }: { disableChart: boolean }) => {
-  const [depositType, setDepositType] = useState<DepositType>('VOLATILE')
-  const [provider, setProvider] = useState<number>(1)
-  const searchParams = useSearchParams()
-  const setToken0 = useSetToken0()
-  const setToken1 = useSetToken1()
-  const token0 = useToken0()
-  const token1 = useToken1()
-  const router = useRouter()
-  const pathname = usePathname()
-  // const [disableChart, setDisableChart] = useState(false)
+  // common
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
+  // (tokens)
+  const token0 = useToken0();
+  const token1 = useToken1();
+  const setToken0 = useSetToken0();
+  const setToken1 = useSetToken1();
+
+  // (chart)
+  const showChart = useShowChart();
+  const setChart = useSetChart();
+
+  // (other)
+  const { chainId } = useAccount();
+  const { createPosition: createGammaPosition } = useGammaCreatePosition();
+
+  // states
+  // const [disableChart, setDisableChart] = useState(false);
+  const [depositType, setDepositType] = useState<DepositType>('VOLATILE');
+  const [defaultPairs, setDefaultPairs] = useState<Address[]>([]);
+  const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([]);
+  // const [pair, setPair] = useState<V2PairId>();
+  const [isChartVisible, setIsChartVisible] = useState(showChart);
+  const [provider, setProvider] = useState<number>(1);
+
+  // computed
+  const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL';
+
+  // effects
   useEffect(() => {
-    const searchParamToken0 = searchParams.get('token0')
-    const searchParamToken1 = searchParams.get('token1')
-    const typeSearch = searchParams.get('type')
-    if (searchParamToken0 && isAddress(searchParamToken0)) setToken0(searchParamToken0 as Address)
-    if (searchParamToken1 && isAddress(searchParamToken1)) setToken1(searchParamToken1 as Address)
+    const searchParamToken0 = searchParams.get('token0');
+    const searchParamToken1 = searchParams.get('token1');
+    const typeSearch = searchParams.get('type');
+    if (searchParamToken0 && isAddress(searchParamToken0)) setToken0(searchParamToken0 as Address);
+    if (searchParamToken1 && isAddress(searchParamToken1)) setToken1(searchParamToken1 as Address);
     if (typeSearch && Object.values(DepositTypeValues).includes(typeSearch as DepositType)) {
-      setDepositType(typeSearch as DepositType)
+      setDepositType(typeSearch as DepositType);
     }
-  }, [])
+  }, []);
 
-  const [defaultPairs, setDefaultPairs] = useState<Address[]>([])
-  const [defaultPairsTokens, setDefaultPairsTokens] = useState<IToken[]>([])
-  const [pair, setPair] = useState<V2PairId>()
-  const handlerSwitch = () => {
-    setDepositType(
-      'CONCENTRATED_MANUAL' === depositType || 'CONCENTRATED_AUTOMATIC' === depositType
-        ? 'VOLATILE'
-        : 'CONCENTRATED_MANUAL'
-    )
-  }
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('type', depositType)
-    params.set('token0', token0)
-    params.set('token1', token1)
-    router.push(pathname + '?' + params.toString(), { scroll: false })
-  }, [token0, token1, depositType])
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('type', depositType);
+    params.set('token0', token0);
+    params.set('token1', token1);
+    router.push(pathname + '?' + params.toString(), { scroll: false });
+  }, [token0, token1, depositType]);
 
-  const activeSwitch = depositType === 'CONCENTRATED_AUTOMATIC' || depositType === 'CONCENTRATED_MANUAL'
-  const { createPosition: createGammaPosition } = useGammaCreatePosition()
-  const createPosition = async () => {
-    if (depositType === 'CONCENTRATED_AUTOMATIC') {
-      createGammaPosition()
-    }
-  }
   useEffect(() => {
-    const searchParamToken0 = searchParams.get('token0')
-    const searchParamToken1 = searchParams.get('token1')
-    const typeSearch = searchParams.get('type')
-    const clmProviderParam = searchParams.get('provider')
+    const searchParamToken0 = searchParams.get('token0');
+    const searchParamToken1 = searchParams.get('token1');
+    const typeSearch = searchParams.get('type');
+    const clmProviderParam = searchParams.get('provider');
     //
 
-    if(clmProviderParam == "2") setProvider(2)
-    else setProvider(1)
-    if (typeSearch == 'CONCENTRATED_AUTOMATIC') setDepositType('CONCENTRATED_AUTOMATIC')
-    if (typeSearch == 'CONCENTRATED_MANUAL') setDepositType('CONCENTRATED_MANUAL')
-    if (typeSearch == 'STABLE') setDepositType('STABLE')
-    if (typeSearch == 'VOLATILE') setDepositType('VOLATILE')
+    if (clmProviderParam == '2') {
+      setProvider(2);
+    } else {
+      setProvider(1);
+    }
+    if (typeSearch == 'CONCENTRATED_AUTOMATIC') setDepositType('CONCENTRATED_AUTOMATIC');
+    if (typeSearch == 'CONCENTRATED_MANUAL') setDepositType('CONCENTRATED_MANUAL');
+    if (typeSearch == 'STABLE') setDepositType('STABLE');
+    if (typeSearch == 'VOLATILE') setDepositType('VOLATILE');
 
-    if (!isAddress(searchParamToken0!) || !isAddress(searchParamToken1!)) return
-    setDefaultPairs([searchParamToken0, searchParamToken1])
-  }, [])
+    if (!isAddress(searchParamToken0!) || !isAddress(searchParamToken1!)) return;
+    setDefaultPairs([searchParamToken0, searchParamToken1]);
+  }, []);
+
   useEffect(() => {
     if (disableChart) {
-      setChart(false)
-      setIsChartVisible(false)
+      setChart(false);
+      setIsChartVisible(false);
     }
-  }, [disableChart])
-  const showChart = useShowChart()
-  const setChart = useSetChart()
-  const { chainId } = useAccount()
-  const [isChartVisible, setIsChartVisible] = useState(showChart)
-  const handleSwitch = () => {
-    setChart(!isChartVisible)
-    setIsChartVisible((prevState) => !prevState)
-  }
+  }, [disableChart]);
+
   useEffect(() => {
     const getList = async () => {
       try {
         if (chainId) {
-          const responseData = await fetchTokens(chainId)
+          const responseData = await fetchTokens(chainId);
           const parsedData = responseData.map((item: any) => {
             return {
               id: 0,
@@ -122,24 +131,46 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
               img: item.logourl,
               isCommon: item.common,
               price: parseFloat(item.priceUSD),
-            }
-          })
+            };
+          });
 
-          const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken]
+          const newDefaultPairsTokens: [IToken, IToken] = [{} as IToken, {} as IToken];
           if (defaultPairs.length > 0) {
             parsedData.map((item: any) => {
-              if (item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item
-              if (item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item
-            })
-            setDefaultPairs([])
+              if (item.address.toLowerCase() == defaultPairs[0]?.toLowerCase()) newDefaultPairsTokens[0] = item;
+              if (item.address.toLowerCase() == defaultPairs[1]?.toLowerCase()) newDefaultPairsTokens[1] = item;
+            });
+            setDefaultPairs([]);
           }
-          setDefaultPairsTokens(newDefaultPairsTokens)
+          setDefaultPairsTokens(newDefaultPairsTokens);
         }
-      } catch (error) {}
-    }
+      } catch (error) {
+      }
+    };
 
-    defaultPairs.length > 0 ? getList() : {}
-  }, [defaultPairs, chainId])
+    defaultPairs.length > 0 ? getList() : {};
+  }, [defaultPairs, chainId]);
+
+  // helpers
+  function handleSwitch(): void {
+    setChart(!isChartVisible);
+    setIsChartVisible((prevState) => !prevState);
+  }
+
+  function handlerSwitch(): void {
+    setDepositType(
+      'CONCENTRATED_MANUAL' === depositType || 'CONCENTRATED_AUTOMATIC' === depositType
+        ? 'VOLATILE'
+        : 'CONCENTRATED_MANUAL',
+    );
+  }
+
+  // async helpers
+  async function createPosition(): Promise<void> {
+    if (depositType === 'CONCENTRATED_AUTOMATIC') {
+      createGammaPosition();
+    }
+  }
 
   return (
     <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
@@ -218,7 +249,7 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Panel
+export default Panel;
