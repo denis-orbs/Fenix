@@ -4,3 +4,4 @@ export const setReferralCode = createAction<{ referralCode: string }>('referrals
 export const setReferralSystemInitialized = createAction<{ isReferralSystemInitialized: boolean }>(
   'referrals/setReferralSystemInitialized'
 )
+export const setReferrerBy = createAction<{ referrerBy: string }>('referrals/setReferrerBy')
