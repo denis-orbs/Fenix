@@ -52,7 +52,7 @@ const GoldRushBanner = () => {
   }
 
   return (
-    <div className="blast-banner max-lg:flex-col overflow-hidden rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl">
+    <div className="blast-banner max-lg:flex-col overflow-hidden  rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl">
       <Image src={'/static/images/blast-point-banner/noise-texture.svg'} alt='Noise Texture' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0 bottom-0 right-0 z-[5] rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/noise-texture-mobile.svg'} alt='Noise Texture Mobile' className='lg:hidden w-[100%] h-[100%] absolute top-0 left-0 bottom-0 right-0 z-[5] rounded-tl-[3.5rem] rounded-br-[3.5rem] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/cell.svg'} alt='Cell' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0 bottom-0 right-0 z-[5] rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
@@ -67,7 +67,10 @@ const GoldRushBanner = () => {
       <Image src={'/static/images/gold-rush-banner/ellipse2.svg'} alt='Ellipse 2' className='max-lg:hidden w-[16px] h-[16px] absolute bottom-[30px]  left-[515px] z-[10]' width={10} height={10}/>
 
       <Image src={'/static/images/gold-rush-banner/background-star3.svg'} alt='Background Star3' className='lg:hidden w-[198px] h-[134px] mix-blend-lighten absolute top-[0px] right-[0px] z-[10]' width={10} height={10}/>
-      <Image src={'/static/images/gold-rush-banner/masive-star2.svg'} alt='Masive Star2' className='lg:hidden w-[1035px] h-[786px] mix-blend-lighten absolute top-[-320px] left-1/2 -translate-x-1/2 z-[10]' width={10} height={10}/>
+      
+      <Image src={'/static/images/gold-rush-banner/masive-star2.svg'} alt='Masive Star2' 
+      className='lg:hidden w-[1035px] h-[786px] mix-blend-lighten absolute top-[-320px] left-1/2 -translate-x-1/2 z-[10]' width={10} height={10}/>
+
       <Image src={'/static/images/gold-rush-banner/fenix-ring2.svg'} alt='Fenix Ring Decorator 2' className='lg:hidden  w-[23px] h-[23px] mix-blend-lighten absolute top-[0] right-[50px] z-[10]' width={10} height={10}/>
 
       <div className="relative z-[12] flex items-center gap-8 max-lg:gap-1 max-lg:hidden">

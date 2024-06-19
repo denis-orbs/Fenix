@@ -21,7 +21,8 @@ export const REWARD_CLIENT: AddressMap = {
   [SupportedChainId.BLAST_SEPOLIA]: 'https://api.studio.thegraph.com/query/67572/fenix-bribev3/version/latest',
 }
 export const ALGEBRA_SUBGRAPH: AddressMap = {
-  [SupportedChainId.BLAST]: 'https://api.studio.thegraph.com/query/67572/mainnet-algebra-fenix/version/latest',
+  [SupportedChainId.BLAST]:
+    'https://api.goldsky.com/api/public/project_clxadvm41bujy01ui2qalezdn/subgraphs/fenix-v3-dex/ce3738b/gn',
   [SupportedChainId.BLAST_SEPOLIA]: 'https://api.studio.thegraph.com/query/67572/fenix-algeabra-v3/version/latest',
 }
 export const PROTOCOL_SUBGRAPH: AddressMap = {
