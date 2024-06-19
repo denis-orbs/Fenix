@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 
 // helpers
-import { formatNumber } from '@/src/library/utils/numbers'
+import { formatNumber, toBN } from '@/src/library/utils/numbers'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 
 // components
@@ -147,6 +147,7 @@ const Manage = ({}: {}) => {
   useEffect(() => {
     if (!positionData) return
     if (optionActive != 'WITHDRAW') return
+    if (!withdrawPercent) return
 
     setLpValue(
       withdrawPercent == 100
@@ -199,8 +200,10 @@ const Manage = ({}: {}) => {
     // }
 
     if (firstToken.address === token.address) {
-      if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(positionData?.ratio)))
-      if (parseFloat(input) == 0) setSecondValue('')
+      if (Number(positionData?.amount0.toString())) {
+        if (parseFloat(input) != 0) setSecondValue(formatNumber(parseFloat(input) * Number(positionData?.ratio)))
+        if (parseFloat(input) == 0) setSecondValue('')
+      }
       setFirstValue(input == '' ? '0' : input)
 
       if (timeout) clearTimeout(timeout)
@@ -209,13 +212,25 @@ const Manage = ({}: {}) => {
           setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
         }, 500),
       )
-    } else {
-      if (parseFloat(input) != 0) {
-        setFirstValue(
-          formatNumber(parseFloat(input) / (Number(positionData?.ratio) == 0 ? 1 : Number(positionData?.ratio))),
-        )
+
+      if (positionData?.amount0) {
+        const posAmount = +positionData.amount0.toString() / 10 ** firstToken.decimals;
+        const inputAmount = +input || 0
+
+        console.log(input, posAmount, inputAmount)
+        if (inputAmount > 0 && inputAmount <= posAmount) {
+          setWithdrawPercent(Math.round(inputAmount / posAmount * 100));
+        }
       }
-      if (parseFloat(input) == 0) setFirstValue('')
+    } else {
+      if (Number(positionData?.amount0.toString())) {
+        if (parseFloat(input) != 0) {
+          setFirstValue(formatNumber(
+            parseFloat(input) / (Number(positionData?.ratio) == 0 ? 1 : Number(positionData?.ratio)),
+          ))
+        }
+        if (parseFloat(input) == 0) setFirstValue('')
+      }
       setSecondValue(input == '' ? '0' : input)
 
       if (timeout) clearTimeout(timeout)
@@ -224,6 +239,16 @@ const Manage = ({}: {}) => {
           setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
         }, 500),
       )
+
+      if (positionData?.amount1) {
+        const posAmount = +positionData.amount1.toString() / 10 ** secondToken.decimals;
+        const inputAmount = +input || 0
+
+        console.log(input, posAmount, inputAmount)
+        if (inputAmount > 0 && inputAmount <= posAmount) {
+          setWithdrawPercent(Math.round(inputAmount / posAmount * 100));
+        }
+      }
     }
   }
 
