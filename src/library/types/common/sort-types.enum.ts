@@ -3,4 +3,4 @@ enum SortTypes {
   ASC = 1,
 }
 
-export default SortTypes;
+export default SortTypes
