@@ -92,7 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname()
   return (
     <html lang="en">
-      <GoogleAnalytics gaId="G-SDWSVLCYX2" />
+      <GoogleAnalytics gaId="G-1MMRJBQK96" />
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
