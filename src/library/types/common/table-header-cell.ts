@@ -1,5 +1,5 @@
 // models
-import { BasicPool } from '@/src/state/liquidity/types';
+import { BasicPool } from '@/src/state/liquidity/types'
 
 interface TableHeaderCell {
   text: string,
@@ -10,4 +10,4 @@ interface TableHeaderCell {
   setShowTooltip?: (showTooltip: boolean) => void,
 }
 
-export default TableHeaderCell;
+export default TableHeaderCell

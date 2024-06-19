@@ -1,18 +1,18 @@
-'use client';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+'use client'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 
 // api
-import { fetchRingsApr } from './getAprRings';
+import { fetchRingsApr } from './getAprRings'
 
 // components
-import Row from './Row';
-import { Pagination, PaginationMobile, TableBody, TableSkeleton } from '@/src/components/UI';
-import TableHeadNew from '@/src/components/UI/Table/TableHeadNew';
+import Row from './Row'
+import { Pagination, PaginationMobile, TableBody, TableSkeleton } from '@/src/components/UI'
+import TableHeadNew from '@/src/components/UI/Table/TableHeadNew'
 
 // models
-import { BasicPool } from '@/src/state/liquidity/types';
-import SortTypes from '@/src/library/types/common/sort-types.enum';
-import TableHeaderCell from '@/src/library/types/common/table-header-cell';
+import { BasicPool } from '@/src/state/liquidity/types'
+import SortTypes from '@/src/library/types/common/sort-types.enum'
+import TableHeaderCell from '@/src/library/types/common/table-header-cell'
 
 // personal models
 interface HeaderRowProps {
@@ -49,11 +49,11 @@ const HeaderRow = ({
   activeRange = false,
 }: HeaderRowProps) => {
   // state
-  const [poolsAprRing, setPoolsAprRing] = useState<{ [key: string]: string } | null>(null);
-  const [itemsPerPage, setItemPerPage] = useState<number>(20);
-  const [activePage, setActivePage] = useState<number>(1);
-  const [sort, setSort] = useState<SortTypes | null>(null);
-  const [sortBy, setSortBy] = useState<keyof BasicPool | null>(null);
+  const [poolsAprRing, setPoolsAprRing] = useState<{ [key: string]: string } | null>(null)
+  const [itemsPerPage, setItemPerPage] = useState<number>(20)
+  const [activePage, setActivePage] = useState<number>(1)
+  const [sort, setSort] = useState<SortTypes | null>(null)
+  const [sortBy, setSortBy] = useState<keyof BasicPool | null>(null)
 
   // computed
   const HeaderCells = useMemo(() => [
@@ -68,43 +68,43 @@ const HeaderRow = ({
     { ...HeaderCellsRaw.at(-3), text: titleHeader || HeaderCellsRaw.at(-3)!.text },
     { ...HeaderCellsRaw.at(-2), text: titleHeader2 || HeaderCellsRaw.at(-2)!.text },
     HeaderCellsRaw.at(-1),
-  ] as TableHeaderCell[], [activeRange, titleHeader, titleHeader2]);
+  ] as TableHeaderCell[], [activeRange, titleHeader, titleHeader2])
   const sortedMappedTableData: BasicPool[] = useMemo(() => {
     const mappedData = poolsData.map((item) => ({
       ...item,
       aprRings: (+(poolsAprRing?.[item.id] ?? 0) + +(isNaN(+item.apr!) ? 0 : item.apr ?? 0)).toString(),
-    }));
+    }))
 
     if (!(sortBy && sort && mappedData[0][sortBy])) {
-      return mappedData;
+      return mappedData
     }
 
-    return mappedData.sort((a, b) => (+a[sortBy]! - +b[sortBy]!) * sort);
-  }, [poolsData, poolsAprRing, sortBy, sort]);
+    return mappedData.sort((a, b) => (+a[sortBy]! - +b[sortBy]!) * sort)
+  }, [poolsData, poolsAprRing, sortBy, sort])
   const pageData = useMemo(() => {
-    const totalPages = Math.max(1, Math.ceil(sortedMappedTableData.length / itemsPerPage));
+    const totalPages = Math.max(1, Math.ceil(sortedMappedTableData.length / itemsPerPage))
 
     // Ensure current page isn't out of range
-    const start = (Math.min(activePage, totalPages) - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return sortedMappedTableData.slice(start, end);
-  }, [sortedMappedTableData, itemsPerPage, activePage]);
+    const start = (Math.min(activePage, totalPages) - 1) * itemsPerPage
+    const end = start + itemsPerPage
+    return sortedMappedTableData.slice(start, end)
+  }, [sortedMappedTableData, itemsPerPage, activePage])
 
   // helpers
   function toggleSort(sortBy: keyof BasicPool | null, sort: SortTypes | null): void {
-    setSortBy(sortBy);
-    setSort(sort);
+    setSortBy(sortBy)
+    setSort(sort)
   }
 
   // async helpers
   async function loadAprRings(): Promise<void> {
-    setPoolsAprRing(await fetchRingsApr());
+    setPoolsAprRing(await fetchRingsApr())
   }
 
   // lifecycle hooks
   useEffect(() => {
-    loadAprRings();
-  }, []);
+    loadAprRings()
+  }, [])
 
   return (
     <div className="relative">
@@ -161,7 +161,7 @@ const HeaderRow = ({
           )
         : null}
     </div>
-  );
+  )
 }
 
-export default HeaderRow;
+export default HeaderRow
