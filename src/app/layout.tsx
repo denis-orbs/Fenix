@@ -9,6 +9,7 @@ import Decorator from '@/src/components/Common/Layout/Background'
 import Footer from '@/src/components/Common/Layout/Footer'
 import Header from '@/src/components/Common/Layout/Header'
 import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { getDefaultConfig, getDefaultWallets, midnightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import {
@@ -91,6 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname()
   return (
     <html lang="en">
+      <GoogleAnalytics gaId="G-SDWSVLCYX2" />
       <Head>
         <link rel="icon" href="/favicon.ico" />
       </Head>
