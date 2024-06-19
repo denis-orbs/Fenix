@@ -416,7 +416,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                               <div>
                                 <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Fees APR</p>
-                                  <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
+                                  <p className="text-sm pb-1 text-chilean-fire-600">{isInRangeAll[position.id] ? position?.apr : "0%"}</p>
                                 </div>
                                 {fenixRingApr > 0 && isInRangeAll[position.id] && (
                                   <div className="flex justify-between items-center gap-3">
