@@ -9,6 +9,7 @@ import { BasicPool } from '@/src/state/liquidity/types'
 import { useEffect, useState } from 'react'
 import HeaderRow from './Tables/LiquidityTable/HeaderRow'
 import GoldRushBanner from '@/src/components/Common/GoldRushBanner'
+import Image from 'next/image'
 import {
   BLAST_NATIVE_POOLS,
   BLUE_CHIPS_POOLS,
