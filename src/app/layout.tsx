@@ -94,6 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <GoogleAnalytics gaId="G-1MMRJBQK96" />
       <Head>
+        <meta name="google-site-verification" content="mn5jWOAzNqP937Tzbl_Rvtnh0aswaep1gUvODRvTZp4" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <body
