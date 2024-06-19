@@ -4,7 +4,7 @@ import '@/src/assets/styles/globals.css'
 import '@rainbow-me/rainbowkit/styles.css'
 import { Poppins } from 'next/font/google'
 import Head from 'next/head'
-
+import { Analytics } from '@vercel/analytics/react'
 import Decorator from '@/src/components/Common/Layout/Background'
 import Footer from '@/src/components/Common/Layout/Footer'
 import Header from '@/src/components/Common/Layout/Header'
@@ -92,6 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname()
   return (
     <html lang="en">
+      <Analytics />
       <GoogleAnalytics gaId="G-1MMRJBQK96" />
       <Head>
         <meta name="google-site-verification" content="mn5jWOAzNqP937Tzbl_Rvtnh0aswaep1gUvODRvTZp4" />
