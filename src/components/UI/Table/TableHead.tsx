@@ -1,6 +1,6 @@
 'use client'
 
-import cn from '@/src/library/utils/cn';
+import cn from '@/src/library/utils/cn'
 
 interface IItems {
   text: string
