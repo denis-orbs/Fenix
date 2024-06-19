@@ -3,6 +3,7 @@ import getProtocolCoreClient, { getAlgebraClient } from '@/src/library/apollo/cl
 import { POOLSV2_LIST, POOLS_LIST, POOLS_TVL } from '@/src/library/apollo/queries/pools'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { TokenDataProvider } from '@/src/library/providers/TokenDataProvider'
+import { totalCampaigns } from '@/src/library/utils/campaigns'
 import { toBN } from '@/src/library/utils/numbers'
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -19,6 +20,7 @@ export interface extraPoints {
 export interface BoostedPool {
   id: string
   points: number
+  blastGold: number
   multiplier?: number
   apr: number
   pair?: string
@@ -38,6 +40,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'WETH/USDB',
     points: 20205000,
+    blastGold: 0,
     id: '0x1d74611f3ef04e7252f7651526711a937aa1f75e',
     apr: 0,
     poolType: 'v3',
@@ -45,6 +48,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'WBTC/WETH',
     points: 150_000,
+    blastGold: 0,
     id: '0xc066a3e5d7c22bd3beaf74d4c0925520b455bb6f',
     apr: 0,
     poolType: 'v3',
@@ -52,6 +56,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'pxETH/ETH',
     points: 1_500_000,
+    blastGold: 0,
     id: '0x3bafe103742da10a4fece8fc5e800df07d645439',
     apr: 0,
     poolType: 'v3',
@@ -59,6 +64,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'WETH/wrsETH',
     points: 1_500_000,
+    blastGold: 0,
     id: '0xe53b1da56f90c9529f2db1bb8711c3f1cc6f03bd',
     apr: 0,
     poolType: 'v3',
@@ -66,6 +72,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'ezETH/WETH',
     points: 1_200_000,
+    blastGold: 0,
     id: '0x635512a1333ad0822f5ba4fd6479daa1df8b77e1',
     apr: 0,
     poolType: 'v3',
@@ -80,6 +87,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'sfrxETH/WETH',
     points: 1_200_000,
+    blastGold: 0,
     id: '0x1eba6f6cfdb86e965040bf9e75d3ded9a3fd22a5',
     apr: 0,
     poolType: 'v3',
@@ -87,6 +95,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'inETH/WETH',
     points: 450_000,
+    blastGold: 0,
     id: '0x46f2aa2aa7d31ddd237d620e52a33a8d5af2a5ab',
     apr: 0,
     poolType: 'v3',
@@ -94,6 +103,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'weETH/WETH',
     points: 1_500_000,
+    blastGold: 0,
     id: '0x9304ba542df9bc61dd1c97c073ed35f81cab6149',
     apr: 0,
     poolType: 'v3',
@@ -101,6 +111,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'USD+/USDB',
     points: 600_000,
+    blastGold: 0,
     id: '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
     apr: 0,
     poolType: 'v3',
@@ -115,6 +126,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'USDe/USDB',
     points: 150_000,
+    blastGold: 0,
     id: '0xd0cd894c605a9eedacbc0fa9bd8440627a5d37b1',
     apr: 0,
     poolType: 'v3',
@@ -122,6 +134,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'DEUS/WETH',
     points: 300_000,
+    blastGold: 0,
     id: '0x117106000ceb709ba3ec885027d111463204d6b6',
     apr: 0,
     poolType: 'v3',
@@ -136,6 +149,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'fDAO/WETH',
     points: 375_000,
+    blastGold: 0,
     extraPoints: [
       {
         tokenAddress: '0x3b0cffda9a5ab64135c227638e777ceec0c243a8',
@@ -186,6 +200,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'DOLA/USDB',
     points: 420_000,
+    blastGold: 0,
     id: '0xd49ad1dd6c5eae53abdafeaed1866330c42ccae4',
     apr: 0,
     poolType: 'v2',
@@ -193,6 +208,7 @@ export const boostedPools: BoostedPool[] = [
   {
     pair: 'PAC/WETH',
     points: 300_000,
+    blastGold: 0,
     id: '0x8e57e61b7524a2f56fd01bbfe5de9bb96ed186b4',
     apr: 0,
     poolType: 'v3',
@@ -355,6 +371,9 @@ export async function GET(request: NextRequest) {
 
     const updatedPool = {
       ...pool,
+      blastGold: toBN(
+        totalCampaigns.find((c) => c.pairAddress.toLowerCase() === pool.id.toLowerCase())?.blastGoldAmount || 0
+      ).toNumber(),
       apr: poolData?.totalValueLockedUSD
         ? toBN(pool.points)
             .multipliedBy(PRICE_PER_POINT)
