@@ -23,7 +23,7 @@ import { useQuery } from '@tanstack/react-query'
 import Loader from '../../UI/Icons/Loader'
 import { BoostedPool, RingCampaignData, extraPoints } from '@/src/app/api/rings/campaign/route'
 import AprBox from '../../UI/Pools/AprBox'
-import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
+import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
 
 interface MyPositionsMobileProps {
   activePagination?: boolean
@@ -47,7 +47,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [tvlPosition, setTvlPosition] = useState<any>([])
   const [nonZeroData, setNonZeroData] = useState<positions[]>([])
 
-  const { data: ringsCampaignsData } = useRingsCampaigns()
+  const { data: ringsCampaignsData } = useRingsCampaignsBoostedPools()
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -64,7 +64,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   }
 
   const TvlTotalValue = (data: any) => {
-    const tvl = 
+    const tvl =
       Number(data?.depositedToken0) *
         Number(
           tokens.find(
@@ -81,7 +81,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                 (data?.token1?.id.toLowerCase())
             )?.priceUSD
           )
-      
+
     tvlPosition[data.id] = tvl
     return tvl
   }
