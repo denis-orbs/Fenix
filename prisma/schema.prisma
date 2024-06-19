@@ -32,6 +32,17 @@ model users {
   without_bonus_rings_points BigInt              @default(0)
   ring_bonus                 ring_bonus[]
   ring_distribution          ring_distribution[]
+  rings_extra_data           rings_extra_data?
+}
+
+model rings_extra_data {
+  id                    String   @id @default(uuid())
+  created_at            DateTime @default(now())
+  updated_at            DateTime @default(now())
+  user_id               String   @unique
+  gold_qualifying_rings Decimal  @default(0)
+  potential_gold_reward Decimal  @default(0)
+  users                 users    @relation(fields: [user_id], references: [id])
 }
 
 model ring_batch_distribution {
