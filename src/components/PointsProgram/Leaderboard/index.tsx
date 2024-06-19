@@ -56,7 +56,7 @@ const Leaderboard = () => {
           <span className="text-white w-[15%] text-sm">Ranking Addresses</span>
           <span className="text-white w-[15%] text-sm text-center">Multiplier</span>
           <span className="text-white w-[20%] text-sm text-center">Gold Potential Rewards</span>
-          <span className="text-white w-[20%] text-sm text-center">Fenix Gold Rings</span>
+          <span className="text-white w-[20%] text-sm text-center">Gold-Qualifying Rings</span>
           <span
             className="text-white w-[20%] cursor-pointer text-center text-sm flex items-center justify-center gap-x-2"
             onClick={() => handleSort()}
@@ -66,7 +66,7 @@ const Leaderboard = () => {
           </span>
         </div>
         {paginatedData.map((data, index: number) => (
-          <Item key={index} data={data} isUser={account?.toLowerCase() === data.id.toLowerCase() ? true : false}/>
+          <Item key={index} data={data} isUser={account?.toLowerCase() === data.id.toLowerCase() ? true : false} />
         ))}
         <Pagination
           className="mx-auto"

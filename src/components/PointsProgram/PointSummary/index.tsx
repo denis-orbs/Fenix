@@ -91,7 +91,7 @@ const PointSummary = ({ userData }: any) => {
     if (!data || !account) {
       return 0
     }
-    return data.find((entry) => entry.id.toLowerCase() === account.toLowerCase())?.accumulated_rings_points
+    return data.find((entry) => entry?.id?.toLowerCase() === account?.toLowerCase())?.accumulated_rings_points
   }, [data, account])
   const userRank = useMemo(() => {
     if (!data || !account) {
@@ -123,7 +123,13 @@ const PointSummary = ({ userData }: any) => {
           >
             Rings{' '}
             <span className="text-xs flex items-center bg-shark-400 border border-shark-100 gap-2 text-white font-normal px-5 py-1 rounded-md">
-              <Image src="/static/images/tokens/blackFNX.svg" alt='Black FNX' width={10} height={10} className='w-[1.25rem]  h-[1.25rem] ml-[-4px]'></Image>
+              <Image
+                src="/static/images/tokens/blackFNX.svg"
+                alt="Black FNX"
+                width={10}
+                height={10}
+                className="w-[1.25rem]  h-[1.25rem] ml-[-4px]"
+              ></Image>
               {nftBoost ? Math.min(Number(nftBoost), MAX_NFT_BOOST).toString() : '0'}% NFT Boost
               {/* <span className="icon-info ml-1"></span> */}
             </span>
@@ -221,7 +227,7 @@ const PointSummary = ({ userData }: any) => {
         </div>
         <div className="point-summary-box">
           <p className="text-base text-white w-full mb-4">
-            Next Points Drop
+            Next Rings Points Drop
             {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
           </p>
           <div className="w-full">
