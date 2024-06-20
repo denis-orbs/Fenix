@@ -234,9 +234,8 @@ export const useIchiVaultsDataMap = (vaultAddresses: string[]) => {
     const chain = 'blast' // SupportedChainId.blast
 
     const fetchVault = async () => {
-      const vaults = await getIchiVaultsDataByIds(chain, dex, vaultAddresses)
-
-      if (vaults.length) {
+      if (vaultAddresses.length) {
+        const vaults = await getIchiVaultsDataByIds(chain, dex, vaultAddresses)
         const vaultsMap: { [key: string]: IchiVault } = vaults.reduce(
           (map, item) => ({ ...map, [item.id]: item }),
           {},
@@ -245,7 +244,7 @@ export const useIchiVaultsDataMap = (vaultAddresses: string[]) => {
       }
     }
     fetchVault()
-  }, [vaultAddresses, setVaultsMap])
+  }, [JSON.stringify(vaultAddresses)])
   return vaultsMap
 }
 

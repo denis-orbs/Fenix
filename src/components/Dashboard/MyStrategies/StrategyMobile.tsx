@@ -31,20 +31,19 @@ type options = {
 interface StrategyMobileProps {
   row: positions
   tokens: Token[]
+  ichiTokens: any
   options: options[]
   setModalSelected: (modal: string) => void
   setOpenModal: (modal: boolean) => void
 }
 
-const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
+const StrategyMobile = ({ row, tokens, ichiTokens: ichitokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
 
   const addNotification = useNotificationAdderCallback()
-
-  const ichitokens = useIchiVaultsData(row.liquidity === 'ichi' ? row?.id : zeroAddress)
 
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const handlerOpenModal = (option: string) => {

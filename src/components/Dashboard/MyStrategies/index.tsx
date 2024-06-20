@@ -19,6 +19,15 @@ import Spinner from '../../Common/Spinner'
 import { useDispatch } from 'react-redux'
 import { setApr } from '@/src/state/apr/reducer'
 
+const defaultVaultInfo = {
+  id: '',
+  tokenA: '',
+  tokenB: '',
+  allowTokenA: false,
+  allowTokenB: false,
+  apr: [],
+}
+
 const MyStrategies = () => {
   const dispatch = useDispatch()
   const slidesPerView = 3
@@ -36,7 +45,7 @@ const MyStrategies = () => {
   const { chainId, address } = useAccount()
   const { ichipositions, ichiLoading } = useIchiPositions()
   const vaultsMap = useIchiVaultsDataMap(
-    nonZeroPosition.filter(({ liquidity }) => liquidity).map(({ id }) => id)
+    nonZeroPosition.filter(({ liquidity }) => liquidity === 'ichi').map(({ id }) => id)
   )
 
   const tokensprice = async () => {
@@ -200,6 +209,7 @@ const MyStrategies = () => {
                       <Strategy
                         row={nonZeroPosition[index]}
                         tokens={tokens}
+                        ichiTokens={vaultsMap[nonZeroPosition[index].id] || defaultVaultInfo}
                         options={OPTIONS_STRATEGIES}
                         setModalSelected={setModalSelected}
                         setOpenModal={setOpenModal}
@@ -231,6 +241,7 @@ const MyStrategies = () => {
                       <StrategyMobile
                         row={nonZeroPosition[index]}
                         tokens={tokens}
+                        ichiTokens={vaultsMap[nonZeroPosition[index].id] || defaultVaultInfo}
                         options={OPTIONS_STRATEGIES}
                         setOpenModal={setOpenModal}
                         setModalSelected={setModalSelected}

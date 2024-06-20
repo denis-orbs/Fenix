@@ -92,12 +92,13 @@ export type ichipositions = {
 interface StrategyProps {
   row: positions
   tokens: Token[]
+  ichiTokens: any
   options: options[]
   setModalSelected: (modal: string) => void
   setOpenModal: (modal: boolean) => void
 }
 
-const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyProps) => {
+const Strategy = ({ row, tokens, ichiTokens: ichitokens, options, setModalSelected, setOpenModal }: StrategyProps) => {
   console.log(row, 'rowtokens')
   const dispatch = useDispatch()
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
@@ -117,7 +118,6 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
   const handlerSwitch = () => {
     setshowtoken0(!showtoken0)
   }
-  const ichitokens = useIchiVaultsData(row.liquidity === 'ichi' ? row?.id : zeroAddress)
 
   const handleClaim = (id: string) => {
     const multi = [
