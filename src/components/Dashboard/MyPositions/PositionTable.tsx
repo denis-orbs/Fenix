@@ -649,11 +649,11 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                           {/* Range */}
 
                           {position.liquidity === 'ichi' ? (
-                            <div className="flex justify-center mx-auto items-center">
+                            <div className="flex justify-start items-center">
                               <Image src={'/static/images/ichi.svg'} alt="ichi" height={48} width={150} />
                             </div>
                           ) : position.liquidity === 'gamma' ? (
-                            <div className="mx-auto flex justify-center items-center">
+                            <div className=" flex justify-start items-center">
                               <Image src={'/static/images/gamma.svg'} alt="ichi" height={48} width={150} />
                             </div>
                           ) : (
