@@ -56,7 +56,7 @@ const HeaderRow = ({
 
   // state
   const aprRingsMap = useMemo(
-    () => (ringsLoading ? buildAprRingsMap(ringsList) : null),
+    () => (ringsLoading ? null : buildAprRingsMap(ringsList)),
     [ringsLoading, ringsList],
   )
   const [itemsPerPage, setItemPerPage] = useState<number>(20)

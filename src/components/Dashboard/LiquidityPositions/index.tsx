@@ -26,7 +26,7 @@ const LiquidityPositions = () => {
 
   // computed
   const aprRingsMap = useMemo(
-    () => (ringsLoading ? buildAprRingsMap(ringsList) : null),
+    () => (ringsLoading ? null : buildAprRingsMap(ringsList)),
     [ringsLoading, ringsList],
   )
   const poolsDataClassic = useMemo(() => (

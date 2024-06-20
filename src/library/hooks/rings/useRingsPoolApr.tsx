@@ -17,7 +17,7 @@ export const useRingsPoolApr = (row: BasicPool | string) => {
 
   // computed
   const aprRingsMap = useMemo(
-    () => (ringsLoading ? buildAprRingsMap(ringsList) : null),
+    () => (ringsLoading ? null : buildAprRingsMap(ringsList)),
     [ringsLoading, ringsList],
   )
   return useMemo(() => ({
