@@ -4,6 +4,9 @@ export interface RankingEntry {
   id: string
   accumulated_rings_points: string
   ranking?: number
+  nft_boost?: number
+  gold_potential_rewards?: number
+  gold_qualifying_rings?: number
 }
 export const useRingsPointsLeaderboard = () => {
   try {

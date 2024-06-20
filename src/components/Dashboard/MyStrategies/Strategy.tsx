@@ -190,6 +190,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
         ? pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
         : pool?.id?.toLowerCase() === row?.pool.id.toLowerCase()
     })?.apr || 0
+    console.log('parseFloat(row?.apr) >> ', parseFloat(row?.apr))
   return (
     (((Number(row?.depositedToken0) * Number(tokens.find((e) => e.tokenAddress.toLowerCase() ===(row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase()))?.priceUSD)) +
       (Number(row?.depositedToken1) * Number(tokens.find((e) =>e.tokenAddress.toLowerCase() ===(row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase()))?.priceUSD)) > 0.1)) ?
