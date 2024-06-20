@@ -67,6 +67,10 @@ export async function GET(request: NextRequest) {
     select: {
       id: true,
       accumulated_rings_points: true,
+      given_blast_poins: true,
+      pending_blast_points: true,
+      given_blast_gold_points: true,
+      pending_blast_gold_points: true,
     },
   })
   // si no es not found, simplemente devolver 0
