@@ -242,6 +242,17 @@ const PointSummary = ({ userData }: any) => {
 
           {/* --- */}
         </div>
+        <div className="point-summary-box">
+          <p className="text-base text-white w-full mb-4">
+            Gold Potential Rewards
+            {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
+          </p>
+          <div className='flex items-center gap-2'>
+              <Image src={'/static'} />
+          </div>
+
+          {/* --- */}
+        </div>
       </div>
     </section>
   )
