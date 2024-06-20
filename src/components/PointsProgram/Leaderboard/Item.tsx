@@ -23,7 +23,7 @@ const Item = ({ data, isUser }: { data: RankingEntry; isUser: boolean }) => {
         <div className="bg-shark-400 text-xs border border-shark-100 rounded-xl px-6 py-1">{data?.nft_boost || 0}%</div>
       </span>
       <span className="text-white w-[20%] flex justify-center">
-        <div className="bg-shark-400 text-xs border border-shark-100 rounded-xl px-3 py-2 flex items-center gap-2">
+        <div className="bg-shark-400 text-xs border w-[50%] border-shark-100 rounded-xl px-3 py-2 flex items-center justify-center gap-2">
           <Image
             src="/static/images/point-stack/blast-gold.svg"
             alt="user"
