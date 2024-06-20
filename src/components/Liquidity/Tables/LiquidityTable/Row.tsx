@@ -162,7 +162,7 @@ const RowData = ({
           <div className="flex  justify-center items-center gap-2 ">
             {
               <span ref={hoverRef} className="flex gap-2">
-                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}>
+                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS ? 'z-[100]' : 'z-0'}`}>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                     <div className='relative flex items-center'>
                       {campaign?.pointStack?.map((stack, index) => (
