@@ -48,7 +48,6 @@ const RowData = ({
 
   const [openInfo, setOpenInfo] = useState<boolean>(false)
   const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
-  const [openTooltipFXS, setopenTooltipFXS] = useState<boolean>(false)
   const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
   const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
   const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
