@@ -90,6 +90,7 @@ const Manage = ({}: {}) => {
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
   const [timeout, setTimeoutID] = useState<NodeJS.Timeout | undefined>(undefined)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string>('')
 
   // (tokens)
   const [firstToken, setFirstToken] = useState<IToken>(FirstTokenInitialState)
@@ -217,10 +218,11 @@ const Manage = ({}: {}) => {
         const posAmount = +positionData.amount0.toString() / 10 ** firstToken.decimals;
         const inputAmount = +input || 0
 
-        console.log(input, posAmount, inputAmount)
         if (inputAmount > 0 && inputAmount <= posAmount) {
           setWithdrawPercent(Math.round(inputAmount / posAmount * 100));
         }
+
+        setError(inputAmount > posAmount ? 'Insufficient balance' : '')
       }
     } else {
       if (Number(positionData?.amount0.toString())) {
@@ -248,6 +250,8 @@ const Manage = ({}: {}) => {
         if (inputAmount > 0 && inputAmount <= posAmount) {
           setWithdrawPercent(Math.round(inputAmount / posAmount * 100));
         }
+
+        setError(inputAmount > posAmount ? 'Insufficient balance' : '')
       }
     }
   }
@@ -680,11 +684,12 @@ const Manage = ({}: {}) => {
             ? false
             : Number(secondValue) * 10 ** secondToken.decimals >= Number(secondAllowance)
         }
+        disabled={optionActive === 'WITHDRAW' && !!error}
         token0={firstToken}
         token1={secondToken}
         handleApprove={handleApprove}
         mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity}
-        mainText={optionActive === 'WITHDRAW' ? 'Withdraw Liquidity' : 'Add Liquidity'}
+        mainText={optionActive === 'WITHDRAW' ? error || 'Withdraw Liquidity' : 'Add Liquidity'}
         isLoading={isLoading}
       />
     </>
