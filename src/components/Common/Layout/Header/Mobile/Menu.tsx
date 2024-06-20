@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import cn from '@/src/library/utils/cn'
 import { usePathname } from 'next/navigation'
+import useIsMobile from '@/src/library/hooks/useIsMobile'
 
 import AccountHandler from '../AccountHandler'
 import { MENU_LINKS, SOCIAL_LINKS } from '../data'
@@ -15,6 +16,7 @@ interface MenuProps {
 
 
 const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
+  const isMobile = useIsMobile()
   const pathname = usePathname()
   const className = cn(
     'absolute transition-all py-4 px-10 bg-shark-500 backdrop-blur-3xl bg-opacity-80 top-full rounded-2xl border border-shark-400',
@@ -32,7 +34,7 @@ const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
       <div className="flex flex-col mb-4 z-[2000]">
 
         {MENU_LINKS.map((link, index) => (
-          <div className="relative" key={index}>
+          <div className={`relative ${isMobile && link.href !== '/trade/swap' ? 'hidden' : 'block'}`} key={index}>
             <Link onClick={() => handleCloseMenu()} href={link.href} className="text-white text-xs my-4">
               <span>{link.name}</span>
             </Link>
