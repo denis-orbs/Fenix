@@ -20,6 +20,7 @@ interface ExchangeBoxProps {
   value?: any
   setValue: (value: string) => void
   option?: string
+  defaultBalance?: string
 }
 
 type CancelableCall = {
@@ -36,6 +37,7 @@ const ExchangeBox = ({
   value,
   setValue,
   option,
+  defaultBalance
 }: ExchangeBoxProps) => {
   const boxVariant = variant === 'secondary' ? 'exchange-box-x2' : 'exchange-box-x1'
   const availableAlign = title ? 'justify-between' : 'justify-end'
@@ -113,14 +115,15 @@ const ExchangeBox = ({
       }
     }
 
-    asyncFn()
+    if(!defaultBalance) asyncFn()
+    else setBalance(defaultBalance)
 
     return () => {
       if (latestCallRef.current) {
         latestCallRef.current.cancel()
       }
     }
-  }, [token, account.address])
+  }, [token, account.address, defaultBalance])
 
   const handleOnChange = (e: any) => {
     if (onTokenValueChange) onTokenValueChange(e < 0 || e == '' ? 0 : e, token)

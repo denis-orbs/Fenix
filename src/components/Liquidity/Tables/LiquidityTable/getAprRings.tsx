@@ -1,6 +1,9 @@
+// helpers
+import { toBN } from '@/src/library/utils/numbers'
+
+// models
 import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
 import { BasicPool } from '@/src/state/liquidity/types'
-import { toBN } from '../../../../library/utils/numbers'
 
 export const fetchRingsPoolApr = async (row: BasicPool) => {
   const response = await fetch('/api/rings/campaign')
@@ -13,4 +16,18 @@ export const fetchRingsPoolApr = async (row: BasicPool) => {
     return apr
   }
   return 0
+}
+
+export async function fetchRingsApr(): Promise<{ [key: string]: string }> {
+  const response = await fetch('/api/rings/campaign')
+  const data: RingCampaignData = await response.json()
+
+  if (!data) {
+    return {}
+  }
+
+  return data.boostedPools.reduce(
+    (map, { id, apr }) => ({ ...map, [id]: toBN(apr || 0).toString() }),
+    {},
+  )
 }

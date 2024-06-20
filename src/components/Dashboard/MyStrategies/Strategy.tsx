@@ -192,6 +192,8 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
         : pool?.id?.toLowerCase() === row?.pool.id.toLowerCase()
     })?.apr || 0
   return (
+    (((Number(row?.depositedToken0) * Number(tokens.find((e) => e.tokenAddress.toLowerCase() ===(row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase()))?.priceUSD)) +
+      (Number(row?.depositedToken1) * Number(tokens.find((e) =>e.tokenAddress.toLowerCase() ===(row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase()))?.priceUSD)) > 0.1)) ?
     <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
       <div className="relative z-10">
         <div className="relative text-white flex flex-col">
@@ -374,16 +376,20 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
             variant="tertiary"
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
             onClick={() => {
-              if (row.liquidity !== 'ichi') {
-                dispatch(setApr(row?.apr))
-                router.push(`/liquidity/manage?id=${row?.id}`)
-                router.refresh()
-              } else {
+              if(row.liquidity == 'ichi') {
                 router.push(
                   `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${row?.token0?.id}&token1=${row?.token1?.id}`
                 )
-                // router.refresh()
+              } else if(row.liquidity == 'gamma') {
+                router.push(
+                  `liquidity/deposit?provider=2&type=CONCENTRATED_AUTOMATIC&token0=${row?.token0?.id}&token1=${row?.token1?.id}`
+                )
+              } else {
+                dispatch(setApr(row?.apr))
+                router.push(`/liquidity/manage?id=${row?.id}`)
+                router.refresh()
               }
+              // router.refresh()
             }}
           >
             <span className="text-l">Manage</span>
@@ -407,7 +413,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
           )}
         </div>
       </div>
-    </div>
+    </div> : <></>
   )
 }
 

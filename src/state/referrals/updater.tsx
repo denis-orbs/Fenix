@@ -9,6 +9,7 @@ import {
   useIsReferralSystemInitialized,
   useSetReferralCodeCallback,
   useSetReferralSystemInitializedCallback,
+  useSetReferrerByCallback,
 } from './hooks'
 
 export default function ReferralsUpdater() {
@@ -20,6 +21,8 @@ export default function ReferralsUpdater() {
   const isReferralSystemInitialized = useIsReferralSystemInitialized()
   const setReferralSystemInitialized = useSetReferralSystemInitializedCallback()
   const setReferralCode = useSetReferralCodeCallback()
+  const setReferrerBy = useSetReferrerByCallback()
+
   const { signMessageAsync } = useSignMessage()
 
   useEffect(() => {
@@ -45,6 +48,7 @@ export default function ReferralsUpdater() {
 
     initializeFuul()
   }, [])
+
   useEffect(() => {
     if (!account || !isReferralSystemInitialized) return
     const getAffiliateCode = async () => {
@@ -59,8 +63,34 @@ export default function ReferralsUpdater() {
         setReferralCode('')
       }
     }
+    const getReferrerBy = async () => {
+      try {
+        const userAffliates = await Fuul.getUserAffiliates({ user_address: account })
+        const referrerBy = userAffliates?.find(
+          (userAffliate) => userAffliate?.conversion_name === 'Fenix Rings'
+        )?.affiliate_address
+        console.log(referrerBy)
+        if (referrerBy) {
+          if (referrerBy?.toLowerCase() === account?.toLowerCase()) {
+            console.log('yes')
+            setReferrerBy('')
+            return
+          }
+          const referrerByCode = await Fuul.getAffiliateCode(referrerBy)
+          console.log(referrerByCode)
+          if (referrerByCode) setReferrerBy(referrerByCode)
+          return
+        }
+        setReferrerBy('')
+      } catch (error) {
+        setReferrerBy('')
+        console.error('Error getting referrerBy:', error)
+      }
+    }
     getAffiliateCode()
-  }, [account, isReferralSystemInitialized])
+    getReferrerBy()
+  }, [account, isReferralSystemInitialized, setReferrerBy, setReferralCode])
+
 
   //   Pageview event
   useEffect(() => {

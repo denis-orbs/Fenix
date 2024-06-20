@@ -32,9 +32,10 @@ interface MyPositionsMobileProps {
   data: positions[]
   tokens: Token[]
   ringsCampaign: RingCampaignData
+  showDust?: boolean
 }
 
-const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionsMobileProps) => {
+const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampaign, showDust }: MyPositionsMobileProps) => {
   const router = useRouter()
   const dispatch = useDispatch()
   const { writeContractAsync } = useWriteContract()
@@ -45,6 +46,8 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [isInRange, setIsInRange] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
+  const [tvlPosition, setTvlPosition] = useState<any>([])
+  const [nonZeroData, setNonZeroData] = useState<positions[]>([])
 
   const hoverRef = useRef(null)
 
@@ -70,7 +73,36 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     return paginatedItems
   }
 
-  const pagination = paginate(data, activePage, itemsPerPage)
+  const TvlTotalValue = (data: any) => {
+    const tvl = 
+      Number(data?.depositedToken0) *
+        Number(
+          tokens.find(
+            (e) =>
+              e.tokenAddress.toLowerCase() ===
+              (data?.token0?.id.toLowerCase())
+          )?.priceUSD
+        ) +
+        Number(data?.depositedToken1) *
+          Number(
+            tokens.find(
+              (e) =>
+                e.tokenAddress.toLowerCase() ===
+                (data?.token1?.id.toLowerCase())
+            )?.priceUSD
+          )
+      
+    tvlPosition[data.id] = tvl
+    return tvl
+  }
+
+  useEffect(() => {
+    setNonZeroData(showDust ? data : data.filter((i) => {
+      return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
+    }))
+  }, [data, showDust, tvlPosition, tokens])
+
+  const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
   type priceClacualtionProps = {
     token0: {
@@ -211,28 +243,10 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   }
 
   const TvlTotal = ({ data }: any) => {
-    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
     return (
       <>
         <p className="text-xs text-white mb-1">
-          {formatDollarAmount(
-            Number(data?.depositedToken0) *
-              Number(
-                tokens.find(
-                  (e) =>
-                    e.tokenAddress.toLowerCase() ===
-                    (data.liquidity === 'ichi' ? ichitokens.tokenA.toLowerCase() : data?.token0?.id.toLowerCase())
-                )?.priceUSD
-              ) +
-              Number(data?.depositedToken1) *
-                Number(
-                  tokens.find(
-                    (e) =>
-                      e.tokenAddress.toLowerCase() ===
-                      (data.liquidity === 'ichi' ? ichitokens.tokenB.toLowerCase() : data?.token1?.id.toLowerCase())
-                  )?.priceUSD
-                )
-          )}
+          {tvlPosition[data.id] ? formatDollarAmount(tvlPosition[data.id]) : formatDollarAmount(TvlTotalValue(data))}
         </p>
       </>
     )
@@ -303,7 +317,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
             // eslint-disable-next-line react-hooks/rules-of-hooks
 
             const fenixRingApr =
-              ringsCampaign.boostedPools.find((pool) => {
+              ringsCampaign?.boostedPools.find((pool) => {
                 return pool.id.toLowerCase() === position.pool.id.toLowerCase()
               })?.apr || 0
 
@@ -569,7 +583,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                               <div>
                                 <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Fees APR</p>
-                                  <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
+                                  <p className="text-sm pb-1 text-chilean-fire-600">{isInRange ? position?.apr : "0%"}</p>
                                 </div>
                                 {fenixRingApr > 0 && isInRange && (
                                   <div className="flex justify-between items-center gap-3">
@@ -662,15 +676,18 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                               variant="tertiary"
                               className="h-[38px] w-[80px] max-xs:w-[50%] bg-opacity-40 items-center flex gap-1 justify-center"
                               onClick={() => {
-                                if (position.liquidity !== 'ichi') {
-                                  dispatch(setApr(position?.apr))
-                                  router.push(`/liquidity/manage?id=${position?.id}`)
-                                  router.refresh()
-                                } else {
+                                if (position.liquidity == 'ichi') {
                                   router.push(
                                     `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
                                   )
-                                  // router.refresh()
+                                } else if(position.liquidity == 'gamma') {
+                                  router.push(
+                                    `liquidity/deposit?provider=2&type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
+                                  )
+                                } else {
+                                  dispatch(setApr(position?.apr))
+                                  router.push(`/liquidity/manage?id=${position?.id}`)
+                                  router.refresh()
                                 }
                               }}
                             >
@@ -716,13 +733,13 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
               /> */}
               <div className="mx-auto">
                 <PaginationMobile
-                  count={data.length}
+                  count={nonZeroData.length}
                   itemsPerPage={itemsPerPage}
                   setItemPerPage={setItemPerPage}
                   activePage={activePage}
                   setActivePage={setActivePage}
                   className="mx-auto"
-                  numberPages={Math.ceil(data.length / itemsPerPage)}
+                  numberPages={Math.ceil(nonZeroData.length / itemsPerPage)}
                 />
               </div>
             </div>

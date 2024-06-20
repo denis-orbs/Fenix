@@ -17,5 +17,5 @@ export function middleware(request: NextRequest) {
   return NextResponse.next()}
 
 export const config = {
-  matcher: ['/trade/recurring', '/trade/limit-range', '/trade/dca', '/lock/(.*)', '/vote', '/rewards'],
+  matcher: ['/trade/recurring', '/trade/limit-range', '/trade/dca', '/lock', '/lock/(.*)', '/vote', '/rewards'],
 }
