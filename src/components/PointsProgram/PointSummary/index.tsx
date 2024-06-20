@@ -13,11 +13,11 @@ import { getPointsDistributionTargetTimestamps } from '@/src/library/utils/campa
 import { useReadContract } from 'wagmi'
 import { erc20Abi, zeroAddress } from 'viem'
 
-const PointSummary = ({ userData }: any) => {
+const PointSummary = () => {
   //
-
   const { data, isLoading } = useRingsPointsLeaderboard()
   const [nextTargetTime, setNextTargetTime] = useState<number>()
+
   // const targetHoursUTC = [17, 1, 9]
   const targetHoursUTC = getPointsDistributionTargetTimestamps()
   const calculateNextTargetTime = () => {
@@ -92,6 +92,12 @@ const PointSummary = ({ userData }: any) => {
       return 0
     }
     return data.find((entry) => entry?.id?.toLowerCase() === account?.toLowerCase())?.accumulated_rings_points
+  }, [data, account])
+  const userPotentialGoldRewards = useMemo(() => {
+    if (!data || !account) {
+      return 0
+    }
+    return data.find((entry) => entry?.id?.toLowerCase() === account?.toLowerCase())?.gold_potential_rewards
   }, [data, account])
   const userRank = useMemo(() => {
     if (!data || !account) {
@@ -173,14 +179,6 @@ const PointSummary = ({ userData }: any) => {
                   Fenix Goldies NFTs
                 </Button>
               </div>
-              {/* <ul className="list-disc  pl-4 space-y-1">
-                <li className="list-item">100% of Blast Gold will be distributed to holders.</li>
-                <li className="list-item">Fully refundable after 21 days</li>
-                <li className="list-item">Early Access to our District One Sprint Launch</li>
-                <li className="list-item">
-                  For every NFT you own, you get a 1% boost, up to a maximum of 20 NFTs (20%)
-                </li>
-              </ul> */}
             </div>
           </p>
           <div className="flex items-center justify-center gap-4 max-2xl:gap-2 w-full">
@@ -241,7 +239,9 @@ const PointSummary = ({ userData }: any) => {
           <p className="text-sm text-white text-center w-full -mt-4 mb-4">Gold Potential Rewards</p>
           <div className="flex items-center gap-2">
             <Image src={'/static/images/point-stack/blast-gold.svg'} alt="Gold" width={25} height={25} />
-            <div className="text-white font-semibold">12,000,000</div>
+            <div className="text-white font-semibold">
+              {isLoading ? <Loader size={'20px'} /> : formatAmount(userPotentialGoldRewards, 6, true)}
+            </div>
           </div>
 
           <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
