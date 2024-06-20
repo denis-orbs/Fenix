@@ -90,28 +90,38 @@ export async function GET(request: NextRequest) {
   const ichiProvider = new IchiProvider()
   const manualProvider = new ManualLiquidityProvider()
 
-  const [ichi, manualV3] = await Promise.all([
-    ichiProvider.getUserLiquidity(account),
-    manualProvider.getUserLiquidity(account),
-  ])
-  let totalTVL = BN_ZERO
-  let boostedTVL = BN_ZERO
+  // const [ichi, manualV3] = await Promise.all([
+  //   ichiProvider.getUserLiquidity(account),
+  //   manualProvider.getUserLiquidity(account),
+  // ])
+  // let totalTVL = BN_ZERO
+  // let boostedTVL = BN_ZERO
 
-  totalTVL = totalTVL.plus(ichi.TVL).plus(manualV3.TVL)
-  boostedTVL = boostedTVL.plus(ichi.boostedTVL).plus(manualV3.boostedTVL)
-
+  // totalTVL = totalTVL.plus(ichi.TVL).plus(manualV3.TVL)
+  // boostedTVL = boostedTVL.plus(ichi.boostedTVL).plus(manualV3.boostedTVL)
+  const nftBonus = await prisma.ring_bonus.aggregate({
+    where: {
+      user_id: account,
+    },
+    _sum: {
+      ring_points: true,
+      gold_points: true,
+    },
+  })
+  const userData = { ...user, nft_extra_rings_points: nftBonus._sum.ring_points }
   return NextResponse.json(
     {
       success: true,
-      user,
-      totalTVL: totalTVL.decimalPlaces(2).toString(),
-      totalBoostedTVL: boostedTVL.decimalPlaces(2).toString(),
-      liquidity: {
-        manualV3,
-        clm: {
-          ichi,
-        },
-      },
+      user: userData,
+      // totalTVL: totalTVL.decimalPlaces(2).toString(),
+      // totalBoostedTVL: boostedTVL.decimalPlaces(2).toString(),
+      // nftBonus,
+      // liquidity: {
+      //   manualV3,
+      //   clm: {
+      //     ichi,
+      //   },
+      // },
     },
     { status: 200 }
   )
