@@ -115,14 +115,14 @@ const PointSummary = ({ userData }: any) => {
           Provide Liquidity
         </Button>
       </div>
-      <div className="flex flex-col xl:flex-row items-center justify-between gap-5 xl:gap-20 relative z-20">
+      <div className="flex flex-col xl:flex-row items-center justify-between gap-5 xl:gap-2 relative z-20">
         <div className="point-summary-box" onMouseLeave={() => setShowNTFBoostInfo(false)}>
           <p
-            className="text-base mb-2 text-white flex items-center w-full gap-2 text-left relative cursor-pointer"
+            className="text-sm mb-2 text-white flex items-center w-full gap-2 text-left justify-center relative cursor-pointer"
             onClick={() => setShowNTFBoostInfo(true)}
           >
             Rings{' '}
-            <span className="text-xs flex items-center bg-shark-400 border border-shark-100 gap-2 text-white font-normal px-5 py-1 rounded-md">
+            <span className="text-xs flex items-center whitespace-nowrap bg-shark-400 border border-shark-100 gap-2 text-white font-normal px-5 max-2xl:px-2 py-1 rounded-md">
               <Image
                 src="/static/images/tokens/blackFNX.svg"
                 alt="Black FNX"
@@ -131,7 +131,6 @@ const PointSummary = ({ userData }: any) => {
                 className="w-[1.25rem]  h-[1.25rem] ml-[-4px]"
               ></Image>
               {nftBoost ? Math.min(Number(nftBoost), MAX_NFT_BOOST).toString() : '0'}% NFT Boost
-              {/* <span className="icon-info ml-1"></span> */}
             </span>
             <div
               className={`box-fenix-goldies cursor-default absolute left-[-60px] max-lg:left-1/2 max-lg:-translate-x-1/2 top-8 px-4 py-2
@@ -146,7 +145,7 @@ const PointSummary = ({ userData }: any) => {
                   height={10}
                 ></Image>
                 <h3 className="text-xl font-normal leading-none z-[10]">Fenix Goldies NFT</h3>
-                <h3 className="text-base font-bold leading-none z-[10]">Boost up to 20%!</h3>
+                <h3 className="text-sm font-bold leading-none z-[10]">Boost up to 20%!</h3>
               </div>
               <div className="text-xs font-normal flex flex-col gap-1 z-[500] relative w-[80%]">
                 <div className="z-[10] text-shark-100 mt-4 mb-2 w-[100%]">
@@ -184,7 +183,7 @@ const PointSummary = ({ userData }: any) => {
               </ul> */}
             </div>
           </p>
-          <div className="flex items-center gap-4 w-full">
+          <div className="flex items-center justify-center gap-4 max-2xl:gap-2 w-full">
             <div className="flex flex-col items-center h-12 justify-center gap-y-1 mt-1">
               <Image
                 src="/static/images/points-program/orbit.svg"
@@ -193,21 +192,21 @@ const PointSummary = ({ userData }: any) => {
                 height={20}
                 // className="w-8 h-8"
               />
-              <p className="text-xs text-white">Fenix Rings</p>
+              <p className="text-xs text-white whitespace-nowrap">Fenix Rings</p>
             </div>
             <div className="h-12 flex flex-col justify-between">
-              <h3 className="text-3xl font-medium text-white">
+              <h3 className="text-3xl font-medium text-white leading-none">
                 {isLoading ? <Loader size={'20px'} /> : userPoints ? formatAmount(userPoints, 6, true) : '-'}
               </h3>
-              <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
+              <p className="text-xs whitespace-nowrap text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 Your Total points
               </p>
             </div>
           </div>
         </div>
         <div className="point-summary-box relative">
-          <p className="text-base mb-2 text-white w-full">Leaderboard Position</p>
-          <div className="flex items-center gap-3 w-full">
+          <p className="text-sm mb-2 text-white w-full text-center">Leaderboard Position</p>
+          <div className="flex items-center justify-center gap-3 w-full">
             <div className="flex items-center justify-center w-12 h-12 border border-solid rounded-lg bg-shark-400 border-shark-400">
               <span className="text-lg text-transparent icon-circles bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text"></span>
             </div>
@@ -218,15 +217,12 @@ const PointSummary = ({ userData }: any) => {
               </div>
             </div>
           </div>
-          <span className="absolute top-0 -left-[40px] z-0 rotate-90 hidden xl:block">
-            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-20" width={1} height={35} />
-          </span>
-          <span className="absolute top-0 -right-[40px] z-0 rotate-90 hidden xl:block">
-            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-20" width={1} height={35} />
+          <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
+            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
           </span>
         </div>
-        <div className="point-summary-box">
-          <p className="text-base text-white w-full mb-4">
+        <div className="point-summary-box relative">
+          <p className="text-sm text-white text-center w-full mb-4">
             Next Rings Points Drop
             {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
           </p>
@@ -239,19 +235,35 @@ const PointSummary = ({ userData }: any) => {
               renderer={renderer}
             />
           </div>
-
-          {/* --- */}
+          <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
+            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
+          </span>
         </div>
-        <div className="point-summary-box">
-          <p className="text-base text-white w-full mb-4">
+        <div className="point-summary-box relative">
+          <p className="text-sm text-white text-center w-full -mt-4 mb-4">
             Gold Potential Rewards
-            {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
           </p>
           <div className='flex items-center gap-2'>
-              <Image src={'/static'} />
+              <Image src={'/static/images/point-stack/blast-gold.svg'} alt='Gold' width={25} height={25} />
+              <div className='text-white font-semibold'>12,000,000</div>
           </div>
 
-          {/* --- */}
+          <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
+            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
+          </span>
+        </div>
+        <div className="point-summary-box relative">
+          <p className="text-sm text-white text-center w-full -mt-4 mb-4">
+            Gold-Qualifying Rings
+          </p>
+          <div className='flex items-center gap-2'>
+              <Image src={'/static/images/point-stack/fenix-ring.svg'} alt='Rings' width={25} height={25} />
+              <div className='text-white font-semibold'>12,000,000</div>
+          </div>
+
+          <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
+            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
+          </span>
         </div>
       </div>
     </section>
