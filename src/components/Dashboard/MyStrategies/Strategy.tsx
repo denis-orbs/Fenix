@@ -111,6 +111,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
     setModalSelected(option)
   }
 
+  console.log(row)
   const [showtoken0, setshowtoken0] = useState(true)
 
   const handlerSwitch = () => {
@@ -291,6 +292,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
         </div>
         <div className="bg-shark-400 bg-opacity-40 rounded-lg">
           <div className="relative text-white flex items-center justify-center border-b border-shark-400">
+          
             <div className="flex items-start flex-col p-4 w-1/2">
               <h4 className="text-sm text-white-400">
                 {row.liquidity === 'ichi'
@@ -320,6 +322,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                 )}
               </p>
             </div>
+          
             <div className="flex items-start flex-col p-4 w-1/2 border-l border-shark-400">
               <h4 className="text-sm text-white-500">
                 {row.liquidity === 'ichi'
@@ -349,6 +352,7 @@ const Strategy = ({ row, tokens, options, setModalSelected, setOpenModal }: Stra
                 )}
               </p>
             </div>
+          
           </div>
 
           <Graph

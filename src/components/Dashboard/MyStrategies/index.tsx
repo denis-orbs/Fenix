@@ -27,9 +27,8 @@ const MyStrategies = () => {
   const [openModal, setOpenModal] = useState(false)
   // const [position, setposition] = useState<positions[]>([])
   const [position, setposition] = useState<any[]>([])
-  const [positionAmounts, setpositionAmounts] = useState<any>([])
+  const [, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
-
   const [loadingIchi, setLoadingIchi] = useState(false)
   const [loadingGamma, setLoadingGamma] = useState(false)
   const [progress, setProgress] = useState<number>(0)
@@ -39,6 +38,7 @@ const MyStrategies = () => {
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
   }
+
   useEffect(() => {
     tokensprice()
   }, [chainId])
@@ -133,6 +133,10 @@ const MyStrategies = () => {
   useEffect(() => {
     dispatch(setApr(position))
   }, [position, dispatch])
+
+
+  // console.log(position)
+  // console.log(tokens)
   return (
     <>
       {position.length > 0 ? (

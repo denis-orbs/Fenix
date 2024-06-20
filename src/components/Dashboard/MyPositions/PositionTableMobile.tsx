@@ -195,13 +195,15 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Min Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {formatCurrency(minPrice, 2)}$
+            {minPrice}$
+            {/* {formatCurrency(minPrice, 2)}$ */}
           </span>
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {formatCurrency(maxPrice, 2)}$
+            {maxPrice}$
+            {/* {formatCurrency(maxPrice, 2)}$ */}
           </span>
         </div>
       </div>
@@ -292,7 +294,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
       }
     )
   }
-
+  const ichitokens = useIchiVaultsData(pagination.liquidity === 'ichi' ? pagination?.id : zeroAddress)
   return (
     <>
       {pagination.length > 0 ? (
@@ -324,22 +326,58 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                 >
                   <div className="flex gap-[9px] items-center">
                     <div className="flex items-center w-full gap-2">
-                      <div className="flex items-center w-[40px] max-2xl:w-[50px]">
-                        <Image
-                          src={`/static/images/tokens/${position.token0.symbol}.svg`}
-                          alt="token"
-                          className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
-                          width={30}
-                          height={30}
-                        />
-                        <Image
-                          src={`/static/images/tokens/${position.token1.symbol}.svg`}
-                          alt="token"
-                          className="-ml-4 rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
-                          width={30}
-                          height={30}
-                        />
-                      </div>
+                      {position.liquidity === 'gamma' || position.liquidity === 'ichi' ? (
+                        <>
+                          <div className="flex items-center w-[40px] max-2xl:w-[50px]">
+                            <Image
+                              src={
+                                position.liquidity === 'ichi'
+                                  ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}.svg`
+                                  : position.liquidity === 'gamma'
+                                    ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token0.id.toLowerCase())?.basetoken.symbol}.svg`
+                                    : `/static/images/tokens/${position?.token0?.symbol}.svg`
+                              }
+                              alt="token"
+                              className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
+                              width={30}
+                              height={30}
+                            />
+                            <Image
+                              src={
+                                position.liquidity === 'ichi'
+                                  ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}.svg`
+                                  : position.liquidity === 'gamma'
+                                    ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token1.id.toLowerCase())?.basetoken.symbol}.svg`
+                                    : `/static/images/tokens/${position?.token1?.symbol}.svg`
+                              }
+                              alt="token"
+                              className="-ml-4 rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
+                              width={30}
+                              height={30}
+                            />
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex items-center w-[40px] max-2xl:w-[50px]">
+                            <Image
+                              src={`/static/images/tokens/${position.token0.symbol}.svg`}
+                              alt="token"
+                              className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
+                              width={30}
+                              height={30}
+                            />
+                            <Image
+                              src={`/static/images/tokens/${position.token1.symbol}.svg`}
+                              alt="token"
+                              className="-ml-4 rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
+                              width={30}
+                              height={30}
+                            />
+                          </div>
+                        </>
+                      )}
+
                       <div className="flex max-xs:flex-col  flex-wrap xs:items-center max-xs:items-start gap-1 max-2xl:max-w-[85%] 2xl:max-w-full">
                         <h5 className="text-sm text-white font-semibold max-xs:leading-none flex items-center justify-center">
                           {position.token0.symbol} / {position.token1.symbol}
@@ -558,8 +596,8 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                           />
                         </div>
                         <div className="flex justify-between items-center mt-2">
-                          <span className="text-white text-sm">TVL</span>
-                          <div className="flex flex-col justify-center items-end">
+                          {/* <span className="text-white text-sm">TVL</span> */}
+                          {/* <div className="flex flex-col justify-center items-end">
                             <TvlTotal data={position} />
                             <span className="flex justify-center items-center gap-2">
                               <p className="flex gap-2 items-center">
@@ -575,7 +613,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                                 </span>
                               </p>
                             </span>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="flex justify-between items-center mt-2">
                           <span className="text-white text-sm">In Wallet</span>
@@ -598,7 +636,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                           </div>
                         </div>
                         <div className="flex justify-between items-center mt-2">
-                          <span className="text-white text-sm">Emissions</span>
+                          <span className="text-white text-sm">Available to Claim</span>
                           <div className="flex flex-col justify-center items-end">
                             <TvlTotal data={position} />
                             <span className="flex justify-center items-center gap-2">

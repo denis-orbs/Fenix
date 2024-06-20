@@ -20,23 +20,98 @@ import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnec
 const MyPositions = () => {
   const dispatch = useDispatch()
   const [position, setposition] = useState<positions[]>([])
+  const [ichiPosition, setIchiPosition] = useState<any[]>([])
+  const [allGamaData, setAllGamaData] = useState<any>()
+  const [userGamaData, setUserGamaData] = useState<any>()
   const [positionAmounts, setpositionAmounts] = useState<any>([])
   const [tokens, setTokens] = useState<Token[]>([])
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState<number>(0)
   const { chainId } = useAccount()
+  const { ichipositions, ichiLoading } = useIchiPositions()
+  const { address } = useAccount()
+  const [loadingIchi, setLoadingIchi] = useState(false)
+  const [loadingGamma, setLoadingGamma] = useState(false)
+
   // const isConnected = useStore((state) => state.isConnected)
   const { isConnected } = useActiveConnectionDetails()
 
-  console.log(position)
+  const getAllGammaData = () => {
+    fetch(`https://wire2.gamma.xyz/fenix/blast/hypervisors/allData`)
+      .then((res) => res.json())
+      .then((data) => {
+        const isEmpty = Object.keys(data).length === 0
+        if (!isEmpty) {
+          console.log(data, 'setAllGamaData')
+          setAllGamaData(data)
+        } else setAllGamaData(null)
+      })
+      .catch((err) => console.log(err))
+  }
+  const getGammaAddressData = () => {
+    fetch(`https://wire2.gamma.xyz/fenix/blast/user/${address?.toLowerCase()}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const isEmpty = Object.keys(data).length === 0
+        if (!isEmpty) {
+          setUserGamaData(data)
+        } else setUserGamaData(null)
+      })
+      .catch((err) => console.log(err))
+  }
+  useEffect(() => {
+    getAllGammaData()
+  }, [])
+
+  useEffect(() => {
+    setIchiPosition([])
+    getGammaAddressData()
+  }, [address])
+
+  useEffect(() => {
+    if (ichipositions.length > 0) {
+      setIchiPosition((prev) => [...prev, ...ichipositions])
+    }
+  }, [ichipositions])
+
+  useEffect(() => {
+    setLoadingGamma(true)
+    if (allGamaData != null && userGamaData != null && address) {
+      const newArr: any[] = []
+      for (const item in allGamaData) {
+        if (userGamaData[address.toLowerCase()]?.hasOwnProperty(item.toLowerCase())) {
+          const nestedObj = userGamaData[address.toLowerCase()][item]
+          const newObj = {
+            liquidity: 'gamma',
+            id: item,
+            pool: { id: allGamaData[item].poolAddress },
+            depositedToken0: nestedObj.balance0,
+            depositedToken1: nestedObj.balance1,
+            token0: { id: allGamaData[item].token0 },
+            token1: { id: allGamaData[item].token1 },
+            inRange: allGamaData[item].inRange,
+            apr: allGamaData[item].returns.monthly.feeApr,
+          }
+
+          newArr.push(newObj)
+        } else {
+          // console.log('hit no')
+        }
+      }
+
+      if (newArr.length > 0) {
+        setIchiPosition((prev) => [...prev, ...newArr])
+      }
+      setLoadingGamma(false)
+    }
+  }, [allGamaData, userGamaData, address])
+
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
   }
   useEffect(() => {
     tokensprice()
   }, [chainId])
-
-  const { address } = useAccount()
 
   const fetchpositions = async (address: Address) => {
     const positions = await fetchV3Positions(address)
@@ -87,21 +162,29 @@ const MyPositions = () => {
     },
   })
 
+  // console.log("ichini",ichiPosition)
 
+  const newPositions = [...position, ...ichiPosition]
+  // console.log('combinatedArray', newPositions)
   return (
     <>
-      {position.length !== 0 && loading === false && isLoadingRingsCampaign === false && address ? (
+      {newPositions.length !== 0 && loading === false && isLoadingRingsCampaign === false && address ? (
         <div className="mb-10 mt-5">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">My Positions</h1>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm flex gap-1 items-center" href="/liquidity">
-              <span className="icon-logout"/>Create position
+            <Button
+              variant="tertiary"
+              className="!py-3 xl:me-5 !text-xs !lg:text-sm flex gap-1 items-center"
+              href="/liquidity"
+            >
+              <span className="icon-logout" />
+              Create position
             </Button>
           </div>
           <h2 className="text-white text-base font-medium">Concentrated Liquidity:</h2>
           <div className="dashboard-box flex-col xl:flex-row">
-            <PositionTable data={position} tokens={tokens} ringsCampaign={ringsCampaign} />
-            <PositionTableMobile data={position} tokens={tokens} ringsCampaign={ringsCampaign} />
+            <PositionTable data={newPositions} tokens={tokens} ringsCampaign={ringsCampaign} />
+            <PositionTableMobile data={newPositions} tokens={tokens} ringsCampaign={ringsCampaign} />
           </div>
         </div>
       ) : (position.length === 0 && loading === false && isLoadingRingsCampaign === false) || address === undefined ? (

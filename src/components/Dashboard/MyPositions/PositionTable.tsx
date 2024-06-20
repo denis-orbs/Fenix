@@ -38,14 +38,15 @@ interface MyPositionssProps {
 }
 
 const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionssProps) => {
-  console.log('dd', data.length)
+  //  console.log('dd', data)
   const router = useRouter()
 
+  
   const dispatch = useDispatch()
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
   const addNotification = useNotificationAdderCallback()
-  const [itemsPerPage, setItemPerPage] = useState<number>(10)
+  const [itemsPerPage, setItemPerPage] = useState<number>(6)
   const [activePage, setActivePage] = useState<number>(1)
   const [isMinHover, setIsMinHover] = useState<boolean>(false)
   const [isMaxHover, setIsMaxHover] = useState<boolean>(false)
@@ -209,15 +210,19 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
           </div>
         </div>
         <div className="flex flex-col items-start">
-          <div className="text-shark-100 text-xs font-normal">Min Price</div>
-          <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {formatCurrency(minPrice, 2)}$
+          <div className="text-shark-100 text-xs font-normal  -mt-[15px]">Min Price</div>
+          <span
+            className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300
+         
+          "
+          >
+            {minPrice}${/* {formatCurrency(minPrice, 2)} */}
           </span>
         </div>
         <div className="flex flex-col items-start">
-          <div className="text-shark-100 text-xs font-normal">Max Price</div>
+          <div className="text-shark-100 text-xs font-normal  -mt-[15px]">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {formatCurrency(maxPrice, 2)}$
+            {maxPrice}${/* {formatCurrency(maxPrice, 2)} */}
           </span>
         </div>
       </div>
@@ -226,6 +231,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
 
   const TvlTotal = ({ data }: any) => {
     const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
+    console.log(ichitokens)
     return (
       <>
         <p className="text-xs text-white mb-1">
@@ -251,6 +257,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       </>
     )
   }
+
   const InWalletTotal = ({ data }: any) => {
     const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
     return (
@@ -280,6 +287,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   }
   const EmissionsTotal = ({ data }: any) => {
     const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
+
     return (
       <>
         <p className="text-xs text-white mb-1">
@@ -302,6 +310,15 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                 )
           )}
         </p>
+      </>
+    )
+  }
+
+  const TokenIchiGamma = ({ data }: any) => {
+
+    return (
+      <>
+     
       </>
     )
   }
@@ -362,22 +379,28 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
       }
     )
   }
-  console.log('pagination >> ', pagination)
+  // console.log('pagination >> ', pagination)
+  const ichitokens = useIchiVaultsData(pagination.liquidity === 'ichi' ? pagination?.id : zeroAddress)
+  // console.log(tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol)
   return (
     <>
       <div className="relative hidden xl:block z-10 xl:mb-5 w-full">
         <div className="w-full">
           <TableHead
             items={[
-              { text: 'Your Positions', className: 'text-left w-[23%]', sortable: false },
-              { text: 'Point Stack', className: 'text-left w-[10%]', sortable: false },
+              { text: 'Your Positions', className: 'text-left w-[23%] text-xs', sortable: false },
+              { text: 'Point Stack', className: 'text-left w-[10%] text-xs', sortable: false },
               // { text: 'Status', className: 'text-left w-[15%]', sortable: false },
-              { text: 'Range', className: 'text-left w-[14%]', sortable: false },
-              { text: 'APR', className: 'text-right w-[12%]', sortable: false },
-              { text: 'TVL', className: 'text-right w-[8%]', sortable: false },
-              { text: 'In Wallet', className: 'text-right w-[8%]', sortable: false },
-              { text: 'Emissions', className: 'text-right w-[8%]', sortable: false },
-              { text: 'Action', className: 'text-right w-[17%]', sortable: false },
+              { text: 'Range', className: 'text-left w-[22%] text-xs', sortable: false },
+              { text: 'APR', className: 'text-right w-[12%] text-xs', sortable: false },
+              // { text: 'TVL', className: 'text-right w-[8%]', sortable: false },
+              { text: 'In Wallet', className: 'text-right w-[8%] text-xs', sortable: false },
+              {
+                text: 'Available to Claim',
+                className: 'text-right w-[8%] text-xs whitespace-nowrap',
+                sortable: false,
+              },
+              { text: 'Action', className: 'text-right w-[17%] text-xs ', sortable: false },
             ]}
             setSort={() => {}}
             setSortIndex={() => {}}
@@ -387,7 +410,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
 
           {data && data?.length > 0 ? (
             <>
-              <TableBody>
+              <TableBody className="whitespace-nowrap">
                 {pagination.map((position: positions) => {
                   // console.log('each', isInRange, position)
                   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -410,48 +433,112 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                     <>
                       <TableRow key={position.id}>
                         <TableCell className="flex w-[23%]">
-                          <div className="flex items-center w-full gap-2">
-                            <div className="flex items-center min-w-[38px] max-2xl:w-[50px]">
-                              <Image
-                                src={`/static/images/tokens/${position.token0.symbol}.svg`}
-                                alt="token"
-                                className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
-                                width={30}
-                                height={30}
-                              />
-                              <Image
-                                src={`/static/images/tokens/${position.token1.symbol}.svg`}
-                                alt="token"
-                                className="-ml-4 rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
-                                width={30}
-                                height={30}
-                              />
-                            </div>
-                            <div className="flex flex-col gap-1 max-2xl:max-w-[85%] 2xl:max-w-full">
-                              <h5 className="text-sm text-white font-semibold leading-none">
-                                {position.token0.symbol} / {position.token1.symbol}
-                              </h5>
-                              <div className="flex items-center gap-1 h-[26px]">
-                                <span className="py-1 px-2 h-[1.875rem] max-w-[95%] flex flex-col justify-center text-xs button-primary rounded-lg">
-                                  <span className='truncate'>Concentrated</span>
-                                </span>
-                                <span className="!py-1 px-3  h-[1.875rem] flex flex-col justify-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-                                  {formatAmount(toBN(position.pool.fee).div(10000), 3)}%
-                                </span>
-                                <span className="!py-0 px-3 h-[1.875rem] text-lg text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-                                  <span className="icon-info"></span>
-                                </span>
-                              </div>
-                              <span
-                                className={`!py-1 px-3 h-[1.875rem] flex flex-col justify-center items-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
-                              >
-                                {
-                                  totalCampaigns.find(
-                                    (add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase()
-                                  )?.multiplier
-                                }
-                              </span>
-                            </div>
+                          <div className="flex items-center w-full gap-2 py-4 -mb-[15px]">
+                            {position.liquidity === 'gamma' || position.liquidity === 'ichi' ? (
+                              <>
+                                <div className="flex items-center min-w-[38px] max-2xl:w-[50px] -mt-[15px]">
+                                  <Image
+                                    src={
+                                      position.liquidity === 'ichi'
+                                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}.svg`
+                                        : position.liquidity === 'gamma'
+                                          ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token0.id.toLowerCase())?.basetoken.symbol}.svg`
+                                          : `/static/images/tokens/${position?.token0?.symbol}.svg`
+                                    }
+                                    alt="token"
+                                    className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
+                                    width={30}
+                                    height={30}
+                                  />
+                                  <Image
+                                    src={
+                                      position.liquidity === 'ichi'
+                                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}.svg`
+                                        : position.liquidity === 'gamma'
+                                          ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token1.id.toLowerCase())?.basetoken.symbol}.svg`
+                                          : `/static/images/tokens/${position?.token1?.symbol}.svg`
+                                    }
+                                    alt="token"
+                                    className="-ml-4 rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
+                                    width={30}
+                                    height={30}
+                                  />
+                                </div>
+                                <div className="flex flex-col gap-2 max-2xl:max-w-[85%] 2xl:max-w-full">
+                                  <h5 className="text-sm text-white font-semibold leading-none">
+                                    {position.liquidity === 'ichi'
+                                      ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
+                                      : position.liquidity === 'gamma'
+                                        ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token0.id.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token1.id.toLowerCase())?.basetoken.symbol}`
+                                        : `${position?.token0?.symbol} / ${position?.token1?.symbol}`}
+                                  </h5>
+                                  <div className="flex items-center gap-2 h-[26px]">
+                                    <span className="py-1 px-2 h-[1.875rem] max-w-[95%] flex flex-col justify-center text-xs button-primary rounded-lg">
+                                      <span className="truncate">Concentrated</span>
+                                    </span>
+                                    <span className="!py-1 px-3  h-[1.875rem] flex flex-col justify-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
+                                      {formatAmount(toBN(position.pool.fee).div(10000), 3)}%
+                                    </span>
+                                    {/* <span className="!py-0 px-3 h-[1.875rem] text-lg text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
+                                      <span className="icon-info"></span>
+                                    </span> */}
+                                  </div>
+                                  <span
+                                    className={`!py-1 px-3 h-[1.875rem] flex flex-col justify-center items-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+                                  >
+                                    {
+                                      totalCampaigns.find(
+                                        (add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase()
+                                      )?.multiplier
+                                    }
+                                  </span>
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <div className="flex items-center min-w-[38px] max-2xl:w-[50px]  -mt-[15px]">
+                                  <Image
+                                    src={`/static/images/tokens/${position.token0.symbol}.svg`}
+                                    alt="token"
+                                    className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
+                                    width={30}
+                                    height={30}
+                                  />
+                                  <Image
+                                    src={`/static/images/tokens/${position.token1.symbol}.svg`}
+                                    alt="token"
+                                    className="-ml-4 rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
+                                    width={30}
+                                    height={30}
+                                  />
+                                </div>
+                                <div className="flex flex-col gap-2 max-2xl:max-w-[85%] 2xl:max-w-full">
+                                  <h5 className="text-sm text-white font-semibold leading-none">
+                                    {position.token0.symbol} / {position.token1.symbol}
+                                  </h5>
+                                  <div className="flex items-center gap-2 h-[26px]">
+                                    <span className="py-1 px-2 h-[1.875rem] max-w-[95%] flex flex-col justify-center text-xs button-primary rounded-lg">
+                                      <span className="truncate">Concentrated</span>
+                                    </span>
+                                    <span className="!py-1 px-3  h-[1.875rem] flex flex-col justify-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
+                                      {formatAmount(toBN(position.pool.fee).div(10000), 3)}%
+                                    </span>
+                                    {/* <span className="!py-0 px-3 h-[1.875rem] text-lg text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
+                                      <span className="icon-info"></span>
+                                    </span> */}
+                                  </div>
+                                  <span
+                                    className={`!py-1 px-3 h-[1.875rem] flex flex-col justify-center items-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300 ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase())?.multiplier ? 'block' : 'hidden'}`}
+                                  >
+                                    {
+                                      totalCampaigns.find(
+                                        (add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase()
+                                      )?.multiplier
+                                    }
+                                  </span>
+                                </div>
+                              </>
+                            )}
                           </div>
                         </TableCell>
                         <TableCell className="flex w-[10%]">
@@ -558,17 +645,30 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                             }
                           </div>
                         </TableCell>
-                        <TableCell className="w-[14%]">
+                        <TableCell className="w-[22%]">
                           {/* Range */}
-                          <SetStatus
-                            token0={position.token0}
-                            token1={position.token1}
-                            tickLower={position.tickLower}
-                            tickUpper={position.tickUpper}
-                            liquidity={position.liquidity}
-                            setIsInRange={setIsInRange}
-                            isInRange={isInRange}
-                          />
+
+                          {position.liquidity === 'ichi' ? (
+                            <div className="flex justify-center mx-auto items-center">
+                              <Image src={'/static/images/ichi.svg'} alt="ichi" height={48} width={150} />
+                            </div>
+                          ) : position.liquidity === 'gamma' ? (
+                            <div className="mx-auto flex justify-center items-center">
+                              <Image src={'/static/images/gamma.svg'} alt="ichi" height={48} width={150} />
+                            </div>
+                          ) : (
+                            <>
+                              <SetStatus
+                                token0={position.token0}
+                                token1={position.token1}
+                                tickLower={position.tickLower}
+                                tickUpper={position.tickUpper}
+                                liquidity={position.liquidity}
+                                setIsInRange={setIsInRange}
+                                isInRange={isInRange}
+                              />
+                            </>
+                          )}
                         </TableCell>
                         <TableCell className="w-[12%] flex justify-end">
                           {/* APR */}
@@ -604,8 +704,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                             }
                           />
                         </TableCell>
-                        <TableCell className="w-[8%] flex justify-end">
-                          {/* TVL */}
+                        {/* <TableCell className="w-[8%] flex justify-end">
                           <div className="flex flex-col justify-center items-end">
                             <TvlTotal data={position} />
 
@@ -619,7 +718,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                               {position.token1.symbol}
                             </span>
                           </div>
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell className="w-[8%] flex justify-end">
                           {/* In Wallet */}
                           <div className="flex flex-col justify-center items-end">
@@ -674,24 +773,24 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
                               <span className="icon-manage" />
                               <span className="text-xs">Manage</span>
                             </Button>
-                            {position.liquidity !== 'ichi' ? (
-                              <>
-                                <Button
-                                  variant="tertiary"
-                                  className="h-[38px] w-[80px] bg-opacity-40 flex items-center gap-1 justify-center"
-                                  onClick={() => {
-                                    if (position.liquidity !== 'ichi') {
-                                      handleClaim(position.id)
-                                    }
-                                  }}
-                                >
-                                  <span className="icon-coin" />
-                                  <span className="text-xs">Claim</span>
-                                </Button>
-                              </>
-                            ) : (
-                              <></>
-                            )}
+                            {/* {position.liquidity !== 'ichi' ? ( */}
+                            <>
+                              <Button
+                                variant="tertiary"
+                                className="h-[38px] w-[80px] bg-opacity-40 flex items-center gap-1 justify-center"
+                                onClick={() => {
+                                  if (position.liquidity !== 'ichi') {
+                                    handleClaim(position.id)
+                                  }
+                                }}
+                              >
+                                <span className="icon-coin" />
+                                <span className="text-xs">Claim</span>
+                              </Button>
+                            </>
+                            {/* ) : ( */}
+                            {/* <></> */}
+                            {/* )} */}
                           </div>
                         </TableCell>
                       </TableRow>
