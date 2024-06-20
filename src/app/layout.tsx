@@ -4,11 +4,13 @@ import '@/src/assets/styles/globals.css'
 import '@rainbow-me/rainbowkit/styles.css'
 import { Poppins } from 'next/font/google'
 import Head from 'next/head'
-
+import { Analytics } from '@vercel/analytics/react'
 import Decorator from '@/src/components/Common/Layout/Background'
 import Footer from '@/src/components/Common/Layout/Footer'
 import Header from '@/src/components/Common/Layout/Header'
 import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
+import RedirectHandler from '@/src/library/hooks/RedirectHandler'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { getDefaultConfig, getDefaultWallets, midnightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import {
@@ -91,45 +93,50 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname()
   return (
     <html lang="en">
+      <Analytics />
+      <GoogleAnalytics gaId="G-1MMRJBQK96" />
       <Head>
+        <meta name="google-site-verification" content="mn5jWOAzNqP937Tzbl_Rvtnh0aswaep1gUvODRvTZp4" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <body
         suppressHydrationWarning={true}
         className={`${poppins.className}  relative pt-[26px]  mix-blend-lighten ${pathname === '/' ? 'bg-cover ' : ''}`}
       >
-        <ReduxProvider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <WagmiProvider config={wagmiConfig}>
-              <QueryClientProvider client={queryClient}>
-                <RainbowKitProvider
-                  initialChain={blast.id}
-                  theme={midnightTheme({
-                    accentColor:
-                      'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%)',
-                    accentColorForeground: 'white',
-                    fontStack: 'system',
-                    overlayBlur: 'small',
-                  })}
-                >
-                  <div className="flex flex-col min-h-screen">
-                    <Updaters />
-                    <Header />
-                    <Slippage />
-                    <Toaster />
-                    <NotificationFeed />
-                    <MobileHeader />
-                    <div className="flex-1">{children}</div>
-                    <div className="mt-auto">
-                      <Footer />
+        <RedirectHandler>
+          <ReduxProvider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <WagmiProvider config={wagmiConfig}>
+                <QueryClientProvider client={queryClient}>
+                  <RainbowKitProvider
+                    initialChain={blast.id}
+                    theme={midnightTheme({
+                      accentColor:
+                        'linear-gradient(90deg, rgba(254, 94, 53, 0.80) 10.49%, rgba(246, 119, 2, 0.80) 92.04%, rgba(255, 239, 118, 0.80) 158.76%)',
+                      accentColorForeground: 'white',
+                      fontStack: 'system',
+                      overlayBlur: 'small',
+                    })}
+                  >
+                    <div className="flex flex-col min-h-screen">
+                      <Updaters />
+                      <Header />
+                      <Slippage />
+                      <Toaster />
+                      <NotificationFeed />
+                      <MobileHeader />
+                      <div className="flex-1">{children}</div>
+                      <div className="mt-auto">
+                        <Footer />
+                      </div>
+                      <Decorator />
                     </div>
-                    <Decorator />
-                  </div>
-                </RainbowKitProvider>
-              </QueryClientProvider>
-            </WagmiProvider>
-          </PersistGate>
-        </ReduxProvider>
+                  </RainbowKitProvider>
+                </QueryClientProvider>
+              </WagmiProvider>
+            </PersistGate>
+          </ReduxProvider>
+        </RedirectHandler>
       </body>
     </html>
   )

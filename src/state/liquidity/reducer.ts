@@ -1,6 +1,6 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
-import { getAllPools, getConcentratedPools, getGammaVaults, getLiquidityV2Pairs, getRingsCampaigns } from './thunks'
+import { getAllPools, getGammaVaults, getLiquidityV2Pairs, getRingsCampaigns } from './thunks'
 import { LiquidityState, V2PairId, v2FactoryData, v3FactoryData } from './types'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import {
@@ -27,6 +27,7 @@ import { POOL_DAY_DATA } from '@/src/library/apollo/queries/pools'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ALGEBRA_SUBGRAPH } from '@/src/library/constants/addresses'
 import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
+import moment from 'moment'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -35,10 +36,7 @@ export const initialState: LiquidityState = {
     data: [],
     tableData: [],
   },
-  concentratedPools: {
-    state: ApiState.LOADING,
-    data: [],
-  },
+
   pools: {
     state: ApiState.LOADING,
     data: [],
@@ -98,16 +96,7 @@ export default createReducer(initialState, (builder) => {
     .addCase(getLiquidityV2Pairs.rejected, (state) => {
       state.v2Pairs.state = ApiState.ERROR
     })
-    .addCase(getConcentratedPools.pending, (state) => {
-      state.concentratedPools.state = ApiState.LOADING
-    })
-    .addCase(getConcentratedPools.fulfilled, (state, action) => {
-      state.concentratedPools.state = ApiState.SUCCESS
-      state.concentratedPools.data = action.payload
-    })
-    .addCase(getConcentratedPools.rejected, (state) => {
-      state.concentratedPools.state = ApiState.ERROR
-    })
+
     .addCase(getLiquidityTableElements.pending, (state) => {
       state.v2Pairs.tablestate = ApiState.LOADING
     })
@@ -250,7 +239,7 @@ export const fetchV3PoolDayData = async () => {
   try {
     const { data } = await algebra_client.query({
       query: POOL_DAY_DATA,
-      // variables: { date: selectedDateTimestamp / 1000 }, // Pass the user variable as owner
+      variables: { from: Math.round(+moment().add(-1, 'week') / 1000) },
     })
     // Data is available in `data.positions`
     return data

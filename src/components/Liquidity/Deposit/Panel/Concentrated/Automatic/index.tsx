@@ -34,13 +34,17 @@ const providers = [
     src: 'https://app.gamma.xyz',
     logo: {
       src: '/static/images/providers/gamma.svg',
-      width: 63.75,
-      height: 21,
+      width: 93.75,
+      height: 51,
     },
   },
 ]
 
-const Automatic = () => {
+const Automatic = ({
+  providerPick
+}: {
+  providerPick?: number
+}) => {
   const [optionActive, setOptionActive] = useState<'ADD' | 'WITHDRAW'>('ADD')
   const [firstToken, setFirstToken] = useState<IToken>({
     name: 'Fenix',
@@ -115,6 +119,11 @@ const Automatic = () => {
   const handlerOption = (option: 'ADD' | 'WITHDRAW') => {
     setOptionActive(option)
   }
+
+  useEffect(() => {
+    if(!providerPick) return;
+    setCurrentProvider(providerPick.toString())
+  }, [providerPick])
 
   return (
     <>

@@ -109,8 +109,8 @@ const Classic = ({
     functionName: 'balanceOf',
     args: [useAccount().address],
     query: {
-      refetchInterval: 1500
-    }
+      refetchInterval: 1500,
+    },
   })
   const updateTokenPrice = useCallback((data: any[], symbol: string) => {
     const foundToken = data.find((token) => token.basetoken.symbol === symbol)
@@ -308,13 +308,12 @@ const Classic = ({
         abi: ROUTERV2_ABI,
         address: contractAddressList.v2router as Address,
         functionName: 'addLiquidity',
-        // TODO: handle deadline and slippage
         args: [
           firstToken.address as Address,
           secondToken.address as Address,
           depositType === 'STABLE',
           parseUnits(firstValue, firstToken?.decimals),
-          parseUnits(firstValue, firstToken?.decimals),
+          parseUnits(secondValue, secondToken?.decimals),
           0,
           0,
           account.address as Address,
@@ -488,7 +487,7 @@ const Classic = ({
       </div>
       <div className="mb-2.5 flex items-center justify-between gap-1.5 rounded-[10px] border border-shark-950 bg-shark-400 bg-opacity-40 px-[10px] py-[11px] max-md:items-start sm:gap-2.5 sm:px-[19px]">
         <div>
-          <div className="mb-2.5 flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5">
             <div className="flex flex-shrink-0 items-center">
               <Image
                 src={`/static/images/tokens/${firstToken.symbol}.svg`}
@@ -510,7 +509,7 @@ const Classic = ({
                 {firstToken.symbol} / {secondToken.symbol}
               </h5>
               <div className="flex items-center gap-[5px] max-md:flex-wrap">
-                {'VOLATILE' === depositType ? (
+                {/* {'VOLATILE' === depositType ? (
                   <Button variant="tertiary" className="h-[28px] flex-shrink-0 !px-1 !py-1 max-md:!text-xs">
                     Volatile Pool
                   </Button>
@@ -525,9 +524,9 @@ const Classic = ({
                   <Button variant="tertiary" className="h-[28px] flex-shrink-0 !px-5 !py-0 max-md:!text-xs">
                     Stable Pool
                   </Button>
-                ) : null}
+                ) : null} */}
 
-                <Button
+                {/* <Button
                   variant="tertiary"
                   className="h-[28px] flex-shrink-0 !border-opacity-100 !bg-shark-300 !bg-opacity-40 !px-5 !py-0 max-md:!text-xs [&:not(:hover)]:border-shark-200"
                 >
@@ -537,7 +536,7 @@ const Classic = ({
                     )?.fee
                   }{' '}
                   %
-                </Button>
+                </Button> */}
                 {/* <Button
                   variant="tertiary"
                   className="!p-0 h-[28px] w-[33px] !border-opacity-100 [&:not(:hover)]:border-shark-200 !bg-shark-300 !bg-opacity-40 max-md:!text-xs flex-shrink-0"
@@ -549,7 +548,7 @@ const Classic = ({
           </div>
           <div className="flex items-center gap-[5px] text-xs leading-normal">
             {/* <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]"> */}
-            <div className="text-white">Liquidity</div>
+            {/* <div className="text-white">Liquidity</div>
             <div className="flex items-center gap-2.5">
               <p className="flex flex-shrink-0 items-center gap-[5px] text-shark-100">
                 <Image
@@ -571,21 +570,21 @@ const Classic = ({
                 />
                 <span>{formatNumber(Number(secondReserve) / 1e18, 8)}</span>
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
 
         <div className="text-xs leading-normal text-white">
-          <div className="text-right md:mb-[5px]">APR</div>
+          {/* <div className="text-right md:mb-[5px]">APR</div> */}
 
-          <p className="border-1 rounded-[10px] border border-solid border-shark-300 bg-shark-400 bg-opacity-40 px-5 py-[5px]">
+          {/* <p className="border-1 rounded-[10px] border border-solid border-shark-300 bg-shark-400 bg-opacity-40 px-5 py-[5px]">
             {
               pairs?.find(
                 (pair: LiquidityTableElement) => pair?.pairAddress?.toLowerCase() === pairAddress.toLowerCase()
               )?.apr
             }{' '}
             %
-          </p>
+          </p> */}
         </div>
       </div>
       <div className="mb-2.5 flex flex-wrap gap-1.5 rounded-[10px] border border-shark-950 bg-shark-400 bg-opacity-40 p-[13px] md:gap-2.5 md:px-[19px] md:py-[11px]">

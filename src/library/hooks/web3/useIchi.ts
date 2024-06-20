@@ -115,11 +115,13 @@ export const useIchiPositions = () => {
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
   const { address } = useAccount()
-  const [positions, setpositions] = useState<positions[]>([])
+  const [ichipositions, setichipositions] = useState<positions[]>([])
+  const [ichiLoading, setichiLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchpositions = async () => {
       if (address) {
+        setichiLoading(true)
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
         const pos = await Promise.all(
           amounts?.map(async (item) => {
@@ -211,16 +213,15 @@ export const useIchiPositions = () => {
             }
           })
         )
-        // FIXME: STARK
-        //DEV FIX
-        //
-        setpositions(pos)
+
+        setichipositions(pos)
+        setichiLoading(false)
       }
     }
     fetchpositions()
   }, [address])
 
-  return positions
+  return { ichipositions, ichiLoading }
 }
 
 export const useIchiVaultsData = (vaultAddress: string) => {
@@ -243,6 +244,6 @@ export const useIchiVaultsData = (vaultAddress: string) => {
       if (vaultInfo) setvaultData(vaultInfo)
     }
     fetchVault()
-  }, [])
+  }, [vaultAddress])
   return vaultData
 }
