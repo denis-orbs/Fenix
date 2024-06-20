@@ -11,7 +11,7 @@ import { useAccount } from 'wagmi'
 import { fetchNativePrice, fetchV3Positions } from '@/src/state/liquidity/reducer'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
-import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
+import { useIchiPositions, useIchiVaultsDataMap } from '@/src/library/hooks/web3/useIchi'
 import { getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionsApr'
@@ -35,7 +35,9 @@ const MyStrategies = () => {
   const [progress, setProgress] = useState<number>(0)
   const { chainId, address } = useAccount()
   const { ichipositions, ichiLoading } = useIchiPositions()
-  console.log('!!!', ichipositions)
+  const vaultsMap = useIchiVaultsDataMap(
+    nonZeroPosition.filter(({ liquidity }) => liquidity).map(({ id }) => id)
+  )
 
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))

@@ -226,6 +226,29 @@ export const useIchiPositions = () => {
   return { ichipositions, ichiLoading }
 }
 
+export const useIchiVaultsDataMap = (vaultAddresses: string[]) => {
+  const [vaultsMap, setVaultsMap] = useState<{ [id: string]: IchiVault }>({})
+
+  useEffect(() => {
+    const dex = SupportedDex.Fenix
+    const chain = 'blast' // SupportedChainId.blast
+
+    const fetchVault = async () => {
+      const vaults = await getIchiVaultsDataByIds(chain, dex, vaultAddresses)
+
+      if (vaults.length) {
+        const vaultsMap: { [key: string]: IchiVault } = vaults.reduce(
+          (map, item) => ({ ...map, [item.id]: item }),
+          {},
+        )
+        setVaultsMap(vaultsMap)
+      }
+    }
+    fetchVault()
+  }, [vaultAddresses, setVaultsMap])
+  return vaultsMap
+}
+
 export const useIchiVaultsData = (vaultAddress: string) => {
   const dex = SupportedDex.Fenix
   const chain = SupportedChainId.blast
@@ -241,7 +264,7 @@ export const useIchiVaultsData = (vaultAddress: string) => {
 
   useEffect(() => {
     const fetchVault = async () => {
-      console.log('!!!req3')
+      console.log('!!!req3', vaultAddress)
       const vaultInfo = await getIchiVaultInfo(chain, dex, vaultAddress)
       console.log('!!!res3', vaultInfo)
       // FIXME: STARK
