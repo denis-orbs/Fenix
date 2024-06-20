@@ -154,7 +154,7 @@ export const boostedPools: BoostedPool[] = [
     blastGold: 0,
     id: '0xcbf7b47e9da345812e3bd732e3ee369a7203b5ae',
     apr: 0,
-    poolType: 'v2',
+    poolType: 'v3',
   },
   // {
   //   pair: 'MCLB/WETH',
