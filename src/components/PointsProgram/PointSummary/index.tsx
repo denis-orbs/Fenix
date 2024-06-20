@@ -13,9 +13,8 @@ import { getPointsDistributionTargetTimestamps } from '@/src/library/utils/campa
 import { useReadContract } from 'wagmi'
 import { erc20Abi, zeroAddress } from 'viem'
 
-const PointSummary = ({ userData }: any) => {
+const PointSummary = () => {
   //
-
   const { data, isLoading } = useRingsPointsLeaderboard()
   const [nextTargetTime, setNextTargetTime] = useState<number>()
 
@@ -44,9 +43,9 @@ const PointSummary = ({ userData }: any) => {
     const interval = setInterval(calculateNextTargetTime, 60 * 1000)
     return () => clearInterval(interval)
   }, [])
-
   const renderer = ({
     hours,
+    days,
     minutes,
     seconds,
     completed,
@@ -55,6 +54,7 @@ const PointSummary = ({ userData }: any) => {
     minutes: number
     seconds: number
     completed: boolean
+    days: number
   }) => {
     if (completed) {
       calculateNextTargetTime()
@@ -64,7 +64,7 @@ const PointSummary = ({ userData }: any) => {
           <div className="flex items-center justify-between px-4">
             <div className="flex flex-col">
               <span className="text-white text-xs bg-shark-400 bg-opacity-40 px-2 py-1 rounded-lg text-center">
-                {hours}
+                {hours + days * 24}
               </span>
               <span className="text-shark-100 text-xs text-center">Hours</span>
             </div>
@@ -92,6 +92,12 @@ const PointSummary = ({ userData }: any) => {
       return 0
     }
     return data.find((entry) => entry?.id?.toLowerCase() === account?.toLowerCase())?.accumulated_rings_points
+  }, [data, account])
+  const userPotentialGoldRewards = useMemo(() => {
+    if (!data || !account) {
+      return 0
+    }
+    return data.find((entry) => entry?.id?.toLowerCase() === account?.toLowerCase())?.gold_potential_rewards
   }, [data, account])
   const userRank = useMemo(() => {
     if (!data || !account) {
@@ -173,14 +179,6 @@ const PointSummary = ({ userData }: any) => {
                   Fenix Goldies NFTs
                 </Button>
               </div>
-              {/* <ul className="list-disc  pl-4 space-y-1">
-                <li className="list-item">100% of Blast Gold will be distributed to holders.</li>
-                <li className="list-item">Fully refundable after 21 days</li>
-                <li className="list-item">Early Access to our District One Sprint Launch</li>
-                <li className="list-item">
-                  For every NFT you own, you get a 1% boost, up to a maximum of 20 NFTs (20%)
-                </li>
-              </ul> */}
             </div>
           </p>
           <div className="flex items-center justify-center gap-4 max-2xl:gap-2 w-full">
@@ -205,6 +203,21 @@ const PointSummary = ({ userData }: any) => {
           </div>
         </div>
         <div className="point-summary-box relative">
+          <p className="text-sm text-white text-center w-full mb-4">Next Rings Points Drop</p>
+          <div className="w-full">
+            <Countdown
+              key={nextTargetTime}
+              date={nextTargetTime}
+              daysInHours={true}
+              autoStart={true}
+              renderer={renderer}
+            />
+          </div>
+          <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
+            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
+          </span>
+        </div>
+        <div className="point-summary-box relative">
           <p className="text-sm mb-2 text-white w-full text-center">Leaderboard Position</p>
           <div className="flex items-center justify-center gap-3 w-full">
             <div className="flex items-center justify-center w-12 h-12 border border-solid rounded-lg bg-shark-400 border-shark-400">
@@ -221,46 +234,32 @@ const PointSummary = ({ userData }: any) => {
             <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
           </span>
         </div>
+
         <div className="point-summary-box relative">
-          <p className="text-sm text-white text-center w-full mb-4">
-            Next Rings Points Drop
-            {/* Next Points Drop <span className="text-xs mb-4 text-green-400 w-full ml-1">14 Feb, 2PM UTC</span> */}
-          </p>
+          <p className="text-sm text-white text-center w-full -mt-4 mb-4">Gold Potential Rewards</p>
+          <div className="flex items-center gap-2">
+            <Image src={'/static/images/point-stack/blast-gold.svg'} alt="Gold" width={25} height={25} />
+            <div className="text-white font-semibold">
+              {isLoading ? <Loader size={'20px'} /> : formatAmount(userPotentialGoldRewards, 6, true)}
+            </div>
+          </div>
+
+          <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
+            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
+          </span>
+        </div>
+
+        <div className="point-summary-box relative">
+          <p className="text-sm text-white text-center w-full mb-4">Next Gold Points Drop</p>
           <div className="w-full">
             <Countdown
-              key={nextTargetTime}
-              date={nextTargetTime}
+              key={34}
+              date={new Date('2024-06-26T09:00:00Z').getTime()}
               daysInHours={true}
               autoStart={true}
               renderer={renderer}
             />
           </div>
-          <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
-            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
-          </span>
-        </div>
-        <div className="point-summary-box relative">
-          <p className="text-sm text-white text-center w-full -mt-4 mb-4">
-            Gold Potential Rewards
-          </p>
-          <div className='flex items-center gap-2'>
-              <Image src={'/static/images/point-stack/blast-gold.svg'} alt='Gold' width={25} height={25} />
-              <div className='text-white font-semibold'>12,000,000</div>
-          </div>
-
-          <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
-            <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
-          </span>
-        </div>
-        <div className="point-summary-box relative">
-          <p className="text-sm text-white text-center w-full -mt-4 mb-4">
-            Gold-Qualifying Rings
-          </p>
-          <div className='flex items-center gap-2'>
-              <Image src={'/static/images/point-stack/fenix-ring.svg'} alt='Rings' width={25} height={25} />
-              <div className='text-white font-semibold'>12,000,000</div>
-          </div>
-
           <span className="absolute top-[-10px] -left-[0px] z-[15] rotate-90 hidden xl:block">
             <Image src="/static/images/components/line.svg" alt="line" className="w-1 h-10" width={1} height={35} />
           </span>
