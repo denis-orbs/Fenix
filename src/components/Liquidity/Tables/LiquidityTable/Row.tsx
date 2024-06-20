@@ -48,6 +48,7 @@ const RowData = ({
 
   const [openInfo, setOpenInfo] = useState<boolean>(false)
   const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
+  const [openTooltipFXS, setopenTooltipFXS] = useState<boolean>(false)
   const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
   const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
   const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
@@ -102,7 +103,7 @@ const RowData = ({
       ?.weekly?.feeApr || null
 
   // console.log('row >> ', row)
-  
+
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -163,7 +164,7 @@ const RowData = ({
               <span ref={hoverRef} className="flex gap-2">
                 <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
-                    <div className='relative flex items-center'>
+                    <div className="relative flex items-center">
                       {campaign?.pointStack?.map((stack, index) => (
                         <Image
                           key={index}
@@ -185,6 +186,9 @@ const RowData = ({
                             if (stack === 'turtle-club') {
                               setOpenTooltipTurtleClub(true)
                             }
+                            if (stack === 'FXS') {
+                              setopenTooltipFXS(true)
+                            }
                           }}
                           onMouseLeave={() => {
                             if (openTooltipGold) {
@@ -199,13 +203,18 @@ const RowData = ({
                             if (openTooltipTurtleClub) {
                               setOpenTooltipTurtleClub(false)
                             }
+                            if (openTooltipFXS) {
+                              setopenTooltipFXS(false)
+                            }
                           }}
                         />
                       ))}
                       {openTooltipGold && (
                         <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
                           <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                            <p className="text-xs">This pool will receive {campaign?.blastGoldAmount} of Blast Gold till the 25th June</p>
+                            <p className="text-xs">
+                              This pool will receive {campaign?.blastGoldAmount} of Blast Gold till the 25th June
+                            </p>
                           </div>
                         </div>
                       )}
@@ -222,6 +231,15 @@ const RowData = ({
                         <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
                           <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                             <p className="text-xs">wrsETH liquidity providers will earn 1x Kelp Miles from this pool</p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipFXS && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              sfrxETH & sFRAX is getting $500 USD each in FXS tokens from 20th to 27th
+                            </p>
                           </div>
                         </div>
                       )}
