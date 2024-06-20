@@ -24,7 +24,7 @@ const GoldRushBanner = () => {
       <div
         className='!w-[300px]'
       >
-        <ul className='!w-[35px] mx-auto flex items-center justify-center'> {dots} </ul>
+        <ul className='!w-[35px] mx-auto flex items-center justify-center relative sm:left-[-100px]'> {dots} </ul>
       </div>
     ),
     customPaging: i => (
@@ -52,7 +52,7 @@ const GoldRushBanner = () => {
   }
 
   return (
-    <div className="blast-banner max-lg:flex-col overflow-hidden rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl">
+    <div className="blast-banner flex items-center overflow-hidden rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl">
       <Image objectFit='cover' quality={100} src={'/static/images/blast-point-banner/noise-texture.svg'} alt='Noise Texture' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0 bottom-0 right-0 z-[5] rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
       <Image objectFit='cover' quality={100} src={'/static/images/blast-point-banner/noise-texture-mobile.svg'} alt='Noise Texture Mobile' className='lg:hidden w-[100%] h-[100%] absolute top-0 left-0 bottom-0 right-0 z-[5] rounded-tl-[3.5rem] rounded-br-[3.5rem] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
       <Image objectFit='cover' quality={100} src={'/static/images/blast-point-banner/cell.svg'} alt='Cell' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0 bottom-0 right-0 z-[5] rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
@@ -77,7 +77,7 @@ const GoldRushBanner = () => {
             <div className='h-[50px] border-l border-shark-100'></div>
             <div className='flex flex-col items-start gap-1'>
               <div className='text-white font-bold text-sm'>Join the Gold Rush</div>
-              <div className='text-white font-medium text-xs'>Deposit liquidity to earn your share of <span className='text-[#FFEF76] font-semibold'>75,000 Blast Gold</span></div>
+              <div className='text-white font-medium text-xs'>Deposit liquidity to earn your share of <span className='text-[#FFEF76] font-semibold'>100K Blast Gold</span></div>
             </div>
         </div>
         <div className='flex items-center gap-3'>
@@ -89,19 +89,19 @@ const GoldRushBanner = () => {
             </div>
         </div>
       </div>
-      <div className="text-white z-[12] lg:hidden relative w-full h-[135px] my-auto">
+      <div className="text-white z-[12] lg:hidden relative w-[70%] h-[135px] my-auto">
         <div className='slider-container w-full flex flex-col mt-4 h-full'>
           <Slider ref={sliderRef} {...settings} beforeChange={(currentSlide: number, nextSlide: number) => setCurrentSlideNumber(nextSlide)}>
-            <div className='!flex items-center justify-center gap-3 z-[8] w-full h-full'>
+            <div className='!flex items-center justify-start gap-3 z-[8] w-full h-full'>
               <Image src={'/static/images/point-stack/blast-gold.svg'} alt='Blast Gold' className='w-[36px] h-[36px] z-[5]' width={10} height={10}/>
               <div className='h-[70px] border-l border-shark-100'></div>
               <div className='flex flex-col items-start gap-1'>
                 <div className='text-white font-bold text-sm'>Join the Gold Rush</div>
                 <div className='text-white font-medium text-xs'>Deposit liquidity to earn your share of</div>
-                <div className='gradient-banner px-3 py-1 font-normal text-white text-xs'>75,000 Blast Gold</div>
+                <div className='gradient-banner px-3 py-1 font-normal text-white text-xs'>100K Blast Gold</div>
               </div>
             </div>
-            <div className='!flex items-center justify-center gap-3 z-[8] w-full'>
+            <div className='!flex items-center justify-start gap-3 z-[8] w-full'>
                 <Image src={'/static/images/blast-point-banner/fenix-ring-liquidity.svg'} alt='Fenix Orbit' className='w-[36px] h-[36px] z-[5]' width={10} height={10}/>
                 <div className='h-[70px] border-l border-shark-100'></div>
                 <div className='flex flex-col items-start gap-1'>
@@ -113,6 +113,9 @@ const GoldRushBanner = () => {
           </Slider>
         </div>
       </div>
+      <Button variant="primary" className={`relative z-[20] max-lg:!px-2 max-lg:!py-1  whitespace-nowrap`} href="/liquidity">
+        <span>Deposit Now</span>
+      </Button>
     </div>
   )
 }
