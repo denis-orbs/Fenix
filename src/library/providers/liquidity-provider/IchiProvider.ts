@@ -1,18 +1,10 @@
-import {
-  SupportedChainId,
-  SupportedDex,
-  getAllUserAmounts,
-  getIchiVaultInfo,
-  UserAmountsInVault,
-} from '@ichidao/ichi-vaults-sdk'
+import { SupportedChainId, SupportedDex, getAllUserAmounts, getIchiVaultInfo } from '@ichidao/ichi-vaults-sdk'
 import { ethers } from 'ethers'
 import { LiquidityProvider } from '.'
 import { PoolProvider } from '../PoolProvider'
 import { toBN } from '../../utils/numbers'
 import { boostedPools } from '@/src/app/api/rings/campaign/route'
 import { TokenDataProvider } from '../TokenDataProvider'
-import { getIchiVaultsDataByIds } from '@/src/state/liquidity/reducer'
-import { IchiVault } from '@/src/library/hooks/web3/useIchi'
 
 export class IchiProvider extends LiquidityProvider {
   async getUserLiquidity(account: string) {
@@ -28,20 +20,10 @@ export class IchiProvider extends LiquidityProvider {
     let boostedTVL = toBN(0)
 
     const tokenPrices = await TokenDataProvider.getTokenPrices()
-
-    const chain = 'blast' // SupportedChainId.blast
-
-    console.log('!!!req')
-    const vaults = await getIchiVaultsDataByIds(chain, dex, allPositions.map(({ vaultAddress }) => vaultAddress))
-    console.log('!!!res', vaults)
-    const vaultsMap: { [key: string]: IchiVault } = vaults.reduce(
-      (map, item) => ({ ...map, [item.id]: item }),
-      {},
-    )
     const results = await Promise.all(
       allPositions.map(async (position) => {
         const vault = position.vaultAddress
-        const vaultInfo = vaultsMap[vault]
+        const vaultInfo = await getIchiVaultInfo(SupportedChainId.blast, dex, vault)
         const token0 = vaultInfo.tokenA
         const token1 = vaultInfo.tokenB
 

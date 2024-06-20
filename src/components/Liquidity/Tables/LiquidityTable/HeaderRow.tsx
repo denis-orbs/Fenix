@@ -1,11 +1,8 @@
 'use client'
-import { useMemo, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 
-// hooks
-import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
-
-// helpers
-import { buildAprRingsMap } from '@/src/library/utils/build-apr-rings-map'
+// api
+import { fetchRingsApr } from './getAprRings'
 
 // components
 import Row from './Row'
@@ -51,14 +48,8 @@ const HeaderRow = ({
   titleHeader2 = '',
   activeRange = false,
 }: HeaderRowProps) => {
-  // common
-  const { data: ringsList, loading: ringsLoading } = useRingsCampaignsBoostedPools()
-
   // state
-  const aprRingsMap = useMemo(
-    () => (ringsLoading ? buildAprRingsMap(ringsList) : null),
-    [ringsLoading, ringsList],
-  )
+  const [poolsAprRing, setPoolsAprRing] = useState<{ [key: string]: string } | null>(null)
   const [itemsPerPage, setItemPerPage] = useState<number>(20)
   const [activePage, setActivePage] = useState<number>(1)
   const [sort, setSort] = useState<SortTypes | null>(null)
@@ -81,7 +72,7 @@ const HeaderRow = ({
   const sortedMappedTableData: BasicPool[] = useMemo(() => {
     const mappedData = poolsData.map((item) => ({
       ...item,
-      aprRings: (+(aprRingsMap?.[item.id] ?? 0) + +(isNaN(+item.apr!) ? 0 : item.apr ?? 0)).toString(),
+      aprRings: (+(poolsAprRing?.[item.id] ?? 0) + +(isNaN(+item.apr!) ? 0 : item.apr ?? 0)).toString(),
     }))
 
     if (!(sortBy && sort && mappedData[0][sortBy])) {
@@ -89,7 +80,7 @@ const HeaderRow = ({
     }
 
     return mappedData.sort((a, b) => (+a[sortBy]! - +b[sortBy]!) * sort)
-  }, [poolsData, aprRingsMap, sortBy, sort])
+  }, [poolsData, poolsAprRing, sortBy, sort])
   const pageData = useMemo(() => {
     const totalPages = Math.max(1, Math.ceil(sortedMappedTableData.length / itemsPerPage))
 
@@ -104,6 +95,16 @@ const HeaderRow = ({
     setSortBy(sortBy)
     setSort(sort)
   }
+
+  // async helpers
+  async function loadAprRings(): Promise<void> {
+    setPoolsAprRing(await fetchRingsApr())
+  }
+
+  // lifecycle hooks
+  useEffect(() => {
+    loadAprRings()
+  }, [])
 
   return (
     <div className="relative">

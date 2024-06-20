@@ -15,7 +15,6 @@ import Spinner from '../../Common/Spinner'
 import PositionTableMobile from './PositionTableMobile'
 import { useQuery } from '@tanstack/react-query'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
-import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 // import useStore from '@/src/state/zustand'
 
 const MyPositions = () => {
@@ -80,7 +79,15 @@ const MyPositions = () => {
     dispatch(setApr(position))
   }, [position, dispatch])
 
-  const { data: ringsCampaign, loading: isLoadingRingsCampaign } = useRingsCampaigns()
+  const { data: ringsCampaign, isLoading: isLoadingRingsCampaign } = useQuery({
+    queryKey: ['ringsPointsCampaign'],
+    staleTime: 1000 * 60 * 5,
+    queryFn: async () => {
+      const response = await fetch('/api/rings/campaign')
+      return response.json()
+    },
+  })
+
 
   return (
     <>
