@@ -66,16 +66,6 @@ model ring_bonus {
   users       users     @relation(fields: [user_id], references: [id])
 }
 
-model rings_extra_data {
-  id                    String   @id
-  created_at            DateTime @default(now())
-  updated_at            DateTime @default(now())
-  user_id               String   @unique
-  gold_qualifying_rings Decimal  @default(0)
-  potential_gold_reward Decimal  @default(0)
-  users                 users    @relation(fields: [user_id], references: [id])
-}
-
 enum BonusType {
   NFT
 }
