@@ -5,8 +5,10 @@ import { useState } from 'react'
 import { Button } from '@/src/components/UI'
 import Image from 'next/image'
 import { useCloseBanner, useShowBanner } from '@/src/state/user/hooks'
+import useIsMobile from '@/src/library/hooks/useIsMobile'
 
 const BlastBanner = () => {
+  const isMobile = useIsMobile()
   const showBanner = useShowBanner()
   const setCloseBanner = useCloseBanner()
   const [close, setClose] = useState<boolean>(false)
@@ -52,7 +54,7 @@ const BlastBanner = () => {
           Earn your share in <span className='font-bold text-white text-opacity-20 text-xs hover:text-opacity-100 transition-all hover:delay-[0s] delay-[3s] airdrop-gradient max-lg:text-white max-lg:rounded-none rounded-[100px] py-1 px-2'>ONE OF THE BIGGEST AIRDROPS</span> in crypto history
         </div> */}
       </div>
-      <Button variant="primary" className="relative z-[9] max-lg:!px-2 max-lg:!py-1 max-lg:mb-4" href="/liquidity">
+      <Button variant="primary" className={`relative z-[9] max-lg:!px-2 max-lg:!py-1 max-lg:mb-4 max-md:hidden`} href="/liquidity">
         <span>Deposit Now</span>
       </Button>
     </div>
