@@ -52,10 +52,13 @@ const Leaderboard = () => {
       </div>
       <div className="relative">
         <div className="flex items-center w-full mb-3">
-          <span className="text-white w-36 text-center text-sm">#</span>
-          <span className="text-white w-full text-sm">Ranking Addresses</span>
+          <span className="text-white w-[15%] text-center text-sm">Rank</span>
+          <span className="text-white w-[25%] text-sm text-center">Ranking Addresses</span>
+          <span className="text-white w-[20%] text-sm text-center">Multiplier</span>
+          <span className="text-white w-[20%] text-sm text-center">Gold Potential Rewards</span>
+          {/* <span className="text-white w-[20%] text-sm text-center">Gold-Qualifying Rings</span> */}
           <span
-            className="text-white w-36 cursor-pointer text-center text-sm flex items-center justify-end gap-x-2 mr-4"
+            className="text-white w-[20%] cursor-pointer text-center text-sm flex items-center justify-center gap-x-2"
             onClick={() => handleSort()}
           >
             RINGS
@@ -63,7 +66,7 @@ const Leaderboard = () => {
           </span>
         </div>
         {paginatedData.map((data, index: number) => (
-          <Item key={index} data={data} isUser={account?.toLowerCase() === data.id.toLowerCase() ? true : false}/>
+          <Item key={index} data={data} isUser={account?.toLowerCase() === data.id.toLowerCase() ? true : false} />
         ))}
         <Pagination
           className="mx-auto"
