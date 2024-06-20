@@ -128,13 +128,22 @@ export function useGammaVaults() {
   }
 }
 
+export function useRingsCampaignsBoostedPools() {
+  const ringsCampaigns = useAppSelector((state) => state.liquidity.ringsCampaigns)
+  return {
+    loading: ringsCampaigns.state === ApiState.LOADING,
+    data: ringsCampaigns.data?.boostedPools || [],
+  }
+}
+
 export function useRingsCampaigns() {
   const ringsCampaigns = useAppSelector((state) => state.liquidity.ringsCampaigns)
   return {
-    loading: ringsCampaigns?.state === ApiState.LOADING,
-    data: ringsCampaigns.data || [],
+    loading: ringsCampaigns.state === ApiState.LOADING,
+    data: ringsCampaigns.data,
   }
 }
+
 // export function useRingCampaignById(id: string) {
 //   const ringsCampaigns = useRingsCampaigns()
 //   return ringsCampaigns.data.find((campaign: BoostedPool) => campaign.id === id)

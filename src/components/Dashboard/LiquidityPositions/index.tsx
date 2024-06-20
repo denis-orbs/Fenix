@@ -1,88 +1,59 @@
 'use client'
+import { useMemo } from 'react'
 
+// api
+import { buildAprRingsMap } from '@/src/library/utils/build-apr-rings-map'
+
+// hooks
+import { useRingsCampaignsBoostedPools, useV2PairsData } from '@/src/state/liquidity/hooks'
+
+// helpers
+import { fromWei } from '@/src/library/utils/numbers'
+
+// components
 import { Button, TableSkeleton } from '@/src/components/UI'
 import HeaderRow from '@/src/components/Liquidity/Tables/HeaderRow'
-import { PROPS_CLASSIC_LIQUIDITY } from '../types'
-import INFO_API from '../data'
-import { useV2PairsData } from '@/src/state/liquidity/hooks'
-import { useEffect, useMemo, useState } from 'react'
+import NotFoundLock from '@/src/components/Lock/NotFoundLock'
+
+// models
+import { PROPS_CLASSIC_LIQUIDITY } from '@/src/components/Dashboard/types'
 import { PoolData } from '@/src/state/liquidity/types'
-import { useAccount } from 'wagmi'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { fromWei } from '@/src/library/utils/numbers'
-import { fetchRingsPoolApr } from '../../Liquidity/Tables/LiquidityTable/getAprRings'
-import NotFoundLock from '../../Lock/NotFoundLock'
 
 const LiquidityPositions = () => {
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const [isSetRingsApr, setIsSetRingsApr] = useState<boolean>(false)
-  const [poolsDataClassic, setPoolsDataClassic] = useState<PoolData[]>([])
-  const [poolsDataClassicRing, setPoolsDataClassicRing] = useState<PoolData[]>([])
-  const { address } = useAccount()
-  const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
+  // common
+  const { data: v2PairsData } = useV2PairsData()
+  const { data: ringsList, loading: ringsLoading } = useRingsCampaignsBoostedPools()
 
-  useEffect(() => {
-    setLoading(true)
-    const timeout = setTimeout(() => {
-      setLoading(false)
-    }, 5000)
-    return () => clearTimeout(timeout)
-  }, [])
-
-  useEffect(() => {
-    const filterPoolsDataClassic = () => {
-      const filteredData: PoolData[] = (v2PairsData || [])
-        .filter((pool) => pool.pairSymbol !== 'Concentrated pool')
-        .filter((row) => Number(fromWei(row.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
-        .map((row) => ({
-          pairDetails: row, // Add the required pairDetails property
-        }))
-      setPoolsDataClassic(filteredData)
-    }
-
-    filterPoolsDataClassic()
-  }, [v2PairsData, address])
-
-  useEffect(() => {
-    const updateRingsApr = async () => {
-      if (!isSetRingsApr && poolsDataClassic.length > 0 && !('aprRings' in poolsDataClassic[0])) {
-        setLoading(true)
-        const newArr = await Promise.all(
-          poolsDataClassic.map(async (pool: any) => {
-            if (pool.pairDetails?.pairSymbol) {
-              return {
-                ...pool,
+  // computed
+  const aprRingsMap = useMemo(
+    () => (ringsLoading ? buildAprRingsMap(ringsList) : null),
+    [ringsLoading, ringsList],
+  )
+  const poolsDataClassic = useMemo(() => (
+    (v2PairsData || [])
+      .filter((pool) => pool.pairSymbol !== 'Concentrated pool')
+      .filter((row) => Number(fromWei(row.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
+      .map((row) => ({ pairDetails: row }))
+  ), [v2PairsData])
+  const poolsDataClassicRing = useMemo<PoolData[]>(() => (
+    aprRingsMap
+      ? poolsDataClassic.map((pool) => ({
+          ...pool,
+          ...(pool.pairDetails?.pairSymbol
+            ? {
                 pairDetails: {
                   ...pool.pairDetails,
-                  maxAPR: Number(await fetchRingsPoolApr(pool.pairDetails)) + Number(pool.pairDetails?.apr),
+                  maxAPR: (+(aprRingsMap[pool.pairDetails.id!] ?? 0) + +(isNaN(pool.pairDetails.apr) ? 0 : pool.pairDetails.apr ?? 0)),
                 },
               }
-            } else {
-              return pool
-            }
-          })
-        )
-        setPoolsDataClassicRing(newArr)
-        setIsSetRingsApr(true)
-        setLoading(false)
-      }
-    }
+            : {}),
+        }))
+      : poolsDataClassic
+  ), [poolsDataClassic, aprRingsMap])
 
-    updateRingsApr()
-  }, [poolsDataClassic, isSetRingsApr, address])
-
-  useEffect(() => {
-    // Reset relevant states when the address changes
-    setLoading(true)
-    setPoolsDataClassic([])
-    setPoolsDataClassicRing([])
-    setIsSetRingsApr(false)
-  }, [address])
-
+  // lifecycle hooks
   const renderContent = () => {
-    if (loading) {
+    if (ringsLoading) {
       return Array.from({ length: 5 }).map((_, index) => <TableSkeleton key={index} />)
     }
 
