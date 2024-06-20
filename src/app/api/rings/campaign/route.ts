@@ -116,13 +116,14 @@ export const boostedPools: BoostedPool[] = [
     apr: 0,
     poolType: 'v3',
   },
-  // {
-  //   pair: 'USDB/sFRAX',
-  //   points: 30000,
-  //   id: '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
-  //   apr: 0,
-  //  poolType: 'v3',
-  // },
+  {
+    pair: 'USDB/sFRAX',
+    points: 30000,
+    id: '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
+    apr: 0,
+    poolType: 'v3',
+    blastGold: 0,
+  },
   {
     pair: 'USDe/USDB',
     points: 150_000,

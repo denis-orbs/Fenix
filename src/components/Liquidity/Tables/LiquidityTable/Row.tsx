@@ -51,6 +51,7 @@ const RowData = ({
   const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
   const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
   const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
+  const [openTooltipFXS, setOpenTooltipFXS] = useState<boolean>(false)
   const [campaign, setCampaign] = useState<Campaign>()
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
@@ -169,7 +170,7 @@ const RowData = ({
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub ? 'z-[100]' : 'z-0'}`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS ? 'z-[100]' : 'z-0'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
@@ -185,6 +186,9 @@ const RowData = ({
                             if (stack === 'turtle-club') {
                               setOpenTooltipTurtleClub(true)
                             }
+                            if (stack === 'fxs') {
+                              setOpenTooltipFXS(true)
+                            }
                           }}
                           onMouseLeave={() => {
                             if (openTooltipGold) {
@@ -198,6 +202,9 @@ const RowData = ({
                             }
                             if (openTooltipTurtleClub) {
                               setOpenTooltipTurtleClub(false)
+                            }
+                            if (openTooltipFXS) {
+                              setOpenTooltipFXS(false)
                             }
                           }}
                         />
@@ -230,6 +237,15 @@ const RowData = ({
                           <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                             <p className="text-xs">
                               Deposit liquidity to receive a 25% Turtle Points boost from Fenix Rings earned
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipFXS && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              This pool is receiving $500 worth of FXS every week
                             </p>
                           </div>
                         </div>
