@@ -31,7 +31,7 @@ const Item = ({ data, isUser }: { data: RankingEntry; isUser: boolean }) => {
             height={40}
             className="w-4 h-4"
           />
-          {formatAmount(data?.gold_potential_rewards, 6, true) || 0}
+          {formatCurrency(data?.gold_potential_rewards) || 0}
         </div>
       </span>
       {/* <span className="text-white w-[20%] flex justify-center">
