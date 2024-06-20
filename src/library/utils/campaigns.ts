@@ -57,19 +57,19 @@ export const totalCampaigns: Campaign[] = [
     multiplier: '🔥 Rings Boost',
     pairAddress: '0x9304ba542df9bc61dd1c97c073ed35f81cab6149',
     pointStack: ['fenix-ring', 'blast', 'blast-gold'],
-    blastGoldAmount: '5700',
+    blastGoldAmount: '5750',
   },
   {
     multiplier: '🔥 Rings Boost',
     pairAddress: '0x6a1de1841c5c3712e3bc7c75ce3d57dedec6915f',
     pointStack: ['fenix-ring', 'blast', 'blast-gold'],
-    blastGoldAmount: '1000',
+    blastGoldAmount: '4500',
   },
   {
     multiplier: '🔥 Rings Boost',
     pairAddress: '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
     pointStack: ['blast', 'blast-gold'],
-    blastGoldAmount: '1750',
+    blastGoldAmount: '500',
   },
   {
     multiplier: '🔥 Rings Boost',
