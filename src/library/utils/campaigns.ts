@@ -1,12 +1,4 @@
-type PointStackType =
-  | 'fenix-ring'
-  | 'blast'
-  | 'blast-gold'
-  | 'fdao'
-  | 'kelp-miles'
-  | 'eigen-layer'
-  | 'turtle-club'
-  | 'FXS'
+type PointStackType = 'fenix-ring' | 'blast' | 'blast-gold' | 'fdao' | 'kelp-miles' | 'eigen-layer' | 'turtle-club' | 'fxs'
 export interface Campaign {
   pairAddress: string
   multiplier: string
@@ -52,7 +44,7 @@ export const totalCampaigns: Campaign[] = [
   {
     multiplier: '🔥 Rings Boost',
     pairAddress: '0x1eba6f6cfdb86e965040bf9e75d3ded9a3fd22a5',
-    pointStack: ['fenix-ring', 'blast', 'FXS', 'blast-gold'],
+    pointStack: ['fxs', 'fenix-ring', 'blast', 'blast-gold'],
     blastGoldAmount: '5000',
   },
   {
@@ -76,8 +68,13 @@ export const totalCampaigns: Campaign[] = [
   {
     multiplier: '🔥 Rings Boost',
     pairAddress: '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
-    pointStack: ['FXS', 'blast', 'blast-gold'],
+    pointStack: ['fxs', 'blast', 'blast-gold'],
     blastGoldAmount: '500',
+  },
+  {
+    multiplier: '🔥 Rings Boost',
+    pairAddress: '0x28d7de5e9592cbd951dc3b22325fdfa89972f6db',
+    pointStack: ['fenix-ring', 'fxs', 'blast-gold'],
   },
   {
     multiplier: '🔥 Rings Boost',
