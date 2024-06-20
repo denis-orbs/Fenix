@@ -311,6 +311,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setRangePrice1(0)
         setRangePrice2(-1)
         setShownPercentage(['', ''])
+        setRangePrice1Text('0')
+        setRangePrice2Text('-1')
       } else {
         {
           let lowerPrice0l, lowerPrice0h, lowerPrice1, newPriceL, newPriceH
@@ -375,10 +377,17 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           const hTick = Number(newPriceH.toFixed(18)) == 0 ? -887220 : priceToClosestTick(newPriceH)
           const hTickRounded = parseInt((hTick / 60).toString()) * 60
 
+          const range1 = Number(newPriceL.toFixed(18))
+          const range2 = Number(newPriceH.toFixed(18))
+
           setLowerTick(lTickRounded)
           setHigherTick(hTickRounded)
-          setRangePrice1(Number(newPriceL.toFixed(18)))
-          setRangePrice2(Number(newPriceH.toFixed(18)))
+
+          setRangePrice1(range1)
+          setRangePrice2(range2)
+
+          setRangePrice1Text(range1.toString())
+          setRangePrice2Text(range2.toString())
         }
       }
     }
