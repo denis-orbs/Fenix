@@ -43,7 +43,7 @@ const LiquidityPositions = () => {
             ? {
                 pairDetails: {
                   ...pool.pairDetails,
-                  maxAPR: (+(aprRingsMap[pool.pairDetails.id!] ?? 0) + +(isNaN(pool.pairDetails.apr) ? 0 : pool.pairDetails.apr ?? 0)),
+                  maxAPR: (+(aprRingsMap[`${pool.pairDetails.id}`.toLowerCase()] ?? 0) + +(isNaN(pool.pairDetails.apr) ? 0 : pool.pairDetails.apr ?? 0)),
                 },
               }
             : {}),

@@ -81,7 +81,7 @@ const HeaderRow = ({
   const sortedMappedTableData: BasicPool[] = useMemo(() => {
     const mappedData = poolsData.map((item) => ({
       ...item,
-      aprRings: (+(aprRingsMap?.[item.id] ?? 0) + +(isNaN(+item.apr!) ? 0 : item.apr ?? 0)).toString(),
+      aprRings: (+(aprRingsMap?.[item.id?.toLowerCase()] ?? 0) + +(isNaN(+item.apr!) ? 0 : item.apr ?? 0)).toString(),
     }))
 
     if (!(sortBy && sort && mappedData[0][sortBy])) {

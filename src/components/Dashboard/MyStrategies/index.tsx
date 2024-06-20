@@ -35,6 +35,7 @@ const MyStrategies = () => {
   const [progress, setProgress] = useState<number>(0)
   const { chainId, address } = useAccount()
   const { ichipositions, ichiLoading } = useIchiPositions()
+  console.log('!!!', ichipositions)
 
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))

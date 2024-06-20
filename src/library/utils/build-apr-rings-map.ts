@@ -10,7 +10,7 @@ export function buildAprRingsMap(data?: BoostedPool[]): { [key: string]: string 
   }
 
   return data.reduce(
-    (map, { id, apr }) => ({ ...map, [id]: toBN(apr || 0).toString() }),
+    (map, { id, apr }) => ({ ...map, [id.toLowerCase()]: toBN(apr || 0).toString() }),
     {},
   )
 }

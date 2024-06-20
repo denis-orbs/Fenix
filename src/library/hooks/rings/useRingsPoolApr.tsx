@@ -21,7 +21,7 @@ export const useRingsPoolApr = (row: BasicPool | string) => {
     [ringsLoading, ringsList],
   )
   return useMemo(() => ({
-    data: aprRingsMap?.[poolId] ?? 0,
+    data: aprRingsMap?.[poolId?.toLowerCase()] ?? 0,
     isLoading: ringsLoading,
   }), [ringsLoading, poolId, aprRingsMap])
 }
