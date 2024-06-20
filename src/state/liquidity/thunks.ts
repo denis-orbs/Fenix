@@ -13,7 +13,7 @@ import cache from 'memory-cache'
 import { POOLSV2_LIST, POOLS_ID_LIST, POOLS_LIST } from '@/src/library/apollo/queries/pools'
 import { toBN } from '@/src/library/utils/numbers'
 import axios from 'axios'
-import { BoostedPool, RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import { BoostedPool } from '@/src/app/api/rings/campaign/route'
 export const getV3PoolsIds = async () => {
   const client = getAlgebraClient()
 
@@ -417,7 +417,7 @@ export const getGammaVaults = createAsyncThunk('liquidity/getGammaVaults', async
   return gammaVaults
 })
 
-export const getRingsCampaigns = createAsyncThunk('liquidity/getRingsCampaigns', async (): Promise<RingCampaignData> => {
+export const getRingsCampaigns = createAsyncThunk('liquidity/getRingsCampaigns', async (): Promise<BoostedPool> => {
   const response = await axios.get('/api/rings/campaign')
-  return response.data
+  return response.data.boostedPools
 })
