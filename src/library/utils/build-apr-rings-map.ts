@@ -1,0 +1,16 @@
+// helpers
+import { toBN } from '@/src/library/utils/numbers'
+
+// models
+import { BoostedPool } from '@/src/app/api/rings/campaign/route'
+
+export function buildAprRingsMap(data?: BoostedPool[]): { [key: string]: string } {
+  if (!data) {
+    return {}
+  }
+
+  return data.reduce(
+    (map, { id, apr }) => ({ ...map, [id]: toBN(apr || 0).toString() }),
+    {},
+  )
+}
