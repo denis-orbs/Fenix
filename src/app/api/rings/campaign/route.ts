@@ -149,14 +149,6 @@ export const boostedPools: BoostedPool[] = [
     poolType: 'v3',
   },
   // {
-  //   pair: 'pSTAKE/WETH',
-  //   points: 0,
-  //   blastGold: 0,
-  //   id: '0xcbf7b47e9da345812e3bd732e3ee369a7203b5ae',
-  //   apr: 0,
-  //   poolType: 'v2',
-  // },
-  // {
   //   pair: 'MCLB/WETH',
   //   points: 37500,
   //   id: '0xcf68cdfea89f9e6964d4c2bd8a42eba5da9f945d',
