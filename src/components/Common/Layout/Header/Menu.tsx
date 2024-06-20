@@ -24,7 +24,7 @@ const Menu = () => {
 
   return (
     <ul
-      className={`${pathname === '/' ? 'header-box-landing z-[1000] max-xl:px-2' : ''} flex items-center md:gap-2 2xl:gap-3 justify-center `}
+      className={`${pathname === '/' ? 'header-box-landing z-[1000] max-xl:px-2' : ''} flex items-center md:gap-2 2xl:gap-3 justify-center`}
     >
       {width >= 1380 &&
         MENU_LINKS.map((link, index) => (
@@ -42,13 +42,6 @@ const Menu = () => {
               <span className="absolute -top-2 right-[-5px] text-[9px]  bg-alizarin-crimson-600 rounded-md w-7 h-5 flex items-center justify-center z-[100] text-white">
                 New
               </span>
-            )}
-            {pathname === '/' && (
-              <>
-                {index !== MENU_LINKS.length - 1 && (
-                  <div className=" border-r solid border-white h-[22px] z-[100] relative mx-3 max-xl:mx-2 right-[-7px] max-xl:right-[-3px]"></div>
-                )}
-              </>
             )}
           </span>
         ))}

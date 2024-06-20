@@ -8,7 +8,7 @@ import Switch from './Switch'
 import ProgressBar from './ProgressBar'
 import MainBox from './Boxes/MainBox'
 import StepBox from './Boxes/StepBox'
-import { TableBody, TableHead, TableCell, TableRow, TableSkeleton } from './Table'
+import { TableBody, TableHead, TableCell, TableRow, TableSkeleton, TableHeadNew } from './Table'
 
 export {
   Button,
@@ -16,6 +16,7 @@ export {
   Pagination,
   TableBody,
   TableHead,
+  TableHeadNew,
   TableCell,
   TableRow,
   TableSkeleton,

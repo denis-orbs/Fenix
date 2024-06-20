@@ -26,7 +26,6 @@ export interface LiquidityState {
     state: ApiState
     data: GammaVault[]
   }
-  concentratedPools: { state: ApiState; data: any }
   ringsCampaigns: {
     state: ApiState
     data: RingCampaignData

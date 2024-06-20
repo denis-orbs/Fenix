@@ -11,6 +11,7 @@ import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 import { formatCurrency } from '@/src/library/utils/numbers'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 
 interface SelectTokenProps {
   openModal: boolean
@@ -30,21 +31,26 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
   )
   const { address, chainId } = useAccount()
 
-  const handlerClose = () => setOpenModal(false)
+  const handlerClose = () => {
+    setOpenModal(false)
+  }
 
   const handlerSelectToken = (token: IToken) => {
     //
     setToken(token)
     // settoken0(token0Data?.address)
     // settoken1(token1Data?.address)
-    setOpenModal(false)
+    handlerClose()
   }
-
+  useEffect(() => {
+    setSearchValue('')
+  }, [openModal])
   useEffect(() => {
     const getList = async () => {
       try {
-        if (chainId) {
-          const responseData = await fetchTokens(chainId)
+        const chainToUse = chainId ? chainId : FALLBACK_CHAIN_ID
+        if (chainToUse) {
+          const responseData = await fetchTokens(chainToUse)
 
           const parsedData = responseData.map((item: any) => {
             //
@@ -99,7 +105,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
           </div>
 
           {/* <div className="mb-1 text-sm text-white">Common Tokens</div> */}
-          <div className=" grid grid-cols-3 sm:flex  flex-row items-center gap-1 my-1">
+          <div className="flex flex-row items-center gap-1 my-1">
             {_commonList ? (
               _commonList.map((token, index) => (
                 <div

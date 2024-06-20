@@ -192,14 +192,14 @@ const DepositAmountsICHI = ({
         dex,
         1
       )
-      await txDepositDetails.wait()
+      const tx = await txDepositDetails.wait()
       // toast.success('Deposited successfully')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
         message: `Deposited successfully.`,
         notificationType: NotificationType.SUCCESS,
-        txHash: '',
+        txHash: tx.transactionHash,
         notificationDuration: NotificationDuration.DURATION_5000,
       })
       setLoading(false)
@@ -336,7 +336,9 @@ const DepositAmountsICHI = ({
       setToken0TypedValue('')
     } else {
       if (token0Balance) {
-        return setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
+        return setToken0TypedValue(toBN(token0Balance.toString())
+        .div(10 ** (token0Decimals || 18))
+        .toString())
       } else {
         setToken0TypedValue('')
       }
@@ -470,14 +472,14 @@ const DepositAmountsICHI = ({
                           {!rignsAprLoading && vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
+                              {(vault?.apr as any[1])[0]?.apr === null || (vault?.apr as any[1])[0]?.apr < 0
                                 ? '0'
                                 : formatAmount(
-                                    toBN(vault?.apr[1]?.apr?.toFixed(0))
+                                    toBN((vault?.apr as any[1])[0]?.apr?.toFixed(0))
                                       .plus(ringsApr || 0)
                                       .toString(),
                                     2
-                                  )}
+                                  ).replace('NaN', '0')}
                               %
                             </span>
                           )}
