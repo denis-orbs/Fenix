@@ -64,7 +64,7 @@ body {
 
 .container {
   @apply mx-auto 
-  lg:max-w-[calc(100%-150px)]
+  lg:max-w-[calc(100%-50px)]
   xl:max-w-[calc(100%-150px)] 
   2xl:max-w-[1600px]
   px-2
