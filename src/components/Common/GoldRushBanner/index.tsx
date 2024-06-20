@@ -29,7 +29,7 @@ const GoldRushBanner = () => {
     ),
     customPaging: i => (
       <div
-        className={`relative w-[35px] rounded-xl h-2 mt-4 ${currentSlideNumber === i ? 'gradient-banner z-10' : 'bg-shark-100'}`}
+        className={`relative w-[35px] rounded-xl h-2 mt-4 max-sm:mt-2 ${currentSlideNumber === i ? 'gradient-banner z-10' : 'bg-shark-100'}`}
       >
       </div>
     )
@@ -52,7 +52,7 @@ const GoldRushBanner = () => {
   }
 
   return (
-    <div className="blast-banner max-lg:flex-col overflow-hidden rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl">
+    <div className="blast-banner flex items-center overflow-hidden rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl">
       <Image objectFit='cover' quality={100} src={'/static/images/blast-point-banner/noise-texture.svg'} alt='Noise Texture' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0 bottom-0 right-0 z-[5] rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
       <Image objectFit='cover' quality={100} src={'/static/images/blast-point-banner/noise-texture-mobile.svg'} alt='Noise Texture Mobile' className='lg:hidden w-[100%] h-[100%] absolute top-0 left-0 bottom-0 right-0 z-[5] rounded-tl-[3.5rem] rounded-br-[3.5rem] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
       <Image objectFit='cover' quality={100} src={'/static/images/blast-point-banner/cell.svg'} alt='Cell' className='max-lg:hidden w-[100%] h-[100%] absolute top-0 left-0 bottom-0 right-0 z-[5] rounded-tl-[1.625rem] rounded-br-[1.625rem] rounded-tr-xl rounded-bl-xl' width={10} height={10}/>
@@ -60,15 +60,15 @@ const GoldRushBanner = () => {
 
       <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/background-star.png'} alt='Background Star' className='max-lg:hidden w-[573px] mix-blend-lighten absolute bottom-[0px] left-[700px] z-[10]' width={570} height={10}/>
       <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/background-star2.png'} alt='Background Star2' className='max-lg:hidden w-[573px] mix-blend-lighten absolute bottom-[0px] left-[1120px] z-[10]' width={570} height={10}/>
-      {/* <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/masive-star.svg'} alt='Masive Star' className='max-lg:hidden w-[1135px] h-[786px] mix-blend-lighten absolute top-[-350px] left-[440px] z-[10]' width={10} height={10}/> */}
-      <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/masive-star.png'} alt='Masive Star' className='max-lg:hidden w-[1135px] mix-blend-lighten  absolute bottom-[0px] left-[440px] z-[10]' width={1000} height={10}/>
+      <Image priority objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/masive-star.svg'} alt='Masive Star' className='max-lg:hidden w-[1135px] h-[786px] mix-blend-lighten absolute top-[-350px] left-[440px] z-[10]' width={10} height={10}/>
+      {/* <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/masive-star.png'} alt='Masive Star' className='max-lg:hidden w-[1135px] mix-blend-lighten  absolute bottom-[0px] left-[440px] z-[10]' width={1000} height={10}/> */}
       <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/fenix-ring-low-opacity.svg'} alt='Fenix Ring Decorator' className='max-lg:hidden w-[23px] h-[23px] mix-blend-lighten absolute top-[0] left-[860px] z-[10]' width={10} height={10}/>
       <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/fenix-ring.svg'} alt='Fenix Ring Decorator 2' className='max-lg:hidden w-[23px] h-[23px] mix-blend-lighten absolute bottom-[0] left-[1400px] z-[10]' width={10} height={10}/>
       <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/ellipse.svg'} alt='Ellipse' className='max-lg:hidden w-[16px] h-[16px] absolute bottom-[20px]  left-[1070px] z-[10]' width={10} height={10}/>
       <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/ellipse2.svg'} alt='Ellipse 2' className='max-lg:hidden w-[16px] h-[16px] absolute bottom-[30px]  left-[515px] z-[10]' width={10} height={10}/>
 
       <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/background-star3.svg'} alt='Background Star3' className='lg:hidden w-[198px] h-[134px] mix-blend-lighten absolute top-[0px] right-[0px] z-[10]' width={10} height={10}/>
-      <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/masive-star2.svg'} alt='Masive Star2' className='lg:hidden w-[1035px] h-[786px] mix-blend-lighten absolute top-[-320px] left-1/2 -translate-x-1/2 z-[10]' width={10} height={10}/>
+      <Image priority objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/masive-star2.svg'} alt='Masive Star2' className='lg:hidden w-[1035px] h-[786px] mix-blend-lighten absolute top-[-320px] left-1/2 -translate-x-1/2 z-[10]' width={10} height={10}/>
       <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/fenix-ring2.svg'} alt='Fenix Ring Decorator 2' className='lg:hidden  w-[23px] h-[23px] mix-blend-lighten absolute top-[0] right-[50px] z-[10]' width={10} height={10}/>
 
       <div className="relative z-[12] flex items-center gap-8 max-lg:gap-1 max-lg:hidden">
@@ -77,7 +77,7 @@ const GoldRushBanner = () => {
             <div className='h-[50px] border-l border-shark-100'></div>
             <div className='flex flex-col items-start gap-1'>
               <div className='text-white font-bold text-sm'>Join the Gold Rush</div>
-              <div className='text-white font-medium text-xs'>Deposit liquidity to earn your share of <span className='text-[#FFEF76] font-semibold'>75,000 Blast Gold</span></div>
+              <div className='text-white font-medium text-xs'>Deposit liquidity to earn your share of <span className='text-[#FFEF76] font-semibold'>100K Blast Gold</span></div>
             </div>
         </div>
         <div className='flex items-center gap-3'>
@@ -98,7 +98,7 @@ const GoldRushBanner = () => {
               <div className='flex flex-col items-start gap-1'>
                 <div className='text-white font-bold text-sm'>Join the Gold Rush</div>
                 <div className='text-white font-medium text-xs'>Deposit liquidity to earn your share of</div>
-                <div className='gradient-banner px-3 py-1 font-normal text-white text-xs'>75,000 Blast Gold</div>
+                <div className='gradient-banner px-3 py-1 font-normal text-white text-xs'>100K Blast Gold</div>
               </div>
             </div>
             <div className='!flex items-center justify-center gap-3 z-[8] w-full'>
@@ -113,6 +113,9 @@ const GoldRushBanner = () => {
           </Slider>
         </div>
       </div>
+      <Button variant="primary" className={`relative z-[20] max-lg:!px-2 max-lg:!py-1 !flex-shrink-0 max-sm:!text-xs max-lg:hidden whitespace-nowrap`} href="/liquidity">
+        <span>Deposit Now</span>
+      </Button>
     </div>
   )
 }

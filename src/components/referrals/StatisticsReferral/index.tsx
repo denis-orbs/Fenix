@@ -32,7 +32,7 @@ const StatisticsReferral = ({ referralData }: { referralData: ReferralData | und
             <span className="icon-users-1 text-white text-lg" />
           </div>
           <div className="text-xs text-white text-center font-semibold">
-            <p>Referrer by</p>
+            <p>Referred by</p>
             <p>{referralData?.referrer_by || '-'}</p>
           </div>
         </div>

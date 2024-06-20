@@ -51,6 +51,7 @@ const RowData = ({
   const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
   const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
   const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
+  const [openTooltipFXS, setOpenTooltipFXS] = useState<boolean>(false)
   const [campaign, setCampaign] = useState<Campaign>()
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
@@ -102,7 +103,7 @@ const RowData = ({
       ?.weekly?.feeApr || null
 
   // console.log('row >> ', row)
-  
+
   return (
     <>
       <TableRow className="hidden lg:flex">
@@ -161,15 +162,15 @@ const RowData = ({
           <div className="flex  justify-center items-center gap-2 ">
             {
               <span ref={hoverRef} className="flex gap-2">
-                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}>
+                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS ? 'z-[100]' : 'z-0'}`}>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
-                    <div className='relative flex items-center'>
+                    <div className="relative flex items-center">
                       {campaign?.pointStack?.map((stack, index) => (
                         <Image
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub ? 'z-[100]' : 'z-0'}`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS ? 'z-[100]' : 'z-0'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
@@ -185,6 +186,9 @@ const RowData = ({
                             if (stack === 'turtle-club') {
                               setOpenTooltipTurtleClub(true)
                             }
+                            if (stack === 'fxs') {
+                              setOpenTooltipFXS(true)
+                            }
                           }}
                           onMouseLeave={() => {
                             if (openTooltipGold) {
@@ -199,13 +203,18 @@ const RowData = ({
                             if (openTooltipTurtleClub) {
                               setOpenTooltipTurtleClub(false)
                             }
+                            if (openTooltipFXS) {
+                              setOpenTooltipFXS(false)
+                            }
                           }}
                         />
                       ))}
                       {openTooltipGold && (
                         <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
                           <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                            <p className="text-xs">This pool will receive {campaign?.blastGoldAmount} of Blast Gold till the 25th June</p>
+                            <p className="text-xs">
+                              This pool will receive {campaign?.blastGoldAmount} of Blast Gold till the 25th June
+                            </p>
                           </div>
                         </div>
                       )}
@@ -225,11 +234,29 @@ const RowData = ({
                           </div>
                         </div>
                       )}
+                      {openTooltipFXS && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              sfrxETH & sFRAX is getting $500 USD each in FXS tokens from 20th to 27th
+                            </p>
+                          </div>
+                        </div>
+                      )}
                       {openTooltipTurtleClub && (
                         <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
                           <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                             <p className="text-xs">
                               Deposit liquidity to receive a 25% Turtle Points boost from Fenix Rings earned
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipFXS && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              This pool is getting $500 worth of $FXS tokens from the 20th to the 26th
                             </p>
                           </div>
                         </div>
