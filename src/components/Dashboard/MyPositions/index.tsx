@@ -15,6 +15,7 @@ import Spinner from '../../Common/Spinner'
 import PositionTableMobile from './PositionTableMobile'
 import { useQuery } from '@tanstack/react-query'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import CheckBox from '../../UI/CheckBox'
 // import useStore from '@/src/state/zustand'
 
 const MyPositions = () => {
@@ -88,38 +89,54 @@ const MyPositions = () => {
     },
   })
 
-
   return (
     <>
       {position.length !== 0 && loading === false && isLoadingRingsCampaign === false && address ? (
         <div className="mb-10 mt-5">
           <div className="flex justify-between mb-4 items-center">
             <h1 className="text-white text-xl">My Positions</h1>
-            <div className='flex items-center gap-3'>
-              <Switch active={activeSwitch} setActive={() => {setActiveSwitch(!activeSwitch)}}/> <p className="text-white">Show Dust Positions</p>
-              <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm flex items-center gap-1" href="/liquidity">
-                <span className="icon-logout"/>Create position
+            <div className="flex items-center gap-3">
+              <p className="text-white">Show Dust Positions</p>
+              <CheckBox
+                checked={activeSwitch}
+                onClick={() => {
+                  setActiveSwitch(!activeSwitch)
+                }}
+              />
+              <Button
+                variant="tertiary"
+                className="!py-3 xl:me-5 !text-xs !lg:text-sm flex items-center gap-1"
+                href="/liquidity"
+              >
+                <span className="icon-logout" />
+                Create position
               </Button>
             </div>
           </div>
           <div className="dashboard-box flex-col xl:flex-row">
             <PositionTable data={position} tokens={tokens} ringsCampaign={ringsCampaign} showDust={activeSwitch} />
-            <PositionTableMobile data={position} tokens={tokens} ringsCampaign={ringsCampaign} showDust={activeSwitch} />
+            <PositionTableMobile
+              data={position}
+              tokens={tokens}
+              ringsCampaign={ringsCampaign}
+              showDust={activeSwitch}
+            />
           </div>
         </div>
       ) : (position.length === 0 && loading === false && isLoadingRingsCampaign === false) || address === undefined ? (
         <div className="flex flex-col gap-3 w-full mb-10 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
             <p className="flex gap-3 text-lg ms-2">Concentrated Liquidity Positions</p>
-            <div className=' flex items-center gap-3'>
-            {/* <Switch active={activeSwitch} setActive={handlerSwitch}/> */}
-            <Button
-              variant="tertiary"
-              className={`!py-3 xl:me-5 !text-xs  flex items-center gap-1 !lg:text-sm ${isConnected === true ? '!block' : '!hidden'}`}
-              href="/liquidity"
-            >
-              <span className="icon-logout"/>Create position
-            </Button>
+            <div className=" flex items-center gap-3">
+              {/* <Switch active={activeSwitch} setActive={handlerSwitch}/> */}
+              <Button
+                variant="tertiary"
+                className={`!py-3 xl:me-5 !text-xs  flex items-center gap-1 !lg:text-sm ${isConnected === true ? '!block' : '!hidden'}`}
+                href="/liquidity"
+              >
+                <span className="icon-logout" />
+                Create position
+              </Button>
             </div>
           </div>
           <div className="box-dashboard p-6 flex gap-8 items-center ">

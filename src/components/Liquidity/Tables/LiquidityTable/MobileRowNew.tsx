@@ -38,6 +38,7 @@ export default function MobileRowNew({
   const [openInfo, setOpenInfo] = useState<boolean>(false)
   const [campaign, setCampaign] = useState<Campaign>()
   const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
+  const [openTooltipFXS, setopenTooltipFXS] = useState<boolean>(false)
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
   let aprdisplayIchi
@@ -243,8 +244,11 @@ export default function MobileRowNew({
                           width={20}
                           height={20}
                           onMouseEnter={() => {
-                            if (stack === 'blast-gold') {
-                              setOpenTooltipGold(true)
+                            if (openTooltipGold) {
+                              setOpenTooltipGold(false)
+                            }
+                            if (openTooltipFXS) {
+                              setopenTooltipFXS(false)
                             }
                           }}
                           onMouseLeave={() => setOpenTooltipGold(false)}
@@ -256,6 +260,15 @@ export default function MobileRowNew({
                     <div className="absolute z-10 bg-shark-950 rounded-lg border border-shark-300 w-auto xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                       <div className="flex justify-between items-center gap-3">
                         <p className="text-xs">This pool will receive 50.000 Blast Gold from 13th - 25th of June</p>
+                      </div>
+                    </div>
+                  )}
+                  {openTooltipFXS && (
+                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                        <p className="text-xs">
+                          sfrxETH & sFRAX is getting $500 USD each in FXS tokens from 20th to 27th
+                        </p>
                       </div>
                     </div>
                   )}

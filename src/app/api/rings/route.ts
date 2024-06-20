@@ -14,12 +14,28 @@ interface Reward {
 interface DistributionData {
   id: string
   rewardToken: string
+  startTimestamp: number
+  endTimestamp: number
 }
 
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams
   let user = params.get('user')
   let pool = params.get('pool')
+  const from = params.get('from') || '0'
+  const to = params.get('to') || new Date('2100-01-01T00:00:00Z').getTime()
+  const fromTimestamp = Number(from)
+  const toTimestamp = Number(to)
+
+  if (isNaN(fromTimestamp) || isNaN(toTimestamp) || toTimestamp <= fromTimestamp) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Invalid timestamp values for "from" or "to"',
+      },
+      { status: 400 }
+    )
+  }
   const chainId = Number(params.get('chainId')) || FALLBACK_CHAIN_ID
   if (!isSupportedChain(chainId)) {
     return NextResponse.json(
@@ -62,6 +78,11 @@ export async function GET(request: NextRequest) {
 
   const rewardsPromises = poolData['distributionData']
     .filter((distribution: DistributionData) => distribution['rewardToken'] === RING_POINTS_ADDRESS[chainId])
+    .filter(
+      (distribution: DistributionData) =>
+        distribution['startTimestamp'] >= Number(from) && distribution['endTimestamp'] <= Number(to)
+    )
+
     .map((distribution: DistributionData) => fetchRewards(distribution['id'], chainId.toString()))
   const rewardsResults = await Promise.all(rewardsPromises)
 

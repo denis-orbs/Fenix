@@ -399,7 +399,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                               <div>
                                 <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Fees APR</p>
-                                  <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
+                                  <p className="text-sm pb-1 text-chilean-fire-600">{isInRange ? position?.apr : "0%"}</p>
                                 </div>
                                 {fenixRingApr > 0 && isInRange && (
                                   <div className="flex justify-between items-center gap-3">

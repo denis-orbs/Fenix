@@ -7,7 +7,7 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getAllPairsForUser } from '@/src/library/web3/apis/PairAPIV3'
 import { AddressZero } from '@/src/library/constants/misc'
 import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
-import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData, fetchv3Factories } from './reducer'
+import { fetchPoolData, fetchV3PoolDayData, fetchv2Factories, fetchv2PoolData, fetchv3Factories } from './reducer'
 import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
 import cache from 'memory-cache'
 import { POOLSV2_LIST, POOLS_ID_LIST, POOLS_LIST } from '@/src/library/apollo/queries/pools'
@@ -254,9 +254,13 @@ export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => 
   if (!cachedData) {
     try {
       const fetchedFactoriesData = await fetchv3Factories()
+      const fetchedv2FactoriesData = await fetchv2Factories()
 
-      const totalVolume = toBN(fetchedFactoriesData[0].totalVolumeUSD).toNumber()
-      const totalTVL = toBN(fetchedFactoriesData[0].totalValueLockedUSD).toNumber()
+      const totalVolumeV2 = toBN(fetchedv2FactoriesData[0].totalVolumeUSD).toNumber()
+      const totalTVLV2 = toBN(fetchedv2FactoriesData[0].totalLiquidityUSD).toNumber()
+
+      const totalVolume = toBN(fetchedFactoriesData[0].totalVolumeUSD).plus(totalVolumeV2).toNumber()
+      const totalTVL = toBN(fetchedFactoriesData[0].totalValueLockedUSD).plus(totalTVLV2).toNumber()
       const totalFees = toBN(fetchedFactoriesData[0].totalFeesUSD).toNumber()
 
       const response = await fetch('/api/statistics')

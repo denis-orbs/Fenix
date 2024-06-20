@@ -36,7 +36,8 @@ const BlastBanner = () => {
       </div>
       <Image src={'/static/images/blast-point-banner/white-star.svg'} alt='White Star' className='max-xl:hidden w-[113px] h-[113px] absolute top-1/2 transform -translate-y-1/2 xl:right-[400px] right-[370px] z-[5]' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/planet.svg'} alt='White Star' className='max-lg:hidden w-[21px] h-[21px] absolute bottom-3 left-[550px] z-[5]' width={10} height={10}/>
-      <Image src={'/static/images/blast-point-banner/orange-star.svg'} alt='Orange Star' className='max-lg:hidden w-[310px] h-[228px] absolute -bottom-16 left-[600px] z-[5] mix-blend-lighten opacity-60' width={10} height={10}/>
+      {/* <Image src={'/static/images/blast-point-banner/orange-star.svg'} alt='Orange Star' className='max-lg:hidden w-[310px] h-[228px] absolute -bottom-16 left-[600px] z-[5] mix-blend-lighten opacity-60' width={10} height={10}/> */}
+      <Image src={'/static/images/blast-point-banner/orange-star.png'} alt='Orange Star' className='max-lg:hidden w-[310px] absolute bottom-0 left-[600px] z-[5] mix-blend-lighten opacity-60' width={300} height={10}/>
       <Image src={'/static/images/blast-point-banner/left-ellipse.svg'} alt='Left Ellipse' className='max-lg:hidden w-[496px] h-[214px] absolute top-0 left-0 z-[8]' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/right-ellipse.svg'} alt='Right Ellipse' className='max-lg:hidden w-[496px] h-[214px] absolute top-0 right-0 z-[8]' width={10} height={10}/>
       <Image src={'/static/images/blast-point-banner/mobile-ellipse.svg'} alt='Mobile Ellipse' className='lg:hidden w-[375px] h-[162px] absolute bottom-0 left-0 z-[8]' width={10} height={10}/>
