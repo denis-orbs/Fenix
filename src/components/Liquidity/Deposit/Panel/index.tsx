@@ -148,7 +148,7 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
                 onClick={handleSwitch}
                 className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
               ></span>
-              <div className="flex items-center gap-[9px] h-10">
+              <div className="flex items-center w-[140px] gap-[9px] h-10">
                 <Switch active={activeSwitch} setActive={handlerSwitch} />
                 <span className="text-shark-100 text-xs leading-normal">{activeSwitch ? 'Concentrated' : 'Classic'}</span>
               </div>
