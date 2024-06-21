@@ -7,13 +7,10 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import useStore from '@/src/state/zustand'
 import { usePathname } from 'next/navigation'
-import { ConnectButton, useAccountModal, useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { useAccountModal, useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
-import axios from 'axios'
-import { Address } from 'viem'
 import { useAccount, useSwitchChain } from 'wagmi'
-import { getPointsDistributionTargetTimestamps, totalCampaigns } from '@/src/library/utils/campaigns'
-import { wagmiConfig, config } from '@/src/app/layout'
+import { getPointsDistributionTargetTimestamps } from '@/src/library/utils/campaigns'
 import cn from '@/src/library/utils/cn'
 import { blast } from 'viem/chains'
 import { isSupportedChain } from '@/src/library/constants/chains'
@@ -184,13 +181,13 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                   openAccountModal && openAccountModal()
                 }
               }}
-              className="flex 
-              w-full 
-              gap-2 
-              md:gap-5 
-              p-1 
-              border 
-              rounded-[5px] 
+              className="flex
+              w-full
+              gap-2
+              md:gap-5
+              p-1
+              border
+              rounded-[5px]
               cursor-pointer bg-shark-900 border-shark-400 bg-opacity-40 hover:bg-opacity-10 group"
             >
               <div className="w-full flex items-center gap-2.5">

@@ -6,7 +6,6 @@ import { Address } from '@/src/library/types'
 
 import { LiquidityTableElement, LiquidityV2PairDetails, V3PairInfo } from './types'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
-import { BoostedPool } from '@/src/app/api/rings/campaign/route'
 
 export function useV2PairsData() {
   const v2Pairs: {

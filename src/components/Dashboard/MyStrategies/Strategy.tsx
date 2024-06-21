@@ -21,7 +21,7 @@ import { NotificationDuration, NotificationType } from '@/src/state/notification
 import { useDispatch } from 'react-redux'
 import { useQuery } from '@tanstack/react-query'
 import { ichiVaults } from '../../Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
-import { BoostedPool } from '@/src/app/api/rings/campaign/route'
+import BoostedPool from '@/src/library/types/pools/boosted-pool'
 import { setApr } from '@/src/state/apr/reducer'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 

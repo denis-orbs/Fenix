@@ -18,8 +18,8 @@ const MyLocks = () => {
           </div>
           <div className="dashboard-box rounded-lg">
             <div className="relative z-10">
-              <Locks Locks={LOCKS} activePagination={false} />
-              <MylocksMobile activePagination={false} Locks={LOCKS} />
+              <Locks Locks={LOCKS} activePagination={false} tab={''} />
+              <MylocksMobile activePagination={false} Locks={LOCKS} tab={''} />
               <div className="mt-2">
                 <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
                   Review more

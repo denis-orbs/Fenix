@@ -20,14 +20,14 @@ const GoldRushBanner = () => {
     slidesToScroll: 1,
     arrows: false,
 
-    appendDots: dots => (
+    appendDots: (dots: any) => (
       <div
         className='!w-[300px]'
       >
         <ul className='!w-[35px] mx-auto flex items-center justify-center relative sm:left-[-100px] '> {dots} </ul>
       </div>
     ),
-    customPaging: i => (
+    customPaging: (i: any) => (
       <div
         className={`relative w-[35px] rounded-xl h-2 mt-4 max-sm:mt-2 max-xs:mt-0 ${currentSlideNumber === i ? 'gradient-banner z-10' : 'bg-shark-100'}`}
       >

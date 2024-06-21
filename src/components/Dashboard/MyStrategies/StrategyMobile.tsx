@@ -20,7 +20,7 @@ import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { ichiVaults } from '../../Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import { useQuery } from '@tanstack/react-query'
-import { BoostedPool } from '@/src/app/api/rings/campaign/route'
+import BoostedPool from '@/src/library/types/pools/boosted-pool'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 
 type options = {

@@ -40,7 +40,7 @@ export default function useBlastPoints() {
       givenPoints: 0,
       pendingPoints: 0,
       pendingFinalizedAt: 0,
-      userAddress: account,
+      userAddress: account!,
     })
     fetchPoints()
   }, [account, fetchPoints])

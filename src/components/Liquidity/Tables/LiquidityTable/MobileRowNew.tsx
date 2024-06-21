@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
 import { Button } from '@/src/components/UI'
 import Loader from '@/src/components/UI/Icons/Loader'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
@@ -69,7 +68,9 @@ export default function MobileRowNew({
 
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
-    setCampaign({ ...campaign_ })
+    if (campaign_) {
+      setCampaign({ ...campaign_ })
+    }
   }, [row])
   const { loading: gammaVaultsLoading, data: gammaVaults } = useGammaVaults()
   const gammaVaultApr =

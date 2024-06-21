@@ -50,7 +50,7 @@ const Rewards = () => {
           <div className="p-2">
             <FeesHeaderRowReward
               activeVote={activeVote}
-              filterData={[1, 2, 3, 4]}
+              filterData={[1, 2, 3, 4] as any}
               loading={loading}
               activePagination={false}
               search={searchValue}
@@ -62,7 +62,7 @@ const Rewards = () => {
           <div className="p-2">
             <BribeHeaderRowReward
               activeVote={activeVote}
-              filterData={[1, 2, 3, 4]}
+              filterData={[1, 2, 3, 4] as any}
               loading={loading}
               activePagination={false}
               search={searchValue}
