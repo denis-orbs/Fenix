@@ -73,8 +73,8 @@ const LiquidityPositions = () => {
 
     if ((poolsDataClassicRing.length === 0 && !loading) || !address) {
       return (
-        <div className="box-dashboard p-6">
-          <NotFoundLock info={'No Pools Found.'} />
+        <div className="bg-shark-400 bg-opacity-40 p-6 rounded-xl">
+          <NotFoundLock info={'No Positions Found.'} />
         </div>
       )
     }
@@ -82,18 +82,19 @@ const LiquidityPositions = () => {
 
   return (
     <>
-      <div className="mb-10">
-        <div className="flex justify-between mb-4 items-center">
-          <h2 className="text-white text-base font-medium">Classic Liquidity Positions</h2>
-          <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
-            <span className="icon-logout"></span>New deposit
-          </Button>
-        </div>
-        <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
-          <div className="rounded-lg z-10">
-            <h1 className="text-white p-3">Classic liquidity</h1>
-            {renderContent()}
+      <div className="mb-10 flex flex-col gap-3">
+        <div className="flex flex-col ">
+          <div className="flex justify-between items-center">
+            <h2 className="text-white font-normal text-lg">Classic liquidity positions</h2>
+            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
+              <span className="icon-logout"></span>New deposit
+            </Button>
           </div>
+          <h1 className="text-white p-3 font-medium">Classic liquidity:</h1>
+        </div>
+
+        <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
+          <div className="rounded-lg z-10">{renderContent()}</div>
         </div>
       </div>
     </>

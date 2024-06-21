@@ -35,22 +35,22 @@ const HeaderRow = ({
         <div className="hidden xl:block">
           <TableHead
             items={[
-              { text: 'Pair', className: `${activeRange ? 'w-[20%]' : 'w-[30%]'}`, sortable: true },
+              { text: 'Your Positions', className: `${activeRange ? 'w-[20%]' : 'w-[30%]'} text-xs`, sortable: true },
               RANGE,
-              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-center`, sortable: true },
-              { text: 'TVL', className: 'w-[15%] text-right', sortable: true },
+              { text: 'APR', className: `${activeRange ? 'w-[8%]' : 'w-[10%]'} text-center text-xs`, sortable: true },
+              { text: 'TVL', className: 'w-[15%] text-right text-xs', sortable: true },
               {
                 text: `${titleHeader === '' ? 'Volume' : titleHeader}`,
-                className: 'w-[15%] text-right',
+                className: 'w-[15%] text-right text-xs',
                 sortable: true,
               },
               // { text: 'Volume', className: 'w-[15%] text-right', sortable: true },
               {
                 text: `${titleHeader2 === '' ? 'Fees' : titleHeader2}`,
-                className: 'w-[15%] text-right',
+                className: 'w-[15%] text-right text-xs',
                 sortable: true,
               },
-              { text: 'Action', className: 'w-[15%] text-right', sortable: true },
+              { text: 'Action', className: 'w-[15%] text-right text-xs', sortable: true },
             ]}
             setSort={() => {}}
             sort={'normal'}

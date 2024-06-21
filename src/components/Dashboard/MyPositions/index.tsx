@@ -163,11 +163,11 @@ const MyPositions = () => {
   return (
     <>
       {newPositions.length !== 0 && loading === false && isLoadingRingsCampaign === false && address ? (
-        <div className="mb-10 mt-5">
-          <div className="flex justify-between mb-4 items-center">
-            <h1 className="text-white text-xl">My Positions</h1>
+        <div className="mb-10 mt-5 flex flex-col ">
+          <div className="flex justify-between items-center">
+            <h1 className="text-white text-lg">My Positions</h1>
             <div className="flex items-center gap-3">
-              <p className="text-white">Show Dust Positions</p>
+              <p className="text-white text-lg font-normal">Show Dust Positions</p>
               <CheckBox
                 checked={activeSwitch}
                 onClick={() => {
@@ -184,16 +184,21 @@ const MyPositions = () => {
               </Button>
             </div>
           </div>
-          <h2 className="text-white text-base font-medium">Concentrated Liquidity:</h2>
-          <div className="dashboard-box flex-col xl:flex-row">
+            <h2 className="text-white text-base p-3 font-medium relative z-50">Concentrated Liquidity:</h2>
+          <div className="dashboard-box flex flex-col">
             <PositionTable data={newPositions} tokens={tokens} ringsCampaign={ringsCampaign} showDust={activeSwitch} />
-            <PositionTableMobile data={newPositions} tokens={tokens} ringsCampaign={ringsCampaign} showDust={activeSwitch} />
+            <PositionTableMobile
+              data={newPositions}
+              tokens={tokens}
+              ringsCampaign={ringsCampaign}
+              showDust={activeSwitch}
+            />
           </div>
         </div>
       ) : (position.length === 0 && loading === false && isLoadingRingsCampaign === false) || address === undefined ? (
         <div className="flex flex-col gap-3 w-full mb-10 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">Concentrated Liquidity Positions</p>
+            <p className="flex gap-3 text-lg">Concentrated Liquidity Positions</p>
             <div className=" flex items-center gap-3">
               {/* <Switch active={activeSwitch} setActive={handlerSwitch}/> */}
               <Button
