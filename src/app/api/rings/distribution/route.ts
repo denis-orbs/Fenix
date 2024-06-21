@@ -17,10 +17,10 @@ export async function GET(request: NextRequest) {
   }
 
   for (const campaign of totalCampaigns) {
-    const campaignId = campaign.campaignId
+    // const campaignId = campaign.campaignId
     const pairAddress = campaign.pairAddress
     try {
-      const response = await fetch(`https://api.merkl.xyz/v3/rewardsReport?chainId=81457&campaignId=${campaignId}`, {
+      const response = await fetch(`https://api.merkl.xyz/v3/rewardsReport?chainId=81457`, { //&campaignId=${campaignId}`, {
         cache: 'no-cache',
       })
       const data: Reward[] = await response.json()
@@ -41,18 +41,18 @@ export async function GET(request: NextRequest) {
           }),
           prisma.ring_distribution.create({
             data: {
-              campaign_id: campaignId.toLowerCase(),
+              // campaign_id: campaignId.toLowerCase(),
               user_id: reward.recipient.toLowerCase(),
               gold_points: 0,
               ring_points: rewardAmount,
               pool_id: pairAddress.toLowerCase(),
-            },
+            } as any,
           }),
         ])
       }
     } catch (error) {
       await notificationService.sendNotification(
-        `There was an error with the rewards distribution: ${campaignId} - ${error}`
+        `There was an error with the rewards distribution: ${error}`// ${campaignId} -
       )
     }
   }

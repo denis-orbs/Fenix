@@ -62,13 +62,13 @@ export const initialState: LiquidityState = {
 export default createReducer(initialState, (builder) => {
   builder
     .addCase(updateToken0, (state, action) => {
-      state.token0 = action.payload
+      state.token0 = action.payload as `0x${string}`
     })
     .addCase(updateToken0TypedValue, (state, action) => {
       state.token0TypedValue = action.payload
     })
     .addCase(updateToken1, (state, action) => {
-      state.token1 = action.payload
+      state.token1 = action.payload as `0x${string}`
     })
     .addCase(updateToken1TypedValue, (state, action) => {
       state.token1TypedValue = action.payload

@@ -2,7 +2,7 @@
 import { toBN } from '@/src/library/utils/numbers'
 
 // models
-import { BoostedPool } from '@/src/app/api/rings/campaign/route'
+import BoostedPool from '@/src/library/types/pools/boosted-pool'
 
 export function buildAprRingsMap(data?: BoostedPool[]): { [key: string]: string } {
   if (!data) {

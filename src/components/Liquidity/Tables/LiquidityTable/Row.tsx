@@ -12,7 +12,6 @@ import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { useQuery } from '@tanstack/react-query'
-import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
 import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVaults'
@@ -84,8 +83,9 @@ const RowData = ({
 
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
-    setCampaign({ ...campaign_ })
-    //
+    if (campaign_) {
+      setCampaign({ ...campaign_ })
+    }
   }, [row])
 
   function getAverageApr(...aprs: number[]): string {

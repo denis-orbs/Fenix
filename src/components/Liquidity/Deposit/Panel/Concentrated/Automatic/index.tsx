@@ -163,10 +163,18 @@ const Automatic = ({
       </div>
 
       {currentProvider === '1' && optionActive === 'ADD' && (
-        <DepositAmountsICHI allIchiVaultsByTokenPair={allIchiVaultsByTokenPair} token={token0} tokenList={tokenList} />
+        <DepositAmountsICHI
+          allIchiVaultsByTokenPair={allIchiVaultsByTokenPair as any}
+          token={token0}
+          tokenList={tokenList}
+        />
       )}
       {currentProvider === '1' && optionActive === 'WITHDRAW' && (
-        <WithdrawAmountsICHI allIchiVaultsByTokenPair={allIchiVaultsByTokenPair} token={token0} tokenList={tokenList} />
+        <WithdrawAmountsICHI
+          allIchiVaultsByTokenPair={allIchiVaultsByTokenPair as any}
+          token={token0}
+          tokenList={tokenList}
+        />
       )}
 
       {currentProvider === '2' && optionActive === 'ADD' && <DepositAmountsGAMMA tokenList={tokenList} />}

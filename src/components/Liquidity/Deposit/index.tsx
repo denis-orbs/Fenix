@@ -30,11 +30,11 @@ const DepositLiquidity = () => {
       const pairString = hashValue.split('-')
       if (pairString.length < 1) return
 
-      const pair: Address = await getPair(
+      const pair: Address = (await getPair(
         pairString[1] as Address,
         pairString[2] as Address,
         pairString[0] === 'STABLE'
-      )
+      )) as Address
       if (pair != '0x0') setPairAddress(pair)
       else setPairAddress('0x0000000000000000000000000000000000000000')
     }
