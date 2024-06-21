@@ -45,7 +45,7 @@ const InputRange = ({
     <input
       type="range"
       className={`w-full h-[var(--height)] rounded-lg cursor-pointer appearance-none
-        [&::-webkit-slider-thumb]:transition-transform [&:active::-webkit-slider-thumb]:scale-[1.2]
+        [&::-webkit-slider-thumb]:transition-transform [&:active::-webkit-slider-thumb]:scale-[1.5]
         [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-[var(--thumb-size)]
         [&::-webkit-slider-thumb]:w-[var(--thumb-size)] [&::-webkit-slider-thumb]:rounded-full ${isDisabledClass} [&::-webkit-slider-thumb]:bg-cover`}
       style={{

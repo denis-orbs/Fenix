@@ -134,9 +134,10 @@ export const useIchiPositions = () => {
         )
         const pos = await Promise.all(amounts?.map(async (item) => {
           const vaultInfo = vaultsMap[item.vaultAddress]
-          console.log('vaultInfo >> ', vaultInfo)
           const tokenAid = vaultInfo.tokenA
           const tokenBid = vaultInfo.tokenB
+          //const vaultInfo = useIchiVaultsData(item.vaultAddress)
+          //
 
           const getLp = async (vadd: string) => {
             const web3Provider = getWeb3Provider()

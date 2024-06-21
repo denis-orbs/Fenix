@@ -38,7 +38,7 @@ const HeaderCellsRaw: TableHeaderCell[] = [
   { text: 'APR', className: 'w-[13%] text-right', rangeClassName: 'w-[8%] text-right', sortBy: 'aprRings' },
   { text: 'Volume', className: 'w-[13%] text-right', sortBy: 'volumeUSD' },
   { text: 'Fees', className: 'w-[13%] text-right', sortBy: 'feesUSD' },
-  { text: 'Action', className: 'w-[13%] flex justify-end' },
+  { text: 'Action', className: 'w-[13%] text-right' },
 ]
 
 const HeaderRow = ({

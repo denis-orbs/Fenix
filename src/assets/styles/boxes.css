@@ -65,7 +65,7 @@
 }
 
 .point-summary-box {
-  @apply relative flex flex-col items-center justify-center px-2 2xl:p-5 rounded-lg bg-shark-400 bg-opacity-40 w-full min-h-[137px]
+  @apply relative flex flex-col items-center justify-center p-5 rounded-lg bg-shark-400 bg-opacity-40 w-full min-h-[137px]
 
   before:hidden
   xl:before:block
@@ -294,7 +294,12 @@
 
 /* Background for header */
 .header-box {
-  @apply relative h-[112px] w-full
+  @apply 
+  
+  relative 
+  h-[112px] 
+  w-full
+
   before:content-[""]
   before:absolute
   before:bg-[url("/static/images/header/header.svg")]
@@ -323,35 +328,35 @@
   after:md:block;
 }
 .header-box-landing {
+
+  
   @apply relative
-  bg-no-repeat
-  bg-cover
-  xl:w-[480px]
-  w-[400px]
-  h-[45px]
-    
+  w-full
+  flex-shrink-0
+  px-4
+  min-h-[41px]
+  min-w-[384px]
   before:content-[""]
   before:absolute
-  xl:before:bg-[url("/static/images/header/header-landing3.svg")]
-  before:bg-[url("/static/images/header/header-landing2.svg")]
+  before:bg-[url("/static/images/header/header-landing.svg")]
   before:bg-no-repeat
-  before:h-full
+  before:h-[50%]
   before:bg-cover
-  before:w-1/2
+  before:w-full
   before:top-0
   before:left-0
-    
+
   after:content-[""]
   after:absolute
-  xl:after:bg-[url("/static/images/header/header-landing3.svg")]
-  after:bg-[url("/static/images/header/header-landing2.svg")]
+  after:bg-[url("/static/images/header/header-landing.svg")]
   after:bg-no-repeat
-  after:bg-right
-  after:h-full
+  after:bg-bottom
+  after:h-[50%]
   after:bg-cover
-  after:w-1/2
-  after:top-0
-  after:right-0;
+  after:w-full
+  after:bottom-0
+  after:left-0
+  
 }
 
 /* .rectangulo {
