@@ -52,7 +52,7 @@ const Manage = ({}: {}) => {
   const router = useRouter()
   // FIXME: STARK
   //DEV FIX
-  const { apr } = useSelector<any>((store) => store.apr as positions | '')
+  const { apr } = useSelector<any>((store) => store.apr as positions | '') as any
 
   const [aprId, setAprId] = useState(null)
   const pid = searchParams.get('id')
@@ -619,6 +619,8 @@ const Manage = ({}: {}) => {
           onTokenValueChange={handleOnTokenValueChange}
           option={optionActive}
           hideTokenSwap={true}
+          defaultBalanceFirst={optionActive === 'WITHDRAW' ? positionData?.amount0.toString(): undefined}
+          defaultBalanceSecond={optionActive === 'WITHDRAW' ? positionData?.amount1.toString(): undefined}
         />
       </div>
 

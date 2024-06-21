@@ -30,6 +30,7 @@ type DepositType = (typeof DepositTypeValues)[keyof typeof DepositTypeValues]
 
 const Panel = ({ disableChart }: { disableChart: boolean }) => {
   const [depositType, setDepositType] = useState<DepositType>('VOLATILE')
+  const [provider, setProvider] = useState<number>(1)
   const searchParams = useSearchParams()
   const setToken0 = useSetToken0()
   const setToken1 = useSetToken1()
@@ -79,8 +80,11 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
     const searchParamToken0 = searchParams.get('token0')
     const searchParamToken1 = searchParams.get('token1')
     const typeSearch = searchParams.get('type')
+    const clmProviderParam = searchParams.get('provider')
     //
 
+    if(clmProviderParam == "2") setProvider(2)
+    else setProvider(1)
     if (typeSearch == 'CONCENTRATED_AUTOMATIC') setDepositType('CONCENTRATED_AUTOMATIC')
     if (typeSearch == 'CONCENTRATED_MANUAL') setDepositType('CONCENTRATED_MANUAL')
     if (typeSearch == 'STABLE') setDepositType('STABLE')
@@ -149,8 +153,8 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
                 className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
               ></span>
               <div className="flex items-center gap-[9px] h-10">
-                {/* <Switch active={activeSwitch} setActive={handlerSwitch} />
-                <span className="text-shark-100 text-xs leading-normal">{depositType}</span> */}
+                <Switch active={activeSwitch} setActive={handlerSwitch} />
+                <span className="text-shark-100 text-xs leading-normal">{depositType}</span>
               </div>
               {/* <div className="w-[28px] h-[28px] md:w-[32px] md:h-[32px] p-2.5 border border-shark-200 bg-shark-300 bg-opacity-40 rounded-[10px] flex items-center justify-center">
                 <span className="icon-cog text-white"></span>
@@ -200,7 +204,7 @@ const Panel = ({ disableChart }: { disableChart: boolean }) => {
             <Classic depositType={depositType} defaultPairs={defaultPairsTokens} />
           )}
 
-          {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic />}
+          {depositType === 'CONCENTRATED_AUTOMATIC' && <Automatic providerPick={provider} />}
           {depositType === 'CONCENTRATED_MANUAL' && <Manual defaultPairs={defaultPairsTokens} />}
           {/* {depositType === 'CONCENTRATED_MANUAL' && (
             <Button className="w-full mx-auto !text-xs !h-[49px]" variant="tertiary" onClick={createPosition}>

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppThunkDispatch } from '..'
-import { getAllPools, getConcentratedPools, getGammaVaults, getRingsCampaigns } from './thunks'
+import { getAllPools, getGammaVaults, getRingsCampaigns } from './thunks'
 import { getLiquidityTableElements, getLiquidityV2Pairs } from './thunks'
 import { useAccount } from 'wagmi'
 import { autoRefresh } from '@/src/library/utils/retry'
@@ -15,7 +15,6 @@ export default function LiquidityUpdater() {
   useEffect(() => {
     if (address && chainId) thunkDispatch(getLiquidityV2Pairs({ address, chainId }))
     if (address && chainId) thunkDispatch(getLiquidityTableElements({ address, chainId }))
-    thunkDispatch(getConcentratedPools())
   }, [thunkDispatch, address, chainId])
 
   useEffect(() => {

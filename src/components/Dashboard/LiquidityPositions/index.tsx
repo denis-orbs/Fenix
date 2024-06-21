@@ -1,113 +1,89 @@
 'use client'
+import { useMemo } from 'react'
 
+// api
+import { buildAprRingsMap } from '@/src/library/utils/build-apr-rings-map'
+
+// hooks
+import { useRingsCampaignsBoostedPools, useV2PairsData } from '@/src/state/liquidity/hooks'
+
+// helpers
+import { fromWei } from '@/src/library/utils/numbers'
+
+// components
 import { Button, TableSkeleton } from '@/src/components/UI'
 import HeaderRow from '@/src/components/Liquidity/Tables/HeaderRow'
-import { PROPS_CLASSIC_LIQUIDITY } from '../types'
-import INFO_API from '../data'
-import { useV2PairsData } from '@/src/state/liquidity/hooks'
-import { useEffect, useMemo, useState } from 'react'
+import NotFoundLock from '@/src/components/Lock/NotFoundLock'
+
+// models
+import { PROPS_CLASSIC_LIQUIDITY } from '@/src/components/Dashboard/types'
 import { PoolData } from '@/src/state/liquidity/types'
-import { useAccount } from 'wagmi'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { fromWei } from '@/src/library/utils/numbers'
-import { fetchRingsPoolApr } from '../../Liquidity/Tables/LiquidityTable/getAprRings'
 
 const LiquidityPositions = () => {
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const [isSetRingsApr, setIsSetRingsApr] = useState<boolean>(false)
-  const [poolsDataClassic, setPoolsDataClassic] = useState<PoolData[]>([])
-  const { address } = useAccount()
-  const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
+  // common
+  const { data: v2PairsData } = useV2PairsData()
+  const { data: ringsList, loading: ringsLoading } = useRingsCampaignsBoostedPools()
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 5000)
-  }, [])
-
-  useEffect(() => {
-    const filterPoolsDataClassic = () => {
-      const filteredData: PoolData[] = (v2PairsData || [])
-        .filter((pool) => pool.pairSymbol !== 'Concentrated pool')
-        .filter((row) => Number(fromWei(row.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
-        .map((row) => ({
-          pairDetails: row, // Add the required pairDetails property
-        }))
-
-      setPoolsDataClassic(filteredData)
-    }
-
-    filterPoolsDataClassic()
-  }, [v2PairsData, loading, address])
-
-  useEffect(() => {
-    const updateRingsApr = async () => {
-      if (!isSetRingsApr && poolsDataClassic.length > 0 && !('aprRings' in poolsDataClassic[0])) {
-        const newArr = await Promise.all(
-          poolsDataClassic.map(async (pool: any) => {
-            if (pool.pairDetails?.pairSymbol) {
-              return {
-                ...pool,
+  // computed
+  const aprRingsMap = useMemo(
+    () => (ringsLoading ? null : buildAprRingsMap(ringsList)),
+    [ringsLoading, ringsList],
+  )
+  const poolsDataClassic = useMemo(() => (
+    (v2PairsData || [])
+      .filter((pool) => pool.pairSymbol !== 'Concentrated pool')
+      .filter((row) => Number(fromWei(row.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
+      .map((row) => ({ pairDetails: row }))
+  ), [v2PairsData])
+  const poolsDataClassicRing = useMemo<PoolData[]>(() => (
+    aprRingsMap
+      ? poolsDataClassic.map((pool) => ({
+          ...pool,
+          ...(pool.pairDetails?.pairSymbol
+            ? {
                 pairDetails: {
                   ...pool.pairDetails,
-                  maxAPR: Number(await fetchRingsPoolApr(pool.pairDetails)) + Number(pool.pairDetails?.apr),
+                  maxAPR: (+(aprRingsMap[`${pool.pairDetails.id}`.toLowerCase()] ?? 0) + +(isNaN(pool.pairDetails.apr) ? 0 : pool.pairDetails.apr ?? 0)),
                 },
               }
-            } else {
-              return pool
-            }
-          })
-        )
-        setPoolsDataClassic(newArr)
-        setIsSetRingsApr(true)
-      }
+            : {}),
+        }))
+      : poolsDataClassic
+  ), [poolsDataClassic, aprRingsMap])
+
+  // lifecycle hooks
+  const renderContent = () => {
+    if (ringsLoading) {
+      return Array.from({ length: 5 }).map((_, index) => <TableSkeleton key={index} />)
     }
 
-    updateRingsApr()
-  }, [poolsDataClassic, isSetRingsApr])
+    if (poolsDataClassicRing.length > 0) {
+      return <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassicRing} />
+    }
+
+    return (
+      <div className="box-dashboard p-6">
+        <NotFoundLock info={'No Pools Found.'} />
+      </div>
+    )
+  }
+
   return (
     <>
-      {poolsDataClassic.length > 0 ? (
-        <div className="mb-10">
-          <div className="flex justify-between mb-4 items-center">
-            <h1 className="text-white text-xl">Liquidity Positions</h1>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
-              <span className="icon-logout"></span>New deposit
-            </Button>
-          </div>
-          <div className={`${poolsDataClassic.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
-            <div className="rounded-lg z-10">
-              <h1 className="text-white p-3">Classic liquidity</h1>
-              {loading ? (
-                <>
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <TableSkeleton key={index} />
-                  ))}
-                </>
-              ) : (
-                <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassic} />
-              )}
-            </div>
+      <div className="mb-10">
+        <div className="flex justify-between mb-4 items-center">
+          <h1 className="text-white text-xl">Classic Liquidity Positions</h1>
+          <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
+            <span className="icon-logout"></span>New deposit
+          </Button>
+        </div>
+        <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
+          <div className="rounded-lg z-10">
+            <h1 className="text-white p-3">Classic liquidity</h1>
+            {renderContent()}
           </div>
         </div>
-      ) : (
-        <></>
-        // <div className="flex flex-col gap-3 w-full lg:w-4/5 mx-auto">
-        //   <div className="text-white flex justify-between items-center flex-wrap">
-        //     <p className="flex gap-3 text-lg ms-2">Liquidity Positions</p>
-        //     <Button variant="tertiary" className="flex gap-2 !py-2" href="/liquidity">
-        //       <span className="icon-logout"></span>New Deposit
-        //     </Button>
-        //   </div>
-        //   <div className="box-dashboard p-6">
-        //     {Array.from({ length: 5 }).map((_, index) => (
-        //       <TableSkeleton key={index} />
-        //     ))}
-        //   </div>
-        // </div>
-      )}
+      </div>
     </>
   )
 }

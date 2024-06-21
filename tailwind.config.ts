@@ -66,7 +66,7 @@ const config: Config = {
         'error-404-mobile': 'url("/static/images/404/backgroundMobile.svg")',
         'error-404-responsive': 'url("/static/images/404/backgroundResponsive.svg")',
 
-        'fenix-slider': 'url("/static/images/vote/fenix-slider.svg")',
+        'fenix-slider': 'url("/static/images/vote/fenix-slider.png")',
         'overlay-fixed': 'url("/static/images/vote/overlay-fixed.svg")',
         rectangle: 'url("/static/images/landing/Rectangle.svg")',
         'rectangle-big': 'url("/static/images/landing/Rectangle-big.svg")',

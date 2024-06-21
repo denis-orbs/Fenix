@@ -23,16 +23,17 @@ import { useQuery } from '@tanstack/react-query'
 import Loader from '../../UI/Icons/Loader'
 import { BoostedPool, RingCampaignData, extraPoints } from '@/src/app/api/rings/campaign/route'
 import AprBox from '../../UI/Pools/AprBox'
-import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
+import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
 
 interface MyPositionsMobileProps {
   activePagination?: boolean
   data: positions[]
   tokens: Token[]
   ringsCampaign: RingCampaignData
+  showDust?: boolean
 }
 
-const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampaign }: MyPositionsMobileProps) => {
+const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampaign, showDust }: MyPositionsMobileProps) => {
   const router = useRouter()
   const dispatch = useDispatch()
   const { writeContractAsync } = useWriteContract()
@@ -40,10 +41,13 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const addNotification = useNotificationAdderCallback()
   const [itemsPerPage, setItemPerPage] = useState<number>(10)
   const [activePage, setActivePage] = useState<number>(1)
+  const [isInRange, setIsInRange] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [openId, setOpenId] = useState<string>('')
-  const [isInRange, setIsInRange] = useState<boolean>(true)
-  const { data: ringsCampaignsData } = useRingsCampaigns()
+  const [tvlPosition, setTvlPosition] = useState<any>([])
+  const [nonZeroData, setNonZeroData] = useState<positions[]>([])
+
+  const { data: ringsCampaignsData } = useRingsCampaignsBoostedPools()
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -59,7 +63,36 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     return paginatedItems
   }
 
-  const pagination = paginate(data, activePage, itemsPerPage)
+  const TvlTotalValue = (data: any) => {
+    const tvl =
+      Number(data?.depositedToken0) *
+        Number(
+          tokens.find(
+            (e) =>
+              e.tokenAddress.toLowerCase() ===
+              (data?.token0?.id.toLowerCase())
+          )?.priceUSD
+        ) +
+        Number(data?.depositedToken1) *
+          Number(
+            tokens.find(
+              (e) =>
+                e.tokenAddress.toLowerCase() ===
+                (data?.token1?.id.toLowerCase())
+            )?.priceUSD
+          )
+
+    tvlPosition[data.id] = tvl
+    return tvl
+  }
+
+  useEffect(() => {
+    setNonZeroData(showDust ? data : data.filter((i) => {
+      return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
+    }))
+  }, [data, showDust, tvlPosition, tokens])
+
+  const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
   type priceClacualtionProps = {
     token0: {
@@ -94,19 +127,17 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
         {isMobile ? (
           <div className="m-2 flex flex-col sm:flex-row gap-2 justify-between items-center">
             <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
-            </div>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
+              {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max:{' '}
+              {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
             </div>
           </div>
         ) : (
           <>
             <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol}
-            </div>
-            <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
+              {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
+              Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} - Max:{' '}
+              {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
             </div>
           </>
         )}
@@ -170,15 +201,15 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     }
     return (
       <>
-        {isInRange ? (
+        {isInRangeAux ? (
           <div className="text-green-400 text-sm flex justify-center items-center gap-2 flex-col">
             <div className="flex items-center gap-x-1 justify-end ml-auto">
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#2AED8F" />
               </svg>
-              <span>In Range</span>
+              <span className="text-xs">In Range</span>
             </div>
-            <span className="text-white">Pool price {currentPoolPrice}</span>
+            {/* <span className="text-white">Pool price {currentPoolPrice}</span> */}
           </div>
         ) : (
           <div className="text-red-600 text-sm flex justify-center items-center gap-2 flex-col">
@@ -186,9 +217,9 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
               <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="3" cy="3" r="3" fill="#dc2626" />
               </svg>
-              <span>Out of Range</span>
+              <span className="text-xs">Out of Range</span>
             </div>
-            <span className="text-white">Pool price {currentPoolPrice}</span>
+            {/* <span className="text-white">Pool price {currentPoolPrice}</span> */}
           </div>
         )}
       </>
@@ -196,28 +227,10 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   }
 
   const TvlTotal = ({ data }: any) => {
-    const ichitokens = useIchiVaultsData(data.liquidity === 'ichi' ? data?.id : zeroAddress)
     return (
       <>
         <p className="text-xs text-white mb-1">
-          {formatDollarAmount(
-            Number(data?.depositedToken0) *
-              Number(
-                tokens.find(
-                  (e) =>
-                    e.tokenAddress.toLowerCase() ===
-                    (data.liquidity === 'ichi' ? ichitokens.tokenA.toLowerCase() : data?.token0?.id.toLowerCase())
-                )?.priceUSD
-              ) +
-              Number(data?.depositedToken1) *
-                Number(
-                  tokens.find(
-                    (e) =>
-                      e.tokenAddress.toLowerCase() ===
-                      (data.liquidity === 'ichi' ? ichitokens.tokenB.toLowerCase() : data?.token1?.id.toLowerCase())
-                  )?.priceUSD
-                )
-          )}
+          {tvlPosition[data.id] ? formatDollarAmount(tvlPosition[data.id]) : formatDollarAmount(TvlTotalValue(data))}
         </p>
       </>
     )
@@ -285,6 +298,8 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
       {pagination.length > 0 ? (
         <>
           {pagination.map((position: positions) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+
             const fenixRingApr =
               ringsCampaign.boostedPools.find((pool) => {
                 return pool.id.toLowerCase() === position.pool.id.toLowerCase()
@@ -300,7 +315,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
             return (
               <>
                 <div
-                  className={`border border-shark-950 px-3 py-2 rounded-[10px] bg-shark-400 ${
+                  className={`border border-shark-950 px-3 py-2 rounded-[10px] bg-shark-400 my-2 ${
                     isOpen ? 'bg-opacity-60' : 'bg-opacity-20'
                   } ${'xl:hidden'}`}
                 >
@@ -366,7 +381,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                           )}
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-white">Status</span>
+                          <span className="text-white text-sm">Status</span>
                           <SetStatus
                             token0={position.token0}
                             token1={position.token1}
@@ -384,7 +399,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                               <div>
                                 <div className="flex justify-between items-center gap-3">
                                   <p className="text-sm pb-1">Fees APR</p>
-                                  <p className="text-sm pb-1 text-chilean-fire-600">{position?.apr}</p>
+                                  <p className="text-sm pb-1 text-chilean-fire-600">{isInRange ? position?.apr : "0%"}</p>
                                 </div>
                                 {fenixRingApr > 0 && isInRange && (
                                   <div className="flex justify-between items-center gap-3">
@@ -411,57 +426,62 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                           />
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-white">TVL</span>
+                          <span className="text-white text-sm">TVL</span>
                           <div className="flex flex-col justify-center items-end">
                             <TvlTotal data={position} />
                             <span className="flex justify-center items-center gap-2">
                               <p className="flex gap-2 items-center">
-                                <Image
+                                {/* <Image
                                   src={`/static/images/tokens/${position.token0.symbol}.svg`}
                                   alt="token"
                                   className="rounded-full w-5 h-5"
                                   width={10}
                                   height={10}
-                                />
+                                /> */}
                                 <span className="text-xs text-white">
                                   {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
+                                  {position.token0.symbol}
                                 </span>
                               </p>
                               <p className="flex gap-2 items-center">
-                                <Image
+                                {/* <Image
                                   src={`/static/images/tokens/${position.token1.symbol}.svg`}
                                   alt="token"
                                   className="rounded-full w-5 h-5"
                                   width={10}
                                   height={10}
-                                />
+                                /> */}
                                 <span className="text-xs text-white">
                                   {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
+                                  {position.token1.symbol}
                                 </span>
                               </p>
                             </span>
                           </div>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-white">Action</span>
+                          <span className="text-white text-sm">Action</span>
                           <div className="flex items-center gap-2">
                             <Button
                               variant="tertiary"
                               className="h-[38px] w-[80px] bg-opacity-40 items-center justify-center"
                               onClick={() => {
-                                if (position.liquidity !== 'ichi') {
-                                  dispatch(setApr(position?.apr))
-                                  router.push(`/liquidity/manage?id=${position?.id}`)
-                                  router.refresh()
-                                } else {
+                                if (position.liquidity == 'ichi') {
                                   router.push(
                                     `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
                                   )
-                                  // router.refresh()
+                                } else if(position.liquidity == 'gamma') {
+                                  router.push(
+                                    `liquidity/deposit?provider=2&type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
+                                  )
+                                } else {
+                                  dispatch(setApr(position?.apr))
+                                  router.push(`/liquidity/manage?id=${position?.id}`)
+                                  router.refresh()
                                 }
                               }}
                             >
-                              <span className="text-l">Manage</span>
+                              <span className="text-xs">Manage</span>
                             </Button>
                             {position.liquidity !== 'ichi' ? (
                               <>
@@ -474,7 +494,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                                     }
                                   }}
                                 >
-                                  <span className="text-l">Claim</span>
+                                  <span className="text-xs">Claim</span>
                                 </Button>
                               </>
                             ) : (
@@ -501,13 +521,13 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
               /> */}
               <div className="mx-auto">
                 <PaginationMobile
-                  count={data.length}
+                  count={nonZeroData.length}
                   itemsPerPage={itemsPerPage}
                   setItemPerPage={setItemPerPage}
                   activePage={activePage}
                   setActivePage={setActivePage}
                   className="mx-auto"
-                  numberPages={Math.ceil(data.length / itemsPerPage)}
+                  numberPages={Math.ceil(nonZeroData.length / itemsPerPage)}
                 />
               </div>
             </div>

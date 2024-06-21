@@ -7,13 +7,13 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getAllPairsForUser } from '@/src/library/web3/apis/PairAPIV3'
 import { AddressZero } from '@/src/library/constants/misc'
 import { FNXTokenAddress } from '@/src/library/web3/ContractAddresses'
-import { fetchPoolData, fetchV3PoolDayData, fetchv2PoolData, fetchv3Factories } from './reducer'
+import { fetchPoolData, fetchV3PoolDayData, fetchv2Factories, fetchv2PoolData, fetchv3Factories } from './reducer'
 import { GlobalStatisticsData } from '@/src/app/api/statistics/route'
 import cache from 'memory-cache'
 import { POOLSV2_LIST, POOLS_ID_LIST, POOLS_LIST } from '@/src/library/apollo/queries/pools'
 import { toBN } from '@/src/library/utils/numbers'
 import axios from 'axios'
-import { BoostedPool } from '@/src/app/api/rings/campaign/route'
+import { BoostedPool, RingCampaignData } from '@/src/app/api/rings/campaign/route'
 export const getV3PoolsIds = async () => {
   const client = getAlgebraClient()
 
@@ -42,18 +42,6 @@ export const getLiquidityV2Pairs = createAsyncThunk(
     }
   }
 )
-
-export const getConcentratedPools = createAsyncThunk('liquidity/getConcentratedPools', async () => {
-  const response = await fetch('https://api.steer.finance/getSmartPools?chainId=56&dexName=pancake')
-  const data = await response.json()
-  const poolsArray = Object.values(data.pools).reduce((acc: any, current: any) => {
-    if (current.length > 0) {
-      acc.push(...current)
-    }
-    return acc
-  }, [])
-  return poolsArray
-})
 
 export const getLiquidityTableElements = createAsyncThunk(
   'liquidity/getPairInfo',
@@ -266,9 +254,13 @@ export const fetchGlobalStatistics = async (): Promise<GlobalStatisticsData> => 
   if (!cachedData) {
     try {
       const fetchedFactoriesData = await fetchv3Factories()
+      const fetchedv2FactoriesData = await fetchv2Factories()
 
-      const totalVolume = toBN(fetchedFactoriesData[0].totalVolumeUSD).toNumber()
-      const totalTVL = toBN(fetchedFactoriesData[0].totalValueLockedUSD).toNumber()
+      const totalVolumeV2 = toBN(fetchedv2FactoriesData[0].totalVolumeUSD).toNumber()
+      const totalTVLV2 = toBN(fetchedv2FactoriesData[0].totalLiquidityUSD).toNumber()
+
+      const totalVolume = toBN(fetchedFactoriesData[0].totalVolumeUSD).plus(totalVolumeV2).toNumber()
+      const totalTVL = toBN(fetchedFactoriesData[0].totalValueLockedUSD).plus(totalTVLV2).toNumber()
       const totalFees = toBN(fetchedFactoriesData[0].totalFeesUSD).toNumber()
 
       const response = await fetch('/api/statistics')
@@ -359,8 +351,16 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
         const feesToken1 = (Number(pool.volumeToken1) * feePercentage) / 100
 
         const feeUsd =
-          feesToken0 * Number(tokens.find((t) => t.tokenAddress === pool.token0.id)?.priceUSD) +
-          feesToken1 * Number(tokens.find((t) => t.tokenAddress === pool.token1.id)?.priceUSD)
+          feesToken0 *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token0.id.toLowerCase())?.priceUSD) +
+          feesToken1 *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token1.id.toLowerCase())?.priceUSD)
+
+        const volumeUSD =
+          Number(pool.volumeToken0) *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token0.id.toLowerCase())?.priceUSD) +
+          Number(pool.volumeToken1) *
+            Number(tokens.find((t) => t.tokenAddress.toLowerCase() === pool.token1.id.toLowerCase())?.priceUSD)
 
         const tvl =
           Number(pool.reserve0) *
@@ -370,7 +370,7 @@ export const getAllPools = createAsyncThunk('liquidity/getAllPools', async (chai
 
         return {
           id: pool.id,
-          volumeUSD: pool.volumeUSD,
+          volumeUSD: volumeUSD / 2,
           feesUSD: feeUsd,
           liquidity: pool.totalSupply,
           totalValueLockedUSD: tvl,
@@ -417,7 +417,7 @@ export const getGammaVaults = createAsyncThunk('liquidity/getGammaVaults', async
   return gammaVaults
 })
 
-export const getRingsCampaigns = createAsyncThunk('liquidity/getRingsCampaigns', async (): Promise<BoostedPool> => {
+export const getRingsCampaigns = createAsyncThunk('liquidity/getRingsCampaigns', async (): Promise<RingCampaignData> => {
   const response = await axios.get('/api/rings/campaign')
-  return response.data.boostedPools
+  return response.data
 })

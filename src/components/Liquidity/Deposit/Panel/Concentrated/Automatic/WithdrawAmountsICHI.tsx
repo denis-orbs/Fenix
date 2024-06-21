@@ -74,7 +74,7 @@ const WithdrawAmountsICHI = ({
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
     if (!amoutToWithdraw || amoutToWithdraw == '0') return 'Enter an amount'
-    if (amoutToWithdraw > totalUserShares) return 'Insufficient balance'
+    if (parseFloat(amoutToWithdraw) > parseFloat(totalUserShares)) return 'Insufficient balance'
     return BUTTON_TEXT_WITHDRAW
   }
   const token0 = useToken0()
@@ -162,14 +162,14 @@ const WithdrawAmountsICHI = ({
         txHash: '',
         notificationDuration: NotificationDuration.DURATION_5000,
       })
-      txnDetails.wait()
+      const tx = await txnDetails.wait()
       // toast.success('Withdrawal Successful')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
         message: `Withdrawal Successful.`,
         notificationType: NotificationType.SUCCESS,
-        txHash: '',
+        txHash: tx.transactionHash,
         notificationDuration: NotificationDuration.DURATION_5000,
       })
       setAmountToWithdraw('')
@@ -219,7 +219,7 @@ const WithdrawAmountsICHI = ({
       if (!totalUserShares || totalUserShares === '') {
         setAmountToWithdraw('')
       } else {
-        setAmountToWithdraw(toBN(totalUserShares).toString())
+        setAmountToWithdraw(toBN(totalUserShares.toString()).toString())
       }
     }
   }
@@ -346,10 +346,10 @@ const WithdrawAmountsICHI = ({
                           {!rignsAprLoading && vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
+                              {(vault?.apr  as any[1])[0]?.apr === null || (vault?.apr  as any[1])[0]?.apr < 0
                                 ? '0'
                                 : formatAmount(
-                                    toBN(vault?.apr[1]?.apr?.toFixed(0))
+                                    toBN((vault?.apr  as any[1])[0]?.apr?.toFixed(0))
                                       .plus(ringsApr || 0)
                                       .toString(),
                                     2
