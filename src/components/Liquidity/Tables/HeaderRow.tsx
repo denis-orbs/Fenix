@@ -27,12 +27,12 @@ const HeaderRow = ({
   const RANGE = activeRange
     ? { text: 'Range', className: 'w-[12%] text-center', sortable: true }
     : { text: '', className: 'w-[0%]', sortable: true }
-  console.log('HeaderRow', poolData)
-  //
+  // console.log('HeaderRow', poolData)
+
   return (
     <div className="relative">
       <div className="w-full mb-2.5 xl:mb-5">
-        <div className="hidden 2xl:block">
+        <div className="hidden xl:block">
           <TableHead
             items={[
               { text: 'Pair', className: `${activeRange ? 'w-[20%]' : 'w-[30%]'}`, sortable: true },
@@ -53,7 +53,7 @@ const HeaderRow = ({
               { text: 'Action', className: 'w-[15%] text-right', sortable: true },
             ]}
             setSort={() => {}}
-            sort={null}
+            sort={'normal'}
             sortIndex={1}
             setSortIndex={() => {}}
           />

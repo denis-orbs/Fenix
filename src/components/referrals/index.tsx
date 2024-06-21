@@ -9,18 +9,19 @@ import { Button } from '../UI'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { useSignMessage } from 'wagmi'
 import { Fuul } from '@fuul/sdk'
-import { useIsReferralSystemInitialized } from '@/src/state/referrals/hooks'
+import { useIsReferralSystemInitialized, useReferrerBy } from '@/src/state/referrals/hooks'
 import { useEffect, useState } from 'react'
-export interface PointsLeaderboard {
+export interface ReferralData {
   total_attributions: number
   total_amount: string
   rank: number
+  referrer_by?: string
 }
 const Referrals = () => {
   const { account } = useActiveConnectionDetails()
-
+  const referrerBy = useReferrerBy()
   const isReferralSystemInitialized = useIsReferralSystemInitialized()
-  const [referralData, setReferralData] = useState<PointsLeaderboard>()
+  const [referralData, setReferralData] = useState<ReferralData>()
   useEffect(() => {
     const fetchReferralData = async () => {
       if (!account || !isReferralSystemInitialized) return
@@ -31,14 +32,17 @@ const Referrals = () => {
         })
         const result = data?.results?.find((result) => result.address?.toLowerCase() === account.toLowerCase())
         if (result) {
-          setReferralData(result)
+          setReferralData({ ...result, referrer_by: referrerBy })
+        } else {
+          setReferralData({ total_attributions: 0, total_amount: '0', rank: 0, referrer_by: referrerBy })
         }
       } catch (error) {
         console.log('error', error)
       }
     }
     fetchReferralData()
-  }, [isReferralSystemInitialized, account])
+  }, [isReferralSystemInitialized, account, referrerBy])
+
   return (
     <div className="flex w-full gap-5 flex-col items-center py-20 relative z-50">
       <div className="flex flex-col  items-center gap-1 pb-10">

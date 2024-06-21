@@ -142,12 +142,13 @@ export const POOLSV2_LIST = gql`
 `
 
 export const POOL_DAY_DATA = gql`
-  query PoolsList {
+  query PoolsList($from: Int!) {
     pools {
       id
       feesUSD
-      poolDayData(first: 7, orderDirection: desc, orderBy: date) {
+      poolDayData(where: { date_gt: $from }, first: 7, orderDirection: desc, orderBy: date) {
         feesUSD
+        date
       }
     }
   }

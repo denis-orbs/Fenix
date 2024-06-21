@@ -1,5 +1,5 @@
 export const contractAddressList = {
-  v2router: '0x0998bEc51D95EAa75Ffdf465D5deD16aEd2ba2fe',
+  v2router: '0x4D6c0FCaadE9546b7238cDe9b03C2Cc3E258A7D2',
   pairs_factory: '0xa19C51D91891D3DF7C13Ed22a2f89d328A82950f',
   cl_manager: '0x8881b3Fb762d1D50e6172f621F107E24299AA1Cd',
   cl_factory: '0x7a44CD060afC1B6F4c80A2B9b37f4473E74E25Df',

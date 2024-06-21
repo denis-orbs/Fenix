@@ -8,7 +8,8 @@ import { useAllPools } from '@/src/state/liquidity/hooks'
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useEffect, useState } from 'react'
 import HeaderRow from './Tables/LiquidityTable/HeaderRow'
-import LiquidityBanner from '@/src/components/Common/LiquidityBanner'
+import GoldRushBanner from '@/src/components/Common/GoldRushBanner'
+import Image from 'next/image'
 import {
   BLAST_NATIVE_POOLS,
   BLUE_CHIPS_POOLS,
@@ -16,6 +17,7 @@ import {
   MEMES_POOLS,
   OPTIONS_FILTER,
   STABLES_POOLS,
+  CLASSIC,
   STEPS,
 } from './data'
 
@@ -42,6 +44,9 @@ const Liquidity = () => {
       } else if (currentTab === 'BLAST NATIVE') {
         const combinedPools = pools.filter((pool: BasicPool) => BLAST_NATIVE_POOLS.includes(pool.id.toLowerCase()))
         setFilteredPools(combinedPools)
+      } else if (currentTab === 'CLASSIC') {
+        const combinedPools = pools.filter((pool: BasicPool) => CLASSIC.includes(pool.id.toLowerCase()))
+        setFilteredPools(combinedPools)
       } else {
         setFilteredPools(pools)
       }
@@ -67,7 +72,7 @@ const Liquidity = () => {
           <Steps steps={STEPS} title="Start Now" />
         </div>
       </div>
-      <LiquidityBanner />
+      <GoldRushBanner />
       <div className="flex flex-col justify-between gap-5 mb-4 md:items-center xl:flex-row overflow-hidden mt-5">
         <h5 className="text-lg mb-1 text-white max-xl:w-full lg:flex-shrink-0">Liquidity Pools</h5>
         <div className="2xl:max-w-[70%] xl:max-w-[65%]  w-full">

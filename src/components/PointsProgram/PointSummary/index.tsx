@@ -123,7 +123,13 @@ const PointSummary = ({ userData }: any) => {
           >
             Rings{' '}
             <span className="text-xs flex items-center bg-shark-400 border border-shark-100 gap-2 text-white font-normal px-5 py-1 rounded-md">
-              <Image src="/static/images/tokens/blackFNX.svg" alt='Black FNX' width={10} height={10} className='w-[1.25rem]  h-[1.25rem] ml-[-4px]'></Image>
+              <Image
+                src="/static/images/tokens/blackFNX.svg"
+                alt="Black FNX"
+                width={10}
+                height={10}
+                className="w-[1.25rem]  h-[1.25rem] ml-[-4px]"
+              ></Image>
               {nftBoost ? Math.min(Number(nftBoost), MAX_NFT_BOOST).toString() : '0'}% NFT Boost
               {/* <span className="icon-info ml-1"></span> */}
             </span>
@@ -193,9 +199,9 @@ const PointSummary = ({ userData }: any) => {
               <h3 className="text-3xl font-medium text-white">
                 {isLoading ? <Loader size={'20px'} /> : userPoints ? formatAmount(userPoints, 6, true) : '-'}
               </h3>
-              <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
+              {/* <p className="text-xs text-transparent bg-gradient-to-r from-outrageous-orange-500 to-festival-500 bg-clip-text">
                 Your Total points
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

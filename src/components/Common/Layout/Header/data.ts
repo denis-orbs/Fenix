@@ -42,11 +42,11 @@ export const MENU_LINKS = [
     href: '/points-program',
     new: false,
   },
-  // {
-  //   name: 'Referrals',
-  //   href: '/referrals',
-  //   new: true,
-  // },
+  {
+    name: 'Referrals',
+    href: '/referrals',
+    new: true,
+  },
 ]
 
 export const SOCIAL_LINKS = [
