@@ -42,7 +42,6 @@ interface MyPositionssProps {
 const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, showDust }: MyPositionssProps) => {
   const router = useRouter()
 
-  
   const dispatch = useDispatch()
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
@@ -73,30 +72,22 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
   const TvlTotalValue = (data: any) => {
     const tvl =
       Number(data?.depositedToken0) *
-        Number(
-          tokens.find(
-            (e) =>
-              e.tokenAddress.toLowerCase() ===
-              (data?.token0?.id.toLowerCase())
-          )?.priceUSD
-        ) +
-        Number(data?.depositedToken1) *
-          Number(
-            tokens.find(
-              (e) =>
-                e.tokenAddress.toLowerCase() ===
-                (data?.token1?.id.toLowerCase())
-            )?.priceUSD
-          )
+        Number(tokens.find((e) => e.tokenAddress.toLowerCase() === data?.token0?.id.toLowerCase())?.priceUSD) +
+      Number(data?.depositedToken1) *
+        Number(tokens.find((e) => e.tokenAddress.toLowerCase() === data?.token1?.id.toLowerCase())?.priceUSD)
 
     tvlPosition[data.id] = tvl
     return tvl
   }
 
   useEffect(() => {
-    setNonZeroData(showDust ? data : data.filter((i) => {
-      return (Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1)
-    }))
+    setNonZeroData(
+      showDust
+        ? data
+        : data.filter((i) => {
+            return Number(tvlPosition[i.id] ? tvlPosition[i.id] : TvlTotalValue(i)) > 0.1
+          })
+    )
   }, [data, showDust, tvlPosition, tokens])
   const pagination = paginate(nonZeroData, activePage, itemsPerPage)
 
@@ -211,7 +202,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
       return (minPrice < Number(currentPoolPrice) && maxPrice >= Number(currentPoolPrice)) || liquidity === 'ichi'
     }, [minPrice, maxPrice, currentPoolPrice, liquidity])
     useEffect(() => {
-      setIsInRangeAll(prevState => {
+      setIsInRangeAll((prevState) => {
         if (prevState[id] !== isInRangeAux) {
           return { ...prevState, [id]: isInRangeAux }
         }
@@ -269,7 +260,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
 
     return (
       <>
-        <p className="text-xs text-white mb-1">
+        <p className="text-xs text-white -mt-[3px]">
           {formatDollarAmount(
             Number(data?.depositedToken0) *
               Number(
@@ -294,12 +285,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
   }
 
   const TokenIchiGamma = ({ data }: any) => {
-
-    return (
-      <>
-     
-      </>
-    )
+    return <></>
   }
 
   const handleClaim = (id: string) => {
@@ -470,6 +456,12 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                                       )?.multiplier
                                     }
                                   </span>
+                                  <span
+                                    className={`
+                                      
+                                      !py-1 px-3 h-[1.875rem]  
+                                      ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase())?.multiplier ? 'hidden' : 'block'}`}
+                                  ></span>
                                 </div>
                               </>
                             ) : (
@@ -514,6 +506,12 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                                       )?.multiplier
                                     }
                                   </span>
+                                  <span
+                                    className={`
+                                      
+                                      !py-1 px-3 h-[1.875rem]  
+                                      ${totalCampaigns.find((add) => add.pairAddress.toLowerCase() == position.pool.id.toLowerCase())?.multiplier ? 'hidden' : 'block'}`}
+                                  ></span>
                                 </div>
                               </>
                             )}
@@ -602,7 +600,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                           <div className="flex flex-col justify-center items-end">
                             {/* <InWalletTotal data={position} /> */}
 
-                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
+                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 mt-[14px]">
                               {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
                               {position.token0.symbol}
                             </span>
@@ -615,10 +613,10 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                         </TableCell>
                         <TableCell className="w-[10%] flex justify-end">
                           {/* Emissions */}
-                          <div className="flex flex-col justify-center items-end">
+                          <div className="flex flex-col justify-center items-end ">
                             <EmissionsTotal data={position} />
 
-                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
+                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                               {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
                               {position.token0.symbol}
                             </span>
