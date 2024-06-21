@@ -128,7 +128,6 @@ export const useIchiPositions = () => {
             const chain = SupportedChainId.blast
 
             const vaultInfo = await getIchiVaultInfo(chain, dex, item.vaultAddress)
-            console.log('vaultInfo >> ', vaultInfo)
             const tokenAid = vaultInfo.tokenA
             const tokenBid = vaultInfo.tokenB
             //const vaultInfo = useIchiVaultsData(item.vaultAddress)

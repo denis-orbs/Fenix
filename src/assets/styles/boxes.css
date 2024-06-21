@@ -65,7 +65,7 @@
 }
 
 .point-summary-box {
-  @apply relative flex flex-col items-center justify-center px-2 2xl:p-5 rounded-lg bg-shark-400 bg-opacity-40 w-full min-h-[137px]
+  @apply relative flex flex-col items-center justify-center p-5 rounded-lg bg-shark-400 bg-opacity-40 w-full min-h-[137px]
 
   before:hidden
   xl:before:block
