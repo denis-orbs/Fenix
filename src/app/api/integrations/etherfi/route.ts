@@ -22,15 +22,13 @@ export async function GET(request: NextRequest) {
   if (Number(block_number) < START_BLOCK) {
     return NextResponse.json(
       {
-        message: 'data starting at block number 1586148',
+        message: `data starting at block number ${START_BLOCK}`,
       },
       {
         status: 400,
       }
     )
   }
-  //   5082738
-  //   el bueno es el token0
   const owners = addresses ? addresses.split(',') : null
   if (owners && owners?.length > 0) {
     for (const address of owners) {
