@@ -11,13 +11,22 @@ import { useAccount } from 'wagmi'
 import { fetchNativePrice, fetchV3Positions } from '@/src/state/liquidity/reducer'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
-import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
+import { useIchiPositions, useIchiVaultsDataMap } from '@/src/library/hooks/web3/useIchi'
 import { getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionsApr'
 import Spinner from '../../Common/Spinner'
 import { useDispatch } from 'react-redux'
 import { setApr } from '@/src/state/apr/reducer'
+
+const defaultVaultInfo = {
+  id: '',
+  tokenA: '',
+  tokenB: '',
+  allowTokenA: false,
+  allowTokenB: false,
+  apr: [],
+}
 
 const MyStrategies = () => {
   const dispatch = useDispatch()
@@ -34,6 +43,9 @@ const MyStrategies = () => {
   const [progress, setProgress] = useState<number>(0)
   const { chainId, address } = useAccount()
   const { ichipositions, ichiLoading } = useIchiPositions()
+  const vaultsMap = useIchiVaultsDataMap(
+    nonZeroPosition.filter(({ liquidity }) => liquidity === 'ichi').map(({ id }) => id)
+  )
 
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
@@ -201,6 +213,7 @@ const MyStrategies = () => {
                       <Strategy
                         row={nonZeroPosition[index]}
                         tokens={tokens}
+                        ichiTokens={vaultsMap[nonZeroPosition[index].id] || defaultVaultInfo}
                         options={OPTIONS_STRATEGIES}
                         setModalSelected={setModalSelected}
                         setOpenModal={setOpenModal}
@@ -232,6 +245,7 @@ const MyStrategies = () => {
                       <StrategyMobile
                         row={nonZeroPosition[index]}
                         tokens={tokens}
+                        ichiTokens={vaultsMap[nonZeroPosition[index].id] || defaultVaultInfo}
                         options={OPTIONS_STRATEGIES}
                         setOpenModal={setOpenModal}
                         setModalSelected={setModalSelected}

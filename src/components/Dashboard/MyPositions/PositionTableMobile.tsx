@@ -26,6 +26,7 @@ import { BoostedPool, RingCampaignData, extraPoints } from '@/src/app/api/rings/
 import AprBox from '../../UI/Pools/AprBox'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
+import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
 
 interface MyPositionsMobileProps {
   activePagination?: boolean
@@ -49,15 +50,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   const [tvlPosition, setTvlPosition] = useState<any>([])
   const [nonZeroData, setNonZeroData] = useState<positions[]>([])
 
-  const hoverRef = useRef(null)
-
-  const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
-  const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
-  const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
-  const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
-  const [id, setId] = useState<string>('')
-
-  const { data: ringsCampaignsData } = useRingsCampaigns()
+  const { data: ringsCampaignsData } = useRingsCampaignsBoostedPools()
 
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
@@ -74,7 +67,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
   }
 
   const TvlTotalValue = (data: any) => {
-    const tvl = 
+    const tvl =
       Number(data?.depositedToken0) *
         Number(
           tokens.find(
@@ -91,7 +84,7 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
                 (data?.token1?.id.toLowerCase())
             )?.priceUSD
           )
-      
+
     tvlPosition[data.id] = tvl
     return tvl
   }
