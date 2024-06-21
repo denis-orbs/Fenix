@@ -9,7 +9,7 @@ import Decorator from '@/src/components/Common/Layout/Background'
 import Footer from '@/src/components/Common/Layout/Footer'
 import Header from '@/src/components/Common/Layout/Header'
 import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
-import RedirectHandler from '@/src/library/hooks/RedirectHandler'
+// import RedirectHandler from '@/src/library/hooks/RedirectHandler'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { getDefaultConfig, getDefaultWallets, midnightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
@@ -103,7 +103,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         suppressHydrationWarning={true}
         className={`${poppins.className}  relative pt-[26px]  mix-blend-lighten ${pathname === '/' ? 'bg-cover ' : ''}`}
       >
-        <RedirectHandler>
+        {/* <RedirectHandler> */}
           <ReduxProvider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <WagmiProvider config={wagmiConfig}>
@@ -136,7 +136,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </WagmiProvider>
             </PersistGate>
           </ReduxProvider>
-        </RedirectHandler>
+        {/* </RedirectHandler> */}
       </body>
     </html>
   )
