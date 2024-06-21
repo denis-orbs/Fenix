@@ -14,7 +14,6 @@ export async function GET(request: NextRequest) {
   const referrer = `&referrer=${OPEN_OCEAN_REFERRER[SupportedChainId.BLAST]}`
 
   const apiUrl = `https://open-api.openocean.finance/v4${pathname.replace('/api/aggregator', '')}${search}${gasPriceParam}${referrer}`
-  console.log(apiUrl)
   const response = await fetch(apiUrl, {
     headers: {
       ...request.headers,
