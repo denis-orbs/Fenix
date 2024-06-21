@@ -636,6 +636,7 @@ const Manage = ({}: {}) => {
         token0={firstToken}
         token1={secondToken}
         handleApprove={handleApprove}
+        disabled={!(+firstValue && !isNaN(+firstValue))}
         mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity}
         mainText={optionActive === 'WITHDRAW' ? 'Withdraw Liquidity' : 'Add Liquidity'}
         isLoading={isLoading}
