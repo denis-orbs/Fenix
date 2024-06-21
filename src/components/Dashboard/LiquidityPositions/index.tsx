@@ -1,71 +1,83 @@
 'use client'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 
-// api
 import { buildAprRingsMap } from '@/src/library/utils/build-apr-rings-map'
 
-// hooks
 import { useRingsCampaignsBoostedPools, useV2PairsData } from '@/src/state/liquidity/hooks'
 
-// helpers
 import { fromWei } from '@/src/library/utils/numbers'
 
-// components
 import { Button, TableSkeleton } from '@/src/components/UI'
 import HeaderRow from '@/src/components/Liquidity/Tables/HeaderRow'
 import NotFoundLock from '@/src/components/Lock/NotFoundLock'
 
-// models
 import { PROPS_CLASSIC_LIQUIDITY } from '@/src/components/Dashboard/types'
 import { PoolData } from '@/src/state/liquidity/types'
+import { useAccount } from 'wagmi'
+import Spinner from '../../Common/Spinner'
 
 const LiquidityPositions = () => {
-  // common
-  const { data: v2PairsData } = useV2PairsData()
+  const { data: v2PairsData, loading: pairsLoading } = useV2PairsData()
   const { data: ringsList, loading: ringsLoading } = useRingsCampaignsBoostedPools()
-
-  // computed
-  const aprRingsMap = useMemo(
-    () => (ringsLoading ? null : buildAprRingsMap(ringsList)),
-    [ringsLoading, ringsList],
+  const { address } = useAccount()
+  const [loading, setLoading] = useState(false)
+  const aprRingsMap = useMemo(() => (ringsLoading ? null : buildAprRingsMap(ringsList)), [ringsLoading, ringsList])
+  const poolsDataClassic = useMemo(
+    () =>
+      (v2PairsData || [])
+        .filter((pool) => pool.pairSymbol !== 'Concentrated pool')
+        .filter((row) => Number(fromWei(row.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
+        .map((row) => ({ pairDetails: row })),
+    [v2PairsData]
   )
-  const poolsDataClassic = useMemo(() => (
-    (v2PairsData || [])
-      .filter((pool) => pool.pairSymbol !== 'Concentrated pool')
-      .filter((row) => Number(fromWei(row.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
-      .map((row) => ({ pairDetails: row }))
-  ), [v2PairsData])
-  const poolsDataClassicRing = useMemo<PoolData[]>(() => (
-    aprRingsMap
-      ? poolsDataClassic.map((pool) => ({
-          ...pool,
-          ...(pool.pairDetails?.pairSymbol
-            ? {
-                pairDetails: {
-                  ...pool.pairDetails,
-                  maxAPR: (+(aprRingsMap[`${pool.pairDetails.id}`.toLowerCase()] ?? 0) + +(isNaN(pool.pairDetails.apr) ? 0 : pool.pairDetails.apr ?? 0)),
-                },
-              }
-            : {}),
-        }))
-      : poolsDataClassic
-  ), [poolsDataClassic, aprRingsMap])
+  const poolsDataClassicRing = useMemo<PoolData[]>(
+    () =>
+      aprRingsMap
+        ? poolsDataClassic.map((pool) => ({
+            ...pool,
+            ...(pool.pairDetails?.pairSymbol
+              ? {
+                  pairDetails: {
+                    ...pool.pairDetails,
+                    maxAPR:
+                      +(aprRingsMap[`${pool.pairDetails.id}`.toLowerCase()] ?? 0) +
+                      +(isNaN(pool.pairDetails.apr) ? 0 : pool.pairDetails.apr ?? 0),
+                  },
+                }
+              : {}),
+          }))
+        : poolsDataClassic,
+    [poolsDataClassic, aprRingsMap]
+  )
 
-  // lifecycle hooks
+  useEffect(() => {
+    setLoading(pairsLoading || ringsLoading)
+  }, [pairsLoading, ringsLoading])
+
   const renderContent = () => {
-    if (ringsLoading) {
-      return Array.from({ length: 5 }).map((_, index) => <TableSkeleton key={index} />)
+    if (loading && address) {
+      return (
+        <div className="flex flex-col gap-3 w-full mb-10 mt-10 mx-auto">
+          <div className="p-6 flex gap-8 justify-center items-center">
+            <p className="text-white text-sm flex items-center gap-3">
+              <Spinner /> Loading
+            </p>
+          </div>
+        </div>
+      )
     }
 
-    if (poolsDataClassicRing.length > 0) {
+    if (poolsDataClassicRing.length > 0 && address) {
       return <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassicRing} />
     }
 
-    return (
-      <div className="box-dashboard p-6">
-        <NotFoundLock info={'No Pools Found.'} />
-      </div>
-    )
+    if ((poolsDataClassicRing.length === 0 && !loading) || !address) {
+      return (
+        <div className="box-dashboard p-6">
+          <NotFoundLock info={'No Pools Found.'} />
+        </div>
+      )
+    }
   }
 
   return (
