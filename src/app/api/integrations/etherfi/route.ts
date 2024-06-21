@@ -87,5 +87,5 @@ export async function GET(request: NextRequest) {
       effective_balance: balances[address],
     })
   }
-  return NextResponse.json({ Results: Result })
+  return NextResponse.json({ Result: Result })
 }
