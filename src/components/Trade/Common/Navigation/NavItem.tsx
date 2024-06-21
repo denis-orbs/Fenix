@@ -29,7 +29,7 @@ const NavItem = ({ item }: NavItemProps) => {
   const activeItem = cn(
     'relative pb-2 transtition cursor-pointer border-b-2  min-w-[100px] group hover:border-chilean-fire-600',
     shortenedPathname === item.path ? 'border-chilean-fire-600' : 'border-transparent',
-    `${isMobile && item.name !== 'Swap' ? 'hidden' : 'block'}`
+    // `${isMobile && item.name !== 'Swap' ? 'hidden' : 'block'}`
   )
   const activeName = cn(shortenedPathname === item.path ? 'text-chilean-fire-600' : 'text-white')
 
