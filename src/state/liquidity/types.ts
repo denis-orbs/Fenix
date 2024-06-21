@@ -28,7 +28,7 @@ export interface LiquidityState {
   }
   ringsCampaigns: {
     state: ApiState
-    data: RingCampaignData
+    data: RingCampaignData | null
   }
 }
 

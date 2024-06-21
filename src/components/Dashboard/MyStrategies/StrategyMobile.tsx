@@ -21,6 +21,7 @@ import { NotificationDuration, NotificationType } from '@/src/state/notification
 import { ichiVaults } from '../../Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import { useQuery } from '@tanstack/react-query'
 import { BoostedPool } from '@/src/app/api/rings/campaign/route'
+import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 
 type options = {
   value: string
@@ -30,20 +31,19 @@ type options = {
 interface StrategyMobileProps {
   row: positions
   tokens: Token[]
+  ichiTokens: any
   options: options[]
   setModalSelected: (modal: string) => void
   setOpenModal: (modal: boolean) => void
 }
 
-const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
+const StrategyMobile = ({ row, tokens, ichiTokens: ichitokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
 
   const addNotification = useNotificationAdderCallback()
-
-  const ichitokens = useIchiVaultsData(row.liquidity === 'ichi' ? row?.id : zeroAddress)
 
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const handlerOpenModal = (option: string) => {
@@ -109,14 +109,8 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
       }
     )
   }
-  const { data: ringsCampaign, isLoading: isLoadingRingsCampaign } = useQuery({
-    queryKey: ['ringsPointsCampaign'],
-    staleTime: 1000 * 60 * 5,
-    queryFn: async () => {
-      const response = await fetch('/api/rings/campaign')
-      return response.json()
-    },
-  })
+  const { data: ringsCampaign } = useRingsCampaigns()
+
   const ichiVaultData = ichiVaults.find((e) => e.id.toLowerCase() === row?.id.toLowerCase())
   const fenixRingApr =
     ringsCampaign?.boostedPools.find((pool: BoostedPool) => {
