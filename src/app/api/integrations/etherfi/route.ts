@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
             }
         }
     `
-  const Results = []
+  const Result = []
   interface Balances {
     [key: string]: number
   }
@@ -82,10 +82,10 @@ export async function GET(request: NextRequest) {
     }
   }
   for (const address in balances) {
-    Results.push({
+    Result.push({
       address: address,
       effective_balance: balances[address],
     })
   }
-  return NextResponse.json({ Results })
+  return NextResponse.json({ Results: Result })
 }
