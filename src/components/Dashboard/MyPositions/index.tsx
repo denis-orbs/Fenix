@@ -184,7 +184,7 @@ const MyPositions = () => {
               </Button>
             </div>
           </div>
-            <h2 className="text-white text-base p-3 font-medium relative z-50">Concentrated Liquidity:</h2>
+          <h2 className="text-white text-base p-3 font-medium relative z-50">Concentrated Liquidity:</h2>
           <div className="dashboard-box flex flex-col">
             <PositionTable data={newPositions} tokens={tokens} ringsCampaign={ringsCampaign} showDust={activeSwitch} />
             <PositionTableMobile
@@ -198,9 +198,9 @@ const MyPositions = () => {
       ) : (position.length === 0 && loading === false && isLoadingRingsCampaign === false) || address === undefined ? (
         <div className="flex flex-col gap-3 w-full mb-10 mt-10 mx-auto">
           <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg">Concentrated Liquidity Positions</p>
-            <div className=" flex items-center gap-3">
-              {/* <Switch active={activeSwitch} setActive={handlerSwitch}/> */}
+            <p className="flex gap-3 text-lg">Your Liquidity Positions</p>
+            {/* <div className=" flex items-center gap-3">
+              <Switch active={activeSwitch} setActive={handlerSwitch}/>
               <Button
                 variant="tertiary"
                 className={`!py-3 xl:me-5 !text-xs  flex items-center gap-1 !lg:text-sm ${isConnected === true ? '!block' : '!hidden'}`}
@@ -209,21 +209,23 @@ const MyPositions = () => {
                 <span className="icon-logout" />
                 Create position
               </Button>
-            </div>
+            </div> */}
           </div>
-          <div className="box-dashboard p-6 flex gap-8 items-center ">
+          {/* <div className="box-dashboard p-6 flex gap-8 items-center ">
             <p className="text-white text-sm">You have no positions.</p>
-          </div>
+          </div> */}
         </div>
       ) : (
-        <div className="flex flex-col  gap-3 w-full mb-10 mt-10 mx-auto">
-          <div className="text-white flex justify-between items-center">
-            <p className="flex gap-3 text-lg ms-2">Concentrated Liquidity Positions</p>
+        <div className="flex flex-col  gap-3 w-full mb-10 mt-10 mx-auto items-center">
+          <div className="text-white flex justify-start w-full max-w-[1127px]">
+            <p className="flex justify-start text-lg ms-2 w-full">Concentrated Liquidity Positions</p>
           </div>
-          <div className="box-dashboard p-6 flex gap-8 justify-center items-center ">
-            <p className="text-white text-sm flex items-center gap-3">
-              <Spinner /> Loading
-            </p>
+          <div className="box-referrals-short p-6 flex gap-8 justify-center ">
+            <div className="relative z-50">
+              <p className="text-white text-sm flex items-center gap-3">
+                <Spinner /> Loading
+              </p>
+            </div>
           </div>
         </div>
       )}

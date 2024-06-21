@@ -57,18 +57,41 @@ const LiquidityPositions = () => {
   const renderContent = () => {
     if (loading && address) {
       return (
-        <div className="flex flex-col gap-3 w-full mb-10 mt-10 mx-auto">
-          <div className="p-6 flex gap-8 justify-center items-center">
-            <p className="text-white text-sm flex items-center gap-3">
-              <Spinner /> Loading
-            </p>
+        <div className="flex flex-col  gap-3 w-full mb-10 mt-10 mx-auto items-center">
+          <div className="text-white flex justify-start w-full max-w-[1127px]">
+            <p className="flex justify-start text-lg ms-2 w-full">Classic Liquidity Positions</p>
+          </div>
+
+          <div className="box-referrals-short p-6 flex gap-8 justify-center ">
+            <div className="relative z-50">
+              <p className="text-white text-sm flex items-center gap-3">
+                <Spinner /> Loading
+              </p>
+            </div>
           </div>
         </div>
       )
     }
 
     if (poolsDataClassicRing.length > 0 && address) {
-      return <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassicRing} />
+      return (
+        <>
+          <div className="flex flex-col ">
+            <div className="flex justify-between items-center">
+              <h2 className="text-white font-normal text-lg">Classic liquidity positions</h2>
+              <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
+                <span className="icon-logout"></span>New deposit
+              </Button>
+            </div>
+            <h1 className="text-white p-3 font-medium">Classic liquidity:</h1>
+          </div>
+          <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
+            <div className="rounded-lg z-10">
+              <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassicRing} />
+            </div>
+          </div>
+        </>
+      )
     }
 
     if ((poolsDataClassicRing.length === 0 && !loading) || !address) {
@@ -82,21 +105,7 @@ const LiquidityPositions = () => {
 
   return (
     <>
-      <div className="mb-10 flex flex-col gap-3">
-        <div className="flex flex-col ">
-          <div className="flex justify-between items-center">
-            <h2 className="text-white font-normal text-lg">Classic liquidity positions</h2>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
-              <span className="icon-logout"></span>New deposit
-            </Button>
-          </div>
-          <h1 className="text-white p-3 font-medium">Classic liquidity:</h1>
-        </div>
-
-        <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
-          <div className="rounded-lg z-10">{renderContent()}</div>
-        </div>
-      </div>
+      <div className="mb-10 flex flex-col">{renderContent()}</div>
     </>
   )
 }
