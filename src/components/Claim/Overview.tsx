@@ -129,7 +129,7 @@ const Overview = () => {
                 setSort={() => {}}
                 setSortIndex={() => {}}
                 sortIndex={0}
-                sort={null}
+                sort={'normal'}
               />
 
               <TableBody>
@@ -289,7 +289,7 @@ const Overview = () => {
                 setSort={() => {}}
                 setSortIndex={() => {}}
                 sortIndex={0}
-                sort={null}
+                sort={'normal'}
               />
 
               <TableBody>

@@ -1,4 +1,6 @@
 import { DATA_ROW } from '@/src/components/Liquidity/data'
+import { voteState } from '@/src/state/vote/types'
+import { lockState } from '@/src/state/lock/types'
 
 export const PROPS_CLASSIC_LIQUIDITY = {
   titleHeader: 'In Wallet',
@@ -26,4 +28,4 @@ export const PROPS_HEADER_ROW_VOTE = {
   activePagination: false,
   filterData: DATA_ROW,
   loading: false,
-}
+} as any

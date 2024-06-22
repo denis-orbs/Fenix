@@ -40,7 +40,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
               ]}
               setSort={() => {}}
               setSortIndex={() => {}}
-              sort={null}
+              sort={'normal'}
               sortIndex={1}
             />
 
@@ -140,7 +140,7 @@ const Overview = ({ migrateStatus, setMigrateStatus }: OverviewProps) => {
               setSort={() => {}}
               setSortIndex={() => {}}
               sortIndex={1}
-              sort={null}
+              sort={'normal'}
             />
 
             <TableBody>

@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 // Crear el contexto
-const ScreenSizeContext = createContext();
+const ScreenSizeContext = createContext({ isMobile: false });
 
 // Proveedor del contexto
 export const ScreenSizeProvider = ({ children }: {children:any}) => {

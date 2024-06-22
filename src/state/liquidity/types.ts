@@ -3,7 +3,7 @@ import { ClmProvider } from '@/src/library/types/liquidity'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
 import { Address } from 'viem'
-import { BoostedPool, RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import RingCampaignData from '@/src/library/types/pools/ring-campaign-data'
 
 export interface LiquidityState {
   // Liquidity V2 Pairs
@@ -28,7 +28,7 @@ export interface LiquidityState {
   }
   ringsCampaigns: {
     state: ApiState
-    data: RingCampaignData
+    data: RingCampaignData | null
   }
 }
 
@@ -210,6 +210,7 @@ export interface BasicPool {
   reserve1?: string
   totalSupply?: string
   aprRings?: string
+  totalCampaigns?: number
 }
 export interface BasicToken {
   id: string

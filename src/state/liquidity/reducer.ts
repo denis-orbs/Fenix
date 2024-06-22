@@ -14,7 +14,7 @@ import { getLiquidityTableElements } from './thunks'
 import { V2PairInfo, V3PairInfo } from './types'
 import { GET_POSITIONV3_USER, GET_V2_PAIRS, GET_V3_ALGEBRA_DATA } from '@/src/library/apollo/queries/LIQUIDITY'
 import { algebra_client } from '@/src/library/apollo/client'
-import { blastClient } from '@/src/library/apollo/client/protocolCoreClient'
+import { blastClient, getIchiClient } from '@/src/library/apollo/client/protocolCoreClient'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 import {
@@ -28,6 +28,8 @@ import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { ALGEBRA_SUBGRAPH } from '@/src/library/constants/addresses'
 import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 import moment from 'moment'
+import { IchiVault, SupportedChainId, SupportedDex } from '@ichidao/ichi-vaults-sdk/dist/src/types'
+import { GET_ICHI_VAULTS_BY_IDS } from '@/src/library/apollo/queries/ichi'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -53,20 +55,20 @@ export const initialState: LiquidityState = {
   },
   ringsCampaigns: {
     state: ApiState.LOADING,
-    data: [],
+    data: null,
   },
 }
 
 export default createReducer(initialState, (builder) => {
   builder
     .addCase(updateToken0, (state, action) => {
-      state.token0 = action.payload
+      state.token0 = action.payload as `0x${string}`
     })
     .addCase(updateToken0TypedValue, (state, action) => {
       state.token0TypedValue = action.payload
     })
     .addCase(updateToken1, (state, action) => {
-      state.token1 = action.payload
+      state.token1 = action.payload as `0x${string}`
     })
     .addCase(updateToken1TypedValue, (state, action) => {
       state.token1TypedValue = action.payload
@@ -118,13 +120,13 @@ export default createReducer(initialState, (builder) => {
       state.gammaVaults = { data: [], state: ApiState.ERROR }
     })
     .addCase(getRingsCampaigns.pending, (state) => {
-      state.ringsCampaigns = { data: [], state: ApiState.LOADING }
+      state.ringsCampaigns = { data: null, state: ApiState.LOADING }
     })
     .addCase(getRingsCampaigns.fulfilled, (state, action) => {
       state.ringsCampaigns = { data: action.payload, state: ApiState.SUCCESS }
     })
     .addCase(getRingsCampaigns.rejected, (state) => {
-      state.ringsCampaigns = { data: [], state: ApiState.ERROR }
+      state.ringsCampaigns = { data: null, state: ApiState.ERROR }
     })
 })
 
@@ -245,6 +247,19 @@ export const fetchV3PoolDayData = async () => {
     return data
   } catch (error) {
     console.error('Error fetching positions:', error)
+    return []
+  }
+}
+
+export async function getIchiVaultsDataByIds(chainName: string, dex: SupportedDex, ids: string[]): Promise<IchiVault[]> {
+  try {
+    const { data } = await getIchiClient(chainName, dex).query({
+      query: GET_ICHI_VAULTS_BY_IDS,
+      variables: { ids },
+    })
+    return data.ichiVaults
+  } catch (error) {
+    console.error('Error fetching vaults data:', error)
     return []
   }
 }

@@ -1,8 +1,12 @@
 'use client'
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
-// api
-import { fetchRingsApr } from './getAprRings'
+// hooks
+import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
+
+// helpers
+import { buildAprRingsMap } from '@/src/library/utils/build-apr-rings-map'
+import { totalCampaigns } from '@/src/library/utils/campaigns'
 
 // components
 import Row from './Row'
@@ -13,6 +17,7 @@ import TableHeadNew from '@/src/components/UI/Table/TableHeadNew'
 import { BasicPool } from '@/src/state/liquidity/types'
 import SortTypes from '@/src/library/types/common/sort-types.enum'
 import TableHeaderCell from '@/src/library/types/common/table-header-cell'
+import { Campaign } from '@/src/library/utils/campaigns'
 
 // personal models
 interface HeaderRowProps {
@@ -30,12 +35,12 @@ interface HeaderRowProps {
 const HeaderCellsRaw: TableHeaderCell[] = [
   { text: 'Pair', className: 'w-[20%]' },
   { text: 'Range', className: 'w-[12%] text-center' },
-  { text: 'Point Stack', className: 'w-[15%] text-right', rangeClassName: 'w-[8%] text-right' },
+  { text: 'Point Stack', className: 'w-[15%] text-right', rangeClassName: 'w-[8%] text-right', sortBy: 'totalCampaigns' },
   { text: 'TVL', className: 'w-[13%] text-right', sortBy: 'totalValueLockedUSD' },
   { text: 'APR', className: 'w-[13%] text-right', rangeClassName: 'w-[8%] text-right', sortBy: 'aprRings' },
   { text: 'Volume', className: 'w-[13%] text-right', sortBy: 'volumeUSD' },
   { text: 'Fees', className: 'w-[13%] text-right', sortBy: 'feesUSD' },
-  { text: 'Action', className: 'w-[13%] flex justify-end' },
+  { text: 'Action', className: 'w-[13%] text-right' },
 ]
 
 const HeaderRow = ({
@@ -48,8 +53,14 @@ const HeaderRow = ({
   titleHeader2 = '',
   activeRange = false,
 }: HeaderRowProps) => {
+  // common
+  const { data: ringsList, loading: ringsLoading } = useRingsCampaignsBoostedPools()
+
   // state
-  const [poolsAprRing, setPoolsAprRing] = useState<{ [key: string]: string } | null>(null)
+  const aprRingsMap = useMemo(
+    () => (ringsLoading ? null : buildAprRingsMap(ringsList)),
+    [ringsLoading, ringsList],
+  )
   const [itemsPerPage, setItemPerPage] = useState<number>(20)
   const [activePage, setActivePage] = useState<number>(1)
   const [sort, setSort] = useState<SortTypes | null>(null)
@@ -72,7 +83,8 @@ const HeaderRow = ({
   const sortedMappedTableData: BasicPool[] = useMemo(() => {
     const mappedData = poolsData.map((item) => ({
       ...item,
-      aprRings: (+(poolsAprRing?.[item.id] ?? 0) + +(isNaN(+item.apr!) ? 0 : item.apr ?? 0)).toString(),
+      aprRings: (+(aprRingsMap?.[item.id?.toLowerCase()] ?? 0) + +(isNaN(+item.apr!) ? 0 : item.apr ?? 0)).toString(),
+      totalCampaigns: Number(totalCampaigns.find((add:Campaign) => add.pairAddress.toLowerCase() === item.id.toLowerCase())?.pointStack?.length) || 0,
     }))
 
     if (!(sortBy && sort && mappedData[0][sortBy])) {
@@ -80,7 +92,7 @@ const HeaderRow = ({
     }
 
     return mappedData.sort((a, b) => (+a[sortBy]! - +b[sortBy]!) * sort)
-  }, [poolsData, poolsAprRing, sortBy, sort])
+  }, [poolsData, aprRingsMap, sortBy, sort])
   const pageData = useMemo(() => {
     const totalPages = Math.max(1, Math.ceil(sortedMappedTableData.length / itemsPerPage))
 
@@ -95,16 +107,6 @@ const HeaderRow = ({
     setSortBy(sortBy)
     setSort(sort)
   }
-
-  // async helpers
-  async function loadAprRings(): Promise<void> {
-    setPoolsAprRing(await fetchRingsApr())
-  }
-
-  // lifecycle hooks
-  useEffect(() => {
-    loadAprRings()
-  }, [])
 
   return (
     <div className="relative">

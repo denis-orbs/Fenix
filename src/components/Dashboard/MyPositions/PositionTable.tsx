@@ -25,9 +25,11 @@ import { useQuery } from '@tanstack/react-query'
 import AprBox from '../../UI/Pools/AprBox'
 // import cn from '@/src/library/utils/cn'
 
-import { BoostedPool, RingCampaignData, extraPoints } from '@/src/app/api/rings/campaign/route'
+import BoostedPool from '@/src/library/types/pools/boosted-pool'
+import extraPoints from '@/src/library/types/pools/extra-points'
+import RingCampaignData from '@/src/library/types/pools/ring-campaign-data'
 import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
-import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
+import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
 
 interface MyPositionssProps {
   activePagination?: boolean
@@ -52,7 +54,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
   const [nonZeroData, setNonZeroData] = useState<positions[]>([])
   const [isInRangeAll, setIsInRangeAll] = useState<{ [key: string]: boolean }>({})
 
-  const { data: ringsCampaignsData } = useRingsCampaigns()
+  const { data: ringsCampaignsData } = useRingsCampaignsBoostedPools()
   function paginate(items: any, currentPage: number, itemsPerPage: number) {
     // Calculate total pages
     const totalPages = Math.ceil(items.length / itemsPerPage)
@@ -68,7 +70,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
   }
 
   const TvlTotalValue = (data: any) => {
-    const tvl = 
+    const tvl =
       Number(data?.depositedToken0) *
         Number(
           tokens.find(
@@ -85,7 +87,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                 (data?.token1?.id.toLowerCase())
             )?.priceUSD
           )
-      
+
     tvlPosition[data.id] = tvl
     return tvl
   }
@@ -135,7 +137,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
               {/* Min: {minPriceIsZero ? 0 : formatAmount(minPrice, 6)} {token0.symbol} per {token1.symbol} */}
             </div>
             {/* <div className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} 
+              Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
               Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol}
             </div> */}
           </div>
@@ -148,7 +150,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
             </div>
             {/* <div
               className="relative px-2 py-2 text-xs whitespace-nowrap text-ellipsis overflow-hidden text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300"
-              
+
             > */}
             {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)} {token0.symbol} per {token1.symbol} */}
             {/* Max: {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}  */}
