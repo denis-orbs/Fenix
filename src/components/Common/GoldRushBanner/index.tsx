@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 
 import { Button } from '@/src/components/UI'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { useCloseBanner, useShowBanner } from '@/src/state/user/hooks'
 
 import Slider from 'react-slick'
@@ -12,6 +13,8 @@ import "slick-carousel/slick/slick-theme.css"
 
 
 const GoldRushBanner = () => {
+  const pathname = usePathname()
+  console.log('pathname :>> ', pathname);
   const settings = {
     dots: true,
     infinite: false,
@@ -113,7 +116,7 @@ const GoldRushBanner = () => {
           </Slider>
         </div>
       </div>
-      <Button variant="primary" className={`relative z-[20] max-lg:!px-2 max-lg:!py-1 !flex-shrink-0 max-sm:!text-xs whitespace-nowrap`} href="/liquidity">
+      <Button variant="primary" className={`relative z-[20] max-lg:!px-2 max-lg:!py-1 !flex-shrink-0 max-sm:!text-xs whitespace-nowrap ${pathname === '/liquidity' ? '!hidden' : '!block'}`} href="/liquidity">
         <span>Deposit Now</span>
       </Button>
     </div>
