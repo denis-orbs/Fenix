@@ -37,6 +37,7 @@ import {
 import { usePool } from '@/src/components/Trade/Swap/Panel/usePool'
 import { blast } from 'viem/chains'
 import BigNumber from 'bignumber.js'
+import { postEvent } from '@/src/library/utils/events'
 
 const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IToken[] }) => {
   const [firstToken, setFirstToken] = useState({
@@ -56,6 +57,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     address: '0x4300000000000000000000000000000000000004' as Address,
     img: '/static/images/tokens/WETH.png',
   } as IToken)
+
   const [secondValue, setSecondValue] = useState('')
   const [allowanceFirst, setAllowanceFirst] = useState(0)
   const [allowanceSecond, setAllowanceSecond] = useState(0)
@@ -119,8 +121,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
       setSecondValue('0')
     } else if (rangePrice2 != -1 && rangePrice1 > rangePrice2) {
       setButtonText("Min price can't be higher than max price")
-    } else if(lowerTick == higherTick) {
-      setButtonText("The gap between min and max price is not enough")
+    } else if (lowerTick == higherTick) {
+      setButtonText('The gap between min and max price is not enough')
     } else if (
       account &&
       isConnected &&
@@ -262,7 +264,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   useEffect(() => {
     if (!firstToken.address || !secondToken.address) {
-      return;
+      return
     }
 
     setIsInverse(BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
@@ -441,7 +443,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
+            // aquí enviar notificación al backend, con el usuario tb
             // toast(`Added LP successfully.`)
+
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
@@ -453,6 +457,14 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
             setFirstValue('0')
             setSecondValue('0')
+            const valueInDollars =
+              parseFloat(firstValue) * firstToken?.price + parseFloat(secondValue) * secondToken?.price
+            await postEvent({
+              tx: transaction.transactionHash,
+              user: account.address as Address,
+              event_type: 'ADD_LIQUIDITY',
+              value: valueInDollars,
+            })
           } else {
             toast(`Added LP TX failed, hash: ${transaction.transactionHash}`)
             addNotification({

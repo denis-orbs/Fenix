@@ -33,6 +33,7 @@ model users {
   ring_bonus                 ring_bonus[]
   ring_distribution          ring_distribution[]
   rings_extra_data           rings_extra_data?
+  action_event               action_event[]
 }
 
 model rings_extra_data {
@@ -53,6 +54,21 @@ model ring_batch_distribution {
   is_sent    Boolean  @default(false)
   pool_id    String
   batch_id   String?
+}
+
+// cambiar a action event?
+enum EventType {
+  ADD_LIQUIDITY
+  SWAP
+}
+
+model action_event {
+  id         String    @id
+  created_at DateTime  @default(now())
+  user_id    String
+  users      users     @relation(fields: [user_id], references: [id])
+  value      Decimal
+  event_type EventType
 }
 
 model ring_bonus {
