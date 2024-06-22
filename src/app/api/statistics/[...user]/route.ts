@@ -24,7 +24,7 @@ export async function GET(
   const from = fromParam ? new Date(Number(fromParam) * 1000) : new Date('2000-01-01T00:00:00Z')
   const to = toParam ? new Date(Number(toParam) * 1000) : new Date('2100-01-01T00:00:00Z')
 
-  const user = params.user.toString()
+  const user = params.user.toString().toLowerCase()
 
   const validateData = userStatisticSchema.safeParse({
     from: fromParam,
@@ -32,7 +32,7 @@ export async function GET(
     user,
   })
   if (!validateData.success) {
-    return NextResponse.json({ error: validateData.error }, { status: 400 })
+    return NextResponse.json({ error: 'Bad request' }, { status: 400 })
   }
 
   const addLiquidityData = await prisma.action_event.aggregate({
