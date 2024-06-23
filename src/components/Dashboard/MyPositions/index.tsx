@@ -6,7 +6,7 @@ import { positions } from '../MyStrategies/Strategy'
 import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useAccount } from 'wagmi'
 import { fetchNativePrice, fetchV3Positions } from '@/src/state/liquidity/reducer'
-import { getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
+import { getPositionDataByPoolAddresses, priceToSqrtPrice } from '@/src/library/hooks/liquidity/useCL'
 import { setApr } from '@/src/state/apr/reducer'
 import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
 import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionApr'
@@ -77,6 +77,7 @@ const MyPositions = () => {
   }, [address])
 
   useEffect(() => {
+    console.log(priceToSqrtPrice('99280000000000000'), 'helloji')
     // FIXME: STARK
     dispatch(setApr(position))
   }, [position, dispatch])
