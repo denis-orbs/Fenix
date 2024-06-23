@@ -9,7 +9,7 @@ import { fetchNativePrice, fetchV3Positions } from '@/src/state/liquidity/reduce
 import { getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
 import { setApr } from '@/src/state/apr/reducer'
 import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
-import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionApr'
+import { getPositionAPR, getPositionFees } from '@/src/library/hooks/algebra/getPositionApr'
 import { Address } from 'viem'
 import Spinner from '../../Common/Spinner'
 import PositionTableMobile from './PositionTableMobile'
@@ -17,6 +17,8 @@ import { useQuery } from '@tanstack/react-query'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 import CheckBox from '../../UI/CheckBox'
+import { Pool } from '@cryptoalgebra/integral-sdk'
+import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 // import useStore from '@/src/state/zustand'
 
 const MyPositions = () => {
@@ -133,6 +135,29 @@ const MyPositions = () => {
         return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
       })
     )
+    const fees = await Promise.all(
+      positions.map(async (position: positions, index: number) => {
+        const pool: Pool = {
+          ...position.pool,
+          sqrtRatioX96: '',
+          tickCurrent: '',
+          tickDataProvider: '',
+          _tickSpacing: '',
+          token0: {
+            ...position.pool.token0,
+            address: position.pool.token0.id, // Add address here
+            chainId: FALLBACK_CHAIN_ID, // Add chainId here
+          },
+          token1: {
+            ...position.pool.token1,
+            address: position.pool.token1.id, // Add address here
+            chainId: FALLBACK_CHAIN_ID, // Add chainId here
+          },
+          // Add the missing properties here
+        } as unknown as Pool
+        return getPositionFees(pool, Number(position.id), position)
+      })
+    )
     const final = positions.map((position: positions, index: number) => {
       //
       return {
@@ -140,8 +165,10 @@ const MyPositions = () => {
         depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
         depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
         apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
+        fees: fees[index],
       }
     })
+    console.log('setpositionfinal', final)
     setposition([...final])
     setpositionAmounts(amounts)
     setLoading(false)
@@ -152,20 +179,19 @@ const MyPositions = () => {
   }, [address])
 
   useEffect(() => {
-    // FIXME: STARK
     dispatch(setApr(position))
   }, [position, dispatch])
 
   const { data: ringsCampaign, loading: isLoadingRingsCampaign } = useRingsCampaigns()
 
   const newPositions = [...position, ...ichiPosition]
-  // console.log('combinatedArray', newPositions)
+  console.log('combinatedArray', newPositions)
   return (
     <>
       {newPositions.length !== 0 && loading === false && isLoadingRingsCampaign === false && address ? (
         <div className="mb-10 mt-5 flex flex-col ">
           <div className="flex justify-between items-center">
-            <h1 className="text-white text-lg">My Positions</h1>
+            <h1 className="text-white text-lg">Concentrated Positions</h1>
             <div className="flex items-center gap-3">
               <p className="text-white text-lg font-normal">Show Dust Positions</p>
               <CheckBox

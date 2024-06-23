@@ -18,6 +18,8 @@ import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import { getIchiVaultsDataByIds } from '@/src/state/liquidity/reducer'
+import { fetchTokens } from '../../common/getAvailableTokens'
+import { FALLBACK_CHAIN_ID } from '../../constants/chains'
 
 export interface IchiVault {
   id: string
@@ -55,20 +57,12 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
 
     tokenVaults.forEach(async (v: IchiVault) => {
       const kapr = await getLp(v.id)
-      // FIXME: STARK
+
       v.apr = kapr
-      //
+
       return v
     })
 
-    // const tokenVaultsWithApr = tokenVaults.map(async (token) => {
-    //   const apr = await getLp(token.id)
-    //
-    //   token.apr = apr
-    //   return token
-    // })
-    //
-    // FIXME: STARK
     setVault(tokenVaults)
   }, [token0, token1, tokenA, tokenB])
 
@@ -115,7 +109,7 @@ export const useIchiVaultInfo = (token0: string, token1: string) => {
 export const useIchiPositions = () => {
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
-  const { address } = useAccount()
+  const { address, chainId } = useAccount()
   const [ichipositions, setichipositions] = useState<positions[]>([])
   const [ichiLoading, setichiLoading] = useState<boolean>(false)
 
@@ -125,105 +119,114 @@ export const useIchiPositions = () => {
         setichiLoading(true)
 
         const chain = 'blast' // SupportedChainId.blast
+        const tokenList = await fetchTokens(chainId || FALLBACK_CHAIN_ID)
 
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
-        const vaults = await getIchiVaultsDataByIds(chain, dex, amounts.map(({ vaultAddress }) => vaultAddress))
-        const vaultsMap: { [key: string]: IchiVault } = vaults.reduce(
-          (map, item) => ({ ...map, [item.id]: item }),
-          {},
+        const vaults = await getIchiVaultsDataByIds(
+          chain,
+          dex,
+          amounts.map(({ vaultAddress }) => vaultAddress)
         )
-        const pos = await Promise.all(amounts?.map(async (item) => {
-          const vaultInfo = vaultsMap[item.vaultAddress]
-          const tokenAid = vaultInfo.tokenA
-          const tokenBid = vaultInfo.tokenB
-          //const vaultInfo = useIchiVaultsData(item.vaultAddress)
-          //
+        const vaultsMap: { [key: string]: IchiVault } = vaults.reduce((map, item) => ({ ...map, [item.id]: item }), {})
+        const pos = await Promise.all(
+          amounts?.map(async (item) => {
+            const vaultInfo = vaultsMap[item.vaultAddress]
+            const tokenAid = vaultInfo.tokenA
+            const tokenBid = vaultInfo.tokenB
+            const poolId = ichiVaults.find((vault: IchiVault) => {
+              return vault.tokenA === tokenAid && vault.tokenB === tokenBid
+            })?.pool
 
-          const getLp = async (vadd: string) => {
-            const web3Provider = getWeb3Provider()
-            const dex = SupportedDex.Fenix
-            const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
-            return averageDtr
-          }
+            const getLp = async (vadd: string) => {
+              const web3Provider = getWeb3Provider()
+              const dex = SupportedDex.Fenix
+              const averageDtr: (VaultApr | null)[] = await getLpApr(vadd, web3Provider, dex)
+              return averageDtr
+            }
 
-          const app: (VaultApr | null)[] = await getLp(item.vaultAddress)
+            const app: (VaultApr | null)[] = await getLp(item.vaultAddress)
 
-          return {
-            id: item.vaultAddress,
-            liquidity: 'ichi',
-            depositedToken0: Number(item.userAmounts[0]),
-            depositedToken1: Number(item.userAmounts[1]),
-            tickLower: {
-              price0: '0',
-              price1: '0',
-              tickIdx: '',
-            },
-            tickUpper: {
-              price0: '0',
-              price1: '0',
-              tickIdx: '',
-            },
-            token0: {
-              id: tokenAid,
-              symbol: 'string',
-              name: 'string',
-              decimals: 'string',
-              derivedMatic: 'string',
-            },
-            token1: {
-              id: tokenBid,
-              symbol: 'string',
-              name: 'string',
-              decimals: 'string',
-              derivedMatic: 'string',
-            },
-            owner: address,
-            withdrawnToken0: '',
-            withdrawnToken1: '',
-            pool: {
-              id: 'string',
-              fee: 'string',
-              sqrtPrice: 'string',
-              liquidity: 'string',
-              tick: 'string',
-              tickSpacing: 'string',
-              totalValueLockedUSD: 'string',
-              volumeUSD: 'string',
-              feesUSD: 'string',
-              untrackedFeesUSD: 'string',
-              token0Price: 'string',
-              token1Price: 'string',
+            return {
+              id: item.vaultAddress,
+              liquidity: 'ichi',
+              depositedToken0: Number(item.userAmounts[0]),
+              depositedToken1: Number(item.userAmounts[1]),
+              tickLower: {
+                price0: '0',
+                price1: '0',
+                tickIdx: '',
+              },
+              tickUpper: {
+                price0: '0',
+                price1: '0',
+                tickIdx: '',
+              },
               token0: {
-                id: 'string',
-                symbol: 'string',
+                id: tokenAid,
+                symbol:
+                  tokenList.find((token) => token.tokenAddress.toLowerCase() === tokenAid.toLowerCase())?.basetoken
+                    .symbol || '',
                 name: 'string',
                 decimals: 'string',
                 derivedMatic: 'string',
               },
               token1: {
-                id: 'string',
-                symbol: 'string',
+                id: tokenBid,
+                symbol:
+                  tokenList.find((token) => token.tokenAddress.toLowerCase() === tokenBid.toLowerCase())?.basetoken
+                    .symbol || '',
                 name: 'string',
                 decimals: 'string',
                 derivedMatic: 'string',
               },
-              poolDayData: {
+              owner: address,
+              withdrawnToken0: '',
+              withdrawnToken1: '',
+              pool: {
+                id: poolId,
+                fee: 'string',
+                sqrtPrice: 'string',
+                liquidity: 'string',
+                tick: 'string',
+                tickSpacing: 'string',
+                totalValueLockedUSD: 'string',
+                volumeUSD: 'string',
                 feesUSD: 'string',
+                untrackedFeesUSD: 'string',
+                token0Price: 'string',
+                token1Price: 'string',
+                token0: {
+                  id: 'string',
+                  symbol: 'string',
+                  name: 'string',
+                  decimals: 'string',
+                  derivedMatic: 'string',
+                },
+                token1: {
+                  id: 'string',
+                  symbol: 'string',
+                  name: 'string',
+                  decimals: 'string',
+                  derivedMatic: 'string',
+                },
+                poolDayData: {
+                  feesUSD: 'string',
+                },
               },
-            },
 
-            // FIXME: STARK
-            // apr: app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
-            apr: app[1] && app[1]?.apr ? (app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%') : '0.00%',
-          }
-        }))
+              // FIXME: STARK
+              // apr: app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
+              apr: app[1] && app[1]?.apr ? (app[1]?.apr <= 0 ? '0.00' : app[1]?.apr) : '0.00',
+            }
+          })
+        )
 
         setichipositions(pos)
         setichiLoading(false)
       }
     }
     fetchpositions()
-  }, [address])
+  }, [address, chainId])
 
   return { ichipositions, ichiLoading }
 }
@@ -238,10 +241,7 @@ export const useIchiVaultsDataMap = (vaultAddresses: string[]) => {
     const fetchVault = async () => {
       if (vaultAddresses.length) {
         const vaults = await getIchiVaultsDataByIds(chain, dex, vaultAddresses)
-        const vaultsMap: { [key: string]: IchiVault } = vaults.reduce(
-          (map, item) => ({ ...map, [item.id]: item }),
-          {},
-        )
+        const vaultsMap: { [key: string]: IchiVault } = vaults.reduce((map, item) => ({ ...map, [item.id]: item }), {})
         setVaultsMap(vaultsMap)
       }
     }

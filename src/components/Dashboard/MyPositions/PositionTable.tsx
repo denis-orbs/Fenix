@@ -233,13 +233,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
          
           "
           >
-            {minPrice}${/* {formatCurrency(minPrice, 2)} */}
+            {formatAmount(minPrice, 6)}$
           </span>
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal  -mt-[15px]">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {maxPrice}${/* {formatCurrency(maxPrice, 2)} */}
+            {formatAmount(maxPrice, 6)}$
           </span>
         </div>
       </div>
@@ -359,9 +359,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
               { text: 'Range', className: 'text-left w-[20%] text-xs', sortable: false },
               { text: 'APR', className: 'text-right w-[20%] text-xs', sortable: false },
               // { text: 'TVL', className: 'text-right w-[8%]', sortable: false },
-              { text: 'In Wallet', className: 'text-right w-[10%] text-xs', sortable: false },
+              { text: 'Position TVL', className: 'text-right w-[10%] text-xs', sortable: false },
               {
-                text: 'Available to Claim',
+                text: 'Claim Fees',
                 className: 'text-right w-[10%] text-xs whitespace-nowrap',
                 sortable: false,
               },
@@ -377,6 +377,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
             <>
               <TableBody className="whitespace-nowrap">
                 {pagination.map((position: positions) => {
+                  console.log('position', position, position.token0.symbol)
                   // eslint-disable-next-line react-hooks/rules-of-hooks
                   //const [isInRange, setIsInRange] = useState<boolean>(false)
                   const fenixRingApr =
@@ -403,11 +404,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                                 <div className="flex items-center min-w-[38px] max-2xl:w-[50px] -mt-[15px]">
                                   <Image
                                     src={
-                                      position.liquidity === 'ichi'
-                                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}.svg`
-                                        : position.liquidity === 'gamma'
-                                          ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token0.id.toLowerCase())?.basetoken.symbol}.svg`
-                                          : `/static/images/tokens/${position?.token0?.symbol}.svg`
+                                      position.liquidity === 'gamma'
+                                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token0.id.toLowerCase())?.basetoken.symbol}.svg`
+                                        : `/static/images/tokens/${position?.token0?.symbol}.svg`
                                     }
                                     alt="token"
                                     className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
@@ -416,11 +415,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                                   />
                                   <Image
                                     src={
-                                      position.liquidity === 'ichi'
-                                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}.svg`
-                                        : position.liquidity === 'gamma'
-                                          ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token1.id.toLowerCase())?.basetoken.symbol}.svg`
-                                          : `/static/images/tokens/${position?.token1?.symbol}.svg`
+                                      position.liquidity === 'gamma'
+                                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token1.id.toLowerCase())?.basetoken.symbol}.svg`
+                                        : `/static/images/tokens/${position?.token1?.symbol}.svg`
                                     }
                                     alt="token"
                                     className="-ml-4 rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
@@ -430,19 +427,17 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                                 </div>
                                 <div className="flex flex-col gap-2 max-2xl:max-w-[85%] 2xl:max-w-full">
                                   <h5 className="text-sm text-white font-semibold leading-none">
-                                    {position.liquidity === 'ichi'
-                                      ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
-                                      : position.liquidity === 'gamma'
-                                        ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token0.id.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token1.id.toLowerCase())?.basetoken.symbol}`
-                                        : `${position?.token0?.symbol} / ${position?.token1?.symbol}`}
+                                    {position.liquidity === 'gamma'
+                                      ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token0.id.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === position.token1.id.toLowerCase())?.basetoken.symbol}`
+                                      : `${position?.token0?.symbol} / ${position?.token1?.symbol}`}
                                   </h5>
                                   <div className="flex items-center gap-2 h-[26px]">
                                     <span className="py-1 px-2 h-[1.875rem] max-w-[95%] flex flex-col justify-center text-xs button-primary rounded-lg">
                                       <span className="truncate">Concentrated</span>
                                     </span>
-                                    <span className="!py-1 px-3  h-[1.875rem] flex flex-col justify-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
+                                    {/* <span className="!py-1 px-3  h-[1.875rem] flex flex-col justify-center text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
                                       {formatAmount(toBN(position.pool.fee).div(10000), 3)}%
-                                    </span>
+                                    </span> */}
                                     {/* <span className="!py-0 px-3 h-[1.875rem] text-lg text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
                                       <span className="icon-info"></span>
                                     </span> */}
@@ -544,41 +539,79 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                         </TableCell>
                         <TableCell className="w-[20%] flex justify-end">
                           {/* APR */}
-                          <AprBox
-                            apr={
-                              isInRangeAll[position.id] ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber : 0
-                            }
-                            tooltip={
-                              <div>
-                                <div className="flex justify-between items-center gap-3">
-                                  <p className="text-sm pb-1">Fees APR</p>
-                                  <p className="text-sm pb-1 text-chilean-fire-600">
-                                    {isInRangeAll[position.id] ? position?.apr : '0%'}
-                                  </p>
-                                </div>
-                                {fenixRingApr > 0 && isInRangeAll[position.id] && (
+                          {position.liquidity === 'gamma' || position.liquidity === 'ichi' ? (
+                            <AprBox
+                              apr={parseFloat(position?.apr) + fenixRingApr + extraAprNumber}
+                              tooltip={
+                                <div>
                                   <div className="flex justify-between items-center gap-3">
-                                    <p className="text-sm pb-1">Rings APR</p>
+                                    <p className="text-sm pb-1">Fees APR</p>
                                     <p className="text-sm pb-1 text-chilean-fire-600">
-                                      {formatAmount(fenixRingApr, 2)}%
+                                      {Number(position.apr).toFixed(2)}%
                                     </p>
                                   </div>
-                                )}
-                                {extraAprs &&
-                                  extraAprs.length > 0 &&
-                                  extraAprs.map((extraApr: extraPoints) => {
-                                    return (
-                                      <div key={extraApr.name} className="flex justify-between items-center gap-3">
-                                        <p className="text-sm pb-1">{extraApr.name}</p>
-                                        <p className="text-sm pb-1 text-chilean-fire-600">
-                                          {formatAmount(extraApr.apr, 2)}%
-                                        </p>
-                                      </div>
-                                    )
-                                  })}
-                              </div>
-                            }
-                          />
+                                  {fenixRingApr > 0 && (
+                                    <div className="flex justify-between items-center gap-3">
+                                      <p className="text-sm pb-1">Rings APR</p>
+                                      <p className="text-sm pb-1 text-chilean-fire-600">
+                                        {formatAmount(fenixRingApr, 2)}%
+                                      </p>
+                                    </div>
+                                  )}
+                                  {extraAprs &&
+                                    extraAprs.length > 0 &&
+                                    extraAprs.map((extraApr: extraPoints) => {
+                                      return (
+                                        <div key={extraApr.name} className="flex justify-between items-center gap-3">
+                                          <p className="text-sm pb-1">{extraApr.name}</p>
+                                          <p className="text-sm pb-1 text-chilean-fire-600">
+                                            {formatAmount(extraApr.apr, 2)}%
+                                          </p>
+                                        </div>
+                                      )
+                                    })}
+                                </div>
+                              }
+                            />
+                          ) : (
+                            <AprBox
+                              apr={
+                                isInRangeAll[position.id]
+                                  ? parseFloat(position?.apr) + fenixRingApr + extraAprNumber
+                                  : 0
+                              }
+                              tooltip={
+                                <div>
+                                  <div className="flex justify-between items-center gap-3">
+                                    <p className="text-sm pb-1">Fees APR</p>
+                                    <p className="text-sm pb-1 text-chilean-fire-600">
+                                      {isInRangeAll[position.id] ? position?.apr : '0%'}
+                                    </p>
+                                  </div>
+                                  {fenixRingApr > 0 && isInRangeAll[position.id] && (
+                                    <div className="flex justify-between items-center gap-3">
+                                      <p className="text-sm pb-1">Rings APR</p>
+                                      <p className="text-sm pb-1 text-chilean-fire-600">
+                                        {formatAmount(fenixRingApr, 2)}%
+                                      </p>
+                                    </div>
+                                  )}
+                                  {extraAprs &&
+                                    extraAprs.length > 0 &&
+                                    extraAprs.map((extraApr: extraPoints) => {
+                                      return (
+                                        <div key={extraApr.name} className="flex justify-between items-center gap-3">
+                                          <p className="text-sm pb-1">{extraApr.name}</p>
+                                          <p className="text-sm pb-1 text-chilean-fire-600">
+                                            {formatAmount(extraApr.apr, 2)}%
+                                          </p>
+                                        </div>
+                                      )
+                                    })}
+                                </div>
+                              }
+                            />
+                          )}
                         </TableCell>
                         {/* <TableCell className="w-[8%] flex justify-end">
                           <div className="flex flex-col justify-center items-end">
@@ -598,7 +631,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                         <TableCell className="w-[10%] flex justify-end">
                           {/* In Wallet */}
                           <div className="flex flex-col justify-center items-end">
-                            {/* <InWalletTotal data={position} /> */}
+                            <EmissionsTotal data={position} />
 
                             <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 mt-[14px]">
                               {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
@@ -614,17 +647,64 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                         <TableCell className="w-[10%] flex justify-end">
                           {/* Emissions */}
                           <div className="flex flex-col justify-center items-end ">
-                            <EmissionsTotal data={position} />
+                            {/* <EmissionsTotal data={position} /> */}
 
-                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
-                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken0)), 6))}{' '}
-                              {position.token0.symbol}
-                            </span>
+                            {position.liquidity !== 'ichi' && position.liquidity !== 'gamma' ? (
+                              <>
+                                <p className="text-xs text-white -mt-[3px]">
+                                  {formatDollarAmount(
+                                    (position && position.fees && position.fees.length > 0
+                                      ? Number(position.fees[0]) / 10 ** Number(position.token0.decimals)
+                                      : 0) *
+                                      Number(
+                                        tokens.find(
+                                          (e) => e.tokenAddress.toLowerCase() === position?.token0?.id.toLowerCase()
+                                        )?.priceUSD
+                                      ) +
+                                      (position && position.fees && position.fees.length > 0
+                                        ? Number(position.fees[1]) / 10 ** Number(position.token1.decimals)
+                                        : 0) *
+                                        Number(
+                                          tokens.find(
+                                            (e) => e.tokenAddress.toLowerCase() === position?.token1?.id.toLowerCase()
+                                          )?.priceUSD
+                                        )
+                                  )}
+                                </p>
+                                <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
+                                  {position && position.fees && position.fees.length > 0
+                                    ? formatCurrency(
+                                        formatAmount(
+                                          toBN(Number(position.fees[0]) / 10 ** Number(position.token0.decimals)),
+                                          6
+                                        )
+                                      )
+                                    : 0}{' '}
+                                  {position.token0.symbol}
+                                </span>
 
-                            <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
-                              {formatCurrency(formatAmount(toBN(Number(position.depositedToken1)), 6))}{' '}
-                              {position.token1.symbol}
-                            </span>
+                                <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
+                                  {position && position.fees && position.fees.length > 0
+                                    ? formatCurrency(
+                                        formatAmount(
+                                          toBN(Number(position.fees[1]) / 10 ** Number(position.token1.decimals)),
+                                          6
+                                        )
+                                      )
+                                    : 0}{' '}
+                                  {position.token1.symbol}
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
+                                  Autcompounded
+                                </span>
+                                <span className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100">
+                                  to Position
+                                </span>
+                              </>
+                            )}
                           </div>
                         </TableCell>
                         <TableCell className="w-[20%] flex justify-end">
@@ -634,7 +714,6 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                               variant="tertiary"
                               className="h-[38px] w-[80px] bg-opacity-40 flex items-center gap-1 justify-center"
                               onClick={() => {
-                                console.log('12345', position.liquidity == 'ichi', position.liquidity == 'gamma')
                                 if (position.liquidity == 'ichi') {
                                   router.push(
                                     `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
@@ -654,23 +733,24 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                               <span className="icon-manage" />
                               <span className="text-xs">Manage</span>
                             </Button>
-                            {/* {position.liquidity !== 'ichi' ? ( */}
-                            <>
-                              <Button
-                                variant="tertiary"
-                                className="h-[38px] w-[80px] bg-opacity-40 flex items-center gap-1 justify-center"
-                                onClick={() => {
-                                  if (position.liquidity !== 'ichi') {
-                                    handleClaim(position.id)
-                                  }
-                                }}
-                              >
-                                <span className="icon-coin" />
-                                <span className="text-xs">Claim</span>
-                              </Button>
-                            </>
-                            {/* ) : ( */}
-                            {/* <></> */}
+                            {position.liquidity !== 'ichi' && position.liquidity !== 'gamma' ? (
+                              <>
+                                <Button
+                                  variant="tertiary"
+                                  className="h-[38px] w-[80px] bg-opacity-40 flex items-center gap-1 justify-center"
+                                  onClick={() => {
+                                    if (position.liquidity !== 'ichi') {
+                                      handleClaim(position.id)
+                                    }
+                                  }}
+                                >
+                                  <span className="icon-coin" />
+                                  <span className="text-xs">Claim</span>
+                                </Button>
+                              </>
+                            ) : (
+                              <></>
+                            )}
                             {/* )} */}
                           </div>
                         </TableCell>
