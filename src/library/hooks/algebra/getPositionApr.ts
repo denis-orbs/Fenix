@@ -1,14 +1,13 @@
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 
 import { CurrencyAmount, NonfungiblePositionManager, Pool, unwrappedToken } from '@cryptoalgebra/integral-sdk'
-import { getContract } from 'wagmi142/actions'
 import { contractAddressList } from '../../constants/contactAddresses'
 import { configwallets, wagmiConfig } from '@/src/app/layout'
 import { CL_MANAGER_ABI } from '../../constants/abi'
 import { getPublicClient } from '@wagmi/core'
 import { FALLBACK_CHAIN_ID } from '../../constants/chains'
 import { simulateContract } from '@wagmi/core'
-import { Abi, Address } from 'viem'
+import { Abi, Address, getContract } from 'viem'
 import { Tenderly, Network } from '@tenderly/sdk'
 import { Interface } from 'ethers/lib/utils'
 
@@ -91,15 +90,13 @@ export async function getPositionFees(pool: Pool, positionId: number, position: 
     // },
   })
   console.log(simulations, 'heyheyheysimulate')
-  // const algebraPositionManager = await getContract({
-  //   abi: CL_MANAGER_ABI,
-  //   address: contractAddressList.cl_manager,
-  //   client: publicClient,
-  //   walletClient: publicClient.toString(),
-  //   chainId: FALLBACK_CHAIN_ID,
-  // })
+  const algebraPositionManager = await getContract({
+    abi: CL_MANAGER_ABI,
+    address: contractAddressList.cl_manager as `0x${string}`,
+    client: publicClient,
+  })
 
-  // const owner = await algebraPositionManager.read.ownerOf([BigInt(positionId)])
+  const owner = await algebraPositionManager.read.ownerOf([BigInt(positionId)])
 
   const {
     result: [fees0, fees1],
