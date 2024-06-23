@@ -26,7 +26,7 @@ model users {
   unclaimed_rings_points     BigInt              @default(0)
   given_blast_poins          Int                 @default(0)
   pending_blast_points       Int                 @default(0)
-  given_blast_gold_points    Int                 @default(0)
+  given_blast_gold_points    Decimal             @default(0)
   pending_blast_gold_points  Int                 @default(0)
   updated_at                 DateTime            @default(now())
   without_bonus_rings_points BigInt              @default(0)
