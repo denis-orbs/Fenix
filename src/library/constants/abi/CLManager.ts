@@ -1407,4 +1407,4 @@ const CL_MANAGER_ABI = [
   },
 ]
 
-export default CL_MANAGER_ABI
+export default CL_MANAGER_ABI as Abi

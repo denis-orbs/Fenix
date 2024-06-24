@@ -61,35 +61,7 @@ export async function getPositionFees(pool: Pool, positionId: number, position: 
     amount0Max: MAX_UINT128,
     amount1Max: MAX_UINT128,
   }
-  const simulations = await tenderlyInstance.simulator.simulateBundle({
-    transactions: [
-      {
-        from: position.owner,
-        to: contractAddressList.cl_manager as Address,
-        gas: 0,
-        gas_price: '0',
-        value: 0,
-        input: new Interface(CL_MANAGER_ABI).encodeFunctionData('collect', [collectParams]),
-      },
-      {
-        from: position.owner,
-        to: contractAddressList.cl_manager as Address,
-        gas: 0,
-        gas_price: '0',
-        value: 0,
-        input: new Interface(CL_MANAGER_ABI).encodeFunctionData('collect', [collectParams]),
-      },
-    ],
-    blockNumber: 5133764,
-    // overrides: {
-    //   [myTokenAddress]: {
-    //     state: {
-    //       [`_balances[${fromWalletAddress}]`]: '1234567891',
-    //     },
-    //   },
-    // },
-  })
-  console.log(simulations, 'heyheyheysimulate')
+
   const algebraPositionManager = await getContract({
     abi: CL_MANAGER_ABI,
     address: contractAddressList.cl_manager as `0x${string}`,
