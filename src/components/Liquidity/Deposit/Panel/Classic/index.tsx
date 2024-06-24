@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useAccount, useReadContract, useWriteContract } from 'wagmi'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { UseReadContractParameters } from 'wagmi/src/hooks/useReadContract';
 import { Toaster } from 'react-hot-toast'
 import debounce from 'lodash/debounce';
 
@@ -232,7 +231,7 @@ const Classic = ({
     setSecondValue('')
   }
 
-  function getBalanceReqParams(address: Address): UseReadContractParameters {
+  function getBalanceReqParams(address: Address) {
     return {
       abi: ERC20_ABI,
       address,

@@ -1,7 +1,6 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useAccount, useReadContract, useWriteContract } from 'wagmi'
 import { Address, formatUnits, maxUint256, zeroAddress } from 'viem'
-import { UseReadContractParameters } from 'wagmi/src/hooks/useReadContract';
 import { computePoolAddress, Pool, Position, Price, priceToClosestTick, Token, } from '@cryptoalgebra/integral-sdk'
 import toast, { Toaster } from 'react-hot-toast'
 import debounce from 'lodash/debounce'
@@ -345,7 +344,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     }) as Address
   }
 
-  function getBalanceReqParams(address: Address): UseReadContractParameters {
+  function getBalanceReqParams(address: Address) {
     return {
       abi: ERC20_ABI,
       address,
