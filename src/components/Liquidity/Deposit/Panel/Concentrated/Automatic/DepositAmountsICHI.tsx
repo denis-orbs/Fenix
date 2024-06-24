@@ -39,6 +39,7 @@ interface modifiedIchiVault extends IchiVault {
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import Loader from '@/src/components/UI/Icons/Loader'
+import { postEvent } from '@/src/library/utils/events'
 const DepositAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
@@ -57,6 +58,7 @@ const DepositAmountsICHI = ({
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
   const { openConnectModal } = useConnectModal()
+  const tokenPrice = tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price || 0
 
   const handlerConnectWallet = () => {
     openConnectModal && openConnectModal()
@@ -203,6 +205,12 @@ const DepositAmountsICHI = ({
         notificationDuration: NotificationDuration.DURATION_5000,
       })
       setLoading(false)
+      await postEvent({
+        tx: tx.transactionHash,
+        user: account,
+        event_type: 'ADD_LIQUIDITY',
+        value: tokenPrice * Number(token0TypedValue),
+      })
     } catch (error) {
       //
       //
@@ -336,15 +344,16 @@ const DepositAmountsICHI = ({
       setToken0TypedValue('')
     } else {
       if (token0Balance) {
-        return setToken0TypedValue(toBN(token0Balance.toString())
-        .div(10 ** (token0Decimals || 18))
-        .toString())
+        return setToken0TypedValue(
+          toBN(token0Balance.toString())
+            .div(10 ** (token0Decimals || 18))
+            .toString()
+        )
       } else {
         setToken0TypedValue('')
       }
     }
   }
-
   // const secondTokenSymbol =
   //   tokenList.find((token) => {
   //     return token.address?.toLowerCase() === secondToken.toLowerCase()

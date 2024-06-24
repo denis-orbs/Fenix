@@ -10,7 +10,7 @@ export interface GlobalStatisticsData {
 }
 import prisma from '@/src/library/utils/db'
 
-export async function GET(request: NextRequest): Promise<GlobalStatisticsData | NextResponse> {
+export async function GET(request: NextRequest) {
   const [factoriesResult, usersResult] = await Promise.allSettled([fetchv3Factories(), prisma.users.count()])
   const fetchedFactoriesData = factoriesResult.status === 'fulfilled' ? factoriesResult.value : null
   const totalUsers = usersResult.status === 'fulfilled' ? usersResult.value : null

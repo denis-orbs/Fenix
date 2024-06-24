@@ -39,7 +39,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
             <TableHead
               items={[{ text: 'Token', className: 'text-left w-[20%]', sortable: true }]}
               setSort={() => {}}
-              sort={null}
+              sort={'normal'}
               setSortIndex={() => {}}
               sortIndex={1}
             />
@@ -144,7 +144,7 @@ const OverviewMobile = ({ migrateStatus, setMigrateStatus }: OverviewMobileProps
             <TableHead
               items={[{ text: 'Tokens', className: 'text-left w-[100%]', sortable: true }]}
               setSort={() => {}}
-              sort={null}
+              sort={'normal'}
               setSortIndex={() => {}}
               sortIndex={1}
             />

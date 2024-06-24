@@ -38,7 +38,7 @@ const Nest = ({ activePagination = true }: NestProps) => {
             { text: 'Action', className: 'text-right w-[20%] text-xs', sortable: false },
           ]}
           setSort={() => {}}
-          sort={null}
+          sort={'normal'}
           setSortIndex={() => {}}
           sortIndex={1}
         />

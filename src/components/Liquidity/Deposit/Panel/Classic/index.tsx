@@ -35,6 +35,7 @@ import { getLiquidityTableElements } from '@/src/state/liquidity/thunks'
 import { useDispatch } from 'react-redux'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import Loader from '@/src/components/UI/Icons/Loader'
+import { postEvent } from '@/src/library/utils/events'
 
 const Classic = ({
   depositType,
@@ -336,6 +337,14 @@ const Classic = ({
           })
 
           setIsLoading(false)
+          await postEvent({
+            tx: transaction.transactionHash,
+            user: account.address as string,
+            event_type: 'ADD_LIQUIDITY',
+            value:
+              toBN(firstValue).multipliedBy(firstToken?.price).toNumber() +
+              toBN(secondValue).multipliedBy(secondToken?.price).toNumber(),
+          })
         },
         onError: (e) => {
           // toast(`Add LP failed. ${e}`)

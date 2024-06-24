@@ -32,6 +32,7 @@ import Loader from '@/src/components/UI/Icons/Loader'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { gammaVaults } from './gammaVaults'
 import Separator from '@/src/components/Trade/Common/Separator'
+import { postEvent } from '@/src/library/utils/events'
 
 const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
   const token0 = useToken0()
@@ -251,7 +252,14 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
           })
           const provider = getWeb3Provider()
           await provider.waitForTransaction(txHash)
-
+          await postEvent({
+            tx: txHash,
+            user: account as `0x${string}`,
+            event_type: 'ADD_LIQUIDITY',
+            value:
+              toBN(token0TypedValue).multipliedBy(token0Price).toNumber() +
+              toBN(token1TypedValue).multipliedBy(token1Price).toNumber(),
+          })
           refetchToken0Data()
           refetchToken1Data()
 

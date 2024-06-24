@@ -7,13 +7,10 @@ import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import useStore from '@/src/state/zustand'
 import { usePathname } from 'next/navigation'
-import { ConnectButton, useAccountModal, useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { useAccountModal, useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
-import axios from 'axios'
-import { Address } from 'viem'
 import { useAccount, useSwitchChain } from 'wagmi'
-import { getPointsDistributionTargetTimestamps, totalCampaigns } from '@/src/library/utils/campaigns'
-import { wagmiConfig, config } from '@/src/app/layout'
+import { getPointsDistributionTargetTimestamps } from '@/src/library/utils/campaigns'
 import cn from '@/src/library/utils/cn'
 import { blast } from 'viem/chains'
 import { isSupportedChain } from '@/src/library/constants/chains'
@@ -21,6 +18,7 @@ import Countdown from 'react-countdown'
 import { useQuery } from '@tanstack/react-query'
 import { UserBlastPointsData } from '@/src/app/api/blast-points/[address]/route'
 import Loader from '@/src/components/UI/Icons/Loader'
+import { formatAmount } from '@/src/library/utils/numbers'
 
 interface Points {
   userLiqPoints: number[]
@@ -153,7 +151,7 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                 <div className="flex flex-col justify-center items-center">
                   <p className="text-shark-100 text-xs mb-2">Blast Gold</p>
                   <p className="text-white text-sm">
-                    {isLoadingUserBlastPoints ? <Loader /> : userBlastPoints?.given_blast_gold_points}
+                    {isLoadingUserBlastPoints ? <Loader /> : formatAmount(userBlastPoints?.given_blast_gold_points)}
                   </p>
                 </div>
               </div>
@@ -184,13 +182,13 @@ const AccountHandler = ({ isMenuMobile, isMoreOption = true }: AccountHandlerPro
                   openAccountModal && openAccountModal()
                 }
               }}
-              className="flex 
-              w-full 
-              gap-2 
-              md:gap-5 
-              p-1 
-              border 
-              rounded-[5px] 
+              className="flex
+              w-full
+              gap-2
+              md:gap-5
+              p-1
+              border
+              rounded-[5px]
               cursor-pointer bg-shark-900 border-shark-400 bg-opacity-40 hover:bg-opacity-10 group"
             >
               <div className="w-full flex items-center gap-2.5">

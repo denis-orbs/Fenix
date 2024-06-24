@@ -1,4 +1,6 @@
 export const dynamic = 'force-dynamic'
+import { OPEN_OCEAN_REFERRER } from '@/src/library/constants/addresses'
+import { SupportedChainId } from '@/src/library/constants/chains'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
@@ -9,8 +11,9 @@ export async function GET(request: NextRequest) {
 
   const { pathname, search } = new URL(request.url)
   const gasPriceParam = `&gasPrice=${encodeURIComponent(gasPrice)}`
+  const referrer = `&referrer=${OPEN_OCEAN_REFERRER[SupportedChainId.BLAST]}`
 
-  const apiUrl = `https://open-api.openocean.finance/v4${pathname.replace('/api/aggregator', '')}${search}${gasPriceParam}`
+  const apiUrl = `https://open-api.openocean.finance/v4${pathname.replace('/api/aggregator', '')}${search}${gasPriceParam}${referrer}`
   const response = await fetch(apiUrl, {
     headers: {
       ...request.headers,
