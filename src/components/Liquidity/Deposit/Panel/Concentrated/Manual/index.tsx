@@ -100,7 +100,20 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   // effects
   useEffect(() => {
-    if (pool[0] == 'LOADING') {
+    const poolAddress = getPoolAddress()
+    
+    if(poolAddress.toLowerCase() == "0x1d74611f3ef04e7252f7651526711a937aa1f75e" && firstToken.symbol == "USDB" ||
+      poolAddress.toLowerCase() == "0x86d1da56fc79accc0daf76ca75668a4d98cb90a7" && firstToken.symbol == "axlUSDC" ||
+      poolAddress.toLowerCase() == "0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d" && firstToken.symbol == "USD+" ||
+      poolAddress.toLowerCase() == "0xCE274E4AE83BAaDd1d3b88e1Ed24886e05ACA345" && firstToken.symbol == "DUSD"
+    ) {
+      swapTokens()
+    }
+
+  }, [pool])
+
+  useEffect(() => {
+    if(pool[0] == 'LOADING') {
       setButtonText('Loading')
     } else if (pool[0] == 'NOT_EXISTS') {
       setButtonText('Pool Doesn\'t Exist')

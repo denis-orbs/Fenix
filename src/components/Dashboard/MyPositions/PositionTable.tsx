@@ -117,8 +117,18 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     isMobile: boolean
   }
   const PriceCalculation = ({ token0, token1, tickLower, tickUpper, isMobile }: priceClacualtionProps) => {
-    const minPrice = parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
-    const maxPrice = parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+    let swapPrices;
+    if(
+      token0.symbol == "USDB" && token1.symbol == "WETH" ||
+      token0.symbol == "DUSD" && token1.symbol == "DETH"
+    ) {
+      swapPrices = true;
+    }
+
+    const minPrice = swapPrices ? parseFloat(tickUpper?.price1) * 10 ** (Number(token1?.decimals) - Number(token0?.decimals))
+    : parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+    const maxPrice = swapPrices ? parseFloat(tickLower?.price1) * 10 ** (Number(token1?.decimals) - Number(token0?.decimals))
+    : parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     const minPriceIsZero = minPrice < 1e-5
     const maxPriceIsInfinity = maxPrice > 1e12
     return (
@@ -181,6 +191,14 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     id: any
   }
   const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, id }: setStatusprops) => {
+    let swapPrices;
+    if(
+      token0.symbol == "USDB" && token1.symbol == "WETH" ||
+      token0.symbol == "DUSD" && token1.symbol == "DETH"
+    ) {
+      swapPrices = true;
+    }
+
     const minPrice = useMemo(() => {
       return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     }, [tickLower, token0?.decimals, token1?.decimals])
@@ -235,13 +253,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
          
           "
           >
-            {formatAmount(minPrice, 6)}
+            {(minPrice < 1e-18 || 1/maxPrice < 1e-18) ? "0" : formatAmount(swapPrices ? 1/maxPrice : minPrice, 6)}
           </span>
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal  -mt-[15px]">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {formatAmount(maxPrice, 6)}
+            {(minPrice < 1e-18 || 1/maxPrice < 1e-18) && (maxPrice > 33e37 || 1/minPrice > 33e37) ? "Infinity" : formatAmount(swapPrices ? 1/minPrice : maxPrice, 6)}
           </span>
         </div>
       </div>
