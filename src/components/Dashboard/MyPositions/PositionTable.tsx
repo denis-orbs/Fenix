@@ -90,7 +90,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign }:
   }
   const PriceCalculation = ({ token0, token1, tickLower, tickUpper, isMobile }: priceClacualtionProps) => {
     let swapPrices;
-    if(token0.symbol == "USDB" && token1.symbol == "WETH"
+    if(
+      token0.symbol == "USDB" && token1.symbol == "WETH" ||
+      token0.symbol == "DUSD" && token1.symbol == "DETH"
     ) {
       swapPrices = true;
     }

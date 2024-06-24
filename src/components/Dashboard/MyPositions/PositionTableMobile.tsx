@@ -85,8 +85,19 @@ const PositionTableMobile = ({ activePagination = true, data, tokens, ringsCampa
     isMobile: boolean
   }
   const PriceCalculation = ({ token0, token1, tickLower, tickUpper, isMobile }: priceClacualtionProps) => {
-    const minPrice = parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
-    const maxPrice = parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+    let swapPrices;
+    if(
+      token0.symbol == "USDB" && token1.symbol == "WETH" ||
+      token0.symbol == "DUSD" && token1.symbol == "DETH"
+    ) {
+      swapPrices = true;
+    }
+
+    const minPrice = swapPrices ? parseFloat(tickUpper?.price1) * 10 ** (Number(token1?.decimals) - Number(token0?.decimals))
+    : parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+    const maxPrice = swapPrices ? parseFloat(tickLower?.price1) * 10 ** (Number(token1?.decimals) - Number(token0?.decimals))
+    : parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+
     const minPriceIsZero = minPrice < 1e-5
     const maxPriceIsInfinity = maxPrice > 1e12
     return (
