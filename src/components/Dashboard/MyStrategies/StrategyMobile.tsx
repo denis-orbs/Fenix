@@ -5,7 +5,7 @@ import { Button, Tooltip } from '@/src/components/UI'
 import ComponentVisible from '@/src/library/hooks/useVisible'
 import Graph from './Graph'
 import { positions } from './Strategy'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { formatAmount, formatCurrency, formatDollarAmount, fromWei, toBN } from '@/src/library/utils/numbers'
 import { useRouter } from 'next/navigation'
@@ -22,6 +22,7 @@ import { ichiVaults } from '../../Liquidity/Deposit/Panel/Concentrated/Automatic
 import { useQuery } from '@tanstack/react-query'
 import BoostedPool from '@/src/library/types/pools/boosted-pool'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
+import TokenListItem from '@/src/library/types/token-list-item';
 
 type options = {
   value: string
@@ -30,7 +31,7 @@ type options = {
 
 interface StrategyMobileProps {
   row: positions
-  tokens: Token[]
+  tokens: TokenListItem[]
   ichiTokens: any
   options: options[]
   setModalSelected: (modal: string) => void

@@ -15,7 +15,7 @@ interface TokenSelectorProps {
   setToken: (token: IToken) => void
   setValue: (value: string) => void
   variant?: 'primary' | 'secondary'
-  onTokenValueChange?: (arg0: any, token: IToken) => void
+  onTokenValueChange?: (arg0: string, token: IToken) => void
   option?: string
   defaultBalance?: string
 }

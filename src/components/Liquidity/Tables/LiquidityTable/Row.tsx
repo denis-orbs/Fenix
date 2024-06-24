@@ -5,7 +5,6 @@ import { Button, TableCell, TableRow } from '@/src/components/UI'
 import { BasicPool, GammaVault, PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRowNew'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
@@ -20,10 +19,11 @@ import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import { adjustTokenOrder } from '@/src/library/utils/tokens'
 import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
 import { useGammaVaults } from '@/src/state/liquidity/hooks'
+import TokenListItem from '@/src/library/types/token-list-item';
 
 interface RowDataProps {
   row: BasicPool
-  tokensData: Promise<Token[]> | null
+  tokensData: Promise<TokenListItem[]> | null
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string

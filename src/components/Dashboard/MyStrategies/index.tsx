@@ -13,11 +13,12 @@ import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 import { useIchiPositions, useIchiVaultsDataMap } from '@/src/library/hooks/web3/useIchi'
 import { getPositionDataByPoolAddresses } from '@/src/library/hooks/liquidity/useCL'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionsApr'
 import Spinner from '../../Common/Spinner'
 import { useDispatch } from 'react-redux'
 import { setApr } from '@/src/state/apr/reducer'
+import TokenListItem from '@/src/library/types/token-list-item';
 
 const defaultVaultInfo = {
   id: '',
@@ -37,7 +38,7 @@ const MyStrategies = () => {
   const [position, setposition] = useState<any[]>([])
   const [nonZeroPosition, setNonZeroposition] = useState<any[]>([])
   const [positionAmounts, setpositionAmounts] = useState<any>([])
-  const [tokens, setTokens] = useState<Token[]>([])
+  const [tokens, setTokens] = useState<TokenListItem[]>([])
 
   const [loadingIchi, setLoadingIchi] = useState(false)
   const [loadingGamma, setLoadingGamma] = useState(false)
