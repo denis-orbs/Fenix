@@ -186,6 +186,14 @@ const PositionTableMobile = ({
     id: any
   }
   const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, id }: setStatusprops) => {
+    let swapPrices;
+    if(
+      token0.symbol == "USDB" && token1.symbol == "WETH" ||
+      token0.symbol == "DUSD" && token1.symbol == "DETH"
+    ) {
+      swapPrices = true;
+    }
+
     const minPrice = useMemo(() => {
       return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     }, [tickLower, token0?.decimals, token1?.decimals])
@@ -236,13 +244,13 @@ const PositionTableMobile = ({
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Min Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {minPrice}${/* {formatCurrency(minPrice, 2)}$ */}
+            {swapPrices ? 1/maxPrice : minPrice}${/* {formatCurrency(minPrice, 2)}$ */}
           </span>
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {maxPrice}${/* {formatCurrency(maxPrice, 2)}$ */}
+            {swapPrices ? 1/minPrice : maxPrice}${/* {formatCurrency(maxPrice, 2)}$ */}
           </span>
         </div>
       </div>
