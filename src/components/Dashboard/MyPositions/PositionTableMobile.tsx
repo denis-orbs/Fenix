@@ -6,7 +6,6 @@ import { positions } from '../MyStrategies/Strategy'
 import NoPositionFound from './NoPositionFound'
 import { useEffect, useMemo, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, toBN } from '@/src/library/utils/numbers'
-import { Token } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { Address, encodeFunctionData, zeroAddress } from 'viem'
@@ -29,11 +28,12 @@ import AprBox from '../../UI/Pools/AprBox'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
+import TokenListItem from '@/src/library/types/token-list-item';
 
 interface MyPositionsMobileProps {
   activePagination?: boolean
   data: positions[]
-  tokens: Token[]
+  tokens: TokenListItem[]
   ringsCampaign: RingCampaignData
   showDust?: boolean
 }

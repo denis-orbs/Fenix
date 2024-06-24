@@ -4,7 +4,7 @@ import { Button, Switch, Tooltip } from '@/src/components/UI'
 import Graph from './Graph'
 import ComponentVisible from '@/src/library/hooks/useVisible'
 import { formatAmount, formatCurrency, formatDollarAmount, fromWei, toBN } from '@/src/library/utils/numbers'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState } from 'react'
 import { useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
 import { IchiVault } from '@ichidao/ichi-vaults-sdk'
@@ -24,6 +24,7 @@ import { ichiVaults } from '../../Liquidity/Deposit/Panel/Concentrated/Automatic
 import BoostedPool from '@/src/library/types/pools/boosted-pool'
 import { setApr } from '@/src/state/apr/reducer'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
+import TokenListItem from '@/src/library/types/token-list-item';
 
 type options = {
   value: string
@@ -92,7 +93,7 @@ export type ichipositions = {
 
 interface StrategyProps {
   row: positions
-  tokens: Token[]
+  tokens: TokenListItem[]
   ichiTokens: any
   options: options[]
   setModalSelected: (modal: string) => void

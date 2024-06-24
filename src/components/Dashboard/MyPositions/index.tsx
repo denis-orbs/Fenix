@@ -3,7 +3,7 @@ import { Button, Switch } from '../../UI'
 import PositionTable from './PositionTable'
 import { useDispatch } from 'react-redux'
 import { positions } from '../MyStrategies/Strategy'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useAccount } from 'wagmi'
 import { fetchNativePrice, fetchV3Positions } from '@/src/state/liquidity/reducer'
 import { getPositionDataByPoolAddresses, priceToSqrtPrice } from '@/src/library/hooks/liquidity/useCL'
@@ -17,8 +17,12 @@ import { useQuery } from '@tanstack/react-query'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 import CheckBox from '../../UI/CheckBox'
+
 import { Pool } from '@cryptoalgebra/integral-sdk'
 import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
+
+import TokenListItem from '@/src/library/types/token-list-item';
+
 // import useStore from '@/src/state/zustand'
 
 const MyPositions = () => {
@@ -28,7 +32,7 @@ const MyPositions = () => {
   const [allGamaData, setAllGamaData] = useState<any>()
   const [userGamaData, setUserGamaData] = useState<any>()
   const [positionAmounts, setpositionAmounts] = useState<any>([])
-  const [tokens, setTokens] = useState<Token[]>([])
+  const [tokens, setTokens] = useState<TokenListItem[]>([])
   const [loading, setLoading] = useState(false)
   const [progress, setProgress] = useState<number>(0)
   const [activeSwitch, setActiveSwitch] = useState(false)
