@@ -18,7 +18,8 @@ import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionsApr'
 import Spinner from '../../Common/Spinner'
 import { useDispatch } from 'react-redux'
 import { setApr } from '@/src/state/apr/reducer'
-import TokenListItem from '@/src/library/types/token-list-item';
+import TokenListItem from '@/src/library/types/token-list-item'
+import { Token } from '@/src/library/structures/common/TokenData'
 
 const defaultVaultInfo = {
   id: '',
@@ -38,6 +39,7 @@ const MyStrategies = () => {
   const [position, setposition] = useState<any[]>([])
   const [nonZeroPosition, setNonZeroposition] = useState<any[]>([])
   const [positionAmounts, setpositionAmounts] = useState<any>([])
+
   const [tokens, setTokens] = useState<TokenListItem[]>([])
 
   const [loadingIchi, setLoadingIchi] = useState(false)
@@ -52,6 +54,7 @@ const MyStrategies = () => {
   const tokensprice = async () => {
     if (chainId) setTokens(await fetchTokens(chainId))
   }
+
   useEffect(() => {
     tokensprice()
   }, [chainId])
@@ -112,28 +115,18 @@ const MyStrategies = () => {
   }, [address])
 
   useEffect(() => {
-    if(tokens.length < 1) return;
-    setNonZeroposition(position.filter((i) => {
-      const tvl =
-      Number(i?.depositedToken0) *
-        Number(
-          tokens.find(
-            (e) =>
-              e.tokenAddress.toLowerCase() ===
-              (i?.token0?.id.toLowerCase())
-          )?.priceUSD
-        ) +
-        Number(i?.depositedToken1) *
-          Number(
-            tokens.find(
-              (e) =>
-                e.tokenAddress.toLowerCase() ===
-                (i?.token1?.id.toLowerCase())
-            )?.priceUSD
-          );
+    if (tokens.length < 1) return
+    setNonZeroposition(
+      position.filter((i) => {
+        const tvl =
+          Number(i?.depositedToken0) *
+            Number(tokens.find((e) => e.tokenAddress.toLowerCase() === i?.token0?.id.toLowerCase())?.priceUSD) +
+          Number(i?.depositedToken1) *
+            Number(tokens.find((e) => e.tokenAddress.toLowerCase() === i?.token1?.id.toLowerCase())?.priceUSD)
 
-      return tvl > 0.1
-    }))
+        return tvl > 0.1
+      })
+    )
   }, [position, tokens])
   useEffect(() => {
     setLoadingGamma(true)
@@ -170,6 +163,9 @@ const MyStrategies = () => {
   useEffect(() => {
     dispatch(setApr(position))
   }, [position, dispatch])
+
+  // console.log(position)
+  // console.log(tokens)
   return (
     <>
       {position.length > 0 ? (
@@ -255,7 +251,7 @@ const MyStrategies = () => {
           </div>
           {/* {MODAL_LIST[modalSelected]} */}
         </div>
-      ) : (nonZeroPosition.length === 0) || address === undefined ? (
+      ) : nonZeroPosition.length === 0 || address === undefined ? (
         <div className="mx-auto mt-10 flex w-full flex-col gap-3">
           <div className="flex items-center justify-between text-white">
             <p className="ms-2 flex gap-3 text-lg">Automated Strategies</p>

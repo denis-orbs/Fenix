@@ -81,6 +81,7 @@ export interface positions {
   token0: Tokenp
   token1: Tokenp
   apr: any
+  fees?: any
 }
 
 export type ichipositions = {
@@ -114,6 +115,7 @@ const Strategy = ({ row, tokens, ichiTokens: ichitokens, options, setModalSelect
     setModalSelected(option)
   }
 
+  console.log(row)
   const [showtoken0, setshowtoken0] = useState(true)
 
   const handlerSwitch = () => {
@@ -185,9 +187,23 @@ const Strategy = ({ row, tokens, ichiTokens: ichitokens, options, setModalSelect
         ? pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
         : pool?.id?.toLowerCase() === row?.pool.id.toLowerCase()
     })?.apr || 0
-  return (
-    (((Number(row?.depositedToken0) * Number(tokens.find((e) => e.tokenAddress.toLowerCase() ===(row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase()))?.priceUSD)) +
-      (Number(row?.depositedToken1) * Number(tokens.find((e) =>e.tokenAddress.toLowerCase() ===(row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase()))?.priceUSD)) > 0.1)) ?
+  return Number(row?.depositedToken0) *
+    Number(
+      tokens.find(
+        (e) =>
+          e.tokenAddress.toLowerCase() ===
+          (row.liquidity === 'ichi' ? ichitokens?.tokenA.toLowerCase() : row?.token0?.id.toLowerCase())
+      )?.priceUSD
+    ) +
+    Number(row?.depositedToken1) *
+      Number(
+        tokens.find(
+          (e) =>
+            e.tokenAddress.toLowerCase() ===
+            (row.liquidity === 'ichi' ? ichitokens?.tokenB.toLowerCase() : row?.token1?.id.toLowerCase())
+        )?.priceUSD
+      ) >
+    0.1 ? (
     <div className="steps-box-dashboard w-auto xl:min-w-[350px]">
       <div className="relative z-10">
         <div className="relative text-white flex flex-col">
@@ -317,6 +333,7 @@ const Strategy = ({ row, tokens, ichiTokens: ichitokens, options, setModalSelect
                 )}
               </p>
             </div>
+
             <div className="flex items-start flex-col p-4 w-1/2 border-l border-shark-400">
               <h4 className="text-sm text-white-500">
                 {row.liquidity === 'ichi'
@@ -367,11 +384,11 @@ const Strategy = ({ row, tokens, ichiTokens: ichitokens, options, setModalSelect
             variant="tertiary"
             className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
             onClick={() => {
-              if(row.liquidity == 'ichi') {
+              if (row.liquidity == 'ichi') {
                 router.push(
                   `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${row?.token0?.id}&token1=${row?.token1?.id}`
                 )
-              } else if(row.liquidity == 'gamma') {
+              } else if (row.liquidity == 'gamma') {
                 router.push(
                   `liquidity/deposit?provider=2&type=CONCENTRATED_AUTOMATIC&token0=${row?.token0?.id}&token1=${row?.token1?.id}`
                 )
@@ -404,7 +421,9 @@ const Strategy = ({ row, tokens, ichiTokens: ichitokens, options, setModalSelect
           )}
         </div>
       </div>
-    </div> : <></>
+    </div>
+  ) : (
+    <></>
   )
 }
 
