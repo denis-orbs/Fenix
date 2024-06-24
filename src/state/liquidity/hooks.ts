@@ -6,7 +6,6 @@ import { Address } from '@/src/library/types'
 
 import { LiquidityTableElement, LiquidityV2PairDetails, V3PairInfo } from './types'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
-import { BoostedPool } from '@/src/app/api/rings/campaign/route'
 
 export function useV2PairsData() {
   const v2Pairs: {
@@ -16,7 +15,7 @@ export function useV2PairsData() {
   const pairLoading: {
     state: ApiState
   } = useAppSelector((state) => state.liquidity.v2Pairs)
-  //console.log(v2Pairs.tableData, 'v2Pairs.tableData')
+  //
   return {
     loading: v2Pairs.tablestate === ApiState.LOADING,
     data: v2Pairs.tableData,
@@ -128,13 +127,22 @@ export function useGammaVaults() {
   }
 }
 
+export function useRingsCampaignsBoostedPools() {
+  const ringsCampaigns = useAppSelector((state) => state.liquidity.ringsCampaigns)
+  return {
+    loading: ringsCampaigns.state === ApiState.LOADING,
+    data: ringsCampaigns.data?.boostedPools || [],
+  }
+}
+
 export function useRingsCampaigns() {
   const ringsCampaigns = useAppSelector((state) => state.liquidity.ringsCampaigns)
   return {
-    loading: ringsCampaigns?.state === ApiState.LOADING,
-    data: ringsCampaigns.data || [],
+    loading: ringsCampaigns.state === ApiState.LOADING,
+    data: ringsCampaigns.data,
   }
 }
+
 // export function useRingCampaignById(id: string) {
 //   const ringsCampaigns = useRingsCampaigns()
 //   return ringsCampaigns.data.find((campaign: BoostedPool) => campaign.id === id)

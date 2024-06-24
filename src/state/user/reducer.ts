@@ -6,7 +6,7 @@ export const initialState: UserState = {
   userDarkMode: true,
   slippageTolerance: 0.5,
   showChart: false,
-  closeBanner: false
+  closeBanner: false,
 }
 
 export default createReducer(initialState, (builder) => {

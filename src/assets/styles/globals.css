@@ -64,7 +64,7 @@ body {
 
 .container {
   @apply mx-auto 
-  lg:max-w-[calc(100%-150px)]
+  lg:max-w-[calc(100%-50px)]
   xl:max-w-[calc(100%-150px)] 
   2xl:max-w-[1600px]
   px-2
@@ -491,3 +491,7 @@ body {
 /* .notification {
   animation: horizontal-shaking 2s infinite alternate;
 } */
+
+.gradient-banner {
+  background: var(--2, linear-gradient(90deg, #F47703 10.49%, #F67702 92.04%, #FFEF76 132.93%));
+}

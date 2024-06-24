@@ -29,8 +29,8 @@ const Welcome = () => {
           </h3>
         </div>
         <div className="items-center hidden gap-2 md:flex">
-          <p className="text-xs text-shark-100">2023 © Fenix Finance</p>
-          <p className="px-2 py-1 text-xs rounded-md text-shark-100 bg-shark-400 bg-opacity-40">Version: 93a8d72</p>
+          <p className="text-xs text-shark-100">2024 © Fenix Finance</p>
+          {/* <p className="px-2 py-1 text-xs rounded-md text-shark-100 bg-shark-400 bg-opacity-40">Version: 93a8d72</p> */}
         </div>
       </div>
       <div className="flex items-center h-full"></div>

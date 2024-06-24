@@ -5,9 +5,9 @@ import { Button, Tooltip } from '@/src/components/UI'
 import ComponentVisible from '@/src/library/hooks/useVisible'
 import Graph from './Graph'
 import { positions } from './Strategy'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { IchiVault, useIchiVaultsData } from '@/src/library/hooks/web3/useIchi'
-import { formatAmount, formatDollarAmount, fromWei } from '@/src/library/utils/numbers'
+import { formatAmount, formatCurrency, formatDollarAmount, fromWei, toBN } from '@/src/library/utils/numbers'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { publicClient } from '@/src/library/constants/viemClient'
@@ -20,7 +20,9 @@ import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
 import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
 import { ichiVaults } from '../../Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
 import { useQuery } from '@tanstack/react-query'
-import { BoostedPool } from '@/src/app/api/rings/campaign/route'
+import BoostedPool from '@/src/library/types/pools/boosted-pool'
+import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
+import TokenListItem from '@/src/library/types/token-list-item';
 
 type options = {
   value: string
@@ -29,21 +31,20 @@ type options = {
 
 interface StrategyMobileProps {
   row: positions
-  tokens: Token[]
+  tokens: TokenListItem[]
+  ichiTokens: any
   options: options[]
   setModalSelected: (modal: string) => void
   setOpenModal: (modal: boolean) => void
 }
 
-const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
+const StrategyMobile = ({ row, tokens, ichiTokens: ichitokens, options, setModalSelected, setOpenModal }: StrategyMobileProps) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const { writeContractAsync } = useWriteContract()
   const { address } = useAccount()
 
   const addNotification = useNotificationAdderCallback()
-
-  const ichitokens = useIchiVaultsData(row.liquidity === 'ichi' ? row?.id : zeroAddress)
 
   const { ref, isVisible, setIsVisible } = ComponentVisible(false)
   const handlerOpenModal = (option: string) => {
@@ -109,18 +110,14 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
       }
     )
   }
-  const { data: ringsCampaign, isLoading: isLoadingRingsCampaign } = useQuery({
-    queryKey: ['ringsPointsCampaign'],
-    staleTime: 1000 * 60 * 5,
-    queryFn: async () => {
-      const response = await fetch('/api/rings/campaign')
-      return response.json()
-    },
-  })
+  const { data: ringsCampaign } = useRingsCampaigns()
+
   const ichiVaultData = ichiVaults.find((e) => e.id.toLowerCase() === row?.id.toLowerCase())
   const fenixRingApr =
     ringsCampaign?.boostedPools.find((pool: BoostedPool) => {
-      return pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
+      return row.liquidity === 'ichi'
+        ? pool?.id?.toLowerCase() === ichiVaultData?.pool.toLowerCase()
+        : pool?.id?.toLowerCase() === row?.pool.id.toLowerCase()
     })?.apr || 0
 
   return (
@@ -134,7 +131,9 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                   src={
                     row.liquidity === 'ichi'
                       ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}.svg`
-                      : `/static/images/tokens/${row?.token0?.symbol}.svg`
+                      : row.liquidity === 'gamma'
+                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token0.id.toLowerCase())?.basetoken.symbol}.svg`
+                        : `/static/images/tokens/${row?.token0?.symbol}.svg`
                   }
                   alt="token"
                   className="rounded-full "
@@ -145,7 +144,9 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                   src={
                     row.liquidity === 'ichi'
                       ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}.svg`
-                      : `/static/images/tokens/${row?.token1?.symbol}.svg`
+                      : row.liquidity === 'gamma'
+                        ? `/static/images/tokens/${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token1.id.toLowerCase())?.basetoken.symbol}.svg`
+                        : `/static/images/tokens/${row?.token1?.symbol}.svg`
                   }
                   alt="token"
                   className="-ml-4 rounded-full"
@@ -155,12 +156,19 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
               </div>
               <div className="flex flex-col">
                 <p>
-                  {' '}
                   {row.liquidity === 'ichi'
                     ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
-                    : `${row?.token0?.symbol} / ${row?.token1?.symbol}`}
+                    : row.liquidity === 'gamma'
+                      ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token0.id.toLowerCase())?.basetoken.symbol} / ${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token1.id.toLowerCase())?.basetoken.symbol}`
+                      : `${row?.token0?.symbol} / ${row?.token1?.symbol}`}
                 </p>
-                <p className="text-xs">ID: {row.liquidity === 'ichi' ? 'Ichi Position' : row?.id}</p>
+                <p className="text-xs">
+                  {row.liquidity === 'ichi'
+                    ? 'Ichi Position'
+                    : row.liquidity === 'gamma'
+                      ? 'Gamma Postion'
+                      : 'ID: ' + row?.id}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -216,8 +224,8 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                   setShow={setIsVisible}
                 >
                   <div className="flex justify-between items-center gap-3 text-white">
-                    <p className="text-sm pb-1 ">Ichi strategy</p>
-                    <p className="text-sm pb-1 text-chilean-fire-600">{parseFloat(row?.apr) < 0 ? 0 : row?.apr}</p>
+                    <p className="text-sm pb-1 ">{row.liquidity === 'ichi' ? 'Ichi' : 'Gamma'} strategy</p>
+                    <p className="text-sm pb-1 text-chilean-fire-600">{parseFloat(row?.apr) < 0 ? 0 : row?.apr}%</p>
                   </div>
                   {fenixRingApr > 0 && (
                     <div className="flex justify-between items-center gap-3 text-white">
@@ -226,14 +234,19 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                     </div>
                   )}
                 </Tooltip>
-                <h4 className="text-green-400 text-2xl">{formatAmount(parseFloat(row?.apr) + fenixRingApr, 2)}</h4>
+                <h4 className="text-green-400 text-2xl">{formatAmount(parseFloat(row?.apr) + fenixRingApr, 2)} %</h4>
               </div>
               <div className="bg-shark-400 bg-opacity-40 flex flex-col gap-2 w-1/2 items-center p-4  rounded-lg">
                 <p className="text-white text-xs lg:text-sm">
                   Liquidity <span className="icon-info"></span>
                 </p>
                 <h1 className="text-white text-2xl">
-                  {row.liquidity === 'ichi' ? 'ICHI' : Number(fromWei(row?.liquidity)).toFixed(5)} LP
+                  {row.liquidity === 'ichi'
+                    ? 'ICHI'
+                    : row.liquidity === 'gamma'
+                      ? 'GAMMA'
+                      : formatCurrency(fromWei(row?.liquidity))}{' '}
+                  LP
                 </h1>
               </div>
             </div>
@@ -243,16 +256,19 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                   <h4 className="text-sm text-white-400">
                     {row.liquidity === 'ichi'
                       ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
-                      : `${row?.token0?.symbol}`}
+                      : row.liquidity === 'gamma'
+                        ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token0.id.toLowerCase())?.basetoken.symbol}`
+                        : `${row?.token0?.symbol}`}
                   </h4>
                   <h4 className="text-sm text-white">
-                    {Number(row?.depositedToken0).toFixed(5)}{' '}
+                    {formatCurrency(formatAmount(toBN(Number(row?.depositedToken0)), 6))}{' '}
                     {row.liquidity === 'ichi'
                       ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenA.toLowerCase())?.basetoken.symbol}`
-                      : `${row?.token0?.symbol}`}
+                      : row.liquidity === 'gamma'
+                        ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token0.id.toLowerCase())?.basetoken.symbol}`
+                        : `${row?.token0?.symbol}`}
                   </h4>
                   <p className="text-xs text-white">
-                    {Number(row?.depositedToken0).toFixed(5)}{' '}
                     {formatDollarAmount(
                       Number(row?.depositedToken0) *
                         Number(
@@ -271,17 +287,19 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                   <h4 className="text-sm text-white-500">
                     {row.liquidity === 'ichi'
                       ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
-                      : `${row?.token1?.symbol}`}
+                      : row.liquidity === 'gamma'
+                        ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token1.id.toLowerCase())?.basetoken.symbol}`
+                        : `${row?.token1?.symbol}`}
                   </h4>
                   <h4 className="text-sm text-white">
-                    {' '}
-                    {Number(row?.depositedToken1).toFixed(5)}{' '}
+                    {formatCurrency(formatAmount(toBN(Number(row?.depositedToken1)), 6))}{' '}
                     {row.liquidity === 'ichi'
                       ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === ichitokens?.tokenB.toLowerCase())?.basetoken.symbol}`
-                      : `${row?.token1?.symbol}`}
+                      : row.liquidity === 'gamma'
+                        ? `${tokens.find((e) => e.tokenAddress.toLowerCase() === row.token1.id.toLowerCase())?.basetoken.symbol}`
+                        : `${row?.token1?.symbol}`}
                   </h4>
                   <p className="text-xs text-white">
-                    ${' '}
                     {formatDollarAmount(
                       Number(row?.depositedToken1) *
                         Number(
@@ -315,21 +333,24 @@ const StrategyMobile = ({ row, tokens, options, setModalSelected, setOpenModal }
                   variant="tertiary"
                   className="h-[38px] w-[90px] bg-opacity-40 items-center justify-center"
                   onClick={() => {
-                    if (row.liquidity !== 'ichi') {
-                      localStorage.setItem('apr', JSON.stringify({ id: row?.id, apr: row?.apr }))
-                      router.push(`/liquidity/manage?id=${row?.id}`)
-                      router.refresh()
-                    } else {
+                    if(row.liquidity == 'ichi') {
                       router.push(
                         `liquidity/deposit?type=CONCENTRATED_AUTOMATIC&token0=${row?.token0}&token1=${row?.token1}`
                       )
-                      // router.refresh()
+                    } else if(row.liquidity == 'gamma') {
+                      router.push(
+                        `liquidity/deposit?provider=2&type=CONCENTRATED_AUTOMATIC&token0=${row?.token0}&token1=${row?.token1}`
+                      )
+                    } else {
+                      localStorage.setItem('apr', JSON.stringify({ id: row?.id, apr: row?.apr }))
+                      router.push(`/liquidity/manage?id=${row?.id}`)
+                      router.refresh()
                     }
                   }}
                 >
                   <span className="text-l">Manage</span>
                 </Button>
-                {row.liquidity !== 'ichi' ? (
+                {row.liquidity !== 'ichi' || 'gamma' ? (
                   <>
                     <Button
                       variant="tertiary"

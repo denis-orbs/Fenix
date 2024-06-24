@@ -72,7 +72,7 @@ const WithdrawAmountsGAMMA = ({
   const { writeContractAsync } = useWriteContract()
   const withdraw = async () => {
     if (!vaultId) return
-    console.log(vaultId)
+    //
     await writeContractAsync(
       {
         address: vaultId as `0x${string}`,

@@ -78,8 +78,8 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
     functionName: migrateStatus === 'success' ? 'deposit' : 'depositnsh',
     args:
       item.token === 'CHR' || item.token === 'spCHR' || item.token === 'elCHR'
-        ? [(depositAmount) * 10 ** 18]
-        : [(depositAmount)],
+        ? [depositAmount * 10 ** 18]
+        : [depositAmount],
   })
 
   const {
@@ -95,8 +95,8 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
     functionName: 'approve',
     args:
       item.token === 'CHR' || item.token === 'spCHR' || item.token === 'elCHR'
-        ? [item.migrateAddress, (depositAmount) * 10 ** 18]
-        : [item.migrateAddress, (depositAmount)],
+        ? [item.migrateAddress, depositAmount * 10 ** 18]
+        : [item.migrateAddress, depositAmount],
   })
   const handlerdepositCheck = async () => {
     try {
@@ -289,9 +289,9 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
 
   return (
     <Modal className="justify-center" openModal={open}>
-      <div className="xl:w-[603px] bg-shark-400 bg-opacity-40 text-white py-[50px] relative xl:mx-auto rounded-2xl">
+      <div className="relative rounded-2xl bg-shark-400 bg-opacity-40 py-[50px] text-white xl:mx-auto xl:w-[603px]">
         <button
-          className="absolute z-10 text-2xl cursor-pointer top-5 right-5 text-shark-100 hover:text-transparent hover:bg-button-primary-hover hover:bg-clip-text"
+          className="absolute right-5 top-5 z-10 cursor-pointer text-2xl text-shark-100 hover:bg-button-primary-hover hover:bg-clip-text hover:text-transparent"
           type="button"
           aria-label="Close Modal"
           title="Close"
@@ -299,18 +299,35 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
         >
           <span className="icon-x"></span>
         </button>
-        
+
         <div className="p-5 text-center">
-        {item.token === 'veCHR'?<><label>Input tokenId one by one, to be able to migrate</label><br></br><br></br></>:item.token === 'chrNFT'?<><label>chrNFTs need to be unstaked in order to be able to be migrated</label><br></br><br></br></>:null}
-        
+          {item.token === 'veCHR' ? (
+            <>
+              <label>Input tokenId one by one, to be able to migrate</label>
+              <br></br>
+              <br></br>
+            </>
+          ) : item.token === 'chrNFT' ? (
+            <>
+              <label>chrNFTs need to be unstaked in order to be able to be migrated</label>
+              <br></br>
+              <br></br>
+            </>
+          ) : null}
+
           <div className="w-100 my-2">
             <input
-              className="me-8 px-3 py-1 text-xs md:text-sm border rounded-lg text-center text-shark-100 bg-shark-400 border-shark-300 truncate max-w-[200px]"
+              className="me-8 max-w-[200px] truncate rounded-lg border border-shark-300 bg-shark-400 px-3 py-1 text-center text-xs text-shark-100 md:text-sm"
               type="text"
               value={depositAmount}
-              placeholder={...item.token === 'chrNFT' || item.token === 'veCHR' ?'Input your token ID, one by one, to be able to migrate':'Input Amount'}
+              placeholder={
+                item.token === 'chrNFT' || item.token === 'veCHR'
+                  ? 'Input your token ID, one by one, to be able to migrate'
+                  : 'Input Amount'
+              }
               onChange={(e) => setdepositAmount(e.target.value)}
             />
+
             <span
               onClick={() => {
                 if (migrateAmount >= balance) setdepositAmount(balance)
@@ -334,7 +351,7 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
               </label>
             </span>
           </div>
-          <div className="w-100 flex justify-center items-center my-5">
+          <div className="w-100 my-5 flex items-center justify-center">
             <Button onClick={handlerdepositCheck}>
               {approvalIsLoading ? 'Approving...' : depositIsLoading ? 'Migrating...' : 'Migrate'}
             </Button>
@@ -342,16 +359,16 @@ const DepositModal = ({ open, setOpenModal, item, acc, migrateAmount, migrateSta
           </div>
         </div>
       </div>
-      {depositiserror ? (
-        addNotification({
-          id: crypto.randomUUID(),
-          createTime: new Date().toISOString(),
-          message: `${depositError?.cause}`,
-          notificationType: NotificationType.SUCCESS,
-          txHash: hash,
-          notificationDuration: NotificationDuration.DURATION_5000,
-        })
-        ) : null}
+      {depositiserror
+        ? addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `${depositError?.cause}`,
+            notificationType: NotificationType.SUCCESS,
+            txHash: hash,
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
+        : null}
     </Modal>
   )
 }

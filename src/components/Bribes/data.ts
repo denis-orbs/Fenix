@@ -1,7 +1,7 @@
 const STEPS = [
   {
     label: 'Choose the Pool you want to incentivise.',
-    icon: 'icon-compass',
+    icon: 'icon-circles',
     hasDecorator: true,
   },
   {

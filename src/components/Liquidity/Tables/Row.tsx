@@ -18,10 +18,10 @@ interface RowDataProps {
 const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, activeRange }: RowDataProps) => {
   return (
     <>
-      <TableRow className="hidden 2xl:flex">
+      <TableRow className="hidden xl:flex">
         <TableCell className={`${activeRange ? 'w-[20%]' : 'w-[30%]'}`}>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center">
+          <div className="flex items-center gap-2 py-4 -mt-[5px]">
+            <div className="flex items-center -mb-[15px]">
               <Image
                 src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
                 alt="token"
@@ -63,9 +63,9 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
                   {row.pairDetails.fee} %
                 </span>
-                <Button variant="tertiary" className="!py-1">
+                {/* <Button variant="tertiary" className="!py-1">
                   <span className="icon-info"></span>
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
@@ -91,15 +91,17 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
         )}
         <TableCell className={`${activeRange ? 'w-[8%]' : 'w-[10%]'} flex justify-center items-center`}>
           <div className="flex items-center  ">
-            <p className="p-2 text-xs text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
-              {row.pairDetails.apr} %
+            <p className="px-2 py-1 text-xs 
+            -mb-[14px] flex items-center
+            text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300 ">
+              {row.pairDetails.maxAPR?.toFixed(2)} %
             </p>
           </div>
         </TableCell>
 
         <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">$ {formatCurrency(Number(row.pairDetails.tvl))}</p>
+          <div className="flex flex-col items-end justify-center w-full px-3">
+            <p className=" text-xs text-white -mb-[14px]">$ {formatCurrency(Number(row.pairDetails.tvl))}</p>
             <div className="flex items-center gap-4">
               {/* <p className="flex items-center gap-2 text-xs text-shark-100">
                 <Image
@@ -126,8 +128,8 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
         </TableCell>
 
         <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">
+          <div className="flex flex-col items-end justify-center w-full px-3">
+            <p className="mb-1 text-xs text-white -mt-[5px]">
               ${' '}
               {formatCurrency(
                 (
@@ -150,13 +152,13 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
             </p>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
+                {/* <Image
                   src={`/static/images/tokens/${row.pairDetails.token0Symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {Number(
                   fromWei(
                     row.pairDetails.pairInformationV2?.account_token0_balance.toString(),
@@ -165,13 +167,13 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 ).toFixed(2)}
               </p>
               <p className="flex items-center gap-2 text-xs text-shark-100">
-                <Image
+                {/* <Image
                   src={`/static/images/tokens/${row.pairDetails.token1Symbol}.svg`}
                   alt="token"
                   className="w-5 h-5 rounded-full"
                   width={20}
                   height={20}
-                />
+                /> */}
                 {Number(
                   fromWei(
                     row.pairDetails.pairInformationV2?.account_token1_balance.toString(),
@@ -184,8 +186,8 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
         </TableCell>
 
         <TableCell className="w-[15%]">
-          <div className="flex flex-col items-end justify-end w-full px-3">
-            <p className="mb-1 text-xs text-white">
+          <div className="flex flex-col items-end justify-center w-full px-3">
+            <p className="mb-1 text-xs text-white -mt-[5px]">
               $ {Number(row.pairDetails.myPoolAmountValue.toString()).toFixed(2)}
             </p>
             <div className="flex items-center gap-2">
@@ -214,6 +216,29 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
         </TableCell>
 
         <TableCell className="flex justify-end items-center w-[15%]">
+          <div className="flex justify-end gap-2 w-full -mb-[15px]">
+            {titleButton2 === '' ? (
+              <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs" href="/liquidity">
+                <span className="icon-circles"></span>
+                Deposit
+              </Button>
+            ) : (
+              <Button
+                variant="tertiary"
+                className="flex items-center gap-2 w-24 h-9 !text-xs"
+                href={
+                  !row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
+                    ? `/liquidity/deposit?type=VOLATILE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                    : `/liquidity/deposit?type=STABLE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                }
+              >
+                <span className="icon-logout"></span>
+                Manage
+              </Button>
+            )}
+          </div>
+        </TableCell>
+        {/* <TableCell className="flex justify-end items-center w-[15%]">
           <div className="flex gap-2 w-full">
             {titleButton === '' ? (
               <Button variant="tertiary" className="flex items-center gap-2 w-24 h-9 !text-xs ">
@@ -237,14 +262,18 @@ const RowData = ({ row, titleButton2, titleButton, titleHeader, titleHeader2, ac
                 variant="tertiary"
                 className="flex items-center gap-2 w-24 h-9 !text-xs "
                 // eslint-disable-next-line max-len
-                href={`/liquidity/deposit#${!row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'volatile' : row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool' ? 'stable' : 'manual'}-${row.pairDetails.pairInformationV2?.token0}-${row.pairDetails.pairInformationV2?.token1}`}
+                href={
+                  !row.pairDetails.pairInformationV2?.stable && row.pairDetails.pairSymbol !== 'Concentrated pool'
+                    ? `/liquidity/deposit?type=VOLATILE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                    : `/liquidity/deposit?type=STABLE&token0=${row.pairDetails.pairInformationV2?.token0}&token1=${row.pairDetails.pairInformationV2?.token1}`
+                }
               >
                 <span className="icon-logout"></span>
                 Manage
               </Button>
             )}
           </div>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
       <MobileRow
         row={row}

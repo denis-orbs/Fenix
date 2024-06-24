@@ -38,7 +38,7 @@ const config: Config = {
             width: '100%',
           },
         },
-        'notification': {
+        notification: {
           '0%': { transform: 'translateX(0)' },
           '20%': { transform: 'translateX(-1.2px)' },
           '40%': { transform: 'translateX(1.2px)' },
@@ -53,7 +53,7 @@ const config: Config = {
 
         'toast-in': 'toast-in 250ms linear',
         progress: 'progress 3s linear',
-        'notification': 'notification 2s infinite alternate'
+        notification: 'notification 2s infinite alternate',
       },
       backgroundImage: {
         // Gradients
@@ -66,7 +66,7 @@ const config: Config = {
         'error-404-mobile': 'url("/static/images/404/backgroundMobile.svg")',
         'error-404-responsive': 'url("/static/images/404/backgroundResponsive.svg")',
 
-        'fenix-slider': 'url("/static/images/vote/fenix-slider.svg")',
+        'fenix-slider': 'url("/static/images/vote/fenix-slider.png")',
         'overlay-fixed': 'url("/static/images/vote/overlay-fixed.svg")',
         rectangle: 'url("/static/images/landing/Rectangle.svg")',
         'rectangle-big': 'url("/static/images/landing/Rectangle-big.svg")',
@@ -136,6 +136,8 @@ const config: Config = {
           '800': '#864d0d',
           '900': '#723f11',
         },
+        'fenix-green': '#2AED8F',
+        'fenix-red': '#E91F38',
       },
       screens: {
         xxxs: '256px',

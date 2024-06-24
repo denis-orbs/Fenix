@@ -5,14 +5,12 @@ import { Button, TableCell, TableRow } from '@/src/components/UI'
 import { BasicPool, GammaVault, PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRowNew'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { useQuery } from '@tanstack/react-query'
-import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
 import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVaults'
@@ -21,10 +19,11 @@ import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import { adjustTokenOrder } from '@/src/library/utils/tokens'
 import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
 import { useGammaVaults } from '@/src/state/liquidity/hooks'
+import TokenListItem from '@/src/library/types/token-list-item';
 
 interface RowDataProps {
   row: BasicPool
-  tokensData: Promise<Token[]> | null
+  tokensData: Promise<TokenListItem[]> | null
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string
@@ -48,6 +47,10 @@ const RowData = ({
 
   const [openInfo, setOpenInfo] = useState<boolean>(false)
   const [openTooltipGold, setOpenTooltipGold] = useState<boolean>(false)
+  const [openTooltipEigenLayer, setOpenTooltipEigenLayer] = useState<boolean>(false)
+  const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
+  const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
+  const [openTooltipFXS, setOpenTooltipFXS] = useState<boolean>(false)
   const [campaign, setCampaign] = useState<Campaign>()
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
@@ -55,7 +58,6 @@ const RowData = ({
   if (aprIchi && aprIchi?.length > 0 && aprIchi[0]) {
     if (aprIchi[0].hasOwnProperty('apr')) aprdisplayIchi = aprIchi[0]?.apr[1]?.apr?.toFixed(0)
   }
-
   const { data: ichiApr, isLoading: ichiAprLoading } = useQuery({
     queryKey: ['ichiApr', row?.id],
     staleTime: 1000 * 60 * 20,
@@ -80,8 +82,9 @@ const RowData = ({
 
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
-    setCampaign({ ...campaign_ })
-    console.log('campaign_ >> ', campaign_)
+    if (campaign_) {
+      setCampaign({ ...campaign_ })
+    }
   }, [row])
 
   function getAverageApr(...aprs: number[]): string {
@@ -90,13 +93,15 @@ const RowData = ({
     const average = sum / values.length
     return formatAmount(average.toString(), 2)
   }
-  // console.log(data?.boostedPools?.find((pool: string) => pool?.toLowerCase() == row?.id?.toLowerCase()))
+  //
   const [adjustToken0, adjustToken1] = adjustTokenOrder(row.token0.symbol, row.token1.symbol)
   const fDAOEmisionsAPR = useFDAOEmissionsAPR(row)
   const { loading: gammaVaultsLoading, data: gammaVaults } = useGammaVaults()
   const gammaVaultApr =
     gammaVaults?.find((vault: GammaVault) => vault?.poolAddress?.toLowerCase() === row?.id?.toLowerCase())?.returns
       ?.weekly?.feeApr || null
+
+  // console.log('row >> ', row)
 
   return (
     <>
@@ -111,7 +116,7 @@ const RowData = ({
               <Image
                 src={`/static/images/tokens/${adjustToken0}.svg`}
                 alt="token"
-                className="rounded-full w-7 h-7 hover:z-20 transition-all hover:scale-[1.10]"
+                className="rounded-full w-7 h-7 hover:z-20 z-10 transition-all hover:scale-[1.10]"
                 width={20}
                 height={20}
               />
@@ -130,7 +135,14 @@ const RowData = ({
                 </div>
               </h5>
               <div className="flex items-center gap-1 h-[26px]">
-                <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
+                {row.poolType === 'concentrated' && (
+                  <span className="py-1 px-2  text-xs button-primary rounded-lg">Concentrated</span>
+                )}
+                {row.poolType === 'volatile' ? (
+                  <span className="py-1 px-2  text-xs button-tertiary rounded-lg">Volatile</span>
+                ) : row.poolType === 'stable' ? (
+                  <span className="py-1 px-2  text-xs button-tertiary rounded-lg">Stable</span>
+                ) : null}
                 <span className="!py-1 px-3  text-xs text-white border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
                   {/* FEES */}
                   {formatAmount(toBN(row.fee).div(10000), 3)}%
@@ -149,32 +161,105 @@ const RowData = ({
           <div className="flex  justify-center items-center gap-2 ">
             {
               <span ref={hoverRef} className="flex gap-2">
-                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold ? 'z-[100]' : 'z-0'}`}>
+                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS ? 'z-[100]' : 'z-0'}`}>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
-                    <>
+                    <div className="relative flex items-center">
                       {campaign?.pointStack?.map((stack, index) => (
                         <Image
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold ? 'z-[100]' : 'z-0'}`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS ? 'z-[100]' : 'z-0'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
                             if (stack === 'blast-gold') {
                               setOpenTooltipGold(true)
                             }
+                            if (stack === 'eigen-layer') {
+                              setOpenTooltipEigenLayer(true)
+                            }
+                            if (stack === 'kelp-miles') {
+                              setOpenTooltipKelpMiles(true)
+                            }
+                            if (stack === 'turtle-club') {
+                              setOpenTooltipTurtleClub(true)
+                            }
+                            if (stack === 'fxs') {
+                              setOpenTooltipFXS(true)
+                            }
                           }}
-                          onMouseLeave={() => setOpenTooltipGold(false)}
+                          onMouseLeave={() => {
+                            if (openTooltipGold) {
+                              setOpenTooltipGold(false)
+                            }
+                            if (openTooltipEigenLayer) {
+                              setOpenTooltipEigenLayer(false)
+                            }
+                            if (openTooltipKelpMiles) {
+                              setOpenTooltipKelpMiles(false)
+                            }
+                            if (openTooltipTurtleClub) {
+                              setOpenTooltipTurtleClub(false)
+                            }
+                            if (openTooltipFXS) {
+                              setOpenTooltipFXS(false)
+                            }
+                          }}
                         />
                       ))}
-                    </>
-                  )}
-                  {openTooltipGold && (
-                    <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
-                      <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                        <p className="text-xs">This pool will receive 10,000 Blast Gold from 1st - 21st of June</p>
-                      </div>
+                      {openTooltipGold && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              This pool will receive {campaign?.blastGoldAmount} of Blast Gold till the 25th June
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipEigenLayer && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              Eigenlayer points will be distributed to liquidity providers in this pool
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipKelpMiles && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">wrsETH liquidity providers will earn 1x Kelp Miles from this pool</p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipFXS && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              sfrxETH & sFRAX is getting $500 USD each in FXS tokens from 20th to 27th
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipTurtleClub && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              Deposit liquidity to receive a 25% Turtle Points boost from Fenix Rings earned
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipFXS && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              This pool is getting $500 worth of $FXS tokens from the 20th to the 26th
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </span>
@@ -186,7 +271,7 @@ const RowData = ({
           <div className="relative flex justify-center items-center gap-2 ">
             <p className="px-2 py-2 text-xs whitespace-nowrap text-white border border-solid bg-shark-400 rounded-xl bg-opacity-40 border-1 border-shark-300">
               {/* TVL */}
-              {formatDollarAmount(Number(row.totalValueLockedUSD))}
+              {formatDollarAmount(Number(row.totalValueLockedUSD)).replace('NaN', '0')}
             </p>
           </div>
         </TableCell>
@@ -256,7 +341,7 @@ const RowData = ({
         <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* VOLUME */}
-            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD))}</p>
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(Number(row.volumeUSD)).replace('NaN', '0')}</p>
             <div className="flex flex-col gap-1">
               <p className="flex items-center justify-end text-right gap-2 font-normal text-xs text-shark-100 ">
                 {/* <Image
@@ -285,7 +370,7 @@ const RowData = ({
         <TableCell className="w-[13%]">
           <div className="flex flex-col items-end justify-center w-full px-3">
             {/* FEES */}
-            <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD)}</p>
+            <p className="mb-1 text-xs text-white">{formatDollarAmount(row.feesUSD).replace('NaN', '0')}</p>
             <div className="flex flex-col  gap-1">
               <p className="flex  items-center justify-end text-right gap-2 text-xs text-shark-100">
                 {/* <Image
@@ -326,7 +411,13 @@ const RowData = ({
               <Button
                 variant="tertiary"
                 className="flex items-center gap-2  w-24 h-9 !text-xs"
-                href={`/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`}
+                href={
+                  row.poolType === 'concentrated'
+                    ? `/liquidity/deposit?type=CONCENTRATED_MANUAL&token0=${row.token0.id}&token1=${row.token1.id}`
+                    : row.poolType === 'volatile'
+                      ? `/liquidity/deposit?type=VOLATILE&token0=${row.token0.id}&token1=${row.token1.id}`
+                      : `/liquidity/deposit?type=STABLE&token0=${row.token0.id}&token1=${row.token1.id}`
+                }
               >
                 <span className="icon-circles"></span>
                 Deposit

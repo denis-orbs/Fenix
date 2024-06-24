@@ -184,6 +184,10 @@
 .icon-info:before {
   content: '\e855';
 } /* '' */
+
+.icon-refresh:before { content: '\e812'; } /* '' */
+.icon-refresh-alt:before { content: '\e818'; } /* '' */
+.icon-refresh:before { content: '\e818'; } /* '' */
 .icon-lucide:before {
   content: '\e856';
 } /* '' */
@@ -341,3 +345,4 @@
   content: '\e894';
 } /* '' */
 .icon-reload:before { content: '\e89e'; } /* '' */
+.icon-manage:before { content: '\e894'; } /* '' */

@@ -47,10 +47,13 @@ const lock = createSlice({
   },
 })
 
-export const fetchNftsAsync = createAsyncThunk('venftInfo/fetchNftsAsync', async (address: Address) => {
-  const resp = await getUserVeFNXLockPositions(address)
-  return resp
-})
+export const fetchNftsAsync = createAsyncThunk(
+  'venftInfo/fetchNftsAsync',
+  async ({ address, chainId }: { address: Address; chainId: number }) => {
+    const resp = await getUserVeFNXLockPositions(address, chainId)
+    return resp
+  }
+)
 
 export const { setLock } = lock.actions
 

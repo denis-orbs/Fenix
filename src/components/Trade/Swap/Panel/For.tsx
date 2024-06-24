@@ -59,7 +59,7 @@ const For = ({ token, setToken, setValue, value }: ForProps) => {
   }, [tokenData, token.decimals, account, nativeToken])
   useEffect(() => {
     if (nativeToken) {
-      // console.log(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
+      //
       setTokenBalance(ethers.utils.formatEther(userBalance?.data?.value || 0n).toString())
     }
   }, [nativeToken, userBalance?.data?.value, token])

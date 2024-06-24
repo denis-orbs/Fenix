@@ -45,6 +45,7 @@ import { useAllPools } from '@/src/state/liquidity/hooks'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { ethers } from 'ethers'
 import useDebounce from '@/src/library/hooks/useDebounce'
+import { postEvent } from '@/src/library/utils/events'
 
 enum ButtonState {
   POOL_NOT_AVAILABLE = 'Pool Not Available',
@@ -70,6 +71,7 @@ const Panel = () => {
   const slippage = useSlippageTolerance()
   const { openConnectModal } = useConnectModal()
   const { account, isConnected } = useActiveConnectionDetails()
+  const { chainId } = useAccount()
   const addNotification = useNotificationAdderCallback()
   const readNotification = useReadNotificationCallback()
   const [swapQuoteLoading, setSwapQuoteLoading] = useState<boolean>(false)
@@ -85,14 +87,14 @@ const Panel = () => {
     const provider = getWeb3Provider()
     const notificationMessage = `${tokenSell?.symbol} for ${tokenGet?.symbol}`
 
-    // console.log(notificationMessage)
+    //
     addNotification({
       id: id,
       createTime: new Date().toISOString(),
       message: !isApproval ? `Proccessing ${notificationMessage} swap...` : 'Proccessing approval...',
       notificationType: NotificationType.DEFAULT,
       txHash: hash,
-      notificationDuration: NotificationDuration.DURATION_25000,
+      notificationDuration: NotificationDuration.DURATION_3000,
     })
 
     if (!hash) return
@@ -101,7 +103,7 @@ const Panel = () => {
       .then((transactionReceipt) => {
         setTimeout(() => {
           readNotification(id)
-        }, 1000)
+        }, 10)
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
@@ -119,8 +121,7 @@ const Panel = () => {
   }
 
   const handleTransactionError = (e: any) => {
-    console.log(e)
-    console.log('si o no', e instanceof Error)
+    //
     if (e instanceof TransactionExecutionError) {
       addNotification({
         id: crypto.randomUUID(),
@@ -178,21 +179,23 @@ const Panel = () => {
   useEffect(() => {
     const fetchTokenPrices = async () => {
       try {
-        const data = await fetchTokens()
-
-        // USDB Because it's the default token sell
-        const sellPrice = updateTokenPrice(data, 'USDB')
-        if (sellPrice !== null && tokenSell?.symbol === 'USDB') setTokenSell((prev) => ({ ...prev, price: sellPrice }))
-        // WETH Because it's the default token get
-        const getPrice = updateTokenPrice(data, 'WETH')
-        if (getPrice !== null && tokenGet?.symbol === 'WETH') setTokenGet((prev) => ({ ...prev, price: getPrice }))
+        if (chainId) {
+          const data = await fetchTokens(chainId)
+          // USDB Because it's the default token sell
+          const sellPrice = updateTokenPrice(data, 'USDB')
+          if (sellPrice !== null && tokenSell?.symbol === 'USDB')
+            setTokenSell((prev) => ({ ...prev, price: sellPrice }))
+          // WETH Because it's the default token get
+          const getPrice = updateTokenPrice(data, 'WETH')
+          if (getPrice !== null && tokenGet?.symbol === 'WETH') setTokenGet((prev) => ({ ...prev, price: getPrice }))
+        }
       } catch (error) {
         console.error('Failed to fetch token prices:', error)
       }
     }
 
     fetchTokenPrices()
-  }, [updateTokenPrice])
+  }, [updateTokenPrice, chainId])
   const { connector } = useAccount()
 
   // function to make the swap
@@ -217,16 +220,48 @@ const Panel = () => {
     const signer = provider.getSigner()
     // const signer = provider.getSigner()
     try {
-      const gasLimit = ethers.BigNumber.from('100000')
+      if (nativeETH_WETH) {
+        const txResponse = writeContract(
+          {
+            address: WETH_ADDRESS,
+            abi: wethAbi,
+            functionName: 'deposit',
+            value: parseUnits(swapValue, tokenSell.decimals),
+          },
+          {
+            onSuccess: async (txHash) => {
+              setForValue('')
+              setSwapValue('')
+              setTimeout(() => {
+                handleTransactionSuccess(txHash, tokenSell, tokenGet)
+              }, 250)
+            },
+            onError: (e) => {
+              handleTransactionError(e)
+            },
+          }
+        )
+        return
+      }
+      const estimatedGas = await signer.estimateGas({
+        to: contractAddressList.open_ocean,
+        data: swapTransactionData,
+      })
       const txResponse = await signer.sendTransaction({
         to: contractAddressList.open_ocean,
-        // gasLimit: gasLimit,
+        gasLimit: estimatedGas.toBigInt(),
         data: swapTransactionData,
       })
 
       setForValue('')
       setSwapValue('')
       setLoadingSwap(false)
+      await postEvent({
+        tx: txResponse.hash,
+        user: account as `0x${string}`,
+        event_type: 'SWAP',
+        value: toBN(swapValue).times(tokenSell.price).toNumber(),
+      })
       handleTransactionSuccess(txResponse.hash as `0x${string}`, tokenSell, tokenGet)
 
       // setTimeout(() => {
@@ -310,8 +345,8 @@ const Panel = () => {
 
   useEffect(() => {
     if ((approvalData.isLoading && !tokenSellIsNative) || swapQuoteLoading || loadingSwap) {
-      console.log(swapQuoteLoading)
-      console.log(loadingSwap)
+      //
+      //
       setCurrentButtonState(ButtonState.LOADING)
     } else if (!swapAvailable) {
       setCurrentButtonState(ButtonState.POOL_NOT_AVAILABLE)
@@ -387,21 +422,6 @@ const Panel = () => {
     }
   }, [swapValue, nativeWETH_ETH])
 
-  useEffect(() => {
-    // console.log(tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE)
-    if (tokenGet?.address?.toLowerCase() === NATIVE_ETH_LOWERCASE && !(nativeETH_WETH || nativeWETH_ETH)) {
-      const price = tokenGet?.price
-      setTokenGet({
-        name: 'Wrapped Ether',
-        symbol: 'WETH',
-        address: '0x4300000000000000000000000000000000000004',
-        decimals: 18,
-        img: 'WETH.svg',
-        price: price,
-      })
-    }
-  }, [tokenSell?.address, tokenGet?.address, tokenGet?.price, nativeETH_WETH, nativeWETH_ETH])
-
   const normalizeToken = (token: string) =>
     token.toLowerCase() === NATIVE_ETH_LOWERCASE ? WETH_ADDRESS.toLowerCase() : token.toLowerCase()
   const { data } = useAllPools()
@@ -439,7 +459,7 @@ const Panel = () => {
       setDisableChart(false)
     }
   }, [tokenSell?.address, tokenGet?.address, data])
-  // console.log(hash, status)
+  //
   // si es ether, tengo que enviar el 0xeeee
   useEffect(() => {
     const controller = new AbortController()
@@ -467,7 +487,6 @@ const Panel = () => {
           inTokenAddress: tokenSell.address as Address,
           outTokenAddress: tokenGet.address as Address,
           amount: removeTrailingZeros(swapValue),
-          gasPrice: '3',
           slippage: slippage == 'Auto' ? '1' : removeTrailingZeros(slippage),
           account: account || zeroAddress,
         })
@@ -498,7 +517,26 @@ const Panel = () => {
       setSwapQuoteLoading(false)
     }
   }, [tokenGet.address, tokenSell.address, swapValue, account, slippage, tokenGet.decimals])
+  const handleTokenSwap = () => {
+    const prevForValue = forValue
+    switchTokensValues(tokenGet, tokenSell, setTokenGet, setTokenSell)
+    setSwapValue(prevForValue)
+  }
+  const updateTokenSell = (newToken: IToken) => {
+    if (newToken.address === tokenGet.address) {
+      handleTokenSwap()
+    } else {
+      setTokenSell(newToken)
+    }
+  }
 
+  const updateTokenGet = (newToken: IToken) => {
+    if (newToken.address === tokenSell.address) {
+      handleTokenSwap()
+    } else {
+      setTokenGet(newToken)
+    }
+  }
   return (
     <>
       <section className={`box-panel-trade ${showChart ? 'max-xl:rounded-b-none' : ''}`}>
@@ -518,7 +556,7 @@ const Panel = () => {
                   className={`text-2xl ${disableChart ? 'cursor-default bg-opacity-40' : 'cursor-pointer'} ${!showChart ? `transition-all bg-shark-100 ${!disableChart && 'lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500'} text-transparent bg-clip-text` : 'text-gradient'} icon-chart-fenix`}
                 ></span>
                 <span
-                  className="text-2xl transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text !cursor-pointer icon-reload"
+                  className="text-2xl transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text !cursor-pointer icon-refresh"
                   onClick={() => {
                     setSwapValue('')
                     setForValue('')
@@ -539,19 +577,17 @@ const Panel = () => {
               <div className="mb-3">
                 <Swap
                   token={tokenSell}
-                  setToken={setTokenSell}
+                  setToken={updateTokenSell}
                   value={swapValue}
                   setValue={setSwapValue}
                   setTokenSellUserBalance={setTokenSellUserBalance}
                 />
                 <Separator
                   onClick={() => {
-                    const prevForValue = forValue
-                    switchTokensValues(tokenGet, tokenSell, setTokenGet, setTokenSell)
-                    setSwapValue(prevForValue)
+                    handleTokenSwap()
                   }}
                 />
-                <For token={tokenGet} setToken={setTokenGet} value={forValue} setValue={setForValue} />
+                <For token={tokenGet} setToken={updateTokenGet} value={forValue} setValue={setForValue} />
               </div>
               <div
                 className={`${priceImpact && currentButtonState !== ButtonState.LOADING && Number(priceImpact) > 3 && swapValue && forValue && !swapQuoteLoading ? 'text-shark-100 text-xs exchange-box-x1 mb-2 !px-[30px] !mt-[-8px] flex items-center gap-3 font-normal' : 'hidden'}`}

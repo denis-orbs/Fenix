@@ -17,6 +17,9 @@ import { useAccount } from 'wagmi'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 import { ichiVaults } from '@/src/components/Liquidity/Deposit/Panel/Concentrated/Automatic/ichiVaults'
+import { getIchiVaultsDataByIds } from '@/src/state/liquidity/reducer'
+import { fetchTokens } from '../../common/getAvailableTokens'
+import { FALLBACK_CHAIN_ID } from '../../constants/chains'
 
 export interface IchiVault {
   id: string
@@ -54,20 +57,12 @@ export const useIchiVault = (providedToken0?: string, providedToken1?: string) =
 
     tokenVaults.forEach(async (v: IchiVault) => {
       const kapr = await getLp(v.id)
-      // FIXME: STARK
+
       v.apr = kapr
-      // console.log(v)
+
       return v
     })
 
-    // const tokenVaultsWithApr = tokenVaults.map(async (token) => {
-    //   const apr = await getLp(token.id)
-    //   console.log('apr', apr)
-    //   token.apr = apr
-    //   return token
-    // })
-    // console.log('mod', tokenVaultsWithApr)
-    // FIXME: STARK
     setVault(tokenVaults)
   }, [token0, token1, tokenA, tokenB])
 
@@ -114,22 +109,33 @@ export const useIchiVaultInfo = (token0: string, token1: string) => {
 export const useIchiPositions = () => {
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
-  const { address } = useAccount()
-  const [positions, setpositions] = useState<positions[]>([])
+  const { address, chainId } = useAccount()
+  const [ichipositions, setichipositions] = useState<positions[]>([])
+  const [ichiLoading, setichiLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchpositions = async () => {
       if (address) {
+        setichiLoading(true)
+
+        const chain = 'blast' // SupportedChainId.blast
+        const tokenList = await fetchTokens(chainId || FALLBACK_CHAIN_ID)
+
         const amounts: UserAmountsInVault[] = await getAllUserAmounts(address, web3Provider, dex)
+        const vaults = await getIchiVaultsDataByIds(
+          chain,
+          dex,
+          amounts.map(({ vaultAddress }) => vaultAddress)
+        )
+        const vaultsMap: { [key: string]: IchiVault } = vaults.reduce((map, item) => ({ ...map, [item.id]: item }), {})
         const pos = await Promise.all(
           amounts?.map(async (item) => {
-            const chain = SupportedChainId.blast
-
-            const vaultInfo = await getIchiVaultInfo(chain, dex, item.vaultAddress)
+            const vaultInfo = vaultsMap[item.vaultAddress]
             const tokenAid = vaultInfo.tokenA
             const tokenBid = vaultInfo.tokenB
-            //const vaultInfo = useIchiVaultsData(item.vaultAddress)
-            //   console.log(tokenA)
+            const poolId = ichiVaults.find((vault: IchiVault) => {
+              return vault.tokenA === tokenAid && vault.tokenB === tokenBid
+            })?.pool
 
             const getLp = async (vadd: string) => {
               const web3Provider = getWeb3Provider()
@@ -157,14 +163,18 @@ export const useIchiPositions = () => {
               },
               token0: {
                 id: tokenAid,
-                symbol: 'string',
+                symbol:
+                  tokenList.find((token) => token.tokenAddress.toLowerCase() === tokenAid.toLowerCase())?.basetoken
+                    .symbol || '',
                 name: 'string',
                 decimals: 'string',
                 derivedMatic: 'string',
               },
               token1: {
                 id: tokenBid,
-                symbol: 'string',
+                symbol:
+                  tokenList.find((token) => token.tokenAddress.toLowerCase() === tokenBid.toLowerCase())?.basetoken
+                    .symbol || '',
                 name: 'string',
                 decimals: 'string',
                 derivedMatic: 'string',
@@ -173,7 +183,7 @@ export const useIchiPositions = () => {
               withdrawnToken0: '',
               withdrawnToken1: '',
               pool: {
-                id: 'string',
+                id: poolId ?? '',
                 fee: 'string',
                 sqrtPrice: 'string',
                 liquidity: 'string',
@@ -206,20 +216,38 @@ export const useIchiPositions = () => {
 
               // FIXME: STARK
               // apr: app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%',
-              apr: app[1] && app[1]?.apr ? (app[1]?.apr <= 0 ? '0.00%' : app[1]?.apr.toFixed(0) + '%') : '0.00%',
+              apr: app[1] && app[1]?.apr ? (app[1]?.apr <= 0 ? '0.00' : app[1]?.apr) : '0.00',
             }
           })
         )
-        // FIXME: STARK
-        //DEV FIX
-        //  console.log(pos, 'pos')
-        setpositions(pos)
+
+        setichipositions(pos)
+        setichiLoading(false)
       }
     }
     fetchpositions()
-  }, [address])
+  }, [address, chainId])
 
-  return positions
+  return { ichipositions, ichiLoading }
+}
+
+export const useIchiVaultsDataMap = (vaultAddresses: string[]) => {
+  const [vaultsMap, setVaultsMap] = useState<{ [id: string]: IchiVault }>({})
+
+  useEffect(() => {
+    const dex = SupportedDex.Fenix
+    const chain = 'blast' // SupportedChainId.blast
+
+    const fetchVault = async () => {
+      if (vaultAddresses.length) {
+        const vaults = await getIchiVaultsDataByIds(chain, dex, vaultAddresses)
+        const vaultsMap: { [key: string]: IchiVault } = vaults.reduce((map, item) => ({ ...map, [item.id]: item }), {})
+        setVaultsMap(vaultsMap)
+      }
+    }
+    fetchVault()
+  }, [JSON.stringify(vaultAddresses)])
+  return vaultsMap
 }
 
 export const useIchiVaultsData = (vaultAddress: string) => {
@@ -238,10 +266,11 @@ export const useIchiVaultsData = (vaultAddress: string) => {
   useEffect(() => {
     const fetchVault = async () => {
       const vaultInfo = await getIchiVaultInfo(chain, dex, vaultAddress)
+
       // FIXME: STARK
       if (vaultInfo) setvaultData(vaultInfo)
     }
     fetchVault()
-  }, [])
+  }, [vaultAddress])
   return vaultData
 }

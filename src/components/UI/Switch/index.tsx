@@ -9,7 +9,6 @@ interface SwitchProps {
 }
 
 const Switch = ({ active, setActive }: SwitchProps) => {
-
   const handlerSwitch = () => setActive(!active)
 
   const wrapperClassName = cn('transition rounded-full w-10 h-5 cursor-pointer flex items-center relative', {

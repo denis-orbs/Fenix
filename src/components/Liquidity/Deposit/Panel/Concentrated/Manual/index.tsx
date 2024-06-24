@@ -1,108 +1,107 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { useAccount, useReadContract, useWriteContract } from 'wagmi'
+import { Address, formatUnits, maxUint256, zeroAddress } from 'viem'
+import { computePoolAddress, Pool, Position, Price, priceToClosestTick, Token, } from '@cryptoalgebra/integral-sdk'
+import toast, { Toaster } from 'react-hot-toast'
+import debounce from 'lodash/debounce'
+
+// instances
+import { publicClient } from '@/src/library/constants/viemClient'
+
+// hooks
+import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
+import { useSetToken0, useSetToken1 } from '@/src/state/liquidity/hooks'
+import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
+import { usePool } from '@/src/components/Trade/Swap/Panel/usePool'
+
+// helpers
+import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
+import { formatNumber } from '@/src/library/utils/numbers'
+import { isSupportedChain } from '@/src/library/constants/chains'
+import formatNumberToView from '@/src/library/helper/format-number-to-view';
+
+// components
 import Image from 'next/image'
 import TokensSelector from '@/src/components/Liquidity/Common/TokensSelector'
 import SetRange from './SetRange'
 import { Button } from '@/src/components/UI'
-import { Address, formatUnits, maxUint256 } from 'viem'
+import ApproveButtons from '@/src/components/Liquidity/Common/ApproveButtons'
+
+// models
 import { IToken } from '@/src/library/types'
+import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
+
+// constants
+import {
+  USDB_TOKEN_ADDRESS,
+  WETH_TOKEN_ADDRESS,
+  USDB_TOKEN_INITIAL_STATE,
+  WETH_TOKEN_INITIAL_STATE,
+} from '@/src/library/constants/common-constants';
 import { CL_MANAGER_ABI, ERC20_ABI } from '@/src/library/constants/abi'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
-import { useAccount, useReadContract, useWriteContract } from 'wagmi'
-import { publicClient } from '@/src/library/constants/viemClient'
-import toast, { Toaster } from 'react-hot-toast'
-import { getTokenAllowance } from '@/src/library/hooks/liquidity/useClassic'
-import { ethers } from 'ethers'
-import { formatNumber } from '@/src/library/utils/numbers'
-import Loader from '@/src/components/UI/Icons/Loader'
-import ApproveButtons from '@/src/components/Liquidity/Common/ApproveButtons'
 import { NATIVE_ETH_LOWERCASE } from '@/src/library/Constants'
-import { useNotificationAdderCallback } from '@/src/state/notifications/hooks'
-import { NotificationDuration, NotificationType } from '@/src/state/notifications/types'
-import { useSetToken0, useSetToken1 } from '@/src/state/liquidity/hooks'
-import { isSupportedChain } from '@/src/library/constants/chains'
-import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
-import {
-  Token,
-  computePoolAddress,
-  tickToPrice,
-  priceToClosestTick,
-  Price,
-  getTickToPrice,
-  Position,
-  Pool,
-  CurrencyAmount,
-  encodeSqrtRatioX96,
-  TickMath,
-} from '@cryptoalgebra/integral-sdk'
-import { usePool } from '@/src/components/Trade/Swap/Panel/usePool'
 import { blast } from 'viem/chains'
 import BigNumber from 'bignumber.js'
+import { postEvent } from '@/src/library/utils/events'
 
 const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IToken[] }) => {
-  const [firstToken, setFirstToken] = useState({
-    name: 'Wrapped Ether',
-    symbol: 'ETH',
-    id: 1,
-    decimals: 18,
-    address: '0x4300000000000000000000000000000000000004' as Address,
-    img: '/static/images/tokens/WETH.png',
-  } as IToken)
+  // common
+  const addNotification = useNotificationAdderCallback()
+  const { isConnected, chainId } = useActiveConnectionDetails()
+  const { writeContractAsync } = useWriteContract()
+  const account = useAccount()
+
+  // (tokens)
+  const setToken0 = useSetToken0()
+  const setToken1 = useSetToken1()
+
+  // states
+  const [timeout, setTimeoutID] = useState<[NodeJS.Timeout | undefined, NodeJS.Timeout | undefined]>([
+    undefined,
+    undefined,
+  ])
+  const [isFirstLoading, setIsFirstLoading] = useState(false)
+  const [isSecondLoading, setIsSecondLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [buttonText, setButtonText] = useState('Create Position')
+
+  // (tokens)
+  const [firstToken, setFirstToken] = useState(USDB_TOKEN_INITIAL_STATE)
   const [firstValue, setFirstValue] = useState('')
-  const [secondToken, setSecondToken] = useState({
-    name: 'USDB',
-    symbol: 'USDB',
-    id: 0,
-    decimals: 18,
-    address: '0x4300000000000000000000000000000000000003' as Address,
-    img: '/static/images/tokens/USDB.svg',
-  } as IToken)
+  const token1Balance = useReadContract(getBalanceReqParams(firstToken.address || USDB_TOKEN_ADDRESS))
+
+  const [secondToken, setSecondToken] = useState(WETH_TOKEN_INITIAL_STATE)
   const [secondValue, setSecondValue] = useState('')
+  const token2Balance = useReadContract(getBalanceReqParams(secondToken.address || WETH_TOKEN_ADDRESS))
+
+  const pool = usePool(getPoolAddress())
+  const [isInverse, setIsInverse] = useState(
+    parseInt(firstToken.address as string) > parseInt(secondToken.address as string)
+  )
+
+  // (allowance)
   const [allowanceFirst, setAllowanceFirst] = useState(0)
   const [allowanceSecond, setAllowanceSecond] = useState(0)
-  const { isConnected, chainId } = useActiveConnectionDetails()
 
-  const [ncurrentPercentage, nsetCurrentPercentage] = useState([-5, 5])
-  const [shownPercentage, setShownPercentage] = useState(['5', '5'])
+  // (range picker)
   const [rangePrice1, setRangePrice1] = useState(0)
   const [rangePrice2, setRangePrice2] = useState(0)
   const [rangePrice1Text, setRangePrice1Text] = useState('0')
   const [rangePrice2Text, setRangePrice2Text] = useState('0')
-  const [buttonText, setButtonText] = useState('Create Position')
-  const [oneSide, setOneSide] = useState('BOTH')
-
   const [lowerTick, setLowerTick] = useState(0)
   const [higherTick, setHigherTick] = useState(0)
-  const token1Balance = useReadContract({
-    abi: ERC20_ABI,
-    address: firstToken.address,
-    functionName: 'balanceOf',
-    args: [useAccount().address],
-  })
-  const account = useAccount()
+  const [ncurrentPercentage, nsetCurrentPercentage] = useState([-5, 5])
+  const [shownPercentage, setShownPercentage] = useState(['5', '5'])
 
-  const token2Balance = useReadContract({
-    abi: ERC20_ABI,
-    address: secondToken.address,
-    functionName: 'balanceOf',
-    args: [useAccount().address],
-  })
+  // (other)
+  const [slippage, setSlippage] = useState(0.05)
+  const [oneSide, setOneSide] = useState('BOTH')
 
-  const poolAddress =
-    firstToken.address == secondToken.address
-      ? '0x0000000000000000000000000000000000000000'
-      : (firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE && secondToken.address?.toLowerCase() == "0x4300000000000000000000000000000000000004")
-      ? '0x0000000000000000000000000000000000000000'
-      : (secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE && firstToken.address?.toLowerCase() == "0x4300000000000000000000000000000000000004")
-      ? '0x0000000000000000000000000000000000000000'
-      : (computePoolAddress({
-          tokenA: new Token(blast.id, firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : firstToken.address as string, 18),
-          tokenB: new Token(blast.id, secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE ? "0x4300000000000000000000000000000000000004" : secondToken.address as string, 18),
-          poolDeployer: '0x5aCCAc55f692Ae2F065CEdDF5924C8f6B53cDaa8',
-          initCodeHashManualOverride: '0xf45e886a0794c1d80aeae5ab5befecd4f0f2b77c0cf627f7c46ec92dc1fa00e4',
-        }) as Address)
-  const pool = usePool(poolAddress)
-
+  // effects
   useEffect(() => {
+    const poolAddress = getPoolAddress()
+    
     if(poolAddress.toLowerCase() == "0x1d74611f3ef04e7252f7651526711a937aa1f75e" && firstToken.symbol == "USDB" ||
       poolAddress.toLowerCase() == "0x86d1da56fc79accc0daf76ca75668a4d98cb90a7" && firstToken.symbol == "axlUSDC" ||
       poolAddress.toLowerCase() == "0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d" && firstToken.symbol == "USD+" ||
@@ -111,17 +110,19 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
       swapTokens()
     }
 
-  }, [poolAddress])
+  }, [pool])
 
   useEffect(() => {
     if(pool[0] == 'LOADING') {
       setButtonText('Loading')
-    } else if(pool[0] == 'NOT_EXISTS') {
+    } else if (pool[0] == 'NOT_EXISTS') {
       setButtonText('Pool Doesn\'t Exist')
-      setFirstValue("0")
-      setSecondValue("0")
+      setFirstValue('0')
+      setSecondValue('0')
     } else if (rangePrice2 != -1 && rangePrice1 > rangePrice2) {
-      setButtonText("Min price can't be higher than max price")
+      setButtonText('Min price can\'t be higher than max price')
+    } else if (lowerTick == higherTick) {
+      setButtonText('The gap between min and max price is not enough')
     } else if (
       account &&
       isConnected &&
@@ -143,78 +144,13 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     token2Balance,
     firstToken,
     secondToken,
-    pool
+    pool,
   ])
-
-  const [isInverse, setIsInverse] = useState(
-    parseInt(firstToken.address as string) > parseInt(secondToken.address as string)
-  )
-
-  const [isFirstLoading, setIsFirstLoading] = useState(false)
-  const [isSecondLoading, setIsSecondLoading] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [slippage, setSlippage] = useState(0.05)
-
-  const [timeout, setTimeoutID] = useState<[NodeJS.Timeout | undefined, NodeJS.Timeout | undefined]>([
-    undefined,
-    undefined,
-  ])
-
-  const setToken0 = useSetToken0()
-  const setToken1 = useSetToken1()
-
-  // const account = useAccount()
-  // const { isConnected, chainId } = useActiveConnectionDetails()
-
-  const { writeContractAsync } = useWriteContract()
 
   useEffect(() => {
     setRangePrice1Text(rangePrice1.toString())
     setRangePrice2Text(rangePrice2.toString())
   }, [rangePrice1, rangePrice2])
-
-  // useEffect(() => {
-  //   if(BigInt(firstToken.address as string) > BigInt(secondToken.address as string)) {
-  //     const temp = firstToken
-  //     setFirstToken(secondToken)
-  //     setSecondToken(temp)
-  //   }
-  // }, [firstToken, secondToken])
-
-  const handleMinMaxInput = (value: any, isFirst: boolean, multiplier: any) => {
-    if (pool[0] !== 'EXISTS') return
-    if (timeout) clearTimeout(timeout[0])
-
-    if (isFirst) {
-      setRangePrice2Text(value.target.value)
-    } else {
-      setRangePrice1Text(value.target.value)
-    }
-
-    const price = value.target.value
-
-    const newTimeout = setTimeout(() => {
-      let currentPrice = Number(pool[1]?.token0Price.toFixed(10))
-      if (isInverse) currentPrice = Number(pool[1]?.token1Price.toFixed(10))
-
-      const pricePercentage = ((price - currentPrice) / currentPrice) * 100
-
-      if (isFirst)
-        if (!isInverse) {
-          nsetCurrentPercentage([ncurrentPercentage[0], pricePercentage])
-        } else {
-          nsetCurrentPercentage([pricePercentage, ncurrentPercentage[1]])
-        }
-      else if (!isInverse) {
-        nsetCurrentPercentage([pricePercentage, ncurrentPercentage[1]])
-      } else {
-        nsetCurrentPercentage([ncurrentPercentage[0], pricePercentage])
-      }
-    }, 500)
-
-    setTimeoutID([newTimeout, timeout[1]])
-  }
-  const addNotification = useNotificationAdderCallback()
 
   useEffect(() => {
     setToken0(firstToken.address)
@@ -238,15 +174,15 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
       setSecondValue(
         isInverse
           ? getFromAmount1(
-              firstValue,
-              isInverse ? firstToken.decimals : secondToken.decimals,
-              isInverse ? secondToken.decimals : firstToken.decimals
-            )
+            firstValue,
+            isInverse ? firstToken.decimals : secondToken.decimals,
+            isInverse ? secondToken.decimals : firstToken.decimals
+          )
           : getFromAmount0(
-              firstValue,
-              isInverse ? secondToken.decimals : firstToken.decimals,
-              isInverse ? firstToken.decimals : secondToken.decimals
-            )
+            firstValue,
+            isInverse ? firstToken.decimals : secondToken.decimals,
+            isInverse ? secondToken.decimals : firstToken.decimals
+          )
       )
     }
   }, [firstToken, secondToken, lowerTick, higherTick, pool[0]])
@@ -262,6 +198,10 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   }, [defaultPairs])
 
   useEffect(() => {
+    if (!firstToken.address || !secondToken.address) {
+      return
+    }
+
     setIsInverse(BigInt(firstToken.address as string) > BigInt(secondToken.address as string))
 
     const asyncGetAllowance = async () => {
@@ -306,6 +246,8 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         setRangePrice1(0)
         setRangePrice2(-1)
         setShownPercentage(['', ''])
+        setRangePrice1Text('0')
+        setRangePrice2Text('-1')
       } else {
         {
           let lowerPrice0l, lowerPrice0h, lowerPrice1, newPriceL, newPriceH
@@ -367,13 +309,20 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           const lTick = Number(newPriceL.toFixed(18)) == 0 ? -887220 : priceToClosestTick(newPriceL)
           const lTickRounded = parseInt((lTick / 60).toString()) * 60
 
-          const hTick = Number(newPriceL.toFixed(18)) == 0 ? -887220 : priceToClosestTick(newPriceH)
+          const hTick = Number(newPriceH.toFixed(18)) == 0 ? -887220 : priceToClosestTick(newPriceH)
           const hTickRounded = parseInt((hTick / 60).toString()) * 60
+
+          const range1 = Number(newPriceL.toFixed(18))
+          const range2 = Number(newPriceH.toFixed(18))
 
           setLowerTick(lTickRounded)
           setHigherTick(hTickRounded)
-          setRangePrice1(Number(newPriceL.toFixed(18)))
-          setRangePrice2(Number(newPriceH.toFixed(18)))
+
+          setRangePrice1(range1)
+          setRangePrice2(range2)
+
+          setRangePrice1Text(range1.toString())
+          setRangePrice2Text(range2.toString())
         }
       }
     }
@@ -382,15 +331,113 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     asyncFn()
   }, [ncurrentPercentage, pool[0]])
 
-  const swapTokens = () => {
-    const temp = firstToken
-    setFirstToken(secondToken)
-    setSecondToken(firstToken)
-    setFirstValue("0")
-    setSecondValue("0")
+  // helpers
+  function getPoolAddress(): Address {
+    if (firstToken.address === secondToken.address) {
+      return zeroAddress
+    }
+
+    return computePoolAddress({
+      tokenA: new Token(
+        blast.id,
+        firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE
+          ? WETH_TOKEN_ADDRESS
+          : (firstToken.address as string),
+        18
+      ),
+      tokenB: new Token(
+        blast.id,
+        secondToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE
+          ? WETH_TOKEN_ADDRESS
+          : (secondToken.address as string),
+        18
+      ),
+      poolDeployer: '0x5aCCAc55f692Ae2F065CEdDF5924C8f6B53cDaa8',
+      initCodeHashManualOverride: '0xf45e886a0794c1d80aeae5ab5befecd4f0f2b77c0cf627f7c46ec92dc1fa00e4',
+    }) as Address
   }
 
-  const handleCLAdd = async () => {
+  function getBalanceReqParams(address: Address) {
+    return {
+      abi: ERC20_ABI,
+      address,
+      functionName: 'balanceOf',
+      args: [account.address],
+    }
+  }
+
+  function handleMinMaxInput(value: ChangeEvent<HTMLInputElement>, isFirst: boolean, multiplier: number): void {
+    if (pool[0] !== 'EXISTS') return
+    if (timeout) clearTimeout(timeout[0])
+
+    if (isFirst) {
+      setRangePrice2Text(value.target.value)
+    } else {
+      setRangePrice1Text(value.target.value)
+    }
+
+    const price = +value.target.value
+
+    const newTimeout = setTimeout(() => {
+      let currentPrice = Number(pool[1]?.token0Price.toFixed(10))
+      if (isInverse) currentPrice = Number(pool[1]?.token1Price.toFixed(10))
+
+      const pricePercentage = ((price - currentPrice) / currentPrice) * 100
+
+      if (isFirst)
+        if (!isInverse) {
+          nsetCurrentPercentage([ncurrentPercentage[0], pricePercentage])
+        } else {
+          nsetCurrentPercentage([pricePercentage, ncurrentPercentage[1]])
+        }
+      else if (!isInverse) {
+        nsetCurrentPercentage([pricePercentage, ncurrentPercentage[1]])
+      } else {
+        nsetCurrentPercentage([ncurrentPercentage[0], pricePercentage])
+      }
+    }, 500)
+
+    setTimeoutID([newTimeout, timeout[1]])
+  }
+
+  function swapTokens(): void {
+    setFirstToken(secondToken)
+    setSecondToken(firstToken)
+    setFirstValue('0')
+    setSecondValue('0')
+  }
+
+  function getFromAmount0(value: any, dec1: any, dec2: any): string {
+    return Position.fromAmount0({
+      pool: pool[1] as unknown as Pool,
+      tickLower: lowerTick,
+      tickUpper: higherTick,
+      amount0: BigInt(Number((parseFloat(value) * 10 ** dec1).toFixed(0))).toString(),
+      useFullPrecision: false,
+    }).amount1.toFixed(parseInt(dec2))
+  }
+
+  function getFromAmount1(value: any, dec1: any, dec2: any): string {
+    return Position.fromAmount1({
+      pool: pool[1] as unknown as Pool,
+      tickLower: lowerTick,
+      tickUpper: higherTick,
+      amount1: BigInt(Number((parseFloat(value) * 10 ** dec1).toFixed(0))).toString(),
+    }).amount0.toFixed(parseInt(dec2))
+  }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debounceSetFirstValue = useCallback(debounce((value: string) => {
+    setFirstValue(formatNumberToView(value, firstToken.decimals))
+  }, 1000), [])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debounceSetSecondValue = useCallback(debounce((value: string) => {
+    setSecondValue(formatNumberToView(value, secondToken.decimals))
+  }, 1000), [])
+
+  // async helpers
+  async function handleCLAdd(): Promise<void> {
     setIsLoading(true)
 
     const _firstToken = isInverse ? secondToken : firstToken
@@ -406,11 +453,11 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           : BigInt(0)
     _firstToken.address =
       _firstToken.address?.toLowerCase() == NATIVE_ETH_LOWERCASE
-        ? '0x4300000000000000000000000000000000000004'
+        ? WETH_TOKEN_ADDRESS
         : _firstToken.address
     _secondToken.address =
       _secondToken.address?.toLocaleLowerCase() == NATIVE_ETH_LOWERCASE
-        ? '0x4300000000000000000000000000000000000004'
+        ? WETH_TOKEN_ADDRESS
         : _secondToken.address
 
     writeContractAsync(
@@ -438,7 +485,9 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
         onSuccess: async (x) => {
           const transaction = await publicClient.waitForTransactionReceipt({ hash: x })
           if (transaction.status == 'success') {
+            // aquí enviar notificación al backend, con el usuario tb
             // toast(`Added LP successfully.`)
+
             addNotification({
               id: crypto.randomUUID(),
               createTime: new Date().toISOString(),
@@ -448,8 +497,16 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
               notificationDuration: NotificationDuration.DURATION_5000,
             })
 
-            setFirstValue("0")
-            setSecondValue("0")
+            setFirstValue('0')
+            setSecondValue('0')
+            const valueInDollars =
+              parseFloat(firstValue) * firstToken?.price + parseFloat(secondValue) * secondToken?.price
+            await postEvent({
+              tx: transaction.transactionHash,
+              user: account.address as Address,
+              event_type: 'ADD_LIQUIDITY',
+              value: valueInDollars,
+            })
           } else {
             toast(`Added LP TX failed, hash: ${transaction.transactionHash}`)
             addNotification({
@@ -464,7 +521,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           setIsLoading(false)
         },
         onError: (e) => {
-          // console.log(e)
+          //
           // toast(`Added LP failed. `)
           addNotification({
             id: crypto.randomUUID(),
@@ -480,10 +537,10 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     )
   }
 
-  const handleApprove = async (token: Address) => {
+  async function handleApprove(token: Address): Promise<void> {
     setIsLoading(true)
-    if(token == firstToken.address) setIsFirstLoading(true)
-    if(token == secondToken.address) setIsSecondLoading(true)
+    if (token == firstToken.address) setIsFirstLoading(true)
+    if (token == secondToken.address) setIsSecondLoading(true)
 
     writeContractAsync(
       {
@@ -552,65 +609,31 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     )
   }
 
-  const getFromAmount0 = (value: any, dec1: any, dec2: any) => {
-    let x = Position.fromAmount0({
-      pool: pool[1] as unknown as Pool,
-      tickLower: lowerTick,
-      tickUpper: higherTick,
-      amount0: BigInt(Number((parseFloat(value) * 10 ** dec1).toFixed(0))).toString(),
-      useFullPrecision: false,
-    }).amount1.toFixed(parseInt(dec2))
-    return x
-  }
+  async function handleOnTokenValueChange(input: string, token: IToken): Promise<void> {
+    if (pool[0] != 'EXISTS') {
+      return
+    }
 
-  const getFromAmount1 = (value: any, dec1: any, dec2: any) => {
-    let x = Position.fromAmount1({
-      pool: pool[1] as unknown as Pool,
-      tickLower: lowerTick,
-      tickUpper: higherTick,
-      amount1: BigInt(Number((parseFloat(value) * 10 ** dec1).toFixed(0))).toString(),
-    })
-    return x.amount0.toFixed(parseInt(dec2))
-  }
+    const inputAmount = parseFloat(input);
 
-  const handleOnTokenValueChange = async (input: any, token: IToken) => {
-    if (pool[0] != 'EXISTS') return;
     if (firstToken.address === token.address) {
-      if (parseFloat(input) != 0) {
-        if (isInverse) {
-          setSecondValue(getFromAmount1(input, firstToken.decimals, secondToken.decimals))
-        } else {
-          setSecondValue(getFromAmount0(input, firstToken.decimals, secondToken.decimals))
-        }
+      if (inputAmount) {
+        setSecondValue((isInverse ? getFromAmount1 : getFromAmount0)(input, firstToken.decimals, secondToken.decimals))
+      } else {
+        setSecondValue('')
       }
-      if (parseFloat(input) == 0) setSecondValue('')
-      setFirstValue(input == '' ? 0 : input)
 
-      if (timeout[1]) clearTimeout(timeout[1])
-      setTimeoutID([
-        timeout[0],
-        setTimeout(() => {
-          setFirstValue(formatNumber(parseFloat(input), firstToken.decimals))
-        }, 500),
-      ])
+      setFirstValue(input == '' ? '0' : input)
+      debounceSetFirstValue(input)
     } else {
-      if (parseFloat(input) != 0) {
-        if (!isInverse) {
-          setFirstValue(getFromAmount1(input, secondToken.decimals, firstToken.decimals))
-        } else {
-          setFirstValue(getFromAmount0(input, secondToken.decimals, firstToken.decimals))
-        }
+      if (inputAmount) {
+        setFirstValue((isInverse ? getFromAmount0 : getFromAmount1)(input, secondToken.decimals, firstToken.decimals))
+      } else {
+        setFirstValue('')
       }
-      if (parseFloat(input) == 0) setFirstValue('')
-      setSecondValue(input == '' ? 0 : input)
 
-      if (timeout[1]) clearTimeout(timeout[1])
-      setTimeoutID([
-        timeout[0],
-        setTimeout(() => {
-          setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
-        }, 500),
-      ])
+      setSecondValue(input == '' ? '0' : input)
+      debounceSetSecondValue(input)
     }
   }
 
@@ -660,7 +683,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
             </div>
           </div>
           <div className="flex items-center text-xs leading-normal max-md:flex-wrap gap-[5px]">
-            <div className="text-white">Current Pool Price: </div>
+            <div className="text-white">Current Pool Price:</div>
             <div className="flex items-center gap-2.5">
               <p className="flex gap-[5px] items-center text-shark-100 flex-shrink-0">
                 {/* <Image src={firstToken.img} alt="token" className="w-5 h-5 rounded-full" width={20} height={20} /> */}
@@ -705,9 +728,10 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           token0={firstToken}
           token1={secondToken}
           handleApprove={handleApprove}
-          mainFn={buttonText == "Create Position" ? handleCLAdd : ()=>{}}
+          mainFn={buttonText == 'Create Position' ? handleCLAdd : () => {
+          }}
           mainText={buttonText}
-          isLoading={buttonText == "Loading" || isLoading}
+          isLoading={buttonText == 'Loading' || isLoading}
           isFirstLoading={isFirstLoading}
           isSecondLoading={isSecondLoading}
         />

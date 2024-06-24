@@ -53,7 +53,7 @@ export async function getAverageVotignAPR(availableTokensDictionary: {
     )
     // return bribeList;
   } catch (e) {
-    // console.log(e)
+    //
     return '0%'
   }
 }

@@ -15,8 +15,9 @@ interface TokenSelectorProps {
   setToken: (token: IToken) => void
   setValue: (value: string) => void
   variant?: 'primary' | 'secondary'
-  onTokenValueChange?: (arg0: any, token: IToken) => void
+  onTokenValueChange?: (arg0: string, token: IToken) => void
   option?: string
+  defaultBalance?: string
 }
 
 const TokenSelector = ({
@@ -27,6 +28,7 @@ const TokenSelector = ({
   value,
   setValue,
   option,
+  defaultBalance
 }: TokenSelectorProps) => {
   const [openSelectToken, setOpenSelectToken] = useState<boolean>(false)
 
@@ -40,6 +42,7 @@ const TokenSelector = ({
         setValue={setValue}
         value={value}
         option={option}
+        defaultBalance={defaultBalance}
       />
 
       <SelectToken openModal={openSelectToken} setOpenModal={setOpenSelectToken} setToken={setToken} />
@@ -58,7 +61,9 @@ const TokensSelector = ({
   setSecondValue,
   onTokenValueChange,
   option,
-  hideTokenSwap = false
+  hideTokenSwap = false,
+  defaultBalanceFirst,
+  defaultBalanceSecond
 }: {
   firstToken: IToken
   secondToken: IToken
@@ -71,6 +76,8 @@ const TokensSelector = ({
   onTokenValueChange: (arg0: any, token: IToken) => void
   option?: string
   hideTokenSwap?: boolean
+  defaultBalanceFirst?: string
+  defaultBalanceSecond?: string
 }) => {
   return (
     <div className="flex flex-col gap-1 mb-2 relative">
@@ -82,6 +89,7 @@ const TokensSelector = ({
         variant="primary"
         onTokenValueChange={onTokenValueChange}
         option={option}
+        defaultBalance={defaultBalanceFirst}
       />
       {
         hideTokenSwap ? (<></>) : (
@@ -100,6 +108,7 @@ const TokensSelector = ({
         variant="secondary"
         onTokenValueChange={onTokenValueChange}
         option={option}
+        defaultBalance={defaultBalanceSecond}
       />
     </div>
   )

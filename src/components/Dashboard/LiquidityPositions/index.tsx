@@ -1,99 +1,111 @@
 'use client'
+import { useMemo, useState, useEffect } from 'react'
+
+import { buildAprRingsMap } from '@/src/library/utils/build-apr-rings-map'
+
+import { useRingsCampaignsBoostedPools, useV2PairsData } from '@/src/state/liquidity/hooks'
+
+import { fromWei } from '@/src/library/utils/numbers'
 
 import { Button, TableSkeleton } from '@/src/components/UI'
 import HeaderRow from '@/src/components/Liquidity/Tables/HeaderRow'
-import { PROPS_CLASSIC_LIQUIDITY, PROPS_CONCENTRATED_LIQUIDITY } from '../types'
-import INFO_API from '../data'
-import { useV2PairsData } from '@/src/state/liquidity/hooks'
-import { useEffect, useMemo, useState } from 'react'
+import NotFoundLock from '@/src/components/Lock/NotFoundLock'
+
+import { PROPS_CLASSIC_LIQUIDITY } from '@/src/components/Dashboard/types'
 import { PoolData } from '@/src/state/liquidity/types'
 import { useAccount } from 'wagmi'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import Spinner from '../../Common/Spinner'
 
 const LiquidityPositions = () => {
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
+  const { data: v2PairsData, loading: pairsLoading } = useV2PairsData()
+  const { data: ringsList, loading: ringsLoading } = useRingsCampaignsBoostedPools()
   const { address } = useAccount()
-  const { loading: loadingV2Pairs, data: v2PairsData } = useV2PairsData()
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 5000)
-  }, [])
+  const [loading, setLoading] = useState(false)
+  const aprRingsMap = useMemo(() => (ringsLoading ? null : buildAprRingsMap(ringsList)), [ringsLoading, ringsList])
+  const poolsDataClassic = useMemo(
+    () =>
+      (v2PairsData || [])
+        .filter((pool) => pool.pairSymbol !== 'Concentrated pool')
+        .filter((row) => Number(fromWei(row.pairInformationV2?.account_lp_balance.toString(), 18)) !== 0)
+        .map((row) => ({ pairDetails: row })),
+    [v2PairsData]
+  )
+  const poolsDataClassicRing = useMemo<PoolData[]>(
+    () =>
+      aprRingsMap
+        ? poolsDataClassic.map((pool) => ({
+            ...pool,
+            ...(pool.pairDetails?.pairSymbol
+              ? {
+                  pairDetails: {
+                    ...pool.pairDetails,
+                    maxAPR:
+                      +(aprRingsMap[`${pool.pairDetails.id}`.toLowerCase()] ?? 0) +
+                      +(isNaN(pool.pairDetails.apr) ? 0 : pool.pairDetails.apr ?? 0),
+                  },
+                }
+              : {}),
+          }))
+        : poolsDataClassic,
+    [poolsDataClassic, aprRingsMap]
+  )
 
   useEffect(() => {
-    // console.log('Loading ', loading)
-    // console.log('v2PairsData ', v2PairsData)
-  }, [v2PairsData, loading, address])
+    setLoading(pairsLoading || ringsLoading)
+  }, [pairsLoading, ringsLoading])
 
-  const poolsData = useMemo<PoolData[]>(() => {
-    if (loading || !v2PairsData) {
-      return []
-    }
-
-    return v2PairsData.map((pair) => {
-      const pd: PoolData = {
-        pairDetails: pair,
-      }
-
-      return pd
-    })
-  }, [loading, v2PairsData, address])
-
-  const poolsDataClassic = poolsData.filter((pool) => pool.pairDetails.pairSymbol !== 'Concentrated pool')
-
-  return (
-    <>
-      {poolsDataClassic.length !== 0 ? (
-        <div className="mb-10">
-          <div className="flex justify-between mb-4 items-center">
-            <h1 className="text-white text-xl">Liquidity Positions</h1>
-            <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
-              <span className="icon-logout"></span>New deposit
-            </Button>
+  const renderContent = () => {
+    if (loading && address) {
+      return (
+        <div className="flex flex-col  gap-3 w-full mb-10 mt-10 mx-auto items-center">
+          <div className="text-white flex justify-start w-full max-w-[1127px]">
+            <p className="flex justify-start text-lg ms-2 w-full">Classic Liquidity Positions</p>
           </div>
-          {/* <div className="dashboard-box"> */}
-          <div className={`${poolsDataClassic.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
-            <div className="  rounded-lg z-10">
-              <h1 className="text-white p-3">Classic liquidity</h1>
-              {loading ? (
-                <>
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <TableSkeleton key={index} />
-                  ))}
-                </>
-              ) : (
-                <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassic} />
-              )}
-              {/* <div className="mt-2">
-                <Button variant="tertiary" className="!py-3 flex gap-2 !text-xs !lg:text-sm">
-                  Review more
-                  <span className="icon-link"></span>
-                </Button>
-              </div> */}
+
+          <div className="box-referrals-short p-6 flex gap-8 justify-center ">
+            <div className="relative z-50">
+              <p className="text-white text-sm flex items-center gap-3">
+                <Spinner /> Loading
+              </p>
             </div>
           </div>
         </div>
-      ) : (
-        <div className="flex flex-col gap-3 w-full lg:w-4/5 mx-auto">
-          <div className="text-white flex justify-between items-center flex-wrap">
-            <p className="flex gap-3 text-lg ms-2">Liquidity Positions</p>
-            <Button variant="tertiary" className="flex gap-2  !py-2" href="/liquidity">
-              <span className="icon-logout "></span>New Deposit
-            </Button>
+      )
+    }
+
+    if (poolsDataClassicRing.length > 0 && address) {
+      return (
+        <>
+          <div className="flex flex-col ">
+            <div className="flex justify-between items-center">
+              <h2 className="text-white font-normal text-lg">Classic liquidity positions</h2>
+              <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
+                <span className="icon-logout"></span>New deposit
+              </Button>
+            </div>
+            <h1 className="text-white p-3 font-medium">Classic liquidity:</h1>
           </div>
-          <div className="box-dashboard p-6">
-            <p className="text-white text-sm">
-              To receive emissions{' '}
-              <Link href={'/liquidity'} className="text-green-400 underline">
-                deposit and stake
-              </Link>{' '}
-              your liquidity first.
-            </p>
+          <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
+            <div className="rounded-lg z-10">
+              <HeaderRow {...PROPS_CLASSIC_LIQUIDITY} poolData={poolsDataClassicRing} />
+            </div>
           </div>
+        </>
+      )
+    }
+
+    if ((poolsDataClassicRing.length === 0 && !loading) || !address) {
+      return (
+        <div className="bg-shark-400 bg-opacity-40 p-6 rounded-xl">
+          <NotFoundLock info={'No Positions Found.'} />
         </div>
-      )}
+      )
+    }
+  }
+
+  return (
+    <>
+      <div className="mb-10 flex flex-col">{renderContent()}</div>
     </>
   )
 }

@@ -1,9 +1,9 @@
-import { Address } from '@/src/library/types'
 import { ApiState } from '@/src/library/types/connection'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import { BigDecimal } from '@/src/library/common/BigDecimal'
 import { PairInfoV3 } from '@/src/library/web3/apis/pairAPI'
-import { BoostedPool, RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import { Address } from 'viem'
+import RingCampaignData from '@/src/library/types/pools/ring-campaign-data'
 
 export interface LiquidityState {
   // Liquidity V2 Pairs
@@ -26,10 +26,9 @@ export interface LiquidityState {
     state: ApiState
     data: GammaVault[]
   }
-  concentratedPools: { state: ApiState; data: any }
   ringsCampaigns: {
     state: ApiState
-    data: RingCampaignData
+    data: RingCampaignData | null
   }
 }
 
@@ -97,6 +96,8 @@ export interface PairInfo {
   inactive_gauge?: boolean
 }
 export interface LiquidityTableElement {
+  id?: string
+  aprRings?: Number
   pairAddress: Address
   pairSymbol: string
   pairInformationV2?: PairInfo
@@ -204,7 +205,12 @@ export interface BasicPool {
   token0: BasicToken
   token1: BasicToken
   apr?: string
+  isStable?: boolean
+  reserve0?: string
+  reserve1?: string
+  totalSupply?: string
   aprRings?: string
+  totalCampaigns?: number
 }
 export interface BasicToken {
   id: string

@@ -1,4 +1,4 @@
-import { config } from '@/src/app/layout'
+import { wagmiConfig } from '@/src/app/layout'
 import { Button } from '@/src/components/UI'
 import { NumericalInput } from '@/src/components/UI/Input'
 import { gammaUniProxyABI } from '@/src/library/constants/abi/gammaUniProxyABI'
@@ -32,6 +32,7 @@ import Loader from '@/src/components/UI/Icons/Loader'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import { gammaVaults } from './gammaVaults'
 import Separator from '@/src/components/Trade/Common/Separator'
+import { postEvent } from '@/src/library/utils/events'
 
 const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
   const token0 = useToken0()
@@ -120,7 +121,7 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
     const fetchToken1Equivalent = async () => {
       if (lastUserUpdate === 'token0' && token0TypedValue !== '0' && token0TypedValue !== '') {
         try {
-          const res = await readContract(config, {
+          const res = await readContract(wagmiConfig, {
             address: contractAddressList.gamma_uniproxy as `0x${string}`,
             abi: gammaUniProxyABI,
             functionName: 'getDepositAmount',
@@ -138,7 +139,7 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
     const fetchToken0Equivalent = async () => {
       if (lastUserUpdate === 'token1' && token1TypedValue !== '0' && token1TypedValue !== '') {
         try {
-          const res = await readContract(config, {
+          const res = await readContract(wagmiConfig, {
             address: contractAddressList.gamma_uniproxy as `0x${string}`,
             abi: gammaUniProxyABI,
             functionName: 'getDepositAmount',
@@ -185,7 +186,7 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
           },
           {
             onSuccess: async (txHash) => {
-              console.log(txHash)
+              //
               const provider = getWeb3Provider()
               await provider.waitForTransaction(txHash)
               setLoadingWaitingApproval(false)
@@ -208,7 +209,7 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
           },
           {
             onSuccess: async (txHash) => {
-              console.log(txHash)
+              //
               const provider = getWeb3Provider()
               await provider.waitForTransaction(txHash)
               refetchToken1Data()
@@ -251,7 +252,14 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
           })
           const provider = getWeb3Provider()
           await provider.waitForTransaction(txHash)
-
+          await postEvent({
+            tx: txHash,
+            user: account as `0x${string}`,
+            event_type: 'ADD_LIQUIDITY',
+            value:
+              toBN(token0TypedValue).multipliedBy(token0Price).toNumber() +
+              toBN(token1TypedValue).multipliedBy(token1Price).toNumber(),
+          })
           refetchToken0Data()
           refetchToken1Data()
 

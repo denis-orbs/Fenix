@@ -28,6 +28,7 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import Loader from '@/src/components/UI/Icons/Loader'
+import { useAccount } from 'wagmi'
 import { ethers } from 'ethers'
 const BUTTON_TEXT_WITHDRAW = 'Withdraw'
 
@@ -54,6 +55,7 @@ const WithdrawAmountsICHI = ({
 
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
+  const { chainId } = useAccount()
 
   const vaultAddress =
     allIchiVaultsByTokenPair?.find((vault) => {
@@ -72,7 +74,7 @@ const WithdrawAmountsICHI = ({
     if (!account) return 'Connect Wallet'
     if (!vaultAddress) return 'Vault not available'
     if (!amoutToWithdraw || amoutToWithdraw == '0') return 'Enter an amount'
-    if (amoutToWithdraw > totalUserShares) return 'Insufficient balance'
+    if (parseFloat(amoutToWithdraw) > parseFloat(totalUserShares)) return 'Insufficient balance'
     return BUTTON_TEXT_WITHDRAW
   }
   const token0 = useToken0()
@@ -116,15 +118,19 @@ const WithdrawAmountsICHI = ({
           return v
         }
       })?.tokenB
-      const tokenList = await fetchTokens()
-      const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
-      const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
-      setTotalShareDollar(Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice))
+      if (chainId) {
+        const tokenList = await fetchTokens(chainId)
+        const tokenAprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenAid?.toLowerCase())?.priceUSD
+        const tokenBprice = tokenList.find((t) => t?.tokenAddress?.toLowerCase() === tokenBid?.toLowerCase())?.priceUSD
+        setTotalShareDollar(
+          Number(amounts.amount0) * Number(tokenAprice) + Number(amounts.amount1) * Number(tokenBprice)
+        )
+      }
 
       setTotalUserShares(data)
     }
     getTotalUserShares()
-  }, [account, vaultAddress, web3Provider])
+  }, [account, vaultAddress, web3Provider, chainId])
   useEffect(() => {
     if (allIchiVaultsByTokenPair && allIchiVaultsByTokenPair?.length > 0) {
       const firstToken = allIchiVaultsByTokenPair[0]
@@ -156,14 +162,14 @@ const WithdrawAmountsICHI = ({
         txHash: '',
         notificationDuration: NotificationDuration.DURATION_5000,
       })
-      txnDetails.wait()
+      const tx = await txnDetails.wait()
       // toast.success('Withdrawal Successful')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
         message: `Withdrawal Successful.`,
         notificationType: NotificationType.SUCCESS,
-        txHash: '',
+        txHash: tx.transactionHash,
         notificationDuration: NotificationDuration.DURATION_5000,
       })
       setAmountToWithdraw('')
@@ -192,9 +198,9 @@ const WithdrawAmountsICHI = ({
   }
 
   const handleHalf = () => {
-    // console.log(!totalUserShares)
-    // console.log()
-    // console.log(totalUserShares)
+    //
+    //
+    //
     if (btnDisabled) {
       setAmountToWithdraw('')
     } else {
@@ -213,7 +219,7 @@ const WithdrawAmountsICHI = ({
       if (!totalUserShares || totalUserShares === '') {
         setAmountToWithdraw('')
       } else {
-        setAmountToWithdraw(toBN(totalUserShares).toString())
+        setAmountToWithdraw(toBN(totalUserShares.toString()).toString())
       }
     }
   }
@@ -340,10 +346,10 @@ const WithdrawAmountsICHI = ({
                           {!rignsAprLoading && vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
+                              {(vault?.apr  as any[1])[0]?.apr === null || (vault?.apr  as any[1])[0]?.apr < 0
                                 ? '0'
                                 : formatAmount(
-                                    toBN(vault?.apr[1]?.apr?.toFixed(0))
+                                    toBN((vault?.apr  as any[1])[0]?.apr?.toFixed(0))
                                       .plus(ringsApr || 0)
                                       .toString(),
                                     2

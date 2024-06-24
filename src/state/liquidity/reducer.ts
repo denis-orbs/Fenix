@@ -1,6 +1,6 @@
 import { ApiState } from '@/src/library/types/connection'
 import { createReducer } from '@reduxjs/toolkit'
-import { getAllPools, getConcentratedPools, getGammaVaults, getLiquidityV2Pairs, getRingsCampaigns } from './thunks'
+import { getAllPools, getGammaVaults, getLiquidityV2Pairs, getRingsCampaigns } from './thunks'
 import { LiquidityState, V2PairId, v2FactoryData, v3FactoryData } from './types'
 import { ClmProvider } from '@/src/library/types/liquidity'
 import {
@@ -14,7 +14,7 @@ import { getLiquidityTableElements } from './thunks'
 import { V2PairInfo, V3PairInfo } from './types'
 import { GET_POSITIONV3_USER, GET_V2_PAIRS, GET_V3_ALGEBRA_DATA } from '@/src/library/apollo/queries/LIQUIDITY'
 import { algebra_client } from '@/src/library/apollo/client'
-import { blastClient } from '@/src/library/apollo/client/protocolCoreClient'
+import { blastClient, getIchiClient } from '@/src/library/apollo/client/protocolCoreClient'
 import { Address } from 'viem'
 import { positions } from '@/src/components/Dashboard/MyStrategies/Strategy'
 import {
@@ -24,6 +24,12 @@ import {
   NATIVE_PRICE,
 } from '@/src/library/apollo/queries/global'
 import { POOL_DAY_DATA } from '@/src/library/apollo/queries/pools'
+import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ALGEBRA_SUBGRAPH } from '@/src/library/constants/addresses'
+import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
+import moment from 'moment'
+import { IchiVault, SupportedChainId, SupportedDex } from '@ichidao/ichi-vaults-sdk/dist/src/types'
+import { GET_ICHI_VAULTS_BY_IDS } from '@/src/library/apollo/queries/ichi'
 
 export const initialState: LiquidityState = {
   v2Pairs: {
@@ -32,10 +38,7 @@ export const initialState: LiquidityState = {
     data: [],
     tableData: [],
   },
-  concentratedPools: {
-    state: ApiState.LOADING,
-    data: [],
-  },
+
   pools: {
     state: ApiState.LOADING,
     data: [],
@@ -52,20 +55,20 @@ export const initialState: LiquidityState = {
   },
   ringsCampaigns: {
     state: ApiState.LOADING,
-    data: [],
+    data: null,
   },
 }
 
 export default createReducer(initialState, (builder) => {
   builder
     .addCase(updateToken0, (state, action) => {
-      state.token0 = action.payload
+      state.token0 = action.payload as `0x${string}`
     })
     .addCase(updateToken0TypedValue, (state, action) => {
       state.token0TypedValue = action.payload
     })
     .addCase(updateToken1, (state, action) => {
-      state.token1 = action.payload
+      state.token1 = action.payload as `0x${string}`
     })
     .addCase(updateToken1TypedValue, (state, action) => {
       state.token1TypedValue = action.payload
@@ -95,16 +98,7 @@ export default createReducer(initialState, (builder) => {
     .addCase(getLiquidityV2Pairs.rejected, (state) => {
       state.v2Pairs.state = ApiState.ERROR
     })
-    .addCase(getConcentratedPools.pending, (state) => {
-      state.concentratedPools.state = ApiState.LOADING
-    })
-    .addCase(getConcentratedPools.fulfilled, (state, action) => {
-      state.concentratedPools.state = ApiState.SUCCESS
-      state.concentratedPools.data = action.payload
-    })
-    .addCase(getConcentratedPools.rejected, (state) => {
-      state.concentratedPools.state = ApiState.ERROR
-    })
+
     .addCase(getLiquidityTableElements.pending, (state) => {
       state.v2Pairs.tablestate = ApiState.LOADING
     })
@@ -126,19 +120,23 @@ export default createReducer(initialState, (builder) => {
       state.gammaVaults = { data: [], state: ApiState.ERROR }
     })
     .addCase(getRingsCampaigns.pending, (state) => {
-      state.ringsCampaigns = { data: [], state: ApiState.LOADING }
+      state.ringsCampaigns = { data: null, state: ApiState.LOADING }
     })
     .addCase(getRingsCampaigns.fulfilled, (state, action) => {
       state.ringsCampaigns = { data: action.payload, state: ApiState.SUCCESS }
     })
     .addCase(getRingsCampaigns.rejected, (state) => {
-      state.ringsCampaigns = { data: [], state: ApiState.ERROR }
+      state.ringsCampaigns = { data: null, state: ApiState.ERROR }
     })
 })
 
 // Function to fetch v3 algebra pool data
-export const fetchPoolData = async () => {
+export const fetchPoolData = async (chainId: number) => {
   try {
+    const algebra_client = new ApolloClient({
+      uri: chainId ? ALGEBRA_SUBGRAPH[chainId] : ALGEBRA_SUBGRAPH[FALLBACK_CHAIN_ID],
+      cache: new InMemoryCache(),
+    })
     const { data } = await algebra_client.query({
       query: GET_V3_ALGEBRA_DATA,
     })
@@ -214,9 +212,9 @@ export const fetchv2PairId = async (token0Id: any, token1Id: any, isStable: Bool
       query: GET_V2_PAIR_ID,
       variables: { token0Id, token1Id, isStable }, // Pass the user variable as owner
     })
-    // console.log(data)
+    //
     // // Data is available in `data.pools`
-    // console.log(data.pairs)
+    //
     return data.pairs as V2PairId[]
   } catch (error) {
     console.error('Error fetching pool data:', error)
@@ -231,7 +229,7 @@ export const fetchNativePrice = async () => {
       fetchPolicy: 'cache-first',
     })
     // Data is available in `data.positions`
-    // console.log(data.bundles[0].maticPriceUSD, 'price')
+    //
     return data.bundles[0].maticPriceUSD as string
   } catch (error) {
     console.error('Error fetching positions:', error)
@@ -243,12 +241,25 @@ export const fetchV3PoolDayData = async () => {
   try {
     const { data } = await algebra_client.query({
       query: POOL_DAY_DATA,
-      // variables: { date: selectedDateTimestamp / 1000 }, // Pass the user variable as owner
+      variables: { from: Math.round(+moment().add(-1, 'week') / 1000) },
     })
     // Data is available in `data.positions`
     return data
   } catch (error) {
     console.error('Error fetching positions:', error)
+    return []
+  }
+}
+
+export async function getIchiVaultsDataByIds(chainName: string, dex: SupportedDex, ids: string[]): Promise<IchiVault[]> {
+  try {
+    const { data } = await getIchiClient(chainName, dex).query({
+      query: GET_ICHI_VAULTS_BY_IDS,
+      variables: { ids },
+    })
+    return data.ichiVaults
+  } catch (error) {
+    console.error('Error fetching vaults data:', error)
     return []
   }
 }

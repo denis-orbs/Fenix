@@ -39,6 +39,7 @@ interface modifiedIchiVault extends IchiVault {
 import { BasicPool } from '@/src/state/liquidity/types'
 import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import Loader from '@/src/components/UI/Icons/Loader'
+import { postEvent } from '@/src/library/utils/events'
 const DepositAmountsICHI = ({
   token,
   allIchiVaultsByTokenPair,
@@ -57,6 +58,7 @@ const DepositAmountsICHI = ({
   const web3Provider = getWeb3Provider()
   const dex = SupportedDex.Fenix
   const { openConnectModal } = useConnectModal()
+  const tokenPrice = tokenList?.find((t) => t?.address?.toLowerCase() === selected.toLowerCase())?.price || 0
 
   const handlerConnectWallet = () => {
     openConnectModal && openConnectModal()
@@ -141,7 +143,7 @@ const DepositAmountsICHI = ({
     if (isToken0ApprovalRequired) {
       setWaitingApproval(true)
       try {
-        // console.log('vault', vaultAddress)
+        //
         const txApproveDepositDetails = await approveDepositToken(
           account,
           vaultAddress.tokenA.toLowerCase() === selected.toLowerCase() && vaultAddress.allowTokenA ? 0 : 1,
@@ -156,7 +158,7 @@ const DepositAmountsICHI = ({
 
         return
       } catch (error) {
-        // console.log(error)
+        //
         setWaitingApproval(false)
         setLoading(false)
 
@@ -192,23 +194,28 @@ const DepositAmountsICHI = ({
         dex,
         1
       )
-      await txDepositDetails.wait()
+      const tx = await txDepositDetails.wait()
       // toast.success('Deposited successfully')
       addNotification({
         id: crypto.randomUUID(),
         createTime: new Date().toISOString(),
         message: `Deposited successfully.`,
         notificationType: NotificationType.SUCCESS,
-        txHash: '',
+        txHash: tx.transactionHash,
         notificationDuration: NotificationDuration.DURATION_5000,
       })
       setLoading(false)
+      await postEvent({
+        tx: tx.transactionHash,
+        user: account,
+        event_type: 'ADD_LIQUIDITY',
+        value: tokenPrice * Number(token0TypedValue),
+      })
     } catch (error) {
-      // console.log('gg', error.reason)
-      // console.log('gg', error)
+      //
+      //
       if (error instanceof Error && 'code' in error) {
         if (error.code == 'ACTION_REJECTED') {
-          console.log(error)
           // toast.error('Action rejected')
           // toast.error(error.message.split('(')[0].trim().toUpperCase())
           addNotification({
@@ -233,7 +240,7 @@ const DepositAmountsICHI = ({
           setLoading(false)
         }
       } else {
-        // console.log(error.reason)
+        //
         // toast.error('Transaction failed')
         // toast.error(error.message.split('(')[0].trim().toUpperCase())
         // FIXME: STARK
@@ -337,13 +344,16 @@ const DepositAmountsICHI = ({
       setToken0TypedValue('')
     } else {
       if (token0Balance) {
-        return setToken0TypedValue(formatUnits(token0Balance, token0Decimals))
+        return setToken0TypedValue(
+          toBN(token0Balance.toString())
+            .div(10 ** (token0Decimals || 18))
+            .toString()
+        )
       } else {
         setToken0TypedValue('')
       }
     }
   }
-
   // const secondTokenSymbol =
   //   tokenList.find((token) => {
   //     return token.address?.toLowerCase() === secondToken.toLowerCase()
@@ -471,14 +481,14 @@ const DepositAmountsICHI = ({
                           {!rignsAprLoading && vault?.apr && (
                             <span className="text-sm">
                               APR :{' '}
-                              {vault?.apr[1]?.apr === null || vault?.apr[1]?.apr < 0
+                              {(vault?.apr as any[1])[0]?.apr === null || (vault?.apr as any[1])[0]?.apr < 0
                                 ? '0'
                                 : formatAmount(
-                                    toBN(vault?.apr[1]?.apr?.toFixed(0))
+                                    toBN((vault?.apr as any[1])[0]?.apr?.toFixed(0))
                                       .plus(ringsApr || 0)
                                       .toString(),
                                     2
-                                  )}
+                                  ).replace('NaN', '0')}
                               %
                             </span>
                           )}
