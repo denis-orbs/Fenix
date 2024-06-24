@@ -98,14 +98,30 @@ export async function getPositionFees(pool: Pool, positionId: number, position: 
 
   const owner = await algebraPositionManager.read.ownerOf([BigInt(positionId)])
 
+  console.log(owner, 'ownerowner')
   const {
     result: [fees0, fees1],
-  }: { result: [bigint, bigint] } = await publicClient.simulateContract({
-    abi: CL_MANAGER_ABI,
-    address: contractAddressList.cl_manager as Address,
-    functionName: 'collect',
-    args: [collectParams],
-  })
+  }: { result: [bigint, bigint] } = await algebraPositionManager.simulate.collect(
+    [
+      {
+        tokenId: BigInt(positionId),
+        recipient: owner,
+        amount0Max: MAX_UINT128,
+        amount1Max: MAX_UINT128,
+      },
+    ],
+    {
+      account: owner as Address,
+    }
+  )
+  // const {
+  //   result: [fees0, fees1],
+  // }: { result: [bigint, bigint] } = await publicClient.simulateContract({
+  //   abi: CL_MANAGER_ABI,
+  //   address: contractAddressList.cl_manager as Address,
+  //   functionName: 'collect',
+  //   args: [collectParams],
+  // })
   // const {
   //   result: [fees0, fees1],
   // }: { result: [bigint, bigint] } = await algebraPositionManager.simulate.collect([

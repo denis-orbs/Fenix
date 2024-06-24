@@ -356,15 +356,15 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
               { text: 'Your Positions', className: 'text-left w-[20%] text-xs', sortable: false },
               // { text: 'Point Stack', className: 'text-left w-[10%] text-xs', sortable: false },
               // { text: 'Status', className: 'text-left w-[15%]', sortable: false },
-              { text: 'Range', className: 'text-left w-[20%] text-xs', sortable: false },
+              { text: 'Range', className: 'text-left w-[30%] text-xs', sortable: false },
               { text: 'APR', className: 'text-right w-[20%] text-xs', sortable: false },
               // { text: 'TVL', className: 'text-right w-[8%]', sortable: false },
               { text: 'Position TVL', className: 'text-right w-[10%] text-xs', sortable: false },
-              {
-                text: 'Claim Fees',
-                className: 'text-right w-[10%] text-xs whitespace-nowrap',
-                sortable: false,
-              },
+              // {
+              //   text: 'Claim Fees',
+              //   className: 'text-right w-[10%] text-xs whitespace-nowrap',
+              //   sortable: false,
+              // },
               { text: 'Action', className: 'text-right w-[20%] text-xs ', sortable: false },
             ]}
             setSort={() => {}}
@@ -377,7 +377,6 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
             <>
               <TableBody className="whitespace-nowrap">
                 {pagination.map((position: positions) => {
-                  console.log('position', position, position.token0.symbol)
                   // eslint-disable-next-line react-hooks/rules-of-hooks
                   //const [isInRange, setIsInRange] = useState<boolean>(false)
                   const fenixRingApr =
@@ -512,7 +511,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                             )}
                           </div>
                         </TableCell>
-                        <TableCell className="w-[20%]">
+                        <TableCell className="w-[30%]">
                           {/* Range */}
 
                           {position.liquidity === 'ichi' ? (
@@ -644,10 +643,10 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                             </span>
                           </div>
                         </TableCell>
-                        <TableCell className="w-[10%] flex justify-end">
-                          {/* Emissions */}
+                        {/* <TableCell className="w-[10%] flex justify-end">
+                      
                           <div className="flex flex-col justify-center items-end ">
-                            {/* <EmissionsTotal data={position} /> */}
+                            
 
                             {position.liquidity !== 'ichi' && position.liquidity !== 'gamma' ? (
                               <>
@@ -706,7 +705,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                               </>
                             )}
                           </div>
-                        </TableCell>
+                        </TableCell>*/}
                         <TableCell className="w-[20%] flex justify-end">
                           {/* Action */}
                           <div className="flex items-center gap-2">

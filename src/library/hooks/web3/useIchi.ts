@@ -265,9 +265,8 @@ export const useIchiVaultsData = (vaultAddress: string) => {
 
   useEffect(() => {
     const fetchVault = async () => {
-      console.log('!!!req3', vaultAddress)
       const vaultInfo = await getIchiVaultInfo(chain, dex, vaultAddress)
-      console.log('!!!res3', vaultInfo)
+
       // FIXME: STARK
       if (vaultInfo) setvaultData(vaultInfo)
     }

@@ -135,29 +135,29 @@ const MyPositions = () => {
         return getPositionAPR(position.liquidity, position, position.pool, position.pool.poolDayData, nativePrice)
       })
     )
-    const fees = await Promise.all(
-      positions.map(async (position: positions, index: number) => {
-        const pool: Pool = {
-          ...position.pool,
-          sqrtRatioX96: '',
-          tickCurrent: '',
-          tickDataProvider: '',
-          _tickSpacing: '',
-          token0: {
-            ...position.pool.token0,
-            address: position.pool.token0.id, // Add address here
-            chainId: FALLBACK_CHAIN_ID, // Add chainId here
-          },
-          token1: {
-            ...position.pool.token1,
-            address: position.pool.token1.id, // Add address here
-            chainId: FALLBACK_CHAIN_ID, // Add chainId here
-          },
-          // Add the missing properties here
-        } as unknown as Pool
-        return getPositionFees(pool, Number(position.id), position)
-      })
-    )
+    // const fees = await Promise.all(
+    //   positions.map(async (position: positions, index: number) => {
+    //     const pool: Pool = {
+    //       ...position.pool,
+    //       sqrtRatioX96: '',
+    //       tickCurrent: '',
+    //       tickDataProvider: '',
+    //       _tickSpacing: '',
+    //       token0: {
+    //         ...position.pool.token0,
+    //         address: position.pool.token0.id, // Add address here
+    //         chainId: FALLBACK_CHAIN_ID, // Add chainId here
+    //       },
+    //       token1: {
+    //         ...position.pool.token1,
+    //         address: position.pool.token1.id, // Add address here
+    //         chainId: FALLBACK_CHAIN_ID, // Add chainId here
+    //       },
+    //       // Add the missing properties here
+    //     } as unknown as Pool
+    //     return getPositionFees(pool, Number(position.id), position)
+    //   })
+    //)
     const final = positions.map((position: positions, index: number) => {
       //
       return {
@@ -165,7 +165,7 @@ const MyPositions = () => {
         depositedToken0: Number(amounts[index][0]) / 10 ** Number(position.token0.decimals), // Assigning amount0 to depositedToken0
         depositedToken1: Number(amounts[index][1]) / 10 ** Number(position.token1.decimals), // Assigning amount1 to depositedToken1
         apr: isNaN(aprs[index]) ? '0.00%' : aprs[index].toFixed(2) + '%',
-        fees: fees[index],
+        // fees: fees[index],
       }
     })
     console.log('setpositionfinal', final)
@@ -185,7 +185,6 @@ const MyPositions = () => {
   const { data: ringsCampaign, loading: isLoadingRingsCampaign } = useRingsCampaigns()
 
   const newPositions = [...position, ...ichiPosition]
-  console.log('combinatedArray', newPositions)
   return (
     <>
       {newPositions.length !== 0 && loading === false && isLoadingRingsCampaign === false && address ? (
