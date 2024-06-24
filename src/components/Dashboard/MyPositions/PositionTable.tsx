@@ -724,7 +724,6 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
                                     `liquidity/deposit?provider=2&type=CONCENTRATED_AUTOMATIC&token0=${position?.token0?.id}&token1=${position?.token1?.id}`
                                   )
                                 } else {
-                                  console.log('12345', '?')
                                   dispatch(setApr(position?.apr))
                                   router.push(`/liquidity/manage?id=${position?.id}`)
                                   router.refresh()
