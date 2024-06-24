@@ -31,7 +31,7 @@ import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
-import TokenListItem from '@/src/library/types/token-list-item';
+import TokenListItem from '@/src/library/types/token-list-item'
 
 interface MyPositionssProps {
   activePagination?: boolean
@@ -121,7 +121,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     const maxPrice = parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     const minPriceIsZero = minPrice < 1e-5
     const maxPriceIsInfinity = maxPrice > 1e12
-    
+
     return (
       <>
         {isMobile ? (
@@ -215,12 +215,10 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     if (isPoolPriceDataLoading) {
       return <Loader />
     }
-    
 
     const minPriceIsZero = minPrice < 1e-5
     const maxPriceIsInfinity = maxPrice > 1e12
-    
-    
+
     return (
       <div className="flex items-center gap-2 max-2xl:gap-1 justify-start">
         <div
@@ -238,7 +236,9 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal  -mt-[15px]">Min Price</div>
           <span
-            className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300
+            className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary 
+            flex items-center max-h-[28px] min-h-[28px] 
+            cursor-default rounded-lg bg-opacity-40 border-shark-300
          
           "
           >
@@ -247,8 +247,15 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal  -mt-[15px]">Max Price</div>
-          <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
+          <span
+            className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary 
+          flex items-center cursor-default rounded-lg bg-opacity-40 border-shark-300
+          max-h-[28px] min-h-[28px] 
+          "
+          >
+            <span className={`${maxPriceIsInfinity && 'mt-[2px]'}`}>
+              {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
+            </span>
           </span>
         </div>
       </div>
