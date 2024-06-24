@@ -183,7 +183,7 @@ export const useIchiPositions = () => {
               withdrawnToken0: '',
               withdrawnToken1: '',
               pool: {
-                id: poolId,
+                id: poolId ?? '',
                 fee: 'string',
                 sqrtPrice: 'string',
                 liquidity: 'string',
