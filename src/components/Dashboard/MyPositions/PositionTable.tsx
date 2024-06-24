@@ -253,13 +253,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
          
           "
           >
-            {formatAmount(swapPrices ? 1/maxPrice : minPrice, 6)}
+            {(minPrice < 1e-18 || 1/maxPrice < 1e-18) ? "0" : formatAmount(swapPrices ? 1/maxPrice : minPrice, 6)}
           </span>
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal  -mt-[15px]">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {formatAmount(swapPrices ? 1/minPrice : maxPrice, 6)}
+            {(minPrice < 1e-18 || 1/maxPrice < 1e-18) && (maxPrice > 33e37 || 1/minPrice > 33e37) ? "Infinity" : formatAmount(swapPrices ? 1/minPrice : maxPrice, 6)}
           </span>
         </div>
       </div>

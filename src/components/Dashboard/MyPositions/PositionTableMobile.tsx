@@ -244,13 +244,13 @@ const PositionTableMobile = ({
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Min Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {swapPrices ? 1/maxPrice : minPrice}${/* {formatCurrency(minPrice, 2)}$ */}
+            {(minPrice < 1e-18 || 1/maxPrice) ? "0" : swapPrices ? 1/maxPrice : minPrice}${/* {formatCurrency(minPrice, 2)}$ */}
           </span>
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {swapPrices ? 1/minPrice : maxPrice}${/* {formatCurrency(maxPrice, 2)}$ */}
+            {(minPrice < 1e-18 || 1/maxPrice < 1e-18) && (maxPrice > 33e37 || 1/minPrice > 33e37) ? "Infinity" : swapPrices ? 1/minPrice : maxPrice}${/* {formatCurrency(maxPrice, 2)}$ */}
           </span>
         </div>
       </div>
