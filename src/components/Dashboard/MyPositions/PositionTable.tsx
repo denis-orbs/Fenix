@@ -121,6 +121,7 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     const maxPrice = parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     const minPriceIsZero = minPrice < 1e-5
     const maxPriceIsInfinity = maxPrice > 1e12
+    
     return (
       <>
         {isMobile ? (
@@ -214,6 +215,12 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
     if (isPoolPriceDataLoading) {
       return <Loader />
     }
+    
+
+    const minPriceIsZero = minPrice < 1e-5
+    const maxPriceIsInfinity = maxPrice > 1e12
+    
+    
     return (
       <div className="flex items-center gap-2 max-2xl:gap-1 justify-start">
         <div
@@ -235,13 +242,13 @@ const PositionTable = ({ activePagination = true, data, tokens, ringsCampaign, s
          
           "
           >
-            {formatAmount(minPrice, 6)}
+            {minPriceIsZero ? 0 : formatAmount(minPrice, 6)}
           </span>
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal  -mt-[15px]">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {formatAmount(maxPrice, 6)}
+            {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
           </span>
         </div>
       </div>

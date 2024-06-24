@@ -208,6 +208,10 @@ const PositionTableMobile = ({
     if (isPoolPriceDataLoading) {
       return <Loader />
     }
+
+        const minPriceIsZero = minPrice < 1e-5
+        const maxPriceIsInfinity = maxPrice > 1e12
+    
     return (
       <div className="flex items-center gap-2 justify-start">
         <div
@@ -225,13 +229,13 @@ const PositionTableMobile = ({
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Min Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {minPrice}${/* {formatCurrency(minPrice, 2)}$ */}
+            {minPriceIsZero ? 0 : formatAmount(minPrice, 6)}${/* {formatCurrency(minPrice, 2)}$ */}
           </span>
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {maxPrice}${/* {formatCurrency(maxPrice, 2)}$ */}
+            {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}${/* {formatCurrency(maxPrice, 2)}$ */}
           </span>
         </div>
       </div>
