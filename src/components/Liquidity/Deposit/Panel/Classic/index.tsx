@@ -156,7 +156,7 @@ const Classic = ({
     } else {
       setButtonText('Create Position')
     }
-  }, [defaultPairs])
+  }, [defaultPairs, firstValue, secondValue, firstToken, secondToken, account.address, isConnected])
 
 
   useEffect(() => {
