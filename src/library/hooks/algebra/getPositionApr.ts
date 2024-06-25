@@ -46,69 +46,68 @@ export async function getPositionAPR(
   }
 }
 
-export async function getPositionFees(pool: Pool, positionId: number, position: any) {
-  const publicClient = getPublicClient(wagmiConfig)
-  const MAX_UINT128 = 340282366920938463463374607431768211455n
-  const tenderlyInstance = new Tenderly({
-    accountName: 'sanchitdawareth',
-    projectName: 'project',
-    accessKey: '134gEYbYnikLK4ESkVNSJdY9VYMKTZZU',
-    network: Network.BLAST, // Replace with the appropriate network
-  })
-  const collectParams = {
-    tokenId: BigInt(positionId),
-    recipient: position.owner,
-    amount0Max: MAX_UINT128,
-    amount1Max: MAX_UINT128,
-  }
+// export async function getPositionFees(pool: Pool, positionId: number, position: any) {
+//   const publicClient = getPublicClient(wagmiConfig)
+//   const MAX_UINT128 = 340282366920938463463374607431768211455n
+//   const tenderlyInstance = new Tenderly({
+//     accountName: 'sanchitdawareth',
+//     projectName: 'project',
+//     accessKey: '134gEYbYnikLK4ESkVNSJdY9VYMKTZZU',
+//     network: Network.BLAST, // Replace with the appropriate network
+//   })
+//   const collectParams = {
+//     tokenId: BigInt(positionId),
+//     recipient: position.owner,
+//     amount0Max: MAX_UINT128,
+//     amount1Max: MAX_UINT128,
+//   }
 
-  const algebraPositionManager = await getContract({
-    abi: CL_MANAGER_ABI,
-    address: contractAddressList.cl_manager as `0x${string}`,
-    client: publicClient,
-  })
+//   const algebraPositionManager = await getContract({
+//     abi: CL_MANAGER_ABI,
+//     address: contractAddressList.cl_manager as `0x${string}`,
+//     client: publicClient,
+//   })
 
-  const owner = await algebraPositionManager.read.ownerOf([BigInt(positionId)])
+//   const owner = await algebraPositionManager.read.ownerOf([BigInt(positionId)])
 
-  console.log(owner, 'ownerowner')
-  const {
-    result: [fees0, fees1],
-  }: { result: [bigint, bigint] } = await algebraPositionManager.simulate.collect(
-    [
-      {
-        tokenId: BigInt(positionId),
-        recipient: owner,
-        amount0Max: MAX_UINT128,
-        amount1Max: MAX_UINT128,
-      },
-    ],
-    {
-      account: owner as Address,
-    }
-  )
-  // const {
-  //   result: [fees0, fees1],
-  // }: { result: [bigint, bigint] } = await publicClient.simulateContract({
-  //   abi: CL_MANAGER_ABI,
-  //   address: contractAddressList.cl_manager as Address,
-  //   functionName: 'collect',
-  //   args: [collectParams],
-  // })
-  // const {
-  //   result: [fees0, fees1],
-  // }: { result: [bigint, bigint] } = await algebraPositionManager.simulate.collect([
-  //   [
-  //     {
-  //       tokenId: BigInt(positionId),
-  //       recipient: owner,
-  //       amount0Max: MAX_UINT128,
-  //       amount1Max: MAX_UINT128,
-  //     },
-  //   ],
-  //   {
-  //     account: owner,
-  //   },
-  // ])
-  console.log(fees0, fees1)
-  return [fees0.toString(), fees1.toString()]
-}
+//   const {
+//     result: [fees0, fees1],
+//   }: { result: [bigint, bigint] } = await algebraPositionManager.simulate.collect(
+//     [
+//       {
+//         tokenId: BigInt(positionId),
+//         recipient: owner,
+//         amount0Max: MAX_UINT128,
+//         amount1Max: MAX_UINT128,
+//       },
+//     ],
+//     {
+//       account: owner as Address,
+//     }
+//   )
+//   // const {
+//   //   result: [fees0, fees1],
+//   // }: { result: [bigint, bigint] } = await publicClient.simulateContract({
+//   //   abi: CL_MANAGER_ABI,
+//   //   address: contractAddressList.cl_manager as Address,
+//   //   functionName: 'collect',
+//   //   args: [collectParams],
+//   // })
+//   // const {
+//   //   result: [fees0, fees1],
+//   // }: { result: [bigint, bigint] } = await algebraPositionManager.simulate.collect([
+//   //   [
+//   //     {
+//   //       tokenId: BigInt(positionId),
+//   //       recipient: owner,
+//   //       amount0Max: MAX_UINT128,
+//   //       amount1Max: MAX_UINT128,
+//   //     },
+//   //   ],
+//   //   {
+//   //     account: owner,
+//   //   },
+//   // ])
+//   console.log(fees0, fees1)
+//   return [fees0.toString(), fees1.toString()]
+// }
