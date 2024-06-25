@@ -111,7 +111,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                 <div
                   key={index}
                   onClick={() => handlerSelectToken(token)}
-                  className="flex  items-center w-full gap-1 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-2 xl:w-auto"
+                  className="flex items-center w-full gap-1 px-2 py-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40 xl:py-2 xl:w-auto"
                 >
                   <Image
                     src={`/static/images/tokens/${token.symbol}.svg`}
@@ -133,7 +133,7 @@ const SelectToken = ({ setOpenModal, openModal, setToken, commonList, tokenBalan
                 <div
                   key={index}
                   onClick={() => handlerSelectToken(token)}
-                  className="flex  items-center justify-between py-3 px-4 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
+                  className="flex items-center justify-between !py-1 !px-2 rounded-lg cursor-pointer bg-shark-400 bg-opacity-40"
                 >
                   <div className="flex items-center gap-2">
                     <Image
