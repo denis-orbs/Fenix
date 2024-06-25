@@ -262,6 +262,9 @@ const Panel = () => {
         to: contractAddressList.open_ocean,
         gasLimit: estimatedGas.toBigInt(),
         data: swapTransactionData,
+        ...(tokenSell?.address?.toLowerCase() === NATIVE_ETH.toLowerCase()
+          ? { value: parseUnits(swapValue, tokenSell.decimals) }
+          : {}),
       })
 
       setForValue('')
