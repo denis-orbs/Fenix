@@ -7,6 +7,7 @@ type PointStackType =
   | 'eigen-layer'
   | 'turtle-club'
   | 'fxs'
+  | 'ether-fi'
 export interface Campaign {
   pairAddress: string
   multiplier: string
@@ -64,7 +65,7 @@ export const totalCampaigns: Campaign[] = [
   {
     multiplier: '🔥 Rings Boost',
     pairAddress: '0x9304ba542df9bc61dd1c97c073ed35f81cab6149',
-    pointStack: ['fenix-ring', 'blast', 'blast-gold'],
+    pointStack: ['fenix-ring', 'blast', 'ether-fi', 'eigen-layer','blast-gold'],
     blastGoldAmount: '5750',
   },
   {
