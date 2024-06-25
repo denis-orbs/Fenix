@@ -79,7 +79,6 @@ const ApproveButtons = ({
       disabled={disabled}
       className="w-full mx-auto !text-xs !h-[49px]"
       variant="tertiary"
-      disabled={disabled}
       onClick={() => {
         mainFn()
       }}

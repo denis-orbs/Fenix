@@ -684,11 +684,12 @@ const Manage = ({}: {}) => {
             ? false
             : Number(secondValue) * 10 ** secondToken.decimals >= Number(secondAllowance)
         }
-        disabled={optionActive === 'WITHDRAW' && !!error}
         token0={firstToken}
         token1={secondToken}
         handleApprove={handleApprove}
-        disabled={!(+firstValue && !isNaN(+firstValue) && +secondValue && !isNaN(+secondValue))}
+        disabled={
+          (optionActive === 'WITHDRAW' && !!error) || !(+firstValue && !isNaN(+firstValue) && +secondValue && !isNaN(+secondValue))
+        }
         mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity}
         mainText={optionActive === 'WITHDRAW' ? error || 'Withdraw Liquidity' : 'Add Liquidity'}
         isLoading={isLoading}
