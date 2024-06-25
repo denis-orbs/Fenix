@@ -46,6 +46,8 @@ import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { ethers } from 'ethers'
 import useDebounce from '@/src/library/hooks/useDebounce'
 import { postEvent } from '@/src/library/utils/events'
+import debounce from 'lodash/debounce'
+import formatNumberToView from '@/src/library/helper/format-number-to-view'
 
 enum ButtonState {
   POOL_NOT_AVAILABLE = 'Pool Not Available',
@@ -61,6 +63,7 @@ enum ButtonState {
 }
 const Panel = () => {
   const [isButtonPrimary, setisButtonPrimary] = useState(false)
+  const [inputSwapValue, setInputSwapValue] = useState<string>('')
   const [swapValue, setSwapValue] = useState<string>('')
   const [forValue, setForValue] = useState<string>('')
   const { setSlippageModal } = useStore()
@@ -76,6 +79,11 @@ const Panel = () => {
   const readNotification = useReadNotificationCallback()
   const [swapQuoteLoading, setSwapQuoteLoading] = useState<boolean>(false)
   const [swapTransactionData, setSwapTransactionData] = useState<string>()
+  const [swapTxEstimatedGas, setSwapTxEstimatedGas] = useState<number>(0)
+
+  const debounceSetSwapValue = useCallback(debounce((value: string) => {
+    setSwapValue(value)
+  }, 400), [])
 
   const handleTransactionSuccess = (
     hash: `0x${string}` | undefined,
@@ -243,10 +251,13 @@ const Panel = () => {
         )
         return
       }
-      const estimatedGas = await signer.estimateGas({
-        to: contractAddressList.open_ocean,
-        data: swapTransactionData,
-      })
+
+      const estimatedGas = swapTxEstimatedGas <= 0
+        ? (await signer.estimateGas({
+            to: contractAddressList.open_ocean,
+            data: swapTransactionData,
+          }))
+        : ethers.BigNumber.from(swapTxEstimatedGas)
       const txResponse = await signer.sendTransaction({
         to: contractAddressList.open_ocean,
         gasLimit: estimatedGas.toBigInt(),
@@ -268,6 +279,7 @@ const Panel = () => {
       //   handleTransactionSuccess(txResponse.hash as `0x${string}`, tokenSell, tokenGet)
       // }, 250)
     } catch (error) {
+      console.dir(error)
       setLoadingSwap(false)
 
       if (error instanceof Error && error.message) {
@@ -421,6 +433,16 @@ const Panel = () => {
       setForValue(swapValue)
     }
   }, [swapValue, nativeWETH_ETH])
+  useEffect(() => {
+    if (inputSwapValue !== swapValue) {
+      debounceSetSwapValue(inputSwapValue)
+    }
+  }, [inputSwapValue])
+  useEffect(() => {
+    if (inputSwapValue !== swapValue) {
+      setInputSwapValue(swapValue)
+    }
+  }, [swapValue])
 
   const normalizeToken = (token: string) =>
     token.toLowerCase() === NATIVE_ETH_LOWERCASE ? WETH_ADDRESS.toLowerCase() : token.toLowerCase()
@@ -494,16 +516,15 @@ const Panel = () => {
         const response = await fetch(apiUrl, { signal })
 
         const jsonResponse = await response.json()
-        // console.log('!!!res', jsonResponse)
         const swapData = jsonResponse.data
         setForValue(fromWei(swapData?.outAmount, tokenGet.decimals))
         setAmountOutMinimum(BigInt(swapData?.minOutAmount))
+        setSwapTxEstimatedGas(swapData?.estimatedGas || 0)
         setSwapTransactionData(swapData?.data)
         setTimeout(() => {
           setSwapQuoteLoading(false)
         }, 50)
       } catch (error) {
-        // console.log('!!!err', error)
       } finally {
         setTimeout(() => {
           setSwapQuoteLoading(false)
@@ -580,8 +601,8 @@ const Panel = () => {
                 <Swap
                   token={tokenSell}
                   setToken={updateTokenSell}
-                  value={swapValue}
-                  setValue={setSwapValue}
+                  value={inputSwapValue}
+                  setValue={setInputSwapValue}
                   setTokenSellUserBalance={setTokenSellUserBalance}
                 />
                 <Separator

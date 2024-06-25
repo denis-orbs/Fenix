@@ -51,10 +51,10 @@ const NavItem = ({ item }: NavItemProps) => {
         </div>
       </Link>
       {hasHover && !item.active && (
-        <div className="bg-shark-400 bg-opacity-90 
+        <div className="bg-shark-400 bg-opacity-90
         whitespace-nowrap
         cursor-not-allowed pointer-events-none rounded-lg
-      text-chilean-fire-600 text-xs flex items-center 
+      text-chilean-fire-600 text-xs flex items-center
         justify-center px-4 py-3 absolute top-0 bottom-1
         min-w-[102px]
         w-full">
