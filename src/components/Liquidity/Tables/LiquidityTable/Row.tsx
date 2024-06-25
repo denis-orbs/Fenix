@@ -5,14 +5,12 @@ import { Button, TableCell, TableRow } from '@/src/components/UI'
 import { BasicPool, GammaVault, PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRowNew'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { useWindowSize, useHover } from 'usehooks-ts'
 import { useIchiVault } from '@/src/library/hooks/web3/useIchi'
 import { useQuery } from '@tanstack/react-query'
-import { RingCampaignData } from '@/src/app/api/rings/campaign/route'
 import { SupportedDex, VaultApr, getLpApr } from '@ichidao/ichi-vaults-sdk'
 import { getWeb3Provider } from '@/src/library/utils/web3'
 import { ichiVaults } from '../../Deposit/Panel/Concentrated/Automatic/ichiVaults'
@@ -21,10 +19,11 @@ import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import { adjustTokenOrder } from '@/src/library/utils/tokens'
 import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
 import { useGammaVaults } from '@/src/state/liquidity/hooks'
+import TokenListItem from '@/src/library/types/token-list-item';
 
 interface RowDataProps {
   row: BasicPool
-  tokensData: Promise<Token[]> | null
+  tokensData: Promise<TokenListItem[]> | null
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string
@@ -59,7 +58,6 @@ const RowData = ({
   if (aprIchi && aprIchi?.length > 0 && aprIchi[0]) {
     if (aprIchi[0].hasOwnProperty('apr')) aprdisplayIchi = aprIchi[0]?.apr[1]?.apr?.toFixed(0)
   }
-  console.log('row >> ', row)
   const { data: ichiApr, isLoading: ichiAprLoading } = useQuery({
     queryKey: ['ichiApr', row?.id],
     staleTime: 1000 * 60 * 20,
@@ -84,8 +82,9 @@ const RowData = ({
 
   useEffect(() => {
     const campaign_ = totalCampaigns.find((add) => add.pairAddress.toLowerCase() === row.id.toLowerCase())
-    setCampaign({ ...campaign_ })
-    //
+    if (campaign_) {
+      setCampaign({ ...campaign_ })
+    }
   }, [row])
 
   function getAverageApr(...aprs: number[]): string {

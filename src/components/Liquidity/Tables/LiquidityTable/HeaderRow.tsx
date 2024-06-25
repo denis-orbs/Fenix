@@ -6,6 +6,7 @@ import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
 
 // helpers
 import { buildAprRingsMap } from '@/src/library/utils/build-apr-rings-map'
+import { totalCampaigns } from '@/src/library/utils/campaigns'
 
 // components
 import Row from './Row'
@@ -16,6 +17,7 @@ import TableHeadNew from '@/src/components/UI/Table/TableHeadNew'
 import { BasicPool } from '@/src/state/liquidity/types'
 import SortTypes from '@/src/library/types/common/sort-types.enum'
 import TableHeaderCell from '@/src/library/types/common/table-header-cell'
+import { Campaign } from '@/src/library/utils/campaigns'
 
 // personal models
 interface HeaderRowProps {
@@ -33,7 +35,7 @@ interface HeaderRowProps {
 const HeaderCellsRaw: TableHeaderCell[] = [
   { text: 'Pair', className: 'w-[20%]' },
   { text: 'Range', className: 'w-[12%] text-center' },
-  { text: 'Point Stack', className: 'w-[15%] text-right', rangeClassName: 'w-[8%] text-right' },
+  { text: 'Point Stack', className: 'w-[15%] text-right', rangeClassName: 'w-[8%] text-right', sortBy: 'totalCampaigns' },
   { text: 'TVL', className: 'w-[13%] text-right', sortBy: 'totalValueLockedUSD' },
   { text: 'APR', className: 'w-[13%] text-right', rangeClassName: 'w-[8%] text-right', sortBy: 'aprRings' },
   { text: 'Volume', className: 'w-[13%] text-right', sortBy: 'volumeUSD' },
@@ -82,6 +84,7 @@ const HeaderRow = ({
     const mappedData = poolsData.map((item) => ({
       ...item,
       aprRings: (+(aprRingsMap?.[item.id?.toLowerCase()] ?? 0) + +(isNaN(+item.apr!) ? 0 : item.apr ?? 0)).toString(),
+      totalCampaigns: Number(totalCampaigns.find((add:Campaign) => add.pairAddress.toLowerCase() === item.id.toLowerCase())?.pointStack?.length) || 0,
     }))
 
     if (!(sortBy && sort && mappedData[0][sortBy])) {

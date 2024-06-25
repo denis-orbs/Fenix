@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 
 import { Button } from '@/src/components/UI'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { useCloseBanner, useShowBanner } from '@/src/state/user/hooks'
 
 import Slider from 'react-slick'
@@ -12,6 +13,8 @@ import "slick-carousel/slick/slick-theme.css"
 
 
 const GoldRushBanner = () => {
+  const pathname = usePathname()
+  console.log('pathname :>> ', pathname);
   const settings = {
     dots: true,
     infinite: false,
@@ -20,16 +23,16 @@ const GoldRushBanner = () => {
     slidesToScroll: 1,
     arrows: false,
 
-    appendDots: dots => (
+    appendDots: (dots: any) => (
       <div
         className='!w-[300px]'
       >
-        <ul className='!w-[35px] mx-auto flex items-center justify-center'> {dots} </ul>
+        <ul className='!w-[35px] mx-auto flex items-center justify-center relative sm:left-[-100px] '> {dots} </ul>
       </div>
     ),
-    customPaging: i => (
+    customPaging: (i: any) => (
       <div
-        className={`relative w-[35px] rounded-xl h-2 mt-4 max-sm:mt-2 ${currentSlideNumber === i ? 'gradient-banner z-10' : 'bg-shark-100'}`}
+        className={`relative w-[35px] rounded-xl h-2 mt-4 max-sm:mt-2 max-xs:mt-0 ${currentSlideNumber === i ? 'gradient-banner z-10' : 'bg-shark-100'}`}
       >
       </div>
     )
@@ -89,10 +92,10 @@ const GoldRushBanner = () => {
             </div>
         </div>
       </div>
-      <div className="text-white z-[12] lg:hidden relative w-full h-[135px] my-auto">
-        <div className='slider-container w-full flex flex-col mt-4 h-full'>
+      <div className="text-white z-[12] lg:hidden relative w-[70%] h-[135px] my-auto">
+        <div className='slider-container w-full flex flex-col mt-4 max-sm:mt-2 h-full'>
           <Slider ref={sliderRef} {...settings} beforeChange={(currentSlide: number, nextSlide: number) => setCurrentSlideNumber(nextSlide)}>
-            <div className='!flex items-center justify-center gap-3 z-[8] w-full h-full'>
+            <div className='!flex items-center justify-start gap-3 z-[8] w-full h-full'>
               <Image src={'/static/images/point-stack/blast-gold.svg'} alt='Blast Gold' className='w-[36px] h-[36px] z-[5]' width={10} height={10}/>
               <div className='h-[70px] border-l border-shark-100'></div>
               <div className='flex flex-col items-start gap-1'>
@@ -101,7 +104,7 @@ const GoldRushBanner = () => {
                 <div className='gradient-banner px-3 py-1 font-normal text-white text-xs'>100K Blast Gold</div>
               </div>
             </div>
-            <div className='!flex items-center justify-center gap-3 z-[8] w-full'>
+            <div className='!flex items-center justify-start gap-3 z-[8] w-full'>
                 <Image src={'/static/images/blast-point-banner/fenix-ring-liquidity.svg'} alt='Fenix Orbit' className='w-[36px] h-[36px] z-[5]' width={10} height={10}/>
                 <div className='h-[70px] border-l border-shark-100'></div>
                 <div className='flex flex-col items-start gap-1'>
@@ -113,7 +116,7 @@ const GoldRushBanner = () => {
           </Slider>
         </div>
       </div>
-      <Button variant="primary" className={`relative z-[20] max-lg:!px-2 max-lg:!py-1 !flex-shrink-0 max-sm:!text-xs max-lg:hidden whitespace-nowrap`} href="/liquidity">
+      <Button variant="primary" className={`relative z-[20] max-lg:!px-2 max-lg:!py-1 !flex-shrink-0 max-sm:!text-xs whitespace-nowrap ${pathname === '/liquidity' ? '!hidden' : '!block'}`} href="/liquidity">
         <span>Deposit Now</span>
       </Button>
     </div>

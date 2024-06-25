@@ -4,7 +4,7 @@ import { Token, computePoolAddress } from '@cryptoalgebra/integral-sdk'
 import { blast } from 'viem/chains'
 import { contractAddressList } from '../constants/contactAddresses'
 import { INIT_CODE_HASH_MANUAL_OVERRIDE } from '../constants/algebra'
-import { boostedPools } from '@/src/app/api/rings/campaign/route'
+import boostedPools from '@/src/library/constants/pools/boosted-pools'
 
 export class PoolProvider {
   static async getV3PoolsIds() {

@@ -9,7 +9,7 @@ import Decorator from '@/src/components/Common/Layout/Background'
 import Footer from '@/src/components/Common/Layout/Footer'
 import Header from '@/src/components/Common/Layout/Header'
 import MobileHeader from '@/src/components/Common/Layout/Header/Mobile'
-import RedirectHandler from '@/src/library/hooks/RedirectHandler'
+// import RedirectHandler from '@/src/library/hooks/RedirectHandler'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { getDefaultConfig, getDefaultWallets, midnightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
@@ -60,7 +60,16 @@ export const configwallets = createConfig({
 export const wagmiConfig = getDefaultConfig({
   appName: 'Fenix Finance',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
-
+  transports: {
+    [blast.id]: fallback([
+      http('https://ancient-powerful-emerald.blast-sepolia.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+      http('https://rpc.blast.io'),
+    ]),
+    [blastSepolia.id]: fallback([
+      http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+      http('https://sepolia.blast.io'),
+    ]),
+  },
   chains: [
     {
       ...blast,
@@ -103,7 +112,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         suppressHydrationWarning={true}
         className={`${poppins.className}  relative pt-[26px]  mix-blend-lighten ${pathname === '/' ? 'bg-cover ' : ''}`}
       >
-        <RedirectHandler>
+        {/* <RedirectHandler> */}
           <ReduxProvider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <WagmiProvider config={wagmiConfig}>
@@ -136,7 +145,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </WagmiProvider>
             </PersistGate>
           </ReduxProvider>
-        </RedirectHandler>
+        {/* </RedirectHandler> */}
       </body>
     </html>
   )

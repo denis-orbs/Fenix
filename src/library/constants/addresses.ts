@@ -4,6 +4,11 @@ import { SupportedChainId } from './chains'
 export const RING_POINTS_ADDRESS: AddressMap = {
   [SupportedChainId.BLAST]: '0xA7c167f58833c5e25848837f45A1372491A535eD',
 }
+
+export const OPEN_OCEAN_REFERRER: AddressMap = {
+  [SupportedChainId.BLAST]: '0x67E65683B933bb389Ee2Bf8d5f4E79786dc1b441',
+}
+
 export const TOKEN_API: AddressMap = {
   [SupportedChainId.BLAST]: 'https://fenix-dex-api.vercel.app/token-prices',
   [SupportedChainId.BLAST_SEPOLIA]: 'https://fenix-api-testnet.vercel.app/token-prices',

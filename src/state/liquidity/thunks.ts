@@ -13,7 +13,7 @@ import cache from 'memory-cache'
 import { POOLSV2_LIST, POOLS_ID_LIST, POOLS_LIST } from '@/src/library/apollo/queries/pools'
 import { toBN } from '@/src/library/utils/numbers'
 import axios from 'axios'
-import { BoostedPool, RingCampaignData } from '@/src/app/api/rings/campaign/route'
+import RingCampaignData from '@/src/library/types/pools/ring-campaign-data'
 export const getV3PoolsIds = async () => {
   const client = getAlgebraClient()
 
@@ -196,7 +196,7 @@ export const getLiquidityTableElements = createAsyncThunk(
             pairSymbol: 'Concentrated pool',
             // FIXME: STARK
             //DEV FIX
-            pairInformationV2: { token0: tokenA, token1: tokenB },
+            pairInformationV2: { token0: tokenA, token1: tokenB } as any,
             priceA: tokenAprice ? tokenAprice : 0,
             priceB: tokenBprice ? tokenBprice : 0,
             isInactiveGauge: false,

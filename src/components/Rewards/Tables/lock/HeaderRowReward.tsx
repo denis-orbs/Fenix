@@ -83,7 +83,7 @@ const HeaderRowReward = ({
               { text: 'Action', className: 'w-[30%] text-right text-xs', sortable: true },
             ]}
             setSort={() => {}}
-            sort={null}
+            sort={'normal'}
             setSortIndex={() => {}}
             sortIndex={1}
           />

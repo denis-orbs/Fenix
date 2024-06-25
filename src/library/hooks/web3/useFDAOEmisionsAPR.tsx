@@ -13,7 +13,7 @@ export default function useFDAOEmissionsAPR(row: BasicPool) {
         setFDAOEmisionsAPR(0)
         return
       }
-      const tokens = await fetchTokens()
+      const tokens = await fetchTokens(undefined as any)
       const fDAOTokenPrice = tokens.find(
         // fdao token address
         (token) => token.tokenAddress.toLowerCase() === '0x3b0cffda9a5ab64135c227638e777ceec0c243a8'

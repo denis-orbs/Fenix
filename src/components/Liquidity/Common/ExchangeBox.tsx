@@ -37,7 +37,7 @@ const ExchangeBox = ({
   value,
   setValue,
   option,
-  defaultBalance
+  defaultBalance,
 }: ExchangeBoxProps) => {
   const boxVariant = variant === 'secondary' ? 'exchange-box-x2' : 'exchange-box-x1'
   const availableAlign = title ? 'justify-between' : 'justify-end'
@@ -115,7 +115,7 @@ const ExchangeBox = ({
       }
     }
 
-    if(!defaultBalance) asyncFn()
+    if (!defaultBalance) asyncFn()
     else setBalance(defaultBalance)
 
     return () => {
@@ -141,7 +141,7 @@ const ExchangeBox = ({
           ) : null}
 
           {option !== 'WITHDRAWINN' ? (
-            <div className='flex items-center justify-end w-full'>
+            <div className="flex items-center justify-end w-full">
               <span className="icon-wallet text-xs mr-2"></span>
               <span onClick={handleMax}>
                 Available: {`${formatNumber(Number(balance) / 10 ** token.decimals, 8)}`} {token.symbol}
@@ -160,7 +160,7 @@ const ExchangeBox = ({
               {option !== 'WITHDRAW' ? (
                 <>
                   <Image
-                    src={`${token.symbol ? `/static/images/tokens/${token.symbol}.png` : '/static/images/tokens/FNX.svg'}`}
+                    src={`${token.symbol ? `/static/images/tokens/${token.symbol}.svg` : '/static/images/tokens/FNX.svg'}`}
                     alt="token"
                     className="w-6 h-6 rounded-full"
                     width={20}

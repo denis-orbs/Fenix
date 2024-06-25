@@ -1,6 +1,6 @@
 import { Abi } from 'viem'
 
-const CL_MANAGER_ABI: Abi = [
+const CL_MANAGER_ABI = [
   {
     inputs: [
       {
@@ -1405,6 +1405,6 @@ const CL_MANAGER_ABI: Abi = [
     stateMutability: 'payable',
     type: 'receive',
   },
-] as Abi
+]
 
-export default CL_MANAGER_ABI
+export default CL_MANAGER_ABI as Abi

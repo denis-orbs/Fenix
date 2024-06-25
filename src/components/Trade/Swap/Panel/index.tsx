@@ -45,6 +45,7 @@ import { useAllPools } from '@/src/state/liquidity/hooks'
 import { fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { ethers } from 'ethers'
 import useDebounce from '@/src/library/hooks/useDebounce'
+import { postEvent } from '@/src/library/utils/events'
 
 enum ButtonState {
   POOL_NOT_AVAILABLE = 'Pool Not Available',
@@ -255,6 +256,12 @@ const Panel = () => {
       setForValue('')
       setSwapValue('')
       setLoadingSwap(false)
+      await postEvent({
+        tx: txResponse.hash,
+        user: account as `0x${string}`,
+        event_type: 'SWAP',
+        value: toBN(swapValue).times(tokenSell.price).toNumber(),
+      })
       handleTransactionSuccess(txResponse.hash as `0x${string}`, tokenSell, tokenGet)
 
       // setTimeout(() => {

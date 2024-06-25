@@ -10,7 +10,7 @@ import { useAccount } from 'wagmi'
 
 interface ActiveVoteProps {
   handlerChange?: () => void
-  lock: LockElement | undefined
+  lock?: LockElement
 }
 
 const ActiveVote = ({ handlerChange, lock }: ActiveVoteProps) => {

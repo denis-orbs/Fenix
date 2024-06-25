@@ -26,7 +26,7 @@ const Voted = () => {
             { text: 'vApr', className: 'w-[15%] text-center', sortable: true },
           ]}
           setSort={() => {}}
-          sort={null}
+          sort={'normal'}
           setSortIndex={() => {}}
           sortIndex={1}
         />
