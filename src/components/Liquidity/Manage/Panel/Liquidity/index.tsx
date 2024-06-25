@@ -241,12 +241,12 @@ const Manage = ({}: {}) => {
           setSecondValue(formatNumber(parseFloat(input), secondToken.decimals))
         }, 500),
       )
-
+      console.log('!!!called')
       if (positionData?.amount1) {
         const posAmount = +positionData.amount1.toString() / 10 ** secondToken.decimals;
         const inputAmount = +input || 0
 
-        console.log(input, posAmount, inputAmount)
+        console.log('!!!check', inputAmount, posAmount)
         if (inputAmount > 0 && inputAmount <= posAmount) {
           setWithdrawPercent(Math.round(inputAmount / posAmount * 100));
         }
@@ -684,10 +684,12 @@ const Manage = ({}: {}) => {
             ? false
             : Number(secondValue) * 10 ** secondToken.decimals >= Number(secondAllowance)
         }
-        disabled={optionActive === 'WITHDRAW' && !!error}
         token0={firstToken}
         token1={secondToken}
         handleApprove={handleApprove}
+        disabled={
+          (optionActive === 'WITHDRAW' && !!error) || !((+firstValue && !isNaN(+firstValue)) || (+secondValue && !isNaN(+secondValue)))
+        }
         mainFn={optionActive === 'WITHDRAW' ? handleDecreaseLiquidity : handleIncreaseLiquidity}
         mainText={optionActive === 'WITHDRAW' ? error || 'Withdraw Liquidity' : 'Add Liquidity'}
         isLoading={isLoading}

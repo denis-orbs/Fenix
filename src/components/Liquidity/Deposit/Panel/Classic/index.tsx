@@ -827,6 +827,8 @@ const Classic = ({
               mainFn={handleAddLiquidity}
               mainText={buttonText}
               isLoading={isLoading}
+              disabled={buttonText === 'Insufficient balance'
+                || !((+firstValue && !isNaN(+firstValue)) || (+secondValue && !isNaN(+secondValue)))}
             />
           ) : (
             <Button
@@ -846,8 +848,9 @@ const Classic = ({
             className="mx-auto !h-[49px] w-full !text-xs"
             variant="tertiary"
             disabled={
-              pairAddress == '0x0000000000000000000000000000000000000000' ||
-              Number(lpBalance) / 10 ** 18 < Number(lpValue)
+              pairAddress == '0x0000000000000000000000000000000000000000'
+              || Number(lpBalance) / 10 ** 18 < Number(lpValue)
+              || !(+lpValue && !isNaN(+lpValue))
             }
             onClick={() => {
               Number(formatUnits(BigInt(allowanceLp), 18)) < Number(lpValue.toString())

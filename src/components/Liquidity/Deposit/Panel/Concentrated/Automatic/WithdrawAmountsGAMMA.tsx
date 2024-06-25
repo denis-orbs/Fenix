@@ -183,7 +183,7 @@ const WithdrawAmountsGAMMA = ({
       )}
       <Button
         variant={'tertiary'}
-        disabled={!vaultId || token0TypedValue > userVaultBalance}
+        disabled={!vaultId || +token0TypedValue > +userVaultBalance || !(+token0TypedValue && !isNaN(+token0TypedValue))}
         onClick={withdraw}
         walletConfig={{
           needSupportedChain: true,
@@ -191,7 +191,7 @@ const WithdrawAmountsGAMMA = ({
         }}
         className="w-full mx-auto !text-xs !h-[49px] mt-4"
       >
-        {vaultId ? (token0TypedValue > userVaultBalance ? 'Insufficient balance' : 'Withdraw') : 'Vault not available'}
+        {vaultId ? (+token0TypedValue > +userVaultBalance ? 'Insufficient balance' : 'Withdraw') : 'Vault not available'}
       </Button>
     </div>
   )

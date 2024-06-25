@@ -15,7 +15,7 @@ interface ApproveButtonsProps {
   isLoading: boolean
   isFirstLoading?: boolean
   isSecondLoading?: boolean
-  disabled?: boolean,
+  disabled?: boolean
 }
 
 const ApproveButtons = ({
@@ -76,9 +76,9 @@ const ApproveButtons = ({
     </div>
   ) : (
     <Button
+      disabled={disabled}
       className="w-full mx-auto !text-xs !h-[49px]"
       variant="tertiary"
-      disabled={disabled}
       onClick={() => {
         mainFn()
       }}

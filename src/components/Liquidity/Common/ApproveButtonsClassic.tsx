@@ -18,6 +18,7 @@ interface ApproveButtonsProps {
   mainFn: any
   mainText: string
   isLoading: boolean
+  disabled?: boolean
 }
 
 const ApproveButtonClassic = ({
@@ -33,6 +34,7 @@ const ApproveButtonClassic = ({
   mainFn,
   mainText,
   isLoading,
+  disabled,
 }: ApproveButtonsProps) => {
   return shouldApproveFirst ||
     shouldApproveSecond ||
@@ -81,7 +83,7 @@ const ApproveButtonClassic = ({
       onClick={() => {
         mainFn()
       }}
-      disabled={mainText === 'Insufficient balance'}
+      disabled={disabled}
     >
       {isLoading ? <Loader color="white" size={20} /> : `${mainText}`}
     </Button>
