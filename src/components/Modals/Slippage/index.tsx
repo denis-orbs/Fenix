@@ -33,7 +33,7 @@ const Slippage = () => {
   // when slippage for redux changes, update the input in the ui
   useEffect(() => {
     setSlippageInput(slippage?.toString())
-  }, [slippage])
+  }, [slippage, openModal])
 
   // when input changes, validate schema
   useEffect(() => {
