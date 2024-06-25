@@ -101,7 +101,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
   // effects
   useEffect(() => {
     const poolAddress = getPoolAddress()
-    
+
     if(poolAddress.toLowerCase() == "0x1d74611f3ef04e7252f7651526711a937aa1f75e" && firstToken.symbol == "USDB" ||
       poolAddress.toLowerCase() == "0x86d1da56fc79accc0daf76ca75668a4d98cb90a7" && firstToken.symbol == "axlUSDC" ||
       poolAddress.toLowerCase() == "0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d" && firstToken.symbol == "USD+" ||
@@ -731,6 +731,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           mainFn={buttonText == 'Create Position' ? handleCLAdd : () => {
           }}
           mainText={buttonText}
+          disabled={!(+firstValue && !isNaN(+firstValue) && +secondValue && !isNaN(+secondValue))}
           isLoading={buttonText == 'Loading' || isLoading}
           isFirstLoading={isFirstLoading}
           isSecondLoading={isSecondLoading}

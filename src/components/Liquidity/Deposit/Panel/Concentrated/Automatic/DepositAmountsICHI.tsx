@@ -437,7 +437,7 @@ const DepositAmountsICHI = ({
                     />
                   </div>
                   <div
-                    className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3 
+                    className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
                     ${isActive ? 'visible bg-shark-500 !bg-opacity-80 border-shark-200' : 'hidden'}`}
                   >
                     {allIchiVaultsByTokenPair.map((vault: modifiedIchiVault) => (
@@ -507,6 +507,7 @@ const DepositAmountsICHI = ({
       {/* <Button onClick={testinPosition}>Deposit testing</Button> */}
       <Button
         onClick={createPosition}
+        disabled={!(+token0TypedValue && !isNaN(+token0TypedValue))}
         variant="tertiary"
         className="w-full mx-auto !text-xs !h-[49px]"
         walletConfig={{

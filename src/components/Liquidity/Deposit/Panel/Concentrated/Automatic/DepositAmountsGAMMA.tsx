@@ -390,7 +390,10 @@ const DepositAmountsGAMMA = ({ tokenList }: { tokenList: IToken[] }) => {
       )}
 
       <Button
-        disabled={loadingWaitingApproval || !vaultId}
+        disabled={
+          loadingWaitingApproval
+          || !vaultId
+          || !((+token0TypedValue && !isNaN(+token0TypedValue)) || (+token1TypedValue && !isNaN(+token1TypedValue)))}
         variant="tertiary"
         walletConfig={{
           needSupportedChain: true,
