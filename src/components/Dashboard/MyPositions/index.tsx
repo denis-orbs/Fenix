@@ -9,7 +9,7 @@ import { fetchNativePrice, fetchV3Positions } from '@/src/state/liquidity/reduce
 import { getPositionDataByPoolAddresses, priceToSqrtPrice } from '@/src/library/hooks/liquidity/useCL'
 import { setApr } from '@/src/state/apr/reducer'
 import { useIchiPositions } from '@/src/library/hooks/web3/useIchi'
-import { getPositionAPR, getPositionFees } from '@/src/library/hooks/algebra/getPositionApr'
+import { getPositionAPR } from '@/src/library/hooks/algebra/getPositionApr'
 import { Address } from 'viem'
 import Spinner from '../../Common/Spinner'
 import PositionTableMobile from './PositionTableMobile'
@@ -21,7 +21,7 @@ import CheckBox from '../../UI/CheckBox'
 import { Pool } from '@cryptoalgebra/integral-sdk'
 import { FALLBACK_CHAIN_ID } from '@/src/library/constants/chains'
 
-import TokenListItem from '@/src/library/types/token-list-item';
+import TokenListItem from '@/src/library/types/token-list-item'
 
 // import useStore from '@/src/state/zustand'
 
