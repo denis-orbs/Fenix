@@ -28,7 +28,7 @@ import AprBox from '../../UI/Pools/AprBox'
 import { useRingsCampaigns } from '@/src/state/liquidity/hooks'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
 import { useRingsCampaignsBoostedPools } from '@/src/state/liquidity/hooks'
-import TokenListItem from '@/src/library/types/token-list-item';
+import TokenListItem from '@/src/library/types/token-list-item'
 
 interface MyPositionsMobileProps {
   activePagination?: boolean
@@ -122,8 +122,18 @@ const PositionTableMobile = ({
     isMobile: boolean
   }
   const PriceCalculation = ({ token0, token1, tickLower, tickUpper, isMobile }: priceClacualtionProps) => {
-    const minPrice = parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
-    const maxPrice = parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+    let swapPrices
+    if ((token0.symbol == 'USDB' && token1.symbol == 'WETH') || (token0.symbol == 'DUSD' && token1.symbol == 'DETH')) {
+      swapPrices = true
+    }
+
+    const minPrice = swapPrices
+      ? parseFloat(tickUpper?.price1) * 10 ** (Number(token1?.decimals) - Number(token0?.decimals))
+      : parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+    const maxPrice = swapPrices
+      ? parseFloat(tickLower?.price1) * 10 ** (Number(token1?.decimals) - Number(token0?.decimals))
+      : parseFloat(tickUpper?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
+
     const minPriceIsZero = minPrice < 1e-5
     const maxPriceIsInfinity = maxPrice > 1e12
     return (
@@ -175,6 +185,11 @@ const PositionTableMobile = ({
     id: any
   }
   const SetStatus = ({ token0, token1, tickLower, tickUpper, liquidity, setIsInRange, id }: setStatusprops) => {
+    let swapPrices
+    if ((token0.symbol == 'USDB' && token1.symbol == 'WETH') || (token0.symbol == 'DUSD' && token1.symbol == 'DETH')) {
+      swapPrices = true
+    }
+
     const minPrice = useMemo(() => {
       return parseFloat(tickLower?.price0) * 10 ** (Number(token0?.decimals) - Number(token1?.decimals))
     }, [tickLower, token0?.decimals, token1?.decimals])
@@ -209,9 +224,9 @@ const PositionTableMobile = ({
       return <Loader />
     }
 
-        const minPriceIsZero = minPrice < 1e-5
-        const maxPriceIsInfinity = maxPrice > 1e12
-    
+    const minPriceIsZero = minPrice < 1e-5
+    const maxPriceIsInfinity = maxPrice > 1e12
+
     return (
       <div className="flex items-center gap-2 justify-start">
         <div
@@ -229,13 +244,15 @@ const PositionTableMobile = ({
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Min Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {minPriceIsZero ? 0 : formatAmount(minPrice, 6)}{/* {formatCurrency(minPrice, 2)}$ */}
+            {minPriceIsZero ? 0 : formatAmount(minPrice, 6)}
+            {/* {formatCurrency(minPrice, 2)}$ */}
           </span>
         </div>
         <div className="flex flex-col items-start">
           <div className="text-shark-100 text-xs font-normal">Max Price</div>
           <span className="!py-1 px-4 text-xs text-white whitespace-nowrap border border-solid bg-shark-400 hover:bg-button-primary cursor-default rounded-lg bg-opacity-40 border-shark-300">
-            {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}{/* {formatCurrency(maxPrice, 2)}$ */}
+            {maxPriceIsInfinity ? '∞' : formatAmount(maxPrice, 6)}
+            {/* {formatCurrency(maxPrice, 2)}$ */}
           </span>
         </div>
       </div>

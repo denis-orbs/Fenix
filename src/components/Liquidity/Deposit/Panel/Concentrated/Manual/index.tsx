@@ -100,7 +100,20 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
 
   // effects
   useEffect(() => {
-    if (pool[0] == 'LOADING') {
+    const poolAddress = getPoolAddress()
+
+    if(poolAddress.toLowerCase() == "0x1d74611f3ef04e7252f7651526711a937aa1f75e" && firstToken.symbol == "USDB" ||
+      poolAddress.toLowerCase() == "0x86d1da56fc79accc0daf76ca75668a4d98cb90a7" && firstToken.symbol == "axlUSDC" ||
+      poolAddress.toLowerCase() == "0xc5910a7f3b0119ac1a3ad7a268cce4a62d8c882d" && firstToken.symbol == "USD+" ||
+      poolAddress.toLowerCase() == "0xCE274E4AE83BAaDd1d3b88e1Ed24886e05ACA345" && firstToken.symbol == "DUSD"
+    ) {
+      swapTokens()
+    }
+
+  }, [pool])
+
+  useEffect(() => {
+    if(pool[0] == 'LOADING') {
       setButtonText('Loading')
     } else if (pool[0] == 'NOT_EXISTS') {
       setButtonText('Pool Doesn\'t Exist')
@@ -394,16 +407,6 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     setSecondValue('0')
   }
 
-  function getFromAmount0(value: any, dec1: any, dec2: any): string {
-    return Position.fromAmount0({
-      pool: pool[1] as unknown as Pool,
-      tickLower: lowerTick,
-      tickUpper: higherTick,
-      amount0: BigInt(Number((parseFloat(value) * 10 ** dec1).toFixed(0))).toString(),
-      useFullPrecision: false,
-    }).amount1.toFixed(parseInt(dec2))
-  }
-
   function getFromAmount1(value: any, dec1: any, dec2: any): string {
     return Position.fromAmount1({
       pool: pool[1] as unknown as Pool,
@@ -596,11 +599,21 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
     )
   }
 
+  const getFromAmount0 = (value: any, dec1: any, dec2: any) => {
+    const x = Position.fromAmount0({
+      pool: pool[1] as unknown as Pool,
+      tickLower: lowerTick,
+      tickUpper: higherTick,
+      amount0: BigInt(Number((parseFloat(value) * 10 ** dec1).toFixed(0))).toString(),
+      useFullPrecision: false,
+    })
+    return x.amount1.toFixed(parseInt(+dec1 < +dec2 ? dec1 : dec2))
+  }
+
   async function handleOnTokenValueChange(input: string, token: IToken): Promise<void> {
     if (pool[0] != 'EXISTS') {
       return
     }
-
     const inputAmount = parseFloat(input);
 
     if (firstToken.address === token.address) {
@@ -718,6 +731,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           mainFn={buttonText == 'Create Position' ? handleCLAdd : () => {
           }}
           mainText={buttonText}
+          disabled={!(+firstValue && !isNaN(+firstValue) && +secondValue && !isNaN(+secondValue))}
           isLoading={buttonText == 'Loading' || isLoading}
           isFirstLoading={isFirstLoading}
           isSecondLoading={isSecondLoading}
