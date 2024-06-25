@@ -494,6 +494,7 @@ const Panel = () => {
         const response = await fetch(apiUrl, { signal })
 
         const jsonResponse = await response.json()
+        // console.log('!!!res', jsonResponse)
         const swapData = jsonResponse.data
         setForValue(fromWei(swapData?.outAmount, tokenGet.decimals))
         setAmountOutMinimum(BigInt(swapData?.minOutAmount))
@@ -502,6 +503,7 @@ const Panel = () => {
           setSwapQuoteLoading(false)
         }, 50)
       } catch (error) {
+        // console.log('!!!err', error)
       } finally {
         setTimeout(() => {
           setSwapQuoteLoading(false)
@@ -568,7 +570,7 @@ const Panel = () => {
                 ></span>
                 {/* <ReloadIcon
                   className="transition-all bg-shark-100 lg:hover:bg-gradient-to-r lg:hover:from-outrageous-orange-500 lg:hover:to-festival-500 text-transparent bg-clip-text !cursor-pointer"
-                  
+
                 /> */}
                 {/* <SettingsIcon onClick={() => setSlippageModal(true)} className="!cursor-pointer " /> */}
               </div>
@@ -653,7 +655,7 @@ const Panel = () => {
           <p className="">
             Slippage:{' '}
             <span className="text-shark-100">
-              {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage.toString().toLowerCase() == 'auto' ? 'Auto' : slippage}
+              {nativeETH_WETH || nativeWETH_ETH ? '0' : slippage?.toString().toLowerCase() == 'auto' ? 'Auto' : slippage}
             </span>
           </p>
 

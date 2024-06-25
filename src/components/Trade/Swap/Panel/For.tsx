@@ -84,7 +84,9 @@ const For = ({ token, setToken, setValue, value }: ForProps) => {
                 }
               }}
             >
-              Available: {(!tokenData.isLoading || nativeToken) && isConnected ? formatPrice(tokenBalance, 6) : '-'}{' '}
+              Available: {((!tokenData.isLoading || nativeToken) && isConnected && !isNaN(+tokenBalance))
+                ? formatPrice(tokenBalance, 6)
+                : '-'}{' '}
               {token.symbol}
             </span>
           </div>
