@@ -77,13 +77,12 @@ const LiquidityPositions = () => {
       return (
         <>
           <div className="flex flex-col ">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mb-4">
               <h2 className="text-white font-normal text-lg">Classic liquidity positions</h2>
               <Button variant="tertiary" className="!py-3 xl:me-5 !text-xs !lg:text-sm" href="/liquidity">
                 <span className="icon-logout"></span>New deposit
               </Button>
             </div>
-            <h1 className="text-white p-3 font-medium">Classic liquidity:</h1>
           </div>
           <div className={`${poolsDataClassicRing.length > 0 ? 'dashboard-box' : 'box-dashboard'}`}>
             <div className="rounded-lg z-10">

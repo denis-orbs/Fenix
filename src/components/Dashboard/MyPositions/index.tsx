@@ -195,7 +195,7 @@ const MyPositions = () => {
         <div className="mb-10 mt-5 flex flex-col ">
           <div className="flex justify-between items-center">
             <h1 className="text-white text-lg">Concentrated Positions</h1>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mb-4">
               <p className="text-white text-lg font-normal">Show Dust Positions</p>
               <CheckBox
                 checked={activeSwitch}
@@ -213,7 +213,6 @@ const MyPositions = () => {
               </Button>
             </div>
           </div>
-          <h2 className="text-white text-base p-3 font-medium relative z-50">Concentrated Liquidity:</h2>
           <div className="dashboard-box flex flex-col">
             <PositionTable data={newPositions} tokens={tokens} ringsCampaign={ringsCampaign} showDust={activeSwitch} />
             <PositionTableMobile
