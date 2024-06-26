@@ -731,6 +731,7 @@ const ConcentratedDepositLiquidityManual = ({ defaultPairs }: { defaultPairs: IT
           mainFn={buttonText == 'Create Position' ? handleCLAdd : () => {
           }}
           mainText={buttonText}
+          disabled={!(+firstValue && !isNaN(+firstValue) && +secondValue && !isNaN(+secondValue))}
           isLoading={buttonText == 'Loading' || isLoading}
           isFirstLoading={isFirstLoading}
           isSecondLoading={isSecondLoading}

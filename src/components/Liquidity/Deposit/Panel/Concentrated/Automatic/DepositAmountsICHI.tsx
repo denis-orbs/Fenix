@@ -504,6 +504,7 @@ const DepositAmountsICHI = ({
       {/* <Button onClick={testinPosition}>Deposit testing</Button> */}
       <Button
         onClick={createPosition}
+        disabled={!(+token0TypedValue && !isNaN(+token0TypedValue))}
         variant="tertiary"
         className="w-full mx-auto !text-xs !h-[49px]"
         walletConfig={{
