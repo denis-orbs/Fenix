@@ -194,6 +194,14 @@ const boostedPools: BoostedPool[] = [
     apr: 0,
     poolType: 'v3',
   },
+  {
+    pair: 'BLAST/USDB',
+    points: 5000000,
+    blastGold: 0,
+    id: '0x4c577f4873061003d6c83eaac20e24397ff5b89b',
+    apr: 0,
+    poolType: 'v3',
+  },
   // {
   //   pair: 'BAJA/WETH',
   //   points: 45000,
