@@ -13,8 +13,8 @@ import { toBN } from '@/src/library/utils/numbers'
 import boostedPools from '@/src/library/constants/pools/boosted-pools'
 
 // personal constants
-const POINTS_SUPLY = 30000000
-const POINTS_TOTAL_VALUE = 49224
+const POINTS_SUPLY = 25055600
+const POINTS_TOTAL_VALUE = 37082.288
 const PRICE_PER_POINT = POINTS_TOTAL_VALUE / POINTS_SUPLY
 export const revalidate = 60
 

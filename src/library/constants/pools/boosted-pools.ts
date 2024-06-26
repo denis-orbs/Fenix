@@ -1,10 +1,9 @@
 import BoostedPool from '@/src/library/types/pools/boosted-pool'
 
-
 const boostedPools: BoostedPool[] = [
   {
     pair: 'WETH/USDB',
-    points: 2825917,
+    points: 5850000,
     blastGold: 0,
     id: '0x1d74611f3ef04e7252f7651526711a937aa1f75e',
     apr: 0,
@@ -184,6 +183,14 @@ const boostedPools: BoostedPool[] = [
     points: 1040853,
     blastGold: 0,
     id: '0x8e57e61b7524a2f56fd01bbfe5de9bb96ed186b4',
+    apr: 0,
+    poolType: 'v3',
+  },
+  {
+    pair: 'BLAST/WETH',
+    points: 2000000,
+    blastGold: 0,
+    id: '0xc8252c4f9136209ec47534bf1c0781307ec9a86f',
     apr: 0,
     poolType: 'v3',
   },
