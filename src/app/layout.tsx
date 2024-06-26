@@ -60,7 +60,16 @@ export const configwallets = createConfig({
 export const wagmiConfig = getDefaultConfig({
   appName: 'Fenix Finance',
   projectId: '1c866fe90ffb8663a08a1b7412f1b8b4',
-
+  transports: {
+    [blast.id]: fallback([
+      http('https://ancient-powerful-emerald.blast-sepolia.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+      http('https://rpc.blast.io'),
+    ]),
+    [blastSepolia.id]: fallback([
+      http('https://ancient-powerful-emerald.blast-mainnet.quiknode.pro/e93288d60f12f4fbb136d310242ac46df10b8f74/'),
+      http('https://sepolia.blast.io'),
+    ]),
+  },
   chains: [
     {
       ...blast,

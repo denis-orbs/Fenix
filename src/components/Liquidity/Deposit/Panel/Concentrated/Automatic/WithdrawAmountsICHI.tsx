@@ -373,6 +373,7 @@ const WithdrawAmountsICHI = ({
 
       <Button
         onClick={withdrawFromVault}
+        disabled={!(+amoutToWithdraw && !isNaN(+amoutToWithdraw))}
         walletConfig={{
           needWalletConnected: true,
           needSupportedChain: true,

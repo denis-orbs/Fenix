@@ -1,35 +1,47 @@
 'use client'
+import { useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 
-import Link from 'next/link'
+// store
+import { useAppSelector } from '@/src/state'
+import { fetchGlobalStatistics } from '@/src/state/liquidity/thunks'
+
+// helpers
+import { fetchTokens } from '@/src/library/common/getAvailableTokens'
+import { formatDollarAmount, toBN } from '@/src/library/utils/numbers'
+
+// components
 import { Button } from '@/src/components/UI'
 import MainBox from '@/src/components/Common/Boxes/MainBox'
 import InfoBox from '@/src/components/Common/InfoBox'
+
+// constants
 import { EXCHANGE_LIST } from '../data'
-import { fetchTokens } from '@/src/library/common/getAvailableTokens'
-import { useEffect, useState } from 'react'
-import { fetchv2Factories, fetchv3Factories } from '@/src/state/liquidity/reducer'
-import { v2FactoryData, v3FactoryData } from '@/src/state/liquidity/types'
-import { useAppSelector } from '@/src/state'
-import { fetchGlobalStatistics } from '@/src/state/liquidity/thunks'
-import { formatDollarAmount, toBN } from '@/src/library/utils/numbers'
-import { useAccount } from 'wagmi'
 
 const LiquidityPools = () => {
-  const [tokens, setTokens] = useState<Number>(0)
-  const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
+  // common
   const { chainId } = useAccount()
-  //
+  const liquidityTable = useAppSelector((state) => state.liquidity.v2Pairs.tableData)
 
-  const tokensData = async (liquidityTable: any) => {
-    if (chainId) setTokens((await fetchTokens(chainId)).length)
-  }
+  // states
+  const [tokens, setTokens] = useState<Number>(0)
+  const [globalStatistics, setGlobalStatistics] =
+    useState<Omit<Awaited<ReturnType<typeof fetchGlobalStatistics>>, 'totalUsers'>>()
 
+  // computed
+  EXCHANGE_LIST[0].description = globalStatistics?.totalTVL ? formatDollarAmount(toBN(globalStatistics?.totalTVL)) : '-'
+  EXCHANGE_LIST[1].description = globalStatistics?.totalFees
+    ? formatDollarAmount(toBN(globalStatistics?.totalFees))
+    : '-'
+  EXCHANGE_LIST[2].description = globalStatistics?.totalVolume
+    ? formatDollarAmount(toBN(globalStatistics?.totalVolume))
+    : '-'
+
+  // effects
   useEffect(() => {
     tokensData(liquidityTable)
     // fetchData()
   }, [chainId])
-  const [globalStatistics, setGlobalStatistics] =
-    useState<Omit<Awaited<ReturnType<typeof fetchGlobalStatistics>>, 'totalUsers'>>()
 
   useEffect(() => {
     const fetchAndSetStatistics = async () => {
@@ -53,13 +65,10 @@ const LiquidityPools = () => {
     fetchAndSetStatistics()
   }, [])
 
-  EXCHANGE_LIST[0].description = globalStatistics?.totalTVL ? formatDollarAmount(toBN(globalStatistics?.totalTVL)) : '-'
-  EXCHANGE_LIST[1].description = globalStatistics?.totalFees
-    ? formatDollarAmount(toBN(globalStatistics?.totalFees))
-    : '-'
-  EXCHANGE_LIST[2].description = globalStatistics?.totalVolume
-    ? formatDollarAmount(toBN(globalStatistics?.totalVolume))
-    : '-'
+  // async helpers
+  async function tokensData(liquidityTable: any): Promise<void> {
+    setTokens((await fetchTokens(chainId || Number(process.env.NEXT_PUBLIC_CHAINID))).length)
+  }
 
   return (
     <MainBox>
@@ -73,8 +82,8 @@ const LiquidityPools = () => {
             Liquidity Providers (LPs) make low-slippage swaps possible. Deposit and stake liquidity to earn rewards.
           </p>
           <div className="flex flex-col gap-2 mb-8 md:flex-row z-[3000]">
-            <Button href="liquidity/deposit?type=CONCENTRATED_MANUAL&token0=0x4300000000000000000000000000000000000003&token1=0x4300000000000000000000000000000000000004">
-              <div className="flex gap-2 ">
+            <Button href="liquidity/deposit?type=CONCENTRATED_MANUAL&token0=0x4300000000000000000000000000000000000004&token1=0x4300000000000000000000000000000000000003">
+              <div className="flex gap-2 text-xs">
                 <span className="icon-send"></span>
                 Create Position
               </div>

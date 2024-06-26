@@ -5,7 +5,6 @@ import { Button, TableCell, TableRow } from '@/src/components/UI'
 import { BasicPool, GammaVault, PoolData, v3PoolData } from '@/src/state/liquidity/types'
 import Image from 'next/image'
 import MobileRow from './MobileRowNew'
-import { Token, fetchTokens } from '@/src/library/common/getAvailableTokens'
 import { useEffect, useState, useRef } from 'react'
 import { formatAmount, formatCurrency, formatDollarAmount, formatPrice, toBN } from '@/src/library/utils/numbers'
 import { totalCampaigns, Campaign } from '@/src/library/utils/campaigns'
@@ -20,10 +19,11 @@ import { useRingsPoolApr } from '@/src/library/hooks/rings/useRingsPoolApr'
 import { adjustTokenOrder } from '@/src/library/utils/tokens'
 import useFDAOEmissionsAPR from '@/src/library/hooks/web3/useFDAOEmisionsAPR'
 import { useGammaVaults } from '@/src/state/liquidity/hooks'
+import TokenListItem from '@/src/library/types/token-list-item';
 
 interface RowDataProps {
   row: BasicPool
-  tokensData: Promise<Token[]> | null
+  tokensData: Promise<TokenListItem[]> | null
   titleHeader?: string
   titleHeader2?: string
   titleButton?: string
@@ -51,6 +51,7 @@ const RowData = ({
   const [openTooltipKelpMiles, setOpenTooltipKelpMiles] = useState<boolean>(false)
   const [openTooltipTurtleClub, setOpenTooltipTurtleClub] = useState<boolean>(false)
   const [openTooltipFXS, setOpenTooltipFXS] = useState<boolean>(false)
+  const [openTooltipEtherFi, setOpenTooltipEtherFi] = useState<boolean>(false)
   const [campaign, setCampaign] = useState<Campaign>()
 
   const aprIchi = useIchiVault(row.token0.id, row.token1.id)
@@ -161,7 +162,7 @@ const RowData = ({
           <div className="flex  justify-center items-center gap-2 ">
             {
               <span ref={hoverRef} className="flex gap-2">
-                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS ? 'z-[100]' : 'z-0'}`}>
+                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS || openTooltipEtherFi ? 'z-[100]' : 'z-0'}`}>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                     <div className="relative flex items-center">
                       {campaign?.pointStack?.map((stack, index) => (
@@ -169,7 +170,7 @@ const RowData = ({
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS ? 'z-[100]' : 'z-0'}`}
+                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS || openTooltipEtherFi ? 'z-[100]' : 'z-0'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {
@@ -188,6 +189,9 @@ const RowData = ({
                             if (stack === 'fxs') {
                               setOpenTooltipFXS(true)
                             }
+                            if (stack === 'ether-fi') {
+                              setOpenTooltipEtherFi(true)
+                            }
                           }}
                           onMouseLeave={() => {
                             if (openTooltipGold) {
@@ -205,6 +209,9 @@ const RowData = ({
                             if (openTooltipFXS) {
                               setOpenTooltipFXS(false)
                             }
+                            if (openTooltipEtherFi) {
+                              setOpenTooltipEtherFi(false)
+                            }
                           }}
                         />
                       ))}
@@ -221,7 +228,7 @@ const RowData = ({
                         <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
                           <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                             <p className="text-xs">
-                              Eigenlayer points will be distributed to liquidity providers in this pool
+                              Earn Eigenlayer points from this pool
                             </p>
                           </div>
                         </div>
@@ -229,7 +236,7 @@ const RowData = ({
                       {openTooltipKelpMiles && (
                         <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
                           <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
-                            <p className="text-xs">wrsETH liquidity providers will earn 1x Kelp Miles from this pool</p>
+                            <p className="text-xs">Earn 1x Kelp Miles from this pool</p>
                           </div>
                         </div>
                       )}
@@ -256,6 +263,15 @@ const RowData = ({
                           <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
                             <p className="text-xs">
                               This pool is getting $500 worth of $FXS tokens from the 20th to the 26th
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {openTooltipEtherFi && (
+                        <div className="absolute left-[-25px] xl:left-auto max-xl:top-[5px] xl:top-0 z-50">
+                          <div className="relative z-[1000] bg-shark-950 rounded-lg border border-shark-300 w-[150px] xl:w-[200px] top-9 px-5 py-3 left-0 xl:-left-12 gap-y-1">
+                            <p className="text-xs">
+                              Earn 2x EtherFi points from this pool
                             </p>
                           </div>
                         </div>

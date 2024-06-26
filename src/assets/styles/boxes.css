@@ -1330,7 +1330,7 @@
   before:border-t-[20px]
   before:border-r-[20px]
   before:border-b-[20px]
-  before:border-[transparent_transparent_#131517]
+  before:border-[transparent_transparent_#1a1d21]
 
   after:hidden
   xl:after:block
@@ -1344,7 +1344,7 @@
   after:border-t-[20px]
   after:border-r-[20px]
   after:border-b-[20px]
-  after:border-[transparent_transparent_#131517]
+  after:border-[transparent_transparent_#1a1d21]
   after:pointer-events-none;
 }
 /* Background for dashboard box */

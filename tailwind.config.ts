@@ -136,6 +136,8 @@ const config: Config = {
           '800': '#864d0d',
           '900': '#723f11',
         },
+        'fenix-green': '#2AED8F',
+        'fenix-red': '#E91F38',
       },
       screens: {
         xxxs: '256px',

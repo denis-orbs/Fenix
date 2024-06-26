@@ -15,6 +15,7 @@ interface ApproveButtonsProps {
   isLoading: boolean
   isFirstLoading?: boolean
   isSecondLoading?: boolean
+  disabled?: boolean
 }
 
 const ApproveButtons = ({
@@ -27,7 +28,8 @@ const ApproveButtons = ({
   mainText,
   isLoading,
   isFirstLoading,
-  isSecondLoading
+  isSecondLoading,
+  disabled
 }: ApproveButtonsProps) => {
   return shouldApproveFirst || shouldApproveSecond ? (
     <div className="flex">
@@ -36,7 +38,7 @@ const ApproveButtons = ({
           if (shouldApproveFirst) handleApprove(token0.address as Address)
         }}
         className="button button-tertiary w-1/2 !text-xs !h-[49px] mr-[10px]"
-        disabled={!shouldApproveFirst}
+        disabled={!shouldApproveFirst || disabled}
       >
         {isFirstLoading ? (
           <>
@@ -55,7 +57,7 @@ const ApproveButtons = ({
         onClick={() => {
           if (shouldApproveSecond) handleApprove(token1.address as Address)
         }}
-        disabled={!shouldApproveSecond}
+        disabled={!shouldApproveSecond || disabled}
         className="button button-tertiary w-1/2 !text-xs !h-[49px]"
       >
         {isSecondLoading ? (
@@ -74,6 +76,7 @@ const ApproveButtons = ({
     </div>
   ) : (
     <Button
+      disabled={disabled}
       className="w-full mx-auto !text-xs !h-[49px]"
       variant="tertiary"
       onClick={() => {

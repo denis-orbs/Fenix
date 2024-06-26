@@ -123,137 +123,134 @@ const DepositAmountsICHI = ({
   const [loading, setLoading] = useState(false)
   const createPosition = async () => {
     setLoading(true)
-    if (!account) {
-      handlerConnectWallet()
-      return
-    }
-    if (!vaultAddress || allIchiVaultsByTokenPair?.length === 0) {
-      // toast.error('Vault not available')
-      addNotification({
-        id: crypto.randomUUID(),
-        createTime: new Date().toISOString(),
-        message: `Vault not available.`,
-        notificationType: NotificationType.ERROR,
-        txHash: '',
-        notificationDuration: NotificationDuration.DURATION_5000,
-      })
-
-      return
-    }
-    if (isToken0ApprovalRequired) {
-      setWaitingApproval(true)
-      try {
-        //
-        const txApproveDepositDetails = await approveDepositToken(
-          account,
-          vaultAddress.tokenA.toLowerCase() === selected.toLowerCase() && vaultAddress.allowTokenA ? 0 : 1,
-          vaultAddress.id,
-          web3Provider,
-          dex
-        )
-        await txApproveDepositDetails.wait()
-        setIsToken0ApprovalRequired(false)
-        setWaitingApproval(false)
-        setLoading(false)
-
-        return
-      } catch (error) {
-        //
-        setWaitingApproval(false)
-        setLoading(false)
-
+    try {
+      if (!account) {
+        handlerConnectWallet()
         return
       }
-    }
-    if (!token0TypedValue) {
-      // toast.error('Please enter a valid amount')
-      addNotification({
-        id: crypto.randomUUID(),
-        createTime: new Date().toISOString(),
-        message: `Please enter a valid amount.`,
-        notificationType: NotificationType.ERROR,
-        txHash: '',
-        notificationDuration: NotificationDuration.DURATION_5000,
-      })
-      setLoading(false)
-      return
-    }
-
-    // const depositToken0 = token0 >= token1 ? '0' : ethers.utils.parseUnits(token0TypedValue, token0Decimals)
-    // const depositToken1 = token0 < token1 ? '0' : ethers.utils.parseUnits(token0TypedValue, token0Decimals)
-    const depositToken0 = vaultAddress.allowTokenA && !vaultAddress.allowTokenB ? token0TypedValue : 0
-    const depositToken1 = vaultAddress.allowTokenB && !vaultAddress.allowTokenA ? token0TypedValue : 0
-
-    try {
-      const txDepositDetails = await deposit(
-        account,
-        depositToken0,
-        depositToken1,
-        vaultAddress.id,
-        web3Provider,
-        dex,
-        1
-      )
-      const tx = await txDepositDetails.wait()
-      // toast.success('Deposited successfully')
-      addNotification({
-        id: crypto.randomUUID(),
-        createTime: new Date().toISOString(),
-        message: `Deposited successfully.`,
-        notificationType: NotificationType.SUCCESS,
-        txHash: tx.transactionHash,
-        notificationDuration: NotificationDuration.DURATION_5000,
-      })
-      setLoading(false)
-      await postEvent({
-        tx: tx.transactionHash,
-        user: account,
-        event_type: 'ADD_LIQUIDITY',
-        value: tokenPrice * Number(token0TypedValue),
-      })
-    } catch (error) {
-      //
-      //
-      if (error instanceof Error && 'code' in error) {
-        if (error.code == 'ACTION_REJECTED') {
-          // toast.error('Action rejected')
-          // toast.error(error.message.split('(')[0].trim().toUpperCase())
-          addNotification({
-            id: crypto.randomUUID(),
-            createTime: new Date().toISOString(),
-            message: `${error.message.split('(')[0].trim().toUpperCase()}`,
-            notificationType: NotificationType.ERROR,
-            txHash: '',
-            notificationDuration: NotificationDuration.DURATION_5000,
-          })
-          setLoading(false)
-          // FIXME: STARK
-        } else if ('reason' in error && error?.reason == 'IV.deposit: deposits too large') {
-          addNotification({
-            id: crypto.randomUUID(),
-            createTime: new Date().toISOString(),
-            message: `Deposits are unavailable due to pool volatility.`,
-            notificationType: NotificationType.ERROR,
-            txHash: '',
-            notificationDuration: NotificationDuration.DURATION_5000,
-          })
-          setLoading(false)
-        }
-      } else {
-        //
-        // toast.error('Transaction failed')
-        // toast.error(error.message.split('(')[0].trim().toUpperCase())
-        // FIXME: STARK
+      if (!vaultAddress || allIchiVaultsByTokenPair?.length === 0) {
+        // toast.error('Vault not available')
         addNotification({
           id: crypto.randomUUID(),
           createTime: new Date().toISOString(),
-          message: `${(error as Error).message}`,
+          message: `Vault not available.`,
           notificationType: NotificationType.ERROR,
           txHash: '',
           notificationDuration: NotificationDuration.DURATION_5000,
         })
-        setLoading(false)
+
+        return
       }
+      if (isToken0ApprovalRequired) {
+        setWaitingApproval(true)
+        try {
+          //
+          const txApproveDepositDetails = await approveDepositToken(
+            account,
+            vaultAddress.tokenA.toLowerCase() === selected.toLowerCase() && vaultAddress.allowTokenA ? 0 : 1,
+            vaultAddress.id,
+            web3Provider,
+            dex
+          )
+          await txApproveDepositDetails.wait()
+          setIsToken0ApprovalRequired(false)
+          setWaitingApproval(false)
+
+          return
+        } catch (error) {
+          //
+          setWaitingApproval(false)
+
+          return
+        }
+      }
+      if (!token0TypedValue) {
+        // toast.error('Please enter a valid amount')
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `Please enter a valid amount.`,
+          notificationType: NotificationType.ERROR,
+          txHash: '',
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
+        return
+      }
+
+      // const depositToken0 = token0 >= token1 ? '0' : ethers.utils.parseUnits(token0TypedValue, token0Decimals)
+      // const depositToken1 = token0 < token1 ? '0' : ethers.utils.parseUnits(token0TypedValue, token0Decimals)
+      const depositToken0 = vaultAddress.allowTokenA && !vaultAddress.allowTokenB ? token0TypedValue : 0
+      const depositToken1 = vaultAddress.allowTokenB && !vaultAddress.allowTokenA ? token0TypedValue : 0
+
+      try {
+        const txDepositDetails = await deposit(
+          account,
+          depositToken0,
+          depositToken1,
+          vaultAddress.id,
+          web3Provider,
+          dex,
+          1
+        )
+        const tx = await txDepositDetails.wait()
+        // toast.success('Deposited successfully')
+        addNotification({
+          id: crypto.randomUUID(),
+          createTime: new Date().toISOString(),
+          message: `Deposited successfully.`,
+          notificationType: NotificationType.SUCCESS,
+          txHash: tx.transactionHash,
+          notificationDuration: NotificationDuration.DURATION_5000,
+        })
+        await postEvent({
+          tx: tx.transactionHash,
+          user: account,
+          event_type: 'ADD_LIQUIDITY',
+          value: tokenPrice * Number(token0TypedValue),
+        })
+      } catch (error) {
+        //
+        //
+        if (error instanceof Error && 'code' in error) {
+          if (error.code == 'ACTION_REJECTED') {
+            // toast.error('Action rejected')
+            // toast.error(error.message.split('(')[0].trim().toUpperCase())
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `${error.message.split('(')[0].trim().toUpperCase()}`,
+              notificationType: NotificationType.ERROR,
+              txHash: '',
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
+            // FIXME: STARK
+          } else if ('reason' in error && error?.reason == 'IV.deposit: deposits too large') {
+            addNotification({
+              id: crypto.randomUUID(),
+              createTime: new Date().toISOString(),
+              message: `Deposits are unavailable due to pool volatility.`,
+              notificationType: NotificationType.ERROR,
+              txHash: '',
+              notificationDuration: NotificationDuration.DURATION_5000,
+            })
+          }
+        } else {
+          //
+          // toast.error('Transaction failed')
+          // toast.error(error.message.split('(')[0].trim().toUpperCase())
+          // FIXME: STARK
+          addNotification({
+            id: crypto.randomUUID(),
+            createTime: new Date().toISOString(),
+            message: `${(error as Error).message}`,
+            notificationType: NotificationType.ERROR,
+            txHash: '',
+            notificationDuration: NotificationDuration.DURATION_5000,
+          })
+        }
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -318,7 +315,7 @@ const DepositAmountsICHI = ({
 
     const typedValueBN = toBN(token0TypedValue)
     const balanceBN = toBN(formatUnits(token0Balance || 0n, token0Decimals))
-    if (typedValueBN > balanceBN) return 'Insufficient balance'
+    if (typedValueBN.gt(balanceBN)) return 'Insufficient balance'
     if (loading) return 'Depositing'
     return 'Deposit'
   }
@@ -437,7 +434,7 @@ const DepositAmountsICHI = ({
                     />
                   </div>
                   <div
-                    className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3 
+                    className={`rounded-lg absolute top-[calc(100%+10px)] w-[230px] left-1/2 max-md:-translate-x-1/2 md:w-full md:left-0 right-0 flex flex-col gap-[5px] overflow-auto scrollbar-hide z-20 p-3
                     ${isActive ? 'visible bg-shark-500 !bg-opacity-80 border-shark-200' : 'hidden'}`}
                   >
                     {allIchiVaultsByTokenPair.map((vault: modifiedIchiVault) => (
@@ -507,6 +504,7 @@ const DepositAmountsICHI = ({
       {/* <Button onClick={testinPosition}>Deposit testing</Button> */}
       <Button
         onClick={createPosition}
+        disabled={!(+token0TypedValue && !isNaN(+token0TypedValue))}
         variant="tertiary"
         className="w-full mx-auto !text-xs !h-[49px]"
         walletConfig={{
