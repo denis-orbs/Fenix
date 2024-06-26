@@ -34,6 +34,7 @@ model users {
   ring_distribution          ring_distribution[]
   rings_extra_data           rings_extra_data?
   action_event               action_event[]
+  referrals_events           referrals_events[]
 }
 
 model rings_extra_data {
@@ -80,6 +81,15 @@ model ring_bonus {
   ring_points BigInt
   gold_points BigInt
   users       users     @relation(fields: [user_id], references: [id])
+}
+
+model referrals_events {
+  id         String   @id
+  user_id    String
+  event_name String
+  created_at DateTime @default(now())
+  rings      Decimal
+  users      users    @relation(fields: [user_id], references: [id])
 }
 
 enum BonusType {
