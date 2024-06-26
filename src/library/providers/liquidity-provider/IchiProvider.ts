@@ -30,9 +30,7 @@ export class IchiProvider extends LiquidityProvider {
 
     const chain = 'blast' // SupportedChainId.blast
 
-    console.log('!!!req')
     const vaults = await getIchiVaultsDataByIds(chain, dex, allPositions.map(({ vaultAddress }) => vaultAddress))
-    console.log('!!!res', vaults)
     const vaultsMap: { [key: string]: IchiVault } = vaults.reduce(
       (map, item) => ({ ...map, [item.id]: item }),
       {},
