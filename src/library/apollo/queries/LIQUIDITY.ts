@@ -78,7 +78,7 @@ export const GET_V3_ALGEBRA_DATA = gql`
 `
 export const GET_POSITIONV3_USER = gql`
   query GetPositionV3User($owner: String!) {
-    positions(where: { owner: $owner }, first: 1000) {
+    positions(orderBy: id, orderDirection: desc, where: { owner: $owner }, first: 1000) {
       id
       liquidity
       owner
