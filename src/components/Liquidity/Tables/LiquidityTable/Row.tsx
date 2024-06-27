@@ -162,7 +162,7 @@ const RowData = ({
           <div className="flex  justify-center items-center gap-2 ">
             {
               <span ref={hoverRef} className="flex gap-2">
-                <span ref={hoverRef} className={`flex items-center relative ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS || openTooltipEtherFi ? 'z-[100]' : 'z-0'}`}>
+                <span ref={hoverRef} className=''>
                   {totalCampaigns.find((add) => add.pairAddress.toLowerCase() == row.id.toLowerCase()) && (
                     <div className="relative flex items-center">
                       {campaign?.pointStack?.map((stack, index) => (
@@ -170,29 +170,10 @@ const RowData = ({
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS || openTooltipEtherFi ? 'z-[100]' : 'z-0'}`}
+                          // className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow motion-safe:animate-notification'} ${openTooltipGold || openTooltipEigenLayer || openTooltipKelpMiles || openTooltipTurtleClub || openTooltipFXS || openTooltipEtherFi ? 'z-[100]' : 'z-0'}`}
                           width={20}
                           height={20}
-                          onMouseEnter={() => {
-                            if (stack === 'blast-gold') {
-                              setOpenTooltipGold(true)
-                            }
-                            if (stack === 'eigen-layer') {
-                              setOpenTooltipEigenLayer(true)
-                            }
-                            if (stack === 'kelp-miles') {
-                              setOpenTooltipKelpMiles(true)
-                            }
-                            if (stack === 'turtle-club') {
-                              setOpenTooltipTurtleClub(true)
-                            }
-                            if (stack === 'fxs') {
-                              setOpenTooltipFXS(true)
-                            }
-                            if (stack === 'ether-fi') {
-                              setOpenTooltipEtherFi(true)
-                            }
-                          }}
+                          onMouseEnter={() => {}}
                           onMouseLeave={() => {
                             if (openTooltipGold) {
                               setOpenTooltipGold(false)

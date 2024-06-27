@@ -10,7 +10,7 @@ import { useAccount, useCall, useConnectorClient, useSimulateContract } from 'wa
 import { type WriteContractErrorType } from '@wagmi/core'
 import Chart from '@/src/components/Liquidity/Deposit/Chart'
 import { useShowChart, useSetChart } from '@/src/state/user/hooks'
-
+import React from 'react'
 import { IToken } from '@/src/library/types'
 import { useReadContract, useWriteContract } from 'wagmi'
 import useActiveConnectionDetails from '@/src/library/hooks/web3/useActiveConnectionDetails'
@@ -24,8 +24,7 @@ import Loader from '@/src/components/UI/Icons/Loader'
 import { ReloadIcon } from '@/src/components/UI/Icons/Reload'
 import SettingsIcon from '@/src/components/UI/Icons/Settings'
 import { useSlippageTolerance } from '@/src/state/user/hooks'
-import { formatNumber, fromWei, removeTrailingZeros, toBN } from '@/src/library/utils/numbers'
-
+import { BN_ONE, formatNumber, fromWei, removeTrailingZeros, toBN } from '@/src/library/utils/numbers'
 import { contractAddressList } from '@/src/library/constants/contactAddresses'
 import useAlgebraPoolByPair from '@/src/library/hooks/web3/useAlgebraPoolByPair'
 import useAlgebraSafelyStateOfAMM from '@/src/library/hooks/web3/useAlgebraSafelyStateOfAMM'
@@ -49,6 +48,7 @@ import { postEvent } from '@/src/library/utils/events'
 import debounce from 'lodash/debounce'
 import formatNumberToView from '@/src/library/helper/format-number-to-view'
 
+import { LiquidityHub } from '../LiquidityHub/index'
 enum ButtonState {
   POOL_NOT_AVAILABLE = 'Pool Not Available',
   ENTER_AMOUNT = 'Enter Amount',
@@ -65,7 +65,8 @@ const Panel = () => {
   const [isButtonPrimary, setisButtonPrimary] = useState(false)
   const [inputSwapValue, setInputSwapValue] = useState<string>('')
   const [swapValue, setSwapValue] = useState<string>('')
-  const [forValue, setForValue] = useState<string>('')
+  const [dexForValue, setForValue] = useState<string>('')
+
   const { setSlippageModal } = useStore()
   const [currentButtonState, setCurrentButtonState] = useState(ButtonState.SWAP)
   const [disableChart, setDisableChart] = useState(false)
@@ -161,7 +162,7 @@ const Panel = () => {
     symbol: 'USDB',
     address: '0x4300000000000000000000000000000000000003',
     decimals: 18,
-    img: 'USDB.svg',
+    img: '/static/images/tokens/USDB.svg',
     price: 0,
   })
 
@@ -170,7 +171,7 @@ const Panel = () => {
     symbol: 'WETH',
     address: '0x4300000000000000000000000000000000000004',
     decimals: 18,
-    img: 'WETH.svg',
+    img: '/static/images/tokens/WETH.svg',
     price: 0,
   })
 
@@ -294,6 +295,12 @@ const Panel = () => {
     }
   }
 
+  const resetAfterSwap = useCallback(() => {
+    setSwapValue('')
+    setForValue('')
+    setAmountOutMinimum(BigInt(0))
+  }, [])
+
   const handleApproveToken = async () => {
     if (!isConnected) {
       openConnectModal && openConnectModal()
@@ -343,7 +350,9 @@ const Panel = () => {
 
   // manage button click
   const handleSwapClick = () => {
-    if (currentButtonState === ButtonState.SWAP || currentButtonState === ButtonState.PRICE_IMPACT_ALERT) {
+    if (isLHSwap && currentButtonState === ButtonState.SWAP) {
+      liquidityHubPaload.onShowConfirmation()
+    } else if (currentButtonState === ButtonState.SWAP || currentButtonState === ButtonState.PRICE_IMPACT_ALERT) {
       callAlgebraRouter()
     } else if (currentButtonState === ButtonState.APPROVAL_REQUIRED) {
       setCurrentButtonState(ButtonState.WAITING_APPROVAL)
@@ -351,12 +360,30 @@ const Panel = () => {
     }
   }
 
+  const liquidityHubPaload = LiquidityHub.useQuoteSwap(swapValue, amountOutMinimum, tokenSell, tokenGet)
+
+  const isLHSwap = LiquidityHub.useIsLHSwap(liquidityHubPaload, amountOutMinimum)
+
+  const forValue = useMemo(() => {
+    if (!swapQuoteLoading && isLHSwap && toBN(dexForValue).isZero()) {
+      return liquidityHubPaload.ui.outAmount
+    }    
+    return dexForValue
+  }, [swapQuoteLoading, dexForValue, isLHSwap, liquidityHubPaload.ui.outAmount])
+
   const tokenGetValue = toBN(swapValue).multipliedBy(tokenSell.price)
   const tokenSellValue = toBN(forValue).multipliedBy(tokenGet.price)
   const [loadingSwap, setLoadingSwap] = useState(false)
   const percentageChange = tokenGetValue.minus(tokenSellValue).div(tokenGetValue).multipliedBy(100).abs().toString()
   const percentageChangeValue = useDebounce(percentageChange, 1000)
   const priceImpact = isNaN(Number(percentageChangeValue)) ? '' : percentageChangeValue
+
+  const minimumReceived = useMemo(() => {
+    if (!swapQuoteLoading && isLHSwap && toBN(amountOutMinimum.toString()).isZero()) {
+      return liquidityHubPaload.ui.minAmountOut
+    }
+    return fromWei(Number(amountOutMinimum), tokenGet.decimals)
+  }, [amountOutMinimum, tokenGet.decimals, swapQuoteLoading, isLHSwap, liquidityHubPaload.ui.minAmountOut])
 
   useEffect(() => {
     if ((approvalData.isLoading && !tokenSellIsNative) || swapQuoteLoading || loadingSwap) {
@@ -368,6 +395,7 @@ const Panel = () => {
     } else if (currentButtonState == ButtonState.WAITING_APPROVAL || currentButtonState == ButtonState.APPROVING) {
       return
     } else if (
+      !isLHSwap &&
       !tokenSellIsNative &&
       Number(formatUnits(approvalData?.data || 0n, tokenSell.decimals)) < Number(swapValue)
     ) {
@@ -394,6 +422,8 @@ const Panel = () => {
     priceImpact,
     swapAvailable,
     approvalData.isLoading,
+    isLHSwap,
+    currentButtonState,
   ])
   useEffect(() => {
     const interval = setInterval(() => {
@@ -686,7 +716,7 @@ const Panel = () => {
           <p className="">
             Minimum Amount Recieved:{' '}
             <span className="text-shark-100">
-              <>{fromWei(Number(amountOutMinimum), tokenGet.decimals)}</>
+              <>{minimumReceived}</>
             </span>
           </p>
           <p className="">
@@ -696,10 +726,25 @@ const Panel = () => {
             </span>
           </p>
         </div>
+        <LiquidityHub.PoweredBy />
       </section>
       {showChart && <Chart token0={tokenGet?.address} token1={tokenSell?.address} />}
+      <LiquidityHub.SwapConfirmationModal
+        resetAfterSwap={resetAfterSwap}
+        setTokenSell={setTokenSell}
+        fromUsd={tokenGetValue}
+        toUsd={tokenSellValue}
+        liquidityHubPaload={liquidityHubPaload}
+        forValue={forValue}
+      />
     </>
   )
 }
 
-export default Panel
+export default () => {
+  return (
+    <LiquidityHub.Provider>
+      <Panel />
+    </LiquidityHub.Provider>
+  )
+}

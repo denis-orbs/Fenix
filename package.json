@@ -17,6 +17,7 @@
     "@fuul/sdk": "^4.7.1",
     "@ichidao/ichi-vaults-sdk": "^0.0.56",
     "@next/third-parties": "^14.2.4",
+    "@orbs-network/liquidity-hub-ui-sdk": "^0.1.227",
     "@prisma/client": "^5.13.0",
     "@rainbow-me/rainbowkit": "^2.0.1",
     "@reduxjs/toolkit": "^2.2.1",

@@ -241,7 +241,7 @@ export default function MobileRowNew({
                           key={index}
                           src={`/static/images/point-stack/${stack}.svg`}
                           alt="token"
-                          className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow notification'}`}
+                          // className={`${stack === 'blast-gold' && 'rounded-full shadow-yellow-glow notification'}`}
                           width={20}
                           height={20}
                           onMouseEnter={() => {

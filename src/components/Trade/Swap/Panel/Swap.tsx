@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/src/components/UI'
 import SelectToken from '@/src/components/Modals/SelectToken'
@@ -87,7 +87,7 @@ const Swap = ({ token, setToken, setValue, value, setTokenSellUserBalance }: Swa
       setTokenBalance(resultado)
       setTokenSellUserBalance(resultado)
     }
-  }, [tokenData, token, account, setTokenSellUserBalance, nativeToken])
+  }, [tokenData.isSuccess, tokenData.data,  token, account, setTokenSellUserBalance, nativeToken])
   const handlerSelectToken = () => setOpenSelectToken(true)
 
   return (
