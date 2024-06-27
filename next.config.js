@@ -33,8 +33,6 @@ const { withSentryConfig } = require('@sentry/nextjs')
 
 // Injected content via Sentry wizard below
 
-const { withSentryConfig } = require('@sentry/nextjs')
-
 module.exports = withSentryConfig(module.exports, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
