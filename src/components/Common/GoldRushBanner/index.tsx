@@ -20,7 +20,7 @@ const GoldRushBanner = () => {
     infinite: false,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1,
+    slidesToScroll: 0,
     arrows: false,
 
     appendDots: (dots: any) => (
@@ -75,14 +75,14 @@ const GoldRushBanner = () => {
       <Image objectFit='cover' quality={100} src={'/static/images/gold-rush-banner/fenix-ring2.svg'} alt='Fenix Ring Decorator 2' className='lg:hidden  w-[23px] h-[23px] mix-blend-lighten absolute top-[0] right-[50px] z-[10]' width={10} height={10}/>
 
       <div className="relative z-[12] flex items-center gap-8 max-lg:gap-1 max-lg:hidden">
-        <div className='flex items-center gap-3'>
+        {/* <div className='flex items-center gap-3'>
             <Image src={'/static/images/point-stack/blast-gold.svg'} alt='Blast Gold' className='w-[36px] h-[36px] z-[5]' width={10} height={10}/>
             <div className='h-[50px] border-l border-shark-100'></div>
             <div className='flex flex-col items-start gap-1'>
               <div className='text-white font-bold text-sm'>Join the Gold Rush</div>
               <div className='text-white font-medium text-xs'>Deposit liquidity to earn your share of <span className='text-[#FFEF76] font-semibold'>100K Blast Gold</span></div>
             </div>
-        </div>
+        </div> */}
         <div className='flex items-center gap-3'>
             <Image src={'/static/images/blast-point-banner/fenix-ring-liquidity.svg'} alt='Fenix Orbit' className='w-[36px] h-[36px] z-[5]' width={10} height={10}/>
             <div className='h-[50px] border-l border-shark-100'></div>
@@ -93,9 +93,9 @@ const GoldRushBanner = () => {
         </div>
       </div>
       <div className="text-white z-[12] lg:hidden relative w-[70%] h-[135px] my-auto">
-        <div className='slider-container w-full flex flex-col mt-4 max-sm:mt-2 h-full'>
+        <div className={`slider-container w-full flex flex-col ${settings.slidesToScroll === 0 ? 'justify-center' : 'mt-4 max-sm:mt-2'}  h-full`}>
           <Slider ref={sliderRef} {...settings} beforeChange={(currentSlide: number, nextSlide: number) => setCurrentSlideNumber(nextSlide)}>
-            <div className='!flex items-center justify-start gap-3 z-[8] w-full h-full'>
+            {/* <div className='!flex items-center justify-start gap-3 z-[8] w-full h-full'>
               <Image src={'/static/images/point-stack/blast-gold.svg'} alt='Blast Gold' className='w-[36px] h-[36px] z-[5]' width={10} height={10}/>
               <div className='h-[70px] border-l border-shark-100'></div>
               <div className='flex flex-col items-start gap-1'>
@@ -103,7 +103,7 @@ const GoldRushBanner = () => {
                 <div className='text-white font-medium text-xs'>Deposit liquidity to earn your share of</div>
                 <div className='gradient-banner px-3 py-1 font-normal text-white text-xs'>100K Blast Gold</div>
               </div>
-            </div>
+            </div> */}
             <div className='!flex items-center justify-start gap-3 z-[8] w-full'>
                 <Image src={'/static/images/blast-point-banner/fenix-ring-liquidity.svg'} alt='Fenix Orbit' className='w-[36px] h-[36px] z-[5]' width={10} height={10}/>
                 <div className='h-[70px] border-l border-shark-100'></div>
